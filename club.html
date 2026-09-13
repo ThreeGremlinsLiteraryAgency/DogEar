@@ -1,0 +1,3844 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="DogEar book club."
+  >
+
+  <title>DogEar — Club</title>
+
+
+  <style>
+
+    :root {
+
+      --ink: #090b0a;
+      --ink-2: #101410;
+      --ink-3: #151b16;
+
+      --cream: #f1e7cf;
+      --paper: #e7dcc2;
+
+      --gold: #c79b59;
+      --gold-soft: #dfbd7e;
+
+      --green: #26362b;
+      --green-light: #34483a;
+
+      --wine: #5a2f2a;
+
+      --muted: #aaa18f;
+
+      --success: #b9d6b2;
+      --warning: #e3c58c;
+      --danger: #e6a09a;
+
+      --line:
+        rgba(
+          199,
+          155,
+          89,
+          0.22
+        );
+
+      --shadow:
+        0
+        20px
+        60px
+        rgba(
+          0,
+          0,
+          0,
+          0.32
+        );
+
+      --radius: 20px;
+
+    }
+
+
+    * {
+
+      box-sizing: border-box;
+
+    }
+
+
+    html {
+
+      scroll-behavior: smooth;
+
+    }
+
+
+    body {
+
+      margin: 0;
+
+      min-height: 100vh;
+
+      background:
+
+        radial-gradient(
+          circle at 8% 0%,
+          rgba(
+            53,
+            73,
+            59,
+            0.24
+          ),
+          transparent 28%
+        ),
+
+        radial-gradient(
+          circle at 92% 8%,
+          rgba(
+            199,
+            155,
+            89,
+            0.09
+          ),
+          transparent 24%
+        ),
+
+        var(--ink);
+
+      color:
+        var(--cream);
+
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    }
+
+
+    button {
+
+      font: inherit;
+
+    }
+
+
+    a {
+
+      color: inherit;
+
+    }
+
+
+    /* =====================================================
+       NAV
+       ===================================================== */
+
+
+    .topbar {
+
+      min-height: 76px;
+
+      position: sticky;
+
+      top: 0;
+
+      z-index: 100;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 30px;
+
+      padding:
+        0
+        clamp(
+          18px,
+          4vw,
+          60px
+        );
+
+      border-bottom:
+        1px
+        solid
+        var(--line);
+
+      background:
+        rgba(
+          9,
+          11,
+          10,
+          0.92
+        );
+
+      backdrop-filter:
+        blur(14px);
+
+    }
+
+
+    .brand {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 11px;
+
+      text-decoration: none;
+
+      color:
+        var(--gold-soft);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 13px;
+
+      font-weight: 800;
+
+      letter-spacing:
+        0.17em;
+
+      text-transform:
+        uppercase;
+
+    }
+
+
+    .brand-mark {
+
+      width: 34px;
+
+      height: 34px;
+
+      position: relative;
+
+      border:
+        1px
+        solid
+        var(--gold);
+
+      border-radius:
+        50%
+        50%
+        50%
+        12%;
+
+      transform:
+        rotate(-8deg);
+
+    }
+
+
+    .brand-mark::after {
+
+      content: "";
+
+      position: absolute;
+
+      width: 11px;
+
+      height: 11px;
+
+      right: 2px;
+
+      top: 2px;
+
+      border-left:
+        1px
+        solid
+        var(--gold);
+
+      border-bottom:
+        1px
+        solid
+        var(--gold);
+
+      background:
+        var(--ink);
+
+    }
+
+
+    .nav-links {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 26px;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      letter-spacing:
+        0.1em;
+
+      text-transform:
+        uppercase;
+
+    }
+
+
+    .nav-links a {
+
+      color:
+        var(--muted);
+
+      text-decoration: none;
+
+    }
+
+
+    .nav-links a:hover,
+    .nav-links a.active {
+
+      color:
+        var(--gold-soft);
+
+    }
+
+
+    .nav-avatar {
+
+      width: 38px;
+
+      height: 38px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      overflow: hidden;
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius: 50%;
+
+      background:
+        var(--green);
+
+      color:
+        var(--gold-soft);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 13px;
+
+      font-weight: 800;
+
+      text-decoration: none;
+
+    }
+
+
+    .nav-avatar img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+    }
+
+
+    /* =====================================================
+       PAGE
+       ===================================================== */
+
+
+    .page {
+
+      width:
+        min(
+          1280px,
+          calc(
+            100% - 36px
+          )
+        );
+
+      margin:
+        0
+        auto;
+
+      padding:
+        42px
+        0
+        110px;
+
+    }
+
+
+    .back-row {
+
+      margin-bottom: 24px;
+
+    }
+
+
+    .back-link {
+
+      color:
+        var(--gold-soft);
+
+      text-decoration: none;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 10px;
+
+      font-weight: 800;
+
+      letter-spacing:
+        0.1em;
+
+      text-transform:
+        uppercase;
+
+    }
+
+
+    /* =====================================================
+       CLUB HEADER
+       ===================================================== */
+
+
+    .club-hero {
+
+      margin-bottom: 30px;
+
+      padding: 34px;
+
+      display: grid;
+
+      grid-template-columns:
+        95px
+        minmax(
+          0,
+          1fr
+        )
+        auto;
+
+      gap: 25px;
+
+      align-items: center;
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius:
+        22px;
+
+      background:
+        linear-gradient(
+          120deg,
+          rgba(
+            38,
+            54,
+            43,
+            0.92
+          ),
+          rgba(
+            16,
+            20,
+            16,
+            0.95
+          )
+        );
+
+      box-shadow:
+        var(--shadow);
+
+    }
+
+
+    .club-mark {
+
+      width: 95px;
+
+      height: 95px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border:
+        1px
+        solid
+        rgba(
+          199,
+          155,
+          89,
+          0.32
+        );
+
+      border-radius: 50%;
+
+      background:
+        rgba(
+          9,
+          11,
+          10,
+          0.65
+        );
+
+      color:
+        var(--gold-soft);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 28px;
+
+      font-weight: 800;
+
+    }
+
+
+    .eyebrow {
+
+      margin-bottom: 9px;
+
+      color:
+        var(--gold);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 10px;
+
+      font-weight: 800;
+
+      letter-spacing:
+        0.18em;
+
+      text-transform:
+        uppercase;
+
+    }
+
+
+    h1,
+    h2,
+    h3,
+    p {
+
+      margin-top: 0;
+
+    }
+
+
+    .club-title {
+
+      margin-bottom: 10px;
+
+      font-size:
+        clamp(
+          40px,
+          5vw,
+          66px
+        );
+
+      line-height:
+        0.98;
+
+      font-weight: 400;
+
+      letter-spacing:
+        -0.035em;
+
+    }
+
+
+    .club-description {
+
+      margin-bottom: 0;
+
+      max-width: 760px;
+
+      color:
+        #b9b0a0;
+
+      font-size: 16px;
+
+      line-height: 1.7;
+
+    }
+
+
+    .hero-actions {
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 10px;
+
+      min-width: 180px;
+
+    }
+
+
+    .primary-button,
+    .secondary-button {
+
+      min-height: 44px;
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding:
+        0
+        18px;
+
+      border-radius:
+        999px;
+
+      text-decoration: none;
+
+      cursor: pointer;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 10px;
+
+      font-weight: 800;
+
+      letter-spacing:
+        0.1em;
+
+      text-transform:
+        uppercase;
+
+    }
+
+
+    .primary-button {
+
+      border:
+        1px
+        solid
+        var(--gold);
+
+      background:
+        var(--gold);
+
+      color:
+        #17130e;
+
+    }
+
+
+    .primary-button:hover {
+
+      background:
+        var(--gold-soft);
+
+    }
+
+
+    .secondary-button {
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      background:
+        transparent;
+
+      color:
+        var(--gold-soft);
+
+    }
+
+
+    .secondary-button:hover {
+
+      border-color:
+        var(--gold);
+
+    }
+
+
+    /* =====================================================
+       STATUS
+       ===================================================== */
+
+
+    .status-banner {
+
+      display: none;
+
+      margin-bottom: 26px;
+
+      padding:
+        18px
+        20px;
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius:
+        14px;
+
+      background:
+        rgba(
+          16,
+          20,
+          16,
+          0.75
+        );
+
+      color:
+        var(--muted);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 12px;
+
+      line-height: 1.6;
+
+    }
+
+
+    .status-banner.show {
+
+      display: block;
+
+    }
+
+
+    .status-banner.success {
+
+      border-color:
+        rgba(
+          185,
+          214,
+          178,
+          0.28
+        );
+
+      color:
+        var(--success);
+
+    }
+
+
+    .status-banner.warning {
+
+      border-color:
+        rgba(
+          227,
+          197,
+          140,
+          0.28
+        );
+
+      color:
+        var(--warning);
+
+    }
+
+
+    /* =====================================================
+       LAYOUT
+       ===================================================== */
+
+
+    .layout {
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(
+          0,
+          1.5fr
+        )
+        minmax(
+          290px,
+          0.7fr
+        );
+
+      gap: 26px;
+
+      align-items: start;
+
+    }
+
+
+    .main-column,
+    .side-column {
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 26px;
+
+    }
+
+
+    .card {
+
+      overflow: hidden;
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius:
+        var(--radius);
+
+      background:
+        rgba(
+          16,
+          20,
+          16,
+          0.84
+        );
+
+      box-shadow:
+        var(--shadow);
+
+    }
+
+
+    .card-header {
+
+      padding:
+        22px
+        25px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 16px;
+
+      border-bottom:
+        1px
+        solid
+        var(--line);
+
+    }
+
+
+    .card-header h2 {
+
+      margin-bottom: 0;
+
+      font-size: 26px;
+
+      font-weight: 400;
+
+    }
+
+
+    .small-link {
+
+      color:
+        var(--gold-soft);
+
+      text-decoration: none;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 9px;
+
+      font-weight: 800;
+
+      letter-spacing:
+        0.1em;
+
+      text-transform:
+        uppercase;
+
+    }
+
+
+    /* =====================================================
+       BOOK OF MONTH
+       ===================================================== */
+
+
+    .book-month {
+
+      padding: 25px;
+
+      display: grid;
+
+      grid-template-columns:
+        155px
+        1fr;
+
+      gap: 24px;
+
+      align-items: center;
+
+    }
+
+
+    .book-cover {
+
+      aspect-ratio:
+        2 / 3;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      overflow: hidden;
+
+      border:
+        1px
+        solid
+        rgba(
+          199,
+          155,
+          89,
+          0.25
+        );
+
+      border-radius: 8px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #3a4b3e,
+          #141a15
+        );
+
+      color:
+        rgba(
+          241,
+          231,
+          207,
+          0.5
+        );
+
+      text-align: center;
+
+      padding: 18px;
+
+      font-style: italic;
+
+    }
+
+
+    .book-cover img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+    }
+
+
+    .book-info h3 {
+
+      margin-bottom: 8px;
+
+      font-size: 31px;
+
+      font-weight: 400;
+
+    }
+
+
+    .book-author {
+
+      margin-bottom: 16px;
+
+      color:
+        var(--gold-soft);
+
+      font-size: 15px;
+
+    }
+
+
+    .book-note {
+
+      margin-bottom: 18px;
+
+      color:
+        var(--muted);
+
+      line-height: 1.6;
+
+    }
+
+
+    /* =====================================================
+       VOTING
+       ===================================================== */
+
+
+    .vote-grid {
+
+      padding: 24px;
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          3,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      gap: 15px;
+
+    }
+
+
+    .vote-card {
+
+      padding: 17px;
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius: 14px;
+
+      background:
+        #0d110e;
+
+    }
+
+
+    .vote-cover {
+
+      width: 100%;
+
+      aspect-ratio:
+        2 / 3;
+
+      margin-bottom: 14px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      overflow: hidden;
+
+      border-radius: 7px;
+
+      background:
+        var(--green);
+
+      color:
+        #7f887f;
+
+      text-align: center;
+
+      font-size: 12px;
+
+    }
+
+
+    .vote-cover img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+    }
+
+
+    .vote-card h3 {
+
+      margin-bottom: 6px;
+
+      font-size: 17px;
+
+      font-weight: 400;
+
+    }
+
+
+    .vote-author {
+
+      min-height: 34px;
+
+      margin-bottom: 14px;
+
+      color:
+        var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.4;
+
+    }
+
+
+    .vote-button {
+
+      width: 100%;
+
+      min-height: 39px;
+
+      border:
+        1px
+        solid
+        var(--gold);
+
+      border-radius:
+        999px;
+
+      background:
+        transparent;
+
+      color:
+        var(--gold-soft);
+
+      cursor: pointer;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 9px;
+
+      font-weight: 800;
+
+      letter-spacing:
+        0.08em;
+
+      text-transform:
+        uppercase;
+
+    }
+
+
+    .vote-button:hover {
+
+      background:
+        rgba(
+          199,
+          155,
+          89,
+          0.08
+        );
+
+    }
+
+
+    /* =====================================================
+       FORUM
+       ===================================================== */
+
+
+    .forum-list {
+
+      padding:
+        0
+        24px;
+
+    }
+
+
+    .forum-row {
+
+      padding:
+        20px
+        0;
+
+      display: grid;
+
+      grid-template-columns:
+        42px
+        1fr
+        auto;
+
+      gap: 14px;
+
+      align-items: center;
+
+      border-bottom:
+        1px
+        solid
+        rgba(
+          199,
+          155,
+          89,
+          0.12
+        );
+
+    }
+
+
+    .forum-row:last-child {
+
+      border-bottom: 0;
+
+    }
+
+
+    .forum-icon {
+
+      width: 42px;
+
+      height: 42px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border-radius: 12px;
+
+      background:
+        var(--green);
+
+      color:
+        var(--gold-soft);
+
+      font-size: 16px;
+
+    }
+
+
+    .forum-main a {
+
+      display: inline-block;
+
+      margin-bottom: 5px;
+
+      color:
+        var(--cream);
+
+      text-decoration: none;
+
+      font-size: 16px;
+
+    }
+
+
+    .forum-main a:hover {
+
+      color:
+        var(--gold-soft);
+
+    }
+
+
+    .forum-meta {
+
+      color:
+        #777066;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 9px;
+
+      text-transform:
+        uppercase;
+
+    }
+
+
+    .forum-status {
+
+      color:
+        var(--muted);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 9px;
+
+      text-transform:
+        uppercase;
+
+    }
+
+
+    /* =====================================================
+       MEMBERS
+       ===================================================== */
+
+
+    .member-list {
+
+      padding:
+        10px
+        22px
+        18px;
+
+    }
+
+
+    .member-row {
+
+      padding:
+        12px
+        0;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      border-bottom:
+        1px
+        solid
+        rgba(
+          199,
+          155,
+          89,
+          0.1
+        );
+
+    }
+
+
+    .member-row:last-child {
+
+      border-bottom: 0;
+
+    }
+
+
+    .member-avatar {
+
+      width: 38px;
+
+      height: 38px;
+
+      flex:
+        0
+        0
+        auto;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background:
+        var(--green);
+
+      color:
+        var(--gold-soft);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 11px;
+
+      font-weight: 800;
+
+    }
+
+
+    .member-info {
+
+      min-width: 0;
+
+      flex: 1;
+
+    }
+
+
+    .member-info a {
+
+      display: block;
+
+      margin-bottom: 2px;
+
+      color:
+        var(--cream);
+
+      text-decoration: none;
+
+      font-size: 13px;
+
+    }
+
+
+    .member-role {
+
+      color:
+        var(--muted);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 9px;
+
+      text-transform:
+        uppercase;
+
+    }
+
+
+    /* =====================================================
+       ADMIN
+       ===================================================== */
+
+
+    .admin-card {
+
+      display: none;
+
+    }
+
+
+    .admin-card.show {
+
+      display: block;
+
+    }
+
+
+    .admin-actions {
+
+      padding: 22px;
+
+      display: grid;
+
+      grid-template-columns:
+        1fr
+        1fr;
+
+      gap: 10px;
+
+    }
+
+
+    .admin-action {
+
+      min-height: 70px;
+
+      padding: 14px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      text-align: center;
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius: 12px;
+
+      background:
+        #0d110e;
+
+      color:
+        var(--gold-soft);
+
+      text-decoration: none;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 9px;
+
+      font-weight: 800;
+
+      letter-spacing:
+        0.08em;
+
+      text-transform:
+        uppercase;
+
+    }
+
+
+    .admin-action:hover {
+
+      border-color:
+        var(--gold);
+
+    }
+
+
+    /* =====================================================
+       EMPTY
+       ===================================================== */
+
+
+    .empty-state {
+
+      padding:
+        38px
+        24px;
+
+      text-align: center;
+
+      color:
+        var(--muted);
+
+      line-height: 1.6;
+
+    }
+
+
+    .empty-state strong {
+
+      display: block;
+
+      margin-bottom: 7px;
+
+      color:
+        var(--cream);
+
+      font-size: 18px;
+
+      font-weight: 400;
+
+    }
+
+
+    /* =====================================================
+       LOADING
+       ===================================================== */
+
+
+    .loading-screen {
+
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 1000;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      flex-direction: column;
+
+      gap: 15px;
+
+      background:
+        var(--ink);
+
+      color:
+        var(--gold-soft);
+
+    }
+
+
+    .loading-screen.hidden {
+
+      display: none;
+
+    }
+
+
+    .loading-mark {
+
+      width: 48px;
+
+      height: 48px;
+
+      border:
+        1px
+        solid
+        var(--gold);
+
+      border-radius:
+        50%
+        50%
+        50%
+        12%;
+
+      animation:
+        pulse
+        1.1s
+        infinite
+        alternate;
+
+    }
+
+
+    @keyframes pulse {
+
+      from {
+
+        opacity: 0.3;
+
+        transform:
+          rotate(-8deg)
+          scale(0.94);
+
+      }
+
+      to {
+
+        opacity: 1;
+
+        transform:
+          rotate(-8deg)
+          scale(1.05);
+
+      }
+
+    }
+
+
+    .loading-text {
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 10px;
+
+      font-weight: 800;
+
+      letter-spacing:
+        0.17em;
+
+      text-transform:
+        uppercase;
+
+    }
+
+
+    /* =====================================================
+       MOBILE
+       ===================================================== */
+
+
+    .mobile-nav {
+
+      display: none;
+
+    }
+
+
+    @media (
+      max-width: 980px
+    ) {
+
+      .layout {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+
+      .side-column {
+
+        display: grid;
+
+        grid-template-columns:
+          1fr
+          1fr;
+
+      }
+
+    }
+
+
+    @media (
+      max-width: 800px
+    ) {
+
+      .club-hero {
+
+        grid-template-columns:
+          70px
+          1fr;
+
+      }
+
+
+      .club-mark {
+
+        width: 70px;
+
+        height: 70px;
+
+      }
+
+
+      .hero-actions {
+
+        grid-column:
+          1 / -1;
+
+        display: grid;
+
+        grid-template-columns:
+          1fr
+          1fr;
+
+      }
+
+
+      .vote-grid {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+    }
+
+
+    @media (
+      max-width: 760px
+    ) {
+
+      .nav-links {
+
+        display: none;
+
+      }
+
+
+      .book-month {
+
+        grid-template-columns:
+          105px
+          1fr;
+
+      }
+
+
+      .side-column {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+
+      .mobile-nav {
+
+        position: fixed;
+
+        left: 12px;
+
+        right: 12px;
+
+        bottom: 12px;
+
+        z-index: 200;
+
+        min-height: 64px;
+
+        display: grid;
+
+        grid-template-columns:
+          repeat(
+            4,
+            1fr
+          );
+
+        border:
+          1px
+          solid
+          var(--line);
+
+        border-radius: 18px;
+
+        background:
+          rgba(
+            9,
+            11,
+            10,
+            0.95
+          );
+
+        backdrop-filter:
+          blur(14px);
+
+        box-shadow:
+          0
+          10px
+          40px
+          rgba(
+            0,
+            0,
+            0,
+            0.5
+          );
+
+      }
+
+
+      .mobile-nav a {
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 4px;
+
+        color:
+          var(--muted);
+
+        text-decoration: none;
+
+        font-family:
+          Arial,
+          Helvetica,
+          sans-serif;
+
+        font-size: 9px;
+
+        text-transform: uppercase;
+
+      }
+
+
+      .mobile-nav a span:first-child {
+
+        color:
+          var(--gold-soft);
+
+        font-size: 17px;
+
+      }
+
+
+      .page {
+
+        padding-bottom:
+          120px;
+
+      }
+
+    }
+
+
+    @media (
+      max-width: 520px
+    ) {
+
+      .page {
+
+        width:
+          calc(
+            100% - 22px
+          );
+
+      }
+
+
+      .club-hero {
+
+        padding: 23px;
+
+      }
+
+
+      .hero-actions {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+
+      .book-month {
+
+        grid-template-columns:
+          85px
+          1fr;
+
+        gap: 17px;
+
+      }
+
+
+      .admin-actions {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- =====================================================
+       LOADING
+       ===================================================== -->
+
+
+  <div
+    class="loading-screen"
+    id="loadingScreen"
+  >
+
+    <div class="loading-mark"></div>
+
+    <div class="loading-text">
+
+      Opening the club...
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =====================================================
+       NAVIGATION
+       ===================================================== -->
+
+
+  <header class="topbar">
+
+
+    <a
+      class="brand"
+      href="dashboard.html"
+    >
+
+      <span class="brand-mark"></span>
+
+      DogEar
+
+    </a>
+
+
+
+    <nav class="nav-links">
+
+
+      <a href="dashboard.html">
+
+        Home
+
+      </a>
+
+
+      <a href="discover.html">
+
+        Discover
+
+      </a>
+
+
+      <a
+        class="active"
+        href="clubs.html"
+      >
+
+        Clubs
+
+      </a>
+
+
+      <a href="marketplace.html">
+
+        Books
+
+      </a>
+
+
+    </nav>
+
+
+
+    <a
+      class="nav-avatar"
+      id="navAvatar"
+      href="profile.html"
+    >
+
+      ?
+
+    </a>
+
+
+  </header>
+
+
+
+  <!-- =====================================================
+       PAGE
+       ===================================================== -->
+
+
+  <main class="page">
+
+
+    <div class="back-row">
+
+      <a
+        class="back-link"
+        href="clubs.html"
+      >
+
+        ← Back to Clubs
+
+      </a>
+
+    </div>
+
+
+
+    <!-- =================================================
+         HERO
+         ================================================= -->
+
+
+    <section class="club-hero">
+
+
+      <div
+        class="club-mark"
+        id="clubMark"
+      >
+
+        C
+
+      </div>
+
+
+
+      <div>
+
+
+        <div
+          class="eyebrow"
+          id="clubEyebrow"
+        >
+
+          DogEar Book Club
+
+        </div>
+
+
+        <h1
+          class="club-title"
+          id="clubTitle"
+        >
+
+          Loading club...
+
+        </h1>
+
+
+        <p
+          class="club-description"
+          id="clubDescription"
+        >
+
+          Loading...
+
+        </p>
+
+
+      </div>
+
+
+
+      <div class="hero-actions">
+
+
+        <button
+          class="primary-button"
+          id="membershipButton"
+          type="button"
+        >
+
+          Request to Join
+
+        </button>
+
+
+        <a
+          class="secondary-button"
+          id="membersButton"
+          href="club-members.html"
+        >
+
+          Members
+
+        </a>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         STATUS
+         ================================================= -->
+
+
+    <div
+      class="status-banner"
+      id="statusBanner"
+    ></div>
+
+
+
+    <!-- =================================================
+         LAYOUT
+         ================================================= -->
+
+
+    <div class="layout">
+
+
+      <!-- =================================================
+           MAIN
+           ================================================= -->
+
+
+      <div class="main-column">
+
+
+        <!-- =============================================
+             BOOK OF MONTH
+             ============================================= -->
+
+
+        <section class="card">
+
+
+          <div class="card-header">
+
+
+            <h2>
+
+              Book of the Month
+
+            </h2>
+
+
+            <a
+              class="small-link"
+              id="pastBooksLink"
+              href="club.html"
+            >
+
+              Past Books
+
+            </a>
+
+
+          </div>
+
+
+
+          <div
+            class="book-month"
+            id="bookMonthArea"
+          >
+
+
+            <div
+              class="book-cover"
+              id="bookMonthCover"
+            >
+
+              No book yet
+
+            </div>
+
+
+            <div class="book-info">
+
+
+              <div class="eyebrow">
+
+                Current Read
+
+              </div>
+
+
+              <h3 id="bookMonthTitle">
+
+                No Book of the Month Yet
+
+              </h3>
+
+
+              <div
+                class="book-author"
+                id="bookMonthAuthor"
+              ></div>
+
+
+              <p
+                class="book-note"
+                id="bookMonthNote"
+              >
+
+                Once this club has a winning monthly vote,
+                the book will appear here.
+
+              </p>
+
+
+              <a
+                class="secondary-button"
+                id="bookMonthLink"
+                href="discover.html"
+              >
+
+                Browse Books
+
+              </a>
+
+
+            </div>
+
+
+          </div>
+
+
+        </section>
+
+
+
+        <!-- =============================================
+             VOTING
+             ============================================= -->
+
+
+        <section class="card">
+
+
+          <div class="card-header">
+
+
+            <h2>
+
+              Next Month's Vote
+
+            </h2>
+
+
+            <a
+              class="small-link"
+              id="fullVotingLink"
+              href="club-voting.html"
+            >
+
+              Voting Page
+
+            </a>
+
+
+          </div>
+
+
+
+          <div
+            class="vote-grid"
+            id="voteGrid"
+          >
+
+
+            <div class="vote-card">
+
+              <div class="vote-cover">
+
+                Option 1
+
+              </div>
+
+              <h3>
+
+                Waiting for selection
+
+              </h3>
+
+              <div class="vote-author">
+
+                The Club President will choose this option.
+
+              </div>
+
+              <button
+                class="vote-button"
+                type="button"
+                disabled
+              >
+
+                Vote
+
+              </button>
+
+            </div>
+
+
+
+            <div class="vote-card">
+
+              <div class="vote-cover">
+
+                Option 2
+
+              </div>
+
+              <h3>
+
+                Waiting for selection
+
+              </h3>
+
+              <div class="vote-author">
+
+                The Club President will choose this option.
+
+              </div>
+
+              <button
+                class="vote-button"
+                type="button"
+                disabled
+              >
+
+                Vote
+
+              </button>
+
+            </div>
+
+
+
+            <div class="vote-card">
+
+              <div class="vote-cover">
+
+                Option 3
+
+              </div>
+
+              <h3>
+
+                Waiting for selection
+
+              </h3>
+
+              <div class="vote-author">
+
+                The Club President will choose this option.
+
+              </div>
+
+              <button
+                class="vote-button"
+                type="button"
+                disabled
+              >
+
+                Vote
+
+              </button>
+
+            </div>
+
+
+          </div>
+
+
+        </section>
+
+
+
+        <!-- =============================================
+             FORUMS
+             ============================================= -->
+
+
+        <section class="card">
+
+
+          <div class="card-header">
+
+
+            <h2>
+
+              Club Conversations
+
+            </h2>
+
+
+            <a
+              class="small-link"
+              id="newThreadLink"
+              href="forum-thread.html"
+            >
+
+              Start Thread
+
+            </a>
+
+
+          </div>
+
+
+
+          <div
+            class="forum-list"
+            id="forumList"
+          >
+
+
+            <div class="empty-state">
+
+              <strong>
+
+                Quiet in here.
+
+              </strong>
+
+              Club conversations will appear here once
+              members start posting.
+
+            </div>
+
+
+          </div>
+
+
+        </section>
+
+
+      </div>
+
+
+
+      <!-- =================================================
+           SIDEBAR
+           ================================================= -->
+
+
+      <aside class="side-column">
+
+
+        <!-- =============================================
+             MEMBERS
+             ============================================= -->
+
+
+        <section class="card">
+
+
+          <div class="card-header">
+
+
+            <h2>
+
+              Members
+
+            </h2>
+
+
+            <a
+              class="small-link"
+              id="allMembersLink"
+              href="club-members.html"
+            >
+
+              View All
+
+            </a>
+
+
+          </div>
+
+
+
+          <div
+            class="member-list"
+            id="memberList"
+          >
+
+
+            <div class="empty-state">
+
+              Members will appear here.
+
+            </div>
+
+
+          </div>
+
+
+        </section>
+
+
+
+        <!-- =============================================
+             CLUB INFO
+             ============================================= -->
+
+
+        <section class="card">
+
+
+          <div class="card-header">
+
+            <h2>
+
+              About This Club
+
+            </h2>
+
+          </div>
+
+
+          <div style="padding:22px;">
+
+
+            <div class="eyebrow">
+
+              Your Status
+
+            </div>
+
+
+            <p
+              id="membershipStatus"
+              style="
+                color:var(--muted);
+                line-height:1.6;
+              "
+            >
+
+              Checking...
+
+            </p>
+
+
+
+            <div
+              class="eyebrow"
+              style="
+                margin-top:22px;
+              "
+            >
+
+              Your Role
+
+            </div>
+
+
+            <p
+              id="roleStatus"
+              style="
+                color:var(--muted);
+                line-height:1.6;
+                margin-bottom:0;
+              "
+            >
+
+              Non-member
+
+            </p>
+
+
+          </div>
+
+
+        </section>
+
+
+
+        <!-- =============================================
+             ADMIN CONTROLS
+             ============================================= -->
+
+
+        <section
+          class="card admin-card"
+          id="adminCard"
+        >
+
+
+          <div class="card-header">
+
+
+            <h2>
+
+              Club Controls
+
+            </h2>
+
+
+          </div>
+
+
+
+          <div class="admin-actions">
+
+
+            <a
+              class="admin-action"
+              id="manageMembersLink"
+              href="club-members.html"
+            >
+
+              Manage Members
+
+            </a>
+
+
+            <a
+              class="admin-action"
+              id="manageVotingLink"
+              href="club-voting.html"
+            >
+
+              Manage Voting
+
+            </a>
+
+
+            <a
+              class="admin-action"
+              id="clubSettingsLink"
+              href="club-settings.html"
+            >
+
+              Club Settings
+
+            </a>
+
+
+            <a
+              class="admin-action"
+              id="moderationLink"
+              href="club.html"
+            >
+
+              Moderation
+
+            </a>
+
+
+          </div>
+
+
+        </section>
+
+
+      </aside>
+
+
+    </div>
+
+
+  </main>
+
+
+
+  <!-- =====================================================
+       MOBILE NAV
+       ===================================================== -->
+
+
+  <nav class="mobile-nav">
+
+
+    <a href="dashboard.html">
+
+      <span>⌂</span>
+
+      Home
+
+    </a>
+
+
+    <a href="discover.html">
+
+      <span>⌕</span>
+
+      Discover
+
+    </a>
+
+
+    <a href="clubs.html">
+
+      <span>◉</span>
+
+      Clubs
+
+    </a>
+
+
+    <a href="profile.html">
+
+      <span>☺</span>
+
+      Profile
+
+    </a>
+
+
+  </nav>
+
+
+
+  <!-- =====================================================
+       SUPABASE
+       ===================================================== -->
+
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
+
+
+
+  <script>
+
+
+    /* =====================================================
+       CONNECTION
+       ===================================================== */
+
+
+    const SUPABASE_URL =
+      "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+
+
+    /* =====================================================
+       ELEMENTS
+       ===================================================== */
+
+
+    const loadingScreen =
+      document.getElementById(
+        "loadingScreen"
+      );
+
+
+    const navAvatar =
+      document.getElementById(
+        "navAvatar"
+      );
+
+
+    const clubMark =
+      document.getElementById(
+        "clubMark"
+      );
+
+
+    const clubTitle =
+      document.getElementById(
+        "clubTitle"
+      );
+
+
+    const clubDescription =
+      document.getElementById(
+        "clubDescription"
+      );
+
+
+    const membershipButton =
+      document.getElementById(
+        "membershipButton"
+      );
+
+
+    const membershipStatus =
+      document.getElementById(
+        "membershipStatus"
+      );
+
+
+    const roleStatus =
+      document.getElementById(
+        "roleStatus"
+      );
+
+
+    const statusBanner =
+      document.getElementById(
+        "statusBanner"
+      );
+
+
+    const adminCard =
+      document.getElementById(
+        "adminCard"
+      );
+
+
+    const membersButton =
+      document.getElementById(
+        "membersButton"
+      );
+
+
+    const allMembersLink =
+      document.getElementById(
+        "allMembersLink"
+      );
+
+
+    const manageMembersLink =
+      document.getElementById(
+        "manageMembersLink"
+      );
+
+
+    const manageVotingLink =
+      document.getElementById(
+        "manageVotingLink"
+      );
+
+
+    const clubSettingsLink =
+      document.getElementById(
+        "clubSettingsLink"
+      );
+
+
+    const fullVotingLink =
+      document.getElementById(
+        "fullVotingLink"
+      );
+
+
+    const newThreadLink =
+      document.getElementById(
+        "newThreadLink"
+      );
+
+
+    let currentUser =
+      null;
+
+
+    let clubId =
+      null;
+
+
+    let clubData =
+      null;
+
+
+    let membershipData =
+      null;
+
+
+
+    /* =====================================================
+       START PAGE
+       ===================================================== */
+
+
+    async function startPage() {
+
+
+      const params =
+        new URLSearchParams(
+          window.location.search
+        );
+
+
+      clubId =
+        params.get(
+          "id"
+        );
+
+
+      if (!clubId) {
+
+
+        window.location.href =
+          "clubs.html";
+
+
+        return;
+
+
+      }
+
+
+      wirePageLinks();
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .auth
+          .getUser();
+
+
+      if (
+        error ||
+        !data.user
+      ) {
+
+
+        window.location.href =
+          "auth.html#login";
+
+
+        return;
+
+
+      }
+
+
+      currentUser =
+        data.user;
+
+
+      await loadProfile();
+
+
+      await loadClub();
+
+
+      await loadMembership();
+
+
+      renderMembershipState();
+
+
+      readNominationMode();
+
+
+      loadingScreen
+        .classList
+        .add(
+          "hidden"
+        );
+
+
+    }
+
+
+
+    /* =====================================================
+       LINKS
+       ===================================================== */
+
+
+    function wirePageLinks() {
+
+
+      const id =
+        encodeURIComponent(
+          clubId
+        );
+
+
+      membersButton.href =
+        "club-members.html?id=" +
+        id;
+
+
+      allMembersLink.href =
+        "club-members.html?id=" +
+        id;
+
+
+      manageMembersLink.href =
+        "club-members.html?id=" +
+        id +
+        "&mode=manage";
+
+
+      manageVotingLink.href =
+        "club-voting.html?id=" +
+        id +
+        "&mode=manage";
+
+
+      fullVotingLink.href =
+        "club-voting.html?id=" +
+        id;
+
+
+      clubSettingsLink.href =
+        "club-settings.html?id=" +
+        id;
+
+
+      newThreadLink.href =
+        "forum-thread.html?clubId=" +
+        id +
+        "&new=1";
+
+
+    }
+
+
+
+    /* =====================================================
+       PROFILE
+       ===================================================== */
+
+
+    async function loadProfile() {
+
+
+      let displayName =
+        currentUser
+          ?.user_metadata
+          ?.display_name ||
+        "Reader";
+
+
+      let avatarUrl =
+        "";
+
+
+      try {
+
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .rpc(
+              "get_public_profile",
+              {
+                check_user_id:
+                  currentUser.id
+              }
+            );
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+
+        const profile =
+          Array.isArray(
+            data
+          )
+            ? data[0]
+            : data;
+
+
+        if (profile) {
+
+
+          displayName =
+            profile.display_name ||
+            displayName;
+
+
+          avatarUrl =
+            profile.avatar_url ||
+            "";
+
+
+        }
+
+
+      }
+
+      catch (error) {
+
+
+        console.error(
+          error
+        );
+
+
+      }
+
+
+      setAvatar(
+        navAvatar,
+        avatarUrl,
+        displayName
+      );
+
+
+    }
+
+
+
+    function setAvatar(
+      container,
+      avatarUrl,
+      displayName
+    ) {
+
+
+      container.innerHTML =
+        "";
+
+
+      if (avatarUrl) {
+
+
+        const image =
+          document.createElement(
+            "img"
+          );
+
+
+        image.src =
+          avatarUrl;
+
+
+        image.alt =
+          displayName;
+
+
+        image.onerror =
+          function () {
+
+
+            container.innerHTML =
+              "";
+
+
+            container.textContent =
+              displayName
+                ? displayName
+                    .charAt(0)
+                    .toUpperCase()
+                : "?";
+
+
+          };
+
+
+        container.appendChild(
+          image
+        );
+
+
+      }
+
+      else {
+
+
+        container.textContent =
+          displayName
+            ? displayName
+                .charAt(0)
+                .toUpperCase()
+            : "?";
+
+
+      }
+
+
+    }
+
+
+
+    /* =====================================================
+       CLUB
+       ===================================================== */
+
+
+    async function loadClub() {
+
+
+      try {
+
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from(
+              "clubs"
+            )
+            .select(
+              "id, name, description, status"
+            )
+            .eq(
+              "id",
+              clubId
+            )
+            .single();
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+
+        clubData =
+          data;
+
+
+        renderClub();
+
+
+      }
+
+      catch (error) {
+
+
+        console.error(
+          "Club load error:",
+          error
+        );
+
+
+        clubTitle.textContent =
+          "Club unavailable";
+
+
+        clubDescription.textContent =
+          "DogEar could not load this club.";
+
+
+      }
+
+
+    }
+
+
+
+    function renderClub() {
+
+
+      const name =
+        clubData?.name ||
+        "Unnamed Club";
+
+
+      clubTitle.textContent =
+        name;
+
+
+      clubDescription.textContent =
+        clubData?.description ||
+        "This club has not added a description yet.";
+
+
+      clubMark.textContent =
+        name
+          .charAt(0)
+          .toUpperCase();
+
+
+      document.title =
+        "DogEar — " +
+        name;
+
+
+    }
+
+
+
+    /* =====================================================
+       MEMBERSHIP
+       ===================================================== */
+
+
+    async function loadMembership() {
+
+
+      try {
+
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from(
+              "club_members"
+            )
+            .select(
+              "role, status"
+            )
+            .eq(
+              "club_id",
+              clubId
+            )
+            .eq(
+              "user_id",
+              currentUser.id
+            )
+            .maybeSingle();
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+
+        membershipData =
+          data;
+
+
+      }
+
+      catch (error) {
+
+
+        console.error(
+          "Membership load error:",
+          error
+        );
+
+
+        membershipData =
+          null;
+
+
+      }
+
+
+    }
+
+
+
+    function renderMembershipState() {
+
+
+      if (!membershipData) {
+
+
+        membershipStatus.textContent =
+          "You are not currently a member of this club.";
+
+
+        roleStatus.textContent =
+          "Non-member";
+
+
+        membershipButton.textContent =
+          "Request to Join";
+
+
+        membershipButton.disabled =
+          false;
+
+
+        return;
+
+
+      }
+
+
+      const status =
+        membershipData.status;
+
+
+      const role =
+        membershipData.role;
+
+
+      roleStatus.textContent =
+        formatRole(
+          role
+        );
+
+
+      if (
+        status ===
+        "pending"
+      ) {
+
+
+        membershipStatus.textContent =
+          "Your membership request is pending approval.";
+
+
+        membershipButton.textContent =
+          "Request Pending";
+
+
+        membershipButton.disabled =
+          true;
+
+
+        showStatus(
+          "Your request to join this club is waiting for approval.",
+          "warning"
+        );
+
+
+      }
+
+
+      else if (
+        status ===
+        "active"
+      ) {
+
+
+        membershipStatus.textContent =
+          "You are an active member of this club.";
+
+
+        membershipButton.textContent =
+          "Member";
+
+
+        membershipButton.disabled =
+          true;
+
+
+        if (
+          role ===
+          "administrator" ||
+          role ===
+          "president"
+        ) {
+
+
+          adminCard.classList.add(
+            "show"
+          );
+
+
+        }
+
+
+      }
+
+
+      else if (
+        status ===
+        "paused"
+      ) {
+
+
+        membershipStatus.textContent =
+          "Your membership is currently paused.";
+
+
+        membershipButton.textContent =
+          "Membership Paused";
+
+
+        membershipButton.disabled =
+          true;
+
+
+      }
+
+
+      else if (
+        status ===
+        "banned"
+      ) {
+
+
+        membershipStatus.textContent =
+          "You cannot participate in this club.";
+
+
+        membershipButton.textContent =
+          "Unavailable";
+
+
+        membershipButton.disabled =
+          true;
+
+
+      }
+
+
+      else {
+
+
+        membershipStatus.textContent =
+          "You are not currently active in this club.";
+
+
+        membershipButton.textContent =
+          "Request to Rejoin";
+
+
+        membershipButton.disabled =
+          false;
+
+
+      }
+
+
+    }
+
+
+
+    function formatRole(
+      role
+    ) {
+
+
+      if (
+        role ===
+        "president"
+      ) {
+
+        return "Club President";
+
+      }
+
+
+      if (
+        role ===
+        "administrator"
+      ) {
+
+        return "Administrator";
+
+      }
+
+
+      if (
+        role ===
+        "member"
+      ) {
+
+        return "Member";
+
+      }
+
+
+      return "Non-member";
+
+
+    }
+
+
+
+    /* =====================================================
+       JOIN BUTTON
+       ===================================================== */
+
+
+    membershipButton
+      .addEventListener(
+        "click",
+        async function () {
+
+
+          if (
+            membershipButton.disabled
+          ) {
+
+            return;
+
+          }
+
+
+          membershipButton.disabled =
+            true;
+
+
+          membershipButton.textContent =
+            "Sending...";
+
+
+          /*
+            IMPORTANT:
+
+            We are not directly inserting a membership row
+            here yet.
+
+            The secure request-to-join function will be
+            connected after we confirm the exact function
+            name/signature we want to expose to the browser.
+
+            The backend already has hardened membership
+            logic, so we should call that instead of letting
+            the browser write membership records directly.
+          */
+
+
+          showStatus(
+            "The club join button is ready for the secure Supabase join function.",
+            "warning"
+          );
+
+
+          membershipButton.textContent =
+            "Request to Join";
+
+
+          membershipButton.disabled =
+            false;
+
+
+        }
+      );
+
+
+
+    /* =====================================================
+       NOMINATION MODE
+       ===================================================== */
+
+
+    function readNominationMode() {
+
+
+      const params =
+        new URLSearchParams(
+          window.location.search
+        );
+
+
+      const action =
+        params.get(
+          "action"
+        );
+
+
+      const bookId =
+        params.get(
+          "bookId"
+        );
+
+
+      if (
+        action ===
+        "nominate" &&
+        bookId
+      ) {
+
+
+        if (
+          membershipData?.status !==
+          "active"
+        ) {
+
+
+          showStatus(
+            "You must be an active member of this club before you can continue with this book.",
+            "warning"
+          );
+
+
+          return;
+
+
+        }
+
+
+        if (
+          membershipData?.role ===
+          "president"
+        ) {
+
+
+          showStatus(
+            "This book is ready to continue into the club's voting setup.",
+            "success"
+          );
+
+
+          fullVotingLink.href =
+            "club-voting.html?id=" +
+            encodeURIComponent(
+              clubId
+            ) +
+            "&action=add&bookId=" +
+            encodeURIComponent(
+              bookId
+            );
+
+
+        }
+
+        else {
+
+
+          showStatus(
+            "This book can be discussed here, but only the Club President can place books into the monthly voting slots.",
+            "warning"
+          );
+
+
+        }
+
+
+      }
+
+
+    }
+
+
+
+    /* =====================================================
+       STATUS
+       ===================================================== */
+
+
+    function showStatus(
+      message,
+      type
+    ) {
+
+
+      statusBanner.textContent =
+        message;
+
+
+      statusBanner.className =
+        "status-banner show";
+
+
+      if (type) {
+
+
+        statusBanner.classList.add(
+          type
+        );
+
+
+      }
+
+
+    }
+
+
+
+    /* =====================================================
+       START
+       ===================================================== */
+
+
+    startPage();
+
+
+  </script>
+
+
+</body>
+
+</html>
