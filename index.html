@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>DogEar — Where Books Find Their People</title>
+
+  <meta
+    name="description"
+    content="DogEar is a community for readers, writers, book clubs, beta readers, agents, editors, and everyone who loves stories."
+  >
+
+  <style>
+
+    /* =========================================
+       DOGEAR COLORS
+    ========================================= */
+
+    :root {
+      --black: #090b0a;
+      --black-soft: #111411;
+      --green: #17231c;
+      --green-light: #26372c;
+
+      --cream: #f3e8cf;
+      --cream-muted: #cfc1a4;
+
+      --gold: #c99a51;
+      --gold-light: #e2bc78;
+      --gold-dark: #7d592c;
+
+      --burgundy: #4b201e;
+      --burgundy-light: #6a302a;
+
+      --line: rgba(201,154,81,.32);
+
+      --max-width: 1180px;
+    }
+
+
+    /* =========================================
+       RESET
+    ========================================= */
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(64, 80, 57, .14),
+          transparent 500px
+        ),
+        var(--black);
+
+      color: var(--cream);
+
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+      line-height: 1.6;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .wrap {
+      width: min(
+        calc(100% - 40px),
+        var(--max-width)
+      );
+
+      margin: auto;
+    }
+
+
+    /* =========================================
+       TOP NAV
+    ========================================= */
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+
+      background: rgba(9, 11, 10, .94);
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+
+      border-bottom:
+        1px solid rgba(201,154,81,.18);
+    }
+
+    .nav {
+      min-height: 64px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+    .mini-brand {
+      font-family: Arial, sans-serif;
+
+      text-transform: uppercase;
+
+      letter-spacing: .22em;
+
+      font-size: 12px;
+
+      color: var(--gold-light);
+    }
+
+    .navlinks {
+      display: flex;
+      align-items: center;
+
+      gap: 20px;
+
+      font-family: Arial, sans-serif;
+
+      text-transform: uppercase;
+
+      letter-spacing: .12em;
+
+      font-size: 11px;
+
+      color: var(--cream-muted);
+    }
+
+    .navlinks a {
+      transition: color .2s ease;
+    }
+
+    .navlinks a:hover {
+      color: var(--gold-light);
+    }
+
+    .nav-signup {
+      padding: 9px 15px;
+
+      border:
+        1px solid var(--gold);
+
+      border-radius: 999px;
+
+      color: var(--gold-light);
+    }
+
+
+    /* =========================================
+       LOGO HERO
+    ========================================= */
+
+    .logo-hero {
+      text-align: center;
+
+      padding:
+        70px 20px
+        28px;
+    }
+
+    .main-logo {
+      width: min(
+        780px,
+        92vw
+      );
+
+      display: block;
+
+      margin: 0 auto;
+
+      filter:
+        drop-shadow(
+          0 28px 42px rgba(0,0,0,.65)
+        );
+    }
+
+
+    /* =========================================
+       DECORATIVE GOLD BANNER
+    ========================================= */
+
+    .ornament {
+      width: min(
+        900px,
+        calc(100% - 40px)
+      );
+
+      margin:
+        10px auto
+        70px;
+
+      display: flex;
+      align-items: center;
+
+      gap: 18px;
+
+      color: var(--gold);
+    }
+
+    .ornament-line {
+      height: 1px;
+
+      flex: 1;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          var(--gold-dark),
+          var(--gold),
+          var(--gold-dark),
+          transparent
+        );
+    }
+
+    .ornament-center {
+      display: flex;
+      align-items: center;
+
+      gap: 10px;
+
+      font-size: 16px;
+
+      color: var(--gold-light);
+    }
+
+    .ornament-diamond {
+      width: 9px;
+      height: 9px;
+
+      border:
+        1px solid var(--gold);
+
+      transform: rotate(45deg);
+    }
+
+    .ornament-star {
+      font-size: 21px;
+    }
+
+
+    /* =========================================
+       INTRO
+    ========================================= */
+
+    .intro {
+      text-align: center;
+
+      padding:
+        0 0
+        95px;
+    }
+
+    .eyebrow {
+      margin-bottom: 16px;
+
+      font-family: Arial, sans-serif;
+
+      text-transform: uppercase;
+
+      letter-spacing: .24em;
+
+      font-size: 11px;
+
+      color: var(--gold);
+    }
+
+    h1 {
+      max-width: 900px;
+
+      margin:
+        0 auto
+        28px;
+
+      font-size:
+        clamp(
+          44px,
+          6vw,
+          78px
+        );
+
+      font-weight: 400;
+
+      line-height: 1.04;
+
+      letter-spacing: -.025em;
+    }
+
+    .intro-text {
+      max-width: 730px;
+
+      margin:
+        0 auto
+        36px;
+
+      color: var(--cream-muted);
+
+      font-size: 20px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+
+      gap: 14px;
+
+      flex-wrap: wrap;
+    }
+
+
+    /* =========================================
+       BUTTONS
+    ========================================= */
+
+    .button {
+      display: inline-block;
+
+      padding:
+        14px 22px;
+
+      border:
+        1px solid var(--gold);
+
+      font-family: Arial, sans-serif;
+
+      text-transform: uppercase;
+
+      letter-spacing: .15em;
+
+      font-size: 11px;
+
+      cursor: pointer;
+
+      transition:
+        background .2s ease,
+        color .2s ease,
+        border-color .2s ease;
+    }
+
+    .button-primary {
+      background:
+        var(--gold);
+
+      color:
+        #17120d;
+
+      font-weight: 700;
+    }
+
+    .button-primary:hover {
+      background:
+        var(--gold-light);
+    }
+
+    .button-secondary {
+      color:
+        var(--gold-light);
+
+      background:
+        transparent;
+    }
+
+    .button-secondary:hover {
+      background:
+        rgba(201,154,81,.08);
+    }
+
+
+    /* =========================================
+       SECTION DIVIDER
+    ========================================= */
+
+    .divider {
+      height: 1px;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          var(--line),
+          transparent
+        );
+    }
+
+
+    /* =========================================
+       GENERAL SECTIONS
+    ========================================= */
+
+    section {
+      padding:
+        92px 0;
+    }
+
+    .section-header {
+      max-width:
+        760px;
+
+      margin-bottom:
+        45px;
+    }
+
+    .section-header h2 {
+      margin:
+        8px 0
+        16px;
+
+      font-size:
+        clamp(
+          34px,
+          4vw,
+          54px
+        );
+
+      font-weight:
+        400;
+
+      line-height:
+        1.08;
+    }
+
+    .section-header p {
+      margin:
+        0;
+
+      color:
+        var(--cream-muted);
+
+      font-size:
+        18px;
+    }
+
+
+    /* =========================================
+       FEATURE CARDS
+    ========================================= */
+
+    .features {
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap:
+        1px;
+
+      border:
+        1px solid var(--line);
+
+      background:
+        var(--line);
+    }
+
+    .feature-card {
+      min-height:
+        285px;
+
+      padding:
+        34px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(32, 48, 38, .58),
+          rgba(14, 16, 14, .96)
+        );
+
+      position:
+        relative;
+    }
+
+    .feature-number {
+      font-family:
+        Arial,
+        sans-serif;
+
+      letter-spacing:
+        .18em;
+
+      font-size:
+        10px;
+
+      color:
+        var(--gold);
+    }
+
+    .feature-card h3 {
+      margin:
+        27px 0
+        13px;
+
+      font-size:
+        26px;
+
+      font-weight:
+        400;
+    }
+
+    .feature-card p {
+      margin:
+        0;
+
+      color:
+        var(--cream-muted);
+    }
+
+
+    /* =========================================
+       BOOK OF THE MONTH
+    ========================================= */
+
+    .book-section {
+      background:
+        linear-gradient(
+          180deg,
+          rgba(23,35,28,.36),
+          rgba(9,11,10,0)
+        );
+    }
+
+    .book-layout {
+      display:
+        grid;
+
+      grid-template-columns:
+        .9fr 1.1fr;
+
+      gap:
+        70px;
+
+      align-items:
+        center;
+    }
+
+    .book-cover-area {
+      min-height:
+        450px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border:
+        1px solid var(--line);
+
+      background:
+        rgba(255,255,255,.018);
+
+      position:
+        relative;
+    }
+
+    .book-cover-area::before {
+      content:
+        "";
+
+      position:
+        absolute;
+
+      inset:
+        30px;
+
+      border:
+        1px solid rgba(201,154,81,.10);
+    }
+
+    .book-cover {
+      position:
+        relative;
+
+      z-index:
+        2;
+
+      max-height:
+        380px;
+
+      width:
+        auto;
+
+      box-shadow:
+        0 28px 45px rgba(0,0,0,.6);
+    }
+
+    .book-placeholder {
+      text-align:
+        center;
+
+      color:
+        #807665;
+
+      font-family:
+        Arial,
+        sans-serif;
+
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        .14em;
+
+      font-size:
+        11px;
+    }
+
+    .book-info h2 {
+      margin:
+        6px 0
+        10px;
+
+      font-size:
+        clamp(
+          36px,
+          4vw,
+          52px
+        );
+
+      font-weight:
+        400;
+
+      line-height:
+        1.08;
+    }
+
+    .book-author {
+      margin-bottom:
+        24px;
+
+      color:
+        var(--gold-light);
+
+      font-style:
+        italic;
+
+      font-size:
+        18px;
+    }
+
+    .book-description {
+      color:
+        var(--cream-muted);
+
+      font-size:
+        17px;
+    }
+
+
+    /* =========================================
+       GOOGLE BOOK SEARCH
+    ========================================= */
+
+    .book-search {
+      margin-top:
+        32px;
+
+      display:
+        flex;
+
+      gap:
+        10px;
+
+      max-width:
+        610px;
+    }
+
+    .book-search input {
+      flex:
+        1;
+
+      min-width:
+        0;
+
+      padding:
+        14px 15px;
+
+      border:
+        1px solid var(--line);
+
+      background:
+        #0d100e;
+
+      color:
+        var(--cream);
+
+      outline:
+        none;
+    }
+
+    .book-search input:focus {
+      border-color:
+        var(--gold);
+    }
+
+
+    /* =========================================
+       QUOTE
+    ========================================= */
+
+    .quote-section {
+      text-align:
+        center;
+    }
+
+    .quote {
+      max-width:
+        900px;
+
+      margin:
+        auto;
+
+      font-size:
+        clamp(
+          32px,
+          5vw,
+          58px
+        );
+
+      line-height:
+        1.13;
+    }
+
+    .quote em {
+      color:
+        var(--gold-light);
+
+      font-style:
+        normal;
+    }
+
+
+    /* =========================================
+       CTA
+    ========================================= */
+
+    .join-box {
+      padding:
+        55px;
+
+      text-align:
+        center;
+
+      border:
+        1px solid var(--line);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(80,35,30,.3),
+          rgba(23,35,28,.22),
+          rgba(0,0,0,0)
+        );
+    }
+
+    .join-box h2 {
+      margin:
+        0 0
+        18px;
+
+      font-size:
+        clamp(
+          36px,
+          5vw,
+          58px
+        );
+
+      font-weight:
+        400;
+    }
+
+    .join-box p {
+      max-width:
+        690px;
+
+      margin:
+        0 auto
+        30px;
+
+      color:
+        var(--cream-muted);
+
+      font-size:
+        18px;
+    }
+
+
+    /* =========================================
+       FOOTER
+    ========================================= */
+
+    footer {
+      padding:
+        45px 0
+        60px;
+
+      border-top:
+        1px solid var(--line);
+    }
+
+    .footer {
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      gap:
+        30px;
+
+      flex-wrap:
+        wrap;
+
+      color:
+        #766e61;
+
+      font-family:
+        Arial,
+        sans-serif;
+
+      font-size:
+        11px;
+
+      letter-spacing:
+        .1em;
+
+      text-transform:
+        uppercase;
+    }
+
+    .gremlin-note {
+      color:
+        #8f6e41;
+    }
+
+
+    /* =========================================
+       MOBILE
+    ========================================= */
+
+    @media (max-width: 850px) {
+
+      .navlinks a:not(.nav-signup) {
+        display:
+          none;
+      }
+
+      .logo-hero {
+        padding-top:
+          45px;
+      }
+
+      .ornament {
+        margin-bottom:
+          50px;
+      }
+
+      .features {
+        grid-template-columns:
+          1fr;
+      }
+
+      .book-layout {
+        grid-template-columns:
+          1fr;
+
+        gap:
+          40px;
+      }
+
+      .book-cover-area {
+        min-height:
+          380px;
+      }
+
+      .join-box {
+        padding:
+          40px 25px;
+      }
+
+    }
+
+
+    @media (max-width: 540px) {
+
+      .wrap {
+        width:
+          min(
+            calc(100% - 28px),
+            var(--max-width)
+          );
+      }
+
+      .mini-brand {
+        font-size:
+          10px;
+      }
+
+      .nav-signup {
+        font-size:
+          10px;
+      }
+
+      .intro {
+        padding-bottom:
+          70px;
+      }
+
+      section {
+        padding:
+          70px 0;
+      }
+
+      .book-search {
+        flex-direction:
+          column;
+      }
+
+      .button {
+        width:
+          100%;
+
+        text-align:
+          center;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     NAVIGATION
+========================================= -->
+
+<header class="topbar">
+
+  <div class="wrap nav">
+
+    <a
+      class="mini-brand"
+      href="#top"
+    >
+      DogEar
+    </a>
+
+    <nav class="navlinks">
+
+      <a href="#discover">
+        Discover
+      </a>
+
+      <a href="#book-month">
+        Book of the Month
+      </a>
+
+      <a href="#community">
+        Community
+      </a>
+
+      <a href="#">
+        Log In
+      </a>
+
+      <a
+        href="#join"
+        class="nav-signup"
+      >
+        Join DogEar
+      </a>
+
+    </nav>
+
+  </div>
+
+</header>
+
+
+
+<main id="top">
+
+
+<!-- =========================================
+     LOGO
+========================================= -->
+
+<div class="logo-hero">
+
+  <img
+    src="logo.png"
+    alt="DogEar — Where Books Find Their People"
+    class="main-logo"
+  >
+
+</div>
+
+
+
+<!-- =========================================
+     GOLD ORNAMENT
+========================================= -->
+
+<div class="ornament">
+
+  <div class="ornament-line"></div>
+
+  <div class="ornament-center">
+
+    <div class="ornament-diamond"></div>
+
+    <span>✦</span>
+
+    <div class="ornament-diamond"></div>
+
+    <span class="ornament-star">
+      ✧
+    </span>
+
+    <div class="ornament-diamond"></div>
+
+    <span>✦</span>
+
+    <div class="ornament-diamond"></div>
+
+  </div>
+
+  <div class="ornament-line"></div>
+
+</div>
+
+
+
+<!-- =========================================
+     INTRODUCTION
+========================================= -->
+
+<section class="intro">
+
+  <div class="wrap">
+
+    <div class="eyebrow">
+      Read · Write · Discover · Belong
+    </div>
+
+    <h1>
+      Books are better
+      when we find them together.
+    </h1>
+
+    <p class="intro-text">
+
+      DogEar is a home for people who live
+      somewhere between the first page and
+      “just one more chapter.”
+
+      Discover books, build book clubs,
+      meet readers, find beta readers,
+      connect with writers, and become
+      part of the larger literary world.
+
+    </p>
+
+    <div class="actions">
+
+      <a
+        href="#join"
+        class="button button-primary"
+      >
+        Join DogEar
+      </a>
+
+      <a
+        href="#discover"
+        class="button button-secondary"
+      >
+        Explore the Community
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<div class="divider"></div>
+
+
+
+<!-- =========================================
+     DISCOVER DOGEAR
+========================================= -->
+
+<section id="discover">
+
+  <div class="wrap">
+
+    <div class="section-header">
+
+      <div class="eyebrow">
+        Find your corner
+      </div>
+
+      <h2>
+        One community.
+        A thousand ways to love books.
+      </h2>
+
+      <p>
+
+        DogEar brings readers, writers,
+        book clubs, beta readers and
+        publishing professionals into
+        the same literary community.
+
+      </p>
+
+    </div>
+
+
+    <div class="features">
+
+      <article class="feature-card">
+
+        <div class="feature-number">
+          01 / READ
+        </div>
+
+        <h3>
+          Find your next obsession.
+        </h3>
+
+        <p>
+
+          Discover books through people,
+          communities, reading lists and
+          book clubs instead of algorithms
+          alone.
+
+        </p>
+
+      </article>
+
+
+      <article class="feature-card">
+
+        <div class="feature-number">
+          02 / BELONG
+        </div>
+
+        <h3>
+          Reading doesn't have to be solitary.
+        </h3>
+
+        <p>
+
+          Create or join book clubs,
+          discuss what you're reading,
+          vote on the next book and find
+          people who love the same stories.
+
+        </p>
+
+      </article>
+
+
+      <article class="feature-card">
+
+        <div class="feature-number">
+          03 / CREATE
+        </div>
+
+        <h3>
+          Stories need readers.
+        </h3>
+
+        <p>
+
+          Writers can meet beta readers,
+          grow their audience and build
+          genuine relationships with the
+          people who make books matter.
+
+        </p>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<div class="divider"></div>
+
+
+
+<!-- =========================================
+     BOOK OF THE MONTH
+========================================= -->
+
+<section
+  id="book-month"
+  class="book-section"
+>
+
+  <div class="wrap">
+
+    <div class="book-layout">
+
+
+      <div
+        class="book-cover-area"
+        id="bookCoverArea"
+      >
+
+        <div
+          class="book-placeholder"
+          id="bookPlaceholder"
+        >
+          Search for a book
+          <br>
+          to display its cover
+        </div>
+
+      </div>
+
+
+      <div class="book-info">
+
+        <div class="eyebrow">
+          DogEar Book of the Month
+        </div>
+
+        <h2 id="bookTitle">
+          Choose the next story.
+        </h2>
+
+        <div
+          class="book-author"
+          id="bookAuthor"
+        >
+          Search Google Books below
+        </div>
+
+        <p
+          class="book-description"
+          id="bookDescription"
+        >
+
+          Type the title of a book and DogEar
+          will retrieve its information and cover
+          from Google Books.
+
+          The cover remains hosted by Google,
+          so DogEar does not need to store the
+          image itself.
+
+        </p>
+
+
+        <div class="book-search">
+
+          <input
+            type="text"
+            id="bookSearchInput"
+            placeholder="Try: The Hobbit"
+          >
+
+          <button
+            class="button button-primary"
+            id="bookSearchButton"
+          >
+            Find Book
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<div class="divider"></div>
+
+
+
+<!-- =========================================
+     COMMUNITY
+========================================= -->
+
+<section
+  id="community"
+  class="quote-section"
+>
+
+  <div class="wrap">
+
+    <div class="eyebrow">
+      Why DogEar?
+    </div>
+
+    <p class="quote">
+
+      Because the best thing about
+      finding a book you love is
+      finding someone who says,
+
+      <em>
+        “Me too.”
+      </em>
+
+    </p>
+
+  </div>
+
+</section>
+
+
+
+<div class="divider"></div>
+
+
+
+<!-- =========================================
+     JOIN DOGEAR
+========================================= -->
+
+<section id="join">
+
+  <div class="wrap">
+
+    <div class="join-box">
+
+      <div class="eyebrow">
+        Your shelf is waiting
+      </div>
+
+      <h2>
+        Find your people.
+      </h2>
+
+      <p>
+
+        Join readers, writers,
+        book clubs and publishing
+        professionals building a
+        different kind of literary
+        community.
+
+      </p>
+
+      <a
+        href="#"
+        class="button button-primary"
+      >
+        Create Your Account
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+</main>
+
+
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
+<footer>
+
+  <div class="wrap footer">
+
+    <div>
+      © 2026 DogEar.
+      All rights reserved.
+    </div>
+
+    <div class="gremlin-note">
+      A little gremlin may have dog-eared this page.
+    </div>
+
+  </div>
+
+</footer>
+
+
+
+<!-- =========================================
+     GOOGLE BOOKS LOOKUP
+========================================= -->
+
+<script>
+
+  const searchButton =
+    document.getElementById(
+      "bookSearchButton"
+    );
+
+  const searchInput =
+    document.getElementById(
+      "bookSearchInput"
+    );
+
+
+  searchButton.addEventListener(
+    "click",
+    searchBook
+  );
+
+
+  searchInput.addEventListener(
+    "keydown",
+    function(event) {
+
+      if (
+        event.key === "Enter"
+      ) {
+        searchBook();
+      }
+
+    }
+  );
+
+
+  async function searchBook() {
+
+    const query =
+      searchInput.value.trim();
+
+    if (!query) {
+      return;
+    }
+
+
+    searchButton.textContent =
+      "Searching...";
+
+
+    try {
+
+      const url =
+        "https://www.googleapis.com/books/v1/volumes?q=" +
+        encodeURIComponent(query) +
+        "&maxResults=1";
+
+
+      const response =
+        await fetch(url);
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !data.items ||
+        data.items.length === 0
+      ) {
+
+        document.getElementById(
+          "bookTitle"
+        ).textContent =
+          "No book found.";
+
+        return;
+      }
+
+
+      const book =
+        data.items[0].volumeInfo;
+
+
+      document.getElementById(
+        "bookTitle"
+      ).textContent =
+        book.title ||
+        "Untitled";
+
+
+      document.getElementById(
+        "bookAuthor"
+      ).textContent =
+        book.authors
+          ? "by " +
+            book.authors.join(", ")
+          : "Author unavailable";
+
+
+      document.getElementById(
+        "bookDescription"
+      ).textContent =
+        book.description ||
+        "No description is available for this title.";
+
+
+      const coverArea =
+        document.getElementById(
+          "bookCoverArea"
+        );
+
+
+      if (
+        book.imageLinks &&
+        book.imageLinks.thumbnail
+      ) {
+
+        const imageUrl =
+          book.imageLinks.thumbnail
+          .replace(
+            "http://",
+            "https://"
+          );
+
+
+        coverArea.innerHTML =
+          `
+          <img
+            src="${imageUrl}"
+            alt="${book.title} book cover"
+            class="book-cover"
+          >
+          `;
+
+      } else {
+
+        coverArea.innerHTML =
+          `
+          <div class="book-placeholder">
+            Cover unavailable
+          </div>
+          `;
+
+      }
+
+
+    } catch (error) {
+
+      console.error(
+        "Google Books search failed:",
+        error
+      );
+
+
+      document.getElementById(
+        "bookTitle"
+      ).textContent =
+        "Something went wrong.";
+
+      document.getElementById(
+        "bookDescription"
+      ).textContent =
+        "DogEar could not reach Google Books. Please try again.";
+
+    } finally {
+
+      searchButton.textContent =
+        "Find Book";
+
+    }
+
+  }
+
+</script>
+
+
+</body>
+</html>
