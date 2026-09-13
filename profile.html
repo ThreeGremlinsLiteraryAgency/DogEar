@@ -1,0 +1,2432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <meta
+    name="description"
+    content="Build your DogEar profile."
+  />
+
+  <title>DogEar — Your Profile</title>
+
+  <style>
+    :root {
+      --ink: #090b0a;
+      --ink-2: #101410;
+      --ink-3: #151b16;
+
+      --cream: #f1e7cf;
+      --paper: #e7dcc2;
+
+      --gold: #c79b59;
+      --gold-soft: #dfbd7e;
+
+      --green: #26362b;
+      --green-light: #34483a;
+
+      --muted: #aaa18f;
+
+      --line: rgba(199, 155, 89, 0.24);
+
+      --success: #b9d6b2;
+      --error: #e6a09a;
+
+      --shadow:
+        0 24px 80px rgba(0, 0, 0, 0.4);
+
+      --radius: 22px;
+    }
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+
+    body {
+      margin: 0;
+
+      min-height: 100vh;
+
+      color: var(--cream);
+
+      background:
+        radial-gradient(
+          circle at 12% 6%,
+          rgba(52, 72, 58, 0.28),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 90% 14%,
+          rgba(199, 155, 89, 0.10),
+          transparent 28%
+        ),
+        var(--ink);
+
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+    }
+
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+
+    a {
+      color: inherit;
+    }
+
+
+    /* =====================================================
+       TOP NAVIGATION
+       ===================================================== */
+
+
+    .topbar {
+      min-height: 76px;
+
+      padding:
+        0
+        clamp(20px, 5vw, 70px);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 30px;
+
+      border-bottom:
+        1px
+        solid
+        var(--line);
+
+      background:
+        rgba(
+          9,
+          11,
+          10,
+          0.90
+        );
+
+      backdrop-filter:
+        blur(14px);
+
+      position: sticky;
+
+      top: 0;
+
+      z-index: 100;
+    }
+
+
+    .brand {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      text-decoration: none;
+
+      color:
+        var(--gold-soft);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.18em;
+
+      text-transform: uppercase;
+    }
+
+
+    .brand-mark {
+      width: 34px;
+
+      height: 34px;
+
+      position: relative;
+
+      border:
+        1px
+        solid
+        var(--gold);
+
+      border-radius:
+        50%
+        50%
+        50%
+        12%;
+
+      transform:
+        rotate(-8deg);
+    }
+
+
+    .brand-mark::after {
+      content: "";
+
+      position: absolute;
+
+      width: 11px;
+
+      height: 11px;
+
+      right: 2px;
+
+      top: 2px;
+
+      border-left:
+        1px
+        solid
+        var(--gold);
+
+      border-bottom:
+        1px
+        solid
+        var(--gold);
+
+      background:
+        var(--ink);
+    }
+
+
+    .nav-right {
+      display: flex;
+
+      align-items: center;
+
+      gap: 22px;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 12px;
+
+      letter-spacing: 0.08em;
+
+      text-transform: uppercase;
+    }
+
+
+    .nav-link {
+      color:
+        var(--muted);
+
+      text-decoration: none;
+    }
+
+
+    .nav-link:hover {
+      color:
+        var(--gold-soft);
+    }
+
+
+    .logout-button {
+      border:
+        1px
+        solid
+        var(--line);
+
+      background:
+        transparent;
+
+      color:
+        var(--gold-soft);
+
+      border-radius:
+        999px;
+
+      padding:
+        10px
+        16px;
+
+      cursor: pointer;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.1em;
+
+      text-transform: uppercase;
+    }
+
+
+    .logout-button:hover {
+      border-color:
+        var(--gold);
+    }
+
+
+    /* =====================================================
+       PAGE
+       ===================================================== */
+
+
+    .page {
+      width:
+        min(
+          1180px,
+          calc(100% - 36px)
+        );
+
+      margin:
+        0
+        auto;
+
+      padding:
+        64px
+        0
+        100px;
+    }
+
+
+    .intro {
+      max-width: 730px;
+
+      margin-bottom: 42px;
+    }
+
+
+    .eyebrow {
+      margin-bottom: 12px;
+
+      color:
+        var(--gold);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.2em;
+
+      text-transform: uppercase;
+    }
+
+
+    h1,
+    h2,
+    p {
+      margin-top: 0;
+    }
+
+
+    h1 {
+      margin-bottom: 16px;
+
+      font-size:
+        clamp(
+          42px,
+          6vw,
+          72px
+        );
+
+      line-height: 0.98;
+
+      font-weight: 400;
+
+      letter-spacing: -0.035em;
+    }
+
+
+    .intro p {
+      margin-bottom: 0;
+
+      max-width: 650px;
+
+      color:
+        var(--muted);
+
+      font-size: 18px;
+
+      line-height: 1.7;
+    }
+
+
+    /* =====================================================
+       PROFILE LAYOUT
+       ===================================================== */
+
+
+    .profile-layout {
+      display: grid;
+
+      grid-template-columns:
+        330px
+        minmax(0, 1fr);
+
+      gap: 28px;
+
+      align-items: start;
+    }
+
+
+    .card {
+      background:
+        rgba(
+          16,
+          20,
+          16,
+          0.85
+        );
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius:
+        var(--radius);
+
+      box-shadow:
+        var(--shadow);
+    }
+
+
+    /* =====================================================
+       PROFILE PREVIEW
+       ===================================================== */
+
+
+    .preview-card {
+      padding: 28px;
+
+      position: sticky;
+
+      top: 108px;
+    }
+
+
+    .avatar-shell {
+      width: 150px;
+
+      height: 150px;
+
+      margin:
+        0
+        auto
+        24px;
+
+      border-radius: 50%;
+
+      padding: 5px;
+
+      border:
+        1px
+        solid
+        rgba(
+          199,
+          155,
+          89,
+          0.45
+        );
+
+      background:
+        #0c100d;
+    }
+
+
+    .avatar {
+      width: 100%;
+
+      height: 100%;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      overflow: hidden;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle at 35% 30%,
+          #34483a,
+          #172019
+        );
+
+      color:
+        var(--gold-soft);
+
+      font-size: 48px;
+    }
+
+
+    .avatar img {
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+
+    .preview-name {
+      margin-bottom: 5px;
+
+      text-align: center;
+
+      font-size: 28px;
+
+      font-weight: 400;
+    }
+
+
+    .preview-username {
+      margin-bottom: 22px;
+
+      color:
+        var(--gold);
+
+      text-align: center;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 13px;
+    }
+
+
+    .preview-divider {
+      width: 60px;
+
+      height: 1px;
+
+      margin:
+        0
+        auto
+        20px;
+
+      background:
+        var(--line);
+    }
+
+
+    .preview-bio {
+      margin-bottom: 0;
+
+      color:
+        #bab19f;
+
+      font-size: 15px;
+
+      line-height: 1.65;
+
+      text-align: center;
+
+      white-space: pre-wrap;
+    }
+
+
+    .preview-placeholder {
+      color:
+        #706b61;
+
+      font-style: italic;
+    }
+
+
+    /* =====================================================
+       FORM CARD
+       ===================================================== */
+
+
+    .form-card {
+      overflow: hidden;
+    }
+
+
+    .form-header {
+      padding:
+        28px
+        32px;
+
+      border-bottom:
+        1px
+        solid
+        var(--line);
+    }
+
+
+    .form-header h2 {
+      margin-bottom: 8px;
+
+      font-size: 32px;
+
+      font-weight: 400;
+    }
+
+
+    .form-header p {
+      margin-bottom: 0;
+
+      color:
+        var(--muted);
+
+      line-height: 1.6;
+    }
+
+
+    .form-body {
+      padding:
+        32px;
+    }
+
+
+    .field {
+      margin-bottom: 24px;
+    }
+
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+
+    .field-row {
+      display: grid;
+
+      grid-template-columns:
+        1fr
+        1fr;
+
+      gap: 20px;
+    }
+
+
+    label {
+      display: block;
+
+      margin-bottom: 8px;
+
+      color:
+        #d8cfbc;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.09em;
+
+      text-transform: uppercase;
+    }
+
+
+    .help {
+      margin-top: 7px;
+
+      color:
+        #777166;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 11px;
+
+      line-height: 1.5;
+    }
+
+
+    input,
+    textarea {
+      width: 100%;
+
+      border:
+        1px
+        solid
+        rgba(
+          199,
+          155,
+          89,
+          0.23
+        );
+
+      border-radius: 12px;
+
+      padding:
+        14px
+        15px;
+
+      background:
+        #0c100d;
+
+      color:
+        var(--cream);
+
+      outline: none;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+
+    input::placeholder,
+    textarea::placeholder {
+      color:
+        #625e56;
+    }
+
+
+    input:focus,
+    textarea:focus {
+      border-color:
+        var(--gold);
+
+      box-shadow:
+        0
+        0
+        0
+        3px
+        rgba(
+          199,
+          155,
+          89,
+          0.08
+        );
+    }
+
+
+    textarea {
+      min-height: 155px;
+
+      resize: vertical;
+
+      line-height: 1.6;
+    }
+
+
+    .character-count {
+      margin-top: 7px;
+
+      text-align: right;
+
+      color:
+        #777166;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 11px;
+    }
+
+
+    /* =====================================================
+       ACCOUNT INFO
+       ===================================================== */
+
+
+    .account-box {
+      margin-top: 10px;
+
+      padding: 18px;
+
+      border:
+        1px
+        solid
+        rgba(
+          199,
+          155,
+          89,
+          0.15
+        );
+
+      border-radius: 12px;
+
+      background:
+        rgba(
+          199,
+          155,
+          89,
+          0.035
+        );
+    }
+
+
+    .account-label {
+      margin-bottom: 5px;
+
+      color:
+        var(--gold);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.12em;
+
+      text-transform: uppercase;
+    }
+
+
+    .account-email {
+      color:
+        #beb5a3;
+
+      word-break:
+        break-word;
+    }
+
+
+    /* =====================================================
+       MESSAGES
+       ===================================================== */
+
+
+    .message {
+      display: none;
+
+      margin-bottom: 22px;
+
+      padding:
+        13px
+        15px;
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius: 11px;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 13px;
+
+      line-height: 1.5;
+    }
+
+
+    .message.show {
+      display: block;
+    }
+
+
+    .message.success {
+      color:
+        var(--success);
+
+      border-color:
+        rgba(
+          185,
+          214,
+          178,
+          0.32
+        );
+
+      background:
+        rgba(
+          185,
+          214,
+          178,
+          0.06
+        );
+    }
+
+
+    .message.error {
+      color:
+        var(--error);
+
+      border-color:
+        rgba(
+          230,
+          160,
+          154,
+          0.32
+        );
+
+      background:
+        rgba(
+          230,
+          160,
+          154,
+          0.06
+        );
+    }
+
+
+    /* =====================================================
+       FORM FOOTER
+       ===================================================== */
+
+
+    .form-footer {
+      padding:
+        24px
+        32px;
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      gap: 18px;
+
+      border-top:
+        1px
+        solid
+        var(--line);
+
+      background:
+        rgba(
+          0,
+          0,
+          0,
+          0.12
+        );
+    }
+
+
+    .save-note {
+      color:
+        #777166;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 11px;
+
+      line-height: 1.5;
+    }
+
+
+    .save-button {
+      min-width: 170px;
+
+      min-height: 48px;
+
+      padding:
+        0
+        24px;
+
+      border:
+        1px
+        solid
+        var(--gold);
+
+      border-radius:
+        999px;
+
+      background:
+        var(--gold);
+
+      color:
+        #17130e;
+
+      cursor: pointer;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 11px;
+
+      font-weight: 800;
+
+      letter-spacing: 0.12em;
+
+      text-transform: uppercase;
+    }
+
+
+    .save-button:hover {
+      background:
+        var(--gold-soft);
+    }
+
+
+    .save-button:disabled {
+      opacity: 0.5;
+
+      cursor: wait;
+    }
+
+
+    /* =====================================================
+       LOADING SCREEN
+       ===================================================== */
+
+
+    .loading-screen {
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 1000;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 16px;
+
+      background:
+        var(--ink);
+
+      color:
+        var(--gold-soft);
+    }
+
+
+    .loading-screen.hidden {
+      display: none;
+    }
+
+
+    .loading-mark {
+      width: 50px;
+
+      height: 50px;
+
+      border:
+        1px
+        solid
+        var(--gold);
+
+      border-radius:
+        50%
+        50%
+        50%
+        12%;
+
+      animation:
+        pulse
+        1.2s
+        infinite
+        alternate;
+    }
+
+
+    @keyframes pulse {
+      from {
+        opacity: 0.35;
+
+        transform:
+          rotate(-8deg)
+          scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+
+        transform:
+          rotate(-8deg)
+          scale(1.05);
+      }
+    }
+
+
+    .loading-text {
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.18em;
+
+      text-transform: uppercase;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+
+    @media (max-width: 850px) {
+
+      .profile-layout {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .preview-card {
+        position: static;
+      }
+
+
+      .field-row {
+        grid-template-columns:
+          1fr;
+      }
+
+    }
+
+
+    @media (max-width: 650px) {
+
+      .topbar {
+        padding:
+          0
+          18px;
+      }
+
+
+      .nav-link {
+        display: none;
+      }
+
+
+      .page {
+        width:
+          min(
+            100% - 24px,
+            1180px
+          );
+
+        padding-top:
+          38px;
+      }
+
+
+      .form-header,
+      .form-body,
+      .form-footer {
+        padding:
+          24px
+          20px;
+      }
+
+
+      .form-footer {
+        align-items: stretch;
+
+        flex-direction: column;
+      }
+
+
+      .save-button {
+        width: 100%;
+      }
+
+    }
+  </style>
+</head>
+
+
+<body>
+
+
+  <!-- =====================================================
+       LOADING
+       ===================================================== -->
+
+
+  <div
+    class="loading-screen"
+    id="loadingScreen"
+  >
+
+    <div class="loading-mark"></div>
+
+    <div class="loading-text">
+
+      Opening your DogEar profile...
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =====================================================
+       NAVIGATION
+       ===================================================== -->
+
+
+  <header class="topbar">
+
+    <a
+      class="brand"
+      href="index.html"
+    >
+
+      <span class="brand-mark"></span>
+
+      DogEar
+
+    </a>
+
+
+    <nav class="nav-right">
+
+      <a
+        class="nav-link"
+        href="index.html"
+      >
+
+        Home
+
+      </a>
+
+
+      <button
+        class="logout-button"
+        id="logoutButton"
+        type="button"
+      >
+
+        Log Out
+
+      </button>
+
+    </nav>
+
+  </header>
+
+
+
+  <!-- =====================================================
+       PAGE CONTENT
+       ===================================================== -->
+
+
+  <main class="page">
+
+
+    <section class="intro">
+
+      <div class="eyebrow">
+
+        Your corner of DogEar
+
+      </div>
+
+
+      <h1>
+
+        Make yourself recognizable.
+
+      </h1>
+
+
+      <p>
+
+        This is how other readers, writers, book clubs,
+        agents, and publishing people will see you around DogEar.
+
+      </p>
+
+    </section>
+
+
+
+    <div class="profile-layout">
+
+
+      <!-- =================================================
+           PROFILE PREVIEW
+           ================================================= -->
+
+
+      <aside class="card preview-card">
+
+
+        <div class="avatar-shell">
+
+          <div
+            class="avatar"
+            id="avatarPreview"
+          >
+
+            ?
+
+          </div>
+
+        </div>
+
+
+        <h2
+          class="preview-name"
+          id="displayNamePreview"
+        >
+
+          Your Name
+
+        </h2>
+
+
+        <div
+          class="preview-username"
+          id="usernamePreview"
+        >
+
+          @username
+
+        </div>
+
+
+        <div class="preview-divider"></div>
+
+
+        <p
+          class="preview-bio preview-placeholder"
+          id="bioPreview"
+        >
+
+          Your bio will appear here.
+
+        </p>
+
+
+      </aside>
+
+
+
+      <!-- =================================================
+           EDIT PROFILE
+           ================================================= -->
+
+
+      <section class="card form-card">
+
+
+        <div class="form-header">
+
+          <h2>
+
+            Edit profile
+
+          </h2>
+
+
+          <p>
+
+            You can change these details later.
+
+          </p>
+
+        </div>
+
+
+
+        <form id="profileForm">
+
+
+          <div class="form-body">
+
+
+            <div
+              class="message"
+              id="profileMessage"
+            ></div>
+
+
+
+            <div class="field-row">
+
+
+              <!-- USERNAME -->
+
+
+              <div class="field">
+
+                <label for="username">
+
+                  Username
+
+                </label>
+
+
+                <input
+                  id="username"
+                  type="text"
+                  maxlength="30"
+                  autocomplete="username"
+                  placeholder="bookdragon"
+                />
+
+
+                <div class="help">
+
+                  Letters, numbers and underscores only.
+
+                </div>
+
+              </div>
+
+
+
+              <!-- DISPLAY NAME -->
+
+
+              <div class="field">
+
+                <label for="displayName">
+
+                  Display Name
+
+                </label>
+
+
+                <input
+                  id="displayName"
+                  type="text"
+                  maxlength="80"
+                  autocomplete="name"
+                  placeholder="Your name"
+                />
+
+              </div>
+
+
+            </div>
+
+
+
+            <!-- AVATAR -->
+
+
+            <div class="field">
+
+              <label for="avatarUrl">
+
+                Profile Image URL
+
+              </label>
+
+
+              <input
+                id="avatarUrl"
+                type="url"
+                placeholder="https://example.com/my-photo.jpg"
+              />
+
+
+              <div class="help">
+
+                For now, paste the web address of an image.
+                Direct image uploads can be added later.
+
+              </div>
+
+            </div>
+
+
+
+            <!-- BIO -->
+
+
+            <div class="field">
+
+              <label for="bio">
+
+                Bio
+
+              </label>
+
+
+              <textarea
+                id="bio"
+                maxlength="500"
+                placeholder="Tell DogEar a little about yourself. Favorite books, genres, what you write, what you read, or whatever belongs here."
+              ></textarea>
+
+
+              <div
+                class="character-count"
+                id="bioCount"
+              >
+
+                0 / 500
+
+              </div>
+
+            </div>
+
+
+
+            <!-- ACCOUNT EMAIL -->
+
+
+            <div class="account-box">
+
+              <div class="account-label">
+
+                Account Email
+
+              </div>
+
+
+              <div
+                class="account-email"
+                id="accountEmail"
+              >
+
+                Loading...
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- =================================================
+               SAVE FOOTER
+               ================================================= -->
+
+
+          <div class="form-footer">
+
+
+            <div class="save-note">
+
+              Your email is private and will not appear
+              on your public DogEar profile.
+
+            </div>
+
+
+            <button
+              class="save-button"
+              id="saveButton"
+              type="submit"
+            >
+
+              Save Profile
+
+            </button>
+
+
+          </div>
+
+
+        </form>
+
+
+      </section>
+
+
+    </div>
+
+
+  </main>
+
+
+
+  <!-- =====================================================
+       SUPABASE
+       ===================================================== -->
+
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
+
+
+
+  <script>
+
+    /* =====================================================
+       SUPABASE CONNECTION
+       ===================================================== */
+
+
+    const SUPABASE_URL =
+      "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+
+
+    /* =====================================================
+       ELEMENTS
+       ===================================================== */
+
+
+    const loadingScreen =
+      document.getElementById(
+        "loadingScreen"
+      );
+
+
+    const profileForm =
+      document.getElementById(
+        "profileForm"
+      );
+
+
+    const usernameInput =
+      document.getElementById(
+        "username"
+      );
+
+
+    const displayNameInput =
+      document.getElementById(
+        "displayName"
+      );
+
+
+    const avatarUrlInput =
+      document.getElementById(
+        "avatarUrl"
+      );
+
+
+    const bioInput =
+      document.getElementById(
+        "bio"
+      );
+
+
+    const bioCount =
+      document.getElementById(
+        "bioCount"
+      );
+
+
+    const profileMessage =
+      document.getElementById(
+        "profileMessage"
+      );
+
+
+    const saveButton =
+      document.getElementById(
+        "saveButton"
+      );
+
+
+    const logoutButton =
+      document.getElementById(
+        "logoutButton"
+      );
+
+
+    const accountEmail =
+      document.getElementById(
+        "accountEmail"
+      );
+
+
+    const avatarPreview =
+      document.getElementById(
+        "avatarPreview"
+      );
+
+
+    const displayNamePreview =
+      document.getElementById(
+        "displayNamePreview"
+      );
+
+
+    const usernamePreview =
+      document.getElementById(
+        "usernamePreview"
+      );
+
+
+    const bioPreview =
+      document.getElementById(
+        "bioPreview"
+      );
+
+
+
+    let currentUser =
+      null;
+
+
+
+    /* =====================================================
+       MESSAGE FUNCTIONS
+       ===================================================== */
+
+
+    function showMessage(
+      text,
+      type
+    ) {
+
+      profileMessage.textContent =
+        text;
+
+
+      profileMessage.className =
+        "message show";
+
+
+      if (type) {
+
+        profileMessage.classList.add(
+          type
+        );
+
+      }
+
+    }
+
+
+
+    function clearMessage() {
+
+      profileMessage.textContent =
+        "";
+
+
+      profileMessage.className =
+        "message";
+
+    }
+
+
+
+    /* =====================================================
+       CLEAN USERNAME
+       ===================================================== */
+
+
+    function cleanUsername(
+      value
+    ) {
+
+      return value
+        .toLowerCase()
+        .replace(
+          /[^a-z0-9_]/g,
+          ""
+        )
+        .slice(
+          0,
+          30
+        );
+
+    }
+
+
+
+    usernameInput.addEventListener(
+      "input",
+      function () {
+
+        const cleaned =
+          cleanUsername(
+            usernameInput.value
+          );
+
+
+        if (
+          usernameInput.value !==
+          cleaned
+        ) {
+
+          usernameInput.value =
+            cleaned;
+
+        }
+
+
+        updatePreview();
+
+      }
+    );
+
+
+
+    /* =====================================================
+       PROFILE PREVIEW
+       ===================================================== */
+
+
+    function updatePreview() {
+
+      const displayName =
+        displayNameInput
+          .value
+          .trim();
+
+
+      const username =
+        usernameInput
+          .value
+          .trim();
+
+
+      const bio =
+        bioInput
+          .value
+          .trim();
+
+
+      const avatarUrl =
+        avatarUrlInput
+          .value
+          .trim();
+
+
+
+      displayNamePreview.textContent =
+        displayName ||
+        "Your Name";
+
+
+      usernamePreview.textContent =
+        username
+          ? "@" + username
+          : "@username";
+
+
+
+      if (bio) {
+
+        bioPreview.textContent =
+          bio;
+
+
+        bioPreview.classList.remove(
+          "preview-placeholder"
+        );
+
+      }
+
+      else {
+
+        bioPreview.textContent =
+          "Your bio will appear here.";
+
+
+        bioPreview.classList.add(
+          "preview-placeholder"
+        );
+
+      }
+
+
+
+      bioCount.textContent =
+        bioInput.value.length +
+        " / 500";
+
+
+
+      if (avatarUrl) {
+
+        avatarPreview.innerHTML =
+          "";
+
+
+        const image =
+          document.createElement(
+            "img"
+          );
+
+
+        image.src =
+          avatarUrl;
+
+
+        image.alt =
+          "Profile image";
+
+
+        image.onerror =
+          function () {
+
+            showAvatarInitial();
+
+          };
+
+
+        avatarPreview.appendChild(
+          image
+        );
+
+      }
+
+      else {
+
+        showAvatarInitial();
+
+      }
+
+    }
+
+
+
+    function showAvatarInitial() {
+
+      avatarPreview.innerHTML =
+        "";
+
+
+      const name =
+        displayNameInput
+          .value
+          .trim();
+
+
+      avatarPreview.textContent =
+        name
+          ? name
+              .charAt(0)
+              .toUpperCase()
+          : "?";
+
+    }
+
+
+
+    displayNameInput.addEventListener(
+      "input",
+      updatePreview
+    );
+
+
+    avatarUrlInput.addEventListener(
+      "input",
+      updatePreview
+    );
+
+
+    bioInput.addEventListener(
+      "input",
+      updatePreview
+    );
+
+
+
+    /* =====================================================
+       CHECK LOGIN
+       ===================================================== */
+
+
+    async function loadUser() {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .auth
+          .getUser();
+
+
+
+      if (
+        error ||
+        !data.user
+      ) {
+
+        window.location.href =
+          "auth.html#login";
+
+        return;
+
+      }
+
+
+
+      currentUser =
+        data.user;
+
+
+      accountEmail.textContent =
+        currentUser.email ||
+        "No email available";
+
+
+
+      await loadProfile();
+
+
+      loadingScreen.classList.add(
+        "hidden"
+      );
+
+    }
+
+
+
+    /* =====================================================
+       LOAD PROFILE
+       ===================================================== */
+
+
+    async function loadProfile() {
+
+      /*
+        We use DogEar's protected public-profile function
+        to load the profile information that is safe
+        to display.
+      */
+
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .rpc(
+              "get_public_profile",
+              {
+                check_user_id:
+                  currentUser.id
+              }
+            );
+
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+
+
+        let profile =
+          null;
+
+
+
+        if (
+          Array.isArray(data)
+        ) {
+
+          profile =
+            data[0];
+
+        }
+
+        else {
+
+          profile =
+            data;
+
+        }
+
+
+
+        if (profile) {
+
+          usernameInput.value =
+            profile.username ||
+            "";
+
+
+          displayNameInput.value =
+            profile.display_name ||
+            currentUser
+              .user_metadata
+              ?.display_name ||
+            "";
+
+
+          avatarUrlInput.value =
+            profile.avatar_url ||
+            "";
+
+
+          bioInput.value =
+            profile.bio ||
+            "";
+
+        }
+
+        else {
+
+          displayNameInput.value =
+            currentUser
+              .user_metadata
+              ?.display_name ||
+            "";
+
+        }
+
+
+
+        updatePreview();
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Profile loading error:",
+          error
+        );
+
+
+        /*
+          Even if profile loading fails,
+          the page can still open so the
+          user isn't trapped.
+        */
+
+
+        displayNameInput.value =
+          currentUser
+            .user_metadata
+            ?.display_name ||
+          "";
+
+
+        updatePreview();
+
+
+        showMessage(
+          "DogEar couldn't load your existing profile details.",
+          "error"
+        );
+
+      }
+
+    }
+
+
+
+    /* =====================================================
+       SAVE PROFILE
+       ===================================================== */
+
+
+    profileForm.addEventListener(
+      "submit",
+      async function (event) {
+
+        event.preventDefault();
+
+
+        clearMessage();
+
+
+
+        const username =
+          cleanUsername(
+            usernameInput.value.trim()
+          );
+
+
+        const displayName =
+          displayNameInput
+            .value
+            .trim();
+
+
+        const avatarUrl =
+          avatarUrlInput
+            .value
+            .trim();
+
+
+        const bio =
+          bioInput
+            .value
+            .trim();
+
+
+
+        if (
+          username.length < 3
+        ) {
+
+          showMessage(
+            "Your username must contain at least 3 characters.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+
+        if (
+          displayName.length < 1
+        ) {
+
+          showMessage(
+            "Please enter a display name.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+
+        if (
+          bio.length > 500
+        ) {
+
+          showMessage(
+            "Your bio must be 500 characters or fewer.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+
+        saveButton.disabled =
+          true;
+
+
+        saveButton.textContent =
+          "Saving...";
+
+
+
+        try {
+
+          /*
+            IMPORTANT:
+
+            This calls the protected DogEar function
+            named update_my_profile.
+
+            That function should only allow the
+            logged-in user to change:
+
+              username
+              display_name
+              avatar_url
+              bio
+
+            It should NOT allow users to change:
+
+              platform_role
+              account_status
+              club limits
+              admin status
+
+            We will create that Supabase function next.
+          */
+
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient
+              .rpc(
+                "update_my_profile",
+                {
+
+                  new_username:
+                    username,
+
+                  new_display_name:
+                    displayName,
+
+                  new_avatar_url:
+                    avatarUrl ||
+                    null,
+
+                  new_bio:
+                    bio ||
+                    null
+
+                }
+              );
+
+
+
+          if (error) {
+
+            throw error;
+
+          }
+
+
+
+          updatePreview();
+
+
+          showMessage(
+            "Your DogEar profile has been saved.",
+            "success"
+          );
+
+        }
+
+        catch (error) {
+
+          console.error(
+            "Profile save error:",
+            error
+          );
+
+
+
+          let message =
+            error.message ||
+            "DogEar couldn't save your profile.";
+
+
+
+          if (
+            message
+              .toLowerCase()
+              .includes(
+                "duplicate"
+              )
+          ) {
+
+            message =
+              "That username is already being used. Try another one.";
+
+          }
+
+
+
+          showMessage(
+            message,
+            "error"
+          );
+
+        }
+
+        finally {
+
+          saveButton.disabled =
+            false;
+
+
+          saveButton.textContent =
+            "Save Profile";
+
+        }
+
+      }
+    );
+
+
+
+    /* =====================================================
+       LOG OUT
+       ===================================================== */
+
+
+    logoutButton.addEventListener(
+      "click",
+      async function () {
+
+        logoutButton.disabled =
+          true;
+
+
+        logoutButton.textContent =
+          "Logging Out...";
+
+
+
+        await supabaseClient
+          .auth
+          .signOut();
+
+
+
+        window.location.href =
+          "auth.html#login";
+
+      }
+    );
+
+
+
+    /* =====================================================
+       START PAGE
+       ===================================================== */
+
+
+    loadUser();
+
+  </script>
+
+
+</body>
+</html>
