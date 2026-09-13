@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DogEar — Club Discussions</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --ink:#090b0a;
+  --panel:#101410;
+  --panel2:#0d110e;
+  --cream:#f1e7cf;
+  --gold:#c79b59;
+  --gold2:#dfbd7e;
+  --green:#26362b;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.22);
+  --danger:#e6a09a;
+  --ok:#b9d6b2;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--cream);
+  background:
+    radial-gradient(circle at 10% 0%,rgba(53,73,59,.24),transparent 28%),
+    var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+a{color:inherit}
+
+.topbar{
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:0 clamp(18px,4vw,60px);
+  border-bottom:1px solid var(--line);
+  background:rgba(9,11,10,.94);
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.brand{
+  display:flex;
+  gap:11px;
+  align-items:center;
+  text-decoration:none;
+  color:var(--gold2);
+  font:800 13px Arial;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  transform:rotate(-8deg);
+}
+
+.nav{
+  display:flex;
+  gap:24px;
+  font:700 11px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.nav a:hover,
+.nav .active{
+  color:var(--gold2);
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:var(--green);
+  text-decoration:none;
+  font:800 13px Arial;
+  overflow:hidden;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.page{
+  width:min(1180px,calc(100% - 32px));
+  margin:auto;
+  padding:36px 0 100px;
+}
+
+.back{
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 10px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.club-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:22px;
+  margin:24px 0 22px;
+  padding-bottom:24px;
+  border-bottom:1px solid var(--line);
+}
+
+.eyebrow{
+  color:var(--gold);
+  font:800 10px Arial;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  margin-bottom:9px;
+}
+
+h1{
+  font-size:clamp(42px,6vw,68px);
+  font-weight:400;
+  line-height:.96;
+  letter-spacing:-.035em;
+  margin:0;
+}
+
+.club-sub{
+  color:var(--muted);
+  font:13px/1.6 Arial;
+  margin-top:12px;
+}
+
+.btn{
+  min-height:44px;
+  padding:0 18px;
+  border-radius:999px;
+  font:800 10px Arial;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.primary{
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:#17130e;
+}
+
+.secondary{
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--gold2);
+}
+
+.btn:disabled{
+  opacity:.55;
+  cursor:wait;
+}
+
+.club-nav{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  margin-bottom:26px;
+}
+
+.club-nav a{
+  padding:9px 12px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--muted);
+  text-decoration:none;
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.club-nav a:hover,
+.club-nav a.active{
+  color:var(--gold2);
+  border-color:var(--gold);
+}
+
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 320px;
+  gap:24px;
+  align-items:start;
+}
+
+.card{
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:rgba(16,20,16,.88);
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.28);
+}
+
+.card-head{
+  padding:20px 22px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  align-items:center;
+}
+
+.card-head h2{
+  font-weight:400;
+  font-size:26px;
+  margin:0;
+}
+
+.card-head p{
+  margin:5px 0 0;
+  color:var(--muted);
+  font:12px/1.5 Arial;
+}
+
+.toolbar{
+  padding:16px 18px;
+  border-bottom:1px solid rgba(199,155,89,.12);
+  display:flex;
+  gap:10px;
+}
+
+.search{
+  width:100%;
+  height:44px;
+  border:1px solid rgba(199,155,89,.2);
+  border-radius:12px;
+  background:var(--panel2);
+  color:var(--cream);
+  outline:none;
+  padding:0 14px;
+  font:13px Arial;
+}
+
+.search:focus{
+  border-color:var(--gold);
+}
+
+.thread-list{
+  padding:4px 18px 10px;
+}
+
+.thread{
+  display:grid;
+  grid-template-columns:46px minmax(0,1fr) auto;
+  gap:14px;
+  align-items:center;
+  padding:17px 4px;
+  border-bottom:1px solid rgba(199,155,89,.11);
+  text-decoration:none;
+}
+
+.thread:last-child{
+  border-bottom:0;
+}
+
+.thread:hover .thread-title{
+  color:var(--gold2);
+}
+
+.thread-icon{
+  width:42px;
+  height:42px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  display:grid;
+  place-items:center;
+  background:var(--green);
+  color:var(--gold2);
+  font:800 14px Arial;
+}
+
+.thread-title{
+  font-size:18px;
+  line-height:1.25;
+  margin-bottom:5px;
+}
+
+.thread-meta,
+.thread-preview{
+  color:var(--muted);
+  font:11px/1.5 Arial;
+}
+
+.thread-preview{
+  margin-top:4px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.thread-stats{
+  text-align:right;
+  color:var(--muted);
+  font:10px/1.5 Arial;
+  white-space:nowrap;
+}
+
+.thread-stats strong{
+  display:block;
+  color:var(--gold2);
+  font-size:14px;
+}
+
+.side-body{
+  padding:18px;
+}
+
+.side-section{
+  padding:3px 0 18px;
+  margin-bottom:18px;
+  border-bottom:1px solid rgba(199,155,89,.11);
+}
+
+.side-section:last-child{
+  border-bottom:0;
+  margin-bottom:0;
+}
+
+.side-section h3{
+  font-size:17px;
+  font-weight:400;
+  margin:0 0 9px;
+}
+
+.side-section p{
+  color:var(--muted);
+  font:11px/1.6 Arial;
+  margin:0;
+}
+
+.pill{
+  display:inline-block;
+  margin-top:10px;
+  padding:6px 9px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--gold2);
+  font:800 9px Arial;
+  text-transform:uppercase;
+}
+
+.empty{
+  padding:48px 24px;
+  text-align:center;
+  color:var(--muted);
+  font:13px/1.65 Arial;
+}
+
+.empty strong{
+  display:block;
+  color:var(--cream);
+  font-size:22px;
+  font-weight:400;
+  margin-bottom:8px;
+}
+
+.loading{
+  position:fixed;
+  inset:0;
+  display:grid;
+  place-items:center;
+  background:var(--ink);
+  z-index:100;
+}
+
+.loading.hidden{
+  display:none;
+}
+
+.loading span{
+  color:var(--gold2);
+  font:800 10px Arial;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.72);
+  display:none;
+  place-items:center;
+  padding:20px;
+  z-index:50;
+}
+
+.modal.show{
+  display:grid;
+}
+
+.modal-card{
+  width:min(680px,100%);
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:#0e120f;
+  box-shadow:0 30px 90px rgba(0,0,0,.5);
+  overflow:hidden;
+}
+
+.modal-head{
+  padding:20px 22px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.modal-head h2{
+  font-weight:400;
+  margin:0;
+  font-size:26px;
+}
+
+.close{
+  background:none;
+  border:0;
+  color:var(--muted);
+  font-size:24px;
+  cursor:pointer;
+}
+
+.form{
+  padding:22px;
+}
+
+.field{
+  margin-bottom:18px;
+}
+
+.field label{
+  display:block;
+  color:var(--gold2);
+  font:800 10px Arial;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+
+.field input,
+.field textarea{
+  width:100%;
+  border:1px solid rgba(199,155,89,.2);
+  border-radius:12px;
+  background:var(--panel2);
+  color:var(--cream);
+  outline:none;
+  font:14px Arial;
+}
+
+.field input{
+  height:48px;
+  padding:0 14px;
+}
+
+.field textarea{
+  min-height:170px;
+  padding:14px;
+  resize:vertical;
+  line-height:1.55;
+}
+
+.field input:focus,
+.field textarea:focus{
+  border-color:var(--gold);
+}
+
+.form-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+}
+
+.message{
+  display:none;
+  margin-bottom:16px;
+  padding:12px 14px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  font:12px/1.5 Arial;
+}
+
+.message.show{display:block}
+.message.error{color:var(--danger)}
+.message.success{color:var(--ok)}
+
+@media(max-width:900px){
+  .layout{
+    grid-template-columns:1fr;
+  }
+
+  .club-head{
+    align-items:start;
+    flex-direction:column;
+  }
+}
+
+@media(max-width:700px){
+  .nav{
+    display:none;
+  }
+
+  .thread{
+    grid-template-columns:40px minmax(0,1fr);
+  }
+
+  .thread-stats{
+    display:none;
+  }
+
+  .form-actions{
+    flex-direction:column;
+  }
+
+  .form-actions .btn{
+    width:100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="loading" id="loading">
+  <span>Opening the discussion room...</span>
+</div>
+
+<header class="topbar">
+  <a class="brand" href="dashboard.html">
+    <span class="brand-mark"></span>
+    DogEar
+  </a>
+
+  <nav class="nav">
+    <a href="dashboard.html">Home</a>
+    <a href="discover.html">Discover</a>
+    <a class="active" href="clubs.html">Clubs</a>
+    <a href="marketplace.html">Books</a>
+  </nav>
+
+  <a class="avatar" id="navAvatar" href="profile.html">?</a>
+</header>
+
+<main class="page">
+
+  <a class="back" id="backLink" href="clubs.html">
+    ← Back to Club
+  </a>
+
+  <section class="club-head">
+    <div>
+      <div class="eyebrow">Club Discussions</div>
+
+      <h1 id="clubName">
+        Book Club
+      </h1>
+
+      <div class="club-sub" id="clubMeta">
+        Loading club details…
+      </div>
+    </div>
+
+    <button
+      class="btn primary"
+      id="newThreadBtn"
+      type="button">
+      Start a Discussion
+    </button>
+  </section>
+
+  <nav class="club-nav" aria-label="Club navigation">
+    <a id="overviewLink" href="club.html">
+      Overview
+    </a>
+
+    <a id="membersLink" href="club-members.html">
+      Members
+    </a>
+
+    <a
+      class="active"
+      id="discussionsLink"
+      href="club-discussions.html">
+      Discussions
+    </a>
+
+    <a id="voteLink" href="club-vote.html">
+      Monthly Vote
+    </a>
+
+    <a id="booksLink" href="club-books.html">
+      Bookshelf
+    </a>
+
+    <a id="settingsLink" href="club-settings.html">
+      Settings
+    </a>
+  </nav>
+
+  <div class="layout">
+
+    <section class="card">
+
+      <div class="card-head">
+        <div>
+          <h2>Conversation Board</h2>
+
+          <p>
+            Talk about the current read, recommendations,
+            club business, or whatever the table has wandered into.
+          </p>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <input
+          class="search"
+          id="threadSearch"
+          type="search"
+          placeholder="Search discussions…"
+          autocomplete="off">
+      </div>
+
+      <div
+        class="thread-list"
+        id="threadList">
+      </div>
+
+      <div
+        class="empty"
+        id="emptyState"
+        hidden>
+
+        <strong>No discussions yet.</strong>
+
+        Be the person who puts the first thought on the table.
+      </div>
+
+    </section>
+
+    <aside class="card">
+
+      <div class="card-head">
+        <div>
+          <h2>The Room</h2>
+          <p>Quick club context.</p>
+        </div>
+      </div>
+
+      <div class="side-body">
+
+        <div class="side-section">
+          <h3>Current Read</h3>
+
+          <p id="currentBook">
+            No current book has been selected yet.
+          </p>
+
+          <a
+            class="pill"
+            id="voteSideLink"
+            href="club-vote.html">
+            View Monthly Vote
+          </a>
+        </div>
+
+        <div class="side-section">
+          <h3>Discussion etiquette</h3>
+
+          <p>
+            Critique books freely. Treat people gently.
+            Use spoiler warnings when a thread title or
+            opening post would reveal a major plot point.
+          </p>
+        </div>
+
+        <div class="side-section">
+          <h3>Club members</h3>
+
+          <p id="memberCount">
+            Loading membership…
+          </p>
+
+          <a
+            class="pill"
+            id="membersSideLink"
+            href="club-members.html">
+            See Members
+          </a>
+        </div>
+
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<div
+  class="modal"
+  id="newThreadModal"
+  aria-hidden="true">
+
+  <div
+    class="modal-card"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="newThreadTitle">
+
+    <div class="modal-head">
+
+      <h2 id="newThreadTitle">
+        Start a Discussion
+      </h2>
+
+      <button
+        class="close"
+        id="closeModal"
+        type="button"
+        aria-label="Close">
+        ×
+      </button>
+
+    </div>
+
+    <form
+      class="form"
+      id="newThreadForm">
+
+      <div
+        class="message"
+        id="message">
+      </div>
+
+      <div class="field">
+
+        <label for="threadTitle">
+          Title
+        </label>
+
+        <input
+          id="threadTitle"
+          maxlength="140"
+          required
+          placeholder="What are we talking about?">
+
+      </div>
+
+      <div class="field">
+
+        <label for="threadBody">
+          Opening Post
+        </label>
+
+        <textarea
+          id="threadBody"
+          maxlength="5000"
+          required
+          placeholder="Start the conversation…"></textarea>
+
+      </div>
+
+      <div class="form-actions">
+
+        <button
+          class="btn secondary"
+          id="cancelThread"
+          type="button">
+          Cancel
+        </button>
+
+        <button
+          class="btn primary"
+          id="postThread"
+          type="submit">
+          Post Discussion
+        </button>
+
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+const $ = id =>
+  document.getElementById(id);
+
+const params =
+  new URLSearchParams(location.search);
+
+const clubId =
+  params.get("id");
+
+let currentUser = null;
+let allThreads = [];
+
+function withClub(filename){
+
+  return clubId
+    ? filename + "?id=" + encodeURIComponent(clubId)
+    : filename;
+
+}
+
+function wireLinks(){
+
+  $("backLink").href =
+    withClub("club.html");
+
+  $("overviewLink").href =
+    withClub("club.html");
+
+  $("membersLink").href =
+    withClub("club-members.html");
+
+  $("discussionsLink").href =
+    withClub("club-discussions.html");
+
+  $("voteLink").href =
+    withClub("club-vote.html");
+
+  $("booksLink").href =
+    withClub("club-books.html");
+
+  $("settingsLink").href =
+    withClub("club-settings.html");
+
+  $("voteSideLink").href =
+    withClub("club-vote.html");
+
+  $("membersSideLink").href =
+    withClub("club-members.html");
+
+}
+
+function msg(text,type=""){
+
+  $("message").textContent = text;
+
+  $("message").className =
+    "message show " + type;
+
+}
+
+function escapeHtml(v=""){
+
+  return v.replace(
+    /[&<>"']/g,
+    m => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    }[m])
+  );
+
+}
+
+function formatDate(v){
+
+  if(!v) return "";
+
+  const d =
+    new Date(v);
+
+  if(Number.isNaN(d.getTime()))
+    return "";
+
+  return d.toLocaleDateString(
+    undefined,
+    {
+      month:"short",
+      day:"numeric",
+      year:
+        d.getFullYear() !==
+        new Date().getFullYear()
+          ? "numeric"
+          : undefined
+    }
+  );
+
+}
+
+function openModal(){
+
+  $("newThreadModal")
+    .classList.add("show");
+
+  $("newThreadModal")
+    .setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+  setTimeout(
+    () => $("threadTitle").focus(),
+    30
+  );
+
+}
+
+function closeModal(){
+
+  $("newThreadModal")
+    .classList.remove("show");
+
+  $("newThreadModal")
+    .setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+}
+
+function renderThreads(list){
+
+  const box =
+    $("threadList");
+
+  box.innerHTML = "";
+
+  $("emptyState").hidden =
+    list.length !== 0;
+
+  for(const t of list){
+
+    const a =
+      document.createElement("a");
+
+    a.className =
+      "thread";
+
+    const threadId =
+      t.id ||
+      t.discussion_id ||
+      "";
+
+    a.href =
+      threadId
+        ? "discussion.html?id=" +
+          encodeURIComponent(threadId) +
+          "&club=" +
+          encodeURIComponent(clubId || "")
+        : withClub(
+            "club-discussions.html"
+          );
+
+    const title =
+      t.title ||
+      "Untitled discussion";
+
+    const author =
+      t.author_name ||
+      t.display_name ||
+      "Club member";
+
+    const body =
+      t.body ||
+      t.content ||
+      t.opening_post ||
+      "";
+
+    const replies =
+      t.reply_count ??
+      t.comments_count ??
+      0;
+
+    const updated =
+      t.updated_at ||
+      t.created_at;
+
+    a.innerHTML = `
+      <div class="thread-icon">
+        ${escapeHtml(
+          title.charAt(0).toUpperCase() || "D"
+        )}
+      </div>
+
+      <div>
+
+        <div class="thread-title">
+          ${escapeHtml(title)}
+        </div>
+
+        <div class="thread-meta">
+          Started by
+          ${escapeHtml(author)}
+          ${
+            updated
+              ? " · " +
+                escapeHtml(
+                  formatDate(updated)
+                )
+              : ""
+          }
+        </div>
+
+        <div class="thread-preview">
+          ${escapeHtml(body)}
+        </div>
+
+      </div>
+
+      <div class="thread-stats">
+
+        <strong>
+          ${Number(replies) || 0}
+        </strong>
+
+        ${
+          Number(replies) === 1
+            ? "reply"
+            : "replies"
+        }
+
+      </div>
+    `;
+
+    box.appendChild(a);
+
+  }
+
+}
+
+async function loadProfile(){
+
+  let display =
+    currentUser?.user_metadata
+      ?.display_name ||
+    "Reader";
+
+  let avatar = "";
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "get_public_profile",
+        {
+          check_user_id:
+            currentUser.id
+        }
+      );
+
+    if(error)
+      throw error;
+
+    const p =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+    if(p){
+
+      display =
+        p.display_name ||
+        display;
+
+      avatar =
+        p.avatar_url ||
+        "";
+
+    }
+
+  }
+  catch(e){
+
+    console.warn(
+      "Profile lookup:",
+      e.message
+    );
+
+  }
+
+  const a =
+    $("navAvatar");
+
+  a.innerHTML = "";
+
+  if(avatar){
+
+    const img =
+      document.createElement("img");
+
+    img.src =
+      avatar;
+
+    img.alt =
+      display;
+
+    img.onerror = () => {
+
+      a.textContent =
+        display?.[0]
+          ?.toUpperCase() ||
+        "?";
+
+    };
+
+    a.appendChild(img);
+
+  }
+  else{
+
+    a.textContent =
+      display?.[0]
+        ?.toUpperCase() ||
+      "?";
+
+  }
+
+}
+
+async function loadClub(){
+
+  if(!clubId){
+
+    $("clubMeta").textContent =
+      "No club ID was supplied.";
+
+    return;
+
+  }
+
+  try{
+
+    let {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("clubs")
+        .select("*")
+        .eq("id",clubId)
+        .maybeSingle();
+
+    if(error)
+      throw error;
+
+    if(data){
+
+      $("clubName").textContent =
+        data.name ||
+        "Book Club";
+
+      const bits = [];
+
+      if(data.genre)
+        bits.push(data.genre);
+
+      bits.push(
+        data.is_public === false
+          ? "Private club"
+          : "Public club"
+      );
+
+      $("clubMeta").textContent =
+        bits.join(" · ");
+
+      if(
+        data.current_book_title
+      ){
+
+        $("currentBook").textContent =
+          data.current_book_author
+            ? data.current_book_title +
+              " by " +
+              data.current_book_author
+            : data.current_book_title;
+
+      }
+
+    }
+
+  }
+  catch(e){
+
+    console.warn(
+      "Club lookup:",
+      e.message
+    );
+
+    $("clubMeta").textContent =
+      "Club discussion room";
+
+  }
+
+}
+
+async function loadMembers(){
+
+  if(!clubId)
+    return;
+
+  try{
+
+    const {
+      count,
+      error
+    } =
+      await supabaseClient
+        .from("club_members")
+        .select(
+          "*",
+          {
+            count:"exact",
+            head:true
+          }
+        )
+        .eq("club_id",clubId);
+
+    if(error)
+      throw error;
+
+    $("memberCount").textContent =
+      (count || 0) +
+      " " +
+      (
+        (count || 0) === 1
+          ? "member"
+          : "members"
+      ) +
+      " in this club.";
+
+  }
+  catch(e){
+
+    console.warn(
+      "Member count:",
+      e.message
+    );
+
+    $("memberCount").textContent =
+      "Member list available from the club roster.";
+
+  }
+
+}
+
+async function loadThreads(){
+
+  if(!clubId){
+
+    renderThreads([]);
+
+    return;
+
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("club_discussions")
+        .select("*")
+        .eq("club_id",clubId)
+        .order(
+          "updated_at",
+          {
+            ascending:false
+          }
+        );
+
+    if(error)
+      throw error;
+
+    allThreads =
+      data || [];
+
+    renderThreads(
+      allThreads
+    );
+
+  }
+  catch(e){
+
+    console.warn(
+      "Discussion lookup:",
+      e.message
+    );
+
+    allThreads = [];
+
+    renderThreads([]);
+
+  }
+
+}
+
+$("threadSearch")
+  .addEventListener(
+    "input",
+    e => {
+
+      const q =
+        e.target.value
+          .trim()
+          .toLowerCase();
+
+      if(!q){
+
+        renderThreads(
+          allThreads
+        );
+
+        return;
+
+      }
+
+      renderThreads(
+        allThreads.filter(
+          t =>
+
+            String(
+              t.title ||
+              ""
+            )
+              .toLowerCase()
+              .includes(q)
+
+            ||
+
+            String(
+              t.body ||
+              t.content ||
+              t.opening_post ||
+              ""
+            )
+              .toLowerCase()
+              .includes(q)
+
+            ||
+
+            String(
+              t.author_name ||
+              t.display_name ||
+              ""
+            )
+              .toLowerCase()
+              .includes(q)
+
+        )
+      );
+
+    }
+  );
+
+$("newThreadBtn")
+  .addEventListener(
+    "click",
+    openModal
+  );
+
+$("closeModal")
+  .addEventListener(
+    "click",
+    closeModal
+  );
+
+$("cancelThread")
+  .addEventListener(
+    "click",
+    closeModal
+  );
+
+$("newThreadModal")
+  .addEventListener(
+    "click",
+    e => {
+
+      if(
+        e.target ===
+        $("newThreadModal")
+      ){
+
+        closeModal();
+
+      }
+
+    }
+  );
+
+document
+  .addEventListener(
+    "keydown",
+    e => {
+
+      if(e.key === "Escape")
+        closeModal();
+
+    }
+  );
+
+$("newThreadForm")
+  .addEventListener(
+    "submit",
+    async e => {
+
+      e.preventDefault();
+
+      const title =
+        $("threadTitle")
+          .value
+          .trim();
+
+      const body =
+        $("threadBody")
+          .value
+          .trim();
+
+      if(!clubId){
+
+        msg(
+          "This page needs a club ID in the URL.",
+          "error"
+        );
+
+        return;
+
+      }
+
+      if(!title || !body){
+
+        msg(
+          "Add both a title and an opening post.",
+          "error"
+        );
+
+        return;
+
+      }
+
+      const b =
+        $("postThread");
+
+      b.disabled =
+        true;
+
+      b.textContent =
+        "Posting...";
+
+      try{
+
+        const payload = {
+
+          club_id:
+            clubId,
+
+          author_id:
+            currentUser.id,
+
+          title,
+
+          body
+
+        };
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+
+            .from(
+              "club_discussions"
+            )
+
+            .insert(
+              payload
+            )
+
+            .select()
+
+            .single();
+
+        if(error)
+          throw error;
+
+        msg(
+          "Discussion posted.",
+          "success"
+        );
+
+        $("threadTitle").value =
+          "";
+
+        $("threadBody").value =
+          "";
+
+        await loadThreads();
+
+        setTimeout(
+          closeModal,
+          350
+        );
+
+        if(data?.id){
+
+          /*
+            Thread links are already
+            wired to discussion.html.
+          */
+
+        }
+
+      }
+      catch(err){
+
+        console.error(err);
+
+        msg(
+          "DogEar couldn't post this discussion: " +
+          (
+            err.message ||
+            "Unknown error"
+          ),
+          "error"
+        );
+
+      }
+      finally{
+
+        b.disabled =
+          false;
+
+        b.textContent =
+          "Post Discussion";
+
+      }
+
+    }
+  );
+
+async function start(){
+
+  wireLinks();
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+  if(
+    error ||
+    !data.user
+  ){
+
+    location.href =
+      "auth.html#login";
+
+    return;
+
+  }
+
+  currentUser =
+    data.user;
+
+  await Promise.all([
+    loadProfile(),
+    loadClub(),
+    loadMembers(),
+    loadThreads()
+  ]);
+
+  $("loading")
+    .classList
+    .add("hidden");
+
+}
+
+start();
+</script>
+
+</body>
+</html>
