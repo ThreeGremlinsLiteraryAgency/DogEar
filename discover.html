@@ -1,0 +1,3110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <meta
+    name="description"
+    content="Discover books, clubs, readers, and writers on DogEar."
+  />
+
+  <title>DogEar — Discover</title>
+
+  <style>
+    :root {
+      --ink: #090b0a;
+      --ink-2: #101410;
+      --ink-3: #151b16;
+
+      --cream: #f1e7cf;
+      --paper: #e7dcc2;
+
+      --gold: #c79b59;
+      --gold-soft: #dfbd7e;
+
+      --green: #26362b;
+      --green-light: #34483a;
+
+      --wine: #5a2f2a;
+
+      --muted: #aaa18f;
+
+      --line: rgba(199, 155, 89, 0.22);
+
+      --shadow:
+        0 20px 60px rgba(0, 0, 0, 0.32);
+
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+
+      min-height: 100vh;
+
+      background:
+        radial-gradient(
+          circle at 10% 0%,
+          rgba(53, 73, 59, 0.24),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at 92% 10%,
+          rgba(199, 155, 89, 0.09),
+          transparent 25%
+        ),
+        var(--ink);
+
+      color: var(--cream);
+
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    a {
+      color: inherit;
+    }
+
+
+    /* =====================================================
+       TOP NAV
+       ===================================================== */
+
+    .topbar {
+      min-height: 76px;
+
+      position: sticky;
+      top: 0;
+
+      z-index: 100;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 30px;
+
+      padding:
+        0
+        clamp(18px, 4vw, 60px);
+
+      border-bottom:
+        1px
+        solid
+        var(--line);
+
+      background:
+        rgba(
+          9,
+          11,
+          10,
+          0.92
+        );
+
+      backdrop-filter:
+        blur(14px);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 11px;
+
+      text-decoration: none;
+
+      color:
+        var(--gold-soft);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 13px;
+
+      font-weight: 800;
+
+      letter-spacing: 0.17em;
+
+      text-transform: uppercase;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+
+      position: relative;
+
+      border:
+        1px
+        solid
+        var(--gold);
+
+      border-radius:
+        50%
+        50%
+        50%
+        12%;
+
+      transform:
+        rotate(-8deg);
+    }
+
+    .brand-mark::after {
+      content: "";
+
+      position: absolute;
+
+      width: 11px;
+      height: 11px;
+
+      right: 2px;
+      top: 2px;
+
+      border-left:
+        1px
+        solid
+        var(--gold);
+
+      border-bottom:
+        1px
+        solid
+        var(--gold);
+
+      background:
+        var(--ink);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+
+      gap: 26px;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.1em;
+
+      text-transform: uppercase;
+    }
+
+    .nav-links a {
+      color:
+        var(--muted);
+
+      text-decoration: none;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color:
+        var(--gold-soft);
+    }
+
+    .nav-avatar {
+      width: 38px;
+      height: 38px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      overflow: hidden;
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius: 50%;
+
+      background:
+        var(--green);
+
+      color:
+        var(--gold-soft);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 13px;
+
+      font-weight: 800;
+
+      text-decoration: none;
+    }
+
+    .nav-avatar img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+
+    /* =====================================================
+       PAGE
+       ===================================================== */
+
+    .page {
+      width:
+        min(
+          1280px,
+          calc(100% - 36px)
+        );
+
+      margin:
+        0
+        auto;
+
+      padding:
+        52px
+        0
+        110px;
+    }
+
+
+    /* =====================================================
+       HERO
+       ===================================================== */
+
+    .hero {
+      margin-bottom: 40px;
+    }
+
+    .eyebrow {
+      margin-bottom: 12px;
+
+      color:
+        var(--gold);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 10px;
+
+      font-weight: 800;
+
+      letter-spacing: 0.2em;
+
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin-bottom: 14px;
+
+      font-size:
+        clamp(
+          48px,
+          7vw,
+          84px
+        );
+
+      line-height: 0.95;
+
+      font-weight: 400;
+
+      letter-spacing: -0.04em;
+    }
+
+    .hero p {
+      margin-bottom: 0;
+
+      max-width: 700px;
+
+      color:
+        var(--muted);
+
+      font-size: 18px;
+
+      line-height: 1.65;
+    }
+
+
+    /* =====================================================
+       SEARCH
+       ===================================================== */
+
+    .search-wrap {
+      margin-bottom: 44px;
+
+      padding: 18px;
+
+      display: grid;
+
+      grid-template-columns:
+        1fr
+        auto
+        auto;
+
+      gap: 12px;
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius:
+        18px;
+
+      background:
+        rgba(
+          16,
+          20,
+          16,
+          0.82
+        );
+
+      box-shadow:
+        var(--shadow);
+    }
+
+    .search-input {
+      min-height: 54px;
+
+      width: 100%;
+
+      padding:
+        0
+        18px;
+
+      border:
+        1px
+        solid
+        rgba(
+          199,
+          155,
+          89,
+          0.2
+        );
+
+      border-radius:
+        13px;
+
+      background:
+        #0d110e;
+
+      color:
+        var(--cream);
+
+      outline: none;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 14px;
+    }
+
+    .search-input:focus {
+      border-color:
+        var(--gold);
+
+      box-shadow:
+        0
+        0
+        0
+        3px
+        rgba(
+          199,
+          155,
+          89,
+          0.07
+        );
+    }
+
+    .search-type {
+      min-height: 54px;
+
+      padding:
+        0
+        16px;
+
+      border:
+        1px
+        solid
+        rgba(
+          199,
+          155,
+          89,
+          0.2
+        );
+
+      border-radius:
+        13px;
+
+      background:
+        #0d110e;
+
+      color:
+        var(--cream);
+
+      outline: none;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 12px;
+    }
+
+    .search-button,
+    .wander-button {
+      min-height: 54px;
+
+      padding:
+        0
+        22px;
+
+      border:
+        1px
+        solid
+        var(--gold);
+
+      border-radius:
+        999px;
+
+      background:
+        var(--gold);
+
+      color:
+        #17130e;
+
+      cursor: pointer;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 10px;
+
+      font-weight: 800;
+
+      letter-spacing: 0.12em;
+
+      text-transform: uppercase;
+    }
+
+    .search-button:hover,
+    .wander-button:hover {
+      background:
+        var(--gold-soft);
+    }
+
+
+    /* =====================================================
+       FILTERS
+       ===================================================== */
+
+    .filter-row {
+      margin-bottom: 36px;
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 10px;
+    }
+
+    .filter-chip {
+      min-height: 38px;
+
+      padding:
+        0
+        16px;
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius: 999px;
+
+      background:
+        transparent;
+
+      color:
+        var(--muted);
+
+      cursor: pointer;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.07em;
+
+      text-transform: uppercase;
+    }
+
+    .filter-chip:hover,
+    .filter-chip.active {
+      border-color:
+        var(--gold);
+
+      color:
+        var(--gold-soft);
+    }
+
+
+    /* =====================================================
+       SECTION
+       ===================================================== */
+
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section-heading {
+      margin-bottom: 20px;
+
+      display: flex;
+
+      align-items: flex-end;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+    .section-heading h2 {
+      margin-bottom: 5px;
+
+      font-size: 31px;
+
+      font-weight: 400;
+    }
+
+    .section-heading p {
+      margin-bottom: 0;
+
+      color:
+        var(--muted);
+
+      font-size: 13px;
+    }
+
+    .section-link {
+      color:
+        var(--gold-soft);
+
+      text-decoration: none;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 10px;
+
+      font-weight: 800;
+
+      letter-spacing: 0.1em;
+
+      text-transform: uppercase;
+    }
+
+
+    /* =====================================================
+       BOOK GRID
+       ===================================================== */
+
+    .book-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          4,
+          minmax(0, 1fr)
+        );
+
+      gap: 18px;
+    }
+
+    .book-card {
+      overflow: hidden;
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius:
+        17px;
+
+      background:
+        rgba(
+          16,
+          20,
+          16,
+          0.83
+        );
+
+      box-shadow:
+        var(--shadow);
+
+      transition:
+        transform 0.18s ease,
+        border-color 0.18s ease;
+    }
+
+    .book-card:hover {
+      transform:
+        translateY(-3px);
+
+      border-color:
+        rgba(
+          199,
+          155,
+          89,
+          0.5
+        );
+    }
+
+    .book-cover {
+      aspect-ratio:
+        2 / 3;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          145deg,
+          #3a4b3e,
+          #141a15
+        );
+
+      color:
+        rgba(
+          241,
+          231,
+          207,
+          0.55
+        );
+
+      padding: 20px;
+
+      text-align: center;
+
+      font-style: italic;
+    }
+
+    .book-cover img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+    .book-meta {
+      padding: 17px;
+    }
+
+    .book-tag {
+      margin-bottom: 7px;
+
+      color:
+        var(--gold);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 9px;
+
+      font-weight: 800;
+
+      letter-spacing: 0.12em;
+
+      text-transform: uppercase;
+    }
+
+    .book-meta h3 {
+      margin-bottom: 6px;
+
+      font-size: 18px;
+
+      font-weight: 400;
+
+      line-height: 1.25;
+    }
+
+    .book-author {
+      margin-bottom: 12px;
+
+      color:
+        var(--muted);
+
+      font-size: 13px;
+    }
+
+    .book-stats {
+      display: flex;
+
+      gap: 14px;
+
+      color:
+        #797267;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 10px;
+
+      text-transform: uppercase;
+    }
+
+
+    /* =====================================================
+       CLUBS
+       ===================================================== */
+
+    .club-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          3,
+          minmax(0, 1fr)
+        );
+
+      gap: 18px;
+    }
+
+    .club-card {
+      min-height: 220px;
+
+      padding: 24px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: space-between;
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius:
+        18px;
+
+      background:
+        rgba(
+          16,
+          20,
+          16,
+          0.84
+        );
+
+      box-shadow:
+        var(--shadow);
+
+      text-decoration: none;
+    }
+
+    .club-card:hover {
+      border-color:
+        rgba(
+          199,
+          155,
+          89,
+          0.5
+        );
+    }
+
+    .club-icon {
+      width: 48px;
+      height: 48px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      margin-bottom: 20px;
+
+      border-radius: 50%;
+
+      background:
+        var(--green);
+
+      color:
+        var(--gold-soft);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-weight: 800;
+    }
+
+    .club-card h3 {
+      margin-bottom: 7px;
+
+      font-size: 22px;
+
+      font-weight: 400;
+    }
+
+    .club-card p {
+      margin-bottom: 18px;
+
+      color:
+        var(--muted);
+
+      font-size: 13px;
+
+      line-height: 1.55;
+    }
+
+    .club-footer {
+      display: flex;
+
+      justify-content: space-between;
+
+      gap: 12px;
+
+      color:
+        #81796e;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 10px;
+
+      text-transform: uppercase;
+    }
+
+
+    /* =====================================================
+       PEOPLE
+       ===================================================== */
+
+    .people-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          4,
+          minmax(0, 1fr)
+        );
+
+      gap: 18px;
+    }
+
+    .person-card {
+      padding: 22px;
+
+      text-align: center;
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius:
+        18px;
+
+      background:
+        rgba(
+          16,
+          20,
+          16,
+          0.84
+        );
+
+      box-shadow:
+        var(--shadow);
+    }
+
+    .person-avatar {
+      width: 82px;
+      height: 82px;
+
+      margin:
+        0
+        auto
+        14px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background:
+        var(--green);
+
+      color:
+        var(--gold-soft);
+
+      font-size: 26px;
+    }
+
+    .person-card h3 {
+      margin-bottom: 4px;
+
+      font-size: 19px;
+
+      font-weight: 400;
+    }
+
+    .person-handle {
+      margin-bottom: 12px;
+
+      color:
+        var(--gold);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 11px;
+    }
+
+    .person-card p {
+      margin-bottom: 16px;
+
+      color:
+        var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.5;
+    }
+
+    .person-role {
+      display: inline-flex;
+
+      padding:
+        6px
+        9px;
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius: 999px;
+
+      color:
+        #8f887b;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 9px;
+
+      letter-spacing: 0.07em;
+
+      text-transform: uppercase;
+    }
+
+
+    /* =====================================================
+       WANDER
+       ===================================================== */
+
+    .wander-card {
+      padding:
+        34px;
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        auto;
+
+      gap: 30px;
+
+      align-items: center;
+
+      border:
+        1px
+        solid
+        rgba(
+          199,
+          155,
+          89,
+          0.35
+        );
+
+      border-radius:
+        22px;
+
+      background:
+        linear-gradient(
+          120deg,
+          rgba(
+            38,
+            54,
+            43,
+            0.95
+          ),
+          rgba(
+            16,
+            20,
+            16,
+            0.95
+          )
+        );
+
+      box-shadow:
+        var(--shadow);
+    }
+
+    .wander-card h2 {
+      margin-bottom: 10px;
+
+      font-size: 32px;
+
+      font-weight: 400;
+    }
+
+    .wander-card p {
+      margin-bottom: 0;
+
+      max-width: 700px;
+
+      color:
+        #b9b0a0;
+
+      line-height: 1.65;
+    }
+
+
+    /* =====================================================
+       SEARCH RESULTS
+       ===================================================== */
+
+    .results-box {
+      display: none;
+
+      margin-bottom: 44px;
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius:
+        18px;
+
+      background:
+        rgba(
+          16,
+          20,
+          16,
+          0.84
+        );
+
+      overflow: hidden;
+    }
+
+    .results-box.show {
+      display: block;
+    }
+
+    .results-header {
+      padding:
+        20px
+        24px;
+
+      border-bottom:
+        1px
+        solid
+        var(--line);
+    }
+
+    .results-header h2 {
+      margin-bottom: 4px;
+
+      font-size: 24px;
+
+      font-weight: 400;
+    }
+
+    .results-header p {
+      margin-bottom: 0;
+
+      color:
+        var(--muted);
+
+      font-size: 12px;
+    }
+
+    .results-content {
+      padding:
+        24px;
+    }
+
+    .placeholder-result {
+      color:
+        var(--muted);
+
+      line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       LOADING
+       ===================================================== */
+
+    .loading-screen {
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 1000;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      flex-direction: column;
+
+      gap: 15px;
+
+      background:
+        var(--ink);
+
+      color:
+        var(--gold-soft);
+    }
+
+    .loading-screen.hidden {
+      display: none;
+    }
+
+    .loading-mark {
+      width: 48px;
+      height: 48px;
+
+      border:
+        1px
+        solid
+        var(--gold);
+
+      border-radius:
+        50%
+        50%
+        50%
+        12%;
+
+      animation:
+        pulse
+        1.1s
+        infinite
+        alternate;
+    }
+
+    @keyframes pulse {
+      from {
+        opacity: 0.3;
+
+        transform:
+          rotate(-8deg)
+          scale(0.94);
+      }
+
+      to {
+        opacity: 1;
+
+        transform:
+          rotate(-8deg)
+          scale(1.05);
+      }
+    }
+
+    .loading-text {
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 10px;
+
+      font-weight: 800;
+
+      letter-spacing: 0.17em;
+
+      text-transform: uppercase;
+    }
+
+
+    /* =====================================================
+       MOBILE NAV
+       ===================================================== */
+
+    .mobile-nav {
+      display: none;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 980px) {
+
+      .book-grid,
+      .people-grid {
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(0, 1fr)
+          );
+      }
+
+      .club-grid {
+        grid-template-columns:
+          1fr
+          1fr;
+      }
+
+    }
+
+    @media (max-width: 760px) {
+
+      .nav-links {
+        display: none;
+      }
+
+      .search-wrap {
+        grid-template-columns:
+          1fr;
+      }
+
+      .wander-card {
+        grid-template-columns:
+          1fr;
+      }
+
+      .club-grid {
+        grid-template-columns:
+          1fr;
+      }
+
+      .mobile-nav {
+        position: fixed;
+
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+
+        z-index: 200;
+
+        min-height: 64px;
+
+        display: grid;
+
+        grid-template-columns:
+          repeat(4, 1fr);
+
+        border:
+          1px
+          solid
+          var(--line);
+
+        border-radius: 18px;
+
+        background:
+          rgba(
+            9,
+            11,
+            10,
+            0.95
+          );
+
+        backdrop-filter:
+          blur(14px);
+
+        box-shadow:
+          0
+          10px
+          40px
+          rgba(
+            0,
+            0,
+            0,
+            0.5
+          );
+      }
+
+      .mobile-nav a {
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 4px;
+
+        color:
+          var(--muted);
+
+        text-decoration: none;
+
+        font-family:
+          Arial,
+          Helvetica,
+          sans-serif;
+
+        font-size: 9px;
+
+        letter-spacing: 0.06em;
+
+        text-transform: uppercase;
+      }
+
+      .mobile-nav a span:first-child {
+        color:
+          var(--gold-soft);
+
+        font-size: 17px;
+      }
+
+      .page {
+        padding-bottom:
+          120px;
+      }
+
+    }
+
+    @media (max-width: 520px) {
+
+      .page {
+        width:
+          calc(100% - 22px);
+
+        padding-top:
+          30px;
+      }
+
+      .book-grid,
+      .people-grid {
+        grid-template-columns:
+          1fr
+          1fr;
+      }
+
+      .book-meta {
+        padding: 14px;
+      }
+
+      .book-meta h3 {
+        font-size: 15px;
+      }
+
+      .person-card {
+        padding:
+          18px
+          12px;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <!-- =====================================================
+       LOADING
+       ===================================================== -->
+
+  <div
+    class="loading-screen"
+    id="loadingScreen"
+  >
+
+    <div class="loading-mark"></div>
+
+    <div class="loading-text">
+
+      Opening discovery...
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       TOP NAV
+       ===================================================== -->
+
+  <header class="topbar">
+
+    <a
+      class="brand"
+      href="dashboard.html"
+    >
+
+      <span class="brand-mark"></span>
+
+      DogEar
+
+    </a>
+
+
+    <nav class="nav-links">
+
+      <a href="dashboard.html">
+        Home
+      </a>
+
+      <a
+        class="active"
+        href="discover.html"
+      >
+        Discover
+      </a>
+
+      <a href="clubs.html">
+        Clubs
+      </a>
+
+      <a href="marketplace.html">
+        Books
+      </a>
+
+    </nav>
+
+
+    <a
+      class="nav-avatar"
+      id="navAvatar"
+      href="profile.html"
+      aria-label="Your profile"
+    >
+      ?
+    </a>
+
+  </header>
+
+
+  <!-- =====================================================
+       PAGE
+       ===================================================== -->
+
+  <main class="page">
+
+
+    <!-- =================================================
+         HERO
+         ================================================= -->
+
+    <section class="hero">
+
+      <div class="eyebrow">
+
+        Discover DogEar
+
+      </div>
+
+      <h1>
+
+        Find something worth getting lost in.
+
+      </h1>
+
+      <p>
+
+        Search for books, stumble into book clubs,
+        meet readers and writers, or let DogEar send
+        you somewhere unexpected.
+
+      </p>
+
+    </section>
+
+
+    <!-- =================================================
+         SEARCH
+         ================================================= -->
+
+    <section
+      class="search-wrap"
+      aria-label="Discover search"
+    >
+
+      <input
+        class="search-input"
+        id="searchInput"
+        type="search"
+        placeholder="Search a title, author, club, reader, or writer..."
+      />
+
+      <select
+        class="search-type"
+        id="searchType"
+      >
+
+        <option value="all">
+          Everything
+        </option>
+
+        <option value="books">
+          Books
+        </option>
+
+        <option value="clubs">
+          Clubs
+        </option>
+
+        <option value="people">
+          Readers & Writers
+        </option>
+
+      </select>
+
+      <button
+        class="search-button"
+        id="searchButton"
+        type="button"
+      >
+        Search
+      </button>
+
+    </section>
+
+
+    <!-- =================================================
+         SEARCH RESULTS
+         ================================================= -->
+
+    <section
+      class="results-box"
+      id="resultsBox"
+    >
+
+      <div class="results-header">
+
+        <h2 id="resultsTitle">
+
+          Search results
+
+        </h2>
+
+        <p id="resultsSubtitle">
+
+          DogEar is looking around.
+
+        </p>
+
+      </div>
+
+      <div
+        class="results-content"
+        id="resultsContent"
+      >
+
+        <p class="placeholder-result">
+
+          Search results will appear here.
+
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         FILTER CHIPS
+         ================================================= -->
+
+    <div class="filter-row">
+
+      <button
+        class="filter-chip active"
+        type="button"
+      >
+        For You
+      </button>
+
+      <button
+        class="filter-chip"
+        type="button"
+      >
+        Fantasy
+      </button>
+
+      <button
+        class="filter-chip"
+        type="button"
+      >
+        Romance
+      </button>
+
+      <button
+        class="filter-chip"
+        type="button"
+      >
+        Mystery
+      </button>
+
+      <button
+        class="filter-chip"
+        type="button"
+      >
+        Science Fiction
+      </button>
+
+      <button
+        class="filter-chip"
+        type="button"
+      >
+        Horror
+      </button>
+
+      <button
+        class="filter-chip"
+        type="button"
+      >
+        Literary
+      </button>
+
+      <button
+        class="filter-chip"
+        type="button"
+      >
+        Nonfiction
+      </button>
+
+    </div>
+
+
+    <!-- =================================================
+         TRENDING BOOKS
+         ================================================= -->
+
+    <section class="section">
+
+      <div class="section-heading">
+
+        <div>
+
+          <h2>
+
+            Trending on DogEar
+
+          </h2>
+
+          <p>
+
+            Books getting attention across the community.
+
+          </p>
+
+        </div>
+
+        <a
+          class="section-link"
+          href="marketplace.html"
+        >
+          Browse Books
+        </a>
+
+      </div>
+
+
+      <div class="book-grid">
+
+
+        <article class="book-card">
+
+          <div class="book-cover">
+
+            Book cover
+
+          </div>
+
+          <div class="book-meta">
+
+            <div class="book-tag">
+
+              Trending
+
+            </div>
+
+            <h3>
+
+              A book will appear here
+
+            </h3>
+
+            <div class="book-author">
+
+              Author name
+
+            </div>
+
+            <div class="book-stats">
+
+              <span>
+                0 votes
+              </span>
+
+              <span>
+                0 clubs
+              </span>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <article class="book-card">
+
+          <div class="book-cover">
+
+            Book cover
+
+          </div>
+
+          <div class="book-meta">
+
+            <div class="book-tag">
+
+              Trending
+
+            </div>
+
+            <h3>
+
+              Community favorite
+
+            </h3>
+
+            <div class="book-author">
+
+              Author name
+
+            </div>
+
+            <div class="book-stats">
+
+              <span>
+                0 votes
+              </span>
+
+              <span>
+                0 clubs
+              </span>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <article class="book-card">
+
+          <div class="book-cover">
+
+            Book cover
+
+          </div>
+
+          <div class="book-meta">
+
+            <div class="book-tag">
+
+              Trending
+
+            </div>
+
+            <h3>
+
+              Something everyone is talking about
+
+            </h3>
+
+            <div class="book-author">
+
+              Author name
+
+            </div>
+
+            <div class="book-stats">
+
+              <span>
+                0 votes
+              </span>
+
+              <span>
+                0 clubs
+              </span>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <article class="book-card">
+
+          <div class="book-cover">
+
+            Book cover
+
+          </div>
+
+          <div class="book-meta">
+
+            <div class="book-tag">
+
+              Trending
+
+            </div>
+
+            <h3>
+
+              Your next obsession
+
+            </h3>
+
+            <div class="book-author">
+
+              Author name
+
+            </div>
+
+            <div class="book-stats">
+
+              <span>
+                0 votes
+              </span>
+
+              <span>
+                0 clubs
+              </span>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         HIDDEN GEMS
+         ================================================= -->
+
+    <section class="section">
+
+      <div class="section-heading">
+
+        <div>
+
+          <h2>
+
+            Hidden Gems
+
+          </h2>
+
+          <p>
+
+            Books quietly finding their people.
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="book-grid">
+
+
+        <article class="book-card">
+
+          <div class="book-cover">
+
+            Book cover
+
+          </div>
+
+          <div class="book-meta">
+
+            <div class="book-tag">
+
+              Hidden Gem
+
+            </div>
+
+            <h3>
+
+              Under-the-radar book
+
+            </h3>
+
+            <div class="book-author">
+
+              Author name
+
+            </div>
+
+            <div class="book-stats">
+
+              <span>
+                New
+              </span>
+
+              <span>
+                Growing
+              </span>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <article class="book-card">
+
+          <div class="book-cover">
+
+            Book cover
+
+          </div>
+
+          <div class="book-meta">
+
+            <div class="book-tag">
+
+              Hidden Gem
+
+            </div>
+
+            <h3>
+
+              Something unexpected
+
+            </h3>
+
+            <div class="book-author">
+
+              Author name
+
+            </div>
+
+            <div class="book-stats">
+
+              <span>
+                New
+              </span>
+
+              <span>
+                Growing
+              </span>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <article class="book-card">
+
+          <div class="book-cover">
+
+            Book cover
+
+          </div>
+
+          <div class="book-meta">
+
+            <div class="book-tag">
+
+              Hidden Gem
+
+            </div>
+
+            <h3>
+
+              Reader-discovered treasure
+
+            </h3>
+
+            <div class="book-author">
+
+              Author name
+
+            </div>
+
+            <div class="book-stats">
+
+              <span>
+                New
+              </span>
+
+              <span>
+                Growing
+              </span>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <article class="book-card">
+
+          <div class="book-cover">
+
+            Book cover
+
+          </div>
+
+          <div class="book-meta">
+
+            <div class="book-tag">
+
+              Hidden Gem
+
+            </div>
+
+            <h3>
+
+              Small book, loud fans
+
+            </h3>
+
+            <div class="book-author">
+
+              Author name
+
+            </div>
+
+            <div class="book-stats">
+
+              <span>
+                New
+              </span>
+
+              <span>
+                Growing
+              </span>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         CLUBS
+         ================================================= -->
+
+    <section class="section">
+
+      <div class="section-heading">
+
+        <div>
+
+          <h2>
+
+            Clubs Worth Wandering Into
+
+          </h2>
+
+          <p>
+
+            Find people reading the same strange things you are.
+
+          </p>
+
+        </div>
+
+        <a
+          class="section-link"
+          href="clubs.html"
+        >
+          All Clubs
+        </a>
+
+      </div>
+
+
+      <div class="club-grid">
+
+
+        <a
+          class="club-card"
+          href="clubs.html"
+        >
+
+          <div>
+
+            <div class="club-icon">
+
+              F
+
+            </div>
+
+            <h3>
+
+              Fantasy Club
+
+            </h3>
+
+            <p>
+
+              Swords, dragons, cursed forests,
+              emotionally compromised wizards.
+
+            </p>
+
+          </div>
+
+          <div class="club-footer">
+
+            <span>
+              0 members
+            </span>
+
+            <span>
+              Open
+            </span>
+
+          </div>
+
+        </a>
+
+
+        <a
+          class="club-card"
+          href="clubs.html"
+        >
+
+          <div>
+
+            <div class="club-icon">
+
+              M
+
+            </div>
+
+            <h3>
+
+              Mystery Readers
+
+            </h3>
+
+            <p>
+
+              Suspicious neighbors, impossible murders,
+              and people making terrible decisions.
+
+            </p>
+
+          </div>
+
+          <div class="club-footer">
+
+            <span>
+              0 members
+            </span>
+
+            <span>
+              Open
+            </span>
+
+          </div>
+
+        </a>
+
+
+        <a
+          class="club-card"
+          href="clubs.html"
+        >
+
+          <div>
+
+            <div class="club-icon">
+
+              R
+
+            </div>
+
+            <h3>
+
+              Romance After Dark
+
+            </h3>
+
+            <p>
+
+              Slow burns, chaos, yearning,
+              and people refusing to communicate.
+
+            </p>
+
+          </div>
+
+          <div class="club-footer">
+
+            <span>
+              0 members
+            </span>
+
+            <span>
+              Open
+            </span>
+
+          </div>
+
+        </a>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         PEOPLE
+         ================================================= -->
+
+    <section class="section">
+
+      <div class="section-heading">
+
+        <div>
+
+          <h2>
+
+            People to Meet
+
+          </h2>
+
+          <p>
+
+            Readers, writers, and book people around DogEar.
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="people-grid">
+
+
+        <article class="person-card">
+
+          <div class="person-avatar">
+
+            R
+
+          </div>
+
+          <h3>
+
+            Reader Name
+
+          </h3>
+
+          <div class="person-handle">
+
+            @reader
+
+          </div>
+
+          <p>
+
+            Loves fantasy, folklore,
+            and gigantic books that could injure someone.
+
+          </p>
+
+          <span class="person-role">
+
+            Reader
+
+          </span>
+
+        </article>
+
+
+        <article class="person-card">
+
+          <div class="person-avatar">
+
+            W
+
+          </div>
+
+          <h3>
+
+            Writer Name
+
+          </h3>
+
+          <div class="person-handle">
+
+            @writer
+
+          </div>
+
+          <p>
+
+            Writes strange little stories
+            about complicated people.
+
+          </p>
+
+          <span class="person-role">
+
+            Writer
+
+          </span>
+
+        </article>
+
+
+        <article class="person-card">
+
+          <div class="person-avatar">
+
+            B
+
+          </div>
+
+          <h3>
+
+            Book Person
+
+          </h3>
+
+          <div class="person-handle">
+
+            @bookgremlin
+
+          </div>
+
+          <p>
+
+            Reads horror at 2 a.m.
+            and regrets absolutely nothing.
+
+          </p>
+
+          <span class="person-role">
+
+            Reader
+
+          </span>
+
+        </article>
+
+
+        <article class="person-card">
+
+          <div class="person-avatar">
+
+            A
+
+          </div>
+
+          <h3>
+
+            Agent Name
+
+          </h3>
+
+          <div class="person-handle">
+
+            @agent
+
+          </div>
+
+          <p>
+
+            Looking for books
+            people cannot stop talking about.
+
+          </p>
+
+          <span class="person-role">
+
+            Agent
+
+          </span>
+
+        </article>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         WANDER
+         ================================================= -->
+
+    <section class="wander-card">
+
+      <div>
+
+        <div class="eyebrow">
+
+          DogEar Wander
+
+        </div>
+
+        <h2>
+
+          Stop choosing.
+
+        </h2>
+
+        <p>
+
+          Hit Wander and DogEar will eventually send you
+          somewhere interesting: a book, a club, a reader,
+          a writer, or something you probably would not
+          have searched for yourself.
+
+        </p>
+
+      </div>
+
+      <button
+        class="wander-button"
+        id="wanderButton"
+        type="button"
+      >
+        Wander
+      </button>
+
+    </section>
+
+
+  </main>
+
+
+  <!-- =====================================================
+       MOBILE NAV
+       ===================================================== -->
+
+  <nav class="mobile-nav">
+
+    <a href="dashboard.html">
+
+      <span>⌂</span>
+
+      Home
+
+    </a>
+
+    <a href="discover.html">
+
+      <span>⌕</span>
+
+      Discover
+
+    </a>
+
+    <a href="clubs.html">
+
+      <span>◉</span>
+
+      Clubs
+
+    </a>
+
+    <a href="profile.html">
+
+      <span>☺</span>
+
+      Profile
+
+    </a>
+
+  </nav>
+
+
+  <!-- =====================================================
+       SUPABASE
+       ===================================================== -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
+
+
+  <script>
+
+    /* =====================================================
+       SUPABASE CONNECTION
+       ===================================================== */
+
+    const SUPABASE_URL =
+      "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+
+    /* =====================================================
+       ELEMENTS
+       ===================================================== */
+
+    const loadingScreen =
+      document.getElementById(
+        "loadingScreen"
+      );
+
+
+    const navAvatar =
+      document.getElementById(
+        "navAvatar"
+      );
+
+
+    const searchInput =
+      document.getElementById(
+        "searchInput"
+      );
+
+
+    const searchType =
+      document.getElementById(
+        "searchType"
+      );
+
+
+    const searchButton =
+      document.getElementById(
+        "searchButton"
+      );
+
+
+    const resultsBox =
+      document.getElementById(
+        "resultsBox"
+      );
+
+
+    const resultsTitle =
+      document.getElementById(
+        "resultsTitle"
+      );
+
+
+    const resultsSubtitle =
+      document.getElementById(
+        "resultsSubtitle"
+      );
+
+
+    const resultsContent =
+      document.getElementById(
+        "resultsContent"
+      );
+
+
+    const wanderButton =
+      document.getElementById(
+        "wanderButton"
+      );
+
+
+    let currentUser =
+      null;
+
+
+    /* =====================================================
+       AVATAR
+       ===================================================== */
+
+    function setAvatar(
+      container,
+      avatarUrl,
+      displayName
+    ) {
+
+      container.innerHTML =
+        "";
+
+
+      if (avatarUrl) {
+
+        const image =
+          document.createElement(
+            "img"
+          );
+
+
+        image.src =
+          avatarUrl;
+
+
+        image.alt =
+          displayName ||
+          "Profile image";
+
+
+        image.onerror =
+          function () {
+
+            container.innerHTML =
+              "";
+
+
+            container.textContent =
+              displayName
+                ? displayName
+                    .charAt(0)
+                    .toUpperCase()
+                : "?";
+
+          };
+
+
+        container.appendChild(
+          image
+        );
+
+      }
+
+      else {
+
+        container.textContent =
+          displayName
+            ? displayName
+                .charAt(0)
+                .toUpperCase()
+            : "?";
+
+      }
+
+    }
+
+
+    /* =====================================================
+       LOAD USER
+       ===================================================== */
+
+    async function loadDiscover() {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .auth
+          .getUser();
+
+
+      if (
+        error ||
+        !data.user
+      ) {
+
+        window.location.href =
+          "auth.html#login";
+
+        return;
+
+      }
+
+
+      currentUser =
+        data.user;
+
+
+      await loadProfile();
+
+
+      loadingScreen.classList.add(
+        "hidden"
+      );
+
+    }
+
+
+    /* =====================================================
+       LOAD PROFILE
+       ===================================================== */
+
+    async function loadProfile() {
+
+      let displayName =
+        currentUser
+          ?.user_metadata
+          ?.display_name ||
+        "Reader";
+
+
+      let avatarUrl =
+        "";
+
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .rpc(
+              "get_public_profile",
+              {
+                check_user_id:
+                  currentUser.id
+              }
+            );
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+
+        let profile =
+          null;
+
+
+        if (
+          Array.isArray(data)
+        ) {
+
+          profile =
+            data[0];
+
+        }
+
+        else {
+
+          profile =
+            data;
+
+        }
+
+
+        if (profile) {
+
+          displayName =
+            profile.display_name ||
+            displayName;
+
+
+          avatarUrl =
+            profile.avatar_url ||
+            "";
+
+        }
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Profile loading error:",
+          error
+        );
+
+      }
+
+
+      setAvatar(
+        navAvatar,
+        avatarUrl,
+        displayName
+      );
+
+    }
+
+
+    /* =====================================================
+       SEARCH
+       ===================================================== */
+
+    function runSearch() {
+
+      const query =
+        searchInput
+          .value
+          .trim();
+
+
+      const type =
+        searchType.value;
+
+
+      if (!query) {
+
+        resultsBox.classList.remove(
+          "show"
+        );
+
+        return;
+
+      }
+
+
+      resultsTitle.textContent =
+        'Results for "' +
+        query +
+        '"';
+
+
+      if (type === "books") {
+
+        resultsSubtitle.textContent =
+          "Searching books.";
+
+      }
+
+      else if (type === "clubs") {
+
+        resultsSubtitle.textContent =
+          "Searching DogEar clubs.";
+
+      }
+
+      else if (type === "people") {
+
+        resultsSubtitle.textContent =
+          "Searching readers and writers.";
+
+      }
+
+      else {
+
+        resultsSubtitle.textContent =
+          "Searching across DogEar.";
+
+      }
+
+
+      resultsContent.innerHTML =
+        `
+          <p class="placeholder-result">
+            The Discover page is ready for search.
+            Next we can connect this box to Google Books
+            for book results and to Supabase for DogEar
+            clubs and people.
+          </p>
+        `;
+
+
+      resultsBox.classList.add(
+        "show"
+      );
+
+
+      resultsBox.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    }
+
+
+    searchButton.addEventListener(
+      "click",
+      runSearch
+    );
+
+
+    searchInput.addEventListener(
+      "keydown",
+      function (event) {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          runSearch();
+
+        }
+
+      }
+    );
+
+
+    /* =====================================================
+       FILTER CHIPS
+       ===================================================== */
+
+    const filterChips =
+      document.querySelectorAll(
+        ".filter-chip"
+      );
+
+
+    filterChips.forEach(
+      function (chip) {
+
+        chip.addEventListener(
+          "click",
+          function () {
+
+            filterChips.forEach(
+              function (otherChip) {
+
+                otherChip.classList.remove(
+                  "active"
+                );
+
+              }
+            );
+
+
+            chip.classList.add(
+              "active"
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+    /* =====================================================
+       WANDER
+       ===================================================== */
+
+    wanderButton.addEventListener(
+      "click",
+      function () {
+
+        const destinations = [
+
+          "clubs.html",
+
+          "marketplace.html",
+
+          "discover.html#books",
+
+          "discover.html#clubs"
+
+        ];
+
+
+        const randomDestination =
+          destinations[
+            Math.floor(
+              Math.random() *
+              destinations.length
+            )
+          ];
+
+
+        window.location.href =
+          randomDestination;
+
+      }
+    );
+
+
+    /* =====================================================
+       START
+       ===================================================== */
+
+    loadDiscover();
+
+  </script>
+
+</body>
+</html>
