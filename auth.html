@@ -1,0 +1,2165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <meta
+    name="description"
+    content="Join DogEar — where books find their people."
+  />
+
+  <title>DogEar — Sign In or Join</title>
+
+  <style>
+    :root {
+      --ink: #090b0a;
+      --cream: #f1e7cf;
+      --gold: #c79b59;
+      --gold-soft: #dfbd7e;
+      --muted: #b7ad98;
+      --line: rgba(199, 155, 89, 0.24);
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.44);
+      --radius: 24px;
+      --error: #e9a09a;
+      --success: #b9d6b2;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--cream);
+
+      background:
+        radial-gradient(
+          circle at 12% 10%,
+          rgba(70, 92, 69, 0.24),
+          transparent 36%
+        ),
+        radial-gradient(
+          circle at 88% 10%,
+          rgba(199, 155, 89, 0.11),
+          transparent 30%
+        ),
+        var(--ink);
+
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .shell {
+      min-height: 100vh;
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(340px, 0.9fr)
+        minmax(440px, 1.1fr);
+    }
+
+    .story {
+      min-height: 100vh;
+
+      padding:
+        42px
+        clamp(28px, 5vw, 72px);
+
+      border-right: 1px solid var(--line);
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      background:
+        linear-gradient(
+          rgba(9, 11, 10, 0.22),
+          rgba(9, 11, 10, 0.68)
+        ),
+        radial-gradient(
+          circle at 20% 22%,
+          rgba(51, 70, 56, 0.52),
+          transparent 42%
+        ),
+        #111611;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+
+      width: fit-content;
+
+      text-decoration: none;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.18em;
+
+      font-size: 13px;
+
+      color: var(--gold-soft);
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+
+      border:
+        1px
+        solid
+        var(--gold);
+
+      border-radius:
+        50%
+        50%
+        50%
+        12%;
+
+      transform:
+        rotate(-8deg);
+
+      position: relative;
+
+      flex: 0 0 auto;
+    }
+
+    .brand-mark::after {
+      content: "";
+
+      position: absolute;
+
+      width: 11px;
+      height: 11px;
+
+      right: 2px;
+      top: 2px;
+
+      border-left:
+        1px
+        solid
+        var(--gold);
+
+      border-bottom:
+        1px
+        solid
+        var(--gold);
+
+      background: #111611;
+    }
+
+    .story-copy {
+      max-width: 540px;
+
+      margin:
+        70px
+        0;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 11px;
+
+      letter-spacing: 0.22em;
+
+      text-transform: uppercase;
+
+      margin-bottom: 18px;
+    }
+
+    h1,
+    h2,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 520px;
+
+      margin-bottom: 24px;
+
+      font-weight: 400;
+
+      font-size:
+        clamp(
+          48px,
+          6vw,
+          84px
+        );
+
+      line-height: 0.96;
+
+      letter-spacing: -0.04em;
+    }
+
+    .story-copy p {
+      max-width: 485px;
+
+      color: #c7bdab;
+
+      font-size: 19px;
+
+      line-height: 1.7;
+    }
+
+    .quote {
+      color: #9f9788;
+
+      font-size: 14px;
+
+      line-height: 1.55;
+
+      max-width: 430px;
+    }
+
+    .auth-side {
+      min-height: 100vh;
+
+      display: grid;
+
+      place-items: center;
+
+      padding: 34px;
+    }
+
+    .auth-card {
+      width:
+        min(
+          100%,
+          520px
+        );
+
+      background:
+        rgba(
+          16,
+          20,
+          16,
+          0.84
+        );
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius:
+        var(--radius);
+
+      box-shadow:
+        var(--shadow);
+
+      overflow: hidden;
+
+      backdrop-filter:
+        blur(12px);
+    }
+
+    .tabs {
+      display: grid;
+
+      grid-template-columns:
+        1fr
+        1fr;
+
+      border-bottom:
+        1px
+        solid
+        var(--line);
+    }
+
+    .tab {
+      appearance: none;
+
+      border: 0;
+
+      background: transparent;
+
+      color: #9f9788;
+
+      padding:
+        20px
+        16px;
+
+      cursor: pointer;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.14em;
+
+      text-transform: uppercase;
+    }
+
+    .tab + .tab {
+      border-left:
+        1px
+        solid
+        var(--line);
+    }
+
+    .tab.active {
+      color: var(--gold-soft);
+
+      background:
+        rgba(
+          199,
+          155,
+          89,
+          0.06
+        );
+
+      box-shadow:
+        inset
+        0
+        -2px
+        0
+        var(--gold);
+    }
+
+    .panel {
+      display: none;
+
+      padding: 36px;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .panel h2 {
+      margin-bottom: 8px;
+
+      font-size: 36px;
+
+      line-height: 1.05;
+
+      font-weight: 400;
+    }
+
+    .subcopy {
+      color: var(--muted);
+
+      margin-bottom: 28px;
+
+      line-height: 1.55;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+
+      margin-bottom: 8px;
+
+      color: #d8cfbc;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.09em;
+
+      text-transform: uppercase;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    input {
+      width: 100%;
+
+      border:
+        1px
+        solid
+        rgba(
+          199,
+          155,
+          89,
+          0.23
+        );
+
+      border-radius: 12px;
+
+      padding:
+        14px
+        15px;
+
+      background: #0c100d;
+
+      color: var(--cream);
+
+      outline: none;
+    }
+
+    input:focus {
+      border-color:
+        var(--gold);
+
+      box-shadow:
+        0
+        0
+        0
+        3px
+        rgba(
+          199,
+          155,
+          89,
+          0.08
+        );
+    }
+
+    .password-input {
+      padding-right: 74px;
+    }
+
+    .show-password {
+      position: absolute;
+
+      right: 8px;
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      border: 0;
+
+      background: transparent;
+
+      color: var(--gold-soft);
+
+      cursor: pointer;
+
+      padding: 8px;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.08em;
+
+      text-transform: uppercase;
+    }
+
+    .row {
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 12px;
+
+      margin:
+        2px
+        0
+        22px;
+
+      color: #9f9788;
+
+      font-size: 13px;
+    }
+
+    .check {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 8px;
+    }
+
+    .check input {
+      width: 15px;
+      height: 15px;
+
+      accent-color:
+        var(--gold);
+    }
+
+    .text-link {
+      color:
+        var(--gold-soft);
+
+      text-decoration: none;
+    }
+
+    .text-link:hover {
+      text-decoration: underline;
+    }
+
+    .submit {
+      width: 100%;
+
+      min-height: 50px;
+
+      border:
+        1px
+        solid
+        var(--gold);
+
+      border-radius: 999px;
+
+      background:
+        var(--gold);
+
+      color: #17130e;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 11px;
+
+      font-weight: 800;
+
+      letter-spacing: 0.14em;
+
+      text-transform: uppercase;
+
+      cursor: pointer;
+    }
+
+    .submit:hover {
+      background:
+        var(--gold-soft);
+    }
+
+    .submit:disabled {
+      opacity: 0.55;
+
+      cursor: wait;
+    }
+
+    .fineprint {
+      margin:
+        18px
+        0
+        0;
+
+      color: #817b70;
+
+      font-size: 12px;
+
+      line-height: 1.5;
+
+      text-align: center;
+    }
+
+    .message {
+      display: none;
+
+      margin-bottom: 18px;
+
+      padding:
+        12px
+        14px;
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius: 10px;
+
+      color:
+        var(--gold-soft);
+
+      background:
+        rgba(
+          199,
+          155,
+          89,
+          0.06
+        );
+
+      font-size: 13px;
+
+      line-height: 1.5;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.error {
+      color:
+        var(--error);
+
+      border-color:
+        rgba(
+          233,
+          160,
+          154,
+          0.32
+        );
+
+      background:
+        rgba(
+          233,
+          160,
+          154,
+          0.07
+        );
+    }
+
+    .message.success {
+      color:
+        var(--success);
+
+      border-color:
+        rgba(
+          185,
+          214,
+          178,
+          0.32
+        );
+
+      background:
+        rgba(
+          185,
+          214,
+          178,
+          0.07
+        );
+    }
+
+    #resetPanel {
+      display: none;
+    }
+
+    #resetPanel.active {
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+      .shell {
+        grid-template-columns: 1fr;
+      }
+
+      .story {
+        min-height: auto;
+
+        padding:
+          28px
+          24px
+          38px;
+
+        border-right: 0;
+
+        border-bottom:
+          1px
+          solid
+          var(--line);
+      }
+
+      .story-copy {
+        margin:
+          52px
+          0
+          26px;
+      }
+
+      .story-copy p,
+      .quote {
+        display: none;
+      }
+
+      .auth-side {
+        min-height: auto;
+
+        padding:
+          30px
+          18px
+          50px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .panel {
+        padding:
+          28px
+          20px;
+      }
+
+      .panel h2 {
+        font-size: 31px;
+      }
+
+      .row {
+        align-items: flex-start;
+
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+
+<body>
+
+  <main class="shell">
+
+
+    <!-- LEFT SIDE -->
+
+    <section class="story">
+
+      <a
+        class="brand"
+        href="index.html"
+      >
+
+        <span class="brand-mark"></span>
+
+        DogEar
+
+      </a>
+
+
+      <div class="story-copy">
+
+        <div class="eyebrow">
+
+          Where books find their people
+
+        </div>
+
+
+        <h1>
+
+          Your next favorite book may start with a conversation.
+
+        </h1>
+
+
+        <p>
+
+          Join readers, writers, book clubs, agents, editors,
+          and publishing people in one cozy corner of the internet
+          built around books.
+
+        </p>
+
+      </div>
+
+
+      <p class="quote">
+
+        Find a club. Cast a vote. Debate an ending.
+        Discover something strange.
+        Dog-ear the pages worth coming back to.
+
+      </p>
+
+    </section>
+
+
+
+    <!-- RIGHT SIDE -->
+
+    <section class="auth-side">
+
+      <div class="auth-card">
+
+
+        <!-- NORMAL LOGIN / SIGNUP TABS -->
+
+        <div
+          class="tabs"
+          id="normalTabs"
+        >
+
+          <button
+            class="tab active"
+            id="loginTab"
+            type="button"
+          >
+
+            Log In
+
+          </button>
+
+
+          <button
+            class="tab"
+            id="signupTab"
+            type="button"
+          >
+
+            Join DogEar
+
+          </button>
+
+        </div>
+
+
+
+        <!-- LOGIN -->
+
+        <section
+          class="panel active"
+          id="loginPanel"
+        >
+
+          <h2>
+
+            Welcome back.
+
+          </h2>
+
+
+          <p class="subcopy">
+
+            Pick up where you left off.
+
+          </p>
+
+
+          <div
+            class="message"
+            id="loginMessage"
+          ></div>
+
+
+          <form id="loginForm">
+
+
+            <div class="field">
+
+              <label for="loginEmail">
+
+                Email
+
+              </label>
+
+
+              <input
+                id="loginEmail"
+                type="email"
+                autocomplete="email"
+                placeholder="you@example.com"
+                required
+              />
+
+            </div>
+
+
+
+            <div class="field">
+
+              <label for="loginPassword">
+
+                Password
+
+              </label>
+
+
+              <div class="input-wrap">
+
+                <input
+                  class="password-input"
+                  id="loginPassword"
+                  type="password"
+                  autocomplete="current-password"
+                  placeholder="Your password"
+                  required
+                />
+
+
+                <button
+                  class="show-password"
+                  type="button"
+                  data-target="loginPassword"
+                >
+
+                  Show
+
+                </button>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="row">
+
+              <span></span>
+
+
+              <a
+                class="text-link"
+                href="#"
+                id="forgotPassword"
+              >
+
+                Forgot password?
+
+              </a>
+
+            </div>
+
+
+
+            <button
+              class="submit"
+              id="loginButton"
+              type="submit"
+            >
+
+              Log In
+
+            </button>
+
+          </form>
+
+        </section>
+
+
+
+        <!-- SIGNUP -->
+
+        <section
+          class="panel"
+          id="signupPanel"
+        >
+
+          <h2>
+
+            Make yourself at home.
+
+          </h2>
+
+
+          <p class="subcopy">
+
+            Create your DogEar account.
+            You can build your profile next.
+
+          </p>
+
+
+          <div
+            class="message"
+            id="signupMessage"
+          ></div>
+
+
+          <form id="signupForm">
+
+
+            <div class="field">
+
+              <label for="signupName">
+
+                Display name
+
+              </label>
+
+
+              <input
+                id="signupName"
+                type="text"
+                autocomplete="name"
+                placeholder="What should DogEar call you?"
+                maxlength="80"
+                required
+              />
+
+            </div>
+
+
+
+            <div class="field">
+
+              <label for="signupEmail">
+
+                Email
+
+              </label>
+
+
+              <input
+                id="signupEmail"
+                type="email"
+                autocomplete="email"
+                placeholder="you@example.com"
+                required
+              />
+
+            </div>
+
+
+
+            <div class="field">
+
+              <label for="signupPassword">
+
+                Password
+
+              </label>
+
+
+              <div class="input-wrap">
+
+                <input
+                  class="password-input"
+                  id="signupPassword"
+                  type="password"
+                  autocomplete="new-password"
+                  minlength="8"
+                  placeholder="At least 8 characters"
+                  required
+                />
+
+
+                <button
+                  class="show-password"
+                  type="button"
+                  data-target="signupPassword"
+                >
+
+                  Show
+
+                </button>
+
+              </div>
+
+            </div>
+
+
+
+            <button
+              class="submit"
+              id="signupButton"
+              type="submit"
+            >
+
+              Create Account
+
+            </button>
+
+
+            <p class="fineprint">
+
+              By creating an account, you agree to DogEar's
+              Terms and Community Guidelines.
+
+            </p>
+
+          </form>
+
+        </section>
+
+
+
+        <!-- PASSWORD RESET -->
+
+        <section
+          class="panel"
+          id="resetPanel"
+        >
+
+          <h2>
+
+            Choose a new password.
+
+          </h2>
+
+
+          <p class="subcopy">
+
+            Enter the new password you want to use for DogEar.
+
+          </p>
+
+
+          <div
+            class="message"
+            id="resetMessage"
+          ></div>
+
+
+          <form id="resetForm">
+
+
+            <div class="field">
+
+              <label for="newPassword">
+
+                New Password
+
+              </label>
+
+
+              <div class="input-wrap">
+
+                <input
+                  class="password-input"
+                  id="newPassword"
+                  type="password"
+                  autocomplete="new-password"
+                  minlength="8"
+                  placeholder="At least 8 characters"
+                  required
+                />
+
+
+                <button
+                  class="show-password"
+                  type="button"
+                  data-target="newPassword"
+                >
+
+                  Show
+
+                </button>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="field">
+
+              <label for="confirmPassword">
+
+                Confirm New Password
+
+              </label>
+
+
+              <div class="input-wrap">
+
+                <input
+                  class="password-input"
+                  id="confirmPassword"
+                  type="password"
+                  autocomplete="new-password"
+                  minlength="8"
+                  placeholder="Type it again"
+                  required
+                />
+
+
+                <button
+                  class="show-password"
+                  type="button"
+                  data-target="confirmPassword"
+                >
+
+                  Show
+
+                </button>
+
+              </div>
+
+            </div>
+
+
+
+            <button
+              class="submit"
+              id="resetButton"
+              type="submit"
+            >
+
+              Update Password
+
+            </button>
+
+          </form>
+
+        </section>
+
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+  <!-- SUPABASE JAVASCRIPT LIBRARY -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+
+  <script>
+
+    /* ========================================================
+       DOGEAR SUPABASE CONNECTION
+       ======================================================== */
+
+
+    const SUPABASE_URL =
+      "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+
+
+    /* ========================================================
+       PAGE ELEMENTS
+       ======================================================== */
+
+
+    const loginTab =
+      document.getElementById(
+        "loginTab"
+      );
+
+
+    const signupTab =
+      document.getElementById(
+        "signupTab"
+      );
+
+
+    const loginPanel =
+      document.getElementById(
+        "loginPanel"
+      );
+
+
+    const signupPanel =
+      document.getElementById(
+        "signupPanel"
+      );
+
+
+    const resetPanel =
+      document.getElementById(
+        "resetPanel"
+      );
+
+
+    const normalTabs =
+      document.getElementById(
+        "normalTabs"
+      );
+
+
+
+    /* ========================================================
+       MESSAGE HELPER
+       ======================================================== */
+
+
+    function showMessage(
+      element,
+      text,
+      type = ""
+    ) {
+
+      element.textContent =
+        text;
+
+
+      element.className =
+        "message show";
+
+
+      if (type) {
+
+        element.classList.add(
+          type
+        );
+
+      }
+
+    }
+
+
+
+    function clearMessage(
+      element
+    ) {
+
+      element.textContent =
+        "";
+
+
+      element.className =
+        "message";
+
+    }
+
+
+
+    /* ========================================================
+       LOGIN / SIGNUP TABS
+       ======================================================== */
+
+
+    function showPanel(
+      which
+    ) {
+
+      const login =
+        which === "login";
+
+
+      loginTab.classList.toggle(
+        "active",
+        login
+      );
+
+
+      signupTab.classList.toggle(
+        "active",
+        !login
+      );
+
+
+      loginPanel.classList.toggle(
+        "active",
+        login
+      );
+
+
+      signupPanel.classList.toggle(
+        "active",
+        !login
+      );
+
+
+      resetPanel.classList.remove(
+        "active"
+      );
+
+
+      normalTabs.style.display =
+        "grid";
+
+
+      history.replaceState(
+        null,
+        "",
+        login
+          ? "#login"
+          : "#signup"
+      );
+
+    }
+
+
+
+    loginTab.addEventListener(
+      "click",
+      function () {
+
+        showPanel(
+          "login"
+        );
+
+      }
+    );
+
+
+
+    signupTab.addEventListener(
+      "click",
+      function () {
+
+        showPanel(
+          "signup"
+        );
+
+      }
+    );
+
+
+
+    if (
+      window.location.hash ===
+      "#signup"
+    ) {
+
+      showPanel(
+        "signup"
+      );
+
+    }
+
+
+
+    /* ========================================================
+       SHOW / HIDE PASSWORD
+       ======================================================== */
+
+
+    document
+      .querySelectorAll(
+        ".show-password"
+      )
+      .forEach(
+        function (button) {
+
+          button.addEventListener(
+            "click",
+            function () {
+
+              const input =
+                document.getElementById(
+                  button.dataset.target
+                );
+
+
+              const showing =
+                input.type ===
+                "text";
+
+
+              input.type =
+                showing
+                  ? "password"
+                  : "text";
+
+
+              button.textContent =
+                showing
+                  ? "Show"
+                  : "Hide";
+
+            }
+          );
+
+        }
+      );
+
+
+
+    /* ========================================================
+       CREATE ACCOUNT
+       ======================================================== */
+
+
+    document
+      .getElementById(
+        "signupForm"
+      )
+      .addEventListener(
+        "submit",
+        async function (event) {
+
+          event.preventDefault();
+
+
+          const signupMessage =
+            document.getElementById(
+              "signupMessage"
+            );
+
+
+          const signupButton =
+            document.getElementById(
+              "signupButton"
+            );
+
+
+          clearMessage(
+            signupMessage
+          );
+
+
+          const displayName =
+            document
+              .getElementById(
+                "signupName"
+              )
+              .value
+              .trim();
+
+
+          const email =
+            document
+              .getElementById(
+                "signupEmail"
+              )
+              .value
+              .trim();
+
+
+          const password =
+            document
+              .getElementById(
+                "signupPassword"
+              )
+              .value;
+
+
+          if (
+            displayName.length < 1
+          ) {
+
+            showMessage(
+              signupMessage,
+              "Please enter a display name.",
+              "error"
+            );
+
+            return;
+
+          }
+
+
+          signupButton.disabled =
+            true;
+
+
+          signupButton.textContent =
+            "Creating Account...";
+
+
+          try {
+
+            const redirectURL =
+              new URL(
+                "auth.html",
+                window.location.href
+              ).href;
+
+
+            const {
+              data,
+              error
+            } =
+              await supabaseClient
+                .auth
+                .signUp({
+
+                  email:
+                    email,
+
+                  password:
+                    password,
+
+                  options: {
+
+                    data: {
+
+                      display_name:
+                        displayName
+
+                    },
+
+                    emailRedirectTo:
+                      redirectURL
+
+                  }
+
+                });
+
+
+            if (error) {
+
+              throw error;
+
+            }
+
+
+            if (
+              data.session
+            ) {
+
+              showMessage(
+                signupMessage,
+                "Your DogEar account was created successfully.",
+                "success"
+              );
+
+
+              setTimeout(
+                function () {
+
+                  window.location.href =
+                    "index.html";
+
+                },
+                1200
+              );
+
+            }
+
+            else {
+
+              showMessage(
+                signupMessage,
+                "Your account was created. Check your email to confirm your DogEar account.",
+                "success"
+              );
+
+            }
+
+          }
+
+          catch (error) {
+
+            console.error(
+              error
+            );
+
+
+            showMessage(
+              signupMessage,
+              error.message ||
+                "DogEar couldn't create your account. Please try again.",
+              "error"
+            );
+
+          }
+
+          finally {
+
+            signupButton.disabled =
+              false;
+
+
+            signupButton.textContent =
+              "Create Account";
+
+          }
+
+        }
+      );
+
+
+
+    /* ========================================================
+       LOGIN
+       ======================================================== */
+
+
+    document
+      .getElementById(
+        "loginForm"
+      )
+      .addEventListener(
+        "submit",
+        async function (event) {
+
+          event.preventDefault();
+
+
+          const loginMessage =
+            document.getElementById(
+              "loginMessage"
+            );
+
+
+          const loginButton =
+            document.getElementById(
+              "loginButton"
+            );
+
+
+          clearMessage(
+            loginMessage
+          );
+
+
+          const email =
+            document
+              .getElementById(
+                "loginEmail"
+              )
+              .value
+              .trim();
+
+
+          const password =
+            document
+              .getElementById(
+                "loginPassword"
+              )
+              .value;
+
+
+          loginButton.disabled =
+            true;
+
+
+          loginButton.textContent =
+            "Logging In...";
+
+
+          try {
+
+            const {
+              data,
+              error
+            } =
+              await supabaseClient
+                .auth
+                .signInWithPassword({
+
+                  email:
+                    email,
+
+                  password:
+                    password
+
+                });
+
+
+            if (error) {
+
+              throw error;
+
+            }
+
+
+            if (
+              !data.user
+            ) {
+
+              throw new Error(
+                "DogEar could not log you in."
+              );
+
+            }
+
+
+            showMessage(
+              loginMessage,
+              "Welcome back! Loading DogEar...",
+              "success"
+            );
+
+
+            setTimeout(
+              function () {
+
+                window.location.href =
+                  "index.html";
+
+              },
+              700
+            );
+
+          }
+
+          catch (error) {
+
+            console.error(
+              error
+            );
+
+
+            showMessage(
+              loginMessage,
+              error.message ||
+                "DogEar couldn't log you in. Check your email and password.",
+              "error"
+            );
+
+          }
+
+          finally {
+
+            loginButton.disabled =
+              false;
+
+
+            loginButton.textContent =
+              "Log In";
+
+          }
+
+        }
+      );
+
+
+
+    /* ========================================================
+       FORGOT PASSWORD
+       ======================================================== */
+
+
+    document
+      .getElementById(
+        "forgotPassword"
+      )
+      .addEventListener(
+        "click",
+        async function (event) {
+
+          event.preventDefault();
+
+
+          const loginMessage =
+            document.getElementById(
+              "loginMessage"
+            );
+
+
+          clearMessage(
+            loginMessage
+          );
+
+
+          const email =
+            document
+              .getElementById(
+                "loginEmail"
+              )
+              .value
+              .trim();
+
+
+          if (
+            !email
+          ) {
+
+            showMessage(
+              loginMessage,
+              "Enter your email address above first, then click Forgot password.",
+              "error"
+            );
+
+            return;
+
+          }
+
+
+          try {
+
+            const resetURL =
+              new URL(
+                "auth.html",
+                window.location.href
+              ).href;
+
+
+            const {
+              error
+            } =
+              await supabaseClient
+                .auth
+                .resetPasswordForEmail(
+
+                  email,
+
+                  {
+
+                    redirectTo:
+                      resetURL
+
+                  }
+
+                );
+
+
+            if (error) {
+
+              throw error;
+
+            }
+
+
+            showMessage(
+              loginMessage,
+              "Password reset email sent. Check your inbox for the reset link.",
+              "success"
+            );
+
+          }
+
+          catch (error) {
+
+            console.error(
+              error
+            );
+
+
+            showMessage(
+              loginMessage,
+              error.message ||
+                "DogEar couldn't send the password reset email.",
+              "error"
+            );
+
+          }
+
+        }
+      );
+
+
+
+    /* ========================================================
+       PASSWORD RECOVERY SCREEN
+       ======================================================== */
+
+
+    function showResetPanel() {
+
+      normalTabs.style.display =
+        "none";
+
+
+      loginPanel.classList.remove(
+        "active"
+      );
+
+
+      signupPanel.classList.remove(
+        "active"
+      );
+
+
+      resetPanel.classList.add(
+        "active"
+      );
+
+    }
+
+
+
+    supabaseClient
+      .auth
+      .onAuthStateChange(
+
+        function (
+          event,
+          session
+        ) {
+
+          if (
+            event ===
+            "PASSWORD_RECOVERY"
+          ) {
+
+            showResetPanel();
+
+          }
+
+        }
+
+      );
+
+
+
+    /* ========================================================
+       SAVE NEW PASSWORD
+       ======================================================== */
+
+
+    document
+      .getElementById(
+        "resetForm"
+      )
+      .addEventListener(
+        "submit",
+        async function (event) {
+
+          event.preventDefault();
+
+
+          const resetMessage =
+            document.getElementById(
+              "resetMessage"
+            );
+
+
+          const resetButton =
+            document.getElementById(
+              "resetButton"
+            );
+
+
+          clearMessage(
+            resetMessage
+          );
+
+
+          const newPassword =
+            document
+              .getElementById(
+                "newPassword"
+              )
+              .value;
+
+
+          const confirmPassword =
+            document
+              .getElementById(
+                "confirmPassword"
+              )
+              .value;
+
+
+          if (
+            newPassword !==
+            confirmPassword
+          ) {
+
+            showMessage(
+              resetMessage,
+              "Those passwords do not match.",
+              "error"
+            );
+
+            return;
+
+          }
+
+
+          if (
+            newPassword.length < 8
+          ) {
+
+            showMessage(
+              resetMessage,
+              "Your password must contain at least 8 characters.",
+              "error"
+            );
+
+            return;
+
+          }
+
+
+          resetButton.disabled =
+            true;
+
+
+          resetButton.textContent =
+            "Updating...";
+
+
+          try {
+
+            const {
+              error
+            } =
+              await supabaseClient
+                .auth
+                .updateUser({
+
+                  password:
+                    newPassword
+
+                });
+
+
+            if (error) {
+
+              throw error;
+
+            }
+
+
+            showMessage(
+              resetMessage,
+              "Password updated successfully. Taking you back to DogEar...",
+              "success"
+            );
+
+
+            setTimeout(
+              function () {
+
+                window.location.href =
+                  "index.html";
+
+              },
+              1200
+            );
+
+          }
+
+          catch (error) {
+
+            console.error(
+              error
+            );
+
+
+            showMessage(
+              resetMessage,
+              error.message ||
+                "DogEar couldn't update your password.",
+              "error"
+            );
+
+          }
+
+          finally {
+
+            resetButton.disabled =
+              false;
+
+
+            resetButton.textContent =
+              "Update Password";
+
+          }
+
+        }
+      );
+
+
+  </script>
+
+
+</body>
+</html>
