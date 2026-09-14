@@ -1,0 +1,2014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DogEar — Discussion</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --ink:#090b0a;
+  --panel:#101410;
+  --panel2:#0d110e;
+  --cream:#f1e7cf;
+  --gold:#c79b59;
+  --gold2:#dfbd7e;
+  --green:#26362b;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.22);
+  --line-soft:rgba(199,155,89,.11);
+  --danger:#e6a09a;
+  --ok:#b9d6b2;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--cream);
+
+  background:
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(53,73,59,.24),
+      transparent 28%
+    ),
+    var(--ink);
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+}
+
+a{
+  color:inherit;
+}
+
+/* =========================================================
+   TOP NAV
+========================================================= */
+
+.topbar{
+  min-height:76px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:24px;
+
+  padding:
+    0
+    clamp(18px,4vw,60px);
+
+  border-bottom:
+    1px solid var(--line);
+
+  background:
+    rgba(9,11,10,.94);
+
+  position:sticky;
+  top:0;
+
+  z-index:20;
+
+  backdrop-filter:
+    blur(14px);
+}
+
+.brand{
+  display:flex;
+  gap:11px;
+  align-items:center;
+
+  text-decoration:none;
+
+  color:var(--gold2);
+
+  font:
+    800 13px Arial;
+
+  letter-spacing:.17em;
+
+  text-transform:
+    uppercase;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+
+  border:
+    1px solid var(--gold);
+
+  border-radius:
+    50% 50% 50% 12%;
+
+  transform:
+    rotate(-8deg);
+}
+
+.nav{
+  display:flex;
+  gap:24px;
+
+  font:
+    700 11px Arial;
+
+  letter-spacing:.1em;
+
+  text-transform:
+    uppercase;
+}
+
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.nav a:hover,
+.nav .active{
+  color:var(--gold2);
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:50%;
+
+  display:grid;
+  place-items:center;
+
+  background:
+    var(--green);
+
+  text-decoration:none;
+
+  font:
+    800 13px Arial;
+
+  overflow:hidden;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.page{
+  width:
+    min(
+      1050px,
+      calc(100% - 32px)
+    );
+
+  margin:auto;
+
+  padding:
+    36px 0 110px;
+}
+
+.back-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:18px;
+
+  margin-bottom:26px;
+}
+
+.back{
+  color:var(--gold2);
+
+  text-decoration:none;
+
+  font:
+    800 10px Arial;
+
+  letter-spacing:.1em;
+
+  text-transform:
+    uppercase;
+}
+
+.back:hover{
+  text-decoration:underline;
+}
+
+.club-link{
+  color:var(--muted);
+
+  text-decoration:none;
+
+  font:
+    700 10px Arial;
+
+  letter-spacing:.08em;
+
+  text-transform:
+    uppercase;
+}
+
+.club-link:hover{
+  color:var(--gold2);
+}
+
+/* =========================================================
+   DISCUSSION HEADER
+========================================================= */
+
+.discussion-header{
+  padding-bottom:28px;
+
+  margin-bottom:26px;
+
+  border-bottom:
+    1px solid var(--line);
+}
+
+.eyebrow{
+  color:var(--gold);
+
+  font:
+    800 10px Arial;
+
+  letter-spacing:.18em;
+
+  text-transform:
+    uppercase;
+
+  margin-bottom:12px;
+}
+
+h1{
+  margin:0;
+
+  max-width:900px;
+
+  font-size:
+    clamp(38px,6vw,68px);
+
+  font-weight:400;
+
+  line-height:1;
+
+  letter-spacing:-.035em;
+}
+
+.discussion-meta{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  flex-wrap:wrap;
+
+  margin-top:18px;
+
+  color:var(--muted);
+
+  font:
+    12px/1.5 Arial;
+}
+
+.meta-dot{
+  width:3px;
+  height:3px;
+
+  border-radius:50%;
+
+  background:
+    var(--gold);
+}
+
+/* =========================================================
+   POSTS
+========================================================= */
+
+.thread{
+  display:flex;
+  flex-direction:column;
+
+  gap:16px;
+}
+
+.post{
+  display:grid;
+
+  grid-template-columns:
+    170px minmax(0,1fr);
+
+  border:
+    1px solid var(--line);
+
+  border-radius:20px;
+
+  overflow:hidden;
+
+  background:
+    rgba(16,20,16,.88);
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.20);
+}
+
+.post.original{
+  border-color:
+    rgba(199,155,89,.38);
+}
+
+.author-column{
+  padding:22px 18px;
+
+  border-right:
+    1px solid var(--line-soft);
+
+  background:
+    rgba(38,54,43,.22);
+}
+
+.author-avatar{
+  width:58px;
+  height:58px;
+
+  border-radius:50%;
+
+  border:
+    1px solid var(--line);
+
+  display:grid;
+  place-items:center;
+
+  overflow:hidden;
+
+  background:
+    var(--green);
+
+  color:var(--gold2);
+
+  font:
+    800 18px Arial;
+
+  margin-bottom:12px;
+}
+
+.author-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.author-name{
+  font-size:17px;
+
+  margin-bottom:5px;
+
+  overflow-wrap:anywhere;
+}
+
+.author-role{
+  color:var(--gold);
+
+  font:
+    800 9px Arial;
+
+  letter-spacing:.09em;
+
+  text-transform:
+    uppercase;
+
+  margin-bottom:7px;
+}
+
+.author-detail{
+  color:var(--muted);
+
+  font:
+    10px/1.5 Arial;
+}
+
+.post-content{
+  min-width:0;
+
+  padding:22px 24px;
+}
+
+.post-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:16px;
+
+  margin-bottom:18px;
+}
+
+.post-date{
+  color:var(--muted);
+
+  font:
+    10px Arial;
+}
+
+.original-label{
+  padding:5px 8px;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:999px;
+
+  color:var(--gold2);
+
+  font:
+    800 8px Arial;
+
+  letter-spacing:.08em;
+
+  text-transform:
+    uppercase;
+}
+
+.post-body{
+  color:#e9dfc8;
+
+  font-size:17px;
+
+  line-height:1.75;
+
+  overflow-wrap:anywhere;
+}
+
+.post-body p{
+  margin:
+    0 0 1em;
+}
+
+.post-body p:last-child{
+  margin-bottom:0;
+}
+
+.post-actions{
+  display:flex;
+  align-items:center;
+
+  gap:14px;
+
+  margin-top:22px;
+
+  padding-top:15px;
+
+  border-top:
+    1px solid var(--line-soft);
+}
+
+.text-button{
+  border:0;
+  padding:0;
+
+  background:none;
+
+  color:var(--muted);
+
+  cursor:pointer;
+
+  font:
+    800 9px Arial;
+
+  letter-spacing:.08em;
+
+  text-transform:
+    uppercase;
+}
+
+.text-button:hover{
+  color:var(--gold2);
+}
+
+/* =========================================================
+   REPLY BOX
+========================================================= */
+
+.reply-card{
+  margin-top:24px;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:20px;
+
+  background:
+    rgba(16,20,16,.88);
+
+  overflow:hidden;
+}
+
+.reply-head{
+  padding:20px 22px;
+
+  border-bottom:
+    1px solid var(--line);
+}
+
+.reply-head h2{
+  margin:0;
+
+  font-size:25px;
+
+  font-weight:400;
+}
+
+.reply-head p{
+  margin:
+    6px 0 0;
+
+  color:var(--muted);
+
+  font:
+    11px/1.5 Arial;
+}
+
+.reply-form{
+  padding:22px;
+}
+
+.reply-form textarea{
+  width:100%;
+
+  min-height:170px;
+
+  padding:15px;
+
+  resize:vertical;
+
+  border:
+    1px solid rgba(199,155,89,.2);
+
+  border-radius:13px;
+
+  outline:none;
+
+  background:
+    var(--panel2);
+
+  color:var(--cream);
+
+  font:
+    14px/1.6 Arial;
+}
+
+.reply-form textarea:focus{
+  border-color:
+    var(--gold);
+}
+
+.reply-actions{
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:15px;
+
+  margin-top:14px;
+}
+
+.reply-note{
+  color:var(--muted);
+
+  font:
+    10px/1.5 Arial;
+}
+
+.btn{
+  min-height:44px;
+
+  padding:
+    0 19px;
+
+  border-radius:
+    999px;
+
+  cursor:pointer;
+
+  font:
+    800 10px Arial;
+
+  letter-spacing:.09em;
+
+  text-transform:
+    uppercase;
+}
+
+.primary{
+  border:
+    1px solid var(--gold);
+
+  background:
+    var(--gold);
+
+  color:#17130e;
+}
+
+.primary:hover{
+  background:
+    var(--gold2);
+}
+
+.btn:disabled{
+  opacity:.55;
+  cursor:wait;
+}
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+.message{
+  display:none;
+
+  margin-bottom:16px;
+
+  padding:
+    12px 14px;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:11px;
+
+  font:
+    12px/1.5 Arial;
+}
+
+.message.show{
+  display:block;
+}
+
+.message.error{
+  color:var(--danger);
+}
+
+.message.success{
+  color:var(--ok);
+}
+
+/* =========================================================
+   EMPTY / ERROR
+========================================================= */
+
+.state-card{
+  display:none;
+
+  padding:
+    60px 24px;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:20px;
+
+  background:
+    rgba(16,20,16,.88);
+
+  text-align:center;
+
+  color:var(--muted);
+
+  font:
+    13px/1.7 Arial;
+}
+
+.state-card.show{
+  display:block;
+}
+
+.state-card strong{
+  display:block;
+
+  margin-bottom:10px;
+
+  color:var(--cream);
+
+  font:
+    400 25px Georgia;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading{
+  position:fixed;
+
+  inset:0;
+
+  display:grid;
+  place-items:center;
+
+  background:
+    var(--ink);
+
+  z-index:100;
+}
+
+.loading.hidden{
+  display:none;
+}
+
+.loading span{
+  color:var(--gold2);
+
+  font:
+    800 10px Arial;
+
+  letter-spacing:.16em;
+
+  text-transform:
+    uppercase;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:720px){
+
+  .nav{
+    display:none;
+  }
+
+  .post{
+    grid-template-columns:1fr;
+  }
+
+  .author-column{
+    border-right:0;
+
+    border-bottom:
+      1px solid var(--line-soft);
+
+    display:grid;
+
+    grid-template-columns:
+      50px minmax(0,1fr);
+
+    gap:
+      0 12px;
+
+    align-items:center;
+  }
+
+  .author-avatar{
+    width:48px;
+    height:48px;
+
+    grid-row:
+      1 / span 3;
+
+    margin:0;
+  }
+
+  .author-name,
+  .author-role,
+  .author-detail{
+    grid-column:2;
+  }
+
+  .author-name{
+    align-self:end;
+  }
+
+  .author-role{
+    margin-bottom:2px;
+  }
+
+  .post-content{
+    padding:
+      20px 18px;
+  }
+
+  .reply-actions{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .reply-actions .btn{
+    width:100%;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div
+  class="loading"
+  id="loading">
+  <span>
+    Opening discussion...
+  </span>
+</div>
+
+<header class="topbar">
+
+  <a
+    class="brand"
+    href="dashboard.html">
+
+    <span class="brand-mark"></span>
+
+    DogEar
+  </a>
+
+  <nav class="nav">
+
+    <a href="dashboard.html">
+      Home
+    </a>
+
+    <a href="discover.html">
+      Discover
+    </a>
+
+    <a
+      class="active"
+      href="clubs.html">
+      Clubs
+    </a>
+
+    <a href="marketplace.html">
+      Books
+    </a>
+
+  </nav>
+
+  <a
+    class="avatar"
+    id="navAvatar"
+    href="profile.html">
+    ?
+  </a>
+
+</header>
+
+<main class="page">
+
+  <div class="back-row">
+
+    <a
+      class="back"
+      id="backLink"
+      href="club-discussions.html">
+      ← Discussions
+    </a>
+
+    <a
+      class="club-link"
+      id="clubLink"
+      href="club.html">
+      Club Overview
+    </a>
+
+  </div>
+
+  <section
+    class="discussion-header"
+    id="discussionHeader">
+
+    <div class="eyebrow">
+      Club Discussion
+    </div>
+
+    <h1 id="discussionTitle">
+      Discussion
+    </h1>
+
+    <div class="discussion-meta">
+
+      <span id="clubName">
+        Book Club
+      </span>
+
+      <span class="meta-dot"></span>
+
+      <span id="replyCount">
+        0 replies
+      </span>
+
+      <span class="meta-dot"></span>
+
+      <span id="discussionDate">
+      </span>
+
+    </div>
+
+  </section>
+
+  <div
+    class="state-card"
+    id="errorState">
+
+    <strong>
+      We couldn't open this discussion.
+    </strong>
+
+    The discussion may have been removed,
+    or the link may be incomplete.
+
+  </div>
+
+  <section
+    class="thread"
+    id="thread">
+  </section>
+
+  <section
+    class="reply-card"
+    id="replyCard">
+
+    <div class="reply-head">
+
+      <h2>
+        Join the Conversation
+      </h2>
+
+      <p>
+        Add your thoughts to the discussion.
+      </p>
+
+    </div>
+
+    <form
+      class="reply-form"
+      id="replyForm">
+
+      <div
+        class="message"
+        id="message">
+      </div>
+
+      <textarea
+        id="replyBody"
+        maxlength="5000"
+        required
+        placeholder="Write your reply…"></textarea>
+
+      <div class="reply-actions">
+
+        <div class="reply-note">
+          Be thoughtful, be weird, be kind.
+        </div>
+
+        <button
+          class="btn primary"
+          id="replyButton"
+          type="submit">
+          Post Reply
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+</main>
+
+<script>
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+/* =========================================================
+   PAGE STATE
+========================================================= */
+
+const $ =
+  id =>
+    document.getElementById(id);
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
+
+const discussionId =
+  params.get("id");
+
+const clubIdFromUrl =
+  params.get("club");
+
+let clubId =
+  clubIdFromUrl || null;
+
+let currentUser =
+  null;
+
+let discussion =
+  null;
+
+let profiles =
+  new Map();
+
+/* =========================================================
+   LINKS
+========================================================= */
+
+function updateLinks(){
+
+  if(clubId){
+
+    const encoded =
+      encodeURIComponent(
+        clubId
+      );
+
+    $("backLink").href =
+      "club-discussions.html?id=" +
+      encoded;
+
+    $("clubLink").href =
+      "club.html?id=" +
+      encoded;
+
+  }
+  else{
+
+    $("backLink").href =
+      "clubs.html";
+
+    $("clubLink").href =
+      "clubs.html";
+
+  }
+
+}
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(value=""){
+
+  return String(value)
+    .replace(
+      /[&<>"']/g,
+      character => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[character])
+    );
+
+}
+
+function formatBody(value=""){
+
+  const safe =
+    escapeHtml(value);
+
+  return safe
+    .split(/\n{2,}/)
+    .map(
+      paragraph =>
+        "<p>" +
+        paragraph
+          .replace(
+            /\n/g,
+            "<br>"
+          ) +
+        "</p>"
+    )
+    .join("");
+
+}
+
+function formatDate(value){
+
+  if(!value)
+    return "";
+
+  const date =
+    new Date(value);
+
+  if(
+    Number.isNaN(
+      date.getTime()
+    )
+  )
+    return "";
+
+  return date
+    .toLocaleString(
+      undefined,
+      {
+        month:"short",
+        day:"numeric",
+        year:"numeric",
+        hour:"numeric",
+        minute:"2-digit"
+      }
+    );
+
+}
+
+function initials(name="Reader"){
+
+  const pieces =
+    String(name)
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+  if(!pieces.length)
+    return "?";
+
+  if(pieces.length === 1)
+    return pieces[0]
+      .charAt(0)
+      .toUpperCase();
+
+  return (
+    pieces[0].charAt(0) +
+    pieces[
+      pieces.length - 1
+    ].charAt(0)
+  ).toUpperCase();
+
+}
+
+function showMessage(
+  text,
+  type=""
+){
+
+  $("message").textContent =
+    text;
+
+  $("message").className =
+    "message show " +
+    type;
+
+}
+
+function clearMessage(){
+
+  $("message").textContent =
+    "";
+
+  $("message").className =
+    "message";
+
+}
+
+function showError(){
+
+  $("discussionHeader").style.display =
+    "none";
+
+  $("thread").style.display =
+    "none";
+
+  $("replyCard").style.display =
+    "none";
+
+  $("errorState")
+    .classList
+    .add("show");
+
+}
+
+/* =========================================================
+   PROFILE LOOKUP
+========================================================= */
+
+async function getProfile(
+  userId
+){
+
+  if(!userId){
+
+    return {
+      display_name:
+        "Club Member",
+
+      avatar_url:
+        ""
+    };
+
+  }
+
+  if(
+    profiles.has(
+      userId
+    )
+  ){
+
+    return profiles.get(
+      userId
+    );
+
+  }
+
+  let profile = {
+
+    display_name:
+      "Club Member",
+
+    avatar_url:
+      ""
+
+  };
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "get_public_profile",
+          {
+            check_user_id:
+              userId
+          }
+        );
+
+    if(error)
+      throw error;
+
+    const row =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+    if(row){
+
+      profile = {
+
+        display_name:
+          row.display_name ||
+          "Club Member",
+
+        avatar_url:
+          row.avatar_url ||
+          ""
+
+      };
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Profile lookup:",
+      error.message
+    );
+
+  }
+
+  profiles.set(
+    userId,
+    profile
+  );
+
+  return profile;
+
+}
+
+/* =========================================================
+   NAV AVATAR
+========================================================= */
+
+async function loadNavAvatar(){
+
+  const profile =
+    await getProfile(
+      currentUser.id
+    );
+
+  const avatar =
+    $("navAvatar");
+
+  avatar.innerHTML =
+    "";
+
+  if(
+    profile.avatar_url
+  ){
+
+    const image =
+      document.createElement(
+        "img"
+      );
+
+    image.src =
+      profile.avatar_url;
+
+    image.alt =
+      profile.display_name;
+
+    image.onerror =
+      () => {
+
+        avatar.innerHTML =
+          "";
+
+        avatar.textContent =
+          initials(
+            profile.display_name
+          );
+
+      };
+
+    avatar.appendChild(
+      image
+    );
+
+  }
+  else{
+
+    avatar.textContent =
+      initials(
+        profile.display_name
+      );
+
+  }
+
+}
+
+/* =========================================================
+   CLUB
+========================================================= */
+
+async function loadClub(){
+
+  if(!clubId)
+    return;
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+
+        .from("clubs")
+
+        .select(
+          "id,name"
+        )
+
+        .eq(
+          "id",
+          clubId
+        )
+
+        .maybeSingle();
+
+    if(error)
+      throw error;
+
+    if(data){
+
+      $("clubName").textContent =
+        data.name ||
+        "Book Club";
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Club lookup:",
+      error.message
+    );
+
+  }
+
+}
+
+/* =========================================================
+   POST RENDERING
+========================================================= */
+
+async function createPost(
+  item,
+  options={}
+){
+
+  const profile =
+    await getProfile(
+      item.author_id
+    );
+
+  const post =
+    document.createElement(
+      "article"
+    );
+
+  post.className =
+    "post" +
+    (
+      options.original
+        ? " original"
+        : ""
+    );
+
+  const role =
+    options.original
+      ? "Discussion Starter"
+      : "Club Member";
+
+  const avatarHtml =
+    profile.avatar_url
+
+      ? `
+        <img
+          src="${escapeHtml(
+            profile.avatar_url
+          )}"
+          alt="${escapeHtml(
+            profile.display_name
+          )}">
+        `
+
+      : escapeHtml(
+          initials(
+            profile.display_name
+          )
+        );
+
+  post.innerHTML = `
+
+    <aside class="author-column">
+
+      <div class="author-avatar">
+        ${avatarHtml}
+      </div>
+
+      <div class="author-name">
+        ${escapeHtml(
+          profile.display_name
+        )}
+      </div>
+
+      <div class="author-role">
+        ${role}
+      </div>
+
+      <div class="author-detail">
+        DogEar member
+      </div>
+
+    </aside>
+
+    <div class="post-content">
+
+      <div class="post-top">
+
+        <div class="post-date">
+          ${escapeHtml(
+            formatDate(
+              item.created_at
+            )
+          )}
+        </div>
+
+        ${
+          options.original
+            ? `
+              <div class="original-label">
+                Original Post
+              </div>
+            `
+            : ""
+        }
+
+      </div>
+
+      <div class="post-body">
+        ${formatBody(
+          item.body ||
+          item.content ||
+          item.opening_post ||
+          ""
+        )}
+      </div>
+
+      <div class="post-actions">
+
+        <button
+          class="text-button quote-button"
+          type="button"
+          data-author="${escapeHtml(
+            profile.display_name
+          )}">
+          Reply
+        </button>
+
+      </div>
+
+    </div>
+  `;
+
+  const image =
+    post.querySelector(
+      ".author-avatar img"
+    );
+
+  if(image){
+
+    image.addEventListener(
+      "error",
+      () => {
+
+        const holder =
+          image.parentElement;
+
+        holder.innerHTML =
+          escapeHtml(
+            initials(
+              profile.display_name
+            )
+          );
+
+      }
+    );
+
+  }
+
+  const replyButton =
+    post.querySelector(
+      ".quote-button"
+    );
+
+  replyButton
+    .addEventListener(
+      "click",
+      () => {
+
+        const textarea =
+          $("replyBody");
+
+        textarea.focus();
+
+        const author =
+          profile.display_name;
+
+        if(
+          !textarea.value.trim()
+        ){
+
+          textarea.value =
+            "@" +
+            author +
+            " ";
+
+        }
+
+        textarea.scrollIntoView(
+          {
+            behavior:"smooth",
+            block:"center"
+          }
+        );
+
+      }
+    );
+
+  return post;
+
+}
+
+/* =========================================================
+   LOAD DISCUSSION
+========================================================= */
+
+async function loadDiscussion(){
+
+  if(!discussionId){
+
+    showError();
+    return;
+
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+
+        .from(
+          "club_discussions"
+        )
+
+        .select("*")
+
+        .eq(
+          "id",
+          discussionId
+        )
+
+        .maybeSingle();
+
+    if(error)
+      throw error;
+
+    if(!data){
+
+      showError();
+      return;
+
+    }
+
+    discussion =
+      data;
+
+    clubId =
+      data.club_id ||
+      clubId;
+
+    updateLinks();
+
+    $("discussionTitle")
+      .textContent =
+        data.title ||
+        "Discussion";
+
+    $("discussionDate")
+      .textContent =
+        formatDate(
+          data.created_at
+        );
+
+    document.title =
+      (data.title ||
+      "Discussion") +
+      " — DogEar";
+
+    await loadClub();
+
+    const originalPost =
+      await createPost(
+        data,
+        {
+          original:true
+        }
+      );
+
+    $("thread")
+      .appendChild(
+        originalPost
+      );
+
+  }
+  catch(error){
+
+    console.error(
+      "Discussion lookup:",
+      error
+    );
+
+    showError();
+
+  }
+
+}
+
+/* =========================================================
+   LOAD REPLIES
+========================================================= */
+
+async function loadReplies(){
+
+  if(!discussionId)
+    return;
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+
+        .from(
+          "discussion_replies"
+        )
+
+        .select("*")
+
+        .eq(
+          "discussion_id",
+          discussionId
+        )
+
+        .order(
+          "created_at",
+          {
+            ascending:true
+          }
+        );
+
+    if(error)
+      throw error;
+
+    const replies =
+      data || [];
+
+    $("replyCount")
+      .textContent =
+        replies.length +
+        " " +
+        (
+          replies.length === 1
+            ? "reply"
+            : "replies"
+        );
+
+    for(
+      const reply
+      of replies
+    ){
+
+      const post =
+        await createPost(
+          reply
+        );
+
+      $("thread")
+        .appendChild(
+          post
+        );
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Reply lookup:",
+      error.message
+    );
+
+    $("replyCount")
+      .textContent =
+        "Replies";
+
+  }
+
+}
+
+/* =========================================================
+   POST REPLY
+========================================================= */
+
+$("replyForm")
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+      clearMessage();
+
+      const body =
+        $("replyBody")
+          .value
+          .trim();
+
+      if(!body){
+
+        showMessage(
+          "Write something before posting.",
+          "error"
+        );
+
+        return;
+
+      }
+
+      if(!discussionId){
+
+        showMessage(
+          "This discussion link is incomplete.",
+          "error"
+        );
+
+        return;
+
+      }
+
+      const button =
+        $("replyButton");
+
+      button.disabled =
+        true;
+
+      button.textContent =
+        "Posting...";
+
+      try{
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+
+            .from(
+              "discussion_replies"
+            )
+
+            .insert({
+
+              discussion_id:
+                discussionId,
+
+              author_id:
+                currentUser.id,
+
+              body:
+                body
+
+            })
+
+            .select()
+
+            .single();
+
+        if(error)
+          throw error;
+
+        $("replyBody").value =
+          "";
+
+        showMessage(
+          "Reply posted.",
+          "success"
+        );
+
+        const post =
+          await createPost(
+            data
+          );
+
+        $("thread")
+          .appendChild(
+            post
+          );
+
+        const replies =
+          $("thread")
+            .querySelectorAll(
+              ".post:not(.original)"
+            )
+            .length;
+
+        $("replyCount")
+          .textContent =
+            replies +
+            " " +
+            (
+              replies === 1
+                ? "reply"
+                : "replies"
+            );
+
+        post.scrollIntoView(
+          {
+            behavior:"smooth",
+            block:"center"
+          }
+        );
+
+      }
+      catch(error){
+
+        console.error(
+          error
+        );
+
+        showMessage(
+          "DogEar couldn't post your reply: " +
+          (
+            error.message ||
+            "Unknown error"
+          ),
+          "error"
+        );
+
+      }
+      finally{
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Post Reply";
+
+      }
+
+    }
+  );
+
+/* =========================================================
+   START PAGE
+========================================================= */
+
+async function start(){
+
+  updateLinks();
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+  if(
+    error ||
+    !data.user
+  ){
+
+    location.href =
+      "auth.html#login";
+
+    return;
+
+  }
+
+  currentUser =
+    data.user;
+
+  await loadNavAvatar();
+
+  await loadDiscussion();
+
+  if(discussion){
+
+    await loadReplies();
+
+  }
+
+  $("loading")
+    .classList
+    .add(
+      "hidden"
+    );
+
+}
+
+start();
+
+</script>
+
+</body>
+</html>
