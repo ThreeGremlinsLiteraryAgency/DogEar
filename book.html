@@ -24,7 +24,9 @@
   --ok:#b9d6b2;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -37,7 +39,9 @@ body{
   font-family:Georgia,"Times New Roman",serif;
 }
 
-a{color:inherit}
+a{
+  color:inherit;
+}
 
 button,
 input,
@@ -225,6 +229,7 @@ h1{
   color:#ddd3bd;
   font-size:16px;
   line-height:1.75;
+  white-space:pre-line;
 }
 
 .actions{
@@ -730,12 +735,23 @@ h1{
           <div class="detail-grid">
 
             <div class="detail-label">
-              ISBN
+              ISBN-13
             </div>
 
             <div
               class="detail-value"
-              id="isbn"
+              id="isbn13"
+            >
+              —
+            </div>
+
+            <div class="detail-label">
+              ISBN-10
+            </div>
+
+            <div
+              class="detail-value"
+              id="isbn10"
             >
               —
             </div>
@@ -837,8 +853,7 @@ h1{
               </h3>
 
               <p id="purchaseText">
-                If an affiliate link has been added for this
-                book, you can buy it here.
+                Buy the exact edition listed on DogEar.
               </p>
 
               <a
@@ -937,7 +952,7 @@ h1{
 
           <p>
             DogEar clubs currently reading or previously
-            featuring this title.
+            featuring this exact book edition.
           </p>
 
         </div>
@@ -1028,53 +1043,18 @@ const bookId =
 const returnUrl =
   params.get("return");
 
-let currentUser = null;
-let book = null;
-let readingStatus = null;
+let currentUser =
+  null;
+
+let book =
+  null;
+
+let readingStatus =
+  null;
 
 /* =========================================================
    HELPERS
    ========================================================= */
-
-function escapeHtml(value=""){
-
-  return String(value)
-    .replace(
-      /[&<>"']/g,
-      character => ({
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#039;"
-      }[character])
-    );
-
-}
-
-function showMessage(
-  text,
-  type=""
-){
-
-  $("statusMessage").textContent =
-    text;
-
-  $("statusMessage").className =
-    "message show " + type;
-
-}
-
-function showError(){
-
-  $("bookPage").style.display =
-    "none";
-
-  $("errorState")
-    .classList
-    .add("show");
-
-}
 
 function initials(name="Reader"){
 
@@ -1125,10 +1105,7 @@ function safeExternalUrl(value){
   try{
 
     const url =
-      new URL(
-        value,
-        location.href
-      );
+      new URL(value);
 
     if(
       url.protocol !== "https:" &&
@@ -1192,6 +1169,82 @@ function safeLocalReturn(value){
 
 }
 
+function formatAuthors(authors){
+
+  if(
+    Array.isArray(authors) &&
+    authors.length
+  ){
+
+    return authors.join(", ");
+
+  }
+
+  return "Unknown author";
+
+}
+
+function formatMonth(value){
+
+  if(!value)
+    return "";
+
+  /*
+    read_month is stored as a DATE.
+    Adding a midday UTC time avoids accidental date shifts.
+  */
+
+  const date =
+    new Date(
+      value + "T12:00:00Z"
+    );
+
+  if(
+    Number.isNaN(
+      date.getTime()
+    )
+  ){
+
+    return value;
+
+  }
+
+  return date.toLocaleDateString(
+    undefined,
+    {
+      month:"long",
+      year:"numeric",
+      timeZone:"UTC"
+    }
+  );
+
+}
+
+function showMessage(
+  text,
+  type=""
+){
+
+  $("statusMessage").textContent =
+    text;
+
+  $("statusMessage").className =
+    "message show " +
+    type;
+
+}
+
+function showError(){
+
+  $("bookPage").style.display =
+    "none";
+
+  $("errorState")
+    .classList
+    .add("show");
+
+}
+
 /* =========================================================
    BACK LINK
    ========================================================= */
@@ -1222,81 +1275,6 @@ function wireBackLink(){
 }
 
 /* =========================================================
-   STATUS
-   ========================================================= */
-
-function renderStatus(){
-
-  const sideButtons = [
-    $("statusWant"),
-    $("statusReading"),
-    $("statusRead")
-  ];
-
-  const heroButtons = [
-    $("wantToReadBtn"),
-    $("readingBtn"),
-    $("readBtn")
-  ];
-
-  [
-    ...sideButtons,
-    ...heroButtons
-  ]
-    .forEach(
-      button =>
-        button.classList
-          .remove("active")
-    );
-
-  if(
-    readingStatus ===
-    "want_to_read"
-  ){
-
-    $("statusWant")
-      .classList
-      .add("active");
-
-    $("wantToReadBtn")
-      .classList
-      .add("active");
-
-  }
-
-  if(
-    readingStatus ===
-    "reading"
-  ){
-
-    $("statusReading")
-      .classList
-      .add("active");
-
-    $("readingBtn")
-      .classList
-      .add("active");
-
-  }
-
-  if(
-    readingStatus ===
-    "read"
-  ){
-
-    $("statusRead")
-      .classList
-      .add("active");
-
-    $("readBtn")
-      .classList
-      .add("active");
-
-  }
-
-}
-
-/* =========================================================
    PROFILE
    ========================================================= */
 
@@ -1308,7 +1286,8 @@ async function loadProfile(){
       ?.display_name ||
     "Reader";
 
-  let avatar = "";
+  let avatar =
+    "";
 
   try{
 
@@ -1411,6 +1390,14 @@ async function loadBook(){
 
   }
 
+  /*
+    books.id is bigint.
+
+    Supabase/PostgREST accepts the query-string value here,
+    so there is no need to convert the ID to UUID or otherwise
+    transform it.
+  */
+
   try{
 
     const {
@@ -1419,7 +1406,29 @@ async function loadBook(){
     } =
       await supabaseClient
         .from("books")
-        .select("*")
+        .select(
+          `
+            id,
+            isbn_13,
+            isbn_10,
+            google_books_id,
+            title,
+            subtitle,
+            authors,
+            publisher,
+            published_date,
+            description,
+            cover_url,
+            affiliate_url,
+            affiliate_source,
+            marketplace_active,
+            page_count,
+            format,
+            categories,
+            created_at,
+            updated_at
+          `
+        )
         .eq(
           "id",
           bookId
@@ -1465,21 +1474,16 @@ function renderBook(){
     book.title ||
     "Untitled Book";
 
-  const author =
-    book.author ||
-    book.book_author ||
-    "Unknown author";
-
-  const cover =
-    book.cover_url ||
-    book.image_url ||
-    "";
+  const authorText =
+    formatAuthors(
+      book.authors
+    );
 
   $("title").textContent =
     title;
 
   $("author").textContent =
-    author;
+    authorText;
 
   document.title =
     title +
@@ -1487,12 +1491,14 @@ function renderBook(){
 
   $("description").textContent =
     book.description ||
-    book.summary ||
     "No description is available yet.";
 
-  $("isbn").textContent =
-    book.isbn ||
-    book.isbn13 ||
+  $("isbn13").textContent =
+    book.isbn_13 ||
+    "—";
+
+  $("isbn10").textContent =
+    book.isbn_10 ||
     "—";
 
   $("publisher").textContent =
@@ -1501,12 +1507,10 @@ function renderBook(){
 
   $("published").textContent =
     book.published_date ||
-    book.publication_date ||
     "—";
 
   $("pages").textContent =
-    book.page_count ||
-    book.pages ||
+    book.page_count ??
     "—";
 
   $("format").textContent =
@@ -1516,24 +1520,22 @@ function renderBook(){
   $("categories").textContent =
     Array.isArray(
       book.categories
-    )
-      ? book.categories
-          .join(", ")
-      : (
-          book.categories ||
-          book.genre ||
-          "—"
-        );
+    ) &&
+    book.categories.length
+      ? book.categories.join(", ")
+      : "—";
 
   $("googleBooksId").textContent =
     book.google_books_id ||
     "—";
 
   renderEditionPills();
+
   renderCover(
-    cover,
+    book.cover_url,
     title
   );
+
   renderPurchaseLink();
 
 }
@@ -1550,15 +1552,17 @@ function renderEditionPills(){
   holder.innerHTML =
     "";
 
-  const values = [
-    book.format,
-    book.isbn || book.isbn13,
-    book.publisher,
-    book.published_date ||
-      book.publication_date
-  ]
-    .filter(Boolean)
-    .slice(0,4);
+  const values =
+    [
+      book.format,
+      book.isbn_13
+        ? "ISBN-13 " + book.isbn_13
+        : null,
+      book.publisher,
+      book.published_date
+    ]
+      .filter(Boolean)
+      .slice(0,4);
 
   for(const value of values){
 
@@ -1615,6 +1619,10 @@ function renderCover(
       .replace(
         /^http:/,
         "https:"
+      )
+      .replace(
+        "zoom=1",
+        "zoom=2"
       );
 
   image.alt =
@@ -1639,24 +1647,18 @@ function renderCover(
 }
 
 /* =========================================================
-   AFFILIATE LINK
+   AFFILIATE PURCHASE
    ========================================================= */
 
 function renderPurchaseLink(){
 
-  const rawAffiliate =
-    book.affiliate_url ||
-    book.purchase_url ||
-    "";
-
   const affiliate =
     safeExternalUrl(
-      rawAffiliate
+      book.affiliate_url
     );
 
   const seller =
     book.affiliate_source ||
-    book.seller_name ||
     "";
 
   const purchaseLink =
@@ -1668,7 +1670,10 @@ function renderPurchaseLink(){
   const disclosure =
     $("affiliateDisclosure");
 
-  if(!affiliate){
+  if(
+    book.marketplace_active === false ||
+    !affiliate
+  ){
 
     purchaseLink.style.display =
       "none";
@@ -1678,6 +1683,21 @@ function renderPurchaseLink(){
 
     disclosure.hidden =
       true;
+
+    if(
+      book.marketplace_active === false
+    ){
+
+      noPurchase.textContent =
+        "This edition is not currently available through the DogEar marketplace.";
+
+    }
+    else{
+
+      noPurchase.textContent =
+        "No purchase link has been added yet.";
+
+    }
 
     return;
 
@@ -1705,6 +1725,11 @@ function renderPurchaseLink(){
       "Buy from " +
       seller;
 
+    $("purchaseText").textContent =
+      "Purchase this exact edition through " +
+      seller +
+      ".";
+
   }
   else{
 
@@ -1713,6 +1738,78 @@ function renderPurchaseLink(){
 
     purchaseLink.textContent =
       "Buy Book";
+
+    $("purchaseText").textContent =
+      "Purchase this exact edition through DogEar's available link.";
+
+  }
+
+}
+
+/* =========================================================
+   READING STATUS
+   ========================================================= */
+
+function renderStatus(){
+
+  const allButtons =
+    [
+      $("statusWant"),
+      $("statusReading"),
+      $("statusRead"),
+      $("wantToReadBtn"),
+      $("readingBtn"),
+      $("readBtn")
+    ];
+
+  allButtons.forEach(
+    button =>
+      button.classList
+        .remove("active")
+  );
+
+  if(
+    readingStatus ===
+    "want_to_read"
+  ){
+
+    $("statusWant")
+      .classList
+      .add("active");
+
+    $("wantToReadBtn")
+      .classList
+      .add("active");
+
+  }
+
+  if(
+    readingStatus ===
+    "reading"
+  ){
+
+    $("statusReading")
+      .classList
+      .add("active");
+
+    $("readingBtn")
+      .classList
+      .add("active");
+
+  }
+
+  if(
+    readingStatus ===
+    "read"
+  ){
+
+    $("statusRead")
+      .classList
+      .add("active");
+
+    $("readBtn")
+      .classList
+      .add("active");
 
   }
 
@@ -1735,7 +1832,9 @@ async function loadReadingStatus(){
     } =
       await supabaseClient
         .from("user_books")
-        .select("id,status")
+        .select(
+          "id,status"
+        )
         .eq(
           "user_id",
           currentUser.id
@@ -1789,65 +1888,35 @@ async function setReadingStatus(
 
   try{
 
+    /*
+      user_books has UNIQUE(user_id, book_id),
+      so upsert is cleaner and avoids a separate lookup.
+    */
+
     const {
-      data:existing,
-      error:lookupError
+      error
     } =
       await supabaseClient
         .from("user_books")
-        .select("id")
-        .eq(
-          "user_id",
-          currentUser.id
-        )
-        .eq(
-          "book_id",
-          bookId
-        )
-        .maybeSingle();
-
-    if(lookupError)
-      throw lookupError;
-
-    let response;
-
-    if(existing){
-
-      response =
-        await supabaseClient
-          .from("user_books")
-          .update({
-            status:
-              normalized
-          })
-          .eq(
-            "id",
-            existing.id
-          );
-
-    }
-    else{
-
-      response =
-        await supabaseClient
-          .from("user_books")
-          .insert({
-
+        .upsert(
+          {
             user_id:
               currentUser.id,
 
             book_id:
-              bookId,
+              Number(bookId),
 
             status:
               normalized
+          },
+          {
+            onConflict:
+              "user_id,book_id"
+          }
+        );
 
-          });
-
-    }
-
-    if(response.error)
-      throw response.error;
+    if(error)
+      throw error;
 
     readingStatus =
       normalized;
@@ -1862,7 +1931,10 @@ async function setReadingStatus(
   }
   catch(error){
 
-    console.error(error);
+    console.error(
+      "Reading status update:",
+      error
+    );
 
     showMessage(
       "DogEar couldn't update your reading status: " +
@@ -1878,7 +1950,7 @@ async function setReadingStatus(
 }
 
 /* =========================================================
-   LOAD CLUBS
+   CLUBS READING THIS BOOK
    ========================================================= */
 
 async function loadClubs(){
@@ -1892,6 +1964,9 @@ async function loadClubs(){
   clubList.innerHTML =
     "";
 
+  $("noClubs").hidden =
+    true;
+
   try{
 
     const {
@@ -1902,7 +1977,12 @@ async function loadClubs(){
         .from("club_books")
         .select(
           `
-            *,
+            id,
+            club_id,
+            book_id,
+            read_month,
+            status,
+            is_current,
             clubs(
               id,
               name,
@@ -1913,6 +1993,12 @@ async function loadClubs(){
         .eq(
           "book_id",
           bookId
+        )
+        .order(
+          "read_month",
+          {
+            ascending:false
+          }
         );
 
     if(error)
@@ -1944,7 +2030,9 @@ async function loadClubs(){
       if(
         !club ||
         !club.id ||
-        seen.has(club.id)
+        seen.has(
+          String(club.id)
+        )
       ){
 
         continue;
@@ -1952,7 +2040,7 @@ async function loadClubs(){
       }
 
       seen.add(
-        club.id
+        String(club.id)
       );
 
       visibleCount++;
@@ -1971,30 +2059,12 @@ async function loadClubs(){
           club.id
         );
 
-      const readMonth =
-        row.read_month ||
-        row.selected_month ||
-        row.month_label ||
-        "";
-
-      const status =
-        String(
-          row.status ||
-          row.read_status ||
-          row.selection_status ||
-          ""
-        )
-          .toLowerCase();
-
       let statusLabel =
         "";
 
       if(
         row.is_current === true ||
-        status === "current" ||
-        status === "reading" ||
-        status === "selected" ||
-        status === "active"
+        row.status === "current"
       ){
 
         statusLabel =
@@ -2002,10 +2072,7 @@ async function loadClubs(){
 
       }
       else if(
-        status === "read" ||
-        status === "completed" ||
-        status === "finished" ||
-        status === "past"
+        row.status === "completed"
       ){
 
         statusLabel =
@@ -2013,29 +2080,47 @@ async function loadClubs(){
 
       }
 
-      const pieces = [
-        club.genre ||
-          "DogEar book club",
-        statusLabel,
-        readMonth
-      ]
-        .filter(Boolean);
+      const month =
+        formatMonth(
+          row.read_month
+        );
 
-      link.innerHTML = `
+      const pieces =
+        [
+          club.genre ||
+            "DogEar book club",
+          statusLabel,
+          month
+        ]
+          .filter(Boolean);
 
-        <div class="club-name">
-          ${escapeHtml(
-            club.name ||
-            "Book Club"
-          )}
-        </div>
+      const name =
+        document.createElement(
+          "div"
+        );
 
-        <div class="club-meta">
-          ${escapeHtml(
-            pieces.join(" · ")
-          )}
-        </div>
-      `;
+      name.className =
+        "club-name";
+
+      name.textContent =
+        club.name ||
+        "Book Club";
+
+      const meta =
+        document.createElement(
+          "div"
+        );
+
+      meta.className =
+        "club-meta";
+
+      meta.textContent =
+        pieces.join(" · ");
+
+      link.append(
+        name,
+        meta
+      );
 
       clubList.appendChild(
         link
@@ -2062,7 +2147,7 @@ async function loadClubs(){
 }
 
 /* =========================================================
-   STATUS BUTTONS
+   BUTTONS
    ========================================================= */
 
 $("wantToReadBtn")
