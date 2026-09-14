@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DogEar — Club Administration</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --ink:#090b0a;
+  --panel:#101410;
+  --panel2:#0d110e;
+  --cream:#f1e7cf;
+  --gold:#c79b59;
+  --gold2:#dfbd7e;
+  --green:#26362b;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.22);
+  --line-soft:rgba(199,155,89,.11);
+  --danger:#e6a09a;
+  --ok:#b9d6b2;
+  --warn:#e1c28b;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--cream);
+  background:
+    radial-gradient(circle at 10% 0%,rgba(53,73,59,.24),transparent 28%),
+    var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+a{color:inherit}
+
+.topbar{
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:0 clamp(18px,4vw,60px);
+  border-bottom:1px solid var(--line);
+  background:rgba(9,11,10,.94);
+  position:sticky;
+  top:0;
+  z-index:30;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 13px Arial;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  transform:rotate(-8deg);
+}
+
+.nav{
+  display:flex;
+  gap:24px;
+  font:700 11px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.nav a:hover{
+  color:var(--gold2);
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:var(--green);
+  text-decoration:none;
+  font:800 13px Arial;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.page{
+  width:min(1240px,calc(100% - 32px));
+  margin:auto;
+  padding:38px 0 110px;
+}
+
+.back{
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 10px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.hero{
+  margin-top:22px;
+  padding-bottom:28px;
+  border-bottom:1px solid var(--line);
+}
+
+.eyebrow{
+  color:var(--gold);
+  font:800 10px Arial;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+
+h1{
+  margin:0;
+  font-size:clamp(42px,6vw,68px);
+  line-height:.96;
+  font-weight:400;
+  letter-spacing:-.04em;
+}
+
+.subtitle{
+  margin-top:12px;
+  max-width:760px;
+  color:var(--muted);
+  font:13px/1.65 Arial;
+}
+
+.toolbar{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:26px 0 18px;
+}
+
+.search{
+  flex:1 1 360px;
+  min-width:0;
+  height:46px;
+  padding:0 14px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--panel2);
+  color:var(--cream);
+  outline:none;
+  font:13px Arial;
+}
+
+.search:focus{
+  border-color:var(--gold);
+}
+
+.select{
+  min-width:160px;
+  height:46px;
+  padding:0 12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--panel2);
+  color:var(--cream);
+  outline:none;
+  font:12px Arial;
+}
+
+.summary{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.summary-pill{
+  padding:8px 11px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--muted);
+  font:800 9px Arial;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.club-list{
+  display:grid;
+  gap:12px;
+}
+
+.club-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 130px 120px auto;
+  gap:16px;
+  align-items:center;
+  padding:16px;
+  border:1px solid var(--line);
+  border-radius:17px;
+  background:rgba(16,20,16,.86);
+}
+
+.club-name{
+  margin-bottom:4px;
+  font-size:20px;
+}
+
+.club-meta{
+  color:var(--muted);
+  font:10px/1.55 Arial;
+}
+
+.badge{
+  justify-self:start;
+  padding:7px 9px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  font:800 8px Arial;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.badge.active{color:var(--ok)}
+.badge.suspended{color:var(--danger)}
+.badge.archived{color:var(--muted)}
+.badge.review{color:var(--warn)}
+
+.visibility{
+  color:var(--gold2);
+  font:800 9px Arial;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  justify-content:flex-end;
+}
+
+.btn{
+  min-height:38px;
+  padding:0 13px;
+  border-radius:999px;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font:800 8px Arial;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.primary{
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:#17130e;
+}
+
+.secondary{
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--gold2);
+}
+
+.danger{
+  border:1px solid rgba(230,160,154,.4);
+  background:transparent;
+  color:var(--danger);
+}
+
+.empty{
+  padding:60px 20px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  text-align:center;
+  color:var(--muted);
+  font:12px/1.7 Arial;
+}
+
+.empty strong{
+  display:block;
+  margin-bottom:8px;
+  color:var(--cream);
+  font:400 24px Georgia;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:60;
+  display:none;
+  place-items:center;
+  padding:20px;
+  background:rgba(0,0,0,.8);
+}
+
+.modal.show{
+  display:grid;
+}
+
+.modal-card{
+  width:min(700px,100%);
+  max-height:90vh;
+  overflow:auto;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:#0e120f;
+  box-shadow:0 30px 90px rgba(0,0,0,.55);
+}
+
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:20px 22px;
+  border-bottom:1px solid var(--line);
+}
+
+.modal-head h2{
+  margin:0;
+  font-size:27px;
+  font-weight:400;
+}
+
+.close{
+  border:0;
+  background:none;
+  color:var(--muted);
+  cursor:pointer;
+  font-size:25px;
+}
+
+.modal-body{
+  padding:22px;
+}
+
+.detail-grid{
+  display:grid;
+  grid-template-columns:160px minmax(0,1fr);
+  gap:11px 18px;
+}
+
+.detail-label{
+  color:var(--gold);
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.detail-value{
+  color:var(--muted);
+  font:12px/1.55 Arial;
+  overflow-wrap:anywhere;
+}
+
+.field{
+  margin-top:18px;
+}
+
+.field label{
+  display:block;
+  margin-bottom:7px;
+  color:var(--gold2);
+  font:800 9px Arial;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.field select,
+.field textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:var(--panel2);
+  color:var(--cream);
+  outline:none;
+}
+
+.field select{
+  height:44px;
+  padding:0 12px;
+}
+
+.field textarea{
+  min-height:90px;
+  padding:12px;
+  resize:vertical;
+  font:12px/1.5 Arial;
+}
+
+.field select:focus,
+.field textarea:focus{
+  border-color:var(--gold);
+}
+
+.modal-actions{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  margin-top:22px;
+}
+
+.message{
+  display:none;
+  margin-top:14px;
+  padding:11px 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  font:11px/1.5 Arial;
+}
+
+.message.show{display:block}
+.message.error{color:var(--danger)}
+.message.success{color:var(--ok)}
+
+.loading{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:grid;
+  place-items:center;
+  background:var(--ink);
+}
+
+.loading.hidden{
+  display:none;
+}
+
+.loading span{
+  color:var(--gold2);
+  font:800 10px Arial;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+.locked{
+  display:none;
+  padding:70px 24px;
+  margin-top:28px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  text-align:center;
+  color:var(--muted);
+  font:13px/1.7 Arial;
+}
+
+.locked.show{
+  display:block;
+}
+
+.locked strong{
+  display:block;
+  margin-bottom:8px;
+  color:var(--cream);
+  font:400 25px Georgia;
+}
+
+@media(max-width:900px){
+  .club-row{
+    grid-template-columns:minmax(0,1fr) auto;
+  }
+
+  .status-col,
+  .visibility-col{
+    grid-column:1/2;
+  }
+
+  .actions{
+    grid-column:1/-1;
+    justify-content:flex-start;
+  }
+}
+
+@media(max-width:650px){
+  .nav{display:none}
+
+  .detail-grid{
+    grid-template-columns:1fr;
+    gap:5px;
+  }
+
+  .detail-value{
+    margin-bottom:9px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="loading" id="loading">
+  <span>Opening club administration...</span>
+</div>
+
+<header class="topbar">
+
+  <a class="brand" href="dashboard.html">
+    <span class="brand-mark"></span>
+    DogEar
+  </a>
+
+  <nav class="nav">
+    <a href="dashboard.html">Home</a>
+    <a href="discover.html">Discover</a>
+    <a href="clubs.html">Clubs</a>
+    <a href="marketplace.html">Books</a>
+  </nav>
+
+  <a class="avatar" id="navAvatar" href="profile.html">?</a>
+
+</header>
+
+<main class="page">
+
+  <a class="back" href="admin-dashboard.html">
+    ← Back to Control Room
+  </a>
+
+  <section class="hero">
+
+    <div class="eyebrow">
+      DogEar Administration
+    </div>
+
+    <h1>
+      Clubs
+    </h1>
+
+    <div class="subtitle">
+      Inspect clubs across DogEar, review ownership and visibility, place
+      clubs under review, suspend problem clubs, or archive clubs that are
+      no longer active.
+    </div>
+
+  </section>
+
+  <div id="adminArea">
+
+    <div class="toolbar">
+
+      <input
+        class="search"
+        id="searchInput"
+        type="search"
+        placeholder="Search club name, genre, or club ID…">
+
+      <select
+        class="select"
+        id="statusFilter">
+
+        <option value="">
+          All Statuses
+        </option>
+
+        <option value="active">
+          Active
+        </option>
+
+        <option value="review">
+          Under Review
+        </option>
+
+        <option value="suspended">
+          Suspended
+        </option>
+
+        <option value="archived">
+          Archived
+        </option>
+
+      </select>
+
+      <select
+        class="select"
+        id="visibilityFilter">
+
+        <option value="">
+          All Visibility
+        </option>
+
+        <option value="public">
+          Public
+        </option>
+
+        <option value="private">
+          Private
+        </option>
+
+      </select>
+
+      <a
+        class="btn secondary"
+        href="clubs.html">
+        View Public Clubs
+      </a>
+
+    </div>
+
+    <div class="summary">
+
+      <div class="summary-pill" id="totalSummary">
+        0 Clubs
+      </div>
+
+      <div class="summary-pill" id="reviewSummary">
+        0 Under Review
+      </div>
+
+      <div class="summary-pill" id="suspendedSummary">
+        0 Suspended
+      </div>
+
+    </div>
+
+    <section
+      class="club-list"
+      id="clubList">
+    </section>
+
+  </div>
+
+  <section
+    class="locked"
+    id="locked">
+
+    <strong>
+      Administrator access required.
+    </strong>
+
+    Your account does not currently have permission to manage DogEar clubs.
+
+  </section>
+
+</main>
+
+<!-- CLUB MODAL -->
+
+<div class="modal" id="clubModal">
+
+  <div class="modal-card">
+
+    <div class="modal-head">
+
+      <h2 id="modalName">
+        Club
+      </h2>
+
+      <button
+        class="close"
+        id="closeModal"
+        type="button">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div class="detail-grid">
+
+        <div class="detail-label">
+          Club ID
+        </div>
+
+        <div
+          class="detail-value"
+          id="detailId">
+          —
+        </div>
+
+        <div class="detail-label">
+          Genre
+        </div>
+
+        <div
+          class="detail-value"
+          id="detailGenre">
+          —
+        </div>
+
+        <div class="detail-label">
+          Visibility
+        </div>
+
+        <div
+          class="detail-value"
+          id="detailVisibility">
+          —
+        </div>
+
+        <div class="detail-label">
+          Members
+        </div>
+
+        <div
+          class="detail-value"
+          id="detailMembers">
+          —
+        </div>
+
+        <div class="detail-label">
+          Created
+        </div>
+
+        <div
+          class="detail-value"
+          id="detailCreated">
+          —
+        </div>
+
+      </div>
+
+      <div class="field">
+
+        <label for="clubStatus">
+          Administrative Status
+        </label>
+
+        <select id="clubStatus">
+
+          <option value="active">
+            Active
+          </option>
+
+          <option value="review">
+            Under Review
+          </option>
+
+          <option value="suspended">
+            Suspended
+          </option>
+
+          <option value="archived">
+            Archived
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="field">
+
+        <label for="adminNote">
+          Internal Note
+        </label>
+
+        <textarea
+          id="adminNote"
+          placeholder="Optional administrative note…"></textarea>
+
+      </div>
+
+      <div class="modal-actions">
+
+        <button
+          class="btn secondary"
+          id="cancelBtn"
+          type="button">
+          Cancel
+        </button>
+
+        <a
+          class="btn secondary"
+          id="viewClubBtn"
+          href="#">
+          View Club
+        </a>
+
+        <a
+          class="btn secondary"
+          id="membersBtn"
+          href="#">
+          Members
+        </a>
+
+        <button
+          class="btn primary"
+          id="saveBtn"
+          type="button">
+          Save Status
+        </button>
+
+      </div>
+
+      <div
+        class="message"
+        id="modalMessage">
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+const $ =
+  id => document.getElementById(id);
+
+let currentUser = null;
+let clubs = [];
+let selectedClub = null;
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(value=""){
+
+  return String(value)
+    .replace(
+      /[&<>"']/g,
+      character => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[character])
+    );
+
+}
+
+function formatDate(value){
+
+  if(!value)
+    return "—";
+
+  const date =
+    new Date(value);
+
+  if(Number.isNaN(date.getTime()))
+    return "—";
+
+  return date.toLocaleDateString(
+    undefined,
+    {
+      month:"short",
+      day:"numeric",
+      year:"numeric"
+    }
+  );
+
+}
+
+function clubStatus(club){
+
+  return String(
+    club.admin_status ||
+    club.status ||
+    "active"
+  ).toLowerCase();
+
+}
+
+function clubVisibility(club){
+
+  return club.is_public === false
+    ? "private"
+    : "public";
+
+}
+
+function showMessage(text,type=""){
+
+  $("modalMessage").textContent =
+    text;
+
+  $("modalMessage").className =
+    "message show " + type;
+
+}
+
+function clearMessage(){
+
+  $("modalMessage").textContent = "";
+  $("modalMessage").className = "message";
+
+}
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+async function loadProfile(){
+
+  let display =
+    currentUser?.user_metadata?.display_name ||
+    "Reader";
+
+  let avatar = "";
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "get_public_profile",
+        {
+          check_user_id:
+            currentUser.id
+        }
+      );
+
+    if(error)
+      throw error;
+
+    const profile =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+    if(profile){
+
+      display =
+        profile.display_name ||
+        display;
+
+      avatar =
+        profile.avatar_url ||
+        "";
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Profile lookup:",
+      error.message
+    );
+
+  }
+
+  const holder =
+    $("navAvatar");
+
+  holder.innerHTML = "";
+
+  if(avatar){
+
+    const image =
+      document.createElement("img");
+
+    image.src = avatar;
+    image.alt = display;
+
+    image.onerror =
+      () => {
+
+        holder.innerHTML = "";
+        holder.textContent =
+          display.charAt(0).toUpperCase();
+
+      };
+
+    holder.appendChild(image);
+
+  }
+  else{
+
+    holder.textContent =
+      display.charAt(0).toUpperCase();
+
+  }
+
+}
+
+/* =========================================================
+   ADMIN CHECK
+========================================================= */
+
+async function verifyAdmin(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("admin_users")
+        .select("user_id,active")
+        .eq("user_id",currentUser.id)
+        .maybeSingle();
+
+    if(error)
+      throw error;
+
+    return (
+      data &&
+      data.active !== false
+    );
+
+  }
+  catch(error){
+
+    console.warn(
+      "Admin lookup:",
+      error.message
+    );
+
+    return false;
+
+  }
+
+}
+
+function showLocked(){
+
+  $("adminArea").style.display =
+    "none";
+
+  $("locked")
+    .classList
+    .add("show");
+
+}
+
+/* =========================================================
+   LOAD CLUBS
+========================================================= */
+
+async function loadClubs(){
+
+  /*
+    Expected clubs fields:
+      id
+      name
+      genre
+      is_public
+      created_at
+      admin_status OR status
+      admin_note
+
+    Member counts are loaded separately from club_members.
+  */
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("clubs")
+        .select("*")
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        );
+
+    if(error)
+      throw error;
+
+    clubs =
+      data || [];
+
+    await attachMemberCounts();
+
+  }
+  catch(error){
+
+    console.error(
+      "Club lookup:",
+      error
+    );
+
+    clubs = [];
+
+  }
+
+  renderClubs();
+  updateSummary();
+
+}
+
+async function attachMemberCounts(){
+
+  await Promise.all(
+    clubs.map(
+      async club => {
+
+        try{
+
+          const {
+            count,
+            error
+          } =
+            await supabaseClient
+              .from("club_members")
+              .select(
+                "*",
+                {
+                  count:"exact",
+                  head:true
+                }
+              )
+              .eq(
+                "club_id",
+                club.id
+              );
+
+          if(error)
+            throw error;
+
+          club.member_count =
+            count ?? 0;
+
+        }
+        catch(error){
+
+          club.member_count =
+            null;
+
+        }
+
+      }
+    )
+  );
+
+}
+
+/* =========================================================
+   FILTERING
+========================================================= */
+
+function filteredClubs(){
+
+  const search =
+    $("searchInput")
+      .value
+      .trim()
+      .toLowerCase();
+
+  const status =
+    $("statusFilter").value;
+
+  const visibility =
+    $("visibilityFilter").value;
+
+  return clubs.filter(
+    club => {
+
+      if(
+        status &&
+        clubStatus(club) !== status
+      )
+        return false;
+
+      if(
+        visibility &&
+        clubVisibility(club) !== visibility
+      )
+        return false;
+
+      if(search){
+
+        const haystack =
+          [
+            club.name,
+            club.genre,
+            club.id
+          ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+
+        if(!haystack.includes(search))
+          return false;
+
+      }
+
+      return true;
+
+    }
+  );
+
+}
+
+$("searchInput")
+  .addEventListener(
+    "input",
+    renderClubs
+  );
+
+$("statusFilter")
+  .addEventListener(
+    "change",
+    renderClubs
+  );
+
+$("visibilityFilter")
+  .addEventListener(
+    "change",
+    renderClubs
+  );
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+function updateSummary(){
+
+  const review =
+    clubs.filter(
+      club =>
+        clubStatus(club) ===
+        "review"
+    ).length;
+
+  const suspended =
+    clubs.filter(
+      club =>
+        clubStatus(club) ===
+        "suspended"
+    ).length;
+
+  $("totalSummary").textContent =
+    clubs.length.toLocaleString() +
+    " Clubs";
+
+  $("reviewSummary").textContent =
+    review.toLocaleString() +
+    " Under Review";
+
+  $("suspendedSummary").textContent =
+    suspended.toLocaleString() +
+    " Suspended";
+
+}
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function renderClubs(){
+
+  const holder =
+    $("clubList");
+
+  const list =
+    filteredClubs();
+
+  holder.innerHTML = "";
+
+  if(!list.length){
+
+    holder.innerHTML = `
+
+      <div class="empty">
+
+        <strong>
+          No matching clubs.
+        </strong>
+
+        Try changing your search or filters.
+
+      </div>
+    `;
+
+    return;
+
+  }
+
+  for(const club of list){
+
+    const status =
+      clubStatus(club);
+
+    const visibility =
+      clubVisibility(club);
+
+    const row =
+      document.createElement("article");
+
+    row.className =
+      "club-row";
+
+    row.innerHTML = `
+
+      <div>
+
+        <div class="club-name">
+          ${escapeHtml(
+            club.name ||
+            "Untitled Club"
+          )}
+        </div>
+
+        <div class="club-meta">
+
+          ${
+            club.genre
+              ? escapeHtml(club.genre) + " · "
+              : ""
+          }
+
+          ${
+            club.member_count === null
+              ? "Member count unavailable"
+              : club.member_count.toLocaleString() +
+                (
+                  club.member_count === 1
+                    ? " member"
+                    : " members"
+                )
+          }
+
+          <br>
+
+          ID:
+          ${escapeHtml(club.id)}
+
+        </div>
+
+      </div>
+
+      <div class="status-col">
+
+        <span class="badge ${escapeHtml(status)}">
+          ${escapeHtml(status)}
+        </span>
+
+      </div>
+
+      <div class="visibility-col">
+
+        <span class="visibility">
+          ${escapeHtml(visibility)}
+        </span>
+
+      </div>
+
+      <div class="actions">
+
+        <a
+          class="btn secondary"
+          href="club.html?id=${encodeURIComponent(club.id)}">
+          View
+        </a>
+
+        <a
+          class="btn secondary"
+          href="club-members.html?id=${encodeURIComponent(club.id)}">
+          Members
+        </a>
+
+        <button
+          class="btn secondary manage-club"
+          type="button"
+          data-id="${escapeHtml(club.id)}">
+          Manage
+        </button>
+
+      </div>
+    `;
+
+    holder.appendChild(row);
+
+  }
+
+  holder
+    .querySelectorAll(".manage-club")
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            openClub(
+              button.dataset.id
+            )
+        );
+
+      }
+    );
+
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function openClub(id){
+
+  selectedClub =
+    clubs.find(
+      club =>
+        String(club.id) ===
+        String(id)
+    );
+
+  if(!selectedClub)
+    return;
+
+  clearMessage();
+
+  $("modalName").textContent =
+    selectedClub.name ||
+    "DogEar Club";
+
+  $("detailId").textContent =
+    selectedClub.id ||
+    "—";
+
+  $("detailGenre").textContent =
+    selectedClub.genre ||
+    "—";
+
+  $("detailVisibility").textContent =
+    clubVisibility(selectedClub);
+
+  $("detailMembers").textContent =
+    selectedClub.member_count === null
+      ? "—"
+      : selectedClub.member_count
+          .toLocaleString();
+
+  $("detailCreated").textContent =
+    formatDate(
+      selectedClub.created_at
+    );
+
+  $("clubStatus").value =
+    clubStatus(selectedClub);
+
+  $("adminNote").value =
+    selectedClub.admin_note ||
+    "";
+
+  $("viewClubBtn").href =
+    "club.html?id=" +
+    encodeURIComponent(
+      selectedClub.id
+    );
+
+  $("membersBtn").href =
+    "club-members.html?id=" +
+    encodeURIComponent(
+      selectedClub.id
+    );
+
+  $("clubModal")
+    .classList
+    .add("show");
+
+}
+
+function closeModal(){
+
+  selectedClub = null;
+
+  $("clubModal")
+    .classList
+    .remove("show");
+
+  clearMessage();
+
+}
+
+$("closeModal")
+  .addEventListener(
+    "click",
+    closeModal
+  );
+
+$("cancelBtn")
+  .addEventListener(
+    "click",
+    closeModal
+  );
+
+$("clubModal")
+  .addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target ===
+        $("clubModal")
+      )
+        closeModal();
+
+    }
+  );
+
+/* =========================================================
+   SAVE ADMIN STATUS
+========================================================= */
+
+$("saveBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      if(!selectedClub)
+        return;
+
+      const status =
+        $("clubStatus").value;
+
+      const note =
+        $("adminNote")
+          .value
+          .trim() ||
+        null;
+
+      try{
+
+        /*
+          Prototype implementation.
+
+          For production, a protected RPC is preferable so:
+          - only site admins can change admin status
+          - suspension effects can be enforced atomically
+          - the action can be written to admin_activity
+          - member/president permissions cannot override it
+
+          This assumes clubs.admin_status exists.
+        */
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from("clubs")
+            .update({
+              admin_status:
+                status,
+              admin_note:
+                note
+            })
+            .eq(
+              "id",
+              selectedClub.id
+            )
+            .select()
+            .single();
+
+        if(error)
+          throw error;
+
+        data.member_count =
+          selectedClub.member_count;
+
+        const index =
+          clubs.findIndex(
+            club =>
+              String(club.id) ===
+              String(data.id)
+          );
+
+        if(index >= 0)
+          clubs[index] =
+            data;
+
+        selectedClub =
+          data;
+
+        updateSummary();
+        renderClubs();
+
+        showMessage(
+          "Club administrative status updated.",
+          "success"
+        );
+
+      }
+      catch(error){
+
+        console.error(error);
+
+        showMessage(
+          "DogEar couldn't update this club: " +
+          (
+            error.message ||
+            "Unknown error"
+          ),
+          "error"
+        );
+
+      }
+
+    }
+  );
+
+/* =========================================================
+   START
+========================================================= */
+
+async function start(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+  if(
+    error ||
+    !data.user
+  ){
+
+    location.href =
+      "auth.html#login";
+
+    return;
+
+  }
+
+  currentUser =
+    data.user;
+
+  await loadProfile();
+
+  const allowed =
+    await verifyAdmin();
+
+  if(!allowed){
+
+    showLocked();
+
+    $("loading")
+      .classList
+      .add("hidden");
+
+    return;
+
+  }
+
+  await loadClubs();
+
+  $("loading")
+    .classList
+    .add("hidden");
+
+}
+
+start();
+</script>
+
+</body>
+</html>
