@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DogEar — Book</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --ink:#090b0a;
+  --panel:#101410;
+  --panel2:#0d110e;
+  --cream:#f1e7cf;
+  --gold:#c79b59;
+  --gold2:#dfbd7e;
+  --green:#26362b;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.22);
+  --line-soft:rgba(199,155,89,.11);
+  --danger:#e6a09a;
+  --ok:#b9d6b2;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--cream);
+  background:
+    radial-gradient(circle at 10% 0%,rgba(53,73,59,.24),transparent 28%),
+    var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+a{color:inherit}
+
+button,
+input,
+select{
+  font:inherit;
+}
+
+.topbar{
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:0 clamp(18px,4vw,60px);
+  border-bottom:1px solid var(--line);
+  background:rgba(9,11,10,.94);
+  position:sticky;
+  top:0;
+  z-index:30;
+}
+
+.brand{
+  display:flex;
+  gap:11px;
+  align-items:center;
+  text-decoration:none;
+  color:var(--gold2);
+  font:800 13px Arial;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  transform:rotate(-8deg);
+}
+
+.nav{
+  display:flex;
+  gap:24px;
+  font:700 11px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.nav a:hover,
+.nav .active{
+  color:var(--gold2);
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:var(--green);
+  text-decoration:none;
+  font:800 13px Arial;
+  overflow:hidden;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.page{
+  width:min(1160px,calc(100% - 32px));
+  margin:auto;
+  padding:36px 0 110px;
+}
+
+.back{
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 10px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.hero{
+  display:grid;
+  grid-template-columns:260px minmax(0,1fr);
+  gap:38px;
+  margin-top:28px;
+  padding-bottom:34px;
+  border-bottom:1px solid var(--line);
+}
+
+.cover{
+  width:100%;
+  aspect-ratio:2/3;
+  border-radius:15px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  background:#171c18;
+  display:grid;
+  place-items:center;
+  color:var(--muted);
+  font:700 10px Arial;
+  box-shadow:0 24px 60px rgba(0,0,0,.34);
+}
+
+.cover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.eyebrow{
+  margin-bottom:10px;
+  color:var(--gold);
+  font:800 10px Arial;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+}
+
+h1{
+  margin:0;
+  font-size:clamp(42px,6vw,72px);
+  font-weight:400;
+  line-height:.95;
+  letter-spacing:-.04em;
+}
+
+.author{
+  margin-top:13px;
+  color:var(--gold2);
+  font-size:21px;
+}
+
+.edition{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+.pill{
+  padding:7px 10px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--muted);
+  font:700 9px Arial;
+  letter-spacing:.06em;
+}
+
+.description{
+  margin-top:24px;
+  max-width:760px;
+  color:#ddd3bd;
+  font-size:16px;
+  line-height:1.75;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:24px;
+}
+
+.btn{
+  min-height:44px;
+  padding:0 18px;
+  border-radius:999px;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font:800 10px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.primary{
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:#17130e;
+}
+
+.secondary{
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--gold2);
+}
+
+.btn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 330px;
+  gap:24px;
+  margin-top:26px;
+}
+
+.card{
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:rgba(16,20,16,.88);
+  overflow:hidden;
+}
+
+.card-head{
+  padding:20px 22px;
+  border-bottom:1px solid var(--line);
+}
+
+.card-head h2{
+  margin:0;
+  font-size:26px;
+  font-weight:400;
+}
+
+.card-head p{
+  margin:6px 0 0;
+  color:var(--muted);
+  font:11px/1.55 Arial;
+}
+
+.card-body{
+  padding:20px 22px;
+}
+
+.detail-grid{
+  display:grid;
+  grid-template-columns:150px minmax(0,1fr);
+  gap:11px 18px;
+}
+
+.detail-label{
+  color:var(--gold);
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.detail-value{
+  color:var(--muted);
+  font:12px/1.55 Arial;
+  overflow-wrap:anywhere;
+}
+
+.status-options{
+  display:grid;
+  gap:9px;
+}
+
+.status-btn{
+  min-height:42px;
+  padding:0 14px;
+  text-align:left;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:transparent;
+  color:var(--muted);
+  cursor:pointer;
+  font:700 11px Arial;
+}
+
+.status-btn:hover,
+.status-btn.active{
+  color:var(--cream);
+  border-color:var(--gold);
+  background:rgba(38,54,43,.55);
+}
+
+.club-list{
+  display:grid;
+  gap:10px;
+}
+
+.club-row{
+  padding:13px 14px;
+  border:1px solid var(--line-soft);
+  border-radius:12px;
+  background:rgba(13,17,14,.65);
+  text-decoration:none;
+}
+
+.club-row:hover{
+  border-color:var(--gold);
+}
+
+.club-name{
+  font-size:16px;
+  margin-bottom:4px;
+}
+
+.club-meta{
+  color:var(--muted);
+  font:10px Arial;
+}
+
+.purchase-card{
+  padding:18px;
+  border:1px solid rgba(199,155,89,.32);
+  border-radius:15px;
+  background:rgba(38,54,43,.24);
+}
+
+.purchase-card h3{
+  margin:0 0 7px;
+  font-size:20px;
+  font-weight:400;
+}
+
+.purchase-card p{
+  margin:0 0 14px;
+  color:var(--muted);
+  font:11px/1.6 Arial;
+}
+
+.purchase-card .btn{
+  width:100%;
+}
+
+.empty{
+  padding:18px 0;
+  color:var(--muted);
+  font:12px/1.6 Arial;
+}
+
+.message{
+  display:none;
+  margin-top:12px;
+  padding:11px 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  font:11px/1.5 Arial;
+}
+
+.message.show{display:block}
+.message.error{color:var(--danger)}
+.message.success{color:var(--ok)}
+
+.loading{
+  position:fixed;
+  inset:0;
+  display:grid;
+  place-items:center;
+  background:var(--ink);
+  z-index:100;
+}
+
+.loading.hidden{
+  display:none;
+}
+
+.loading span{
+  color:var(--gold2);
+  font:800 10px Arial;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+.error-state{
+  display:none;
+  padding:70px 24px;
+  text-align:center;
+  border:1px solid var(--line);
+  border-radius:20px;
+  margin-top:28px;
+  color:var(--muted);
+  font:13px/1.7 Arial;
+}
+
+.error-state.show{
+  display:block;
+}
+
+.error-state strong{
+  display:block;
+  margin-bottom:8px;
+  color:var(--cream);
+  font:400 26px Georgia;
+}
+
+@media(max-width:850px){
+  .hero{
+    grid-template-columns:180px minmax(0,1fr);
+    gap:26px;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:650px){
+  .nav{display:none}
+
+  .hero{
+    grid-template-columns:1fr;
+  }
+
+  .cover{
+    width:min(220px,70vw);
+  }
+
+  .detail-grid{
+    grid-template-columns:1fr;
+    gap:5px;
+  }
+
+  .detail-value{
+    margin-bottom:9px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="loading" id="loading">
+  <span>Opening the book...</span>
+</div>
+
+<header class="topbar">
+
+  <a class="brand" href="dashboard.html">
+    <span class="brand-mark"></span>
+    DogEar
+  </a>
+
+  <nav class="nav">
+    <a href="dashboard.html">Home</a>
+    <a href="discover.html">Discover</a>
+    <a href="clubs.html">Clubs</a>
+    <a class="active" href="marketplace.html">Books</a>
+  </nav>
+
+  <a class="avatar" id="navAvatar" href="profile.html">?</a>
+
+</header>
+
+<main class="page">
+
+  <a class="back" href="marketplace.html">
+    ← Back to Books
+  </a>
+
+  <div class="error-state" id="errorState">
+    <strong>We couldn't find this book.</strong>
+    The book may have been removed, or the link may be incomplete.
+  </div>
+
+  <div id="bookPage">
+
+    <section class="hero">
+
+      <div class="cover" id="cover">
+        No cover
+      </div>
+
+      <div>
+
+        <div class="eyebrow">
+          DogEar Book
+        </div>
+
+        <h1 id="title">
+          Book Title
+        </h1>
+
+        <div class="author" id="author">
+          Unknown author
+        </div>
+
+        <div class="edition" id="edition"></div>
+
+        <div class="description" id="description">
+          No description is available yet.
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="btn primary"
+            id="wantToReadBtn"
+            type="button">
+            Want to Read
+          </button>
+
+          <button
+            class="btn secondary"
+            id="readingBtn"
+            type="button">
+            Reading
+          </button>
+
+          <button
+            class="btn secondary"
+            id="readBtn"
+            type="button">
+            Read
+          </button>
+
+        </div>
+
+        <div class="message" id="statusMessage"></div>
+
+      </div>
+
+    </section>
+
+    <div class="grid">
+
+      <section class="card">
+
+        <div class="card-head">
+          <h2>Edition Details</h2>
+          <p>The specific edition represented by this DogEar record.</p>
+        </div>
+
+        <div class="card-body">
+
+          <div class="detail-grid">
+
+            <div class="detail-label">
+              ISBN
+            </div>
+
+            <div class="detail-value" id="isbn">
+              —
+            </div>
+
+            <div class="detail-label">
+              Publisher
+            </div>
+
+            <div class="detail-value" id="publisher">
+              —
+            </div>
+
+            <div class="detail-label">
+              Published
+            </div>
+
+            <div class="detail-value" id="published">
+              —
+            </div>
+
+            <div class="detail-label">
+              Pages
+            </div>
+
+            <div class="detail-value" id="pages">
+              —
+            </div>
+
+            <div class="detail-label">
+              Categories
+            </div>
+
+            <div class="detail-value" id="categories">
+              —
+            </div>
+
+            <div class="detail-label">
+              Google Books ID
+            </div>
+
+            <div class="detail-value" id="googleBooksId">
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <aside>
+
+        <section class="card">
+
+          <div class="card-head">
+            <h2>Get the Book</h2>
+            <p>Support DogEar through the available affiliate link.</p>
+          </div>
+
+          <div class="card-body">
+
+            <div class="purchase-card">
+
+              <h3 id="sellerName">
+                Purchase this edition
+              </h3>
+
+              <p id="purchaseText">
+                If an affiliate link has been added for this book, you can buy it here.
+              </p>
+
+              <a
+                class="btn primary"
+                id="purchaseLink"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="display:none;">
+                Buy Book
+              </a>
+
+              <div class="empty" id="noPurchase">
+                No purchase link has been added yet.
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <section class="card" style="margin-top:20px">
+
+          <div class="card-head">
+            <h2>Reading Status</h2>
+            <p>Your personal shelf.</p>
+          </div>
+
+          <div class="card-body">
+
+            <div class="status-options">
+
+              <button
+                class="status-btn"
+                id="statusWant"
+                type="button">
+                Want to Read
+              </button>
+
+              <button
+                class="status-btn"
+                id="statusReading"
+                type="button">
+                Currently Reading
+              </button>
+
+              <button
+                class="status-btn"
+                id="statusRead"
+                type="button">
+                Read
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </aside>
+
+      <section class="card">
+
+        <div class="card-head">
+          <h2>Clubs Reading This Book</h2>
+
+          <p>
+            Book clubs currently reading or featuring this title.
+          </p>
+        </div>
+
+        <div class="card-body">
+
+          <div class="club-list" id="clubList"></div>
+
+          <div class="empty" id="noClubs" hidden>
+            No clubs are currently linked to this book.
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </div>
+
+</main>
+
+<script>
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+const $ =
+  id => document.getElementById(id);
+
+const params =
+  new URLSearchParams(location.search);
+
+const bookId =
+  params.get("id");
+
+let currentUser = null;
+let book = null;
+let readingStatus = null;
+
+function escapeHtml(value=""){
+
+  return String(value)
+    .replace(
+      /[&<>"']/g,
+      character => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[character])
+    );
+
+}
+
+function showMessage(text,type=""){
+
+  $("statusMessage").textContent =
+    text;
+
+  $("statusMessage").className =
+    "message show " + type;
+
+}
+
+function showError(){
+
+  $("bookPage").style.display =
+    "none";
+
+  $("errorState")
+    .classList
+    .add("show");
+
+}
+
+function normalizeStatus(value){
+
+  const status =
+    String(value || "")
+      .toLowerCase();
+
+  if(status === "want_to_read")
+    return "want_to_read";
+
+  if(status === "reading")
+    return "reading";
+
+  if(status === "read")
+    return "read";
+
+  return null;
+
+}
+
+function renderStatus(){
+
+  [
+    $("statusWant"),
+    $("statusReading"),
+    $("statusRead")
+  ]
+    .forEach(
+      button =>
+        button.classList.remove("active")
+    );
+
+  if(readingStatus === "want_to_read")
+    $("statusWant").classList.add("active");
+
+  if(readingStatus === "reading")
+    $("statusReading").classList.add("active");
+
+  if(readingStatus === "read")
+    $("statusRead").classList.add("active");
+
+}
+
+async function loadProfile(){
+
+  let display =
+    currentUser?.user_metadata?.display_name ||
+    "Reader";
+
+  let avatar = "";
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "get_public_profile",
+        {
+          check_user_id:
+            currentUser.id
+        }
+      );
+
+    if(error)
+      throw error;
+
+    const profile =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+    if(profile){
+
+      display =
+        profile.display_name ||
+        display;
+
+      avatar =
+        profile.avatar_url ||
+        "";
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Profile lookup:",
+      error.message
+    );
+
+  }
+
+  const holder =
+    $("navAvatar");
+
+  holder.innerHTML = "";
+
+  if(avatar){
+
+    const image =
+      document.createElement("img");
+
+    image.src = avatar;
+    image.alt = display;
+
+    image.onerror =
+      () => {
+
+        holder.innerHTML = "";
+
+        holder.textContent =
+          display.charAt(0).toUpperCase();
+
+      };
+
+    holder.appendChild(image);
+
+  }
+  else{
+
+    holder.textContent =
+      display.charAt(0).toUpperCase();
+
+  }
+
+}
+
+async function loadBook(){
+
+  if(!bookId){
+
+    showError();
+    return;
+
+  }
+
+  try{
+
+    /*
+      Canonical DogEar book record.
+
+      The table name "books" is intentionally simple.
+      If your existing database uses a different book table,
+      change it here.
+    */
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("books")
+        .select("*")
+        .eq("id",bookId)
+        .maybeSingle();
+
+    if(error)
+      throw error;
+
+    if(!data){
+
+      showError();
+      return;
+
+    }
+
+    book = data;
+
+    renderBook();
+
+  }
+  catch(error){
+
+    console.error(
+      "Book lookup:",
+      error
+    );
+
+    showError();
+
+  }
+
+}
+
+function renderBook(){
+
+  const title =
+    book.title ||
+    "Untitled Book";
+
+  const author =
+    book.author ||
+    book.book_author ||
+    "Unknown author";
+
+  const cover =
+    book.cover_url ||
+    book.image_url ||
+    "";
+
+  $("title").textContent =
+    title;
+
+  $("author").textContent =
+    author;
+
+  document.title =
+    title + " — DogEar";
+
+  $("description").textContent =
+    book.description ||
+    book.summary ||
+    "No description is available yet.";
+
+  $("isbn").textContent =
+    book.isbn ||
+    "—";
+
+  $("publisher").textContent =
+    book.publisher ||
+    "—";
+
+  $("published").textContent =
+    book.published_date ||
+    book.publication_date ||
+    "—";
+
+  $("pages").textContent =
+    book.page_count ||
+    book.pages ||
+    "—";
+
+  $("categories").textContent =
+    Array.isArray(book.categories)
+      ? book.categories.join(", ")
+      : (
+          book.categories ||
+          book.genre ||
+          "—"
+        );
+
+  $("googleBooksId").textContent =
+    book.google_books_id ||
+    "—";
+
+  const edition =
+    $("edition");
+
+  edition.innerHTML = "";
+
+  [
+    book.format,
+    book.isbn,
+    book.publisher,
+    book.published_date
+  ]
+    .filter(Boolean)
+    .slice(0,4)
+    .forEach(
+      value => {
+
+        const span =
+          document.createElement("span");
+
+        span.className =
+          "pill";
+
+        span.textContent =
+          value;
+
+        edition.appendChild(span);
+
+      }
+    );
+
+  const coverHolder =
+    $("cover");
+
+  if(cover){
+
+    coverHolder.innerHTML = "";
+
+    const image =
+      document.createElement("img");
+
+    image.src =
+      cover;
+
+    image.alt =
+      title + " cover";
+
+    image.onerror =
+      () => {
+
+        coverHolder.innerHTML =
+          "No cover";
+
+      };
+
+    coverHolder.appendChild(image);
+
+  }
+
+  renderPurchaseLink();
+
+}
+
+function renderPurchaseLink(){
+
+  const affiliate =
+    book.affiliate_url ||
+    book.purchase_url ||
+    "";
+
+  const seller =
+    book.affiliate_source ||
+    book.seller_name ||
+    "";
+
+  if(!affiliate){
+
+    $("purchaseLink").style.display =
+      "none";
+
+    $("noPurchase").hidden =
+      false;
+
+    return;
+
+  }
+
+  $("noPurchase").hidden =
+    true;
+
+  $("purchaseLink").style.display =
+    "flex";
+
+  $("purchaseLink").href =
+    affiliate;
+
+  if(seller){
+
+    $("sellerName").textContent =
+      "Buy from " + seller;
+
+  }
+
+}
+
+async function loadReadingStatus(){
+
+  if(!bookId)
+    return;
+
+  try{
+
+    /*
+      Personal reader shelves.
+
+      Expected fields:
+      user_id
+      book_id
+      status
+    */
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("user_books")
+        .select("*")
+        .eq("user_id",currentUser.id)
+        .eq("book_id",bookId)
+        .maybeSingle();
+
+    if(error)
+      throw error;
+
+    readingStatus =
+      normalizeStatus(
+        data?.status
+      );
+
+    renderStatus();
+
+  }
+  catch(error){
+
+    console.warn(
+      "Reading status lookup:",
+      error.message
+    );
+
+  }
+
+}
+
+async function setReadingStatus(status){
+
+  if(!bookId)
+    return;
+
+  try{
+
+    const {
+      data:existing,
+      error:lookupError
+    } =
+      await supabaseClient
+        .from("user_books")
+        .select("id")
+        .eq("user_id",currentUser.id)
+        .eq("book_id",bookId)
+        .maybeSingle();
+
+    if(lookupError)
+      throw lookupError;
+
+    let response;
+
+    if(existing){
+
+      response =
+        await supabaseClient
+          .from("user_books")
+          .update({
+            status
+          })
+          .eq("id",existing.id);
+
+    }
+    else{
+
+      response =
+        await supabaseClient
+          .from("user_books")
+          .insert({
+            user_id:
+              currentUser.id,
+
+            book_id:
+              bookId,
+
+            status
+          });
+
+    }
+
+    if(response.error)
+      throw response.error;
+
+    readingStatus =
+      status;
+
+    renderStatus();
+
+    showMessage(
+      "Your reading status has been updated.",
+      "success"
+    );
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    showMessage(
+      "DogEar couldn't update your reading status: " +
+      (
+        error.message ||
+        "Unknown error"
+      ),
+      "error"
+    );
+
+  }
+
+}
+
+async function loadClubs(){
+
+  if(!bookId)
+    return;
+
+  const clubList =
+    $("clubList");
+
+  clubList.innerHTML = "";
+
+  try{
+
+    /*
+      This assumes club_books can reference
+      the canonical DogEar book by book_id.
+    */
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("club_books")
+        .select("club_id, clubs(id,name,genre)")
+        .eq("book_id",bookId);
+
+    if(error)
+      throw error;
+
+    const rows =
+      data || [];
+
+    if(!rows.length){
+
+      $("noClubs").hidden =
+        false;
+
+      return;
+
+    }
+
+    $("noClubs").hidden =
+      true;
+
+    const seen =
+      new Set();
+
+    for(const row of rows){
+
+      const club =
+        row.clubs;
+
+      if(
+        !club ||
+        seen.has(club.id)
+      )
+        continue;
+
+      seen.add(club.id);
+
+      const link =
+        document.createElement("a");
+
+      link.className =
+        "club-row";
+
+      link.href =
+        "club.html?id=" +
+        encodeURIComponent(
+          club.id
+        );
+
+      link.innerHTML = `
+
+        <div class="club-name">
+          ${escapeHtml(
+            club.name ||
+            "Book Club"
+          )}
+        </div>
+
+        <div class="club-meta">
+          ${escapeHtml(
+            club.genre ||
+            "DogEar book club"
+          )}
+        </div>
+      `;
+
+      clubList.appendChild(link);
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Club book lookup:",
+      error.message
+    );
+
+    $("noClubs").hidden =
+      false;
+
+  }
+
+}
+
+$("wantToReadBtn")
+  .addEventListener(
+    "click",
+    () =>
+      setReadingStatus(
+        "want_to_read"
+      )
+  );
+
+$("readingBtn")
+  .addEventListener(
+    "click",
+    () =>
+      setReadingStatus(
+        "reading"
+      )
+  );
+
+$("readBtn")
+  .addEventListener(
+    "click",
+    () =>
+      setReadingStatus(
+        "read"
+      )
+  );
+
+$("statusWant")
+  .addEventListener(
+    "click",
+    () =>
+      setReadingStatus(
+        "want_to_read"
+      )
+  );
+
+$("statusReading")
+  .addEventListener(
+    "click",
+    () =>
+      setReadingStatus(
+        "reading"
+      )
+  );
+
+$("statusRead")
+  .addEventListener(
+    "click",
+    () =>
+      setReadingStatus(
+        "read"
+      )
+  );
+
+async function start(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+  if(
+    error ||
+    !data.user
+  ){
+
+    location.href =
+      "auth.html#login";
+
+    return;
+
+  }
+
+  currentUser =
+    data.user;
+
+  await Promise.all([
+    loadProfile(),
+    loadBook()
+  ]);
+
+  if(book){
+
+    await Promise.all([
+      loadReadingStatus(),
+      loadClubs()
+    ]);
+
+  }
+
+  $("loading")
+    .classList
+    .add("hidden");
+
+}
+
+start();
+</script>
+
+</body>
+</html>
