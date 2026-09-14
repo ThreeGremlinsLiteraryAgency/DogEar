@@ -30,6 +30,7 @@ body{
   color:var(--cream);
   background:
     radial-gradient(circle at 10% 0%,rgba(53,73,59,.24),transparent 28%),
+    radial-gradient(circle at 92% 8%,rgba(199,155,89,.08),transparent 24%),
     var(--ink);
   font-family:Georgia,"Times New Roman",serif;
 }
@@ -45,9 +46,10 @@ a{color:inherit}
   padding:0 clamp(18px,4vw,60px);
   border-bottom:1px solid var(--line);
   background:rgba(9,11,10,.94);
+  backdrop-filter:blur(14px);
   position:sticky;
   top:0;
-  z-index:20;
+  z-index:100;
 }
 
 .brand{
@@ -67,6 +69,19 @@ a{color:inherit}
   border:1px solid var(--gold);
   border-radius:50% 50% 50% 12%;
   transform:rotate(-8deg);
+  position:relative;
+}
+
+.brand-mark::after{
+  content:"";
+  position:absolute;
+  width:11px;
+  height:11px;
+  right:2px;
+  top:2px;
+  border-left:1px solid var(--gold);
+  border-bottom:1px solid var(--gold);
+  background:var(--ink);
 }
 
 .nav{
@@ -95,6 +110,7 @@ a{color:inherit}
   display:grid;
   place-items:center;
   background:var(--green);
+  color:var(--gold2);
   text-decoration:none;
   font:800 13px Arial;
   overflow:hidden;
@@ -192,7 +208,9 @@ h1{
   font:13px Arial;
 }
 
-.search:focus{border-color:var(--gold)}
+.search:focus{
+  border-color:var(--gold);
+}
 
 .shelf{
   display:grid;
@@ -206,6 +224,25 @@ h1{
   overflow:hidden;
   background:rgba(16,20,16,.88);
   box-shadow:0 18px 50px rgba(0,0,0,.22);
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease;
+}
+
+.book-card.clickable{
+  cursor:pointer;
+}
+
+.book-card.clickable:hover{
+  transform:translateY(-4px);
+  border-color:rgba(199,155,89,.55);
+  box-shadow:0 24px 60px rgba(0,0,0,.34);
+}
+
+.book-card.clickable:focus{
+  outline:2px solid var(--gold);
+  outline-offset:3px;
 }
 
 .cover{
@@ -215,6 +252,8 @@ h1{
   place-items:center;
   color:var(--muted);
   font:700 10px Arial;
+  text-align:center;
+  overflow:hidden;
 }
 
 .cover img{
@@ -231,6 +270,7 @@ h1{
   margin:0 0 6px;
   font-size:20px;
   font-weight:400;
+  line-height:1.15;
 }
 
 .author{
@@ -241,16 +281,47 @@ h1{
 
 .meta{
   color:var(--muted);
-  font:10px/1.5 Arial;
+  font:10px/1.55 Arial;
+  margin-top:4px;
+}
+
+.edition-meta{
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid var(--line-soft);
+}
+
+.badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:12px;
 }
 
 .badge{
   display:inline-block;
-  margin-top:10px;
   padding:6px 9px;
   border:1px solid var(--line);
   border-radius:999px;
   color:var(--gold2);
+  font:800 8px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.badge.current{
+  border-color:var(--gold);
+  background:rgba(199,155,89,.1);
+  color:var(--gold2);
+}
+
+.badge.past{
+  color:var(--muted);
+}
+
+.view-hint{
+  margin-top:12px;
+  color:#756e63;
   font:800 8px Arial;
   letter-spacing:.08em;
   text-transform:uppercase;
@@ -281,10 +352,12 @@ h1{
   display:grid;
   place-items:center;
   background:var(--ink);
-  z-index:100;
+  z-index:1000;
 }
 
-.loading.hidden{display:none}
+.loading.hidden{
+  display:none;
+}
 
 .loading span{
   color:var(--gold2);
@@ -293,19 +366,75 @@ h1{
   text-transform:uppercase;
 }
 
+.mobile-nav{
+  display:none;
+}
+
 @media(max-width:950px){
-  .shelf{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .shelf{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
 }
 
 @media(max-width:700px){
-  .nav{display:none}
-  .shelf{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .toolbar{align-items:stretch;flex-direction:column}
-  .search{width:100%}
+  .nav{
+    display:none;
+  }
+
+  .shelf{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .toolbar{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .search{
+    width:100%;
+  }
+
+  .mobile-nav{
+    position:fixed;
+    left:12px;
+    right:12px;
+    bottom:12px;
+    z-index:200;
+    min-height:64px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:rgba(9,11,10,.95);
+    backdrop-filter:blur(14px);
+  }
+
+  .mobile-nav a{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    color:var(--muted);
+    text-decoration:none;
+    font:9px Arial;
+    text-transform:uppercase;
+  }
+
+  .mobile-nav a span:first-child{
+    color:var(--gold2);
+    font-size:17px;
+  }
+
+  .page{
+    padding-bottom:120px;
+  }
 }
 
 @media(max-width:460px){
-  .shelf{grid-template-columns:1fr}
+  .shelf{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
@@ -330,13 +459,23 @@ h1{
     <a href="marketplace.html">Books</a>
   </nav>
 
-  <a class="avatar" id="navAvatar" href="profile.html">?</a>
+  <a
+    class="avatar"
+    id="navAvatar"
+    href="profile.html"
+  >
+    ?
+  </a>
 
 </header>
 
 <main class="page">
 
-  <a class="back" id="backLink" href="club.html">
+  <a
+    class="back"
+    id="backLink"
+    href="club.html"
+  >
     ← Back to Club
   </a>
 
@@ -356,29 +495,51 @@ h1{
 
   </section>
 
-  <nav class="club-nav" aria-label="Club navigation">
+  <nav
+    class="club-nav"
+    aria-label="Club navigation"
+  >
 
-    <a id="overviewLink" href="club.html">
+    <a
+      id="overviewLink"
+      href="club.html"
+    >
       Overview
     </a>
 
-    <a id="membersLink" href="club-members.html">
+    <a
+      id="membersLink"
+      href="club-members.html"
+    >
       Members
     </a>
 
-    <a id="discussionsLink" href="club-discussions.html">
+    <a
+      id="discussionsLink"
+      href="club-discussions.html"
+    >
       Discussions
     </a>
 
-    <a id="voteLink" href="club-vote.html">
+    <a
+      id="voteLink"
+      href="club-vote.html"
+    >
       Monthly Vote
     </a>
 
-    <a class="active" id="booksLink" href="club-books.html">
+    <a
+      class="active"
+      id="booksLink"
+      href="club-books.html"
+    >
       Bookshelf
     </a>
 
-    <a id="settingsLink" href="club-settings.html">
+    <a
+      id="settingsLink"
+      href="club-settings.html"
+    >
       Settings
     </a>
 
@@ -390,13 +551,42 @@ h1{
       class="search"
       id="bookSearch"
       type="search"
-      placeholder="Search the club bookshelf…">
+      placeholder="Search the club bookshelf…"
+      aria-label="Search club bookshelf"
+    >
 
   </div>
 
-  <section class="shelf" id="shelf"></section>
+  <section
+    class="shelf"
+    id="shelf"
+  ></section>
 
 </main>
+
+<nav class="mobile-nav">
+
+  <a href="dashboard.html">
+    <span>⌂</span>
+    Home
+  </a>
+
+  <a href="discover.html">
+    <span>⌕</span>
+    Discover
+  </a>
+
+  <a href="clubs.html">
+    <span>◉</span>
+    Clubs
+  </a>
+
+  <a href="profile.html">
+    <span>☺</span>
+    Profile
+  </a>
+
+</nav>
 
 <script>
 const SUPABASE_URL =
@@ -412,10 +602,13 @@ const supabaseClient =
   );
 
 const $ =
-  id => document.getElementById(id);
+  id =>
+    document.getElementById(id);
 
 const params =
-  new URLSearchParams(location.search);
+  new URLSearchParams(
+    location.search
+  );
 
 const clubId =
   params.get("id");
@@ -423,10 +616,16 @@ const clubId =
 let currentUser = null;
 let books = [];
 
+/* =========================================
+   LINKS
+   ========================================= */
+
 function withClub(filename){
 
   return clubId
-    ? filename + "?id=" + encodeURIComponent(clubId)
+    ? filename +
+      "?id=" +
+      encodeURIComponent(clubId)
     : filename;
 
 }
@@ -456,6 +655,10 @@ function wireLinks(){
 
 }
 
+/* =========================================
+   HELPERS
+   ========================================= */
+
 function escapeHtml(value=""){
 
   return String(value)
@@ -472,6 +675,126 @@ function escapeHtml(value=""){
 
 }
 
+function initials(name="Reader"){
+
+  const parts =
+    String(name)
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+  if(!parts.length)
+    return "?";
+
+  if(parts.length === 1)
+    return parts[0]
+      .charAt(0)
+      .toUpperCase();
+
+  return (
+    parts[0].charAt(0) +
+    parts[parts.length - 1].charAt(0)
+  ).toUpperCase();
+
+}
+
+/* =========================================
+   BOOK STATUS
+   ========================================= */
+
+function getBookStatus(book,index){
+
+  const rawStatus =
+    String(
+      book.status ||
+      book.read_status ||
+      book.selection_status ||
+      ""
+    )
+      .trim()
+      .toLowerCase();
+
+  if(
+    rawStatus === "current" ||
+    rawStatus === "selected" ||
+    rawStatus === "reading" ||
+    rawStatus === "active"
+  ){
+
+    return {
+      label:"Current Selection",
+      className:"current"
+    };
+
+  }
+
+  if(
+    rawStatus === "completed" ||
+    rawStatus === "read" ||
+    rawStatus === "finished" ||
+    rawStatus === "past"
+  ){
+
+    return {
+      label:"Club Read",
+      className:"past"
+    };
+
+  }
+
+  /*
+    Compatibility fallback:
+
+    Some current club_books rows may not yet
+    have a status column. In that case we keep
+    the original Club Read behavior.
+
+    If a future row exposes is_current, we use it.
+  */
+
+  if(
+    book.is_current === true
+  ){
+
+    return {
+      label:"Current Selection",
+      className:"current"
+    };
+
+  }
+
+  return {
+    label:"Club Read",
+    className:"past"
+  };
+
+}
+
+/* =========================================
+   BOOK DETAIL URL
+   ========================================= */
+
+function getBookDetailUrl(book){
+
+  const bookId =
+    book.book_id ||
+    book.central_book_id ||
+    null;
+
+  if(!bookId)
+    return null;
+
+  return (
+    "book.html?id=" +
+    encodeURIComponent(bookId)
+  );
+
+}
+
+/* =========================================
+   RENDER BOOKS
+   ========================================= */
+
 function renderBooks(list){
 
   const shelf =
@@ -484,7 +807,10 @@ function renderBooks(list){
 
     shelf.innerHTML = `
       <div class="empty">
-        <strong>The shelf is still empty.</strong>
+        <strong>
+          The shelf is still empty.
+        </strong>
+
         Once the club finishes or selects books,
         they'll appear here.
       </div>
@@ -494,7 +820,14 @@ function renderBooks(list){
 
   }
 
-  for(const book of list){
+  for(
+    let index = 0;
+    index < list.length;
+    index++
+  ){
+
+    const book =
+      list[index];
 
     const title =
       book.title ||
@@ -517,11 +850,77 @@ function renderBooks(list){
       book.month_label ||
       "";
 
+    const isbn =
+      book.isbn ||
+      book.isbn13 ||
+      book.isbn_13 ||
+      "";
+
+    const publisher =
+      book.publisher ||
+      "";
+
+    const publishedDate =
+      book.published_date ||
+      book.publication_date ||
+      "";
+
+    const status =
+      getBookStatus(
+        book,
+        index
+      );
+
+    const detailUrl =
+      getBookDetailUrl(
+        book
+      );
+
+    const editionParts = [];
+
+    if(publisher)
+      editionParts.push(
+        publisher
+      );
+
+    if(publishedDate)
+      editionParts.push(
+        publishedDate
+      );
+
+    if(isbn)
+      editionParts.push(
+        "ISBN " + isbn
+      );
+
     const card =
-      document.createElement("article");
+      document.createElement(
+        "article"
+      );
 
     card.className =
       "book-card";
+
+    if(detailUrl){
+
+      card.classList.add(
+        "clickable"
+      );
+
+      card.tabIndex =
+        0;
+
+      card.setAttribute(
+        "role",
+        "link"
+      );
+
+      card.setAttribute(
+        "aria-label",
+        "View " + title
+      );
+
+    }
 
     card.innerHTML = `
 
@@ -553,29 +952,105 @@ function renderBooks(list){
           readMonth
             ? `
               <div class="meta">
-                Read ${escapeHtml(readMonth)}
+                ${
+                  status.className === "current"
+                    ? "Selected "
+                    : "Read "
+                }
+                ${escapeHtml(readMonth)}
               </div>
             `
             : ""
         }
 
-        <div class="badge">
-          Club Read
+        ${
+          editionParts.length
+            ? `
+              <div class="edition-meta">
+                <div class="meta">
+                  ${escapeHtml(
+                    editionParts.join(" · ")
+                  )}
+                </div>
+              </div>
+            `
+            : ""
+        }
+
+        <div class="badges">
+
+          <span
+            class="badge ${escapeHtml(status.className)}"
+          >
+            ${escapeHtml(status.label)}
+          </span>
+
         </div>
+
+        ${
+          detailUrl
+            ? `
+              <div class="view-hint">
+                View book details →
+              </div>
+            `
+            : ""
+        }
 
       </div>
     `;
 
-    shelf.appendChild(card);
+    if(detailUrl){
+
+      card.addEventListener(
+        "click",
+        () => {
+
+          location.href =
+            detailUrl;
+
+        }
+      );
+
+      card.addEventListener(
+        "keydown",
+        event => {
+
+          if(
+            event.key === "Enter" ||
+            event.key === " "
+          ){
+
+            event.preventDefault();
+
+            location.href =
+              detailUrl;
+
+          }
+
+        }
+      );
+
+    }
+
+    shelf.appendChild(
+      card
+    );
 
   }
 
 }
 
+/* =========================================
+   PROFILE
+   ========================================= */
+
 async function loadProfile(){
 
   let display =
-    currentUser?.user_metadata?.display_name ||
+    currentUser
+      ?.user_metadata
+      ?.display_name ||
     "Reader";
 
   let avatar = "";
@@ -586,13 +1061,14 @@ async function loadProfile(){
       data,
       error
     } =
-      await supabaseClient.rpc(
-        "get_public_profile",
-        {
-          check_user_id:
-            currentUser.id
-        }
-      );
+      await supabaseClient
+        .rpc(
+          "get_public_profile",
+          {
+            check_user_id:
+              currentUser.id
+          }
+        );
 
     if(error)
       throw error;
@@ -633,7 +1109,9 @@ async function loadProfile(){
   if(avatar){
 
     const image =
-      document.createElement("img");
+      document.createElement(
+        "img"
+      );
 
     image.src =
       avatar;
@@ -648,26 +1126,29 @@ async function loadProfile(){
           "";
 
         holder.textContent =
-          display.charAt(0).toUpperCase();
+          initials(display);
 
       };
 
-    holder.appendChild(image);
+    holder.appendChild(
+      image
+    );
 
   }
   else{
 
     holder.textContent =
-      display.charAt(0).toUpperCase();
+      initials(display);
 
   }
 
 }
 
-async function loadClub(){
+/* =========================================
+   CLUB
+   ========================================= */
 
-  if(!clubId)
-    return;
+async function loadClub(){
 
   try{
 
@@ -678,19 +1159,35 @@ async function loadClub(){
       await supabaseClient
         .from("clubs")
         .select("id,name")
-        .eq("id",clubId)
+        .eq(
+          "id",
+          clubId
+        )
         .maybeSingle();
 
     if(error)
       throw error;
 
-    if(data){
+    if(!data){
 
-      $("clubName").textContent =
-        data.name ||
-        "Book Club";
+      location.href =
+        "clubs.html";
+
+      return;
 
     }
+
+    $("clubName").textContent =
+      data.name ||
+      "Book Club";
+
+    document.title =
+      "DogEar — " +
+      (
+        data.name ||
+        "Club"
+      ) +
+      " Bookshelf";
 
   }
   catch(error){
@@ -704,14 +1201,11 @@ async function loadClub(){
 
 }
 
+/* =========================================
+   LOAD BOOKS
+   ========================================= */
+
 async function loadBooks(){
-
-  if(!clubId){
-
-    renderBooks([]);
-    return;
-
-  }
 
   try{
 
@@ -722,8 +1216,16 @@ async function loadBooks(){
       await supabaseClient
         .from("club_books")
         .select("*")
-        .eq("club_id",clubId)
-        .order("created_at",{ascending:false});
+        .eq(
+          "club_id",
+          clubId
+        )
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        );
 
     if(error)
       throw error;
@@ -731,7 +1233,9 @@ async function loadBooks(){
     books =
       data || [];
 
-    renderBooks(books);
+    renderBooks(
+      books
+    );
 
   }
   catch(error){
@@ -742,11 +1246,16 @@ async function loadBooks(){
     );
 
     books = [];
+
     renderBooks([]);
 
   }
 
 }
+
+/* =========================================
+   SEARCH
+   ========================================= */
 
 $("bookSearch")
   .addEventListener(
@@ -754,13 +1263,17 @@ $("bookSearch")
     event => {
 
       const query =
-        event.target.value
+        event.target
+          .value
           .trim()
           .toLowerCase();
 
       if(!query){
 
-        renderBooks(books);
+        renderBooks(
+          books
+        );
+
         return;
 
       }
@@ -777,23 +1290,53 @@ $("bookSearch")
                 book.book_author,
                 book.read_month,
                 book.selected_month,
-                book.month_label
+                book.month_label,
+                book.publisher,
+                book.published_date,
+                book.publication_date,
+                book.isbn,
+                book.isbn13,
+                book.isbn_13,
+                book.status,
+                book.read_status,
+                book.selection_status
               ]
-              .filter(Boolean)
-              .join(" ")
-              .toLowerCase();
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
 
-            return haystack.includes(query);
+            return haystack.includes(
+              query
+            );
 
           }
         );
 
-      renderBooks(filtered);
+      renderBooks(
+        filtered
+      );
 
     }
   );
 
+/* =========================================
+   START
+   ========================================= */
+
 async function start(){
+
+  /*
+    Every club page requires a club id.
+  */
+
+  if(!clubId){
+
+    location.href =
+      "clubs.html";
+
+    return;
+
+  }
 
   wireLinks();
 
