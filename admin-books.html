@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DogEar — Book Administration</title>
+<title>DogEar — Marketplace Manager</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -17,14 +17,20 @@
   --gold:#c79b59;
   --gold2:#dfbd7e;
   --green:#26362b;
+  --green2:#314838;
   --muted:#aaa18f;
   --line:rgba(199,155,89,.22);
   --line-soft:rgba(199,155,89,.11);
   --danger:#e6a09a;
+  --danger-bg:rgba(130,45,45,.16);
   --ok:#b9d6b2;
+  --ok-bg:rgba(80,125,75,.14);
+  --warning:#e7c67e;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -32,6 +38,7 @@ body{
   color:var(--cream);
   background:
     radial-gradient(circle at 10% 0%,rgba(53,73,59,.24),transparent 28%),
+    radial-gradient(circle at 90% 5%,rgba(199,155,89,.06),transparent 25%),
     var(--ink);
   font-family:Georgia,"Times New Roman",serif;
 }
@@ -47,6 +54,14 @@ a{
   color:inherit;
 }
 
+button{
+  color:inherit;
+}
+
+/* =========================================================
+   TOPBAR
+   ========================================================= */
+
 .topbar{
   min-height:76px;
   display:flex;
@@ -55,10 +70,11 @@ a{
   gap:24px;
   padding:0 clamp(18px,4vw,60px);
   border-bottom:1px solid var(--line);
-  background:rgba(9,11,10,.94);
+  background:rgba(9,11,10,.95);
   position:sticky;
   top:0;
-  z-index:30;
+  z-index:40;
+  backdrop-filter:blur(14px);
 }
 
 .brand{
@@ -75,15 +91,28 @@ a{
 .brand-mark{
   width:34px;
   height:34px;
+  position:relative;
   border:1px solid var(--gold);
   border-radius:50% 50% 50% 12%;
   transform:rotate(-8deg);
 }
 
+.brand-mark::after{
+  content:"";
+  position:absolute;
+  width:11px;
+  height:11px;
+  right:2px;
+  top:2px;
+  border-left:1px solid var(--gold);
+  border-bottom:1px solid var(--gold);
+  background:var(--ink);
+}
+
 .nav{
   display:flex;
-  gap:24px;
-  font:700 11px Arial;
+  gap:22px;
+  font:700 10px Arial;
   letter-spacing:.1em;
   text-transform:uppercase;
 }
@@ -94,7 +123,7 @@ a{
 }
 
 .nav a:hover,
-.nav .active{
+.nav a.active{
   color:var(--gold2);
 }
 
@@ -107,6 +136,7 @@ a{
   place-items:center;
   overflow:hidden;
   background:var(--green);
+  color:var(--gold2);
   text-decoration:none;
   font:800 13px Arial;
 }
@@ -117,17 +147,31 @@ a{
   object-fit:cover;
 }
 
+/* =========================================================
+   PAGE
+   ========================================================= */
+
 .page{
-  width:min(1220px,calc(100% - 32px));
+  width:min(1240px,calc(100% - 32px));
   margin:auto;
-  padding:38px 0 110px;
+  padding:38px 0 100px;
+}
+
+.back-link{
+  display:inline-block;
+  margin-bottom:24px;
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 10px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
 }
 
 .hero{
   display:flex;
   align-items:flex-end;
   justify-content:space-between;
-  gap:24px;
+  gap:30px;
   padding-bottom:28px;
   border-bottom:1px solid var(--line);
 }
@@ -150,10 +194,20 @@ h1{
 
 .subtitle{
   margin-top:12px;
-  max-width:700px;
+  max-width:760px;
   color:var(--muted);
   font:13px/1.65 Arial;
 }
+
+.hero-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
 
 .btn{
   min-height:44px;
@@ -187,40 +241,275 @@ h1{
   color:var(--danger);
 }
 
+.btn:hover{
+  filter:brightness(1.08);
+}
+
 .btn:disabled{
-  opacity:.5;
+  opacity:.45;
   cursor:not-allowed;
 }
+
+/* =========================================================
+   SYSTEM STATUS
+   ========================================================= */
+
+.system-panel{
+  margin-top:26px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  overflow:hidden;
+  background:rgba(16,20,16,.88);
+}
+
+.system-head{
+  padding:20px 22px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  align-items:center;
+}
+
+.system-head h2{
+  margin:0;
+  font-size:27px;
+  font-weight:400;
+}
+
+.system-head p{
+  margin:6px 0 0;
+  color:var(--muted);
+  font:11px/1.55 Arial;
+}
+
+.system-body{
+  padding:20px 22px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+.switch-card{
+  border:1px solid var(--line-soft);
+  border-radius:15px;
+  padding:18px;
+  background:var(--panel2);
+}
+
+.switch-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.switch-title{
+  font-size:20px;
+}
+
+.switch-description{
+  margin-top:8px;
+  color:var(--muted);
+  font:11px/1.55 Arial;
+}
+
+.switch{
+  width:58px;
+  height:31px;
+  padding:3px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#171a18;
+  cursor:pointer;
+  transition:.2s;
+  flex:0 0 auto;
+}
+
+.switch-knob{
+  display:block;
+  width:23px;
+  height:23px;
+  border-radius:50%;
+  background:var(--muted);
+  transition:.2s;
+}
+
+.switch.on{
+  border-color:var(--gold);
+  background:var(--green2);
+}
+
+.switch.on .switch-knob{
+  transform:translateX(27px);
+  background:var(--gold2);
+}
+
+.switch:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.status-banner{
+  margin:0 22px 20px;
+  padding:13px 14px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  color:var(--muted);
+  font:11px/1.55 Arial;
+}
+
+.status-banner.off{
+  border-color:rgba(230,160,154,.25);
+  background:var(--danger-bg);
+  color:#d8b0ab;
+}
+
+.status-banner.on{
+  border-color:rgba(185,214,178,.25);
+  background:var(--ok-bg);
+  color:var(--ok);
+}
+
+/* =========================================================
+   TABS
+   ========================================================= */
+
+.tabs{
+  display:flex;
+  gap:8px;
+  margin:28px 0 18px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--line);
+  overflow:auto;
+}
+
+.tab{
+  min-height:40px;
+  padding:0 16px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:transparent;
+  color:var(--muted);
+  cursor:pointer;
+  white-space:nowrap;
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.tab.active{
+  border-color:var(--gold);
+  color:var(--gold2);
+  background:rgba(38,54,43,.45);
+}
+
+.tab-panel{
+  display:none;
+}
+
+.tab-panel.active{
+  display:block;
+}
+
+/* =========================================================
+   SECTION HEADER
+   ========================================================= */
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:20px;
+  margin-bottom:18px;
+}
+
+.section-head h2{
+  margin:0;
+  font-size:31px;
+  font-weight:400;
+}
+
+.section-head p{
+  margin:6px 0 0;
+  color:var(--muted);
+  font:11px/1.55 Arial;
+  max-width:720px;
+}
+
+.section-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.stat{
+  padding:17px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:rgba(16,20,16,.75);
+}
+
+.stat-label{
+  color:var(--gold);
+  font:800 8px Arial;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.stat-value{
+  margin-top:7px;
+  font-size:29px;
+}
+
+/* =========================================================
+   TOOLBAR
+   ========================================================= */
 
 .toolbar{
   display:flex;
   justify-content:space-between;
-  gap:14px;
-  margin:26px 0 18px;
+  gap:12px;
+  margin-bottom:16px;
 }
 
 .search{
-  width:min(460px,100%);
-  height:46px;
+  width:min(480px,100%);
+  height:45px;
   padding:0 14px;
   border:1px solid var(--line);
-  border-radius:12px;
+  border-radius:11px;
   background:var(--panel2);
   color:var(--cream);
   outline:none;
-  font:13px Arial;
+  font:12px Arial;
 }
 
 .search:focus{
   border-color:var(--gold);
 }
 
-.library{
+/* =========================================================
+   ROWS
+   ========================================================= */
+
+.list{
   display:grid;
-  gap:12px;
+  gap:11px;
 }
 
-.book-row{
+.item-row{
   display:grid;
   grid-template-columns:72px minmax(0,1fr) auto;
   gap:16px;
@@ -231,7 +520,7 @@ h1{
   background:rgba(16,20,16,.86);
 }
 
-.book-cover{
+.item-image{
   width:72px;
   aspect-ratio:2/3;
   border-radius:7px;
@@ -244,38 +533,74 @@ h1{
   text-align:center;
 }
 
-.book-cover img{
+.reward-image{
+  aspect-ratio:1/1;
+}
+
+.item-image img{
   width:100%;
   height:100%;
   object-fit:cover;
 }
 
-.book-title{
+.item-title{
   margin:0 0 4px;
   font-size:20px;
   font-weight:400;
 }
 
-.book-author{
+.item-author{
   color:var(--gold2);
   font:700 11px Arial;
   margin-bottom:7px;
 }
 
-.book-meta{
+.item-meta{
   color:var(--muted);
-  font:10px/1.5 Arial;
+  font:10px/1.55 Arial;
+}
+
+.badges{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-top:8px;
+}
+
+.badge{
+  padding:5px 8px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--muted);
+  font:800 8px Arial;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+
+.badge.featured{
+  color:var(--gold2);
+  border-color:rgba(199,155,89,.45);
+}
+
+.badge.active{
+  color:var(--ok);
+  border-color:rgba(185,214,178,.3);
+}
+
+.badge.inactive{
+  color:var(--danger);
+  border-color:rgba(230,160,154,.3);
 }
 
 .row-actions{
   display:flex;
-  gap:8px;
+  gap:7px;
   flex-wrap:wrap;
   justify-content:flex-end;
 }
 
 .empty{
-  padding:60px 20px;
+  padding:55px 20px;
   border:1px solid var(--line);
   border-radius:18px;
   text-align:center;
@@ -287,18 +612,71 @@ h1{
   display:block;
   margin-bottom:8px;
   color:var(--cream);
-  font-size:24px;
-  font-weight:400;
+  font:400 24px Georgia;
 }
+
+/* =========================================================
+   BOOK PICKER
+   ========================================================= */
+
+.book-picker-list{
+  display:grid;
+  gap:9px;
+  max-height:430px;
+  overflow:auto;
+  margin-top:14px;
+}
+
+.picker-row{
+  display:grid;
+  grid-template-columns:50px minmax(0,1fr) auto;
+  gap:12px;
+  align-items:center;
+  padding:10px;
+  border:1px solid var(--line-soft);
+  border-radius:11px;
+}
+
+.picker-cover{
+  width:50px;
+  aspect-ratio:2/3;
+  border-radius:5px;
+  overflow:hidden;
+  background:#171c18;
+  display:grid;
+  place-items:center;
+  color:var(--muted);
+  font:7px Arial;
+}
+
+.picker-cover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.picker-title{
+  font-size:15px;
+}
+
+.picker-author{
+  margin-top:3px;
+  color:var(--muted);
+  font:10px Arial;
+}
+
+/* =========================================================
+   MODALS
+   ========================================================= */
 
 .modal{
   position:fixed;
   inset:0;
-  z-index:60;
+  z-index:80;
   display:none;
   place-items:center;
   padding:20px;
-  background:rgba(0,0,0,.8);
+  background:rgba(0,0,0,.82);
 }
 
 .modal.show{
@@ -307,12 +685,16 @@ h1{
 
 .modal-card{
   width:min(760px,100%);
-  max-height:90vh;
+  max-height:92vh;
   overflow:auto;
   border:1px solid var(--line);
   border-radius:20px;
   background:#0e120f;
   box-shadow:0 30px 90px rgba(0,0,0,.55);
+}
+
+.modal-card.small{
+  width:min(520px,100%);
 }
 
 .modal-head{
@@ -343,7 +725,7 @@ h1{
 }
 
 .field{
-  margin-bottom:18px;
+  margin-bottom:17px;
 }
 
 .field label{
@@ -374,7 +756,7 @@ h1{
 }
 
 .field textarea{
-  min-height:120px;
+  min-height:110px;
   padding:12px;
   resize:vertical;
   line-height:1.5;
@@ -390,6 +772,28 @@ h1{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:14px;
+}
+
+.check-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.check-card{
+  display:flex;
+  gap:9px;
+  align-items:flex-start;
+  padding:12px;
+  border:1px solid var(--line-soft);
+  border-radius:11px;
+  color:var(--muted);
+  font:11px/1.45 Arial;
+}
+
+.check-card input{
+  margin-top:2px;
 }
 
 .form-actions{
@@ -408,9 +812,42 @@ h1{
   font:11px/1.5 Arial;
 }
 
-.message.show{display:block}
-.message.error{color:var(--danger)}
-.message.success{color:var(--ok)}
+.message.show{
+  display:block;
+}
+
+.message.error{
+  color:var(--danger);
+}
+
+.message.success{
+  color:var(--ok);
+}
+
+/* =========================================================
+   CONFIRMATION
+   ========================================================= */
+
+.confirm-copy{
+  padding:22px;
+  color:var(--muted);
+  font:12px/1.7 Arial;
+}
+
+.confirm-copy strong{
+  color:var(--cream);
+}
+
+.confirm-actions{
+  padding:0 22px 22px;
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+}
+
+/* =========================================================
+   LOADING / LOCKED
+   ========================================================= */
 
 .loading{
   position:fixed;
@@ -433,8 +870,11 @@ h1{
 }
 
 .locked{
+  margin-top:30px;
   padding:70px 24px;
   text-align:center;
+  border:1px solid var(--line);
+  border-radius:20px;
   color:var(--muted);
   font:13px/1.7 Arial;
 }
@@ -446,19 +886,36 @@ h1{
   font:400 25px Georgia;
 }
 
-@media(max-width:760px){
-  .nav{display:none}
+/* =========================================================
+   MOBILE
+   ========================================================= */
 
-  .hero{
+@media(max-width:850px){
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .system-body{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:720px){
+
+  .nav{
+    display:none;
+  }
+
+  .hero,
+  .section-head,
+  .toolbar{
     flex-direction:column;
     align-items:flex-start;
   }
 
-  .toolbar{
-    flex-direction:column;
-  }
-
-  .book-row{
+  .item-row{
     grid-template-columns:65px minmax(0,1fr);
   }
 
@@ -467,9 +924,19 @@ h1{
     justify-content:flex-start;
   }
 
-  .two-col{
+  .two-col,
+  .check-grid{
     grid-template-columns:1fr;
   }
+
+}
+
+@media(max-width:480px){
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+
 }
 </style>
 </head>
@@ -477,7 +944,7 @@ h1{
 <body>
 
 <div class="loading" id="loading">
-  <span>Opening Milo's book desk...</span>
+  <span>Opening Marketplace Manager...</span>
 </div>
 
 <header class="topbar">
@@ -488,17 +955,24 @@ h1{
   </a>
 
   <nav class="nav">
-    <a href="dashboard.html">Home</a>
-    <a href="discover.html">Discover</a>
-    <a href="clubs.html">Clubs</a>
-    <a class="active" href="marketplace.html">Books</a>
+    <a href="admin-dashboard.html">Admin</a>
+    <a href="admin-users.html">Users</a>
+    <a class="active" href="admin-books.html">Marketplace</a>
+    <a href="admin-logs.html">Logs</a>
+    <a href="marketplace.html">View Site</a>
   </nav>
 
-  <a class="avatar" id="navAvatar" href="profile.html">?</a>
+  <a class="avatar" id="navAvatar" href="profile.html">
+    ?
+  </a>
 
 </header>
 
 <main class="page">
+
+  <a class="back-link" href="admin-dashboard.html">
+    ← Back to Control Room
+  </a>
 
   <section class="hero">
 
@@ -509,99 +983,437 @@ h1{
       </div>
 
       <h1>
-        Book Desk
+        Marketplace Manager
       </h1>
 
       <div class="subtitle">
-        Manage books DogEar can sell, attach affiliate links, and manually
-        add books you want featured in the marketplace.
+        Curate DogEar's book marketplace, control featured titles,
+        manage coin rewards, and shut down the coin economy instantly
+        if necessary.
       </div>
 
     </div>
 
-    <button
-      class="btn primary"
-      id="addBookBtn"
-      type="button">
-      + Add Book to Sell
-    </button>
+    <div class="hero-actions">
 
-  </section>
-
-  <div id="adminArea">
-
-    <div class="toolbar">
-
-      <input
-        class="search"
-        id="librarySearch"
-        type="search"
-        placeholder="Search books, authors, ISBNs…">
-
-      <a
-        class="btn secondary"
-        href="marketplace.html">
+      <a class="btn secondary" href="marketplace.html">
         View Marketplace
       </a>
 
     </div>
 
-    <section class="library" id="bookLibrary"></section>
+  </section>
+
+  <div id="adminArea">
+
+    <!-- =====================================================
+         COIN SYSTEM CONTROL
+         ===================================================== -->
+
+    <section class="system-panel">
+
+      <div class="system-head">
+
+        <div>
+
+          <h2>
+            Coin System Controls
+          </h2>
+
+          <p>
+            Emergency controls for DogEar's entire coin economy.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="system-body">
+
+        <div class="switch-card">
+
+          <div class="switch-top">
+
+            <div class="switch-title">
+              Coin System
+            </div>
+
+            <button
+              class="switch"
+              id="coinSystemSwitch"
+              type="button"
+              aria-label="Toggle Coin System"
+              aria-pressed="false">
+
+              <span class="switch-knob"></span>
+
+            </button>
+
+          </div>
+
+          <div class="switch-description">
+            Master switch. When OFF, DogEar should not display,
+            award, spend, or redeem coins anywhere on the site.
+          </div>
+
+        </div>
+
+        <div class="switch-card">
+
+          <div class="switch-top">
+
+            <div class="switch-title">
+              Coin Marketplace
+            </div>
+
+            <button
+              class="switch"
+              id="coinMarketplaceSwitch"
+              type="button"
+              aria-label="Toggle Coin Marketplace"
+              aria-pressed="false">
+
+              <span class="switch-knob"></span>
+
+            </button>
+
+          </div>
+
+          <div class="switch-description">
+            Controls coin redemption only. This can be turned off
+            while leaving the broader coin system available.
+          </div>
+
+        </div>
+
+      </div>
+
+      <div
+        class="status-banner off"
+        id="coinStatusBanner">
+
+        Coins are currently disabled. Users should not see the
+        coin economy anywhere on DogEar.
+
+      </div>
+
+    </section>
+
+    <!-- =====================================================
+         TABS
+         ===================================================== -->
+
+    <div class="tabs">
+
+      <button
+        class="tab active"
+        type="button"
+        data-tab="booksPanel">
+        Book Marketplace
+      </button>
+
+      <button
+        class="tab"
+        type="button"
+        data-tab="rewardsPanel">
+        Coin Rewards
+      </button>
+
+    </div>
+
+    <!-- =====================================================
+         BOOK MARKETPLACE
+         ===================================================== -->
+
+    <section
+      class="tab-panel active"
+      id="booksPanel">
+
+      <div class="section-head">
+
+        <div>
+
+          <h2>
+            Book Marketplace
+          </h2>
+
+          <p>
+            These are normal books purchased with real money through
+            Bookshop.org. Coins are never used for these listings.
+          </p>
+
+        </div>
+
+        <div class="section-actions">
+
+          <button
+            class="btn primary"
+            id="addCuratedBookBtn"
+            type="button">
+            + Add Marketplace Book
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="stats">
+
+        <div class="stat">
+          <div class="stat-label">Marketplace Books</div>
+          <div class="stat-value" id="bookCount">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Featured</div>
+          <div class="stat-value" id="featuredCount">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Staff Picks</div>
+          <div class="stat-value" id="staffCount">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Active</div>
+          <div class="stat-value" id="activeBookCount">0</div>
+        </div>
+
+      </div>
+
+      <div class="toolbar">
+
+        <input
+          class="search"
+          id="bookSearch"
+          type="search"
+          placeholder="Search marketplace books...">
+
+      </div>
+
+      <div class="list" id="curatedBookList"></div>
+
+    </section>
+
+    <!-- =====================================================
+         COIN REWARDS
+         ===================================================== -->
+
+    <section
+      class="tab-panel"
+      id="rewardsPanel">
+
+      <div class="section-head">
+
+        <div>
+
+          <h2>
+            Coin Rewards
+          </h2>
+
+          <p>
+            Only DogEar-controlled inventory belongs here.
+            Bookshop.org affiliate listings are never coin rewards.
+          </p>
+
+        </div>
+
+        <div class="section-actions">
+
+          <button
+            class="btn primary"
+            id="addRewardBtn"
+            type="button">
+            + Add Coin Reward
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="stats">
+
+        <div class="stat">
+          <div class="stat-label">Rewards</div>
+          <div class="stat-value" id="rewardCount">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Active</div>
+          <div class="stat-value" id="activeRewardCount">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Featured</div>
+          <div class="stat-value" id="featuredRewardCount">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Coin Marketplace</div>
+          <div class="stat-value" id="rewardSystemStatus">OFF</div>
+        </div>
+
+      </div>
+
+      <div class="toolbar">
+
+        <input
+          class="search"
+          id="rewardSearch"
+          type="search"
+          placeholder="Search coin rewards...">
+
+      </div>
+
+      <div class="list" id="rewardList"></div>
+
+    </section>
 
   </div>
 
 </main>
 
-<!-- ADD / EDIT BOOK MODAL -->
+<!-- =========================================================
+     ADD BOOK PICKER
+     ========================================================= -->
 
-<div class="modal" id="bookModal">
+<div class="modal" id="bookPickerModal">
 
   <div class="modal-card">
 
     <div class="modal-head">
 
-      <h2 id="modalTitle">
-        Add Book to Sell
+      <h2>
+        Add Marketplace Book
       </h2>
 
       <button
         class="close"
-        id="closeModal"
-        type="button">
+        type="button"
+        data-close="bookPickerModal">
         ×
       </button>
 
     </div>
 
-    <form class="form" id="bookForm">
+    <div class="form">
 
-      <div class="message" id="formMessage"></div>
+      <div class="message" id="bookPickerMessage"></div>
+
+      <div class="field">
+
+        <label for="bookPickerSearch">
+          Search DogEar Books
+        </label>
+
+        <input
+          id="bookPickerSearch"
+          type="search"
+          placeholder="Title, author, ISBN...">
+
+      </div>
+
+      <div
+        class="book-picker-list"
+        id="bookPickerList">
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =========================================================
+     EDIT CURATED BOOK
+     ========================================================= -->
+
+<div class="modal" id="curatedBookModal">
+
+  <div class="modal-card">
+
+    <div class="modal-head">
+
+      <h2>
+        Marketplace Settings
+      </h2>
+
+      <button
+        class="close"
+        type="button"
+        data-close="curatedBookModal">
+        ×
+      </button>
+
+    </div>
+
+    <form
+      class="form"
+      id="curatedBookForm">
+
+      <div
+        class="message"
+        id="curatedBookMessage">
+      </div>
 
       <input
-        id="editingId"
-        type="hidden">
+        type="hidden"
+        id="curatedId">
 
-      <div class="field">
+      <div
+        class="field">
 
-        <label for="title">
-          Book Title
+        <label>
+          Book
         </label>
 
         <input
-          id="title"
-          required>
+          id="curatedBookName"
+          disabled>
 
       </div>
 
-      <div class="field">
+      <div class="check-grid">
 
-        <label for="author">
-          Author
+        <label class="check-card">
+          <input
+            id="curatedActive"
+            type="checkbox">
+          <span>
+            <strong>Active</strong><br>
+            Show this book in the Marketplace.
+          </span>
         </label>
 
-        <input
-          id="author"
-          required>
+        <label class="check-card">
+          <input
+            id="curatedFeatured"
+            type="checkbox">
+          <span>
+            <strong>Featured</strong><br>
+            Include in the Featured Books section.
+          </span>
+        </label>
+
+        <label class="check-card">
+          <input
+            id="curatedStaffPick"
+            type="checkbox">
+          <span>
+            <strong>Staff Pick</strong><br>
+            Mark as a DogEar staff selection.
+          </span>
+        </label>
+
+        <label class="check-card">
+          <input
+            id="curatedNew"
+            type="checkbox">
+          <span>
+            <strong>New &amp; Noteworthy</strong><br>
+            Include in the new-books feature section.
+          </span>
+        </label>
 
       </div>
 
@@ -609,134 +1421,53 @@ h1{
 
         <div class="field">
 
-          <label for="isbn">
-            ISBN
-          </label>
-
-          <input id="isbn">
-
-        </div>
-
-        <div class="field">
-
-          <label for="googleBooksId">
-            Google Books ID
-          </label>
-
-          <input id="googleBooksId">
-
-        </div>
-
-      </div>
-
-      <div class="two-col">
-
-        <div class="field">
-
-          <label for="publisher">
-            Publisher
-          </label>
-
-          <input id="publisher">
-
-        </div>
-
-        <div class="field">
-
-          <label for="publishedDate">
-            Publication Date
+          <label for="curatedSort">
+            Sort Priority
           </label>
 
           <input
-            id="publishedDate"
-            placeholder="2026 or 2026-09-14">
+            id="curatedSort"
+            type="number"
+            value="0">
 
         </div>
 
-      </div>
-
-      <div class="field">
-
-        <label for="coverUrl">
-          Cover Image URL
-        </label>
-
-        <input
-          id="coverUrl"
-          type="url"
-          placeholder="https://...">
+        <div></div>
 
       </div>
 
       <div class="field">
 
-        <label for="description">
-          Description
+        <label for="curatedNote">
+          Admin Note
         </label>
 
-        <textarea id="description"></textarea>
-
-      </div>
-
-      <div class="field">
-
-        <label for="affiliateSource">
-          Affiliate Source
-        </label>
-
-        <select id="affiliateSource">
-
-          <option value="">
-            None Yet
-          </option>
-
-          <option value="Bookshop.org">
-            Bookshop.org
-          </option>
-
-          <option value="Amazon">
-            Amazon
-          </option>
-
-          <option value="Publisher">
-            Publisher
-          </option>
-
-          <option value="Other">
-            Other
-          </option>
-
-        </select>
-
-      </div>
-
-      <div class="field">
-
-        <label for="affiliateUrl">
-          Affiliate / Purchase URL
-        </label>
-
-        <input
-          id="affiliateUrl"
-          type="url"
-          placeholder="https://...">
+        <textarea
+          id="curatedNote"
+          placeholder="Internal note. Users will not see this."></textarea>
 
       </div>
 
       <div class="form-actions">
 
         <button
-          class="btn secondary"
-          id="cancelBtn"
+          class="btn danger"
+          id="removeCuratedBtn"
           type="button">
+          Remove from Marketplace
+        </button>
+
+        <button
+          class="btn secondary"
+          type="button"
+          data-close="curatedBookModal">
           Cancel
         </button>
 
         <button
           class="btn primary"
-          id="saveBtn"
           type="submit">
-          Save Book
+          Save Changes
         </button>
 
       </div>
@@ -747,7 +1478,310 @@ h1{
 
 </div>
 
+<!-- =========================================================
+     COIN REWARD MODAL
+     ========================================================= -->
+
+<div class="modal" id="rewardModal">
+
+  <div class="modal-card">
+
+    <div class="modal-head">
+
+      <h2 id="rewardModalTitle">
+        Add Coin Reward
+      </h2>
+
+      <button
+        class="close"
+        type="button"
+        data-close="rewardModal">
+        ×
+      </button>
+
+    </div>
+
+    <form
+      class="form"
+      id="rewardForm">
+
+      <div
+        class="message"
+        id="rewardMessage">
+      </div>
+
+      <input
+        id="rewardId"
+        type="hidden">
+
+      <div class="field">
+
+        <label for="rewardTitle">
+          Reward Name
+        </label>
+
+        <input
+          id="rewardTitle"
+          required>
+
+      </div>
+
+      <div class="field">
+
+        <label for="rewardDescription">
+          Description
+        </label>
+
+        <textarea
+          id="rewardDescription"></textarea>
+
+      </div>
+
+      <div class="two-col">
+
+        <div class="field">
+
+          <label for="rewardType">
+            Reward Type
+          </label>
+
+          <select id="rewardType">
+
+            <option value="book">
+              Book
+            </option>
+
+            <option value="signed_book">
+              Signed Book
+            </option>
+
+            <option value="special_edition">
+              Special Edition
+            </option>
+
+            <option value="merch">
+              Merchandise
+            </option>
+
+            <option value="digital">
+              Digital Reward
+            </option>
+
+            <option value="gift">
+              Gift
+            </option>
+
+            <option value="other">
+              Other
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="field">
+
+          <label for="rewardPrice">
+            Coin Price
+          </label>
+
+          <input
+            id="rewardPrice"
+            type="number"
+            min="1"
+            step="1"
+            required>
+
+        </div>
+
+      </div>
+
+      <div class="field">
+
+        <label for="rewardImage">
+          Image URL
+        </label>
+
+        <input
+          id="rewardImage"
+          type="url"
+          placeholder="https://...">
+
+      </div>
+
+      <div class="two-col">
+
+        <div class="field">
+
+          <label for="rewardQuantity">
+            Quantity Available
+          </label>
+
+          <input
+            id="rewardQuantity"
+            type="number"
+            min="0"
+            placeholder="Blank = unlimited">
+
+        </div>
+
+        <div class="field">
+
+          <label for="rewardLimit">
+            Per-User Limit
+          </label>
+
+          <input
+            id="rewardLimit"
+            type="number"
+            min="1"
+            placeholder="Blank = no limit">
+
+        </div>
+
+      </div>
+
+      <div class="two-col">
+
+        <div class="field">
+
+          <label for="rewardSort">
+            Sort Priority
+          </label>
+
+          <input
+            id="rewardSort"
+            type="number"
+            value="0">
+
+        </div>
+
+        <div></div>
+
+      </div>
+
+      <div class="check-grid">
+
+        <label class="check-card">
+          <input
+            id="rewardActive"
+            type="checkbox">
+          <span>
+            <strong>Active</strong><br>
+            Available when the Coin Marketplace is enabled.
+          </span>
+        </label>
+
+        <label class="check-card">
+          <input
+            id="rewardFeatured"
+            type="checkbox">
+          <span>
+            <strong>Featured</strong><br>
+            Highlight this reward.
+          </span>
+        </label>
+
+        <label class="check-card">
+          <input
+            id="rewardShipping"
+            type="checkbox">
+          <span>
+            <strong>Shipping Required</strong><br>
+            DogEar must physically fulfill this reward.
+          </span>
+        </label>
+
+      </div>
+
+      <div class="form-actions">
+
+        <button
+          class="btn danger"
+          id="deleteRewardBtn"
+          type="button"
+          style="display:none">
+          Delete Reward
+        </button>
+
+        <button
+          class="btn secondary"
+          type="button"
+          data-close="rewardModal">
+          Cancel
+        </button>
+
+        <button
+          class="btn primary"
+          id="saveRewardBtn"
+          type="submit">
+          Save Reward
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+<!-- =========================================================
+     CONFIRM MODAL
+     ========================================================= -->
+
+<div class="modal" id="confirmModal">
+
+  <div class="modal-card small">
+
+    <div class="modal-head">
+
+      <h2 id="confirmTitle">
+        Confirm Change
+      </h2>
+
+      <button
+        class="close"
+        type="button"
+        data-close="confirmModal">
+        ×
+      </button>
+
+    </div>
+
+    <div
+      class="confirm-copy"
+      id="confirmText">
+    </div>
+
+    <div class="confirm-actions">
+
+      <button
+        class="btn secondary"
+        id="confirmCancel"
+        type="button">
+        Cancel
+      </button>
+
+      <button
+        class="btn primary"
+        id="confirmAccept"
+        type="button">
+        Confirm
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
 <script>
+
+/* =========================================================
+   CONNECTION
+   ========================================================= */
+
 const SUPABASE_URL =
   "https://nrtutxjznkfvvbmaagum.supabase.co";
 
@@ -760,24 +1794,37 @@ const supabaseClient =
     SUPABASE_PUBLISHABLE_KEY
   );
 
+/* =========================================================
+   STATE
+   ========================================================= */
+
 const $ =
-  id => document.getElementById(id);
+  id =>
+    document.getElementById(id);
 
-let currentUser = null;
-let books = [];
+let currentUser =
+  null;
 
-/*
-  IMPORTANT:
-  This page needs to be protected by your database/RLS,
-  not only by the browser.
+let allBooks =
+  [];
 
-  The browser-side admin check below is for interface behavior.
-  Supabase policies should ultimately decide who may edit books.
-*/
+let curatedBooks =
+  [];
+
+let rewards =
+  [];
+
+let settings = {
+  coins_enabled:false,
+  coin_marketplace_enabled:false
+};
+
+let pendingConfirmation =
+  null;
 
 /* =========================================================
    HELPERS
-========================================================= */
+   ========================================================= */
 
 function escapeHtml(value=""){
 
@@ -795,34 +1842,121 @@ function escapeHtml(value=""){
 
 }
 
-function showFormMessage(text,type=""){
+function formatAuthors(authors){
 
-  $("formMessage").textContent =
+  if(
+    Array.isArray(authors) &&
+    authors.length
+  ){
+
+    return authors.join(", ");
+
+  }
+
+  if(typeof authors === "string")
+    return authors;
+
+  return "Unknown author";
+
+}
+
+function bookCover(book){
+
+  return (
+    book?.cover_url ||
+    ""
+  );
+
+}
+
+function bookIsbn(book){
+
+  return (
+    book?.isbn_13 ||
+    book?.isbn_10 ||
+    ""
+  );
+
+}
+
+function openModal(id){
+
+  $(id)
+    .classList
+    .add("show");
+
+}
+
+function closeModal(id){
+
+  $(id)
+    .classList
+    .remove("show");
+
+}
+
+function setMessage(
+  id,
+  text,
+  type=""
+){
+
+  const holder =
+    $(id);
+
+  holder.textContent =
     text;
 
-  $("formMessage").className =
+  holder.className =
     "message show " + type;
 
 }
 
-function clearFormMessage(){
+function clearMessage(id){
 
-  $("formMessage").textContent = "";
-  $("formMessage").className = "message";
+  const holder =
+    $(id);
+
+  holder.textContent =
+    "";
+
+  holder.className =
+    "message";
+
+}
+
+function numberOrNull(value){
+
+  const clean =
+    String(value || "")
+      .trim();
+
+  if(clean === "")
+    return null;
+
+  const number =
+    Number(clean);
+
+  return Number.isFinite(number)
+    ? number
+    : null;
 
 }
 
 /* =========================================================
    PROFILE
-========================================================= */
+   ========================================================= */
 
 async function loadProfile(){
 
   let display =
-    currentUser?.user_metadata?.display_name ||
-    "Reader";
+    currentUser
+      ?.user_metadata
+      ?.display_name ||
+    "Admin";
 
-  let avatar = "";
+  let avatar =
+    "";
 
   try{
 
@@ -871,20 +2005,25 @@ async function loadProfile(){
   const holder =
     $("navAvatar");
 
-  holder.innerHTML = "";
+  holder.innerHTML =
+    "";
 
   if(avatar){
 
     const image =
       document.createElement("img");
 
-    image.src = avatar;
-    image.alt = display;
+    image.src =
+      avatar;
+
+    image.alt =
+      display;
 
     image.onerror =
       () => {
 
-        holder.innerHTML = "";
+        holder.innerHTML =
+          "";
 
         holder.textContent =
           display.charAt(0).toUpperCase();
@@ -905,21 +2044,9 @@ async function loadProfile(){
 
 /* =========================================================
    ADMIN CHECK
-========================================================= */
+   ========================================================= */
 
 async function verifyAdmin(){
-
-  /*
-    Preferred long-term setup:
-    an RPC such as is_site_admin() or a protected
-    admin_users table.
-
-    For now this page attempts an admin_users lookup.
-
-    Expected fields:
-      user_id
-      active
-  */
 
   try{
 
@@ -930,13 +2057,16 @@ async function verifyAdmin(){
       await supabaseClient
         .from("admin_users")
         .select("user_id,active")
-        .eq("user_id",currentUser.id)
+        .eq(
+          "user_id",
+          currentUser.id
+        )
         .maybeSingle();
 
     if(error)
       throw error;
 
-    return (
+    return Boolean(
       data &&
       data.active !== false
     );
@@ -945,13 +2075,9 @@ async function verifyAdmin(){
   catch(error){
 
     console.warn(
-      "Admin lookup:",
+      "Admin check:",
       error.message
     );
-
-    /*
-      This intentionally fails closed.
-    */
 
     return false;
 
@@ -966,79 +2092,621 @@ function showLocked(){
     <div class="locked">
 
       <strong>
-        This page is for DogEar administration.
+        Administrator access required.
       </strong>
 
       Your account does not currently have permission
-      to manage marketplace books.
+      to manage the DogEar Marketplace.
 
     </div>
   `;
 
-  $("addBookBtn").disabled =
-    true;
+}
+
+/* =========================================================
+   TABS
+   ========================================================= */
+
+document
+  .querySelectorAll(".tab")
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          document
+            .querySelectorAll(".tab")
+            .forEach(
+              item =>
+                item.classList.remove("active")
+            );
+
+          document
+            .querySelectorAll(".tab-panel")
+            .forEach(
+              panel =>
+                panel.classList.remove("active")
+            );
+
+          button
+            .classList
+            .add("active");
+
+          $(button.dataset.tab)
+            .classList
+            .add("active");
+
+        }
+      );
+
+    }
+  );
+
+/* =========================================================
+   MODAL CLOSE BUTTONS
+   ========================================================= */
+
+document
+  .querySelectorAll("[data-close]")
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () =>
+          closeModal(
+            button.dataset.close
+          )
+      );
+
+    }
+  );
+
+document
+  .querySelectorAll(".modal")
+  .forEach(
+    modal => {
+
+      modal.addEventListener(
+        "click",
+        event => {
+
+          if(event.target === modal){
+
+            modal.classList.remove("show");
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+/* =========================================================
+   CONFIRMATION
+   ========================================================= */
+
+function confirmAction({
+  title,
+  html,
+  confirmText="Confirm",
+  danger=false,
+  action
+}){
+
+  $("confirmTitle").textContent =
+    title;
+
+  $("confirmText").innerHTML =
+    html;
+
+  $("confirmAccept").textContent =
+    confirmText;
+
+  $("confirmAccept").className =
+    danger
+      ? "btn danger"
+      : "btn primary";
+
+  pendingConfirmation =
+    action;
+
+  openModal("confirmModal");
+
+}
+
+$("confirmCancel")
+  .addEventListener(
+    "click",
+    () => {
+
+      pendingConfirmation =
+        null;
+
+      closeModal("confirmModal");
+
+    }
+  );
+
+$("confirmAccept")
+  .addEventListener(
+    "click",
+    async () => {
+
+      if(!pendingConfirmation)
+        return;
+
+      const action =
+        pendingConfirmation;
+
+      pendingConfirmation =
+        null;
+
+      $("confirmAccept").disabled =
+        true;
+
+      try{
+
+        await action();
+
+        closeModal("confirmModal");
+
+      }
+      catch(error){
+
+        console.error(error);
+
+        alert(
+          error.message ||
+          "DogEar couldn't complete that change."
+        );
+
+      }
+      finally{
+
+        $("confirmAccept").disabled =
+          false;
+
+      }
+
+    }
+  );
+
+/* =========================================================
+   SETTINGS
+   ========================================================= */
+
+async function loadSettings(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("marketplace_settings")
+      .select(
+        "id,coins_enabled,coin_marketplace_enabled,updated_at"
+      )
+      .eq("id",1)
+      .single();
+
+  if(error)
+    throw error;
+
+  settings = {
+    coins_enabled:
+      data.coins_enabled === true,
+
+    coin_marketplace_enabled:
+      data.coin_marketplace_enabled === true
+  };
+
+  renderSettings();
+
+}
+
+function renderSettings(){
+
+  const master =
+    $("coinSystemSwitch");
+
+  const market =
+    $("coinMarketplaceSwitch");
+
+  master.classList.toggle(
+    "on",
+    settings.coins_enabled
+  );
+
+  master.setAttribute(
+    "aria-pressed",
+    String(settings.coins_enabled)
+  );
+
+  market.classList.toggle(
+    "on",
+    settings.coin_marketplace_enabled
+  );
+
+  market.setAttribute(
+    "aria-pressed",
+    String(settings.coin_marketplace_enabled)
+  );
+
+  market.disabled =
+    !settings.coins_enabled;
+
+  const banner =
+    $("coinStatusBanner");
+
+  if(!settings.coins_enabled){
+
+    banner.className =
+      "status-banner off";
+
+    banner.textContent =
+      "Coins are currently disabled. Users should not see, earn, spend, or redeem coins anywhere on DogEar.";
+
+  }
+  else if(!settings.coin_marketplace_enabled){
+
+    banner.className =
+      "status-banner on";
+
+    banner.textContent =
+      "The Coin System is ON, but Marketplace redemption is OFF. Users may earn coins once earning features are enabled, but rewards cannot be redeemed.";
+
+  }
+  else{
+
+    banner.className =
+      "status-banner on";
+
+    banner.textContent =
+      "The Coin System and Coin Marketplace are both ON. Coin redemption is available.";
+
+  }
+
+  $("rewardSystemStatus").textContent =
+    settings.coin_marketplace_enabled
+      ? "ON"
+      : "OFF";
+
+}
+
+async function saveCoinSettings(
+  coinsEnabled,
+  marketplaceEnabled
+){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.rpc(
+      "set_coin_system_settings",
+      {
+        p_coins_enabled:
+          coinsEnabled,
+
+        p_coin_marketplace_enabled:
+          marketplaceEnabled
+      }
+    );
+
+  if(error)
+    throw error;
+
+  const row =
+    Array.isArray(data)
+      ? data[0]
+      : data;
+
+  if(row){
+
+    settings.coins_enabled =
+      row.coins_enabled === true;
+
+    settings.coin_marketplace_enabled =
+      row.coin_marketplace_enabled === true;
+
+  }
+  else{
+
+    await loadSettings();
+    return;
+
+  }
+
+  renderSettings();
 
 }
 
 /* =========================================================
-   LOAD BOOKS
-========================================================= */
+   MASTER COIN SWITCH
+   ========================================================= */
 
-async function loadBooks(){
+$("coinSystemSwitch")
+  .addEventListener(
+    "click",
+    () => {
 
-  try{
+      if(settings.coins_enabled){
 
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("books")
-        .select("*")
-        .order("created_at",{
-          ascending:false
+        confirmAction({
+          title:
+            "Disable the Coin System?",
+
+          html:
+            `
+              <strong>This is the master emergency shutoff.</strong>
+              <br><br>
+              Turning it off will also disable the Coin Marketplace.
+              Existing coin data is preserved.
+              <br><br>
+              Use this immediately if you suspect an exploit,
+              balance manipulation, or other problem with the coin economy.
+            `,
+
+          confirmText:
+            "Disable Coins",
+
+          danger:true,
+
+          action:
+            async () => {
+
+              await saveCoinSettings(
+                false,
+                false
+              );
+
+            }
         });
 
-    if(error)
-      throw error;
+      }
+      else{
 
-    books =
-      data || [];
+        confirmAction({
+          title:
+            "Enable the Coin System?",
 
-  }
-  catch(error){
+          html:
+            `
+              <strong>Coin functionality will become available to DogEar features that use the master setting.</strong>
+              <br><br>
+              The Coin Marketplace will remain OFF until you enable it separately.
+              <br><br>
+              Only enable this after the coin-earning system is ready for users.
+            `,
 
-    console.error(
-      "Book lookup:",
-      error
-    );
+          confirmText:
+            "Enable Coin System",
 
-    books = [];
+          action:
+            async () => {
 
-  }
+              await saveCoinSettings(
+                true,
+                false
+              );
 
-  renderBooks(books);
+            }
+        });
+
+      }
+
+    }
+  );
+
+/* =========================================================
+   COIN MARKETPLACE SWITCH
+   ========================================================= */
+
+$("coinMarketplaceSwitch")
+  .addEventListener(
+    "click",
+    () => {
+
+      if(!settings.coins_enabled)
+        return;
+
+      if(settings.coin_marketplace_enabled){
+
+        confirmAction({
+          title:
+            "Pause Coin Redemptions?",
+
+          html:
+            `
+              Users will no longer be able to access
+              Coin Marketplace rewards.
+              <br><br>
+              The overall Coin System will remain ON.
+            `,
+
+          confirmText:
+            "Pause Redemptions",
+
+          danger:true,
+
+          action:
+            async () => {
+
+              await saveCoinSettings(
+                true,
+                false
+              );
+
+            }
+        });
+
+      }
+      else{
+
+        confirmAction({
+          title:
+            "Enable Coin Marketplace?",
+
+          html:
+            `
+              <strong>Coin rewards will become visible and redeemable once the redemption backend is enabled.</strong>
+              <br><br>
+              Confirm that reward inventory and coin security are ready before enabling this.
+            `,
+
+          confirmText:
+            "Enable Marketplace",
+
+          action:
+            async () => {
+
+              await saveCoinSettings(
+                true,
+                true
+              );
+
+            }
+        });
+
+      }
+
+    }
+  );
+
+/* =========================================================
+   LOAD ALL DOGEAR BOOKS
+   ========================================================= */
+
+async function loadAllBooks(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("books")
+      .select(
+        `
+          id,
+          isbn_13,
+          isbn_10,
+          google_books_id,
+          title,
+          subtitle,
+          authors,
+          publisher,
+          published_date,
+          description,
+          cover_url,
+          page_count,
+          format,
+          categories
+        `
+      )
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
+
+  if(error)
+    throw error;
+
+  allBooks =
+    data || [];
 
 }
 
-function renderBooks(list){
+/* =========================================================
+   CURATED BOOKS
+   ========================================================= */
 
-  const library =
-    $("bookLibrary");
+async function loadCuratedBooks(){
 
-  library.innerHTML = "";
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("marketplace_curated_books")
+      .select("*")
+      .order(
+        "sort_order",
+        {
+          ascending:false
+        }
+      )
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
+
+  if(error)
+    throw error;
+
+  curatedBooks =
+    data || [];
+
+  renderCuratedBooks(
+    curatedBooks
+  );
+
+}
+
+function curatedBookRecord(row){
+
+  return allBooks.find(
+    book =>
+      String(book.id) ===
+      String(row.book_id)
+  );
+
+}
+
+function renderCuratedBooks(list){
+
+  const holder =
+    $("curatedBookList");
+
+  holder.innerHTML =
+    "";
+
+  $("bookCount").textContent =
+    list.length;
+
+  $("featuredCount").textContent =
+    list.filter(
+      row => row.featured
+    ).length;
+
+  $("staffCount").textContent =
+    list.filter(
+      row => row.staff_pick
+    ).length;
+
+  $("activeBookCount").textContent =
+    list.filter(
+      row => row.active
+    ).length;
 
   if(!list.length){
 
-    library.innerHTML = `
+    holder.innerHTML = `
 
       <div class="empty">
 
         <strong>
-          No books are in the sales catalog yet.
+          No curated Marketplace books yet.
         </strong>
 
-        Use “Add Book to Sell” to create the first one.
+        Add a DogEar book to begin building the Marketplace.
 
       </div>
     `;
@@ -1047,44 +2715,40 @@ function renderBooks(list){
 
   }
 
-  for(const book of list){
+  for(const row of list){
+
+    const book =
+      curatedBookRecord(row);
+
+    if(!book)
+      continue;
 
     const title =
       book.title ||
       "Untitled Book";
 
-    const author =
-      book.author ||
-      "Unknown author";
+    const authors =
+      formatAuthors(
+        book.authors
+      );
 
     const cover =
-      book.cover_url ||
-      book.image_url ||
-      "";
+      bookCover(book);
 
     const isbn =
-      book.isbn ||
-      "";
+      bookIsbn(book);
 
-    const affiliate =
-      book.affiliate_url ||
-      book.purchase_url ||
-      "";
+    const article =
+      document.createElement(
+        "article"
+      );
 
-    const source =
-      book.affiliate_source ||
-      book.seller_name ||
-      "";
+    article.className =
+      "item-row";
 
-    const row =
-      document.createElement("article");
+    article.innerHTML = `
 
-    row.className =
-      "book-row";
-
-    row.innerHTML = `
-
-      <div class="book-cover">
+      <div class="item-image">
 
         ${
           cover
@@ -1100,36 +2764,58 @@ function renderBooks(list){
 
       <div>
 
-        <h2 class="book-title">
+        <h3 class="item-title">
           ${escapeHtml(title)}
-        </h2>
+        </h3>
 
-        <div class="book-author">
-          ${escapeHtml(author)}
+        <div class="item-author">
+          ${escapeHtml(authors)}
         </div>
 
-        <div class="book-meta">
+        <div class="item-meta">
 
           ${
             isbn
-              ? `
-                ISBN:
-                ${escapeHtml(isbn)}
-                <br>
-              `
+              ? "ISBN: " +
+                escapeHtml(isbn)
+              : "No ISBN"
+          }
+
+          · Sort priority:
+          ${Number(row.sort_order || 0)}
+
+        </div>
+
+        <div class="badges">
+
+          <span class="badge ${
+            row.active
+              ? "active"
+              : "inactive"
+          }">
+            ${
+              row.active
+                ? "Active"
+                : "Hidden"
+            }
+          </span>
+
+          ${
+            row.featured
+              ? `<span class="badge featured">Featured</span>`
               : ""
           }
 
           ${
-            affiliate
-              ? `
-                Affiliate:
-                ${escapeHtml(
-                  source ||
-                  "Linked"
-                )}
-              `
-              : "No affiliate link"
+            row.staff_pick
+              ? `<span class="badge featured">Staff Pick</span>`
+              : ""
+          }
+
+          ${
+            row.new_and_noteworthy
+              ? `<span class="badge">New &amp; Noteworthy</span>`
+              : ""
           }
 
         </div>
@@ -1145,28 +2831,30 @@ function renderBooks(list){
         </a>
 
         <button
-          class="btn secondary edit-book"
+          class="btn secondary edit-curated"
           type="button"
-          data-id="${escapeHtml(book.id)}">
-          Edit
+          data-id="${escapeHtml(row.id)}">
+          Manage
         </button>
 
       </div>
     `;
 
-    library.appendChild(row);
+    holder.appendChild(
+      article
+    );
 
   }
 
-  library
-    .querySelectorAll(".edit-book")
+  holder
+    .querySelectorAll(".edit-curated")
     .forEach(
       button => {
 
         button.addEventListener(
           "click",
           () =>
-            editBook(
+            editCuratedBook(
               button.dataset.id
             )
         );
@@ -1177,10 +2865,10 @@ function renderBooks(list){
 }
 
 /* =========================================================
-   SEARCH
-========================================================= */
+   CURATED SEARCH
+   ========================================================= */
 
-$("librarySearch")
+$("bookSearch")
   .addEventListener(
     "input",
     event => {
@@ -1192,328 +2880,450 @@ $("librarySearch")
 
       if(!query){
 
-        renderBooks(books);
+        renderCuratedBooks(
+          curatedBooks
+        );
+
         return;
 
       }
 
       const filtered =
-        books.filter(
+        curatedBooks.filter(
+          row => {
+
+            const book =
+              curatedBookRecord(row);
+
+            if(!book)
+              return false;
+
+            const haystack =
+              [
+                book.title,
+                formatAuthors(book.authors),
+                book.isbn_13,
+                book.isbn_10,
+                book.publisher
+              ]
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
+
+            return haystack.includes(
+              query
+            );
+
+          }
+        );
+
+      renderCuratedBooks(
+        filtered
+      );
+
+    }
+  );
+
+/* =========================================================
+   ADD CURATED BOOK
+   ========================================================= */
+
+$("addCuratedBookBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      $("bookPickerSearch").value =
+        "";
+
+      clearMessage(
+        "bookPickerMessage"
+      );
+
+      renderBookPicker(
+        allBooks
+      );
+
+      openModal(
+        "bookPickerModal"
+      );
+
+    }
+  );
+
+function renderBookPicker(list){
+
+  const holder =
+    $("bookPickerList");
+
+  holder.innerHTML =
+    "";
+
+  const alreadyAdded =
+    new Set(
+      curatedBooks.map(
+        row =>
+          String(row.book_id)
+      )
+    );
+
+  const available =
+    list.filter(
+      book =>
+        !alreadyAdded.has(
+          String(book.id)
+        )
+    );
+
+  if(!available.length){
+
+    holder.innerHTML = `
+
+      <div class="empty">
+
+        <strong>
+          No available DogEar books.
+        </strong>
+
+        ${
+          allBooks.length
+            ? "Every DogEar book is already in the Marketplace."
+            : "The DogEar books table is currently empty."
+        }
+
+      </div>
+    `;
+
+    return;
+
+  }
+
+  for(const book of available){
+
+    const title =
+      book.title ||
+      "Untitled Book";
+
+    const cover =
+      bookCover(book);
+
+    const row =
+      document.createElement(
+        "div"
+      );
+
+    row.className =
+      "picker-row";
+
+    row.innerHTML = `
+
+      <div class="picker-cover">
+
+        ${
+          cover
+            ? `
+              <img
+                src="${escapeHtml(cover)}"
+                alt="${escapeHtml(title)} cover">
+            `
+            : "No cover"
+        }
+
+      </div>
+
+      <div>
+
+        <div class="picker-title">
+          ${escapeHtml(title)}
+        </div>
+
+        <div class="picker-author">
+          ${escapeHtml(formatAuthors(book.authors))}
+        </div>
+
+      </div>
+
+      <button
+        class="btn primary add-picked-book"
+        type="button"
+        data-id="${escapeHtml(book.id)}">
+        Add
+      </button>
+    `;
+
+    holder.appendChild(
+      row
+    );
+
+  }
+
+  holder
+    .querySelectorAll(".add-picked-book")
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            addCuratedBook(
+              button.dataset.id
+            )
+        );
+
+      }
+    );
+
+}
+
+$("bookPickerSearch")
+  .addEventListener(
+    "input",
+    event => {
+
+      const query =
+        event.target.value
+          .trim()
+          .toLowerCase();
+
+      if(!query){
+
+        renderBookPicker(
+          allBooks
+        );
+
+        return;
+
+      }
+
+      const filtered =
+        allBooks.filter(
           book => {
 
             const haystack =
               [
                 book.title,
-                book.author,
-                book.isbn,
-                book.publisher,
-                book.affiliate_source
+                formatAuthors(book.authors),
+                book.isbn_13,
+                book.isbn_10,
+                book.publisher
               ]
-              .filter(Boolean)
-              .join(" ")
-              .toLowerCase();
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
 
-            return haystack.includes(query);
+            return haystack.includes(
+              query
+            );
 
           }
         );
 
-      renderBooks(filtered);
+      renderBookPicker(
+        filtered
+      );
 
     }
   );
 
-/* =========================================================
-   MODAL
-========================================================= */
+async function addCuratedBook(bookId){
 
-function openModal(){
+  try{
 
-  $("bookModal")
-    .classList
-    .add("show");
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("marketplace_curated_books")
+        .insert({
+          book_id:
+            Number(bookId),
 
-}
+          active:
+            true,
 
-function closeModal(){
+          featured:
+            false,
 
-  $("bookModal")
-    .classList
-    .remove("show");
+          staff_pick:
+            false,
 
-  clearFormMessage();
+          new_and_noteworthy:
+            false,
 
-}
+          sort_order:
+            0,
 
-$("closeModal")
-  .addEventListener(
-    "click",
-    closeModal
-  );
+          created_by:
+            currentUser.id,
 
-$("cancelBtn")
-  .addEventListener(
-    "click",
-    closeModal
-  );
+          updated_by:
+            currentUser.id
+        });
 
-$("bookModal")
-  .addEventListener(
-    "click",
-    event => {
+    if(error)
+      throw error;
 
-      if(
-        event.target ===
-        $("bookModal")
-      ){
+    await loadCuratedBooks();
 
-        closeModal();
+    renderBookPicker(
+      allBooks
+    );
 
-      }
+    setMessage(
+      "bookPickerMessage",
+      "Book added to the Marketplace.",
+      "success"
+    );
 
-    }
-  );
+  }
+  catch(error){
 
-/* =========================================================
-   ADD BOOK
-========================================================= */
+    console.error(error);
 
-function resetForm(){
+    setMessage(
+      "bookPickerMessage",
+      "DogEar couldn't add this book: " +
+      (
+        error.message ||
+        "Unknown error"
+      ),
+      "error"
+    );
 
-  $("editingId").value = "";
-  $("title").value = "";
-  $("author").value = "";
-  $("isbn").value = "";
-  $("googleBooksId").value = "";
-  $("publisher").value = "";
-  $("publishedDate").value = "";
-  $("coverUrl").value = "";
-  $("description").value = "";
-  $("affiliateSource").value = "";
-  $("affiliateUrl").value = "";
+  }
 
 }
 
-$("addBookBtn")
-  .addEventListener(
-    "click",
-    () => {
-
-      resetForm();
-
-      $("modalTitle").textContent =
-        "Add Book to Sell";
-
-      $("saveBtn").textContent =
-        "Add Book";
-
-      openModal();
-
-    }
-  );
-
 /* =========================================================
-   EDIT BOOK
-========================================================= */
+   EDIT CURATED BOOK
+   ========================================================= */
 
-function editBook(id){
+function editCuratedBook(id){
 
-  const book =
-    books.find(
+  const row =
+    curatedBooks.find(
       item =>
         String(item.id) ===
         String(id)
     );
 
+  if(!row)
+    return;
+
+  const book =
+    curatedBookRecord(row);
+
   if(!book)
     return;
 
-  resetForm();
+  clearMessage(
+    "curatedBookMessage"
+  );
 
-  $("editingId").value =
-    book.id;
+  $("curatedId").value =
+    row.id;
 
-  $("title").value =
-    book.title ||
+  $("curatedBookName").value =
+    book.title +
+    " — " +
+    formatAuthors(book.authors);
+
+  $("curatedActive").checked =
+    row.active === true;
+
+  $("curatedFeatured").checked =
+    row.featured === true;
+
+  $("curatedStaffPick").checked =
+    row.staff_pick === true;
+
+  $("curatedNew").checked =
+    row.new_and_noteworthy === true;
+
+  $("curatedSort").value =
+    Number(row.sort_order || 0);
+
+  $("curatedNote").value =
+    row.admin_note ||
     "";
 
-  $("author").value =
-    book.author ||
-    "";
-
-  $("isbn").value =
-    book.isbn ||
-    "";
-
-  $("googleBooksId").value =
-    book.google_books_id ||
-    "";
-
-  $("publisher").value =
-    book.publisher ||
-    "";
-
-  $("publishedDate").value =
-    book.published_date ||
-    book.publication_date ||
-    "";
-
-  $("coverUrl").value =
-    book.cover_url ||
-    book.image_url ||
-    "";
-
-  $("description").value =
-    book.description ||
-    book.summary ||
-    "";
-
-  $("affiliateSource").value =
-    book.affiliate_source ||
-    "";
-
-  $("affiliateUrl").value =
-    book.affiliate_url ||
-    book.purchase_url ||
-    "";
-
-  $("modalTitle").textContent =
-    "Edit Book";
-
-  $("saveBtn").textContent =
-    "Save Changes";
-
-  openModal();
+  openModal(
+    "curatedBookModal"
+  );
 
 }
 
-/* =========================================================
-   SAVE
-========================================================= */
-
-$("bookForm")
+$("curatedBookForm")
   .addEventListener(
     "submit",
     async event => {
 
       event.preventDefault();
 
-      clearFormMessage();
+      clearMessage(
+        "curatedBookMessage"
+      );
 
-      const save =
-        $("saveBtn");
-
-      save.disabled =
-        true;
-
-      save.textContent =
-        "Saving...";
-
-      const editingId =
-        $("editingId").value;
-
-      const payload = {
-
-        title:
-          $("title")
-            .value
-            .trim(),
-
-        author:
-          $("author")
-            .value
-            .trim(),
-
-        isbn:
-          $("isbn")
-            .value
-            .trim() ||
-          null,
-
-        google_books_id:
-          $("googleBooksId")
-            .value
-            .trim() ||
-          null,
-
-        publisher:
-          $("publisher")
-            .value
-            .trim() ||
-          null,
-
-        published_date:
-          $("publishedDate")
-            .value
-            .trim() ||
-          null,
-
-        cover_url:
-          $("coverUrl")
-            .value
-            .trim() ||
-          null,
-
-        description:
-          $("description")
-            .value
-            .trim() ||
-          null,
-
-        affiliate_source:
-          $("affiliateSource")
-            .value ||
-          null,
-
-        affiliate_url:
-          $("affiliateUrl")
-            .value
-            .trim() ||
-          null
-
-      };
+      const id =
+        $("curatedId").value;
 
       try{
 
-        let response;
+        const {
+          error
+        } =
+          await supabaseClient
+            .from("marketplace_curated_books")
+            .update({
+              active:
+                $("curatedActive").checked,
 
-        if(editingId){
+              featured:
+                $("curatedFeatured").checked,
 
-          response =
-            await supabaseClient
-              .from("books")
-              .update(payload)
-              .eq("id",editingId)
-              .select()
-              .single();
+              staff_pick:
+                $("curatedStaffPick").checked,
 
-        }
-        else{
+              new_and_noteworthy:
+                $("curatedNew").checked,
 
-          response =
-            await supabaseClient
-              .from("books")
-              .insert(payload)
-              .select()
-              .single();
+              sort_order:
+                Number(
+                  $("curatedSort").value ||
+                  0
+                ),
 
-        }
+              admin_note:
+                $("curatedNote")
+                  .value
+                  .trim() ||
+                null,
 
-        if(response.error)
-          throw response.error;
+              updated_by:
+                currentUser.id
+            })
+            .eq(
+              "id",
+              id
+            );
 
-        showFormMessage(
-          editingId
-            ? "Book updated."
-            : "Book added to DogEar.",
+        if(error)
+          throw error;
+
+        await loadCuratedBooks();
+
+        setMessage(
+          "curatedBookMessage",
+          "Marketplace settings saved.",
           "success"
         );
 
-        await loadBooks();
-
         setTimeout(
-          closeModal,
-          500
+          () =>
+            closeModal(
+              "curatedBookModal"
+            ),
+          450
         );
 
       }
@@ -1521,8 +3331,654 @@ $("bookForm")
 
         console.error(error);
 
-        showFormMessage(
-          "DogEar couldn't save this book: " +
+        setMessage(
+          "curatedBookMessage",
+          "DogEar couldn't save these settings: " +
+          (
+            error.message ||
+            "Unknown error"
+          ),
+          "error"
+        );
+
+      }
+
+    }
+  );
+
+/* =========================================================
+   REMOVE CURATED BOOK
+   ========================================================= */
+
+$("removeCuratedBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      const id =
+        $("curatedId").value;
+
+      if(!id)
+        return;
+
+      confirmAction({
+        title:
+          "Remove Marketplace Book?",
+
+        html:
+          `
+            This removes the book from DogEar's curated
+            Marketplace.
+            <br><br>
+            <strong>The underlying DogEar book record will NOT be deleted.</strong>
+          `,
+
+        confirmText:
+          "Remove Book",
+
+        danger:true,
+
+        action:
+          async () => {
+
+            const {
+              error
+            } =
+              await supabaseClient
+                .from("marketplace_curated_books")
+                .delete()
+                .eq(
+                  "id",
+                  id
+                );
+
+            if(error)
+              throw error;
+
+            closeModal(
+              "curatedBookModal"
+            );
+
+            await loadCuratedBooks();
+
+          }
+      });
+
+    }
+  );
+
+/* =========================================================
+   COIN REWARDS
+   ========================================================= */
+
+async function loadRewards(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("coin_rewards")
+      .select("*")
+      .order(
+        "sort_order",
+        {
+          ascending:false
+        }
+      )
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
+
+  if(error)
+    throw error;
+
+  rewards =
+    data || [];
+
+  renderRewards(
+    rewards
+  );
+
+}
+
+function rewardTypeLabel(value){
+
+  const labels = {
+    book:"Book",
+    signed_book:"Signed Book",
+    special_edition:"Special Edition",
+    merch:"Merchandise",
+    digital:"Digital Reward",
+    gift:"Gift",
+    other:"Other"
+  };
+
+  return (
+    labels[value] ||
+    "Other"
+  );
+
+}
+
+function renderRewards(list){
+
+  const holder =
+    $("rewardList");
+
+  holder.innerHTML =
+    "";
+
+  $("rewardCount").textContent =
+    list.length;
+
+  $("activeRewardCount").textContent =
+    list.filter(
+      item => item.active
+    ).length;
+
+  $("featuredRewardCount").textContent =
+    list.filter(
+      item => item.featured
+    ).length;
+
+  if(!list.length){
+
+    holder.innerHTML = `
+
+      <div class="empty">
+
+        <strong>
+          No coin rewards yet.
+        </strong>
+
+        That's expected while DogEar's Coin System is disabled.
+        You can prepare rewards now without exposing them to users.
+
+      </div>
+    `;
+
+    return;
+
+  }
+
+  for(const reward of list){
+
+    const title =
+      reward.title ||
+      "Untitled Reward";
+
+    const image =
+      reward.image_url ||
+      "";
+
+    const quantity =
+      reward.quantity_available === null
+        ? "Unlimited"
+        : reward.quantity_available;
+
+    const article =
+      document.createElement(
+        "article"
+      );
+
+    article.className =
+      "item-row";
+
+    article.innerHTML = `
+
+      <div class="item-image reward-image">
+
+        ${
+          image
+            ? `
+              <img
+                src="${escapeHtml(image)}"
+                alt="${escapeHtml(title)}">
+            `
+            : "No image"
+        }
+
+      </div>
+
+      <div>
+
+        <h3 class="item-title">
+          ${escapeHtml(title)}
+        </h3>
+
+        <div class="item-author">
+          ${Number(reward.coin_price || 0).toLocaleString()} Coins
+        </div>
+
+        <div class="item-meta">
+
+          ${escapeHtml(
+            rewardTypeLabel(
+              reward.reward_type
+            )
+          )}
+
+          · Quantity:
+          ${escapeHtml(quantity)}
+
+          ${
+            reward.per_user_limit
+              ? " · Limit " +
+                escapeHtml(
+                  reward.per_user_limit
+                ) +
+                " per user"
+              : ""
+          }
+
+        </div>
+
+        <div class="badges">
+
+          <span class="badge ${
+            reward.active
+              ? "active"
+              : "inactive"
+          }">
+            ${
+              reward.active
+                ? "Active"
+                : "Hidden"
+            }
+          </span>
+
+          ${
+            reward.featured
+              ? `<span class="badge featured">Featured</span>`
+              : ""
+          }
+
+          ${
+            reward.shipping_required
+              ? `<span class="badge">Shipping Required</span>`
+              : ""
+          }
+
+        </div>
+
+      </div>
+
+      <div class="row-actions">
+
+        <button
+          class="btn secondary edit-reward"
+          type="button"
+          data-id="${escapeHtml(reward.id)}">
+          Manage
+        </button>
+
+      </div>
+    `;
+
+    holder.appendChild(
+      article
+    );
+
+  }
+
+  holder
+    .querySelectorAll(".edit-reward")
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            editReward(
+              button.dataset.id
+            )
+        );
+
+      }
+    );
+
+}
+
+/* =========================================================
+   REWARD SEARCH
+   ========================================================= */
+
+$("rewardSearch")
+  .addEventListener(
+    "input",
+    event => {
+
+      const query =
+        event.target.value
+          .trim()
+          .toLowerCase();
+
+      if(!query){
+
+        renderRewards(
+          rewards
+        );
+
+        return;
+
+      }
+
+      const filtered =
+        rewards.filter(
+          reward => {
+
+            const haystack =
+              [
+                reward.title,
+                reward.description,
+                reward.reward_type,
+                reward.coin_price
+              ]
+                .filter(
+                  value =>
+                    value !== null &&
+                    value !== undefined
+                )
+                .join(" ")
+                .toLowerCase();
+
+            return haystack.includes(
+              query
+            );
+
+          }
+        );
+
+      renderRewards(
+        filtered
+      );
+
+    }
+  );
+
+/* =========================================================
+   ADD REWARD
+   ========================================================= */
+
+$("addRewardBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      resetRewardForm();
+
+      $("rewardModalTitle").textContent =
+        "Add Coin Reward";
+
+      $("deleteRewardBtn").style.display =
+        "none";
+
+      openModal(
+        "rewardModal"
+      );
+
+    }
+  );
+
+function resetRewardForm(){
+
+  clearMessage(
+    "rewardMessage"
+  );
+
+  $("rewardId").value =
+    "";
+
+  $("rewardTitle").value =
+    "";
+
+  $("rewardDescription").value =
+    "";
+
+  $("rewardType").value =
+    "book";
+
+  $("rewardPrice").value =
+    "";
+
+  $("rewardImage").value =
+    "";
+
+  $("rewardQuantity").value =
+    "";
+
+  $("rewardLimit").value =
+    "";
+
+  $("rewardSort").value =
+    "0";
+
+  $("rewardActive").checked =
+    false;
+
+  $("rewardFeatured").checked =
+    false;
+
+  $("rewardShipping").checked =
+    false;
+
+}
+
+/* =========================================================
+   EDIT REWARD
+   ========================================================= */
+
+function editReward(id){
+
+  const reward =
+    rewards.find(
+      item =>
+        String(item.id) ===
+        String(id)
+    );
+
+  if(!reward)
+    return;
+
+  resetRewardForm();
+
+  $("rewardId").value =
+    reward.id;
+
+  $("rewardTitle").value =
+    reward.title ||
+    "";
+
+  $("rewardDescription").value =
+    reward.description ||
+    "";
+
+  $("rewardType").value =
+    reward.reward_type ||
+    "other";
+
+  $("rewardPrice").value =
+    reward.coin_price ||
+    "";
+
+  $("rewardImage").value =
+    reward.image_url ||
+    "";
+
+  $("rewardQuantity").value =
+    reward.quantity_available ??
+    "";
+
+  $("rewardLimit").value =
+    reward.per_user_limit ??
+    "";
+
+  $("rewardSort").value =
+    reward.sort_order ??
+    0;
+
+  $("rewardActive").checked =
+    reward.active === true;
+
+  $("rewardFeatured").checked =
+    reward.featured === true;
+
+  $("rewardShipping").checked =
+    reward.shipping_required === true;
+
+  $("rewardModalTitle").textContent =
+    "Manage Coin Reward";
+
+  $("deleteRewardBtn").style.display =
+    "inline-flex";
+
+  openModal(
+    "rewardModal"
+  );
+
+}
+
+/* =========================================================
+   SAVE REWARD
+   ========================================================= */
+
+$("rewardForm")
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+      clearMessage(
+        "rewardMessage"
+      );
+
+      const saveButton =
+        $("saveRewardBtn");
+
+      saveButton.disabled =
+        true;
+
+      const id =
+        $("rewardId").value;
+
+      const payload = {
+
+        title:
+          $("rewardTitle")
+            .value
+            .trim(),
+
+        description:
+          $("rewardDescription")
+            .value
+            .trim() ||
+          null,
+
+        reward_type:
+          $("rewardType").value,
+
+        image_url:
+          $("rewardImage")
+            .value
+            .trim() ||
+          null,
+
+        coin_price:
+          Number(
+            $("rewardPrice").value
+          ),
+
+        quantity_available:
+          numberOrNull(
+            $("rewardQuantity").value
+          ),
+
+        per_user_limit:
+          numberOrNull(
+            $("rewardLimit").value
+          ),
+
+        shipping_required:
+          $("rewardShipping").checked,
+
+        active:
+          $("rewardActive").checked,
+
+        featured:
+          $("rewardFeatured").checked,
+
+        sort_order:
+          Number(
+            $("rewardSort").value ||
+            0
+          ),
+
+        updated_by:
+          currentUser.id
+      };
+
+      try{
+
+        let response;
+
+        if(id){
+
+          response =
+            await supabaseClient
+              .from("coin_rewards")
+              .update(payload)
+              .eq(
+                "id",
+                id
+              );
+
+        }
+        else{
+
+          payload.created_by =
+            currentUser.id;
+
+          response =
+            await supabaseClient
+              .from("coin_rewards")
+              .insert(payload);
+
+        }
+
+        if(response.error)
+          throw response.error;
+
+        await loadRewards();
+
+        setMessage(
+          "rewardMessage",
+          id
+            ? "Reward updated."
+            : "Reward created.",
+          "success"
+        );
+
+        setTimeout(
+          () =>
+            closeModal(
+              "rewardModal"
+            ),
+          450
+        );
+
+      }
+      catch(error){
+
+        console.error(error);
+
+        setMessage(
+          "rewardMessage",
+          "DogEar couldn't save this reward: " +
           (
             error.message ||
             "Unknown error"
@@ -1533,13 +3989,8 @@ $("bookForm")
       }
       finally{
 
-        save.disabled =
+        saveButton.disabled =
           false;
-
-        save.textContent =
-          editingId
-            ? "Save Changes"
-            : "Add Book";
 
       }
 
@@ -1547,8 +3998,69 @@ $("bookForm")
   );
 
 /* =========================================================
+   DELETE REWARD
+   ========================================================= */
+
+$("deleteRewardBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      const id =
+        $("rewardId").value;
+
+      if(!id)
+        return;
+
+      confirmAction({
+        title:
+          "Delete Coin Reward?",
+
+        html:
+          `
+            This will permanently remove this reward
+            from the Coin Marketplace inventory.
+            <br><br>
+            <strong>This action does not affect a user's existing coin balance.</strong>
+          `,
+
+        confirmText:
+          "Delete Reward",
+
+        danger:true,
+
+        action:
+          async () => {
+
+            const {
+              error
+            } =
+              await supabaseClient
+                .from("coin_rewards")
+                .delete()
+                .eq(
+                  "id",
+                  id
+                );
+
+            if(error)
+              throw error;
+
+            closeModal(
+              "rewardModal"
+            );
+
+            await loadRewards();
+
+          }
+      });
+
+    }
+  );
+
+/* =========================================================
    START
-========================================================= */
+   ========================================================= */
 
 async function start(){
 
@@ -1592,7 +4104,34 @@ async function start(){
 
   }
 
-  await loadBooks();
+  try{
+
+    await loadSettings();
+
+    await loadAllBooks();
+
+    await Promise.all([
+      loadCuratedBooks(),
+      loadRewards()
+    ]);
+
+  }
+  catch(error){
+
+    console.error(
+      "Marketplace Manager:",
+      error
+    );
+
+    alert(
+      "DogEar couldn't load Marketplace Manager: " +
+      (
+        error.message ||
+        "Unknown error"
+      )
+    );
+
+  }
 
   $("loading")
     .classList
@@ -1601,6 +4140,7 @@ async function start(){
 }
 
 start();
+
 </script>
 
 </body>
