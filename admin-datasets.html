@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Datasets | DogEar Admin</title>
+
+  <style>
+    :root {
+      --bg: #0d0d0f;
+      --panel: #17171b;
+      --panel-2: #1e1e23;
+      --panel-3: #25252b;
+      --border: #313138;
+      --text: #f5f2ea;
+      --muted: #aaa7a0;
+      --gold: #d4af37;
+      --gold-light: #f1d66e;
+      --green: #5fc786;
+      --red: #e16a66;
+      --blue: #6d9bea;
+      --orange: #dfa55d;
+      --radius: 16px;
+      --shadow: 0 12px 32px rgba(0,0,0,.32);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top right, rgba(212,175,55,.07), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, Helvetica, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    /* =========================================================
+       HEADER
+    ========================================================= */
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      background: rgba(13,13,15,.95);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: linear-gradient(145deg, var(--gold-light), var(--gold));
+      color: #111;
+      font-weight: 900;
+      box-shadow: 0 5px 18px rgba(212,175,55,.18);
+    }
+
+    .brand-name {
+      color: var(--gold-light);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .top-btn {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      transition: .2s ease;
+    }
+
+    .top-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold-light);
+    }
+
+    /* =========================================================
+       SHELL
+    ========================================================= */
+
+    .app-shell {
+      min-height: calc(100vh - 72px);
+      display: grid;
+      grid-template-columns: 250px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      padding: 24px 16px;
+      background: #111114;
+      border-right: 1px solid var(--border);
+    }
+
+    .sidebar-title {
+      color: var(--muted);
+      text-transform: uppercase;
+      font-size: .7rem;
+      letter-spacing: 1.5px;
+      padding: 0 12px 10px;
+    }
+
+    .admin-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .admin-nav a {
+      padding: 12px 14px;
+      border-radius: 10px;
+      color: #cfcdc7;
+      transition: .18s ease;
+    }
+
+    .admin-nav a:hover {
+      background: var(--panel-2);
+      color: #fff;
+    }
+
+    .admin-nav a.active {
+      background: rgba(212,175,55,.12);
+      border: 1px solid rgba(212,175,55,.28);
+      color: var(--gold-light);
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 18px 8px;
+    }
+
+    .main {
+      width: 100%;
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 34px;
+    }
+
+    /* =========================================================
+       PAGE HEADER
+    ========================================================= */
+
+    .page-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      font-size: .74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+
+    .page-subtitle {
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 760px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      border-radius: 10px;
+      padding: 11px 16px;
+      font-weight: 800;
+      transition: .2s ease;
+    }
+
+    .primary-btn {
+      border: 0;
+      background: var(--gold);
+      color: #111;
+    }
+
+    .primary-btn:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+    }
+
+    .secondary-btn {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+    }
+
+    .secondary-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold-light);
+    }
+
+    /* =========================================================
+       STATS
+    ========================================================= */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      padding: 20px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: linear-gradient(
+        145deg,
+        rgba(29,29,34,.98),
+        rgba(21,21,25,.98)
+      );
+      box-shadow: var(--shadow);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 1.9rem;
+      font-weight: 800;
+    }
+
+    .stat-note {
+      margin-top: 6px;
+      font-size: .78rem;
+      color: var(--muted);
+    }
+
+    /* =========================================================
+       TOOLBAR
+    ========================================================= */
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(220px,1fr) 190px 190px;
+      gap: 12px;
+      padding: 18px;
+      margin-bottom: 18px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-wrap input,
+    .toolbar select {
+      width: 100%;
+      height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #111114;
+      color: var(--text);
+      outline: none;
+      padding: 0 12px;
+    }
+
+    .search-wrap input {
+      padding-left: 40px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    .search-wrap input:focus,
+    .toolbar select:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(212,175,55,.08);
+    }
+
+    /* =========================================================
+       TABLE
+    ========================================================= */
+
+    .table-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .table-heading {
+      padding: 19px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .table-heading h2 {
+      font-size: 1.08rem;
+    }
+
+    .table-heading span {
+      color: var(--muted);
+      font-size: .84rem;
+    }
+
+    .table-scroll {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+    }
+
+    thead th {
+      text-align: left;
+      padding: 13px 16px;
+      color: var(--muted);
+      background: #141417;
+      font-size: .73rem;
+      text-transform: uppercase;
+      letter-spacing: .9px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody td {
+      padding: 15px 16px;
+      border-bottom: 1px solid rgba(49,49,56,.72);
+      vertical-align: middle;
+    }
+
+    tbody tr {
+      transition: .16s ease;
+    }
+
+    tbody tr:hover {
+      background: rgba(255,255,255,.025);
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .dataset-name {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .dataset-icon {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      border-radius: 10px;
+      background: rgba(212,175,55,.11);
+      color: var(--gold-light);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+    }
+
+    .dataset-title {
+      font-weight: 800;
+      margin-bottom: 3px;
+    }
+
+    .dataset-description {
+      color: var(--muted);
+      font-size: .78rem;
+      max-width: 340px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 6px 9px;
+      font-size: .72rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .badge::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .badge-active {
+      color: #8bddaa;
+      background: rgba(95,199,134,.1);
+    }
+
+    .badge-syncing {
+      color: #83acec;
+      background: rgba(109,155,234,.1);
+    }
+
+    .badge-warning {
+      color: #edb76f;
+      background: rgba(223,165,93,.1);
+    }
+
+    .badge-disabled {
+      color: #aaa7a0;
+      background: rgba(170,167,160,.1);
+    }
+
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: #d4d1ca;
+      font-size: .82rem;
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 7px;
+    }
+
+    .icon-btn {
+      border: 1px solid var(--border);
+      background: #111114;
+      color: var(--text);
+      padding: 8px 10px;
+      border-radius: 8px;
+      transition: .16s ease;
+      white-space: nowrap;
+    }
+
+    .icon-btn:hover {
+      color: var(--gold-light);
+      border-color: var(--gold);
+    }
+
+    /* =========================================================
+       EMPTY / LOADING
+    ========================================================= */
+
+    .empty-state {
+      display: none;
+      text-align: center;
+      padding: 68px 20px;
+    }
+
+    .empty-state.show {
+      display: block;
+    }
+
+    .empty-icon {
+      width: 62px;
+      height: 62px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 16px;
+      border-radius: 18px;
+      background: rgba(212,175,55,.09);
+      color: var(--gold-light);
+      font-size: 1.7rem;
+    }
+
+    .empty-state h3 {
+      margin-bottom: 8px;
+    }
+
+    .empty-state p {
+      color: var(--muted);
+      max-width: 490px;
+      margin: auto;
+      line-height: 1.5;
+    }
+
+    .loading-row td {
+      text-align: center;
+      color: var(--muted);
+      padding: 42px;
+    }
+
+    /* =========================================================
+       MODAL
+    ========================================================= */
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-backdrop.show {
+      display: flex;
+    }
+
+    .modal {
+      width: min(680px,100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 24px 60px rgba(0,0,0,.55);
+    }
+
+    .modal-header {
+      padding: 21px 22px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: flex-start;
+    }
+
+    .modal-header h2 {
+      font-size: 1.25rem;
+      margin-bottom: 5px;
+    }
+
+    .modal-header p {
+      color: var(--muted);
+      font-size: .85rem;
+    }
+
+    .close-btn {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .close-btn:hover {
+      color: white;
+    }
+
+    .modal-body {
+      padding: 22px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 13px;
+    }
+
+    .detail-item {
+      background: #111114;
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 10px;
+    }
+
+    .detail-label {
+      color: var(--muted);
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin-bottom: 6px;
+    }
+
+    .detail-value {
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 9px;
+      padding: 18px 22px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @media (max-width: 1050px) {
+      .stats-grid {
+        grid-template-columns: repeat(2,1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+        padding: 12px 14px;
+      }
+
+      .sidebar-title,
+      .sidebar-divider {
+        display: none;
+      }
+
+      .admin-nav {
+        flex-direction: row;
+        overflow-x: auto;
+      }
+
+      .admin-nav + .admin-nav {
+        margin-top: 7px;
+      }
+
+      .admin-nav a {
+        white-space: nowrap;
+      }
+
+      .main {
+        padding: 24px 18px 40px;
+      }
+
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .topbar {
+        padding: 0 15px;
+      }
+
+      .brand-name,
+      .view-site {
+        display: none;
+      }
+
+      .page-header {
+        flex-direction: column;
+      }
+
+      .header-actions {
+        width: 100%;
+      }
+
+      .header-actions button,
+      .header-actions a {
+        flex: 1;
+        text-align: center;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <a href="dashboard.html" class="brand">
+    <div class="brand-mark">D</div>
+    <span class="brand-name">DogEar</span>
+  </a>
+
+  <div class="top-actions">
+    <a href="dashboard.html" class="top-btn view-site">View Site</a>
+    <a href="login.html" class="top-btn">Log Out</a>
+  </div>
+</header>
+
+
+<div class="app-shell">
+
+  <!-- =======================================================
+       ADMIN NAVIGATION
+  ======================================================== -->
+
+  <aside class="sidebar">
+    <div class="sidebar-title">Administration</div>
+
+    <nav class="admin-nav">
+      <a href="admin.html">Overview</a>
+      <a href="admin-users.html">Users</a>
+      <a href="admin-datasets.html" class="active">Datasets</a>
+      <a href="admin-uploads.html">Uploads</a>
+      <a href="admin-logs.html">Logs</a>
+      <a href="admin-settings.html">Settings</a>
+    </nav>
+
+    <div class="sidebar-divider"></div>
+
+    <nav class="admin-nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="discover.html">Discover</a>
+      <a href="clubs.html">Book Clubs</a>
+      <a href="marketplace.html">Marketplace</a>
+      <a href="profile.html">My Profile</a>
+    </nav>
+  </aside>
+
+
+  <!-- =======================================================
+       MAIN
+  ======================================================== -->
+
+  <main class="main">
+
+    <div class="page-header">
+
+      <div>
+        <div class="eyebrow">DogEar Administration</div>
+
+        <h1>Datasets</h1>
+
+        <p class="page-subtitle">
+          Monitor the data collections DogEar uses to power books,
+          clubs, profiles, marketplace features, recommendations,
+          moderation, analytics, and other platform systems.
+        </p>
+      </div>
+
+      <div class="header-actions">
+
+        <button
+          type="button"
+          class="secondary-btn"
+          id="refreshAllBtn"
+        >
+          Refresh
+        </button>
+
+        <a
+          href="admin-uploads.html"
+          class="primary-btn"
+        >
+          Manage Uploads
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         STATS
+    ====================================================== -->
+
+    <section class="stats-grid">
+
+      <div class="stat-card">
+        <div class="stat-label">Datasets</div>
+        <div class="stat-value" id="datasetCount">0</div>
+        <div class="stat-note">Tracked data collections</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Total Records</div>
+        <div class="stat-value" id="recordCount">0</div>
+        <div class="stat-note">Across all datasets</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Active</div>
+        <div class="stat-value" id="activeCount">0</div>
+        <div class="stat-note">Currently available</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Needs Attention</div>
+        <div class="stat-value" id="attentionCount">0</div>
+        <div class="stat-note">Warnings or sync problems</div>
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FILTERS
+    ====================================================== -->
+
+    <section class="toolbar">
+
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Search datasets..."
+          autocomplete="off"
+        />
+      </div>
+
+
+      <select id="typeFilter">
+        <option value="">All types</option>
+        <option value="books">Books</option>
+        <option value="users">Users</option>
+        <option value="clubs">Book Clubs</option>
+        <option value="marketplace">Marketplace</option>
+        <option value="analytics">Analytics</option>
+        <option value="moderation">Moderation</option>
+        <option value="other">Other</option>
+      </select>
+
+
+      <select id="statusFilter">
+        <option value="">All statuses</option>
+        <option value="active">Active</option>
+        <option value="syncing">Syncing</option>
+        <option value="warning">Needs Attention</option>
+        <option value="disabled">Disabled</option>
+      </select>
+
+    </section>
+
+
+    <!-- =====================================================
+         TABLE
+    ====================================================== -->
+
+    <section class="table-card">
+
+      <div class="table-heading">
+        <h2>Data Collections</h2>
+
+        <span id="visibleDatasetCount">
+          0 datasets
+        </span>
+      </div>
+
+
+      <div class="table-scroll">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>Dataset</th>
+              <th>Type</th>
+              <th>Source</th>
+              <th>Records</th>
+              <th>Status</th>
+              <th>Last Updated</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody id="datasetTableBody">
+
+            <tr class="loading-row">
+              <td colspan="7">
+                Loading datasets...
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+      <div class="empty-state" id="emptyState">
+
+        <div class="empty-icon">▦</div>
+
+        <h3>No datasets found</h3>
+
+        <p id="emptyMessage">
+          DogEar does not currently have any datasets available
+          through this admin page.
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<!-- =========================================================
+     DETAILS MODAL
+========================================================= -->
+
+<div
+  class="modal-backdrop"
+  id="detailsModal"
+  aria-hidden="true"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div>
+        <h2 id="modalDatasetName">
+          Dataset
+        </h2>
+
+        <p id="modalDatasetDescription">
+          Dataset details
+        </p>
+      </div>
+
+      <button
+        class="close-btn"
+        id="closeModalBtn"
+        type="button"
+        aria-label="Close"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div class="detail-grid">
+
+        <div class="detail-item">
+          <div class="detail-label">Dataset ID</div>
+          <div class="detail-value mono" id="detailId">—</div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label">Type</div>
+          <div class="detail-value" id="detailType">—</div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label">Source</div>
+          <div class="detail-value" id="detailSource">—</div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label">Records</div>
+          <div class="detail-value" id="detailRecords">—</div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label">Status</div>
+          <div class="detail-value" id="detailStatus">—</div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label">Last Updated</div>
+          <div class="detail-value" id="detailUpdated">—</div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-footer">
+
+      <button
+        type="button"
+        class="secondary-btn"
+        id="modalCloseBtn"
+      >
+        Close
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  /* ==========================================================
+     DOGEAR DATASET ADMIN
+
+     IMPORTANT:
+
+     I am intentionally NOT guessing the Supabase table/schema
+     here.
+
+     When we confirm DogEar's actual tables, replace the contents
+     of loadDatasets() with the real query.
+
+     Everything else on this page will continue working.
+  ========================================================== */
+
+
+  let datasets = [];
+  let filteredDatasets = [];
+
+
+  /* ==========================================================
+     ELEMENTS
+  ========================================================== */
+
+  const datasetTableBody =
+    document.getElementById("datasetTableBody");
+
+  const emptyState =
+    document.getElementById("emptyState");
+
+  const emptyMessage =
+    document.getElementById("emptyMessage");
+
+  const searchInput =
+    document.getElementById("searchInput");
+
+  const typeFilter =
+    document.getElementById("typeFilter");
+
+  const statusFilter =
+    document.getElementById("statusFilter");
+
+  const refreshAllBtn =
+    document.getElementById("refreshAllBtn");
+
+  const detailsModal =
+    document.getElementById("detailsModal");
+
+
+  /* ==========================================================
+     LOAD DATASETS
+
+     WIRE DOGEAR'S REAL BACKEND HERE.
+
+     Expected object shape:
+
+     {
+       id: "books",
+       name: "Book Catalog",
+       description: "Books currently known to DogEar.",
+       type: "books",
+       source: "Google Books",
+       recordCount: 15432,
+       status: "active",
+       updatedAt: "2026-09-14T12:00:00Z"
+     }
+
+  ========================================================== */
+
+  async function loadDatasets() {
+
+    setLoadingState();
+
+    try {
+
+      /*
+      =========================================================
+      REPLACE THIS SECTION WITH DOGEAR'S REAL DATA QUERY.
+
+      Example only:
+
+      const { data, error } = await supabase
+        .from("whatever_the_real_table_is")
+        .select("*");
+
+      if (error) throw error;
+
+      datasets = data.map(...);
+      =========================================================
+      */
+
+
+      /*
+       Until the real DogEar data source is wired,
+       leave this empty instead of pretending these
+       records exist.
+      */
+
+      datasets = [];
+
+
+      applyFilters();
+
+    } catch (error) {
+
+      console.error(
+        "Unable to load DogEar datasets:",
+        error
+      );
+
+      datasets = [];
+
+      renderDatasets();
+
+      showEmpty(
+        "DogEar couldn't load the dataset catalog. Check the browser console for details."
+      );
+
+    }
+
+  }
+
+
+  /* ==========================================================
+     FILTER
+  ========================================================== */
+
+  function applyFilters() {
+
+    const search =
+      searchInput.value.trim().toLowerCase();
+
+    const selectedType =
+      typeFilter.value;
+
+    const selectedStatus =
+      statusFilter.value;
+
+
+    filteredDatasets = datasets.filter(dataset => {
+
+      const searchableText = [
+        dataset.name,
+        dataset.description,
+        dataset.type,
+        dataset.source
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+
+      const matchesSearch =
+        !search ||
+        searchableText.includes(search);
+
+
+      const matchesType =
+        !selectedType ||
+        dataset.type === selectedType;
+
+
+      const matchesStatus =
+        !selectedStatus ||
+        dataset.status === selectedStatus;
+
+
+      return (
+        matchesSearch &&
+        matchesType &&
+        matchesStatus
+      );
+
+    });
+
+
+    renderDatasets();
+    updateStats();
+
+  }
+
+
+  /* ==========================================================
+     RENDER TABLE
+  ========================================================== */
+
+  function renderDatasets() {
+
+    datasetTableBody.innerHTML = "";
+
+
+    if (!filteredDatasets.length) {
+
+      showEmpty(
+        datasets.length
+          ? "No datasets match your current filters."
+          : "No DogEar datasets have been connected to this page yet."
+      );
+
+      document.getElementById(
+        "visibleDatasetCount"
+      ).textContent = "0 datasets";
+
+      return;
+
+    }
+
+
+    hideEmpty();
+
+
+    filteredDatasets.forEach(dataset => {
+
+      const row =
+        document.createElement("tr");
+
+
+      row.innerHTML = `
+
+        <td>
+
+          <div class="dataset-name">
+
+            <div class="dataset-icon">
+              ${datasetIcon(dataset.type)}
+            </div>
+
+            <div>
+
+              <div class="dataset-title">
+                ${escapeHtml(dataset.name || "Untitled Dataset")}
+              </div>
+
+              <div class="dataset-description">
+                ${escapeHtml(dataset.description || "")}
+              </div>
+
+            </div>
+
+          </div>
+
+        </td>
+
+
+        <td>
+          ${formatType(dataset.type)}
+        </td>
+
+
+        <td>
+          ${escapeHtml(dataset.source || "DogEar")}
+        </td>
+
+
+        <td>
+          ${formatNumber(dataset.recordCount)}
+        </td>
+
+
+        <td>
+          ${statusBadge(dataset.status)}
+        </td>
+
+
+        <td>
+          ${formatDate(dataset.updatedAt)}
+        </td>
+
+
+        <td>
+
+          <div class="row-actions">
+
+            <button
+              class="icon-btn"
+              type="button"
+              data-action="details"
+              data-id="${escapeAttribute(dataset.id)}"
+            >
+              Details
+            </button>
+
+          </div>
+
+        </td>
+
+      `;
+
+
+      datasetTableBody.appendChild(row);
+
+    });
+
+
+    document.getElementById(
+      "visibleDatasetCount"
+    ).textContent =
+      `${filteredDatasets.length} ${pluralize(
+        filteredDatasets.length,
+        "dataset"
+      )}`;
+
+  }
+
+
+  /* ==========================================================
+     STATS
+  ========================================================== */
+
+  function updateStats() {
+
+    const totalRecords =
+      datasets.reduce(
+        (total, dataset) =>
+          total + Number(dataset.recordCount || 0),
+        0
+      );
+
+
+    const active =
+      datasets.filter(
+        dataset =>
+          dataset.status === "active"
+      ).length;
+
+
+    const attention =
+      datasets.filter(
+        dataset =>
+          dataset.status === "warning"
+      ).length;
+
+
+    document.getElementById(
+      "datasetCount"
+    ).textContent =
+      formatNumber(datasets.length);
+
+
+    document.getElementById(
+      "recordCount"
+    ).textContent =
+      formatNumber(totalRecords);
+
+
+    document.getElementById(
+      "activeCount"
+    ).textContent =
+      formatNumber(active);
+
+
+    document.getElementById(
+      "attentionCount"
+    ).textContent =
+      formatNumber(attention);
+
+  }
+
+
+  /* ==========================================================
+     DETAILS
+  ========================================================== */
+
+  function openDatasetDetails(datasetId) {
+
+    const dataset =
+      datasets.find(
+        item =>
+          String(item.id) === String(datasetId)
+      );
+
+
+    if (!dataset) {
+      return;
+    }
+
+
+    document.getElementById(
+      "modalDatasetName"
+    ).textContent =
+      dataset.name || "Dataset";
+
+
+    document.getElementById(
+      "modalDatasetDescription"
+    ).textContent =
+      dataset.description || "DogEar dataset";
+
+
+    document.getElementById(
+      "detailId"
+    ).textContent =
+      dataset.id ?? "—";
+
+
+    document.getElementById(
+      "detailType"
+    ).textContent =
+      formatType(dataset.type);
+
+
+    document.getElementById(
+      "detailSource"
+    ).textContent =
+      dataset.source || "DogEar";
+
+
+    document.getElementById(
+      "detailRecords"
+    ).textContent =
+      formatNumber(dataset.recordCount);
+
+
+    document.getElementById(
+      "detailStatus"
+    ).textContent =
+      formatStatus(dataset.status);
+
+
+    document.getElementById(
+      "detailUpdated"
+    ).textContent =
+      formatDate(dataset.updatedAt);
+
+
+    detailsModal.classList.add("show");
+
+    detailsModal.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+  }
+
+
+  function closeModal() {
+
+    detailsModal.classList.remove("show");
+
+    detailsModal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+  }
+
+
+  /* ==========================================================
+     UI STATES
+  ========================================================== */
+
+  function setLoadingState() {
+
+    emptyState.classList.remove("show");
+
+    datasetTableBody.innerHTML = `
+
+      <tr class="loading-row">
+
+        <td colspan="7">
+          Loading datasets...
+        </td>
+
+      </tr>
+
+    `;
+
+  }
+
+
+  function showEmpty(message) {
+
+    datasetTableBody.innerHTML = "";
+
+    emptyMessage.textContent = message;
+
+    emptyState.classList.add("show");
+
+  }
+
+
+  function hideEmpty() {
+
+    emptyState.classList.remove("show");
+
+  }
+
+
+  /* ==========================================================
+     FORMATTERS
+  ========================================================== */
+
+  function datasetIcon(type) {
+
+    switch (type) {
+
+      case "books":
+        return "B";
+
+      case "users":
+        return "U";
+
+      case "clubs":
+        return "C";
+
+      case "marketplace":
+        return "$";
+
+      case "analytics":
+        return "A";
+
+      case "moderation":
+        return "!";
+
+      default:
+        return "D";
+
+    }
+
+  }
+
+
+  function statusBadge(status) {
+
+    const safeStatus =
+      status || "disabled";
+
+
+    let className =
+      "badge-disabled";
+
+
+    if (safeStatus === "active") {
+      className = "badge-active";
+    }
+
+    if (safeStatus === "syncing") {
+      className = "badge-syncing";
+    }
+
+    if (safeStatus === "warning") {
+      className = "badge-warning";
+    }
+
+
+    return `
+
+      <span class="badge ${className}">
+        ${formatStatus(safeStatus)}
+      </span>
+
+    `;
+
+  }
+
+
+  function formatStatus(status) {
+
+    switch (status) {
+
+      case "active":
+        return "Active";
+
+      case "syncing":
+        return "Syncing";
+
+      case "warning":
+        return "Needs Attention";
+
+      case "disabled":
+        return "Disabled";
+
+      default:
+        return status
+          ? capitalize(status)
+          : "Unknown";
+
+    }
+
+  }
+
+
+  function formatType(type) {
+
+    if (!type) {
+      return "Other";
+    }
+
+
+    const labels = {
+      books: "Books",
+      users: "Users",
+      clubs: "Book Clubs",
+      marketplace: "Marketplace",
+      analytics: "Analytics",
+      moderation: "Moderation",
+      other: "Other"
+    };
+
+
+    return labels[type] || capitalize(type);
+
+  }
+
+
+  function formatNumber(value) {
+
+    const number =
+      Number(value || 0);
+
+
+    return new Intl.NumberFormat(
+      "en-US"
+    ).format(number);
+
+  }
+
+
+  function formatDate(value) {
+
+    if (!value) {
+      return "Never";
+    }
+
+
+    const date =
+      new Date(value);
+
+
+    if (
+      Number.isNaN(
+        date.getTime()
+      )
+    ) {
+      return "Unknown";
+    }
+
+
+    return new Intl.DateTimeFormat(
+      "en-US",
+      {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit"
+      }
+    ).format(date);
+
+  }
+
+
+  function capitalize(value) {
+
+    return String(value)
+      .charAt(0)
+      .toUpperCase() +
+      String(value).slice(1);
+
+  }
+
+
+  function pluralize(count, word) {
+
+    return count === 1
+      ? word
+      : `${word}s`;
+
+  }
+
+
+  function escapeHtml(value) {
+
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+  }
+
+
+  function escapeAttribute(value) {
+
+    return escapeHtml(
+      String(value ?? "")
+    );
+
+  }
+
+
+  /* ==========================================================
+     EVENTS
+  ========================================================== */
+
+  searchInput.addEventListener(
+    "input",
+    applyFilters
+  );
+
+
+  typeFilter.addEventListener(
+    "change",
+    applyFilters
+  );
+
+
+  statusFilter.addEventListener(
+    "change",
+    applyFilters
+  );
+
+
+  refreshAllBtn.addEventListener(
+    "click",
+    async () => {
+
+      refreshAllBtn.disabled = true;
+
+      refreshAllBtn.textContent =
+        "Refreshing...";
+
+
+      await loadDatasets();
+
+
+      refreshAllBtn.disabled = false;
+
+      refreshAllBtn.textContent =
+        "Refresh";
+
+    }
+  );
+
+
+  datasetTableBody.addEventListener(
+    "click",
+    event => {
+
+      const button =
+        event.target.closest(
+          "[data-action]"
+        );
+
+
+      if (!button) {
+        return;
+      }
+
+
+      if (
+        button.dataset.action ===
+        "details"
+      ) {
+
+        openDatasetDetails(
+          button.dataset.id
+        );
+
+      }
+
+    }
+  );
+
+
+  document.getElementById(
+    "closeModalBtn"
+  ).addEventListener(
+    "click",
+    closeModal
+  );
+
+
+  document.getElementById(
+    "modalCloseBtn"
+  ).addEventListener(
+    "click",
+    closeModal
+  );
+
+
+  detailsModal.addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target ===
+        detailsModal
+      ) {
+        closeModal();
+      }
+
+    }
+  );
+
+
+  document.addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key === "Escape"
+      ) {
+        closeModal();
+      }
+
+    }
+  );
+
+
+  /* ==========================================================
+     START
+  ========================================================== */
+
+  loadDatasets();
+
+</script>
+
+</body>
+</html>
