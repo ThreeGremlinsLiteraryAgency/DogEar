@@ -32,6 +32,7 @@ body{
   color:var(--cream);
   background:
     radial-gradient(circle at 10% 0%,rgba(53,73,59,.24),transparent 28%),
+    radial-gradient(circle at 90% 4%,rgba(199,155,89,.07),transparent 22%),
     var(--ink);
   font-family:Georgia,"Times New Roman",serif;
 }
@@ -43,6 +44,10 @@ input,
 select{
   font:inherit;
 }
+
+/* =========================================================
+   TOP NAV
+   ========================================================= */
 
 .topbar{
   min-height:76px;
@@ -56,6 +61,7 @@ select{
   position:sticky;
   top:0;
   z-index:30;
+  backdrop-filter:blur(14px);
 }
 
 .brand{
@@ -72,9 +78,22 @@ select{
 .brand-mark{
   width:34px;
   height:34px;
+  position:relative;
   border:1px solid var(--gold);
   border-radius:50% 50% 50% 12%;
   transform:rotate(-8deg);
+}
+
+.brand-mark::after{
+  content:"";
+  position:absolute;
+  width:11px;
+  height:11px;
+  right:2px;
+  top:2px;
+  border-left:1px solid var(--gold);
+  border-bottom:1px solid var(--gold);
+  background:var(--ink);
 }
 
 .nav{
@@ -103,6 +122,7 @@ select{
   display:grid;
   place-items:center;
   background:var(--green);
+  color:var(--gold2);
   text-decoration:none;
   font:800 13px Arial;
   overflow:hidden;
@@ -113,6 +133,10 @@ select{
   height:100%;
   object-fit:cover;
 }
+
+/* =========================================================
+   PAGE
+   ========================================================= */
 
 .page{
   width:min(1160px,calc(100% - 32px));
@@ -236,10 +260,20 @@ h1{
   color:var(--gold2);
 }
 
+.btn.active{
+  border-color:var(--gold);
+  background:var(--green);
+  color:var(--cream);
+}
+
 .btn:disabled{
   opacity:.5;
   cursor:not-allowed;
 }
+
+/* =========================================================
+   CONTENT GRID
+   ========================================================= */
 
 .grid{
   display:grid;
@@ -295,6 +329,10 @@ h1{
   overflow-wrap:anywhere;
 }
 
+/* =========================================================
+   PERSONAL SHELF
+   ========================================================= */
+
 .status-options{
   display:grid;
   gap:9px;
@@ -318,6 +356,10 @@ h1{
   border-color:var(--gold);
   background:rgba(38,54,43,.55);
 }
+
+/* =========================================================
+   CLUBS
+   ========================================================= */
 
 .club-list{
   display:grid;
@@ -343,8 +385,12 @@ h1{
 
 .club-meta{
   color:var(--muted);
-  font:10px Arial;
+  font:10px/1.45 Arial;
 }
+
+/* =========================================================
+   PURCHASE
+   ========================================================= */
 
 .purchase-card{
   padding:18px;
@@ -369,6 +415,16 @@ h1{
   width:100%;
 }
 
+.disclosure{
+  margin-top:10px;
+  color:#766e61;
+  font:9px/1.45 Arial;
+}
+
+/* =========================================================
+   STATES
+   ========================================================= */
+
 .empty{
   padding:18px 0;
   color:var(--muted);
@@ -384,9 +440,17 @@ h1{
   font:11px/1.5 Arial;
 }
 
-.message.show{display:block}
-.message.error{color:var(--danger)}
-.message.success{color:var(--ok)}
+.message.show{
+  display:block;
+}
+
+.message.error{
+  color:var(--danger);
+}
+
+.message.success{
+  color:var(--ok);
+}
 
 .loading{
   position:fixed;
@@ -430,7 +494,16 @@ h1{
   font:400 26px Georgia;
 }
 
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+.mobile-nav{
+  display:none;
+}
+
 @media(max-width:850px){
+
   .hero{
     grid-template-columns:180px minmax(0,1fr);
     gap:26px;
@@ -439,10 +512,14 @@ h1{
   .grid{
     grid-template-columns:1fr;
   }
+
 }
 
 @media(max-width:650px){
-  .nav{display:none}
+
+  .nav{
+    display:none;
+  }
 
   .hero{
     grid-template-columns:1fr;
@@ -460,6 +537,43 @@ h1{
   .detail-value{
     margin-bottom:9px;
   }
+
+  .mobile-nav{
+    position:fixed;
+    left:12px;
+    right:12px;
+    bottom:12px;
+    z-index:200;
+    min-height:64px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:rgba(9,11,10,.95);
+    backdrop-filter:blur(14px);
+  }
+
+  .mobile-nav a{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    color:var(--muted);
+    text-decoration:none;
+    font:9px Arial;
+    text-transform:uppercase;
+  }
+
+  .mobile-nav a span:first-child{
+    color:var(--gold2);
+    font-size:17px;
+  }
+
+  .page{
+    padding-bottom:120px;
+  }
+
 }
 </style>
 </head>
@@ -484,26 +598,48 @@ h1{
     <a class="active" href="marketplace.html">Books</a>
   </nav>
 
-  <a class="avatar" id="navAvatar" href="profile.html">?</a>
+  <a
+    class="avatar"
+    id="navAvatar"
+    href="profile.html"
+  >
+    ?
+  </a>
 
 </header>
 
 <main class="page">
 
-  <a class="back" href="marketplace.html">
+  <a
+    class="back"
+    id="backLink"
+    href="marketplace.html"
+  >
     ← Back to Books
   </a>
 
-  <div class="error-state" id="errorState">
-    <strong>We couldn't find this book.</strong>
-    The book may have been removed, or the link may be incomplete.
+  <div
+    class="error-state"
+    id="errorState"
+  >
+
+    <strong>
+      We couldn't find this book.
+    </strong>
+
+    The book may have been removed,
+    or the link may be incomplete.
+
   </div>
 
   <div id="bookPage">
 
     <section class="hero">
 
-      <div class="cover" id="cover">
+      <div
+        class="cover"
+        id="cover"
+      >
         No cover
       </div>
 
@@ -517,13 +653,22 @@ h1{
           Book Title
         </h1>
 
-        <div class="author" id="author">
+        <div
+          class="author"
+          id="author"
+        >
           Unknown author
         </div>
 
-        <div class="edition" id="edition"></div>
+        <div
+          class="edition"
+          id="edition"
+        ></div>
 
-        <div class="description" id="description">
+        <div
+          class="description"
+          id="description"
+        >
           No description is available yet.
         </div>
 
@@ -532,27 +677,33 @@ h1{
           <button
             class="btn primary"
             id="wantToReadBtn"
-            type="button">
+            type="button"
+          >
             Want to Read
           </button>
 
           <button
             class="btn secondary"
             id="readingBtn"
-            type="button">
+            type="button"
+          >
             Reading
           </button>
 
           <button
             class="btn secondary"
             id="readBtn"
-            type="button">
+            type="button"
+          >
             Read
           </button>
 
         </div>
 
-        <div class="message" id="statusMessage"></div>
+        <div
+          class="message"
+          id="statusMessage"
+        ></div>
 
       </div>
 
@@ -563,8 +714,15 @@ h1{
       <section class="card">
 
         <div class="card-head">
-          <h2>Edition Details</h2>
-          <p>The specific edition represented by this DogEar record.</p>
+
+          <h2>
+            Edition Details
+          </h2>
+
+          <p>
+            The specific edition represented by this DogEar record.
+          </p>
+
         </div>
 
         <div class="card-body">
@@ -575,7 +733,10 @@ h1{
               ISBN
             </div>
 
-            <div class="detail-value" id="isbn">
+            <div
+              class="detail-value"
+              id="isbn"
+            >
               —
             </div>
 
@@ -583,7 +744,10 @@ h1{
               Publisher
             </div>
 
-            <div class="detail-value" id="publisher">
+            <div
+              class="detail-value"
+              id="publisher"
+            >
               —
             </div>
 
@@ -591,7 +755,10 @@ h1{
               Published
             </div>
 
-            <div class="detail-value" id="published">
+            <div
+              class="detail-value"
+              id="published"
+            >
               —
             </div>
 
@@ -599,7 +766,21 @@ h1{
               Pages
             </div>
 
-            <div class="detail-value" id="pages">
+            <div
+              class="detail-value"
+              id="pages"
+            >
+              —
+            </div>
+
+            <div class="detail-label">
+              Format
+            </div>
+
+            <div
+              class="detail-value"
+              id="format"
+            >
               —
             </div>
 
@@ -607,7 +788,10 @@ h1{
               Categories
             </div>
 
-            <div class="detail-value" id="categories">
+            <div
+              class="detail-value"
+              id="categories"
+            >
               —
             </div>
 
@@ -615,7 +799,10 @@ h1{
               Google Books ID
             </div>
 
-            <div class="detail-value" id="googleBooksId">
+            <div
+              class="detail-value"
+              id="googleBooksId"
+            >
               —
             </div>
 
@@ -630,8 +817,15 @@ h1{
         <section class="card">
 
           <div class="card-head">
-            <h2>Get the Book</h2>
-            <p>Support DogEar through the available affiliate link.</p>
+
+            <h2>
+              Get the Book
+            </h2>
+
+            <p>
+              Support DogEar through the available affiliate link.
+            </p>
+
           </div>
 
           <div class="card-body">
@@ -643,7 +837,8 @@ h1{
               </h3>
 
               <p id="purchaseText">
-                If an affiliate link has been added for this book, you can buy it here.
+                If an affiliate link has been added for this
+                book, you can buy it here.
               </p>
 
               <a
@@ -651,13 +846,26 @@ h1{
                 id="purchaseLink"
                 href="#"
                 target="_blank"
-                rel="noopener noreferrer"
-                style="display:none;">
+                rel="noopener noreferrer sponsored"
+                style="display:none"
+              >
                 Buy Book
               </a>
 
-              <div class="empty" id="noPurchase">
+              <div
+                class="empty"
+                id="noPurchase"
+              >
                 No purchase link has been added yet.
+              </div>
+
+              <div
+                class="disclosure"
+                id="affiliateDisclosure"
+                hidden
+              >
+                DogEar may earn a commission when you purchase
+                through this link.
               </div>
 
             </div>
@@ -666,11 +874,21 @@ h1{
 
         </section>
 
-        <section class="card" style="margin-top:20px">
+        <section
+          class="card"
+          style="margin-top:20px"
+        >
 
           <div class="card-head">
-            <h2>Reading Status</h2>
-            <p>Your personal shelf.</p>
+
+            <h2>
+              Reading Status
+            </h2>
+
+            <p>
+              Your personal shelf.
+            </p>
+
           </div>
 
           <div class="card-body">
@@ -680,21 +898,24 @@ h1{
               <button
                 class="status-btn"
                 id="statusWant"
-                type="button">
+                type="button"
+              >
                 Want to Read
               </button>
 
               <button
                 class="status-btn"
                 id="statusReading"
-                type="button">
+                type="button"
+              >
                 Currently Reading
               </button>
 
               <button
                 class="status-btn"
                 id="statusRead"
-                type="button">
+                type="button"
+              >
                 Read
               </button>
 
@@ -709,18 +930,30 @@ h1{
       <section class="card">
 
         <div class="card-head">
-          <h2>Clubs Reading This Book</h2>
+
+          <h2>
+            Clubs Reading This Book
+          </h2>
 
           <p>
-            Book clubs currently reading or featuring this title.
+            DogEar clubs currently reading or previously
+            featuring this title.
           </p>
+
         </div>
 
         <div class="card-body">
 
-          <div class="club-list" id="clubList"></div>
+          <div
+            class="club-list"
+            id="clubList"
+          ></div>
 
-          <div class="empty" id="noClubs" hidden>
+          <div
+            class="empty"
+            id="noClubs"
+            hidden
+          >
             No clubs are currently linked to this book.
           </div>
 
@@ -734,7 +967,36 @@ h1{
 
 </main>
 
+<nav class="mobile-nav">
+
+  <a href="dashboard.html">
+    <span>⌂</span>
+    Home
+  </a>
+
+  <a href="discover.html">
+    <span>⌕</span>
+    Discover
+  </a>
+
+  <a href="clubs.html">
+    <span>◉</span>
+    Clubs
+  </a>
+
+  <a href="profile.html">
+    <span>☺</span>
+    Profile
+  </a>
+
+</nav>
+
 <script>
+
+/* =========================================================
+   CONNECTION
+   ========================================================= */
+
 const SUPABASE_URL =
   "https://nrtutxjznkfvvbmaagum.supabase.co";
 
@@ -747,18 +1009,32 @@ const supabaseClient =
     SUPABASE_PUBLISHABLE_KEY
   );
 
+/* =========================================================
+   STATE
+   ========================================================= */
+
 const $ =
-  id => document.getElementById(id);
+  id =>
+    document.getElementById(id);
 
 const params =
-  new URLSearchParams(location.search);
+  new URLSearchParams(
+    location.search
+  );
 
 const bookId =
   params.get("id");
 
+const returnUrl =
+  params.get("return");
+
 let currentUser = null;
 let book = null;
 let readingStatus = null;
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
 
 function escapeHtml(value=""){
 
@@ -776,7 +1052,10 @@ function escapeHtml(value=""){
 
 }
 
-function showMessage(text,type=""){
+function showMessage(
+  text,
+  type=""
+){
 
   $("statusMessage").textContent =
     text;
@@ -794,6 +1073,28 @@ function showError(){
   $("errorState")
     .classList
     .add("show");
+
+}
+
+function initials(name="Reader"){
+
+  const pieces =
+    String(name)
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+  if(!pieces.length)
+    return "?";
+
+  if(pieces.length === 1)
+    return pieces[0][0]
+      .toUpperCase();
+
+  return (
+    pieces[0][0] +
+    pieces[pieces.length - 1][0]
+  ).toUpperCase();
 
 }
 
@@ -816,33 +1117,195 @@ function normalizeStatus(value){
 
 }
 
+function safeExternalUrl(value){
+
+  if(!value)
+    return null;
+
+  try{
+
+    const url =
+      new URL(
+        value,
+        location.href
+      );
+
+    if(
+      url.protocol !== "https:" &&
+      url.protocol !== "http:"
+    ){
+
+      return null;
+
+    }
+
+    return url.href;
+
+  }
+  catch(error){
+
+    return null;
+
+  }
+
+}
+
+function safeLocalReturn(value){
+
+  if(!value)
+    return null;
+
+  try{
+
+    const decoded =
+      decodeURIComponent(value);
+
+    const url =
+      new URL(
+        decoded,
+        location.href
+      );
+
+    if(
+      url.origin !==
+      location.origin
+    ){
+
+      return null;
+
+    }
+
+    return (
+      url.pathname
+        .split("/")
+        .pop() +
+      url.search +
+      url.hash
+    );
+
+  }
+  catch(error){
+
+    return null;
+
+  }
+
+}
+
+/* =========================================================
+   BACK LINK
+   ========================================================= */
+
+function wireBackLink(){
+
+  const safe =
+    safeLocalReturn(
+      returnUrl
+    );
+
+  if(safe){
+
+    $("backLink").href =
+      safe;
+
+    $("backLink").textContent =
+      "← Back";
+
+  }
+  else{
+
+    $("backLink").href =
+      "marketplace.html";
+
+  }
+
+}
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
 function renderStatus(){
 
-  [
+  const sideButtons = [
     $("statusWant"),
     $("statusReading"),
     $("statusRead")
+  ];
+
+  const heroButtons = [
+    $("wantToReadBtn"),
+    $("readingBtn"),
+    $("readBtn")
+  ];
+
+  [
+    ...sideButtons,
+    ...heroButtons
   ]
     .forEach(
       button =>
-        button.classList.remove("active")
+        button.classList
+          .remove("active")
     );
 
-  if(readingStatus === "want_to_read")
-    $("statusWant").classList.add("active");
+  if(
+    readingStatus ===
+    "want_to_read"
+  ){
 
-  if(readingStatus === "reading")
-    $("statusReading").classList.add("active");
+    $("statusWant")
+      .classList
+      .add("active");
 
-  if(readingStatus === "read")
-    $("statusRead").classList.add("active");
+    $("wantToReadBtn")
+      .classList
+      .add("active");
+
+  }
+
+  if(
+    readingStatus ===
+    "reading"
+  ){
+
+    $("statusReading")
+      .classList
+      .add("active");
+
+    $("readingBtn")
+      .classList
+      .add("active");
+
+  }
+
+  if(
+    readingStatus ===
+    "read"
+  ){
+
+    $("statusRead")
+      .classList
+      .add("active");
+
+    $("readBtn")
+      .classList
+      .add("active");
+
+  }
 
 }
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
 
 async function loadProfile(){
 
   let display =
-    currentUser?.user_metadata?.display_name ||
+    currentUser
+      ?.user_metadata
+      ?.display_name ||
     "Reader";
 
   let avatar = "";
@@ -894,37 +1357,50 @@ async function loadProfile(){
   const holder =
     $("navAvatar");
 
-  holder.innerHTML = "";
+  holder.innerHTML =
+    "";
 
   if(avatar){
 
     const image =
-      document.createElement("img");
+      document.createElement(
+        "img"
+      );
 
-    image.src = avatar;
-    image.alt = display;
+    image.src =
+      avatar;
+
+    image.alt =
+      display;
 
     image.onerror =
       () => {
 
-        holder.innerHTML = "";
+        holder.innerHTML =
+          "";
 
         holder.textContent =
-          display.charAt(0).toUpperCase();
+          initials(display);
 
       };
 
-    holder.appendChild(image);
+    holder.appendChild(
+      image
+    );
 
   }
   else{
 
     holder.textContent =
-      display.charAt(0).toUpperCase();
+      initials(display);
 
   }
 
 }
+
+/* =========================================================
+   LOAD BOOK
+   ========================================================= */
 
 async function loadBook(){
 
@@ -937,14 +1413,6 @@ async function loadBook(){
 
   try{
 
-    /*
-      Canonical DogEar book record.
-
-      The table name "books" is intentionally simple.
-      If your existing database uses a different book table,
-      change it here.
-    */
-
     const {
       data,
       error
@@ -952,7 +1420,10 @@ async function loadBook(){
       await supabaseClient
         .from("books")
         .select("*")
-        .eq("id",bookId)
+        .eq(
+          "id",
+          bookId
+        )
         .maybeSingle();
 
     if(error)
@@ -965,7 +1436,8 @@ async function loadBook(){
 
     }
 
-    book = data;
+    book =
+      data;
 
     renderBook();
 
@@ -982,6 +1454,10 @@ async function loadBook(){
   }
 
 }
+
+/* =========================================================
+   RENDER BOOK
+   ========================================================= */
 
 function renderBook(){
 
@@ -1006,7 +1482,8 @@ function renderBook(){
     author;
 
   document.title =
-    title + " — DogEar";
+    title +
+    " — DogEar";
 
   $("description").textContent =
     book.description ||
@@ -1015,6 +1492,7 @@ function renderBook(){
 
   $("isbn").textContent =
     book.isbn ||
+    book.isbn13 ||
     "—";
 
   $("publisher").textContent =
@@ -1031,9 +1509,16 @@ function renderBook(){
     book.pages ||
     "—";
 
+  $("format").textContent =
+    book.format ||
+    "—";
+
   $("categories").textContent =
-    Array.isArray(book.categories)
-      ? book.categories.join(", ")
+    Array.isArray(
+      book.categories
+    )
+      ? book.categories
+          .join(", ")
       : (
           book.categories ||
           book.genre ||
@@ -1044,109 +1529,198 @@ function renderBook(){
     book.google_books_id ||
     "—";
 
-  const edition =
-    $("edition");
-
-  edition.innerHTML = "";
-
-  [
-    book.format,
-    book.isbn,
-    book.publisher,
-    book.published_date
-  ]
-    .filter(Boolean)
-    .slice(0,4)
-    .forEach(
-      value => {
-
-        const span =
-          document.createElement("span");
-
-        span.className =
-          "pill";
-
-        span.textContent =
-          value;
-
-        edition.appendChild(span);
-
-      }
-    );
-
-  const coverHolder =
-    $("cover");
-
-  if(cover){
-
-    coverHolder.innerHTML = "";
-
-    const image =
-      document.createElement("img");
-
-    image.src =
-      cover;
-
-    image.alt =
-      title + " cover";
-
-    image.onerror =
-      () => {
-
-        coverHolder.innerHTML =
-          "No cover";
-
-      };
-
-    coverHolder.appendChild(image);
-
-  }
-
+  renderEditionPills();
+  renderCover(
+    cover,
+    title
+  );
   renderPurchaseLink();
 
 }
 
+/* =========================================================
+   EDITION PILLS
+   ========================================================= */
+
+function renderEditionPills(){
+
+  const holder =
+    $("edition");
+
+  holder.innerHTML =
+    "";
+
+  const values = [
+    book.format,
+    book.isbn || book.isbn13,
+    book.publisher,
+    book.published_date ||
+      book.publication_date
+  ]
+    .filter(Boolean)
+    .slice(0,4);
+
+  for(const value of values){
+
+    const span =
+      document.createElement(
+        "span"
+      );
+
+    span.className =
+      "pill";
+
+    span.textContent =
+      value;
+
+    holder.appendChild(
+      span
+    );
+
+  }
+
+}
+
+/* =========================================================
+   COVER
+   ========================================================= */
+
+function renderCover(
+  cover,
+  title
+){
+
+  const holder =
+    $("cover");
+
+  holder.innerHTML =
+    "";
+
+  if(!cover){
+
+    holder.textContent =
+      "No cover";
+
+    return;
+
+  }
+
+  const image =
+    document.createElement(
+      "img"
+    );
+
+  image.src =
+    String(cover)
+      .replace(
+        /^http:/,
+        "https:"
+      );
+
+  image.alt =
+    title +
+    " cover";
+
+  image.onerror =
+    () => {
+
+      holder.innerHTML =
+        "";
+
+      holder.textContent =
+        "No cover";
+
+    };
+
+  holder.appendChild(
+    image
+  );
+
+}
+
+/* =========================================================
+   AFFILIATE LINK
+   ========================================================= */
+
 function renderPurchaseLink(){
 
-  const affiliate =
+  const rawAffiliate =
     book.affiliate_url ||
     book.purchase_url ||
     "";
+
+  const affiliate =
+    safeExternalUrl(
+      rawAffiliate
+    );
 
   const seller =
     book.affiliate_source ||
     book.seller_name ||
     "";
 
+  const purchaseLink =
+    $("purchaseLink");
+
+  const noPurchase =
+    $("noPurchase");
+
+  const disclosure =
+    $("affiliateDisclosure");
+
   if(!affiliate){
 
-    $("purchaseLink").style.display =
+    purchaseLink.style.display =
       "none";
 
-    $("noPurchase").hidden =
+    noPurchase.hidden =
       false;
+
+    disclosure.hidden =
+      true;
 
     return;
 
   }
 
-  $("noPurchase").hidden =
+  noPurchase.hidden =
     true;
 
-  $("purchaseLink").style.display =
+  purchaseLink.style.display =
     "flex";
 
-  $("purchaseLink").href =
+  purchaseLink.href =
     affiliate;
+
+  disclosure.hidden =
+    false;
 
   if(seller){
 
     $("sellerName").textContent =
-      "Buy from " + seller;
+      "Buy from " +
+      seller;
+
+    purchaseLink.textContent =
+      "Buy from " +
+      seller;
+
+  }
+  else{
+
+    $("sellerName").textContent =
+      "Purchase this edition";
+
+    purchaseLink.textContent =
+      "Buy Book";
 
   }
 
 }
+
+/* =========================================================
+   LOAD PERSONAL STATUS
+   ========================================================= */
 
 async function loadReadingStatus(){
 
@@ -1155,24 +1729,21 @@ async function loadReadingStatus(){
 
   try{
 
-    /*
-      Personal reader shelves.
-
-      Expected fields:
-      user_id
-      book_id
-      status
-    */
-
     const {
       data,
       error
     } =
       await supabaseClient
         .from("user_books")
-        .select("*")
-        .eq("user_id",currentUser.id)
-        .eq("book_id",bookId)
+        .select("id,status")
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .eq(
+          "book_id",
+          bookId
+        )
         .maybeSingle();
 
     if(error)
@@ -1197,9 +1768,23 @@ async function loadReadingStatus(){
 
 }
 
-async function setReadingStatus(status){
+/* =========================================================
+   SET PERSONAL STATUS
+   ========================================================= */
+
+async function setReadingStatus(
+  status
+){
 
   if(!bookId)
+    return;
+
+  const normalized =
+    normalizeStatus(
+      status
+    );
+
+  if(!normalized)
     return;
 
   try{
@@ -1211,8 +1796,14 @@ async function setReadingStatus(status){
       await supabaseClient
         .from("user_books")
         .select("id")
-        .eq("user_id",currentUser.id)
-        .eq("book_id",bookId)
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .eq(
+          "book_id",
+          bookId
+        )
         .maybeSingle();
 
     if(lookupError)
@@ -1226,9 +1817,13 @@ async function setReadingStatus(status){
         await supabaseClient
           .from("user_books")
           .update({
-            status
+            status:
+              normalized
           })
-          .eq("id",existing.id);
+          .eq(
+            "id",
+            existing.id
+          );
 
     }
     else{
@@ -1237,13 +1832,16 @@ async function setReadingStatus(status){
         await supabaseClient
           .from("user_books")
           .insert({
+
             user_id:
               currentUser.id,
 
             book_id:
               bookId,
 
-            status
+            status:
+              normalized
+
           });
 
     }
@@ -1252,7 +1850,7 @@ async function setReadingStatus(status){
       throw response.error;
 
     readingStatus =
-      status;
+      normalized;
 
     renderStatus();
 
@@ -1279,6 +1877,10 @@ async function setReadingStatus(status){
 
 }
 
+/* =========================================================
+   LOAD CLUBS
+   ========================================================= */
+
 async function loadClubs(){
 
   if(!bookId)
@@ -1287,14 +1889,10 @@ async function loadClubs(){
   const clubList =
     $("clubList");
 
-  clubList.innerHTML = "";
+  clubList.innerHTML =
+    "";
 
   try{
-
-    /*
-      This assumes club_books can reference
-      the canonical DogEar book by book_id.
-    */
 
     const {
       data,
@@ -1302,8 +1900,20 @@ async function loadClubs(){
     } =
       await supabaseClient
         .from("club_books")
-        .select("club_id, clubs(id,name,genre)")
-        .eq("book_id",bookId);
+        .select(
+          `
+            *,
+            clubs(
+              id,
+              name,
+              genre
+            )
+          `
+        )
+        .eq(
+          "book_id",
+          bookId
+        );
 
     if(error)
       throw error;
@@ -1320,11 +1930,11 @@ async function loadClubs(){
 
     }
 
-    $("noClubs").hidden =
-      true;
-
     const seen =
       new Set();
+
+    let visibleCount =
+      0;
 
     for(const row of rows){
 
@@ -1333,14 +1943,24 @@ async function loadClubs(){
 
       if(
         !club ||
+        !club.id ||
         seen.has(club.id)
-      )
+      ){
+
         continue;
 
-      seen.add(club.id);
+      }
+
+      seen.add(
+        club.id
+      );
+
+      visibleCount++;
 
       const link =
-        document.createElement("a");
+        document.createElement(
+          "a"
+        );
 
       link.className =
         "club-row";
@@ -1350,6 +1970,56 @@ async function loadClubs(){
         encodeURIComponent(
           club.id
         );
+
+      const readMonth =
+        row.read_month ||
+        row.selected_month ||
+        row.month_label ||
+        "";
+
+      const status =
+        String(
+          row.status ||
+          row.read_status ||
+          row.selection_status ||
+          ""
+        )
+          .toLowerCase();
+
+      let statusLabel =
+        "";
+
+      if(
+        row.is_current === true ||
+        status === "current" ||
+        status === "reading" ||
+        status === "selected" ||
+        status === "active"
+      ){
+
+        statusLabel =
+          "Current club read";
+
+      }
+      else if(
+        status === "read" ||
+        status === "completed" ||
+        status === "finished" ||
+        status === "past"
+      ){
+
+        statusLabel =
+          "Previously read";
+
+      }
+
+      const pieces = [
+        club.genre ||
+          "DogEar book club",
+        statusLabel,
+        readMonth
+      ]
+        .filter(Boolean);
 
       link.innerHTML = `
 
@@ -1362,15 +2032,19 @@ async function loadClubs(){
 
         <div class="club-meta">
           ${escapeHtml(
-            club.genre ||
-            "DogEar book club"
+            pieces.join(" · ")
           )}
         </div>
       `;
 
-      clubList.appendChild(link);
+      clubList.appendChild(
+        link
+      );
 
     }
+
+    $("noClubs").hidden =
+      visibleCount > 0;
 
   }
   catch(error){
@@ -1386,6 +2060,10 @@ async function loadClubs(){
   }
 
 }
+
+/* =========================================================
+   STATUS BUTTONS
+   ========================================================= */
 
 $("wantToReadBtn")
   .addEventListener(
@@ -1441,7 +2119,13 @@ $("statusRead")
       )
   );
 
+/* =========================================================
+   START
+   ========================================================= */
+
 async function start(){
+
+  wireBackLink();
 
   const {
     data,
@@ -1466,17 +2150,31 @@ async function start(){
   currentUser =
     data.user;
 
-  await Promise.all([
-    loadProfile(),
-    loadBook()
-  ]);
-
-  if(book){
+  try{
 
     await Promise.all([
-      loadReadingStatus(),
-      loadClubs()
+      loadProfile(),
+      loadBook()
     ]);
+
+    if(book){
+
+      await Promise.all([
+        loadReadingStatus(),
+        loadClubs()
+      ]);
+
+    }
+
+  }
+  catch(error){
+
+    console.error(
+      "Book page load:",
+      error
+    );
+
+    showError();
 
   }
 
@@ -1487,6 +2185,7 @@ async function start(){
 }
 
 start();
+
 </script>
 
 </body>
