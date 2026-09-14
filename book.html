@@ -839,7 +839,7 @@ h1{
             </h2>
 
             <p>
-              Support DogEar through the available affiliate link.
+              Buy through Bookshop.org and support DogEar through our affiliate partnership.
             </p>
 
           </div>
@@ -849,11 +849,11 @@ h1{
             <div class="purchase-card">
 
               <h3 id="sellerName">
-                Purchase this edition
+                Buy on Bookshop.org
               </h3>
 
               <p id="purchaseText">
-                Buy the exact edition listed on DogEar.
+                DogEar automatically builds the Bookshop affiliate link from this edition’s ISBN.
               </p>
 
               <a
@@ -864,14 +864,23 @@ h1{
                 rel="noopener noreferrer sponsored"
                 style="display:none"
               >
-                Buy Book
+                Buy on Bookshop.org
               </a>
 
               <div
                 class="empty"
                 id="noPurchase"
               >
-                No purchase link has been added yet.
+                No direct ISBN purchase link is available for this edition.
+              </div>
+
+              <div style="margin-top:12px">
+                <script
+                  src="https://bookshop.org/widgets.js"
+                  data-type="search"
+                  data-include-branding="false"
+                  data-affiliate-id="128186">
+                </script>
               </div>
 
               <div
@@ -1051,6 +1060,9 @@ let book =
 
 let readingStatus =
   null;
+
+const BOOKSHOP_AFFILIATE_ID =
+  "128186";
 
 /* =========================================================
    HELPERS
@@ -1647,19 +1659,81 @@ function renderCover(
 }
 
 /* =========================================================
-   AFFILIATE PURCHASE
+   BOOKSHOP AFFILIATE PURCHASE
    ========================================================= */
 
+function cleanIsbn(value){
+
+  return String(value || "")
+    .replace(/[^0-9X]/gi, "")
+    .toUpperCase();
+
+}
+
+function isbn10To13(value){
+
+  const isbn10 =
+    cleanIsbn(value);
+
+  if(isbn10.length !== 10)
+    return null;
+
+  const base =
+    "978" + isbn10.slice(0, 9);
+
+  let sum = 0;
+
+  for(let i = 0; i < 12; i++){
+
+    sum +=
+      Number(base[i]) *
+      (i % 2 === 0 ? 1 : 3);
+
+  }
+
+  const checkDigit =
+    (10 - (sum % 10)) % 10;
+
+  return base + checkDigit;
+
+}
+
+function resolvedIsbn13(){
+
+  const isbn13 =
+    cleanIsbn(book?.isbn_13);
+
+  if(/^\d{13}$/.test(isbn13))
+    return isbn13;
+
+  const isbn10 =
+    cleanIsbn(book?.isbn_10);
+
+  if(/^[0-9]{9}[0-9X]$/.test(isbn10))
+    return isbn10To13(isbn10);
+
+  return null;
+
+}
+
+function bookshopAffiliateUrl(){
+
+  const isbn13 =
+    resolvedIsbn13();
+
+  if(!isbn13)
+    return null;
+
+  return (
+    "https://bookshop.org/a/" +
+    BOOKSHOP_AFFILIATE_ID +
+    "/" +
+    isbn13
+  );
+
+}
+
 function renderPurchaseLink(){
-
-  const affiliate =
-    safeExternalUrl(
-      book.affiliate_url
-    );
-
-  const seller =
-    book.affiliate_source ||
-    "";
 
   const purchaseLink =
     $("purchaseLink");
@@ -1670,10 +1744,13 @@ function renderPurchaseLink(){
   const disclosure =
     $("affiliateDisclosure");
 
-  if(
-    book.marketplace_active === false ||
-    !affiliate
-  ){
+  const affiliate =
+    bookshopAffiliateUrl();
+
+  $("sellerName").textContent =
+    "Buy on Bookshop.org";
+
+  if(book.marketplace_active === false){
 
     purchaseLink.style.display =
       "none";
@@ -1681,68 +1758,53 @@ function renderPurchaseLink(){
     noPurchase.hidden =
       false;
 
+    noPurchase.textContent =
+      "This edition is not currently available through the DogEar marketplace.";
+
     disclosure.hidden =
       true;
-
-    if(
-      book.marketplace_active === false
-    ){
-
-      noPurchase.textContent =
-        "This edition is not currently available through the DogEar marketplace.";
-
-    }
-    else{
-
-      noPurchase.textContent =
-        "No purchase link has been added yet.";
-
-    }
 
     return;
 
   }
 
-  noPurchase.hidden =
-    true;
+  if(affiliate){
+
+    noPurchase.hidden =
+      true;
+
+    purchaseLink.style.display =
+      "flex";
+
+    purchaseLink.href =
+      affiliate;
+
+    purchaseLink.textContent =
+      "Buy on Bookshop.org";
+
+    $("purchaseText").textContent =
+      book.isbn_13
+        ? "Purchase this edition on Bookshop.org using its ISBN-13."
+        : "Purchase this edition on Bookshop.org using the ISBN-13 converted from its ISBN-10.";
+
+    disclosure.hidden =
+      false;
+
+    return;
+
+  }
 
   purchaseLink.style.display =
-    "flex";
+    "none";
 
-  purchaseLink.href =
-    affiliate;
+  noPurchase.hidden =
+    false;
+
+  noPurchase.textContent =
+    "This book does not have a usable ISBN. Use the Bookshop search below to find an available edition.";
 
   disclosure.hidden =
     false;
-
-  if(seller){
-
-    $("sellerName").textContent =
-      "Buy from " +
-      seller;
-
-    purchaseLink.textContent =
-      "Buy from " +
-      seller;
-
-    $("purchaseText").textContent =
-      "Purchase this exact edition through " +
-      seller +
-      ".";
-
-  }
-  else{
-
-    $("sellerName").textContent =
-      "Purchase this edition";
-
-    purchaseLink.textContent =
-      "Buy Book";
-
-    $("purchaseText").textContent =
-      "Purchase this exact edition through DogEar's available link.";
-
-  }
 
 }
 
