@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>DogEar — Club Bookshelf</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -212,6 +213,12 @@ h1{
   border-color:var(--gold);
 }
 
+.shelf-summary{
+  color:var(--muted);
+  font:10px Arial;
+  letter-spacing:.04em;
+}
+
 .shelf{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
@@ -228,6 +235,13 @@ h1{
     transform .18s ease,
     border-color .18s ease,
     box-shadow .18s ease;
+}
+
+.book-card.current{
+  border-color:rgba(199,155,89,.6);
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.22),
+    0 0 0 1px rgba(199,155,89,.08);
 }
 
 .book-card.clickable{
@@ -254,12 +268,28 @@ h1{
   font:700 10px Arial;
   text-align:center;
   overflow:hidden;
+  position:relative;
 }
 
 .cover img{
   width:100%;
   height:100%;
   object-fit:cover;
+}
+
+.current-ribbon{
+  position:absolute;
+  top:13px;
+  right:-35px;
+  width:130px;
+  padding:6px 0;
+  transform:rotate(45deg);
+  background:var(--gold);
+  color:#17130e;
+  text-align:center;
+  font:900 8px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
 }
 
 .book-body{
@@ -317,6 +347,11 @@ h1{
 
 .badge.past{
   color:var(--muted);
+}
+
+.badge.upcoming{
+  color:#c8d8c7;
+  border-color:rgba(185,214,178,.3);
 }
 
 .view-hint{
@@ -500,31 +535,19 @@ h1{
     aria-label="Club navigation"
   >
 
-    <a
-      id="overviewLink"
-      href="club.html"
-    >
+    <a id="overviewLink" href="club.html">
       Overview
     </a>
 
-    <a
-      id="membersLink"
-      href="club-members.html"
-    >
+    <a id="membersLink" href="club-members.html">
       Members
     </a>
 
-    <a
-      id="discussionsLink"
-      href="club-discussions.html"
-    >
+    <a id="discussionsLink" href="club-discussions.html">
       Discussions
     </a>
 
-    <a
-      id="voteLink"
-      href="club-vote.html"
-    >
+    <a id="voteLink" href="club-vote.html">
       Monthly Vote
     </a>
 
@@ -536,10 +559,7 @@ h1{
       Bookshelf
     </a>
 
-    <a
-      id="settingsLink"
-      href="club-settings.html"
-    >
+    <a id="settingsLink" href="club-settings.html">
       Settings
     </a>
 
@@ -554,6 +574,11 @@ h1{
       placeholder="Search the club bookshelf…"
       aria-label="Search club bookshelf"
     >
+
+    <div
+      class="shelf-summary"
+      id="shelfSummary"
+    ></div>
 
   </div>
 
@@ -615,6 +640,7 @@ const clubId =
 
 let currentUser = null;
 let books = [];
+let clubData = null;
 
 /* =========================================
    LINKS
@@ -698,74 +724,201 @@ function initials(name="Reader"){
 
 }
 
+function normalizeStatus(value=""){
+
+  return String(value)
+    .trim()
+    .toLowerCase();
+
+}
+
+function authorText(value){
+
+  if(Array.isArray(value))
+    return value.join(", ");
+
+  return value || "";
+
+}
+
+function formatMonth(value){
+
+  if(!value)
+    return "";
+
+  const raw =
+    String(value);
+
+  const match =
+    raw.match(
+      /^(\d{4})-(\d{2})(?:-(\d{2}))?$/
+    );
+
+  if(match){
+
+    const year =
+      Number(match[1]);
+
+    const month =
+      Number(match[2]);
+
+    if(
+      month >= 1 &&
+      month <= 12
+    ){
+
+      return new Date(
+        year,
+        month - 1,
+        1
+      ).toLocaleDateString(
+        undefined,
+        {
+          month:"long",
+          year:"numeric"
+        }
+      );
+
+    }
+
+  }
+
+  return raw;
+
+}
+
 /* =========================================
-   BOOK STATUS
+   NORMALIZE CLUB BOOK
    ========================================= */
 
-function getBookStatus(book,index){
+function normalizeClubBook(row){
 
-  const rawStatus =
-    String(
-      book.status ||
-      book.read_status ||
-      book.selection_status ||
-      ""
-    )
-      .trim()
-      .toLowerCase();
+  const central =
+    row.books || {};
 
-  if(
-    rawStatus === "current" ||
-    rawStatus === "selected" ||
-    rawStatus === "reading" ||
-    rawStatus === "active"
-  ){
+  const title =
+    central.title ||
+    row.title ||
+    row.book_title ||
+    "Untitled Book";
 
-    return {
-      label:"Current Selection",
-      className:"current"
-    };
+  const author =
+    authorText(
+      central.authors ||
+      row.authors ||
+      row.author ||
+      row.book_author
+    ) ||
+    "Unknown author";
+
+  const cover =
+    central.cover_url ||
+    row.cover_url ||
+    row.image_url ||
+    "";
+
+  const isbn13 =
+    central.isbn_13 ||
+    row.isbn_13 ||
+    row.isbn13 ||
+    row.isbn ||
+    "";
+
+  const isbn10 =
+    central.isbn_10 ||
+    row.isbn_10 ||
+    "";
+
+  const publisher =
+    central.publisher ||
+    row.publisher ||
+    "";
+
+  const publishedDate =
+    central.published_date ||
+    row.published_date ||
+    row.publication_date ||
+    "";
+
+  const googleBooksId =
+    central.google_books_id ||
+    row.google_books_id ||
+    "";
+
+  const bookId =
+    row.book_id ||
+    row.central_book_id ||
+    central.id ||
+    null;
+
+  const status =
+    normalizeStatus(
+      row.status ||
+      row.read_status ||
+      row.selection_status
+    );
+
+  const readMonth =
+    row.read_month ||
+    row.selected_month ||
+    row.month_label ||
+    "";
+
+  const isCurrent =
+    row.is_current === true ||
+    [
+      "current",
+      "reading",
+      "active"
+    ].includes(status);
+
+  let statusLabel =
+    "Club Read";
+
+  let statusClass =
+    "past";
+
+  if(isCurrent){
+
+    statusLabel =
+      "Current Selection";
+
+    statusClass =
+      "current";
 
   }
-
-  if(
-    rawStatus === "completed" ||
-    rawStatus === "read" ||
-    rawStatus === "finished" ||
-    rawStatus === "past"
+  else if(
+    [
+      "selected",
+      "upcoming",
+      "scheduled"
+    ].includes(status)
   ){
 
-    return {
-      label:"Club Read",
-      className:"past"
-    };
+    statusLabel =
+      "Upcoming Selection";
 
-  }
-
-  /*
-    Compatibility fallback:
-
-    Some current club_books rows may not yet
-    have a status column. In that case we keep
-    the original Club Read behavior.
-
-    If a future row exposes is_current, we use it.
-  */
-
-  if(
-    book.is_current === true
-  ){
-
-    return {
-      label:"Current Selection",
-      className:"current"
-    };
+    statusClass =
+      "upcoming";
 
   }
 
   return {
-    label:"Club Read",
-    className:"past"
+    ...row,
+    title,
+    author,
+    cover,
+    isbn13,
+    isbn10,
+    publisher,
+    publishedDate,
+    googleBooksId,
+    bookId,
+    readMonth,
+    isCurrent,
+    status,
+    statusLabel,
+    statusClass
   };
 
 }
@@ -776,17 +929,65 @@ function getBookStatus(book,index){
 
 function getBookDetailUrl(book){
 
-  const bookId =
-    book.book_id ||
-    book.central_book_id ||
-    null;
-
-  if(!bookId)
+  if(!book.bookId)
     return null;
 
   return (
     "book.html?id=" +
-    encodeURIComponent(bookId)
+    encodeURIComponent(
+      book.bookId
+    )
+  );
+
+}
+
+/* =========================================
+   SORT BOOKS
+   ========================================= */
+
+function sortBooks(list){
+
+  return [...list].sort(
+    (a,b) => {
+
+      if(
+        a.isCurrent &&
+        !b.isCurrent
+      )
+        return -1;
+
+      if(
+        !a.isCurrent &&
+        b.isCurrent
+      )
+        return 1;
+
+      const monthA =
+        a.readMonth
+          ? new Date(a.readMonth).getTime()
+          : 0;
+
+      const monthB =
+        b.readMonth
+          ? new Date(b.readMonth).getTime()
+          : 0;
+
+      if(monthA !== monthB)
+        return monthB - monthA;
+
+      const createdA =
+        a.created_at
+          ? new Date(a.created_at).getTime()
+          : 0;
+
+      const createdB =
+        b.created_at
+          ? new Date(b.created_at).getTime()
+          : 0;
+
+      return createdB - createdA;
+
+    }
   );
 
 }
@@ -803,6 +1004,11 @@ function renderBooks(list){
   shelf.innerHTML =
     "";
 
+  $("shelfSummary").textContent =
+    list.length === 1
+      ? "1 book"
+      : list.length + " books";
+
   if(!list.length){
 
     shelf.innerHTML = `
@@ -811,8 +1017,8 @@ function renderBooks(list){
           The shelf is still empty.
         </strong>
 
-        Once the club finishes or selects books,
-        they'll appear here.
+        Once the club selects its first monthly book,
+        it will appear here.
       </div>
     `;
 
@@ -820,77 +1026,33 @@ function renderBooks(list){
 
   }
 
-  for(
-    let index = 0;
-    index < list.length;
-    index++
-  ){
-
-    const book =
-      list[index];
-
-    const title =
-      book.title ||
-      book.book_title ||
-      "Untitled Book";
-
-    const author =
-      book.author ||
-      book.book_author ||
-      "Unknown author";
-
-    const cover =
-      book.cover_url ||
-      book.image_url ||
-      "";
-
-    const readMonth =
-      book.read_month ||
-      book.selected_month ||
-      book.month_label ||
-      "";
-
-    const isbn =
-      book.isbn ||
-      book.isbn13 ||
-      book.isbn_13 ||
-      "";
-
-    const publisher =
-      book.publisher ||
-      "";
-
-    const publishedDate =
-      book.published_date ||
-      book.publication_date ||
-      "";
-
-    const status =
-      getBookStatus(
-        book,
-        index
-      );
+  for(const book of list){
 
     const detailUrl =
-      getBookDetailUrl(
-        book
+      getBookDetailUrl(book);
+
+    const editionParts =
+      [];
+
+    if(book.publisher)
+      editionParts.push(
+        book.publisher
       );
 
-    const editionParts = [];
-
-    if(publisher)
+    if(book.publishedDate)
       editionParts.push(
-        publisher
+        book.publishedDate
       );
 
-    if(publishedDate)
+    if(book.isbn13)
       editionParts.push(
-        publishedDate
+        "ISBN-13 " +
+        book.isbn13
       );
-
-    if(isbn)
+    else if(book.isbn10)
       editionParts.push(
-        "ISBN " + isbn
+        "ISBN-10 " +
+        book.isbn10
       );
 
     const card =
@@ -899,7 +1061,12 @@ function renderBooks(list){
       );
 
     card.className =
-      "book-card";
+      "book-card" +
+      (
+        book.isCurrent
+          ? " current"
+          : ""
+      );
 
     if(detailUrl){
 
@@ -917,7 +1084,8 @@ function renderBooks(list){
 
       card.setAttribute(
         "aria-label",
-        "View " + title
+        "View " +
+        book.title
       );
 
     }
@@ -927,13 +1095,23 @@ function renderBooks(list){
       <div class="cover">
 
         ${
-          cover
+          book.cover
             ? `
               <img
-                src="${escapeHtml(cover)}"
-                alt="${escapeHtml(title)} cover">
+                src="${escapeHtml(book.cover)}"
+                alt="${escapeHtml(book.title)} cover">
             `
             : "No cover"
+        }
+
+        ${
+          book.isCurrent
+            ? `
+              <div class="current-ribbon">
+                Reading Now
+              </div>
+            `
+            : ""
         }
 
       </div>
@@ -941,23 +1119,32 @@ function renderBooks(list){
       <div class="book-body">
 
         <h3>
-          ${escapeHtml(title)}
+          ${escapeHtml(book.title)}
         </h3>
 
         <div class="author">
-          ${escapeHtml(author)}
+          ${escapeHtml(book.author)}
         </div>
 
         ${
-          readMonth
+          book.readMonth
             ? `
               <div class="meta">
                 ${
-                  status.className === "current"
-                    ? "Selected "
-                    : "Read "
+                  book.isCurrent
+                    ? "Reading "
+                    : (
+                        book.statusClass ===
+                        "upcoming"
+                          ? "Scheduled "
+                          : "Read "
+                      )
                 }
-                ${escapeHtml(readMonth)}
+                ${escapeHtml(
+                  formatMonth(
+                    book.readMonth
+                  )
+                )}
               </div>
             `
             : ""
@@ -967,11 +1154,15 @@ function renderBooks(list){
           editionParts.length
             ? `
               <div class="edition-meta">
+
                 <div class="meta">
                   ${escapeHtml(
-                    editionParts.join(" · ")
+                    editionParts.join(
+                      " · "
+                    )
                   )}
                 </div>
+
               </div>
             `
             : ""
@@ -980,9 +1171,13 @@ function renderBooks(list){
         <div class="badges">
 
           <span
-            class="badge ${escapeHtml(status.className)}"
+            class="badge ${escapeHtml(
+              book.statusClass
+            )}"
           >
-            ${escapeHtml(status.label)}
+            ${escapeHtml(
+              book.statusLabel
+            )}
           </span>
 
         </div>
@@ -1053,7 +1248,8 @@ async function loadProfile(){
       ?.display_name ||
     "Reader";
 
-  let avatar = "";
+  let avatar =
+    "";
 
   try{
 
@@ -1150,54 +1346,45 @@ async function loadProfile(){
 
 async function loadClub(){
 
-  try{
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("clubs")
+      .select("*")
+      .eq(
+        "id",
+        clubId
+      )
+      .maybeSingle();
 
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("clubs")
-        .select("id,name")
-        .eq(
-          "id",
-          clubId
-        )
-        .maybeSingle();
+  if(error)
+    throw error;
 
-    if(error)
-      throw error;
+  if(!data){
 
-    if(!data){
+    location.href =
+      "clubs.html";
 
-      location.href =
-        "clubs.html";
+    return;
 
-      return;
+  }
 
-    }
+  clubData =
+    data;
 
-    $("clubName").textContent =
+  $("clubName").textContent =
+    data.name ||
+    "Book Club";
+
+  document.title =
+    "DogEar — " +
+    (
       data.name ||
-      "Book Club";
-
-    document.title =
-      "DogEar — " +
-      (
-        data.name ||
-        "Club"
-      ) +
-      " Bookshelf";
-
-  }
-  catch(error){
-
-    console.warn(
-      "Club lookup:",
-      error.message
-    );
-
-  }
+      "Club"
+    ) +
+    " Bookshelf";
 
 }
 
@@ -1207,12 +1394,74 @@ async function loadClub(){
 
 async function loadBooks(){
 
-  try{
+  /*
+    Preferred query:
+    club_books.book_id -> books.id
 
-    const {
-      data,
-      error
-    } =
+    If Supabase cannot resolve the relationship,
+    the fallback below still loads club_books
+    without breaking the page.
+  */
+
+  let rows =
+    null;
+
+  let preferredError =
+    null;
+
+  const preferred =
+    await supabaseClient
+      .from("club_books")
+      .select(`
+        *,
+        books:book_id (
+          id,
+          isbn_13,
+          isbn_10,
+          google_books_id,
+          title,
+          subtitle,
+          authors,
+          publisher,
+          published_date,
+          description,
+          cover_url,
+          affiliate_url
+        )
+      `)
+      .eq(
+        "club_id",
+        clubId
+      )
+      .order(
+        "read_month",
+        {
+          ascending:false,
+          nullsFirst:false
+        }
+      );
+
+  if(preferred.error){
+
+    preferredError =
+      preferred.error;
+
+  }
+  else{
+
+    rows =
+      preferred.data || [];
+
+  }
+
+  if(rows === null){
+
+    console.warn(
+      "Joined club_books query unavailable; using compatibility query:",
+      preferredError?.message
+    );
+
+    const fallback =
       await supabaseClient
         .from("club_books")
         .select("*")
@@ -1227,29 +1476,24 @@ async function loadBooks(){
           }
         );
 
-    if(error)
-      throw error;
+    if(fallback.error)
+      throw fallback.error;
 
-    books =
-      data || [];
-
-    renderBooks(
-      books
-    );
+    rows =
+      fallback.data || [];
 
   }
-  catch(error){
 
-    console.warn(
-      "Club books lookup:",
-      error.message
+  books =
+    sortBooks(
+      rows.map(
+        normalizeClubBook
+      )
     );
 
-    books = [];
-
-    renderBooks([]);
-
-  }
+  renderBooks(
+    books
+  );
 
 }
 
@@ -1285,21 +1529,18 @@ $("bookSearch")
             const haystack =
               [
                 book.title,
-                book.book_title,
                 book.author,
-                book.book_author,
-                book.read_month,
-                book.selected_month,
-                book.month_label,
+                book.readMonth,
+                formatMonth(
+                  book.readMonth
+                ),
                 book.publisher,
-                book.published_date,
-                book.publication_date,
-                book.isbn,
+                book.publishedDate,
                 book.isbn13,
-                book.isbn_13,
+                book.isbn10,
+                book.googleBooksId,
                 book.status,
-                book.read_status,
-                book.selection_status
+                book.statusLabel
               ]
                 .filter(Boolean)
                 .join(" ")
@@ -1324,10 +1565,6 @@ $("bookSearch")
    ========================================= */
 
 async function start(){
-
-  /*
-    Every club page requires a club id.
-  */
 
   if(!clubId){
 
@@ -1363,11 +1600,45 @@ async function start(){
   currentUser =
     data.user;
 
-  await Promise.all([
-    loadProfile(),
-    loadClub(),
-    loadBooks()
-  ]);
+  try{
+
+    await Promise.all([
+      loadProfile(),
+      loadClub()
+    ]);
+
+    await loadBooks();
+
+  }
+  catch(error){
+
+    console.error(
+      "Club bookshelf:",
+      error
+    );
+
+    books =
+      [];
+
+    $("shelf").innerHTML = `
+      <div class="empty">
+
+        <strong>
+          DogEar couldn't open this bookshelf.
+        </strong>
+
+        ${escapeHtml(
+          error.message ||
+          "Unknown error"
+        )}
+
+      </div>
+    `;
+
+    $("shelfSummary").textContent =
+      "";
+
+  }
 
   $("loading")
     .classList
