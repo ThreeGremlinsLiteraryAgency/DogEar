@@ -22,6 +22,7 @@
   --line-soft:rgba(199,155,89,.11);
   --danger:#e6a09a;
   --ok:#b9d6b2;
+  --warning:#e3c58c;
 }
 
 *{
@@ -33,7 +34,11 @@ body{
   min-height:100vh;
   color:var(--cream);
   background:
-    radial-gradient(circle at 10% 0%,rgba(53,73,59,.24),transparent 28%),
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(53,73,59,.24),
+      transparent 28%
+    ),
     var(--ink);
   font-family:Georgia,"Times New Roman",serif;
 }
@@ -47,9 +52,9 @@ a{
   color:inherit;
 }
 
-/* =========================
+/* =========================================================
    TOP NAV
-========================= */
+   ========================================================= */
 
 .topbar{
   min-height:76px;
@@ -80,9 +85,22 @@ a{
 .brand-mark{
   width:34px;
   height:34px;
+  position:relative;
   border:1px solid var(--gold);
   border-radius:50% 50% 50% 12%;
   transform:rotate(-8deg);
+}
+
+.brand-mark::after{
+  content:"";
+  position:absolute;
+  width:11px;
+  height:11px;
+  right:2px;
+  top:2px;
+  border-left:1px solid var(--gold);
+  border-bottom:1px solid var(--gold);
+  background:var(--ink);
 }
 
 .nav{
@@ -112,6 +130,7 @@ a{
   place-items:center;
   overflow:hidden;
   background:var(--green);
+  color:var(--gold2);
   text-decoration:none;
   font:800 13px Arial;
 }
@@ -122,9 +141,9 @@ a{
   object-fit:cover;
 }
 
-/* =========================
+/* =========================================================
    PAGE
-========================= */
+   ========================================================= */
 
 .page{
   width:min(1180px,calc(100% - 32px));
@@ -189,9 +208,9 @@ h1{
   color:var(--ok);
 }
 
-/* =========================
+/* =========================================================
    CLUB NAV
-========================= */
+   ========================================================= */
 
 .club-nav{
   display:flex;
@@ -216,9 +235,9 @@ h1{
   border-color:var(--gold);
 }
 
-/* =========================
+/* =========================================================
    LAYOUT
-========================= */
+   ========================================================= */
 
 .layout{
   display:grid;
@@ -252,9 +271,9 @@ h1{
   font:12px/1.55 Arial;
 }
 
-/* =========================
+/* =========================================================
    BALLOT SLOTS
-========================= */
+   ========================================================= */
 
 .slots{
   padding:20px;
@@ -356,9 +375,9 @@ h1{
   margin-top:13px;
 }
 
-/* =========================
+/* =========================================================
    BUTTONS
-========================= */
+   ========================================================= */
 
 .btn{
   min-height:42px;
@@ -393,9 +412,9 @@ h1{
   cursor:not-allowed;
 }
 
-/* =========================
+/* =========================================================
    SIDEBAR
-========================= */
+   ========================================================= */
 
 .side-body{
   padding:18px;
@@ -435,6 +454,24 @@ h1{
   width:100%;
 }
 
+.ballot-progress{
+  margin-top:13px;
+  display:grid;
+  gap:7px;
+}
+
+.progress-row{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  color:var(--muted);
+  font:10px Arial;
+}
+
+.progress-row strong{
+  color:var(--cream);
+}
+
 .message{
   display:none;
   margin-top:12px;
@@ -444,13 +481,25 @@ h1{
   font:11px/1.5 Arial;
 }
 
-.message.show{display:block}
-.message.error{color:var(--danger)}
-.message.success{color:var(--ok)}
+.message.show{
+  display:block;
+}
 
-/* =========================
+.message.error{
+  color:var(--danger);
+}
+
+.message.success{
+  color:var(--ok);
+}
+
+.message.warning{
+  color:var(--warning);
+}
+
+/* =========================================================
    SEARCH MODAL
-========================= */
+   ========================================================= */
 
 .modal{
   position:fixed;
@@ -594,9 +643,9 @@ h1{
   font:12px/1.6 Arial;
 }
 
-/* =========================
+/* =========================================================
    LOCKED
-========================= */
+   ========================================================= */
 
 .locked{
   padding:55px 24px;
@@ -612,9 +661,9 @@ h1{
   font:400 24px Georgia;
 }
 
-/* =========================
+/* =========================================================
    LOADING
-========================= */
+   ========================================================= */
 
 .loading{
   position:fixed;
@@ -636,7 +685,16 @@ h1{
   text-transform:uppercase;
 }
 
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+.mobile-nav{
+  display:none;
+}
+
 @media(max-width:900px){
+
   .layout{
     grid-template-columns:1fr;
   }
@@ -645,9 +703,11 @@ h1{
     flex-direction:column;
     align-items:flex-start;
   }
+
 }
 
 @media(max-width:700px){
+
   .nav{
     display:none;
   }
@@ -659,9 +719,47 @@ h1{
   .result .btn{
     grid-column:1/-1;
   }
+
+  .mobile-nav{
+    position:fixed;
+    left:12px;
+    right:12px;
+    bottom:12px;
+    z-index:200;
+    min-height:64px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:rgba(9,11,10,.95);
+    backdrop-filter:blur(14px);
+  }
+
+  .mobile-nav a{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    color:var(--muted);
+    text-decoration:none;
+    font:9px Arial;
+    text-transform:uppercase;
+  }
+
+  .mobile-nav a span:first-child{
+    color:var(--gold2);
+    font-size:17px;
+  }
+
+  .page{
+    padding-bottom:120px;
+  }
+
 }
 
 @media(max-width:500px){
+
   .book-selected{
     grid-template-columns:70px minmax(0,1fr);
   }
@@ -673,6 +771,7 @@ h1{
   .search-row{
     grid-template-columns:1fr;
   }
+
 }
 </style>
 </head>
@@ -697,13 +796,23 @@ h1{
     <a href="marketplace.html">Books</a>
   </nav>
 
-  <a class="avatar" id="navAvatar" href="profile.html">?</a>
+  <a
+    class="avatar"
+    id="navAvatar"
+    href="profile.html"
+  >
+    ?
+  </a>
 
 </header>
 
 <main class="page">
 
-  <a class="back" id="backLink" href="club-vote.html">
+  <a
+    class="back"
+    id="backLink"
+    href="club-vote.html"
+  >
     ← Back to Monthly Vote
   </a>
 
@@ -712,48 +821,75 @@ h1{
     <div>
 
       <div class="eyebrow">
-        President's Desk
+        Leadership Desk
       </div>
 
       <h1>
         Build the Ballot
       </h1>
 
-      <div class="subtitle" id="clubSubtitle">
+      <div
+        class="subtitle"
+        id="clubSubtitle"
+      >
         Choose three exact editions for your club's next monthly vote.
       </div>
 
     </div>
 
-    <div class="status-pill" id="ballotStatus">
+    <div
+      class="status-pill"
+      id="ballotStatus"
+    >
       Ballot Closed
     </div>
 
   </section>
 
-  <nav class="club-nav">
+  <nav
+    class="club-nav"
+    aria-label="Club navigation"
+  >
 
-    <a id="overviewLink" href="club.html">
+    <a
+      id="overviewLink"
+      href="club.html"
+    >
       Overview
     </a>
 
-    <a id="membersLink" href="club-members.html">
+    <a
+      id="membersLink"
+      href="club-members.html"
+    >
       Members
     </a>
 
-    <a id="discussionsLink" href="club-discussions.html">
+    <a
+      id="discussionsLink"
+      href="club-discussions.html"
+    >
       Discussions
     </a>
 
-    <a id="voteLink" href="club-vote.html">
+    <a
+      id="voteLink"
+      href="club-vote.html"
+    >
       Monthly Vote
     </a>
 
-    <a id="booksLink" href="club-books.html">
+    <a
+      id="booksLink"
+      href="club-books.html"
+    >
       Bookshelf
     </a>
 
-    <a id="settingsLink" href="club-settings.html">
+    <a
+      id="settingsLink"
+      href="club-settings.html"
+    >
       Settings
     </a>
 
@@ -764,16 +900,23 @@ h1{
     <section class="card">
 
       <div class="card-head">
-        <h2>Three Book Ballot</h2>
+
+        <h2>
+          Three Book Ballot
+        </h2>
 
         <p>
           Each slot represents the exact edition members will vote on.
         </p>
+
       </div>
 
       <div id="adminContent">
 
-        <div class="slots" id="slots"></div>
+        <div
+          class="slots"
+          id="slots"
+        ></div>
 
       </div>
 
@@ -782,63 +925,94 @@ h1{
     <aside class="card">
 
       <div class="card-head">
-        <h2>Ballot Controls</h2>
+
+        <h2>
+          Ballot Controls
+        </h2>
 
         <p>
           Finish all three choices before opening the vote.
         </p>
+
       </div>
 
       <div class="side-body">
 
         <div class="side-section">
 
-          <h3>Ballot Status</h3>
+          <h3>
+            Ballot Status
+          </h3>
 
           <p id="statusText">
             Members cannot vote while the ballot is closed.
           </p>
+
+          <div class="ballot-progress">
+
+            <div class="progress-row">
+              <span>Choices Ready</span>
+              <strong id="choiceCount">0 / 3</strong>
+            </div>
+
+            <div class="progress-row">
+              <span>Leadership Access</span>
+              <strong id="accessStatus">Checking</strong>
+            </div>
+
+          </div>
 
           <div class="side-actions">
 
             <button
               class="btn primary"
               id="openBallotBtn"
-              type="button">
+              type="button"
+            >
               Open Voting
             </button>
 
             <button
               class="btn secondary"
               id="closeBallotBtn"
-              type="button">
+              type="button"
+            >
               Close Voting
             </button>
 
           </div>
 
-          <div class="message" id="message"></div>
+          <div
+            class="message"
+            id="message"
+          ></div>
 
         </div>
 
         <div class="side-section">
 
-          <h3>Exact editions matter</h3>
+          <h3>
+            Exact editions matter
+          </h3>
 
           <p>
-            DogEar stores the Google Books volume ID, ISBN, publisher,
-            publication date, and cover so the club can distinguish between
-            editions of the same title.
+            DogEar stores the Google Books volume ID,
+            ISBN, publisher, publication date, and cover
+            so the club can distinguish between editions
+            of the same title.
           </p>
 
         </div>
 
         <div class="side-section">
 
-          <h3>Member View</h3>
+          <h3>
+            Member View
+          </h3>
 
           <p>
-            See exactly what club members will see before you open voting.
+            See exactly what club members will see before
+            you open voting.
           </p>
 
           <div class="side-actions">
@@ -847,7 +1021,13 @@ h1{
               class="btn secondary"
               id="previewLink"
               href="club-vote.html"
-              style="text-decoration:none;display:flex;align-items:center;justify-content:center;">
+              style="
+                text-decoration:none;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+              "
+            >
               View Ballot
             </a>
 
@@ -863,9 +1043,36 @@ h1{
 
 </main>
 
+<nav class="mobile-nav">
+
+  <a href="dashboard.html">
+    <span>⌂</span>
+    Home
+  </a>
+
+  <a href="discover.html">
+    <span>⌕</span>
+    Discover
+  </a>
+
+  <a href="clubs.html">
+    <span>◉</span>
+    Clubs
+  </a>
+
+  <a href="profile.html">
+    <span>☺</span>
+    Profile
+  </a>
+
+</nav>
+
 <!-- BOOK SEARCH MODAL -->
 
-<div class="modal" id="searchModal">
+<div
+  class="modal"
+  id="searchModal"
+>
 
   <div class="modal-card">
 
@@ -878,7 +1085,9 @@ h1{
       <button
         class="close"
         id="closeSearch"
-        type="button">
+        type="button"
+        aria-label="Close book search"
+      >
         ×
       </button>
 
@@ -893,12 +1102,14 @@ h1{
           id="bookSearch"
           type="search"
           placeholder="Search title, author, or ISBN…"
-          autocomplete="off">
+          autocomplete="off"
+        >
 
         <button
           class="btn primary"
           id="searchBtn"
-          type="button">
+          type="button"
+        >
           Search
         </button>
 
@@ -906,11 +1117,15 @@ h1{
 
       <div class="search-help">
         For the most precise edition, search by ISBN.
+        DogEar will automatically recognize ISBN-style searches.
       </div>
 
     </div>
 
-    <div class="results" id="results">
+    <div
+      class="results"
+      id="results"
+    >
 
       <div class="no-results">
         Search Google Books to choose an exact edition.
@@ -926,7 +1141,7 @@ h1{
 
 /* =========================================================
    CONFIG
-========================================================= */
+   ========================================================= */
 
 const SUPABASE_URL =
   "https://nrtutxjznkfvvbmaagum.supabase.co";
@@ -935,11 +1150,15 @@ const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
 
 /*
-  Use the same browser-side, website-restricted
-  Google Books API key already used by DogEar.
+  DogEar can perform the basic Google Books lookup
+  without including the API key in this file.
+
+  If the existing website-restricted DogEar key is
+  inserted here later, the search automatically uses it.
 */
+
 const GOOGLE_BOOKS_API_KEY =
-  "YOUR_EXISTING_GOOGLE_BOOKS_API_KEY";
+  "";
 
 const supabaseClient =
   supabase.createClient(
@@ -947,12 +1166,6 @@ const supabaseClient =
     SUPABASE_PUBLISHABLE_KEY
   );
 
-/*
-  These names match club-vote.html.
-
-  If your final Supabase schema uses different names,
-  change them here and in club-vote.html together.
-*/
 const BALLOT_TABLE =
   "club_ballot_options";
 
@@ -961,10 +1174,11 @@ const MEMBER_TABLE =
 
 /* =========================================================
    STATE
-========================================================= */
+   ========================================================= */
 
 const $ =
-  id => document.getElementById(id);
+  id =>
+    document.getElementById(id);
 
 const params =
   new URLSearchParams(
@@ -973,6 +1187,12 @@ const params =
 
 const clubId =
   params.get("id");
+
+const incomingAction =
+  params.get("action");
+
+const incomingBookId =
+  params.get("bookId");
 
 let currentUser = null;
 let clubData = null;
@@ -983,7 +1203,7 @@ let ballotOpen = false;
 
 /* =========================================================
    LINKS
-========================================================= */
+   ========================================================= */
 
 function withClub(filename){
 
@@ -998,34 +1218,50 @@ function withClub(filename){
 function wireLinks(){
 
   $("backLink").href =
-    withClub("club-vote.html");
+    withClub(
+      "club-vote.html"
+    );
 
   $("overviewLink").href =
-    withClub("club.html");
+    withClub(
+      "club.html"
+    );
 
   $("membersLink").href =
-    withClub("club-members.html");
+    withClub(
+      "club-members.html"
+    );
 
   $("discussionsLink").href =
-    withClub("club-discussions.html");
+    withClub(
+      "club-discussions.html"
+    );
 
   $("voteLink").href =
-    withClub("club-vote.html");
+    withClub(
+      "club-vote.html"
+    );
 
   $("booksLink").href =
-    withClub("club-books.html");
+    withClub(
+      "club-books.html"
+    );
 
   $("settingsLink").href =
-    withClub("club-settings.html");
+    withClub(
+      "club-settings.html"
+    );
 
   $("previewLink").href =
-    withClub("club-vote.html");
+    withClub(
+      "club-vote.html"
+    );
 
 }
 
 /* =========================================================
    HELPERS
-========================================================= */
+   ========================================================= */
 
 function escapeHtml(value=""){
 
@@ -1043,7 +1279,10 @@ function escapeHtml(value=""){
 
 }
 
-function showMessage(text,type=""){
+function showMessage(
+  text,
+  type=""
+){
 
   $("message").textContent =
     text;
@@ -1055,26 +1294,32 @@ function showMessage(text,type=""){
 
 function clearMessage(){
 
-  $("message").textContent = "";
-  $("message").className = "message";
+  $("message").textContent =
+    "";
+
+  $("message").className =
+    "message";
 
 }
 
 function getISBN(info){
 
   const identifiers =
-    info.industryIdentifiers || [];
+    info.industryIdentifiers ||
+    [];
 
   const isbn13 =
     identifiers.find(
       item =>
-        item.type === "ISBN_13"
+        item.type ===
+        "ISBN_13"
     );
 
   const isbn10 =
     identifiers.find(
       item =>
-        item.type === "ISBN_10"
+        item.type ===
+        "ISBN_10"
     );
 
   return (
@@ -1091,35 +1336,149 @@ function normalizeCover(url){
     return "";
 
   return url
-    .replace(/^http:/,"https:")
-    .replace("zoom=1","zoom=2");
+    .replace(
+      /^http:/,
+      "https:"
+    )
+    .replace(
+      "zoom=1",
+      "zoom=2"
+    );
 
 }
 
-function isAdmin(){
+function initials(name="Reader"){
 
-  const role =
-    String(
-      membership?.role || ""
-    ).toLowerCase();
+  const pieces =
+    String(name)
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+  if(!pieces.length)
+    return "?";
+
+  if(pieces.length === 1)
+    return pieces[0][0]
+      .toUpperCase();
 
   return (
-    role === "president" ||
-    role === "owner" ||
-    role === "admin" ||
-    role === "administrator"
+    pieces[0][0] +
+    pieces[pieces.length - 1][0]
+  ).toUpperCase();
+
+}
+
+function normalizeRole(role=""){
+
+  return String(role)
+    .trim()
+    .toLowerCase();
+
+}
+
+/* =========================================================
+   PERMISSION CHECK
+   ========================================================= */
+
+function isAdmin(){
+
+  /*
+    Leadership must also have an ACTIVE membership.
+
+    A paused, banned, pending, suspended, etc.
+    administrator must not be able to edit the ballot.
+  */
+
+  if(
+    !membership ||
+    membership.status !== "active"
+  ){
+
+    return false;
+
+  }
+
+  const role =
+    normalizeRole(
+      membership.role
+    );
+
+  return [
+    "president",
+    "owner",
+    "admin",
+    "administrator"
+  ].includes(role);
+
+}
+
+/* =========================================================
+   BALLOT VALIDATION
+   ========================================================= */
+
+function ballotIsComplete(){
+
+  if(
+    ballotOptions.length !== 3
+  ){
+
+    return false;
+
+  }
+
+  const positions =
+    ballotOptions
+      .map(
+        option =>
+          Number(option.position)
+      )
+      .sort();
+
+  return (
+    positions.length === 3 &&
+    positions[0] === 1 &&
+    positions[1] === 2 &&
+    positions[2] === 3
   );
+
+}
+
+function updateProgress(){
+
+  const validPositions =
+    [1,2,3]
+      .filter(
+        position =>
+          ballotOptions.some(
+            option =>
+              Number(option.position) ===
+              position
+          )
+      )
+      .length;
+
+  $("choiceCount").textContent =
+    validPositions +
+    " / 3";
+
+  $("accessStatus").textContent =
+    isAdmin()
+      ? "Active"
+      : "Locked";
 
 }
 
 /* =========================================================
    PROFILE
-========================================================= */
+   ========================================================= */
 
 async function loadProfile(){
 
   let display =
-    currentUser?.user_metadata?.display_name ||
+    currentUser
+      ?.user_metadata
+      ?.display_name ||
     "Reader";
 
   let avatar = "";
@@ -1171,32 +1530,42 @@ async function loadProfile(){
   const holder =
     $("navAvatar");
 
-  holder.innerHTML = "";
+  holder.innerHTML =
+    "";
 
   if(avatar){
 
     const image =
-      document.createElement("img");
+      document.createElement(
+        "img"
+      );
 
-    image.src = avatar;
-    image.alt = display;
+    image.src =
+      avatar;
 
-    image.onerror = () => {
+    image.alt =
+      display;
 
-      holder.innerHTML = "";
+    image.onerror =
+      () => {
 
-      holder.textContent =
-        display.charAt(0).toUpperCase();
+        holder.innerHTML =
+          "";
 
-    };
+        holder.textContent =
+          initials(display);
 
-    holder.appendChild(image);
+      };
+
+    holder.appendChild(
+      image
+    );
 
   }
   else{
 
     holder.textContent =
-      display.charAt(0).toUpperCase();
+      initials(display);
 
   }
 
@@ -1204,125 +1573,149 @@ async function loadProfile(){
 
 /* =========================================================
    CLUB
-========================================================= */
+   ========================================================= */
 
 async function loadClub(){
 
-  if(!clubId)
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("clubs")
+      .select("*")
+      .eq(
+        "id",
+        clubId
+      )
+      .maybeSingle();
+
+  if(error)
+    throw error;
+
+  if(!data){
+
+    location.href =
+      "clubs.html";
+
     return;
 
-  try{
+  }
 
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("clubs")
-        .select("*")
-        .eq("id",clubId)
-        .maybeSingle();
+  clubData =
+    data;
 
-    if(error)
-      throw error;
+  $("clubSubtitle").textContent =
+    "Build " +
+    (
+      data.name ||
+      "this club"
+    ) +
+    "'s next three-book ballot.";
 
-    if(!data)
-      return;
+  document.title =
+    "DogEar — " +
+    (
+      data.name ||
+      "Club"
+    ) +
+    " Ballot";
 
-    clubData = data;
+  /*
+    Support either field name during the
+    current schema transition.
+  */
 
-    $("clubSubtitle").textContent =
-      "Build " +
-      (data.name || "this club") +
-      "'s next three-book ballot.";
-
-    /*
-      This page supports either of these
-      possible status fields if present.
-    */
+  if(
+    typeof data.ballot_open ===
+    "boolean"
+  ){
 
     ballotOpen =
-      data.ballot_open === true ||
-      data.voting_open === true;
-
-    updateStatus();
+      data.ballot_open;
 
   }
-  catch(error){
+  else if(
+    typeof data.voting_open ===
+    "boolean"
+  ){
 
-    console.warn(
-      "Club lookup:",
-      error.message
-    );
+    ballotOpen =
+      data.voting_open;
 
   }
+  else{
+
+    ballotOpen =
+      false;
+
+  }
+
+  updateStatus();
 
 }
 
 /* =========================================================
    MEMBERSHIP
-========================================================= */
+   ========================================================= */
 
 async function loadMembership(){
 
-  if(!clubId)
-    return;
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(MEMBER_TABLE)
+      .select(
+        "role,status"
+      )
+      .eq(
+        "club_id",
+        clubId
+      )
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+      .maybeSingle();
 
-  try{
+  if(error)
+    throw error;
 
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from(MEMBER_TABLE)
-        .select("*")
-        .eq("club_id",clubId)
-        .eq("user_id",currentUser.id)
-        .maybeSingle();
-
-    if(error)
-      throw error;
-
-    membership =
-      data || null;
-
-  }
-  catch(error){
-
-    console.warn(
-      "Membership lookup:",
-      error.message
-    );
-
-  }
+  membership =
+    data || null;
 
 }
 
 /* =========================================================
    BALLOT STATUS
-========================================================= */
+   ========================================================= */
 
 function updateStatus(){
 
   const status =
     $("ballotStatus");
 
+  status.classList
+    .remove("open");
+
   if(ballotOpen){
 
     status.textContent =
       "Voting Open";
 
-    status.classList.add("open");
+    status.classList
+      .add("open");
 
     $("statusText").textContent =
-      "Members can currently vote on these three books.";
+      "Members can currently vote on these three books. Close voting before editing the ballot.";
 
     $("openBallotBtn").disabled =
       true;
 
     $("closeBallotBtn").disabled =
-      false;
+      !isAdmin();
 
   }
   else{
@@ -1330,66 +1723,66 @@ function updateStatus(){
     status.textContent =
       "Ballot Closed";
 
-    status.classList.remove("open");
-
     $("statusText").textContent =
-      "Members cannot vote while the ballot is closed.";
+      ballotIsComplete()
+        ? "The three choices are ready. Open voting when you want members to begin."
+        : "Members cannot vote until all three ballot positions are filled.";
 
     $("openBallotBtn").disabled =
-      false;
+      !isAdmin() ||
+      !ballotIsComplete();
 
     $("closeBallotBtn").disabled =
       true;
 
   }
 
+  updateProgress();
+
 }
 
 /* =========================================================
-   BALLOT OPTIONS
-========================================================= */
+   LOAD BALLOT
+   ========================================================= */
 
 async function loadBallot(){
 
-  if(!clubId)
-    return;
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from(BALLOT_TABLE)
-        .select("*")
-        .eq("club_id",clubId)
-        .eq("is_active",true)
-        .order("position",{
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(BALLOT_TABLE)
+      .select("*")
+      .eq(
+        "club_id",
+        clubId
+      )
+      .eq(
+        "is_active",
+        true
+      )
+      .order(
+        "position",
+        {
           ascending:true
-        });
+        }
+      );
 
-    if(error)
-      throw error;
+  if(error)
+    throw error;
 
-    ballotOptions =
-      data || [];
-
-  }
-  catch(error){
-
-    console.warn(
-      "Ballot lookup:",
-      error.message
-    );
-
-    ballotOptions = [];
-
-  }
+  ballotOptions =
+    data || [];
 
   renderSlots();
+  updateStatus();
 
 }
+
+/* =========================================================
+   SLOT HELPERS
+   ========================================================= */
 
 function optionForSlot(slot){
 
@@ -1401,12 +1794,20 @@ function optionForSlot(slot){
 
 }
 
+/* =========================================================
+   RENDER SLOTS
+   ========================================================= */
+
 function renderSlots(){
 
   const container =
     $("slots");
 
-  container.innerHTML = "";
+  if(!container)
+    return;
+
+  container.innerHTML =
+    "";
 
   for(
     let slot = 1;
@@ -1418,7 +1819,9 @@ function renderSlots(){
       optionForSlot(slot);
 
     const article =
-      document.createElement("article");
+      document.createElement(
+        "article"
+      );
 
     article.className =
       "slot" +
@@ -1452,7 +1855,9 @@ function renderSlots(){
               <button
                 class="btn secondary choose-book"
                 type="button"
-                data-slot="${slot}">
+                data-slot="${slot}"
+                ${ballotOpen ? "disabled" : ""}
+              >
                 Find a Book
               </button>
 
@@ -1531,7 +1936,8 @@ function renderSlots(){
                 isbn
                   ? `
                     <span>
-                      ISBN: ${escapeHtml(isbn)}
+                      ISBN:
+                      ${escapeHtml(isbn)}
                     </span>
                   `
                   : ""
@@ -1559,6 +1965,19 @@ function renderSlots(){
                   : ""
               }
 
+              ${
+                option.google_books_id
+                  ? `
+                    <span>
+                      Google Books ID:
+                      ${escapeHtml(
+                        option.google_books_id
+                      )}
+                    </span>
+                  `
+                  : ""
+              }
+
             </div>
 
             <div class="slot-actions">
@@ -1566,14 +1985,18 @@ function renderSlots(){
               <button
                 class="btn secondary choose-book"
                 type="button"
-                data-slot="${slot}">
+                data-slot="${slot}"
+                ${ballotOpen ? "disabled" : ""}
+              >
                 Replace
               </button>
 
               <button
                 class="btn danger remove-book"
                 type="button"
-                data-id="${escapeHtml(option.id)}">
+                data-id="${escapeHtml(option.id)}"
+                ${ballotOpen ? "disabled" : ""}
+              >
                 Remove
               </button>
 
@@ -1602,6 +2025,19 @@ function renderSlots(){
         button.addEventListener(
           "click",
           () => {
+
+            clearMessage();
+
+            if(!isAdmin()){
+
+              showMessage(
+                "Only active club leadership can edit the ballot.",
+                "error"
+              );
+
+              return;
+
+            }
 
             if(ballotOpen){
 
@@ -1645,11 +2081,13 @@ function renderSlots(){
       }
     );
 
+  updateProgress();
+
 }
 
 /* =========================================================
    SEARCH MODAL
-========================================================= */
+   ========================================================= */
 
 function openSearch(){
 
@@ -1668,7 +2106,8 @@ function openSearch(){
 
   setTimeout(
     () =>
-      $("bookSearch").focus(),
+      $("bookSearch")
+        .focus(),
     40
   );
 
@@ -1705,19 +2144,66 @@ $("searchModal")
     }
   );
 
+document
+  .addEventListener(
+    "keydown",
+    event => {
+
+      if(
+        event.key === "Escape" &&
+        $("searchModal")
+          .classList
+          .contains("show")
+      ){
+
+        closeSearch();
+
+      }
+
+    }
+  );
+
 /* =========================================================
    GOOGLE BOOKS SEARCH
-========================================================= */
+   ========================================================= */
+
+function buildGoogleQuery(rawQuery){
+
+  const cleaned =
+    rawQuery
+      .replace(/[-\s]/g,"");
+
+  /*
+    ISBN-10 or ISBN-13 style search.
+  */
+
+  if(
+    /^\d{9}[\dXx]$/.test(cleaned) ||
+    /^\d{13}$/.test(cleaned)
+  ){
+
+    return "isbn:" + cleaned;
+
+  }
+
+  return rawQuery;
+
+}
 
 async function searchBooks(){
 
-  const query =
+  const rawQuery =
     $("bookSearch")
       .value
       .trim();
 
-  if(!query)
+  if(!rawQuery)
     return;
+
+  const query =
+    buildGoogleQuery(
+      rawQuery
+    );
 
   const results =
     $("results");
@@ -1736,11 +2222,7 @@ async function searchBooks(){
       encodeURIComponent(query) +
       "&maxResults=20";
 
-    if(
-      GOOGLE_BOOKS_API_KEY &&
-      GOOGLE_BOOKS_API_KEY !==
-      "YOUR_EXISTING_GOOGLE_BOOKS_API_KEY"
-    ){
+    if(GOOGLE_BOOKS_API_KEY){
 
       url +=
         "&key=" +
@@ -1799,12 +2281,17 @@ async function searchBooks(){
 
 }
 
+/* =========================================================
+   SEARCH RESULTS
+   ========================================================= */
+
 function renderSearchResults(items){
 
   const results =
     $("results");
 
-  results.innerHTML = "";
+  results.innerHTML =
+    "";
 
   for(const item of items){
 
@@ -1887,9 +2374,7 @@ function renderSearchResults(items){
 
           ${
             publisher
-              ? `
-                ${escapeHtml(publisher)}
-              `
+              ? escapeHtml(publisher)
               : ""
           }
 
@@ -1901,13 +2386,24 @@ function renderSearchResults(items){
               : ""
           }
 
+          ${
+            item.id
+              ? `
+                <br>
+                Google Books ID:
+                ${escapeHtml(item.id)}
+              `
+              : ""
+          }
+
         </div>
 
       </div>
 
       <button
         class="btn secondary"
-        type="button">
+        type="button"
+      >
         Choose
       </button>
     `;
@@ -1968,6 +2464,7 @@ $("bookSearch")
       if(event.key === "Enter"){
 
         event.preventDefault();
+
         searchBooks();
 
       }
@@ -1976,15 +2473,69 @@ $("bookSearch")
   );
 
 /* =========================================================
+   CHECK DUPLICATE EDITION
+   ========================================================= */
+
+function duplicateEditionExists(
+  book,
+  ignoredSlot
+){
+
+  return ballotOptions.some(
+    option => {
+
+      if(
+        Number(option.position) ===
+        Number(ignoredSlot)
+      ){
+
+        return false;
+
+      }
+
+      if(
+        book.google_books_id &&
+        option.google_books_id
+      ){
+
+        return (
+          option.google_books_id ===
+          book.google_books_id
+        );
+
+      }
+
+      if(
+        book.isbn &&
+        option.isbn
+      ){
+
+        return (
+          String(option.isbn) ===
+          String(book.isbn)
+        );
+
+      }
+
+      return false;
+
+    }
+  );
+
+}
+
+/* =========================================================
    SAVE BOOK TO SLOT
-========================================================= */
+   ========================================================= */
 
 async function selectBook(book){
+
+  clearMessage();
 
   if(!isAdmin()){
 
     showMessage(
-      "Only the club president or an administrator can edit the ballot.",
+      "Only an active Club President or Administrator can edit the ballot.",
       "error"
     );
 
@@ -1998,6 +2549,24 @@ async function selectBook(book){
 
     showMessage(
       "Close voting before changing ballot choices.",
+      "error"
+    );
+
+    closeSearch();
+
+    return;
+
+  }
+
+  if(
+    duplicateEditionExists(
+      book,
+      selectedSlot
+    )
+  ){
+
+    showMessage(
+      "That exact edition is already on this ballot.",
       "error"
     );
 
@@ -2059,7 +2628,14 @@ async function selectBook(book){
         await supabaseClient
           .from(BALLOT_TABLE)
           .update(payload)
-          .eq("id",existing.id)
+          .eq(
+            "id",
+            existing.id
+          )
+          .eq(
+            "club_id",
+            clubId
+          )
           .select()
           .single();
 
@@ -2111,9 +2687,22 @@ async function selectBook(book){
 
 /* =========================================================
    REMOVE BOOK
-========================================================= */
+   ========================================================= */
 
 async function removeBook(optionId){
+
+  clearMessage();
+
+  if(!isAdmin()){
+
+    showMessage(
+      "Only active club leadership can change the ballot.",
+      "error"
+    );
+
+    return;
+
+  }
 
   if(ballotOpen){
 
@@ -2126,7 +2715,12 @@ async function removeBook(optionId){
 
   }
 
-  if(!isAdmin())
+  const confirmed =
+    confirm(
+      "Remove this book from the monthly ballot?"
+    );
+
+  if(!confirmed)
     return;
 
   try{
@@ -2137,7 +2731,14 @@ async function removeBook(optionId){
       await supabaseClient
         .from(BALLOT_TABLE)
         .delete()
-        .eq("id",optionId);
+        .eq(
+          "id",
+          optionId
+        )
+        .eq(
+          "club_id",
+          clubId
+        );
 
     if(error)
       throw error;
@@ -2154,7 +2755,10 @@ async function removeBook(optionId){
 
     showMessage(
       "DogEar couldn't remove this book: " +
-      error.message,
+      (
+        error.message ||
+        "Unknown error"
+      ),
       "error"
     );
 
@@ -2164,7 +2768,7 @@ async function removeBook(optionId){
 
 /* =========================================================
    OPEN / CLOSE VOTING
-========================================================= */
+   ========================================================= */
 
 async function setBallotStatus(open){
 
@@ -2173,7 +2777,7 @@ async function setBallotStatus(open){
   if(!isAdmin()){
 
     showMessage(
-      "Only club leadership can control voting.",
+      "Only active club leadership can control voting.",
       "error"
     );
 
@@ -2183,11 +2787,11 @@ async function setBallotStatus(open){
 
   if(
     open &&
-    ballotOptions.length !== 3
+    !ballotIsComplete()
   ){
 
     showMessage(
-      "Add all three book choices before opening voting.",
+      "All three ballot positions must be filled before voting can open.",
       "error"
     );
 
@@ -2198,10 +2802,11 @@ async function setBallotStatus(open){
   try{
 
     /*
-      This uses ballot_open on clubs.
+      Current DogEar pages use ballot_open.
 
-      If your existing clubs table uses voting_open
-      instead, change ballot_open below to voting_open.
+      The consolidated Supabase schema should
+      standardize this field and enforce the same
+      leadership rules with RLS or an RPC.
     */
 
     const {
@@ -2224,6 +2829,13 @@ async function setBallotStatus(open){
     ballotOpen =
       open;
 
+    if(clubData){
+
+      clubData.ballot_open =
+        open;
+
+    }
+
     updateStatus();
     renderSlots();
 
@@ -2241,7 +2853,10 @@ async function setBallotStatus(open){
 
     showMessage(
       "DogEar couldn't change the ballot status: " +
-      error.message,
+      (
+        error.message ||
+        "Unknown error"
+      ),
       "error"
     );
 
@@ -2265,9 +2880,11 @@ $("closeBallotBtn")
 
 /* =========================================================
    PERMISSIONS
-========================================================= */
+   ========================================================= */
 
 function applyPermissions(){
+
+  updateProgress();
 
   if(isAdmin())
     return;
@@ -2280,7 +2897,7 @@ function applyPermissions(){
         This desk belongs to club leadership.
       </strong>
 
-      Only the Club President or an Administrator
+      Only an active Club President or Administrator
       can create or change the monthly ballot.
 
     </div>
@@ -2295,12 +2912,48 @@ function applyPermissions(){
 }
 
 /* =========================================================
+   OPTIONAL INCOMING BOOK
+   ========================================================= */
+
+async function handleIncomingBook(){
+
+  /*
+    club.html already establishes links like:
+
+    club-ballot-admin.html?id=CLUB_ID
+      &action=add
+      &bookId=BOOK_ID
+
+    A central DogEar book and a Google Books volume
+    are not necessarily the same record, so we do not
+    guess the edition here.
+
+    We simply alert leadership that a book was passed
+    into the ballot flow. Once the central books schema
+    is finalized, this can resolve its exact edition.
+  */
+
+  if(
+    incomingAction === "add" &&
+    incomingBookId &&
+    isAdmin() &&
+    !ballotOpen
+  ){
+
+    showMessage(
+      "A book was sent to the ballot builder. Choose the exact edition for one of the three slots before opening voting.",
+      "warning"
+    );
+
+  }
+
+}
+
+/* =========================================================
    START
-========================================================= */
+   ========================================================= */
 
 async function start(){
-
-  wireLinks();
 
   if(!clubId){
 
@@ -2310,6 +2963,8 @@ async function start(){
     return;
 
   }
+
+  wireLinks();
 
   const {
     data,
@@ -2334,15 +2989,40 @@ async function start(){
   currentUser =
     data.user;
 
-  await Promise.all([
-    loadProfile(),
-    loadClub(),
-    loadMembership()
-  ]);
+  try{
 
-  await loadBallot();
+    await Promise.all([
+      loadProfile(),
+      loadClub(),
+      loadMembership()
+    ]);
 
-  applyPermissions();
+    await loadBallot();
+
+    applyPermissions();
+
+    await handleIncomingBook();
+
+  }
+  catch(error){
+
+    console.error(
+      "Ballot builder load:",
+      error
+    );
+
+    showMessage(
+      "DogEar couldn't load the ballot builder: " +
+      (
+        error.message ||
+        "Unknown error"
+      ),
+      "error"
+    );
+
+    applyPermissions();
+
+  }
 
   $("loading")
     .classList
