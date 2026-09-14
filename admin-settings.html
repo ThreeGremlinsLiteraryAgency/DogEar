@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DogEar — Platform Settings</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --ink:#090b0a;
+  --panel:#101410;
+  --panel2:#0d110e;
+  --cream:#f1e7cf;
+  --gold:#c79b59;
+  --gold2:#dfbd7e;
+  --green:#26362b;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.22);
+  --line-soft:rgba(199,155,89,.11);
+  --danger:#e6a09a;
+  --ok:#b9d6b2;
+  --warn:#e1c28b;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--cream);
+  background:
+    radial-gradient(circle at 10% 0%,rgba(53,73,59,.24),transparent 28%),
+    var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+a{color:inherit}
+
+.topbar{
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:0 clamp(18px,4vw,60px);
+  border-bottom:1px solid var(--line);
+  background:rgba(9,11,10,.94);
+  position:sticky;
+  top:0;
+  z-index:30;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 13px Arial;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  transform:rotate(-8deg);
+}
+
+.nav{
+  display:flex;
+  gap:24px;
+  font:700 11px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.nav a:hover{
+  color:var(--gold2);
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:var(--green);
+  text-decoration:none;
+  font:800 13px Arial;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.page{
+  width:min(1180px,calc(100% - 32px));
+  margin:auto;
+  padding:38px 0 110px;
+}
+
+.back{
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 10px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.hero{
+  margin-top:22px;
+  padding-bottom:28px;
+  border-bottom:1px solid var(--line);
+}
+
+.eyebrow{
+  color:var(--gold);
+  font:800 10px Arial;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+
+h1{
+  margin:0;
+  font-size:clamp(42px,6vw,68px);
+  line-height:.96;
+  font-weight:400;
+  letter-spacing:-.04em;
+}
+
+.subtitle{
+  margin-top:12px;
+  max-width:780px;
+  color:var(--muted);
+  font:13px/1.65 Arial;
+}
+
+.settings-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  margin-top:26px;
+}
+
+.card{
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(16,20,16,.86);
+  overflow:hidden;
+}
+
+.card.full{
+  grid-column:1/-1;
+}
+
+.card-head{
+  padding:18px 20px;
+  border-bottom:1px solid var(--line);
+}
+
+.card-head h2{
+  margin:0;
+  font-size:23px;
+  font-weight:400;
+}
+
+.card-head p{
+  margin:7px 0 0;
+  color:var(--muted);
+  font:11px/1.55 Arial;
+}
+
+.card-body{
+  padding:20px;
+}
+
+.setting{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:24px;
+  padding:14px 0;
+  border-bottom:1px solid var(--line-soft);
+}
+
+.setting:first-child{
+  padding-top:0;
+}
+
+.setting:last-child{
+  border-bottom:0;
+  padding-bottom:0;
+}
+
+.setting-copy{
+  min-width:0;
+}
+
+.setting-title{
+  font-size:16px;
+}
+
+.setting-help{
+  margin-top:4px;
+  color:var(--muted);
+  font:10px/1.5 Arial;
+}
+
+.toggle{
+  position:relative;
+  width:46px;
+  height:25px;
+  flex:0 0 auto;
+}
+
+.toggle input{
+  opacity:0;
+  width:0;
+  height:0;
+}
+
+.slider{
+  position:absolute;
+  inset:0;
+  cursor:pointer;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#181c19;
+  transition:.2s;
+}
+
+.slider:before{
+  content:"";
+  position:absolute;
+  width:17px;
+  height:17px;
+  left:3px;
+  top:3px;
+  border-radius:50%;
+  background:var(--muted);
+  transition:.2s;
+}
+
+.toggle input:checked + .slider{
+  background:var(--green);
+  border-color:var(--gold);
+}
+
+.toggle input:checked + .slider:before{
+  transform:translateX(21px);
+  background:var(--gold2);
+}
+
+.field{
+  margin-bottom:16px;
+}
+
+.field:last-child{
+  margin-bottom:0;
+}
+
+.field label{
+  display:block;
+  margin-bottom:7px;
+  color:var(--gold2);
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:var(--panel2);
+  color:var(--cream);
+  outline:none;
+  font:12px Arial;
+}
+
+.field input,
+.field select{
+  height:44px;
+  padding:0 12px;
+}
+
+.field textarea{
+  min-height:100px;
+  padding:12px;
+  resize:vertical;
+  line-height:1.5;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  border-color:var(--gold);
+}
+
+.two-col{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.footer-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:24px;
+}
+
+.btn{
+  min-height:42px;
+  padding:0 15px;
+  border-radius:999px;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font:800 9px Arial;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.primary{
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:#17130e;
+}
+
+.secondary{
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--gold2);
+}
+
+.btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.message{
+  display:none;
+  margin-top:16px;
+  padding:12px 14px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  font:11px/1.55 Arial;
+}
+
+.message.show{display:block}
+.message.success{color:var(--ok)}
+.message.error{color:var(--danger)}
+
+.locked{
+  display:none;
+  padding:70px 24px;
+  margin-top:28px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  text-align:center;
+  color:var(--muted);
+  font:13px/1.7 Arial;
+}
+
+.locked.show{
+  display:block;
+}
+
+.locked strong{
+  display:block;
+  margin-bottom:8px;
+  color:var(--cream);
+  font:400 25px Georgia;
+}
+
+.loading{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:grid;
+  place-items:center;
+  background:var(--ink);
+}
+
+.loading.hidden{
+  display:none;
+}
+
+.loading span{
+  color:var(--gold2);
+  font:800 10px Arial;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+@media(max-width:760px){
+  .nav{display:none}
+
+  .settings-grid{
+    grid-template-columns:1fr;
+  }
+
+  .card.full{
+    grid-column:auto;
+  }
+
+  .two-col{
+    grid-template-columns:1fr;
+  }
+
+  .setting{
+    align-items:flex-start;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="loading" id="loading">
+  <span>Opening platform settings...</span>
+</div>
+
+<header class="topbar">
+
+  <a class="brand" href="dashboard.html">
+    <span class="brand-mark"></span>
+    DogEar
+  </a>
+
+  <nav class="nav">
+    <a href="dashboard.html">Home</a>
+    <a href="discover.html">Discover</a>
+    <a href="clubs.html">Clubs</a>
+    <a href="marketplace.html">Books</a>
+  </nav>
+
+  <a class="avatar" id="navAvatar" href="profile.html">?</a>
+
+</header>
+
+<main class="page">
+
+  <a class="back" href="admin-dashboard.html">
+    ← Back to Control Room
+  </a>
+
+  <section class="hero">
+
+    <div class="eyebrow">
+      DogEar Administration
+    </div>
+
+    <h1>
+      Platform Settings
+    </h1>
+
+    <div class="subtitle">
+      Configure DogEar-wide behavior for registrations, verification,
+      communities, marketplace behavior, and platform economics.
+    </div>
+
+  </section>
+
+  <div id="settingsArea">
+
+    <section class="settings-grid">
+
+      <article class="card">
+
+        <div class="card-head">
+          <h2>Accounts & Access</h2>
+          <p>
+            Site-wide registration and account behavior.
+          </p>
+        </div>
+
+        <div class="card-body">
+
+          <div class="setting">
+
+            <div class="setting-copy">
+              <div class="setting-title">
+                Allow new registrations
+              </div>
+              <div class="setting-help">
+                Turns public account creation on or off.
+              </div>
+            </div>
+
+            <label class="toggle">
+              <input type="checkbox" id="allowRegistrations">
+              <span class="slider"></span>
+            </label>
+
+          </div>
+
+          <div class="setting">
+
+            <div class="setting-copy">
+              <div class="setting-title">
+                Require admin approval
+              </div>
+              <div class="setting-help">
+                New accounts remain pending until accepted.
+              </div>
+            </div>
+
+            <label class="toggle">
+              <input type="checkbox" id="requireApproval">
+              <span class="slider"></span>
+            </label>
+
+          </div>
+
+          <div class="setting">
+
+            <div class="setting-copy">
+              <div class="setting-title">
+                Require email verification
+              </div>
+              <div class="setting-help">
+                Accounts must verify their email before normal access.
+              </div>
+            </div>
+
+            <label class="toggle">
+              <input type="checkbox" id="requireEmailVerification">
+              <span class="slider"></span>
+            </label>
+
+          </div>
+
+        </div>
+
+      </article>
+
+      <article class="card">
+
+        <div class="card-head">
+          <h2>Trust & Verification</h2>
+          <p>
+            Rules for DogEar verified accounts.
+          </p>
+        </div>
+
+        <div class="card-body">
+
+          <div class="setting">
+
+            <div class="setting-copy">
+              <div class="setting-title">
+                Verification enabled
+              </div>
+              <div class="setting-help">
+                Allows members to request account verification.
+              </div>
+            </div>
+
+            <label class="toggle">
+              <input type="checkbox" id="verificationEnabled">
+              <span class="slider"></span>
+            </label>
+
+          </div>
+
+          <div class="setting">
+
+            <div class="setting-copy">
+              <div class="setting-title">
+                Verified accounts lift limits
+              </div>
+              <div class="setting-help">
+                Verified users may receive expanded platform limits.
+              </div>
+            </div>
+
+            <label class="toggle">
+              <input type="checkbox" id="verifiedLiftLimits">
+              <span class="slider"></span>
+            </label>
+
+          </div>
+
+          <div class="field" style="margin-top:16px">
+
+            <label for="verificationLabel">
+              Public Verification Label
+            </label>
+
+            <input
+              id="verificationLabel"
+              maxlength="40"
+              placeholder="Verified">
+
+          </div>
+
+        </div>
+
+      </article>
+
+      <article class="card">
+
+        <div class="card-head">
+          <h2>Book Clubs</h2>
+          <p>
+            Global club and monthly ballot behavior.
+          </p>
+        </div>
+
+        <div class="card-body">
+
+          <div class="setting">
+
+            <div class="setting-copy">
+              <div class="setting-title">
+                Allow new clubs
+              </div>
+              <div class="setting-help">
+                Members may create new book clubs.
+              </div>
+            </div>
+
+            <label class="toggle">
+              <input type="checkbox" id="allowClubCreation">
+              <span class="slider"></span>
+            </label>
+
+          </div>
+
+          <div class="setting">
+
+            <div class="setting-copy">
+              <div class="setting-title">
+                Allow private clubs
+              </div>
+              <div class="setting-help">
+                Presidents may create invitation-only clubs.
+              </div>
+            </div>
+
+            <label class="toggle">
+              <input type="checkbox" id="allowPrivateClubs">
+              <span class="slider"></span>
+            </label>
+
+          </div>
+
+          <div class="two-col" style="margin-top:16px">
+
+            <div class="field">
+
+              <label for="clubLimit">
+                Owned Club Limit
+              </label>
+
+              <input
+                id="clubLimit"
+                type="number"
+                min="1"
+                max="100"
+                value="5">
+
+            </div>
+
+            <div class="field">
+
+              <label for="ballotChoiceCount">
+                Ballot Choices
+              </label>
+
+              <input
+                id="ballotChoiceCount"
+                type="number"
+                min="2"
+                max="10"
+                value="3">
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </article>
+
+      <article class="card">
+
+        <div class="card-head">
+          <h2>Marketplace & Affiliates</h2>
+          <p>
+            Configure DogEar book-purchase behavior.
+          </p>
+        </div>
+
+        <div class="card-body">
+
+          <div class="setting">
+
+            <div class="setting-copy">
+              <div class="setting-title">
+                Marketplace enabled
+              </div>
+              <div class="setting-help">
+                Shows purchase options and affiliate-linked books.
+              </div>
+            </div>
+
+            <label class="toggle">
+              <input type="checkbox" id="marketplaceEnabled">
+              <span class="slider"></span>
+            </label>
+
+          </div>
+
+          <div class="field" style="margin-top:16px">
+
+            <label for="preferredAffiliate">
+              Preferred Affiliate Partner
+            </label>
+
+            <select id="preferredAffiliate">
+
+              <option value="Bookshop.org">
+                Bookshop.org
+              </option>
+
+              <option value="Amazon">
+                Amazon
+              </option>
+
+              <option value="mixed">
+                Mixed / Per Book
+              </option>
+
+            </select>
+
+          </div>
+
+          <div class="field">
+
+            <label for="affiliateDisclosure">
+              Affiliate Disclosure
+            </label>
+
+            <textarea id="affiliateDisclosure">
+DogEar may earn a commission from qualifying purchases made through affiliate links.
+            </textarea>
+
+          </div>
+
+        </div>
+
+      </article>
+
+      <article class="card">
+
+        <div class="card-head">
+          <h2>Tokens & Coins</h2>
+          <p>
+            Default platform economy values.
+          </p>
+        </div>
+
+        <div class="card-body">
+
+          <div class="two-col">
+
+            <div class="field">
+
+              <label for="premiumPrice">
+                Author Premium / Month
+              </label>
+
+              <input
+                id="premiumPrice"
+                type="number"
+                min="0"
+                step="0.01"
+                value="10">
+
+            </div>
+
+            <div class="field">
+
+              <label for="premiumTokens">
+                Included Tokens
+              </label>
+
+              <input
+                id="premiumTokens"
+                type="number"
+                min="0"
+                step="1"
+                value="1000">
+
+            </div>
+
+          </div>
+
+          <div class="two-col">
+
+            <div class="field">
+
+              <label for="coinsPerDollar">
+                Coins per $1
+              </label>
+
+              <input
+                id="coinsPerDollar"
+                type="number"
+                min="1"
+                value="100">
+
+            </div>
+
+            <div class="field">
+
+              <label for="reservePercent">
+                Reserve Coverage %
+              </label>
+
+              <input
+                id="reservePercent"
+                type="number"
+                min="0"
+                max="200"
+                step="1"
+                value="100">
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </article>
+
+      <article class="card">
+
+        <div class="card-head">
+          <h2>Safety</h2>
+          <p>
+            Global platform safety behavior.
+          </p>
+        </div>
+
+        <div class="card-body">
+
+          <div class="setting">
+
+            <div class="setting-copy">
+              <div class="setting-title">
+                Disable clickable links in club posts
+              </div>
+              <div class="setting-help">
+                Discussion text remains plain text even when URLs are posted.
+              </div>
+            </div>
+
+            <label class="toggle">
+              <input type="checkbox" id="disableClubLinks">
+              <span class="slider"></span>
+            </label>
+
+          </div>
+
+          <div class="setting">
+
+            <div class="setting-copy">
+              <div class="setting-title">
+                Disable images in club posts
+              </div>
+              <div class="setting-help">
+                Prevents discussion image uploads.
+              </div>
+            </div>
+
+            <label class="toggle">
+              <input type="checkbox" id="disableClubImages">
+              <span class="slider"></span>
+            </label>
+
+          </div>
+
+          <div class="setting">
+
+            <div class="setting-copy">
+              <div class="setting-title">
+                Device/IP enforcement enabled
+              </div>
+              <div class="setting-help">
+                Makes platform-level ban enforcement available when supported.
+              </div>
+            </div>
+
+            <label class="toggle">
+              <input type="checkbox" id="deviceEnforcement">
+              <span class="slider"></span>
+            </label>
+
+          </div>
+
+        </div>
+
+      </article>
+
+      <article class="card full">
+
+        <div class="card-head">
+          <h2>Platform Status</h2>
+          <p>
+            Emergency controls and site-wide notices.
+          </p>
+        </div>
+
+        <div class="card-body">
+
+          <div class="setting">
+
+            <div class="setting-copy">
+              <div class="setting-title">
+                Maintenance mode
+              </div>
+              <div class="setting-help">
+                Use this when normal member access needs to be temporarily disabled.
+              </div>
+            </div>
+
+            <label class="toggle">
+              <input type="checkbox" id="maintenanceMode">
+              <span class="slider"></span>
+            </label>
+
+          </div>
+
+          <div class="field" style="margin-top:16px">
+
+            <label for="siteNotice">
+              Site-Wide Notice
+            </label>
+
+            <textarea
+              id="siteNotice"
+              placeholder="Leave blank when there is no platform announcement."></textarea>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    </section>
+
+    <div class="footer-actions">
+
+      <a
+        class="btn secondary"
+        href="admin-dashboard.html">
+        Cancel
+      </a>
+
+      <button
+        class="btn primary"
+        id="saveBtn"
+        type="button">
+        Save Platform Settings
+      </button>
+
+    </div>
+
+    <div
+      class="message"
+      id="message">
+    </div>
+
+  </div>
+
+  <section class="locked" id="locked">
+
+    <strong>
+      Administrator access required.
+    </strong>
+
+    Your account does not currently have permission to change DogEar's
+    platform settings.
+
+  </section>
+
+</main>
+
+<script>
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+const $ =
+  id => document.getElementById(id);
+
+let currentUser = null;
+
+/* =========================================================
+   DEFAULT SETTINGS
+========================================================= */
+
+const DEFAULTS = {
+
+  allow_registrations:true,
+  require_approval:true,
+  require_email_verification:true,
+
+  verification_enabled:true,
+  verified_lift_limits:true,
+  verification_label:"Verified",
+
+  allow_club_creation:true,
+  allow_private_clubs:true,
+  club_limit:5,
+  ballot_choice_count:3,
+
+  marketplace_enabled:true,
+  preferred_affiliate:"Bookshop.org",
+  affiliate_disclosure:
+    "DogEar may earn a commission from qualifying purchases made through affiliate links.",
+
+  premium_price:10,
+  premium_tokens:1000,
+  coins_per_dollar:100,
+  reserve_percent:100,
+
+  disable_club_links:true,
+  disable_club_images:true,
+  device_enforcement:true,
+
+  maintenance_mode:false,
+  site_notice:""
+
+};
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+async function loadProfile(){
+
+  let display =
+    currentUser?.user_metadata?.display_name ||
+    "Reader";
+
+  let avatar = "";
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "get_public_profile",
+        {
+          check_user_id:
+            currentUser.id
+        }
+      );
+
+    if(error)
+      throw error;
+
+    const profile =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+    if(profile){
+
+      display =
+        profile.display_name ||
+        display;
+
+      avatar =
+        profile.avatar_url ||
+        "";
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Profile lookup:",
+      error.message
+    );
+
+  }
+
+  const holder =
+    $("navAvatar");
+
+  holder.innerHTML = "";
+
+  if(avatar){
+
+    const image =
+      document.createElement("img");
+
+    image.src = avatar;
+    image.alt = display;
+
+    image.onerror =
+      () => {
+
+        holder.innerHTML = "";
+
+        holder.textContent =
+          display.charAt(0).toUpperCase();
+
+      };
+
+    holder.appendChild(image);
+
+  }
+  else{
+
+    holder.textContent =
+      display.charAt(0).toUpperCase();
+
+  }
+
+}
+
+/* =========================================================
+   ADMIN CHECK
+========================================================= */
+
+async function verifyAdmin(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("admin_users")
+        .select("user_id,active")
+        .eq("user_id",currentUser.id)
+        .maybeSingle();
+
+    if(error)
+      throw error;
+
+    return (
+      data &&
+      data.active !== false
+    );
+
+  }
+  catch(error){
+
+    console.warn(
+      "Admin lookup:",
+      error.message
+    );
+
+    return false;
+
+  }
+
+}
+
+function showLocked(){
+
+  $("settingsArea").style.display =
+    "none";
+
+  $("locked")
+    .classList
+    .add("show");
+
+}
+
+/* =========================================================
+   FORM MAPPING
+========================================================= */
+
+function applySettings(settings){
+
+  const s =
+    Object.assign(
+      {},
+      DEFAULTS,
+      settings || {}
+    );
+
+  $("allowRegistrations").checked =
+    !!s.allow_registrations;
+
+  $("requireApproval").checked =
+    !!s.require_approval;
+
+  $("requireEmailVerification").checked =
+    !!s.require_email_verification;
+
+  $("verificationEnabled").checked =
+    !!s.verification_enabled;
+
+  $("verifiedLiftLimits").checked =
+    !!s.verified_lift_limits;
+
+  $("verificationLabel").value =
+    s.verification_label || "";
+
+  $("allowClubCreation").checked =
+    !!s.allow_club_creation;
+
+  $("allowPrivateClubs").checked =
+    !!s.allow_private_clubs;
+
+  $("clubLimit").value =
+    s.club_limit ?? 5;
+
+  $("ballotChoiceCount").value =
+    s.ballot_choice_count ?? 3;
+
+  $("marketplaceEnabled").checked =
+    !!s.marketplace_enabled;
+
+  $("preferredAffiliate").value =
+    s.preferred_affiliate ||
+    "Bookshop.org";
+
+  $("affiliateDisclosure").value =
+    s.affiliate_disclosure ||
+    "";
+
+  $("premiumPrice").value =
+    s.premium_price ?? 10;
+
+  $("premiumTokens").value =
+    s.premium_tokens ?? 1000;
+
+  $("coinsPerDollar").value =
+    s.coins_per_dollar ?? 100;
+
+  $("reservePercent").value =
+    s.reserve_percent ?? 100;
+
+  $("disableClubLinks").checked =
+    !!s.disable_club_links;
+
+  $("disableClubImages").checked =
+    !!s.disable_club_images;
+
+  $("deviceEnforcement").checked =
+    !!s.device_enforcement;
+
+  $("maintenanceMode").checked =
+    !!s.maintenance_mode;
+
+  $("siteNotice").value =
+    s.site_notice || "";
+
+}
+
+function collectSettings(){
+
+  return {
+
+    allow_registrations:
+      $("allowRegistrations").checked,
+
+    require_approval:
+      $("requireApproval").checked,
+
+    require_email_verification:
+      $("requireEmailVerification").checked,
+
+    verification_enabled:
+      $("verificationEnabled").checked,
+
+    verified_lift_limits:
+      $("verifiedLiftLimits").checked,
+
+    verification_label:
+      $("verificationLabel")
+        .value
+        .trim() ||
+      "Verified",
+
+    allow_club_creation:
+      $("allowClubCreation").checked,
+
+    allow_private_clubs:
+      $("allowPrivateClubs").checked,
+
+    club_limit:
+      Number(
+        $("clubLimit").value
+      ) || 5,
+
+    ballot_choice_count:
+      Number(
+        $("ballotChoiceCount").value
+      ) || 3,
+
+    marketplace_enabled:
+      $("marketplaceEnabled").checked,
+
+    preferred_affiliate:
+      $("preferredAffiliate").value,
+
+    affiliate_disclosure:
+      $("affiliateDisclosure")
+        .value
+        .trim(),
+
+    premium_price:
+      Number(
+        $("premiumPrice").value
+      ) || 0,
+
+    premium_tokens:
+      Number(
+        $("premiumTokens").value
+      ) || 0,
+
+    coins_per_dollar:
+      Number(
+        $("coinsPerDollar").value
+      ) || 100,
+
+    reserve_percent:
+      Number(
+        $("reservePercent").value
+      ) || 0,
+
+    disable_club_links:
+      $("disableClubLinks").checked,
+
+    disable_club_images:
+      $("disableClubImages").checked,
+
+    device_enforcement:
+      $("deviceEnforcement").checked,
+
+    maintenance_mode:
+      $("maintenanceMode").checked,
+
+    site_notice:
+      $("siteNotice")
+        .value
+        .trim()
+
+  };
+
+}
+
+/* =========================================================
+   LOAD SETTINGS
+========================================================= */
+
+async function loadSettings(){
+
+  /*
+    Expected single-row table:
+
+    platform_settings
+      id
+      allow_registrations
+      require_approval
+      require_email_verification
+      verification_enabled
+      verified_lift_limits
+      verification_label
+      allow_club_creation
+      allow_private_clubs
+      club_limit
+      ballot_choice_count
+      marketplace_enabled
+      preferred_affiliate
+      affiliate_disclosure
+      premium_price
+      premium_tokens
+      coins_per_dollar
+      reserve_percent
+      disable_club_links
+      disable_club_images
+      device_enforcement
+      maintenance_mode
+      site_notice
+      updated_at
+      updated_by
+
+    This page uses a fixed row id:
+      global
+  */
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("platform_settings")
+        .select("*")
+        .eq("id","global")
+        .maybeSingle();
+
+    if(error)
+      throw error;
+
+    applySettings(
+      data || DEFAULTS
+    );
+
+  }
+  catch(error){
+
+    console.warn(
+      "Platform settings:",
+      error.message
+    );
+
+    applySettings(
+      DEFAULTS
+    );
+
+  }
+
+}
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+function showMessage(text,type=""){
+
+  $("message").textContent =
+    text;
+
+  $("message").className =
+    "message show " + type;
+
+}
+
+function clearMessage(){
+
+  $("message").textContent = "";
+  $("message").className = "message";
+
+}
+
+/* =========================================================
+   SAVE
+========================================================= */
+
+$("saveBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      clearMessage();
+
+      const button =
+        $("saveBtn");
+
+      button.disabled =
+        true;
+
+      button.textContent =
+        "Saving...";
+
+      const settings =
+        collectSettings();
+
+      try{
+
+        /*
+          Prototype storage.
+
+          Production recommendation:
+          use a protected update_platform_settings RPC
+          rather than allowing browser-side writes directly.
+
+          RLS should guarantee only site administrators
+          may alter this row.
+        */
+
+        const payload = {
+
+          id:"global",
+          ...settings,
+
+          updated_at:
+            new Date().toISOString(),
+
+          updated_by:
+            currentUser.id
+
+        };
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .from("platform_settings")
+            .upsert(
+              payload,
+              {
+                onConflict:"id"
+              }
+            );
+
+        if(error)
+          throw error;
+
+        showMessage(
+          "DogEar platform settings saved.",
+          "success"
+        );
+
+      }
+      catch(error){
+
+        console.error(error);
+
+        showMessage(
+          "DogEar couldn't save these settings: " +
+          (
+            error.message ||
+            "Unknown error"
+          ),
+          "error"
+        );
+
+      }
+      finally{
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Save Platform Settings";
+
+      }
+
+    }
+  );
+
+/* =========================================================
+   START
+========================================================= */
+
+async function start(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+  if(
+    error ||
+    !data.user
+  ){
+
+    location.href =
+      "auth.html#login";
+
+    return;
+
+  }
+
+  currentUser =
+    data.user;
+
+  await loadProfile();
+
+  const allowed =
+    await verifyAdmin();
+
+  if(!allowed){
+
+    showLocked();
+
+    $("loading")
+      .classList
+      .add("hidden");
+
+    return;
+
+  }
+
+  await loadSettings();
+
+  $("loading")
+    .classList
+    .add("hidden");
+
+}
+
+start();
+</script>
+
+</body>
+</html>
