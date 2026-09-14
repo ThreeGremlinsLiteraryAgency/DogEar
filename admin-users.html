@@ -1488,9 +1488,9 @@ function getFilteredMembers(){
             member.username,
             member.id
           ]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase();
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
 
 
         if(
@@ -1931,7 +1931,7 @@ document.addEventListener(
 
     if(
       event.key ===
-      "Escape"
+        "Escape"
     ){
 
       closeModal();
@@ -1973,6 +1973,41 @@ function replaceMember(
 
 
 /* =========================================================
+   ADMIN AUDIT LOGGING
+========================================================= */
+
+async function logAdminEvent({
+  event,
+  description=null,
+  severity="info",
+  target=null,
+  message=null,
+  metadata={}
+}){
+
+  const {
+    error
+  } =
+    await supabaseClient.rpc(
+      "log_admin_event",
+      {
+        p_event:event,
+        p_description:description,
+        p_severity:severity,
+        p_target:target,
+        p_message:message,
+        p_metadata:metadata
+      }
+    );
+
+
+  if(error)
+    throw error;
+
+}
+
+
+/* =========================================================
    SAVE STATUS
 ========================================================= */
 
@@ -1992,6 +2027,12 @@ $("saveStatusBtn")
       const newStatus =
         $("statusSelect")
           .value;
+
+
+      const oldStatus =
+        memberStatus(
+          selectedMember
+        );
 
 
       button.disabled =
@@ -2028,6 +2069,70 @@ $("saveStatusBtn")
           throw error;
 
 
+        let auditWarning = "";
+
+
+        if(oldStatus !== newStatus){
+
+          try{
+
+            await logAdminEvent({
+              event:
+                "Member status changed",
+
+              description:
+                "An administrator changed a DogEar member account status.",
+
+              severity:
+                newStatus === "suspended"
+                  ? "warning"
+                  : "info",
+
+              target:
+                "Member: " +
+                selectedMember.id,
+
+              message:
+                "Account status changed from " +
+                oldStatus +
+                " to " +
+                newStatus +
+                ".",
+
+              metadata:{
+                member_id:
+                  selectedMember.id,
+
+                member_name:
+                  memberName(
+                    selectedMember
+                  ),
+
+                previous_status:
+                  oldStatus,
+
+                new_status:
+                  newStatus
+              }
+            });
+
+          }
+          catch(auditError){
+
+            console.error(
+              "Audit log error:",
+              auditError
+            );
+
+
+            auditWarning =
+              " The account was updated, but DogEar could not record the audit event.";
+
+          }
+
+        }
+
+
         replaceMember(
           data
         );
@@ -2044,7 +2149,10 @@ $("saveStatusBtn")
 
 
         showModalMessage(
-          "Account status updated.",
+          oldStatus === newStatus
+            ? "No account status change was needed."
+            : "Account status updated." +
+              auditWarning,
           "success"
         );
 
@@ -2215,6 +2323,68 @@ $("verificationBtn")
           throw error;
 
 
+        let auditWarning = "";
+
+
+        try{
+
+          await logAdminEvent({
+            event:
+              newValue
+                ? "Member verified"
+                : "Member verification removed",
+
+            description:
+              newValue
+                ? "An administrator verified a DogEar member account."
+                : "An administrator removed verification from a DogEar member account.",
+
+            severity:
+              newValue
+                ? "success"
+                : "warning",
+
+            target:
+              "Member: " +
+              selectedMember.id,
+
+            message:
+              newValue
+                ? "Account verification granted."
+                : "Account verification removed.",
+
+            metadata:{
+              member_id:
+                selectedMember.id,
+
+              member_name:
+                memberName(
+                  selectedMember
+                ),
+
+              previous_verified:
+                currentlyVerified,
+
+              new_verified:
+                newValue
+            }
+          });
+
+        }
+        catch(auditError){
+
+          console.error(
+            "Audit log error:",
+            auditError
+          );
+
+
+          auditWarning =
+            " The verification change succeeded, but DogEar could not record the audit event.";
+
+        }
+
+
         replaceMember(
           data
         );
@@ -2237,9 +2407,12 @@ $("verificationBtn")
 
 
         showModalMessage(
-          memberVerified(data)
-            ? "Account verified."
-            : "Verification removed.",
+          (
+            memberVerified(data)
+              ? "Account verified."
+              : "Verification removed."
+          ) +
+          auditWarning,
           "success"
         );
 
