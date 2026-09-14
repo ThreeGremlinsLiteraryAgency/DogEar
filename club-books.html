@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DogEar — Club Bookshelf</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --ink:#090b0a;
+  --panel:#101410;
+  --panel2:#0d110e;
+  --cream:#f1e7cf;
+  --gold:#c79b59;
+  --gold2:#dfbd7e;
+  --green:#26362b;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.22);
+  --line-soft:rgba(199,155,89,.11);
+  --danger:#e6a09a;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--cream);
+  background:
+    radial-gradient(circle at 10% 0%,rgba(53,73,59,.24),transparent 28%),
+    var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+a{color:inherit}
+
+.topbar{
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:0 clamp(18px,4vw,60px);
+  border-bottom:1px solid var(--line);
+  background:rgba(9,11,10,.94);
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.brand{
+  display:flex;
+  gap:11px;
+  align-items:center;
+  text-decoration:none;
+  color:var(--gold2);
+  font:800 13px Arial;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  transform:rotate(-8deg);
+}
+
+.nav{
+  display:flex;
+  gap:24px;
+  font:700 11px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.nav a:hover,
+.nav .active{
+  color:var(--gold2);
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:var(--green);
+  text-decoration:none;
+  font:800 13px Arial;
+  overflow:hidden;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.page{
+  width:min(1180px,calc(100% - 32px));
+  margin:auto;
+  padding:36px 0 100px;
+}
+
+.back{
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 10px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.club-head{
+  margin:24px 0 22px;
+  padding-bottom:24px;
+  border-bottom:1px solid var(--line);
+}
+
+.eyebrow{
+  color:var(--gold);
+  font:800 10px Arial;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  margin-bottom:9px;
+}
+
+h1{
+  font-size:clamp(42px,6vw,68px);
+  font-weight:400;
+  line-height:.96;
+  letter-spacing:-.035em;
+  margin:0;
+}
+
+.club-sub{
+  color:var(--muted);
+  font:13px/1.6 Arial;
+  margin-top:12px;
+}
+
+.club-nav{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  margin-bottom:26px;
+}
+
+.club-nav a{
+  padding:9px 12px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--muted);
+  text-decoration:none;
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.club-nav a:hover,
+.club-nav a.active{
+  color:var(--gold2);
+  border-color:var(--gold);
+}
+
+.toolbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  margin-bottom:18px;
+}
+
+.search{
+  width:min(420px,100%);
+  height:44px;
+  border:1px solid rgba(199,155,89,.2);
+  border-radius:12px;
+  background:var(--panel2);
+  color:var(--cream);
+  outline:none;
+  padding:0 14px;
+  font:13px Arial;
+}
+
+.search:focus{border-color:var(--gold)}
+
+.shelf{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:18px;
+}
+
+.book-card{
+  border:1px solid var(--line);
+  border-radius:18px;
+  overflow:hidden;
+  background:rgba(16,20,16,.88);
+  box-shadow:0 18px 50px rgba(0,0,0,.22);
+}
+
+.cover{
+  aspect-ratio:2/3;
+  background:#171c18;
+  display:grid;
+  place-items:center;
+  color:var(--muted);
+  font:700 10px Arial;
+}
+
+.cover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.book-body{
+  padding:16px;
+}
+
+.book-body h3{
+  margin:0 0 6px;
+  font-size:20px;
+  font-weight:400;
+}
+
+.author{
+  color:var(--gold2);
+  font:700 11px Arial;
+  margin-bottom:10px;
+}
+
+.meta{
+  color:var(--muted);
+  font:10px/1.5 Arial;
+}
+
+.badge{
+  display:inline-block;
+  margin-top:10px;
+  padding:6px 9px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--gold2);
+  font:800 8px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.empty{
+  grid-column:1/-1;
+  padding:56px 24px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  text-align:center;
+  color:var(--muted);
+  font:13px/1.7 Arial;
+  background:rgba(16,20,16,.72);
+}
+
+.empty strong{
+  display:block;
+  color:var(--cream);
+  font-size:24px;
+  font-weight:400;
+  margin-bottom:8px;
+}
+
+.loading{
+  position:fixed;
+  inset:0;
+  display:grid;
+  place-items:center;
+  background:var(--ink);
+  z-index:100;
+}
+
+.loading.hidden{display:none}
+
+.loading span{
+  color:var(--gold2);
+  font:800 10px Arial;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+@media(max-width:950px){
+  .shelf{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+@media(max-width:700px){
+  .nav{display:none}
+  .shelf{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .toolbar{align-items:stretch;flex-direction:column}
+  .search{width:100%}
+}
+
+@media(max-width:460px){
+  .shelf{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<div class="loading" id="loading">
+  <span>Opening the bookshelf...</span>
+</div>
+
+<header class="topbar">
+
+  <a class="brand" href="dashboard.html">
+    <span class="brand-mark"></span>
+    DogEar
+  </a>
+
+  <nav class="nav">
+    <a href="dashboard.html">Home</a>
+    <a href="discover.html">Discover</a>
+    <a class="active" href="clubs.html">Clubs</a>
+    <a href="marketplace.html">Books</a>
+  </nav>
+
+  <a class="avatar" id="navAvatar" href="profile.html">?</a>
+
+</header>
+
+<main class="page">
+
+  <a class="back" id="backLink" href="club.html">
+    ← Back to Club
+  </a>
+
+  <section class="club-head">
+
+    <div class="eyebrow">
+      Club Bookshelf
+    </div>
+
+    <h1 id="clubName">
+      Book Club
+    </h1>
+
+    <div class="club-sub">
+      The books this club has read, chosen, and survived together.
+    </div>
+
+  </section>
+
+  <nav class="club-nav" aria-label="Club navigation">
+
+    <a id="overviewLink" href="club.html">
+      Overview
+    </a>
+
+    <a id="membersLink" href="club-members.html">
+      Members
+    </a>
+
+    <a id="discussionsLink" href="club-discussions.html">
+      Discussions
+    </a>
+
+    <a id="voteLink" href="club-vote.html">
+      Monthly Vote
+    </a>
+
+    <a class="active" id="booksLink" href="club-books.html">
+      Bookshelf
+    </a>
+
+    <a id="settingsLink" href="club-settings.html">
+      Settings
+    </a>
+
+  </nav>
+
+  <div class="toolbar">
+
+    <input
+      class="search"
+      id="bookSearch"
+      type="search"
+      placeholder="Search the club bookshelf…">
+
+  </div>
+
+  <section class="shelf" id="shelf"></section>
+
+</main>
+
+<script>
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+const $ =
+  id => document.getElementById(id);
+
+const params =
+  new URLSearchParams(location.search);
+
+const clubId =
+  params.get("id");
+
+let currentUser = null;
+let books = [];
+
+function withClub(filename){
+
+  return clubId
+    ? filename + "?id=" + encodeURIComponent(clubId)
+    : filename;
+
+}
+
+function wireLinks(){
+
+  $("backLink").href =
+    withClub("club.html");
+
+  $("overviewLink").href =
+    withClub("club.html");
+
+  $("membersLink").href =
+    withClub("club-members.html");
+
+  $("discussionsLink").href =
+    withClub("club-discussions.html");
+
+  $("voteLink").href =
+    withClub("club-vote.html");
+
+  $("booksLink").href =
+    withClub("club-books.html");
+
+  $("settingsLink").href =
+    withClub("club-settings.html");
+
+}
+
+function escapeHtml(value=""){
+
+  return String(value)
+    .replace(
+      /[&<>"']/g,
+      character => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[character])
+    );
+
+}
+
+function renderBooks(list){
+
+  const shelf =
+    $("shelf");
+
+  shelf.innerHTML =
+    "";
+
+  if(!list.length){
+
+    shelf.innerHTML = `
+      <div class="empty">
+        <strong>The shelf is still empty.</strong>
+        Once the club finishes or selects books,
+        they'll appear here.
+      </div>
+    `;
+
+    return;
+
+  }
+
+  for(const book of list){
+
+    const title =
+      book.title ||
+      book.book_title ||
+      "Untitled Book";
+
+    const author =
+      book.author ||
+      book.book_author ||
+      "Unknown author";
+
+    const cover =
+      book.cover_url ||
+      book.image_url ||
+      "";
+
+    const readMonth =
+      book.read_month ||
+      book.selected_month ||
+      book.month_label ||
+      "";
+
+    const card =
+      document.createElement("article");
+
+    card.className =
+      "book-card";
+
+    card.innerHTML = `
+
+      <div class="cover">
+
+        ${
+          cover
+            ? `
+              <img
+                src="${escapeHtml(cover)}"
+                alt="${escapeHtml(title)} cover">
+            `
+            : "No cover"
+        }
+
+      </div>
+
+      <div class="book-body">
+
+        <h3>
+          ${escapeHtml(title)}
+        </h3>
+
+        <div class="author">
+          ${escapeHtml(author)}
+        </div>
+
+        ${
+          readMonth
+            ? `
+              <div class="meta">
+                Read ${escapeHtml(readMonth)}
+              </div>
+            `
+            : ""
+        }
+
+        <div class="badge">
+          Club Read
+        </div>
+
+      </div>
+    `;
+
+    shelf.appendChild(card);
+
+  }
+
+}
+
+async function loadProfile(){
+
+  let display =
+    currentUser?.user_metadata?.display_name ||
+    "Reader";
+
+  let avatar = "";
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "get_public_profile",
+        {
+          check_user_id:
+            currentUser.id
+        }
+      );
+
+    if(error)
+      throw error;
+
+    const profile =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+    if(profile){
+
+      display =
+        profile.display_name ||
+        display;
+
+      avatar =
+        profile.avatar_url ||
+        "";
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Profile lookup:",
+      error.message
+    );
+
+  }
+
+  const holder =
+    $("navAvatar");
+
+  holder.innerHTML =
+    "";
+
+  if(avatar){
+
+    const image =
+      document.createElement("img");
+
+    image.src =
+      avatar;
+
+    image.alt =
+      display;
+
+    image.onerror =
+      () => {
+
+        holder.innerHTML =
+          "";
+
+        holder.textContent =
+          display.charAt(0).toUpperCase();
+
+      };
+
+    holder.appendChild(image);
+
+  }
+  else{
+
+    holder.textContent =
+      display.charAt(0).toUpperCase();
+
+  }
+
+}
+
+async function loadClub(){
+
+  if(!clubId)
+    return;
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("clubs")
+        .select("id,name")
+        .eq("id",clubId)
+        .maybeSingle();
+
+    if(error)
+      throw error;
+
+    if(data){
+
+      $("clubName").textContent =
+        data.name ||
+        "Book Club";
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Club lookup:",
+      error.message
+    );
+
+  }
+
+}
+
+async function loadBooks(){
+
+  if(!clubId){
+
+    renderBooks([]);
+    return;
+
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("club_books")
+        .select("*")
+        .eq("club_id",clubId)
+        .order("created_at",{ascending:false});
+
+    if(error)
+      throw error;
+
+    books =
+      data || [];
+
+    renderBooks(books);
+
+  }
+  catch(error){
+
+    console.warn(
+      "Club books lookup:",
+      error.message
+    );
+
+    books = [];
+    renderBooks([]);
+
+  }
+
+}
+
+$("bookSearch")
+  .addEventListener(
+    "input",
+    event => {
+
+      const query =
+        event.target.value
+          .trim()
+          .toLowerCase();
+
+      if(!query){
+
+        renderBooks(books);
+        return;
+
+      }
+
+      const filtered =
+        books.filter(
+          book => {
+
+            const haystack =
+              [
+                book.title,
+                book.book_title,
+                book.author,
+                book.book_author,
+                book.read_month,
+                book.selected_month,
+                book.month_label
+              ]
+              .filter(Boolean)
+              .join(" ")
+              .toLowerCase();
+
+            return haystack.includes(query);
+
+          }
+        );
+
+      renderBooks(filtered);
+
+    }
+  );
+
+async function start(){
+
+  wireLinks();
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+  if(
+    error ||
+    !data.user
+  ){
+
+    location.href =
+      "auth.html#login";
+
+    return;
+
+  }
+
+  currentUser =
+    data.user;
+
+  await Promise.all([
+    loadProfile(),
+    loadClub(),
+    loadBooks()
+  ]);
+
+  $("loading")
+    .classList
+    .add("hidden");
+
+}
+
+start();
+</script>
+
+</body>
+</html>
