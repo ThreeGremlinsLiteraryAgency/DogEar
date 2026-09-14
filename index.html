@@ -3,7 +3,11 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>DogEar — Where Books Find Their People</title>
 
@@ -14,13 +18,10 @@
 
   <style>
 
-    /* =========================================
-       DOGEAR COLORS
-    ========================================= */
-
     :root {
       --black: #090b0a;
       --black-soft: #111411;
+
       --green: #17231c;
       --green-light: #26372c;
 
@@ -40,17 +41,15 @@
     }
 
 
-    /* =========================================
-       RESET
-    ========================================= */
-
     * {
       box-sizing: border-box;
     }
 
+
     html {
       scroll-behavior: smooth;
     }
+
 
     body {
       margin: 0;
@@ -58,7 +57,7 @@
       background:
         radial-gradient(
           circle at top,
-          rgba(64, 80, 57, .14),
+          rgba(64,80,57,.14),
           transparent 500px
         ),
         var(--black);
@@ -73,19 +72,23 @@
       line-height: 1.6;
     }
 
+
     img {
       max-width: 100%;
     }
+
 
     a {
       color: inherit;
       text-decoration: none;
     }
 
+
     button,
     input {
       font: inherit;
     }
+
 
     .wrap {
       width: min(
@@ -97,16 +100,17 @@
     }
 
 
-    /* =========================================
+
+    /* =====================================================
        TOP NAV
-    ========================================= */
+    ===================================================== */
 
     .topbar {
       position: sticky;
       top: 0;
       z-index: 50;
 
-      background: rgba(9, 11, 10, .94);
+      background: rgba(9,11,10,.94);
 
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
@@ -114,6 +118,7 @@
       border-bottom:
         1px solid rgba(201,154,81,.18);
     }
+
 
     .nav {
       min-height: 64px;
@@ -125,6 +130,7 @@
       gap: 20px;
     }
 
+
     .mini-brand {
       font-family: Arial, sans-serif;
 
@@ -135,7 +141,15 @@
       font-size: 12px;
 
       color: var(--gold-light);
+
+      transition: color .2s ease;
     }
+
+
+    .mini-brand:hover {
+      color: var(--cream);
+    }
+
 
     .navlinks {
       display: flex;
@@ -154,13 +168,19 @@
       color: var(--cream-muted);
     }
 
+
     .navlinks a {
-      transition: color .2s ease;
+      transition:
+        color .2s ease,
+        border-color .2s ease,
+        background .2s ease;
     }
+
 
     .navlinks a:hover {
       color: var(--gold-light);
     }
+
 
     .nav-signup {
       padding: 9px 15px;
@@ -174,9 +194,16 @@
     }
 
 
-    /* =========================================
+    .nav-signup:hover {
+      background:
+        rgba(201,154,81,.08);
+    }
+
+
+
+    /* =====================================================
        LOGO HERO
-    ========================================= */
+    ===================================================== */
 
     .logo-hero {
       text-align: center;
@@ -185,6 +212,7 @@
         70px 20px
         28px;
     }
+
 
     .main-logo {
       width: min(
@@ -203,9 +231,15 @@
     }
 
 
-    /* =========================================
+    .logo-link {
+      display: inline-block;
+    }
+
+
+
+    /* =====================================================
        DECORATIVE GOLD BANNER
-    ========================================= */
+    ===================================================== */
 
     .ornament {
       width: min(
@@ -225,6 +259,7 @@
       color: var(--gold);
     }
 
+
     .ornament-line {
       height: 1px;
 
@@ -241,6 +276,7 @@
         );
     }
 
+
     .ornament-center {
       display: flex;
       align-items: center;
@@ -252,6 +288,7 @@
       color: var(--gold-light);
     }
 
+
     .ornament-diamond {
       width: 9px;
       height: 9px;
@@ -262,14 +299,16 @@
       transform: rotate(45deg);
     }
 
+
     .ornament-star {
       font-size: 21px;
     }
 
 
-    /* =========================================
+
+    /* =====================================================
        INTRO
-    ========================================= */
+    ===================================================== */
 
     .intro {
       text-align: center;
@@ -278,6 +317,7 @@
         0 0
         95px;
     }
+
 
     .eyebrow {
       margin-bottom: 16px;
@@ -292,6 +332,7 @@
 
       color: var(--gold);
     }
+
 
     h1 {
       max-width: 900px;
@@ -314,6 +355,7 @@
       letter-spacing: -.025em;
     }
 
+
     .intro-text {
       max-width: 730px;
 
@@ -326,6 +368,7 @@
       font-size: 20px;
     }
 
+
     .actions {
       display: flex;
       justify-content: center;
@@ -336,9 +379,10 @@
     }
 
 
-    /* =========================================
+
+    /* =====================================================
        BUTTONS
-    ========================================= */
+    ===================================================== */
 
     .button {
       display: inline-block;
@@ -365,6 +409,7 @@
         border-color .2s ease;
     }
 
+
     .button-primary {
       background:
         var(--gold);
@@ -375,10 +420,12 @@
       font-weight: 700;
     }
 
+
     .button-primary:hover {
       background:
         var(--gold-light);
     }
+
 
     .button-secondary {
       color:
@@ -388,15 +435,17 @@
         transparent;
     }
 
+
     .button-secondary:hover {
       background:
         rgba(201,154,81,.08);
     }
 
 
-    /* =========================================
-       SECTION DIVIDER
-    ========================================= */
+
+    /* =====================================================
+       DIVIDER
+    ===================================================== */
 
     .divider {
       height: 1px;
@@ -411,22 +460,24 @@
     }
 
 
-    /* =========================================
+
+    /* =====================================================
        GENERAL SECTIONS
-    ========================================= */
+    ===================================================== */
 
     section {
       padding:
         92px 0;
     }
 
+
     .section-header {
-      max-width:
-        760px;
+      max-width: 760px;
 
       margin-bottom:
         45px;
     }
+
 
     .section-header h2 {
       margin:
@@ -447,6 +498,7 @@
         1.08;
     }
 
+
     .section-header p {
       margin:
         0;
@@ -459,16 +511,17 @@
     }
 
 
-    /* =========================================
+
+    /* =====================================================
        FEATURE CARDS
-    ========================================= */
+    ===================================================== */
 
     .features {
       display:
         grid;
 
       grid-template-columns:
-        repeat(3, 1fr);
+        repeat(3,1fr);
 
       gap:
         1px;
@@ -480,6 +533,7 @@
         var(--line);
     }
 
+
     .feature-card {
       min-height:
         285px;
@@ -490,13 +544,30 @@
       background:
         linear-gradient(
           145deg,
-          rgba(32, 48, 38, .58),
-          rgba(14, 16, 14, .96)
+          rgba(32,48,38,.58),
+          rgba(14,16,14,.96)
         );
 
       position:
         relative;
+
+      display: block;
+
+      transition:
+        background .2s ease,
+        transform .2s ease;
     }
+
+
+    .feature-card:hover {
+      background:
+        linear-gradient(
+          145deg,
+          rgba(44,65,51,.72),
+          rgba(18,21,18,.98)
+        );
+    }
+
 
     .feature-number {
       font-family:
@@ -513,6 +584,7 @@
         var(--gold);
     }
 
+
     .feature-card h3 {
       margin:
         27px 0
@@ -525,6 +597,7 @@
         400;
     }
 
+
     .feature-card p {
       margin:
         0;
@@ -534,9 +607,31 @@
     }
 
 
-    /* =========================================
+    .feature-link {
+      margin-top: 24px;
+
+      font-family:
+        Arial,
+        sans-serif;
+
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        .12em;
+
+      font-size:
+        10px;
+
+      color:
+        var(--gold-light);
+    }
+
+
+
+    /* =====================================================
        BOOK OF THE MONTH
-    ========================================= */
+    ===================================================== */
 
     .book-section {
       background:
@@ -546,6 +641,7 @@
           rgba(9,11,10,0)
         );
     }
+
 
     .book-layout {
       display:
@@ -560,6 +656,7 @@
       align-items:
         center;
     }
+
 
     .book-cover-area {
       min-height:
@@ -584,6 +681,7 @@
         relative;
     }
 
+
     .book-cover-area::before {
       content:
         "";
@@ -597,6 +695,7 @@
       border:
         1px solid rgba(201,154,81,.10);
     }
+
 
     .book-cover {
       position:
@@ -614,6 +713,7 @@
       box-shadow:
         0 28px 45px rgba(0,0,0,.6);
     }
+
 
     .book-placeholder {
       text-align:
@@ -636,6 +736,7 @@
         11px;
     }
 
+
     .book-info h2 {
       margin:
         6px 0
@@ -655,6 +756,7 @@
         1.08;
     }
 
+
     .book-author {
       margin-bottom:
         24px;
@@ -669,6 +771,7 @@
         18px;
     }
 
+
     .book-description {
       color:
         var(--cream-muted);
@@ -678,9 +781,25 @@
     }
 
 
-    /* =========================================
+    .book-actions {
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        10px;
+
+      margin-top:
+        26px;
+    }
+
+
+
+    /* =====================================================
        GOOGLE BOOK SEARCH
-    ========================================= */
+    ===================================================== */
 
     .book-search {
       margin-top:
@@ -695,6 +814,7 @@
       max-width:
         610px;
     }
+
 
     .book-search input {
       flex:
@@ -719,20 +839,23 @@
         none;
     }
 
+
     .book-search input:focus {
       border-color:
         var(--gold);
     }
 
 
-    /* =========================================
-       QUOTE
-    ========================================= */
+
+    /* =====================================================
+       COMMUNITY QUOTE
+    ===================================================== */
 
     .quote-section {
       text-align:
         center;
     }
+
 
     .quote {
       max-width:
@@ -752,6 +875,7 @@
         1.13;
     }
 
+
     .quote em {
       color:
         var(--gold-light);
@@ -761,9 +885,28 @@
     }
 
 
-    /* =========================================
+    .community-actions {
+      margin-top:
+        36px;
+
+      display:
+        flex;
+
+      justify-content:
+        center;
+
+      gap:
+        12px;
+
+      flex-wrap:
+        wrap;
+    }
+
+
+
+    /* =====================================================
        CTA
-    ========================================= */
+    ===================================================== */
 
     .join-box {
       padding:
@@ -784,6 +927,7 @@
         );
     }
 
+
     .join-box h2 {
       margin:
         0 0
@@ -799,6 +943,7 @@
       font-weight:
         400;
     }
+
 
     .join-box p {
       max-width:
@@ -816,9 +961,10 @@
     }
 
 
-    /* =========================================
+
+    /* =====================================================
        FOOTER
-    ========================================= */
+    ===================================================== */
 
     footer {
       padding:
@@ -828,6 +974,7 @@
       border-top:
         1px solid var(--line);
     }
+
 
     .footer {
       display:
@@ -859,15 +1006,35 @@
         uppercase;
     }
 
+
+    .footer-links {
+      display:
+        flex;
+
+      gap:
+        18px;
+
+      flex-wrap:
+        wrap;
+    }
+
+
+    .footer-links a:hover {
+      color:
+        var(--gold-light);
+    }
+
+
     .gremlin-note {
       color:
         #8f6e41;
     }
 
 
-    /* =========================================
+
+    /* =====================================================
        MOBILE
-    ========================================= */
+    ===================================================== */
 
     @media (max-width: 850px) {
 
@@ -876,20 +1043,24 @@
           none;
       }
 
+
       .logo-hero {
         padding-top:
           45px;
       }
+
 
       .ornament {
         margin-bottom:
           50px;
       }
 
+
       .features {
         grid-template-columns:
           1fr;
       }
+
 
       .book-layout {
         grid-template-columns:
@@ -899,10 +1070,12 @@
           40px;
       }
 
+
       .book-cover-area {
         min-height:
           380px;
       }
+
 
       .join-box {
         padding:
@@ -922,30 +1095,36 @@
           );
       }
 
+
       .mini-brand {
         font-size:
           10px;
       }
+
 
       .nav-signup {
         font-size:
           10px;
       }
 
+
       .intro {
         padding-bottom:
           70px;
       }
+
 
       section {
         padding:
           70px 0;
       }
 
+
       .book-search {
         flex-direction:
           column;
       }
+
 
       .button {
         width:
@@ -955,18 +1134,26 @@
           center;
       }
 
+
+      .book-actions,
+      .community-actions {
+        flex-direction:
+          column;
+      }
+
     }
 
   </style>
+
 </head>
 
 
 <body>
 
 
-<!-- =========================================
+<!-- =====================================================
      NAVIGATION
-========================================= -->
+===================================================== -->
 
 <header class="topbar">
 
@@ -974,31 +1161,36 @@
 
     <a
       class="mini-brand"
-      href="#top"
+      href="index.html"
     >
       DogEar
     </a>
 
+
     <nav class="navlinks">
 
-      <a href="#discover">
+      <a href="discover.html">
         Discover
       </a>
 
-      <a href="#book-month">
-        Book of the Month
+
+      <a href="marketplace.html">
+        Books
       </a>
 
-      <a href="#community">
-        Community
+
+      <a href="clubs.html">
+        Book Clubs
       </a>
 
-      <a href="#">
+
+      <a href="auth.html#login">
         Log In
       </a>
 
+
       <a
-        href="#join"
+        href="auth.html#signup"
         class="nav-signup"
       >
         Join DogEar
@@ -1012,32 +1204,40 @@
 
 
 
-<main id="top">
+<main>
 
 
-<!-- =========================================
+<!-- =====================================================
      LOGO
-========================================= -->
+===================================================== -->
 
 <div class="logo-hero">
 
-  <img
-    src="logo.png"
-    alt="DogEar — Where Books Find Their People"
-    class="main-logo"
+  <a
+    href="index.html"
+    class="logo-link"
   >
+
+    <img
+      src="logo.png"
+      alt="DogEar — Where Books Find Their People"
+      class="main-logo"
+    >
+
+  </a>
 
 </div>
 
 
 
-<!-- =========================================
+<!-- =====================================================
      GOLD ORNAMENT
-========================================= -->
+===================================================== -->
 
 <div class="ornament">
 
   <div class="ornament-line"></div>
+
 
   <div class="ornament-center">
 
@@ -1059,15 +1259,16 @@
 
   </div>
 
+
   <div class="ornament-line"></div>
 
 </div>
 
 
 
-<!-- =========================================
+<!-- =====================================================
      INTRODUCTION
-========================================= -->
+===================================================== -->
 
 <section class="intro">
 
@@ -1077,10 +1278,12 @@
       Read · Write · Discover · Belong
     </div>
 
+
     <h1>
       Books are better
       when we find them together.
     </h1>
+
 
     <p class="intro-text">
 
@@ -1095,17 +1298,19 @@
 
     </p>
 
+
     <div class="actions">
 
       <a
-        href="#join"
+        href="auth.html#signup"
         class="button button-primary"
       >
         Join DogEar
       </a>
 
+
       <a
-        href="#discover"
+        href="discover.html"
         class="button button-secondary"
       >
         Explore the Community
@@ -1123,11 +1328,11 @@
 
 
 
-<!-- =========================================
+<!-- =====================================================
      DISCOVER DOGEAR
-========================================= -->
+===================================================== -->
 
-<section id="discover">
+<section>
 
   <div class="wrap">
 
@@ -1137,10 +1342,12 @@
         Find your corner
       </div>
 
+
       <h2>
         One community.
         A thousand ways to love books.
       </h2>
+
 
       <p>
 
@@ -1156,15 +1363,21 @@
 
     <div class="features">
 
-      <article class="feature-card">
+
+      <a
+        href="discover.html"
+        class="feature-card"
+      >
 
         <div class="feature-number">
           01 / READ
         </div>
 
+
         <h3>
           Find your next obsession.
         </h3>
+
 
         <p>
 
@@ -1175,18 +1388,29 @@
 
         </p>
 
-      </article>
+
+        <div class="feature-link">
+          Explore DogEar →
+        </div>
+
+      </a>
 
 
-      <article class="feature-card">
+
+      <a
+        href="clubs.html"
+        class="feature-card"
+      >
 
         <div class="feature-number">
           02 / BELONG
         </div>
 
+
         <h3>
           Reading doesn't have to be solitary.
         </h3>
+
 
         <p>
 
@@ -1197,18 +1421,29 @@
 
         </p>
 
-      </article>
+
+        <div class="feature-link">
+          Find Book Clubs →
+        </div>
+
+      </a>
 
 
-      <article class="feature-card">
+
+      <a
+        href="beta-reading.html"
+        class="feature-card"
+      >
 
         <div class="feature-number">
           03 / CREATE
         </div>
 
+
         <h3>
           Stories need readers.
         </h3>
+
 
         <p>
 
@@ -1219,7 +1454,13 @@
 
         </p>
 
-      </article>
+
+        <div class="feature-link">
+          Writers & Beta Readers →
+        </div>
+
+      </a>
+
 
     </div>
 
@@ -1233,14 +1474,11 @@
 
 
 
-<!-- =========================================
+<!-- =====================================================
      BOOK OF THE MONTH
-========================================= -->
+===================================================== -->
 
-<section
-  id="book-month"
-  class="book-section"
->
+<section class="book-section">
 
   <div class="wrap">
 
@@ -1264,15 +1502,18 @@
       </div>
 
 
+
       <div class="book-info">
 
         <div class="eyebrow">
           DogEar Book of the Month
         </div>
 
+
         <h2 id="bookTitle">
           Choose the next story.
         </h2>
+
 
         <div
           class="book-author"
@@ -1280,6 +1521,7 @@
         >
           Search Google Books below
         </div>
+
 
         <p
           class="book-description"
@@ -1305,12 +1547,34 @@
             placeholder="Try: The Hobbit"
           >
 
+
           <button
             class="button button-primary"
             id="bookSearchButton"
+            type="button"
           >
             Find Book
           </button>
+
+        </div>
+
+
+        <div class="book-actions">
+
+          <a
+            href="marketplace.html"
+            class="button button-secondary"
+          >
+            Browse Books
+          </a>
+
+
+          <a
+            href="clubs.html"
+            class="button button-secondary"
+          >
+            Find a Book Club
+          </a>
 
         </div>
 
@@ -1328,20 +1592,18 @@
 
 
 
-<!-- =========================================
+<!-- =====================================================
      COMMUNITY
-========================================= -->
+===================================================== -->
 
-<section
-  id="community"
-  class="quote-section"
->
+<section class="quote-section">
 
   <div class="wrap">
 
     <div class="eyebrow">
       Why DogEar?
     </div>
+
 
     <p class="quote">
 
@@ -1355,6 +1617,26 @@
 
     </p>
 
+
+    <div class="community-actions">
+
+      <a
+        href="discover.html"
+        class="button button-secondary"
+      >
+        Discover People
+      </a>
+
+
+      <a
+        href="clubs.html"
+        class="button button-secondary"
+      >
+        Explore Book Clubs
+      </a>
+
+    </div>
+
   </div>
 
 </section>
@@ -1365,11 +1647,11 @@
 
 
 
-<!-- =========================================
+<!-- =====================================================
      JOIN DOGEAR
-========================================= -->
+===================================================== -->
 
-<section id="join">
+<section>
 
   <div class="wrap">
 
@@ -1379,9 +1661,11 @@
         Your shelf is waiting
       </div>
 
+
       <h2>
         Find your people.
       </h2>
+
 
       <p>
 
@@ -1393,12 +1677,25 @@
 
       </p>
 
-      <a
-        href="#"
-        class="button button-primary"
-      >
-        Create Your Account
-      </a>
+
+      <div class="actions">
+
+        <a
+          href="auth.html#signup"
+          class="button button-primary"
+        >
+          Create Your Account
+        </a>
+
+
+        <a
+          href="auth.html#login"
+          class="button button-secondary"
+        >
+          Log In
+        </a>
+
+      </div>
 
     </div>
 
@@ -1411,9 +1708,9 @@
 
 
 
-<!-- =========================================
+<!-- =====================================================
      FOOTER
-========================================= -->
+===================================================== -->
 
 <footer>
 
@@ -1423,6 +1720,36 @@
       © 2026 DogEar.
       All rights reserved.
     </div>
+
+
+    <div class="footer-links">
+
+      <a href="discover.html">
+        Discover
+      </a>
+
+
+      <a href="marketplace.html">
+        Books
+      </a>
+
+
+      <a href="clubs.html">
+        Clubs
+      </a>
+
+
+      <a href="auth.html#login">
+        Log In
+      </a>
+
+
+      <a href="auth.html#signup">
+        Join
+      </a>
+
+    </div>
+
 
     <div class="gremlin-note">
       A little gremlin may have dog-eared this page.
@@ -1434,9 +1761,9 @@
 
 
 
-<!-- =========================================
+<!-- =====================================================
      GOOGLE BOOKS LOOKUP
-========================================= -->
+===================================================== -->
 
 <script>
 
@@ -1444,6 +1771,7 @@
     document.getElementById(
       "bookSearchButton"
     );
+
 
   const searchInput =
     document.getElementById(
@@ -1464,7 +1792,9 @@
       if (
         event.key === "Enter"
       ) {
+
         searchBook();
+
       }
 
     }
@@ -1476,9 +1806,14 @@
     const query =
       searchInput.value.trim();
 
+
     if (!query) {
       return;
     }
+
+
+    searchButton.disabled =
+      true;
 
 
     searchButton.textContent =
@@ -1497,6 +1832,15 @@
         await fetch(url);
 
 
+      if (!response.ok) {
+
+        throw new Error(
+          "Google Books request failed."
+        );
+
+      }
+
+
       const data =
         await response.json();
 
@@ -1511,12 +1855,40 @@
         ).textContent =
           "No book found.";
 
+
+        document.getElementById(
+          "bookAuthor"
+        ).textContent =
+          "Try another search.";
+
+
+        document.getElementById(
+          "bookDescription"
+        ).textContent =
+          "DogEar could not find a matching title.";
+
+
+        document.getElementById(
+          "bookCoverArea"
+        ).innerHTML =
+          `
+            <div class="book-placeholder">
+              No cover found
+            </div>
+          `;
+
+
         return;
+
       }
 
 
+      const volume =
+        data.items[0];
+
+
       const book =
-        data.items[0].volumeInfo;
+        volume.volumeInfo || {};
 
 
       document.getElementById(
@@ -1555,34 +1927,58 @@
 
         const imageUrl =
           book.imageLinks.thumbnail
-          .replace(
-            "http://",
-            "https://"
-          );
+            .replace(
+              "http://",
+              "https://"
+            );
+
+
+        const safeTitle =
+          String(
+            book.title ||
+            "Book"
+          )
+            .replaceAll(
+              "&",
+              "&amp;"
+            )
+            .replaceAll(
+              "<",
+              "&lt;"
+            )
+            .replaceAll(
+              ">",
+              "&gt;"
+            )
+            .replaceAll(
+              '"',
+              "&quot;"
+            );
 
 
         coverArea.innerHTML =
           `
-          <img
-            src="${imageUrl}"
-            alt="${book.title} book cover"
-            class="book-cover"
-          >
+            <img
+              src="${imageUrl}"
+              alt="${safeTitle} book cover"
+              class="book-cover"
+            >
           `;
 
-      } else {
+      }
+      else {
 
         coverArea.innerHTML =
           `
-          <div class="book-placeholder">
-            Cover unavailable
-          </div>
+            <div class="book-placeholder">
+              Cover unavailable
+            </div>
           `;
 
       }
 
-
-    } catch (error) {
+    }
+    catch (error) {
 
       console.error(
         "Google Books search failed:",
@@ -1595,12 +1991,24 @@
       ).textContent =
         "Something went wrong.";
 
+
+      document.getElementById(
+        "bookAuthor"
+      ).textContent =
+        "Please try again.";
+
+
       document.getElementById(
         "bookDescription"
       ).textContent =
         "DogEar could not reach Google Books. Please try again.";
 
-    } finally {
+    }
+    finally {
+
+      searchButton.disabled =
+        false;
+
 
       searchButton.textContent =
         "Find Book";
@@ -1613,4 +2021,5 @@
 
 
 </body>
+
 </html>
