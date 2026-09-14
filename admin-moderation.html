@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DogEar — Moderation Queue</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --ink:#090b0a;
+  --panel:#101410;
+  --panel2:#0d110e;
+  --cream:#f1e7cf;
+  --gold:#c79b59;
+  --gold2:#dfbd7e;
+  --green:#26362b;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.22);
+  --line-soft:rgba(199,155,89,.11);
+  --danger:#e6a09a;
+  --ok:#b9d6b2;
+  --warn:#e1c28b;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--cream);
+  background:
+    radial-gradient(circle at 10% 0%,rgba(53,73,59,.24),transparent 28%),
+    var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+a{
+  color:inherit;
+}
+
+.topbar{
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:0 clamp(18px,4vw,60px);
+  border-bottom:1px solid var(--line);
+  background:rgba(9,11,10,.94);
+  position:sticky;
+  top:0;
+  z-index:30;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 13px Arial;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  transform:rotate(-8deg);
+}
+
+.nav{
+  display:flex;
+  gap:24px;
+  font:700 11px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.nav a:hover{
+  color:var(--gold2);
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:var(--green);
+  text-decoration:none;
+  font:800 13px Arial;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.page{
+  width:min(1240px,calc(100% - 32px));
+  margin:auto;
+  padding:38px 0 110px;
+}
+
+.back{
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 10px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.hero{
+  margin-top:22px;
+  padding-bottom:28px;
+  border-bottom:1px solid var(--line);
+}
+
+.eyebrow{
+  color:var(--gold);
+  font:800 10px Arial;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+
+h1{
+  margin:0;
+  font-size:clamp(42px,6vw,68px);
+  line-height:.96;
+  font-weight:400;
+  letter-spacing:-.04em;
+}
+
+.subtitle{
+  margin-top:12px;
+  max-width:770px;
+  color:var(--muted);
+  font:13px/1.65 Arial;
+}
+
+.toolbar{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:26px 0 18px;
+}
+
+.search{
+  flex:1 1 350px;
+  min-width:0;
+  height:46px;
+  padding:0 14px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--panel2);
+  color:var(--cream);
+  outline:none;
+  font:13px Arial;
+}
+
+.search:focus{
+  border-color:var(--gold);
+}
+
+.select{
+  min-width:165px;
+  height:46px;
+  padding:0 12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--panel2);
+  color:var(--cream);
+  outline:none;
+  font:12px Arial;
+}
+
+.summary{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+
+.summary-pill{
+  padding:8px 11px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--muted);
+  font:800 9px Arial;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.queue{
+  display:grid;
+  gap:12px;
+}
+
+.report{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 130px 120px auto;
+  gap:16px;
+  align-items:center;
+  padding:16px;
+  border:1px solid var(--line);
+  border-radius:17px;
+  background:rgba(16,20,16,.86);
+}
+
+.report-title{
+  margin-bottom:5px;
+  font-size:19px;
+}
+
+.report-meta{
+  color:var(--muted);
+  font:10px/1.55 Arial;
+}
+
+.badge{
+  justify-self:start;
+  padding:7px 9px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  font:800 8px Arial;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.badge.open{color:var(--warn)}
+.badge.reviewing{color:var(--gold2)}
+.badge.resolved{color:var(--ok)}
+.badge.dismissed{color:var(--muted)}
+.badge.urgent{color:var(--danger)}
+
+.severity{
+  font:800 9px Arial;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.severity.low{color:var(--muted)}
+.severity.medium{color:var(--warn)}
+.severity.high{color:var(--danger)}
+.severity.critical{color:#ffb0aa}
+
+.actions{
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+}
+
+.btn{
+  min-height:38px;
+  padding:0 13px;
+  border-radius:999px;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font:800 8px Arial;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.primary{
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:#17130e;
+}
+
+.secondary{
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--gold2);
+}
+
+.danger{
+  border:1px solid rgba(230,160,154,.4);
+  background:transparent;
+  color:var(--danger);
+}
+
+.empty{
+  padding:60px 20px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  text-align:center;
+  color:var(--muted);
+  font:12px/1.7 Arial;
+}
+
+.empty strong{
+  display:block;
+  margin-bottom:8px;
+  color:var(--cream);
+  font:400 24px Georgia;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:60;
+  display:none;
+  place-items:center;
+  padding:20px;
+  background:rgba(0,0,0,.8);
+}
+
+.modal.show{
+  display:grid;
+}
+
+.modal-card{
+  width:min(760px,100%);
+  max-height:90vh;
+  overflow:auto;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:#0e120f;
+  box-shadow:0 30px 90px rgba(0,0,0,.55);
+}
+
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:20px 22px;
+  border-bottom:1px solid var(--line);
+}
+
+.modal-head h2{
+  margin:0;
+  font-size:27px;
+  font-weight:400;
+}
+
+.close{
+  border:0;
+  background:none;
+  color:var(--muted);
+  cursor:pointer;
+  font-size:25px;
+}
+
+.modal-body{
+  padding:22px;
+}
+
+.detail-grid{
+  display:grid;
+  grid-template-columns:160px minmax(0,1fr);
+  gap:11px 18px;
+}
+
+.detail-label{
+  color:var(--gold);
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.detail-value{
+  color:var(--muted);
+  font:12px/1.55 Arial;
+  overflow-wrap:anywhere;
+}
+
+.content-box{
+  margin-top:20px;
+  padding:15px;
+  border:1px solid var(--line-soft);
+  border-radius:12px;
+  background:rgba(38,54,43,.18);
+  color:var(--cream);
+  font:12px/1.65 Arial;
+  white-space:pre-wrap;
+}
+
+.field{
+  margin-top:18px;
+}
+
+.field label{
+  display:block;
+  margin-bottom:7px;
+  color:var(--gold2);
+  font:800 9px Arial;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.field select,
+.field textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:var(--panel2);
+  color:var(--cream);
+  outline:none;
+}
+
+.field select{
+  height:44px;
+  padding:0 12px;
+}
+
+.field textarea{
+  min-height:100px;
+  padding:12px;
+  resize:vertical;
+  font:12px/1.5 Arial;
+}
+
+.field select:focus,
+.field textarea:focus{
+  border-color:var(--gold);
+}
+
+.modal-actions{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  margin-top:22px;
+}
+
+.message{
+  display:none;
+  margin-top:14px;
+  padding:11px 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  font:11px/1.5 Arial;
+}
+
+.message.show{display:block}
+.message.error{color:var(--danger)}
+.message.success{color:var(--ok)}
+
+.loading{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:grid;
+  place-items:center;
+  background:var(--ink);
+}
+
+.loading.hidden{
+  display:none;
+}
+
+.loading span{
+  color:var(--gold2);
+  font:800 10px Arial;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+.locked{
+  display:none;
+  padding:70px 24px;
+  margin-top:28px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  text-align:center;
+  color:var(--muted);
+  font:13px/1.7 Arial;
+}
+
+.locked.show{
+  display:block;
+}
+
+.locked strong{
+  display:block;
+  margin-bottom:8px;
+  color:var(--cream);
+  font:400 25px Georgia;
+}
+
+@media(max-width:900px){
+  .report{
+    grid-template-columns:minmax(0,1fr) auto;
+  }
+
+  .status-col,
+  .severity-col{
+    grid-column:1/2;
+  }
+
+  .actions{
+    grid-column:1/-1;
+    justify-content:flex-start;
+  }
+}
+
+@media(max-width:650px){
+  .nav{display:none}
+
+  .detail-grid{
+    grid-template-columns:1fr;
+    gap:5px;
+  }
+
+  .detail-value{
+    margin-bottom:9px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="loading" id="loading">
+  <span>Opening moderation queue...</span>
+</div>
+
+<header class="topbar">
+
+  <a class="brand" href="dashboard.html">
+    <span class="brand-mark"></span>
+    DogEar
+  </a>
+
+  <nav class="nav">
+    <a href="dashboard.html">Home</a>
+    <a href="discover.html">Discover</a>
+    <a href="clubs.html">Clubs</a>
+    <a href="marketplace.html">Books</a>
+  </nav>
+
+  <a class="avatar" id="navAvatar" href="profile.html">?</a>
+
+</header>
+
+<main class="page">
+
+  <a class="back" href="admin-dashboard.html">
+    ← Back to Control Room
+  </a>
+
+  <section class="hero">
+
+    <div class="eyebrow">
+      DogEar Administration
+    </div>
+
+    <h1>
+      Moderation
+    </h1>
+
+    <div class="subtitle">
+      Review reports involving members, clubs, discussions, replies, harassment,
+      spam, impersonation, or other platform safety concerns.
+    </div>
+
+  </section>
+
+  <div id="adminArea">
+
+    <div class="toolbar">
+
+      <input
+        class="search"
+        id="searchInput"
+        type="search"
+        placeholder="Search report reason, user ID, club ID, or target ID…">
+
+      <select
+        class="select"
+        id="statusFilter">
+
+        <option value="">
+          All Statuses
+        </option>
+
+        <option value="open">
+          Open
+        </option>
+
+        <option value="reviewing">
+          Reviewing
+        </option>
+
+        <option value="resolved">
+          Resolved
+        </option>
+
+        <option value="dismissed">
+          Dismissed
+        </option>
+
+      </select>
+
+      <select
+        class="select"
+        id="severityFilter">
+
+        <option value="">
+          All Severity
+        </option>
+
+        <option value="low">
+          Low
+        </option>
+
+        <option value="medium">
+          Medium
+        </option>
+
+        <option value="high">
+          High
+        </option>
+
+        <option value="critical">
+          Critical
+        </option>
+
+      </select>
+
+      <a
+        class="btn secondary"
+        href="admin-users.html">
+        Members
+      </a>
+
+      <a
+        class="btn secondary"
+        href="admin-clubs.html">
+        Clubs
+      </a>
+
+    </div>
+
+    <div class="summary">
+
+      <div class="summary-pill" id="openSummary">
+        0 Open
+      </div>
+
+      <div class="summary-pill" id="reviewSummary">
+        0 Reviewing
+      </div>
+
+      <div class="summary-pill" id="criticalSummary">
+        0 Critical
+      </div>
+
+    </div>
+
+    <section class="queue" id="queue"></section>
+
+  </div>
+
+  <section class="locked" id="locked">
+
+    <strong>
+      Administrator access required.
+    </strong>
+
+    Your account does not currently have permission to review moderation reports.
+
+  </section>
+
+</main>
+
+<div class="modal" id="reportModal">
+
+  <div class="modal-card">
+
+    <div class="modal-head">
+
+      <h2 id="modalTitle">
+        Moderation Report
+      </h2>
+
+      <button
+        class="close"
+        id="closeModal"
+        type="button">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div class="detail-grid">
+
+        <div class="detail-label">Report ID</div>
+        <div class="detail-value" id="detailId">—</div>
+
+        <div class="detail-label">Reporter</div>
+        <div class="detail-value" id="detailReporter">—</div>
+
+        <div class="detail-label">Target Type</div>
+        <div class="detail-value" id="detailTargetType">—</div>
+
+        <div class="detail-label">Target ID</div>
+        <div class="detail-value" id="detailTargetId">—</div>
+
+        <div class="detail-label">Club</div>
+        <div class="detail-value" id="detailClub">—</div>
+
+        <div class="detail-label">Reason</div>
+        <div class="detail-value" id="detailReason">—</div>
+
+        <div class="detail-label">Created</div>
+        <div class="detail-value" id="detailCreated">—</div>
+
+      </div>
+
+      <div
+        class="content-box"
+        id="reportedContent">
+        No captured content.
+      </div>
+
+      <div class="field">
+
+        <label for="reportStatus">
+          Report Status
+        </label>
+
+        <select id="reportStatus">
+
+          <option value="open">
+            Open
+          </option>
+
+          <option value="reviewing">
+            Reviewing
+          </option>
+
+          <option value="resolved">
+            Resolved
+          </option>
+
+          <option value="dismissed">
+            Dismissed
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="field">
+
+        <label for="severitySelect">
+          Severity
+        </label>
+
+        <select id="severitySelect">
+
+          <option value="low">
+            Low
+          </option>
+
+          <option value="medium">
+            Medium
+          </option>
+
+          <option value="high">
+            High
+          </option>
+
+          <option value="critical">
+            Critical
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="field">
+
+        <label for="adminNote">
+          Internal Moderation Note
+        </label>
+
+        <textarea
+          id="adminNote"
+          placeholder="Document what was reviewed and any action taken…"></textarea>
+
+      </div>
+
+      <div class="modal-actions">
+
+        <button
+          class="btn secondary"
+          id="cancelBtn"
+          type="button">
+          Cancel
+        </button>
+
+        <a
+          class="btn secondary"
+          id="viewTargetBtn"
+          href="#">
+          View Target
+        </a>
+
+        <button
+          class="btn danger"
+          id="suspendUserBtn"
+          type="button">
+          Suspend Reported User
+        </button>
+
+        <button
+          class="btn primary"
+          id="saveBtn"
+          type="button">
+          Save Review
+        </button>
+
+      </div>
+
+      <div class="message" id="modalMessage"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+const $ =
+  id => document.getElementById(id);
+
+let currentUser = null;
+let reports = [];
+let selectedReport = null;
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(value=""){
+  return String(value).replace(
+    /[&<>"']/g,
+    character => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    }[character])
+  );
+}
+
+function formatDate(value){
+
+  if(!value)
+    return "—";
+
+  const date = new Date(value);
+
+  if(Number.isNaN(date.getTime()))
+    return "—";
+
+  return date.toLocaleDateString(
+    undefined,
+    {
+      month:"short",
+      day:"numeric",
+      year:"numeric"
+    }
+  );
+}
+
+function reportStatus(report){
+  return String(
+    report.status ||
+    "open"
+  ).toLowerCase();
+}
+
+function reportSeverity(report){
+  return String(
+    report.severity ||
+    "medium"
+  ).toLowerCase();
+}
+
+function showMessage(text,type=""){
+
+  $("modalMessage").textContent = text;
+  $("modalMessage").className =
+    "message show " + type;
+}
+
+function clearMessage(){
+
+  $("modalMessage").textContent = "";
+  $("modalMessage").className = "message";
+}
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+async function loadProfile(){
+
+  let display =
+    currentUser?.user_metadata?.display_name ||
+    "Reader";
+
+  let avatar = "";
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "get_public_profile",
+        {
+          check_user_id:
+            currentUser.id
+        }
+      );
+
+    if(error)
+      throw error;
+
+    const profile =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+    if(profile){
+
+      display =
+        profile.display_name ||
+        display;
+
+      avatar =
+        profile.avatar_url ||
+        "";
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Profile lookup:",
+      error.message
+    );
+  }
+
+  const holder =
+    $("navAvatar");
+
+  holder.innerHTML = "";
+
+  if(avatar){
+
+    const image =
+      document.createElement("img");
+
+    image.src = avatar;
+    image.alt = display;
+
+    image.onerror =
+      () => {
+
+        holder.innerHTML = "";
+        holder.textContent =
+          display.charAt(0).toUpperCase();
+      };
+
+    holder.appendChild(image);
+
+  }
+  else{
+
+    holder.textContent =
+      display.charAt(0).toUpperCase();
+  }
+}
+
+/* =========================================================
+   ADMIN CHECK
+========================================================= */
+
+async function verifyAdmin(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("admin_users")
+        .select("user_id,active")
+        .eq("user_id",currentUser.id)
+        .maybeSingle();
+
+    if(error)
+      throw error;
+
+    return (
+      data &&
+      data.active !== false
+    );
+
+  }
+  catch(error){
+
+    console.warn(
+      "Admin lookup:",
+      error.message
+    );
+
+    return false;
+  }
+}
+
+function showLocked(){
+
+  $("adminArea").style.display =
+    "none";
+
+  $("locked")
+    .classList
+    .add("show");
+}
+
+/* =========================================================
+   LOAD REPORTS
+========================================================= */
+
+async function loadReports(){
+
+  /*
+    Expected moderation_reports table:
+
+      id
+      reporter_id
+      reported_user_id
+      club_id
+      target_type
+      target_id
+      reason
+      details
+      captured_content
+      severity
+      status
+      admin_note
+      created_at
+      reviewed_at
+      reviewed_by
+
+    target_type examples:
+      user
+      club
+      discussion
+      reply
+      profile
+  */
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("moderation_reports")
+        .select("*")
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        );
+
+    if(error)
+      throw error;
+
+    reports =
+      data || [];
+
+  }
+  catch(error){
+
+    console.warn(
+      "Moderation reports:",
+      error.message
+    );
+
+    reports = [];
+  }
+
+  renderReports();
+  updateSummary();
+}
+
+/* =========================================================
+   FILTERING
+========================================================= */
+
+function filteredReports(){
+
+  const search =
+    $("searchInput")
+      .value
+      .trim()
+      .toLowerCase();
+
+  const status =
+    $("statusFilter").value;
+
+  const severity =
+    $("severityFilter").value;
+
+  return reports.filter(
+    report => {
+
+      if(
+        status &&
+        reportStatus(report) !== status
+      )
+        return false;
+
+      if(
+        severity &&
+        reportSeverity(report) !== severity
+      )
+        return false;
+
+      if(search){
+
+        const haystack =
+          [
+            report.reason,
+            report.details,
+            report.reporter_id,
+            report.reported_user_id,
+            report.target_id,
+            report.target_type,
+            report.club_id,
+            report.id
+          ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+
+        if(!haystack.includes(search))
+          return false;
+      }
+
+      return true;
+    }
+  );
+}
+
+$("searchInput")
+  .addEventListener(
+    "input",
+    renderReports
+  );
+
+$("statusFilter")
+  .addEventListener(
+    "change",
+    renderReports
+  );
+
+$("severityFilter")
+  .addEventListener(
+    "change",
+    renderReports
+  );
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+function updateSummary(){
+
+  const open =
+    reports.filter(
+      report =>
+        reportStatus(report) ===
+        "open"
+    ).length;
+
+  const reviewing =
+    reports.filter(
+      report =>
+        reportStatus(report) ===
+        "reviewing"
+    ).length;
+
+  const critical =
+    reports.filter(
+      report =>
+        reportSeverity(report) ===
+        "critical" &&
+        ![
+          "resolved",
+          "dismissed"
+        ].includes(
+          reportStatus(report)
+        )
+    ).length;
+
+  $("openSummary").textContent =
+    open.toLocaleString() +
+    " Open";
+
+  $("reviewSummary").textContent =
+    reviewing.toLocaleString() +
+    " Reviewing";
+
+  $("criticalSummary").textContent =
+    critical.toLocaleString() +
+    " Critical";
+}
+
+/* =========================================================
+   RENDER REPORTS
+========================================================= */
+
+function renderReports(){
+
+  const list =
+    filteredReports();
+
+  const holder =
+    $("queue");
+
+  holder.innerHTML = "";
+
+  if(!list.length){
+
+    holder.innerHTML = `
+
+      <div class="empty">
+
+        <strong>
+          No matching reports.
+        </strong>
+
+        The moderation queue is clear for these filters.
+
+      </div>
+    `;
+
+    return;
+  }
+
+  for(const report of list){
+
+    const status =
+      reportStatus(report);
+
+    const severity =
+      reportSeverity(report);
+
+    const row =
+      document.createElement("article");
+
+    row.className =
+      "report";
+
+    row.innerHTML = `
+
+      <div>
+
+        <div class="report-title">
+          ${escapeHtml(
+            report.reason ||
+            "Moderation Report"
+          )}
+        </div>
+
+        <div class="report-meta">
+
+          ${escapeHtml(
+            report.target_type ||
+            "content"
+          )}
+
+          ${
+            report.target_id
+              ? " · " +
+                escapeHtml(
+                  report.target_id
+                )
+              : ""
+          }
+
+          <br>
+
+          Reported:
+          ${escapeHtml(
+            formatDate(
+              report.created_at
+            )
+          )}
+
+        </div>
+
+      </div>
+
+      <div class="status-col">
+
+        <span class="badge ${escapeHtml(status)}">
+          ${escapeHtml(status)}
+        </span>
+
+      </div>
+
+      <div class="severity-col">
+
+        <span class="severity ${escapeHtml(severity)}">
+          ${escapeHtml(severity)}
+        </span>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="btn secondary review-btn"
+          type="button"
+          data-id="${escapeHtml(report.id)}">
+          Review
+        </button>
+
+      </div>
+    `;
+
+    holder.appendChild(row);
+  }
+
+  holder
+    .querySelectorAll(".review-btn")
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            openReport(
+              button.dataset.id
+            )
+        );
+      }
+    );
+}
+
+/* =========================================================
+   REPORT MODAL
+========================================================= */
+
+function buildTargetUrl(report){
+
+  const type =
+    String(
+      report.target_type ||
+      ""
+    ).toLowerCase();
+
+  if(
+    type === "user" ||
+    type === "profile"
+  ){
+
+    const userId =
+      report.reported_user_id ||
+      report.target_id;
+
+    return userId
+      ? "profile.html?id=" +
+        encodeURIComponent(userId)
+      : "#";
+  }
+
+  if(type === "club"){
+
+    return report.target_id
+      ? "club.html?id=" +
+        encodeURIComponent(
+          report.target_id
+        )
+      : report.club_id
+        ? "club.html?id=" +
+          encodeURIComponent(
+            report.club_id
+          )
+        : "#";
+  }
+
+  if(type === "discussion"){
+
+    if(
+      report.target_id &&
+      report.club_id
+    ){
+
+      return (
+        "discussion.html?id=" +
+        encodeURIComponent(
+          report.target_id
+        ) +
+        "&club=" +
+        encodeURIComponent(
+          report.club_id
+        )
+      );
+    }
+  }
+
+  if(type === "reply"){
+
+    /*
+      Replies currently live inside discussion.html,
+      so if the report stores discussion_id later,
+      update this to deep-link there.
+    */
+
+    if(report.club_id){
+
+      return (
+        "club-discussions.html?id=" +
+        encodeURIComponent(
+          report.club_id
+        )
+      );
+    }
+  }
+
+  return "#";
+}
+
+function openReport(id){
+
+  selectedReport =
+    reports.find(
+      report =>
+        String(report.id) ===
+        String(id)
+    );
+
+  if(!selectedReport)
+    return;
+
+  clearMessage();
+
+  $("modalTitle").textContent =
+    selectedReport.reason ||
+    "Moderation Report";
+
+  $("detailId").textContent =
+    selectedReport.id ||
+    "—";
+
+  $("detailReporter").textContent =
+    selectedReport.reporter_id ||
+    "—";
+
+  $("detailTargetType").textContent =
+    selectedReport.target_type ||
+    "—";
+
+  $("detailTargetId").textContent =
+    selectedReport.target_id ||
+    selectedReport.reported_user_id ||
+    "—";
+
+  $("detailClub").textContent =
+    selectedReport.club_id ||
+    "—";
+
+  $("detailReason").textContent =
+    selectedReport.reason ||
+    "—";
+
+  $("detailCreated").textContent =
+    formatDate(
+      selectedReport.created_at
+    );
+
+  $("reportedContent").textContent =
+    selectedReport.captured_content ||
+    selectedReport.details ||
+    "No captured content was stored with this report.";
+
+  $("reportStatus").value =
+    reportStatus(
+      selectedReport
+    );
+
+  $("severitySelect").value =
+    reportSeverity(
+      selectedReport
+    );
+
+  $("adminNote").value =
+    selectedReport.admin_note ||
+    "";
+
+  $("viewTargetBtn").href =
+    buildTargetUrl(
+      selectedReport
+    );
+
+  $("viewTargetBtn").style.display =
+    $("viewTargetBtn").href.endsWith("#")
+      ? "none"
+      : "inline-flex";
+
+  $("suspendUserBtn").style.display =
+    selectedReport.reported_user_id
+      ? "inline-flex"
+      : "none";
+
+  $("reportModal")
+    .classList
+    .add("show");
+}
+
+function closeModal(){
+
+  selectedReport = null;
+
+  $("reportModal")
+    .classList
+    .remove("show");
+
+  clearMessage();
+}
+
+$("closeModal")
+  .addEventListener(
+    "click",
+    closeModal
+  );
+
+$("cancelBtn")
+  .addEventListener(
+    "click",
+    closeModal
+  );
+
+$("reportModal")
+  .addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target ===
+        $("reportModal")
+      )
+        closeModal();
+    }
+  );
+
+/* =========================================================
+   SAVE REVIEW
+========================================================= */
+
+$("saveBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      if(!selectedReport)
+        return;
+
+      const status =
+        $("reportStatus").value;
+
+      const severity =
+        $("severitySelect").value;
+
+      const note =
+        $("adminNote")
+          .value
+          .trim() ||
+        null;
+
+      try{
+
+        /*
+          Production recommendation:
+          replace direct updates with a protected RPC so:
+          - admin authorization is server-side
+          - actions are logged
+          - notifications can be created
+          - sanctions and report resolution stay atomic
+        */
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from("moderation_reports")
+            .update({
+              status,
+              severity,
+              admin_note:note,
+              reviewed_at:
+                new Date().toISOString(),
+              reviewed_by:
+                currentUser.id
+            })
+            .eq(
+              "id",
+              selectedReport.id
+            )
+            .select()
+            .single();
+
+        if(error)
+          throw error;
+
+        const index =
+          reports.findIndex(
+            report =>
+              String(report.id) ===
+              String(data.id)
+          );
+
+        if(index >= 0)
+          reports[index] = data;
+
+        selectedReport = data;
+
+        updateSummary();
+        renderReports();
+
+        showMessage(
+          "Moderation review saved.",
+          "success"
+        );
+
+      }
+      catch(error){
+
+        console.error(error);
+
+        showMessage(
+          "DogEar couldn't save this review: " +
+          (
+            error.message ||
+            "Unknown error"
+          ),
+          "error"
+        );
+      }
+    }
+  );
+
+/* =========================================================
+   SUSPEND REPORTED USER
+========================================================= */
+
+$("suspendUserBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      if(
+        !selectedReport ||
+        !selectedReport.reported_user_id
+      )
+        return;
+
+      try{
+
+        /*
+          Assumes profiles.status exists.
+
+          Eventually this should be a protected admin RPC that
+          records who suspended the account, why, and whether
+          the suspension expires.
+        */
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .from("profiles")
+            .update({
+              status:"suspended"
+            })
+            .eq(
+              "id",
+              selectedReport.reported_user_id
+            );
+
+        if(error)
+          throw error;
+
+        showMessage(
+          "Reported account suspended.",
+          "success"
+        );
+
+      }
+      catch(error){
+
+        console.error(error);
+
+        showMessage(
+          "DogEar couldn't suspend this account: " +
+          (
+            error.message ||
+            "Unknown error"
+          ),
+          "error"
+        );
+      }
+    }
+  );
+
+/* =========================================================
+   START
+========================================================= */
+
+async function start(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+  if(
+    error ||
+    !data.user
+  ){
+
+    location.href =
+      "auth.html#login";
+
+    return;
+  }
+
+  currentUser =
+    data.user;
+
+  await loadProfile();
+
+  const allowed =
+    await verifyAdmin();
+
+  if(!allowed){
+
+    showLocked();
+
+    $("loading")
+      .classList
+      .add("hidden");
+
+    return;
+  }
+
+  await loadReports();
+
+  $("loading")
+    .classList
+    .add("hidden");
+}
+
+start();
+</script>
+
+</body>
+</html>
