@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DogEar — Monthly Vote</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --ink:#090b0a;
+  --panel:#101410;
+  --panel2:#0d110e;
+  --cream:#f1e7cf;
+  --gold:#c79b59;
+  --gold2:#dfbd7e;
+  --green:#26362b;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.22);
+  --line-soft:rgba(199,155,89,.11);
+  --danger:#e6a09a;
+  --ok:#b9d6b2;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--cream);
+  background:
+    radial-gradient(circle at 10% 0%,rgba(53,73,59,.24),transparent 28%),
+    var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+a{color:inherit}
+
+.topbar{
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:0 clamp(18px,4vw,60px);
+  border-bottom:1px solid var(--line);
+  background:rgba(9,11,10,.94);
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.brand{
+  display:flex;
+  gap:11px;
+  align-items:center;
+  text-decoration:none;
+  color:var(--gold2);
+  font:800 13px Arial;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  transform:rotate(-8deg);
+}
+
+.nav{
+  display:flex;
+  gap:24px;
+  font:700 11px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.nav a:hover,
+.nav .active{
+  color:var(--gold2);
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:var(--green);
+  text-decoration:none;
+  font:800 13px Arial;
+  overflow:hidden;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.page{
+  width:min(1180px,calc(100% - 32px));
+  margin:auto;
+  padding:36px 0 100px;
+}
+
+.back{
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 10px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.club-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:22px;
+  margin:24px 0 22px;
+  padding-bottom:24px;
+  border-bottom:1px solid var(--line);
+}
+
+.eyebrow{
+  color:var(--gold);
+  font:800 10px Arial;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  margin-bottom:9px;
+}
+
+h1{
+  font-size:clamp(42px,6vw,68px);
+  font-weight:400;
+  line-height:.96;
+  letter-spacing:-.035em;
+  margin:0;
+}
+
+.club-sub{
+  color:var(--muted);
+  font:13px/1.6 Arial;
+  margin-top:12px;
+}
+
+.club-nav{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  margin-bottom:26px;
+}
+
+.club-nav a{
+  padding:9px 12px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--muted);
+  text-decoration:none;
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.club-nav a:hover,
+.club-nav a.active{
+  color:var(--gold2);
+  border-color:var(--gold);
+}
+
+.vote-layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 320px;
+  gap:24px;
+  align-items:start;
+}
+
+.card{
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:rgba(16,20,16,.88);
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.28);
+}
+
+.card-head{
+  padding:20px 22px;
+  border-bottom:1px solid var(--line);
+}
+
+.card-head h2{
+  margin:0;
+  font-size:27px;
+  font-weight:400;
+}
+
+.card-head p{
+  margin:6px 0 0;
+  color:var(--muted);
+  font:12px/1.5 Arial;
+}
+
+.ballot{
+  padding:20px;
+  display:grid;
+  gap:16px;
+}
+
+.book-option{
+  border:1px solid var(--line-soft);
+  border-radius:17px;
+  background:rgba(13,17,14,.72);
+  padding:16px;
+  display:grid;
+  grid-template-columns:92px minmax(0,1fr);
+  gap:18px;
+  position:relative;
+  transition:.18s ease;
+}
+
+.book-option:hover{
+  border-color:rgba(199,155,89,.42);
+}
+
+.book-option.selected{
+  border-color:var(--gold);
+  box-shadow:0 0 0 1px rgba(199,155,89,.18);
+}
+
+.cover{
+  width:92px;
+  aspect-ratio:2/3;
+  border-radius:9px;
+  overflow:hidden;
+  background:#1b211c;
+  border:1px solid var(--line-soft);
+  display:grid;
+  place-items:center;
+  color:var(--muted);
+  font:700 10px Arial;
+  text-align:center;
+}
+
+.cover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.book-copy h3{
+  margin:0 0 6px;
+  font-size:24px;
+  font-weight:400;
+}
+
+.author{
+  color:var(--gold2);
+  font:700 11px Arial;
+  margin-bottom:10px;
+}
+
+.description{
+  color:var(--muted);
+  font:12px/1.65 Arial;
+  margin-bottom:14px;
+}
+
+.vote-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+.vote-count{
+  color:var(--muted);
+  font:11px Arial;
+}
+
+.vote-count strong{
+  color:var(--cream);
+  font-size:14px;
+}
+
+.btn{
+  min-height:42px;
+  padding:0 16px;
+  border-radius:999px;
+  cursor:pointer;
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.vote-btn{
+  border:1px solid var(--gold);
+  background:transparent;
+  color:var(--gold2);
+}
+
+.vote-btn:hover,
+.book-option.selected .vote-btn{
+  background:var(--gold);
+  color:#17130e;
+}
+
+.vote-btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.side-body{
+  padding:18px;
+}
+
+.side-section{
+  padding-bottom:18px;
+  margin-bottom:18px;
+  border-bottom:1px solid var(--line-soft);
+}
+
+.side-section:last-child{
+  border-bottom:0;
+  margin-bottom:0;
+}
+
+.side-section h3{
+  margin:0 0 8px;
+  font-size:17px;
+  font-weight:400;
+}
+
+.side-section p{
+  margin:0;
+  color:var(--muted);
+  font:11px/1.6 Arial;
+}
+
+.status{
+  margin-top:10px;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  color:var(--gold2);
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.message{
+  display:none;
+  margin:0 20px 20px;
+  padding:12px 14px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  font:12px/1.5 Arial;
+}
+
+.message.show{display:block}
+.message.error{color:var(--danger)}
+.message.success{color:var(--ok)}
+
+.empty{
+  padding:52px 24px;
+  text-align:center;
+  color:var(--muted);
+  font:13px/1.7 Arial;
+}
+
+.empty strong{
+  display:block;
+  color:var(--cream);
+  font-size:22px;
+  font-weight:400;
+  margin-bottom:8px;
+}
+
+.loading{
+  position:fixed;
+  inset:0;
+  display:grid;
+  place-items:center;
+  background:var(--ink);
+  z-index:100;
+}
+
+.loading.hidden{display:none}
+
+.loading span{
+  color:var(--gold2);
+  font:800 10px Arial;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+@media(max-width:900px){
+  .vote-layout{grid-template-columns:1fr}
+  .club-head{flex-direction:column;align-items:start}
+}
+
+@media(max-width:650px){
+  .nav{display:none}
+  .book-option{grid-template-columns:72px minmax(0,1fr)}
+  .cover{width:72px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="loading" id="loading">
+  <span>Preparing the ballot...</span>
+</div>
+
+<header class="topbar">
+
+  <a class="brand" href="dashboard.html">
+    <span class="brand-mark"></span>
+    DogEar
+  </a>
+
+  <nav class="nav">
+    <a href="dashboard.html">Home</a>
+    <a href="discover.html">Discover</a>
+    <a class="active" href="clubs.html">Clubs</a>
+    <a href="marketplace.html">Books</a>
+  </nav>
+
+  <a class="avatar" id="navAvatar" href="profile.html">?</a>
+
+</header>
+
+<main class="page">
+
+  <a class="back" id="backLink" href="club.html">
+    ← Back to Club
+  </a>
+
+  <section class="club-head">
+
+    <div>
+      <div class="eyebrow">Monthly Ballot</div>
+
+      <h1 id="clubName">
+        Book Club
+      </h1>
+
+      <div class="club-sub" id="clubMeta">
+        Choose the book you want the club to read next.
+      </div>
+    </div>
+
+  </section>
+
+  <nav class="club-nav" aria-label="Club navigation">
+
+    <a id="overviewLink" href="club.html">
+      Overview
+    </a>
+
+    <a id="membersLink" href="club-members.html">
+      Members
+    </a>
+
+    <a id="discussionsLink" href="club-discussions.html">
+      Discussions
+    </a>
+
+    <a class="active" id="voteLink" href="club-vote.html">
+      Monthly Vote
+    </a>
+
+    <a id="booksLink" href="club-books.html">
+      Bookshelf
+    </a>
+
+    <a id="settingsLink" href="club-settings.html">
+      Settings
+    </a>
+
+  </nav>
+
+  <div class="vote-layout">
+
+    <section class="card">
+
+      <div class="card-head">
+        <h2>This Month's Choices</h2>
+
+        <p>
+          Each ballot contains three exact editions.
+          One vote per member.
+        </p>
+      </div>
+
+      <div class="ballot" id="ballot"></div>
+
+      <div class="empty" id="emptyState" hidden>
+        <strong>No ballot is open yet.</strong>
+        The club president or administrator can add this month's three choices.
+      </div>
+
+      <div class="message" id="message"></div>
+
+    </section>
+
+    <aside class="card">
+
+      <div class="card-head">
+        <h2>Voting Room</h2>
+
+        <p>
+          One club, three books, one tiny democracy.
+        </p>
+      </div>
+
+      <div class="side-body">
+
+        <div class="side-section">
+          <h3>Your Vote</h3>
+
+          <p id="yourVoteText">
+            You haven't voted yet.
+          </p>
+
+          <div class="status" id="voteStatus">
+            Vote Open
+          </div>
+        </div>
+
+        <div class="side-section">
+          <h3>How it works</h3>
+
+          <p>
+            Members can cast one vote while the ballot is open.
+            If the club allows vote changes, choosing another title will replace
+            the previous vote.
+          </p>
+        </div>
+
+        <div class="side-section">
+          <h3>Results</h3>
+
+          <p>
+            Current totals are shown on each book. Final selection should be
+            enforced by your backend rules or club administrator workflow.
+          </p>
+        </div>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+</main>
+
+<script>
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+const $ =
+  id =>
+    document.getElementById(id);
+
+const params =
+  new URLSearchParams(
+    location.search
+  );
+
+const clubId =
+  params.get("id");
+
+let currentUser = null;
+let choices = [];
+let userVote = null;
+
+function withClub(filename){
+
+  return clubId
+    ? filename +
+      "?id=" +
+      encodeURIComponent(clubId)
+    : filename;
+
+}
+
+function wireLinks(){
+
+  $("backLink").href =
+    withClub("club.html");
+
+  $("overviewLink").href =
+    withClub("club.html");
+
+  $("membersLink").href =
+    withClub("club-members.html");
+
+  $("discussionsLink").href =
+    withClub("club-discussions.html");
+
+  $("voteLink").href =
+    withClub("club-vote.html");
+
+  $("booksLink").href =
+    withClub("club-books.html");
+
+  $("settingsLink").href =
+    withClub("club-settings.html");
+
+}
+
+function escapeHtml(value=""){
+
+  return String(value)
+    .replace(
+      /[&<>"']/g,
+      character => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[character])
+    );
+
+}
+
+function initials(name="Reader"){
+
+  const parts =
+    String(name)
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+  if(!parts.length)
+    return "?";
+
+  if(parts.length === 1)
+    return parts[0]
+      .charAt(0)
+      .toUpperCase();
+
+  return (
+    parts[0].charAt(0) +
+    parts[parts.length - 1].charAt(0)
+  ).toUpperCase();
+
+}
+
+function showMessage(
+  text,
+  type=""
+){
+
+  $("message").textContent =
+    text;
+
+  $("message").className =
+    "message show " + type;
+
+}
+
+function clearMessage(){
+
+  $("message").textContent =
+    "";
+
+  $("message").className =
+    "message";
+
+}
+
+async function loadProfile(){
+
+  let display =
+    currentUser?.user_metadata
+      ?.display_name ||
+    "Reader";
+
+  let avatar = "";
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "get_public_profile",
+          {
+            check_user_id:
+              currentUser.id
+          }
+        );
+
+    if(error)
+      throw error;
+
+    const profile =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+    if(profile){
+
+      display =
+        profile.display_name ||
+        display;
+
+      avatar =
+        profile.avatar_url ||
+        "";
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Profile lookup:",
+      error.message
+    );
+
+  }
+
+  const navAvatar =
+    $("navAvatar");
+
+  navAvatar.innerHTML =
+    "";
+
+  if(avatar){
+
+    const image =
+      document.createElement("img");
+
+    image.src =
+      avatar;
+
+    image.alt =
+      display;
+
+    image.onerror =
+      () => {
+
+        navAvatar.innerHTML =
+          "";
+
+        navAvatar.textContent =
+          initials(display);
+
+      };
+
+    navAvatar.appendChild(
+      image
+    );
+
+  }
+  else{
+
+    navAvatar.textContent =
+      initials(display);
+
+  }
+
+}
+
+async function loadClub(){
+
+  if(!clubId)
+    return;
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+
+        .from("clubs")
+
+        .select("*")
+
+        .eq(
+          "id",
+          clubId
+        )
+
+        .maybeSingle();
+
+    if(error)
+      throw error;
+
+    if(data){
+
+      $("clubName").textContent =
+        data.name ||
+        "Book Club";
+
+      const bits = [];
+
+      if(data.genre)
+        bits.push(data.genre);
+
+      bits.push(
+        "Monthly book vote"
+      );
+
+      $("clubMeta").textContent =
+        bits.join(" · ");
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Club lookup:",
+      error.message
+    );
+
+  }
+
+}
+
+async function loadUserVote(){
+
+  if(!clubId)
+    return;
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+
+        .from("club_votes")
+
+        .select("*")
+
+        .eq(
+          "club_id",
+          clubId
+        )
+
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+
+        .maybeSingle();
+
+    if(error)
+      throw error;
+
+    userVote =
+      data || null;
+
+  }
+  catch(error){
+
+    console.warn(
+      "User vote lookup:",
+      error.message
+    );
+
+    userVote =
+      null;
+
+  }
+
+}
+
+async function loadBallot(){
+
+  if(!clubId){
+
+    $("emptyState").hidden =
+      false;
+
+    return;
+
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+
+        .from("club_ballot_options")
+
+        .select("*")
+
+        .eq(
+          "club_id",
+          clubId
+        )
+
+        .eq(
+          "is_active",
+          true
+        )
+
+        .order(
+          "position",
+          {
+            ascending:true
+          }
+        );
+
+    if(error)
+      throw error;
+
+    choices =
+      data || [];
+
+    if(!choices.length){
+
+      $("emptyState").hidden =
+        false;
+
+      return;
+
+    }
+
+    $("emptyState").hidden =
+      true;
+
+    await renderChoices();
+
+  }
+  catch(error){
+
+    console.warn(
+      "Ballot lookup:",
+      error.message
+    );
+
+    $("emptyState").hidden =
+      false;
+
+  }
+
+}
+
+async function loadVoteCount(optionId){
+
+  try{
+
+    const {
+      count,
+      error
+    } =
+      await supabaseClient
+
+        .from("club_votes")
+
+        .select(
+          "*",
+          {
+            count:"exact",
+            head:true
+          }
+        )
+
+        .eq(
+          "option_id",
+          optionId
+        );
+
+    if(error)
+      throw error;
+
+    return count || 0;
+
+  }
+  catch(error){
+
+    console.warn(
+      "Vote count:",
+      error.message
+    );
+
+    return 0;
+
+  }
+
+}
+
+async function renderChoices(){
+
+  const ballot =
+    $("ballot");
+
+  ballot.innerHTML =
+    "";
+
+  for(
+    const choice
+    of choices
+  ){
+
+    const votes =
+      await loadVoteCount(
+        choice.id
+      );
+
+    const selected =
+      userVote &&
+      (
+        userVote.option_id ===
+        choice.id
+      );
+
+    const option =
+      document.createElement(
+        "article"
+      );
+
+    option.className =
+      "book-option" +
+      (
+        selected
+          ? " selected"
+          : ""
+      );
+
+    const title =
+      choice.title ||
+      choice.book_title ||
+      "Untitled Book";
+
+    const author =
+      choice.author ||
+      choice.book_author ||
+      "Unknown author";
+
+    const cover =
+      choice.cover_url ||
+      choice.image_url ||
+      "";
+
+    const description =
+      choice.description ||
+      choice.summary ||
+      "No description has been added for this edition.";
+
+    option.innerHTML = `
+
+      <div class="cover">
+
+        ${
+          cover
+
+            ? `
+              <img
+                src="${escapeHtml(cover)}"
+                alt="${escapeHtml(title)} cover">
+            `
+
+            : "No cover"
+        }
+
+      </div>
+
+      <div class="book-copy">
+
+        <h3>
+          ${escapeHtml(title)}
+        </h3>
+
+        <div class="author">
+          ${escapeHtml(author)}
+        </div>
+
+        <div class="description">
+          ${escapeHtml(description)}
+        </div>
+
+        <div class="vote-row">
+
+          <div class="vote-count">
+
+            <strong>
+              ${votes}
+            </strong>
+
+            ${
+              votes === 1
+                ? "vote"
+                : "votes"
+            }
+
+          </div>
+
+          <button
+            class="btn vote-btn"
+            type="button"
+            data-option-id="${escapeHtml(choice.id)}">
+
+            ${
+              selected
+                ? "Your Vote"
+                : "Vote for This Book"
+            }
+
+          </button>
+
+        </div>
+
+      </div>
+    `;
+
+    const button =
+      option.querySelector(
+        ".vote-btn"
+      );
+
+    button.addEventListener(
+      "click",
+      async () => {
+
+        await castVote(
+          choice.id,
+          title,
+          button
+        );
+
+      }
+    );
+
+    ballot.appendChild(
+      option
+    );
+
+  }
+
+  updateVoteSummary();
+
+}
+
+function updateVoteSummary(){
+
+  if(!userVote){
+
+    $("yourVoteText").textContent =
+      "You haven't voted yet.";
+
+    return;
+
+  }
+
+  const selected =
+    choices.find(
+      choice =>
+        choice.id ===
+        userVote.option_id
+    );
+
+  $("yourVoteText").textContent =
+    selected
+      ? "You voted for " +
+        (
+          selected.title ||
+          selected.book_title ||
+          "this book"
+        ) +
+        "."
+      : "Your vote has been recorded.";
+
+}
+
+async function castVote(
+  optionId,
+  title,
+  button
+){
+
+  clearMessage();
+
+  if(!currentUser){
+
+    showMessage(
+      "You need to be logged in to vote.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  button.disabled =
+    true;
+
+  const originalText =
+    button.textContent;
+
+  button.textContent =
+    "Saving...";
+
+  try{
+
+    if(userVote){
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+
+          .from("club_votes")
+
+          .update({
+            option_id:
+              optionId
+          })
+
+          .eq(
+            "id",
+            userVote.id
+          )
+
+          .select()
+
+          .single();
+
+      if(error)
+        throw error;
+
+      userVote =
+        data;
+
+    }
+    else{
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+
+          .from("club_votes")
+
+          .insert({
+
+            club_id:
+              clubId,
+
+            option_id:
+              optionId,
+
+            user_id:
+              currentUser.id
+
+          })
+
+          .select()
+
+          .single();
+
+      if(error)
+        throw error;
+
+      userVote =
+        data;
+
+    }
+
+    showMessage(
+      "Your vote for " +
+      title +
+      " has been recorded.",
+      "success"
+    );
+
+    await renderChoices();
+
+  }
+  catch(error){
+
+    console.error(
+      error
+    );
+
+    showMessage(
+      "DogEar couldn't save your vote: " +
+      (
+        error.message ||
+        "Unknown error"
+      ),
+      "error"
+    );
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      originalText;
+
+  }
+
+}
+
+async function start(){
+
+  wireLinks();
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+  if(
+    error ||
+    !data.user
+  ){
+
+    location.href =
+      "auth.html#login";
+
+    return;
+
+  }
+
+  currentUser =
+    data.user;
+
+  await Promise.all([
+    loadProfile(),
+    loadClub()
+  ]);
+
+  await loadUserVote();
+
+  await loadBallot();
+
+  $("loading")
+    .classList
+    .add("hidden");
+
+}
+
+start();
+</script>
+
+</body>
+</html>
