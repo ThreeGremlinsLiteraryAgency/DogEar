@@ -10,10 +10,10 @@
 
   <meta
     name="description"
-    content="Build your DogEar profile."
+    content="Your DogEar profile."
   />
 
-  <title>DogEar — Your Profile</title>
+  <title>DogEar — Profile</title>
 
   <style>
     :root {
@@ -43,22 +43,17 @@
       --radius: 22px;
     }
 
-
     * {
       box-sizing: border-box;
     }
-
 
     html {
       scroll-behavior: smooth;
     }
 
-
     body {
       margin: 0;
-
       min-height: 100vh;
-
       color: var(--cream);
 
       background:
@@ -80,23 +75,19 @@
         serif;
     }
 
-
     button,
     input,
     textarea {
       font: inherit;
     }
 
-
     a {
       color: inherit;
     }
 
-
     /* =====================================================
        TOP NAVIGATION
        ===================================================== */
-
 
     .topbar {
       min-height: 76px;
@@ -136,7 +127,6 @@
       z-index: 100;
     }
 
-
     .brand {
       display: inline-flex;
 
@@ -163,7 +153,6 @@
       text-transform: uppercase;
     }
 
-
     .brand-mark {
       width: 34px;
 
@@ -185,7 +174,6 @@
       transform:
         rotate(-8deg);
     }
-
 
     .brand-mark::after {
       content: "";
@@ -214,7 +202,6 @@
         var(--ink);
     }
 
-
     .nav-right {
       display: flex;
 
@@ -234,7 +221,6 @@
       text-transform: uppercase;
     }
 
-
     .nav-link {
       color:
         var(--muted);
@@ -242,12 +228,10 @@
       text-decoration: none;
     }
 
-
     .nav-link:hover {
       color:
         var(--gold-soft);
     }
-
 
     .logout-button {
       border:
@@ -284,17 +268,14 @@
       text-transform: uppercase;
     }
 
-
     .logout-button:hover {
       border-color:
         var(--gold);
     }
 
-
     /* =====================================================
        PAGE
        ===================================================== */
-
 
     .page {
       width:
@@ -313,13 +294,11 @@
         100px;
     }
 
-
     .intro {
       max-width: 730px;
 
       margin-bottom: 42px;
     }
-
 
     .eyebrow {
       margin-bottom: 12px;
@@ -341,13 +320,11 @@
       text-transform: uppercase;
     }
 
-
     h1,
     h2,
     p {
       margin-top: 0;
     }
-
 
     h1 {
       margin-bottom: 16px;
@@ -366,7 +343,6 @@
       letter-spacing: -0.035em;
     }
 
-
     .intro p {
       margin-bottom: 0;
 
@@ -380,11 +356,9 @@
       line-height: 1.7;
     }
 
-
     /* =====================================================
        PROFILE LAYOUT
        ===================================================== */
-
 
     .profile-layout {
       display: grid;
@@ -397,7 +371,6 @@
 
       align-items: start;
     }
-
 
     .card {
       background:
@@ -420,11 +393,9 @@
         var(--shadow);
     }
 
-
     /* =====================================================
        PROFILE PREVIEW
        ===================================================== */
-
 
     .preview-card {
       padding: 28px;
@@ -433,7 +404,6 @@
 
       top: 108px;
     }
-
 
     .avatar-shell {
       width: 150px;
@@ -463,7 +433,6 @@
         #0c100d;
     }
 
-
     .avatar {
       width: 100%;
 
@@ -492,7 +461,6 @@
       font-size: 48px;
     }
 
-
     .avatar img {
       width: 100%;
 
@@ -500,7 +468,6 @@
 
       object-fit: cover;
     }
-
 
     .preview-name {
       margin-bottom: 5px;
@@ -511,7 +478,6 @@
 
       font-weight: 400;
     }
-
 
     .preview-username {
       margin-bottom: 22px;
@@ -529,7 +495,6 @@
       font-size: 13px;
     }
 
-
     .preview-divider {
       width: 60px;
 
@@ -543,7 +508,6 @@
       background:
         var(--line);
     }
-
 
     .preview-bio {
       margin-bottom: 0;
@@ -560,7 +524,6 @@
       white-space: pre-wrap;
     }
 
-
     .preview-placeholder {
       color:
         #706b61;
@@ -568,16 +531,203 @@
       font-style: italic;
     }
 
+    /* =====================================================
+       PUBLIC PROFILE ACTIONS
+       ===================================================== */
+
+    .public-actions {
+      display: none;
+
+      margin-top: 24px;
+
+      padding-top: 22px;
+
+      border-top:
+        1px
+        solid
+        var(--line);
+
+      gap: 10px;
+
+      flex-direction: column;
+    }
+
+    .public-actions.show {
+      display: flex;
+    }
+
+    .public-button {
+      min-height: 42px;
+
+      padding:
+        0
+        16px;
+
+      border:
+        1px
+        solid
+        var(--line);
+
+      border-radius:
+        999px;
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      text-decoration: none;
+
+      background:
+        transparent;
+
+      color:
+        var(--gold-soft);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 10px;
+
+      font-weight: 800;
+
+      letter-spacing:
+        0.09em;
+
+      text-transform:
+        uppercase;
+
+      cursor: pointer;
+    }
+
+    .public-button:hover {
+      border-color:
+        var(--gold);
+    }
+
+    .report-button {
+      color:
+        var(--error);
+    }
+
+    .report-button:hover {
+      border-color:
+        rgba(
+          230,
+          160,
+          154,
+          0.65
+        );
+    }
+
+    /* =====================================================
+       PUBLIC PROFILE DETAIL CARD
+       ===================================================== */
+
+    .public-profile-card {
+      display: none;
+
+      overflow: hidden;
+    }
+
+    .public-profile-card.show {
+      display: block;
+    }
+
+    .public-header {
+      padding:
+        28px
+        32px;
+
+      border-bottom:
+        1px
+        solid
+        var(--line);
+    }
+
+    .public-header h2 {
+      margin-bottom: 8px;
+
+      font-size: 32px;
+
+      font-weight: 400;
+    }
+
+    .public-header p {
+      margin-bottom: 0;
+
+      color:
+        var(--muted);
+
+      line-height:
+        1.6;
+    }
+
+    .public-body {
+      padding:
+        32px;
+    }
+
+    .public-section {
+      margin-bottom:
+        28px;
+    }
+
+    .public-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .public-label {
+      margin-bottom:
+        9px;
+
+      color:
+        var(--gold);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      letter-spacing:
+        0.12em;
+
+      text-transform:
+        uppercase;
+    }
+
+    .public-value {
+      color:
+        #c9c0ae;
+
+      font-size:
+        16px;
+
+      line-height:
+        1.7;
+
+      white-space:
+        pre-wrap;
+    }
 
     /* =====================================================
        FORM CARD
        ===================================================== */
 
-
     .form-card {
       overflow: hidden;
     }
 
+    .form-card.hidden {
+      display: none;
+    }
 
     .form-header {
       padding:
@@ -590,7 +740,6 @@
         var(--line);
     }
 
-
     .form-header h2 {
       margin-bottom: 8px;
 
@@ -598,7 +747,6 @@
 
       font-weight: 400;
     }
-
 
     .form-header p {
       margin-bottom: 0;
@@ -609,22 +757,18 @@
       line-height: 1.6;
     }
 
-
     .form-body {
       padding:
         32px;
     }
 
-
     .field {
       margin-bottom: 24px;
     }
 
-
     .field:last-child {
       margin-bottom: 0;
     }
-
 
     .field-row {
       display: grid;
@@ -635,7 +779,6 @@
 
       gap: 20px;
     }
-
 
     label {
       display: block;
@@ -659,7 +802,6 @@
       text-transform: uppercase;
     }
 
-
     .help {
       margin-top: 7px;
 
@@ -675,7 +817,6 @@
 
       line-height: 1.5;
     }
-
 
     input,
     textarea {
@@ -710,13 +851,11 @@
         box-shadow 0.2s ease;
     }
 
-
     input::placeholder,
     textarea::placeholder {
       color:
         #625e56;
     }
-
 
     input:focus,
     textarea:focus {
@@ -736,7 +875,6 @@
         );
     }
 
-
     textarea {
       min-height: 155px;
 
@@ -744,7 +882,6 @@
 
       line-height: 1.6;
     }
-
 
     .character-count {
       margin-top: 7px;
@@ -762,11 +899,9 @@
       font-size: 11px;
     }
 
-
     /* =====================================================
        ACCOUNT INFO
        ===================================================== */
-
 
     .account-box {
       margin-top: 10px;
@@ -794,7 +929,6 @@
         );
     }
 
-
     .account-label {
       margin-bottom: 5px;
 
@@ -815,7 +949,6 @@
       text-transform: uppercase;
     }
 
-
     .account-email {
       color:
         #beb5a3;
@@ -824,11 +957,9 @@
         break-word;
     }
 
-
     /* =====================================================
        MESSAGES
        ===================================================== */
-
 
     .message {
       display: none;
@@ -856,11 +987,9 @@
       line-height: 1.5;
     }
 
-
     .message.show {
       display: block;
     }
-
 
     .message.success {
       color:
@@ -883,7 +1012,6 @@
         );
     }
 
-
     .message.error {
       color:
         var(--error);
@@ -905,11 +1033,9 @@
         );
     }
 
-
     /* =====================================================
        FORM FOOTER
        ===================================================== */
-
 
     .form-footer {
       padding:
@@ -938,7 +1064,6 @@
         );
     }
 
-
     .save-note {
       color:
         #777166;
@@ -952,7 +1077,6 @@
 
       line-height: 1.5;
     }
-
 
     .save-button {
       min-width: 170px;
@@ -993,12 +1117,10 @@
       text-transform: uppercase;
     }
 
-
     .save-button:hover {
       background:
         var(--gold-soft);
     }
-
 
     .save-button:disabled {
       opacity: 0.5;
@@ -1006,11 +1128,9 @@
       cursor: wait;
     }
 
-
     /* =====================================================
        LOADING SCREEN
        ===================================================== */
-
 
     .loading-screen {
       position: fixed;
@@ -1036,11 +1156,9 @@
         var(--gold-soft);
     }
 
-
     .loading-screen.hidden {
       display: none;
     }
-
 
     .loading-mark {
       width: 50px;
@@ -1065,7 +1183,6 @@
         alternate;
     }
 
-
     @keyframes pulse {
       from {
         opacity: 0.35;
@@ -1084,7 +1201,6 @@
       }
     }
 
-
     .loading-text {
       font-family:
         Arial,
@@ -1100,11 +1216,9 @@
       text-transform: uppercase;
     }
 
-
     /* =====================================================
        RESPONSIVE
        ===================================================== */
-
 
     @media (max-width: 850px) {
 
@@ -1113,11 +1227,9 @@
           1fr;
       }
 
-
       .preview-card {
         position: static;
       }
-
 
       .field-row {
         grid-template-columns:
@@ -1125,7 +1237,6 @@
       }
 
     }
-
 
     @media (max-width: 650px) {
 
@@ -1135,11 +1246,9 @@
           18px;
       }
 
-
       .nav-link {
         display: none;
       }
-
 
       .page {
         width:
@@ -1152,15 +1261,15 @@
           38px;
       }
 
-
       .form-header,
       .form-body,
-      .form-footer {
+      .form-footer,
+      .public-header,
+      .public-body {
         padding:
           24px
           20px;
       }
-
 
       .form-footer {
         align-items: stretch;
@@ -1168,23 +1277,20 @@
         flex-direction: column;
       }
 
-
       .save-button {
         width: 100%;
       }
 
     }
+
   </style>
 </head>
 
-
 <body>
-
 
   <!-- =====================================================
        LOADING
        ===================================================== -->
-
 
   <div
     class="loading-screen"
@@ -1194,25 +1300,20 @@
     <div class="loading-mark"></div>
 
     <div class="loading-text">
-
-      Opening your DogEar profile...
-
+      Opening DogEar profile...
     </div>
 
   </div>
-
-
 
   <!-- =====================================================
        NAVIGATION
        ===================================================== -->
 
-
   <header class="topbar">
 
     <a
       class="brand"
-      href="index.html"
+      href="dashboard.html"
     >
 
       <span class="brand-mark"></span>
@@ -1221,80 +1322,81 @@
 
     </a>
 
-
     <nav class="nav-right">
 
       <a
         class="nav-link"
-        href="index.html"
+        href="dashboard.html"
       >
-
         Home
-
       </a>
 
+      <a
+        class="nav-link"
+        href="discover.html"
+      >
+        Discover
+      </a>
+
+      <a
+        class="nav-link"
+        href="clubs.html"
+      >
+        Clubs
+      </a>
+
+      <a
+        class="nav-link"
+        href="marketplace.html"
+      >
+        Books
+      </a>
 
       <button
         class="logout-button"
         id="logoutButton"
         type="button"
       >
-
         Log Out
-
       </button>
 
     </nav>
 
   </header>
 
-
-
   <!-- =====================================================
        PAGE CONTENT
        ===================================================== -->
 
-
   <main class="page">
-
 
     <section class="intro">
 
-      <div class="eyebrow">
-
+      <div
+        class="eyebrow"
+        id="profileEyebrow"
+      >
         Your corner of DogEar
-
       </div>
 
-
-      <h1>
-
+      <h1 id="pageHeading">
         Make yourself recognizable.
-
       </h1>
 
-
-      <p>
-
+      <p id="pageIntro">
         This is how other readers, writers, book clubs,
         agents, and publishing people will see you around DogEar.
-
       </p>
 
     </section>
 
-
-
     <div class="profile-layout">
-
 
       <!-- =================================================
            PROFILE PREVIEW
            ================================================= -->
 
-
       <aside class="card preview-card">
-
 
         <div class="avatar-shell">
 
@@ -1302,105 +1404,96 @@
             class="avatar"
             id="avatarPreview"
           >
-
             ?
-
           </div>
 
         </div>
-
 
         <h2
           class="preview-name"
           id="displayNamePreview"
         >
-
           Your Name
-
         </h2>
-
 
         <div
           class="preview-username"
           id="usernamePreview"
         >
-
           @username
-
         </div>
 
-
         <div class="preview-divider"></div>
-
 
         <p
           class="preview-bio preview-placeholder"
           id="bioPreview"
         >
-
           Your bio will appear here.
-
         </p>
 
+        <div
+          class="public-actions"
+          id="publicActions"
+        >
+
+          <a
+            class="public-button"
+            id="backButton"
+            href="discover.html"
+          >
+            Back
+          </a>
+
+          <a
+            class="public-button report-button"
+            id="reportProfileButton"
+            href="report.html"
+          >
+            Report Profile
+          </a>
+
+        </div>
 
       </aside>
-
-
 
       <!-- =================================================
            EDIT PROFILE
            ================================================= -->
 
-
-      <section class="card form-card">
-
+      <section
+        class="card form-card"
+        id="editProfileCard"
+      >
 
         <div class="form-header">
 
           <h2>
-
             Edit profile
-
           </h2>
 
-
           <p>
-
             You can change these details later.
-
           </p>
 
         </div>
 
-
-
         <form id="profileForm">
 
-
           <div class="form-body">
-
 
             <div
               class="message"
               id="profileMessage"
             ></div>
 
-
-
             <div class="field-row">
-
-
-              <!-- USERNAME -->
-
 
               <div class="field">
 
                 <label for="username">
-
                   Username
-
                 </label>
-
 
                 <input
                   id="username"
@@ -1410,28 +1503,17 @@
                   placeholder="bookdragon"
                 />
 
-
                 <div class="help">
-
                   Letters, numbers and underscores only.
-
                 </div>
 
               </div>
 
-
-
-              <!-- DISPLAY NAME -->
-
-
               <div class="field">
 
                 <label for="displayName">
-
                   Display Name
-
                 </label>
-
 
                 <input
                   id="displayName"
@@ -1443,22 +1525,13 @@
 
               </div>
 
-
             </div>
-
-
-
-            <!-- AVATAR -->
-
 
             <div class="field">
 
               <label for="avatarUrl">
-
                 Profile Image URL
-
               </label>
-
 
               <input
                 id="avatarUrl"
@@ -1466,29 +1539,18 @@
                 placeholder="https://example.com/my-photo.jpg"
               />
 
-
               <div class="help">
-
                 For now, paste the web address of an image.
                 Direct image uploads can be added later.
-
               </div>
 
             </div>
 
-
-
-            <!-- BIO -->
-
-
             <div class="field">
 
               <label for="bio">
-
                 Bio
-
               </label>
-
 
               <textarea
                 id="bio"
@@ -1496,101 +1558,136 @@
                 placeholder="Tell DogEar a little about yourself. Favorite books, genres, what you write, what you read, or whatever belongs here."
               ></textarea>
 
-
               <div
                 class="character-count"
                 id="bioCount"
               >
-
                 0 / 500
-
               </div>
 
             </div>
 
-
-
-            <!-- ACCOUNT EMAIL -->
-
-
             <div class="account-box">
 
               <div class="account-label">
-
                 Account Email
-
               </div>
-
 
               <div
                 class="account-email"
                 id="accountEmail"
               >
-
                 Loading...
-
               </div>
 
             </div>
 
-
           </div>
-
-
-
-          <!-- =================================================
-               SAVE FOOTER
-               ================================================= -->
-
 
           <div class="form-footer">
 
-
             <div class="save-note">
-
               Your email is private and will not appear
               on your public DogEar profile.
-
             </div>
-
 
             <button
               class="save-button"
               id="saveButton"
               type="submit"
             >
-
               Save Profile
-
             </button>
-
 
           </div>
 
-
         </form>
-
 
       </section>
 
+      <!-- =================================================
+           PUBLIC PROFILE DETAILS
+           ================================================= -->
+
+      <section
+        class="card public-profile-card"
+        id="publicProfileCard"
+      >
+
+        <div class="public-header">
+
+          <h2>
+            About this reader
+          </h2>
+
+          <p>
+            A member of the DogEar community.
+          </p>
+
+        </div>
+
+        <div class="public-body">
+
+          <div class="public-section">
+
+            <div class="public-label">
+              Display Name
+            </div>
+
+            <div
+              class="public-value"
+              id="publicDisplayName"
+            >
+              —
+            </div>
+
+          </div>
+
+          <div class="public-section">
+
+            <div class="public-label">
+              Username
+            </div>
+
+            <div
+              class="public-value"
+              id="publicUsername"
+            >
+              —
+            </div>
+
+          </div>
+
+          <div class="public-section">
+
+            <div class="public-label">
+              Bio
+            </div>
+
+            <div
+              class="public-value"
+              id="publicBio"
+            >
+              No bio yet.
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
 
     </div>
 
-
   </main>
-
-
 
   <!-- =====================================================
        SUPABASE
        ===================================================== -->
 
-
   <script
     src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
   ></script>
-
-
 
   <script>
 
@@ -1598,14 +1695,11 @@
        SUPABASE CONNECTION
        ===================================================== */
 
-
     const SUPABASE_URL =
       "https://nrtutxjznkfvvbmaagum.supabase.co";
 
-
     const SUPABASE_PUBLISHABLE_KEY =
       "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
-
 
     const supabaseClient =
       supabase.createClient(
@@ -1613,113 +1707,149 @@
         SUPABASE_PUBLISHABLE_KEY
       );
 
-
-
     /* =====================================================
        ELEMENTS
        ===================================================== */
-
 
     const loadingScreen =
       document.getElementById(
         "loadingScreen"
       );
 
-
     const profileForm =
       document.getElementById(
         "profileForm"
       );
-
 
     const usernameInput =
       document.getElementById(
         "username"
       );
 
-
     const displayNameInput =
       document.getElementById(
         "displayName"
       );
-
 
     const avatarUrlInput =
       document.getElementById(
         "avatarUrl"
       );
 
-
     const bioInput =
       document.getElementById(
         "bio"
       );
-
 
     const bioCount =
       document.getElementById(
         "bioCount"
       );
 
-
     const profileMessage =
       document.getElementById(
         "profileMessage"
       );
-
 
     const saveButton =
       document.getElementById(
         "saveButton"
       );
 
-
     const logoutButton =
       document.getElementById(
         "logoutButton"
       );
-
 
     const accountEmail =
       document.getElementById(
         "accountEmail"
       );
 
-
     const avatarPreview =
       document.getElementById(
         "avatarPreview"
       );
-
 
     const displayNamePreview =
       document.getElementById(
         "displayNamePreview"
       );
 
-
     const usernamePreview =
       document.getElementById(
         "usernamePreview"
       );
-
 
     const bioPreview =
       document.getElementById(
         "bioPreview"
       );
 
+    const editProfileCard =
+      document.getElementById(
+        "editProfileCard"
+      );
 
+    const publicProfileCard =
+      document.getElementById(
+        "publicProfileCard"
+      );
 
-    let currentUser =
-      null;
+    const publicActions =
+      document.getElementById(
+        "publicActions"
+      );
 
+    const reportProfileButton =
+      document.getElementById(
+        "reportProfileButton"
+      );
 
+    const backButton =
+      document.getElementById(
+        "backButton"
+      );
+
+    const publicDisplayName =
+      document.getElementById(
+        "publicDisplayName"
+      );
+
+    const publicUsername =
+      document.getElementById(
+        "publicUsername"
+      );
+
+    const publicBio =
+      document.getElementById(
+        "publicBio"
+      );
+
+    const profileEyebrow =
+      document.getElementById(
+        "profileEyebrow"
+      );
+
+    const pageHeading =
+      document.getElementById(
+        "pageHeading"
+      );
+
+    const pageIntro =
+      document.getElementById(
+        "pageIntro"
+      );
+
+    let currentUser = null;
+
+    let viewedUserId = null;
+
+    let viewingOwnProfile = true;
 
     /* =====================================================
        MESSAGE FUNCTIONS
        ===================================================== */
-
 
     function showMessage(
       text,
@@ -1729,10 +1859,8 @@
       profileMessage.textContent =
         text;
 
-
       profileMessage.className =
         "message show";
-
 
       if (type) {
 
@@ -1744,25 +1872,19 @@
 
     }
 
-
-
     function clearMessage() {
 
       profileMessage.textContent =
         "";
-
 
       profileMessage.className =
         "message";
 
     }
 
-
-
     /* =====================================================
        CLEAN USERNAME
        ===================================================== */
-
 
     function cleanUsername(
       value
@@ -1781,8 +1903,6 @@
 
     }
 
-
-
     usernameInput.addEventListener(
       "input",
       function () {
@@ -1791,7 +1911,6 @@
           cleanUsername(
             usernameInput.value
           );
-
 
         if (
           usernameInput.value !==
@@ -1803,18 +1922,14 @@
 
         }
 
-
         updatePreview();
 
       }
     );
 
-
-
     /* =====================================================
        PROFILE PREVIEW
        ===================================================== */
-
 
     function updatePreview() {
 
@@ -1823,43 +1938,34 @@
           .value
           .trim();
 
-
       const username =
         usernameInput
           .value
           .trim();
-
 
       const bio =
         bioInput
           .value
           .trim();
 
-
       const avatarUrl =
         avatarUrlInput
           .value
           .trim();
 
-
-
       displayNamePreview.textContent =
         displayName ||
         "Your Name";
-
 
       usernamePreview.textContent =
         username
           ? "@" + username
           : "@username";
 
-
-
       if (bio) {
 
         bioPreview.textContent =
           bio;
-
 
         bioPreview.classList.remove(
           "preview-placeholder"
@@ -1872,6 +1978,159 @@
         bioPreview.textContent =
           "Your bio will appear here.";
 
+        bioPreview.classList.add(
+          "preview-placeholder"
+        );
+
+      }
+
+      bioCount.textContent =
+        bioInput.value.length +
+        " / 500";
+
+      if (avatarUrl) {
+
+        setAvatar(
+          avatarUrl,
+          displayName
+        );
+
+      }
+
+      else {
+
+        showAvatarInitial(
+          displayName
+        );
+
+      }
+
+    }
+
+    function setAvatar(
+      url,
+      displayName
+    ) {
+
+      avatarPreview.innerHTML =
+        "";
+
+      const image =
+        document.createElement(
+          "img"
+        );
+
+      image.src =
+        url;
+
+      image.alt =
+        "Profile image";
+
+      image.onerror =
+        function () {
+
+          showAvatarInitial(
+            displayName
+          );
+
+        };
+
+      avatarPreview.appendChild(
+        image
+      );
+
+    }
+
+    function showAvatarInitial(
+      displayName = ""
+    ) {
+
+      avatarPreview.innerHTML =
+        "";
+
+      avatarPreview.textContent =
+        displayName
+          ? displayName
+              .charAt(0)
+              .toUpperCase()
+          : "?";
+
+    }
+
+    displayNameInput.addEventListener(
+      "input",
+      updatePreview
+    );
+
+    avatarUrlInput.addEventListener(
+      "input",
+      updatePreview
+    );
+
+    bioInput.addEventListener(
+      "input",
+      updatePreview
+    );
+
+    /* =====================================================
+       PUBLIC PROFILE DISPLAY
+       ===================================================== */
+
+    function showPublicProfile(
+      profile
+    ) {
+
+      editProfileCard.classList.add(
+        "hidden"
+      );
+
+      publicProfileCard.classList.add(
+        "show"
+      );
+
+      publicActions.classList.add(
+        "show"
+      );
+
+      const displayName =
+        profile?.display_name ||
+        "DogEar Member";
+
+      const username =
+        profile?.username ||
+        "";
+
+      const bio =
+        profile?.bio ||
+        "";
+
+      const avatar =
+        profile?.avatar_url ||
+        "";
+
+      displayNamePreview.textContent =
+        displayName;
+
+      usernamePreview.textContent =
+        username
+          ? "@" + username
+          : "@reader";
+
+      if (bio) {
+
+        bioPreview.textContent =
+          bio;
+
+        bioPreview.classList.remove(
+          "preview-placeholder"
+        );
+
+      }
+
+      else {
+
+        bioPreview.textContent =
+          "This reader hasn't written a bio yet.";
 
         bioPreview.classList.add(
           "preview-placeholder"
@@ -1879,104 +2138,64 @@
 
       }
 
+      if (avatar) {
 
-
-      bioCount.textContent =
-        bioInput.value.length +
-        " / 500";
-
-
-
-      if (avatarUrl) {
-
-        avatarPreview.innerHTML =
-          "";
-
-
-        const image =
-          document.createElement(
-            "img"
-          );
-
-
-        image.src =
-          avatarUrl;
-
-
-        image.alt =
-          "Profile image";
-
-
-        image.onerror =
-          function () {
-
-            showAvatarInitial();
-
-          };
-
-
-        avatarPreview.appendChild(
-          image
+        setAvatar(
+          avatar,
+          displayName
         );
 
       }
 
       else {
 
-        showAvatarInitial();
+        showAvatarInitial(
+          displayName
+        );
 
       }
 
+      publicDisplayName.textContent =
+        displayName;
+
+      publicUsername.textContent =
+        username
+          ? "@" + username
+          : "Not set";
+
+      publicBio.textContent =
+        bio ||
+        "This reader hasn't written a bio yet.";
+
+      profileEyebrow.textContent =
+        "DogEar member";
+
+      pageHeading.textContent =
+        displayName;
+
+      pageIntro.textContent =
+        "See what this reader shares with the DogEar community.";
+
+      const returnUrl =
+        "profile.html?id=" +
+        encodeURIComponent(
+          viewedUserId
+        );
+
+      reportProfileButton.href =
+        "report.html?" +
+        new URLSearchParams({
+          type: "user",
+          target: viewedUserId,
+          user: viewedUserId,
+          return: returnUrl
+        }).toString();
+
     }
-
-
-
-    function showAvatarInitial() {
-
-      avatarPreview.innerHTML =
-        "";
-
-
-      const name =
-        displayNameInput
-          .value
-          .trim();
-
-
-      avatarPreview.textContent =
-        name
-          ? name
-              .charAt(0)
-              .toUpperCase()
-          : "?";
-
-    }
-
-
-
-    displayNameInput.addEventListener(
-      "input",
-      updatePreview
-    );
-
-
-    avatarUrlInput.addEventListener(
-      "input",
-      updatePreview
-    );
-
-
-    bioInput.addEventListener(
-      "input",
-      updatePreview
-    );
-
-
 
     /* =====================================================
        CHECK LOGIN
        ===================================================== */
-
 
     async function loadUser() {
 
@@ -1987,8 +2206,6 @@
         await supabaseClient
           .auth
           .getUser();
-
-
 
       if (
         error ||
@@ -2002,20 +2219,47 @@
 
       }
 
-
-
       currentUser =
         data.user;
-
 
       accountEmail.textContent =
         currentUser.email ||
         "No email available";
 
+      const params =
+        new URLSearchParams(
+          window.location.search
+        );
 
+      viewedUserId =
+        params.get(
+          "id"
+        );
 
-      await loadProfile();
+      if (
+        !viewedUserId ||
+        viewedUserId ===
+          currentUser.id
+      ) {
 
+        viewedUserId =
+          currentUser.id;
+
+        viewingOwnProfile =
+          true;
+
+        await loadOwnProfile();
+
+      }
+
+      else {
+
+        viewingOwnProfile =
+          false;
+
+        await loadPublicProfile();
+
+      }
 
       loadingScreen.classList.add(
         "hidden"
@@ -2023,21 +2267,11 @@
 
     }
 
-
-
     /* =====================================================
-       LOAD PROFILE
+       LOAD OWN PROFILE
        ===================================================== */
 
-
-    async function loadProfile() {
-
-      /*
-        We use DogEar's protected public-profile function
-        to load the profile information that is safe
-        to display.
-      */
-
+    async function loadOwnProfile() {
 
       try {
 
@@ -2054,20 +2288,14 @@
               }
             );
 
-
-
         if (error) {
 
           throw error;
 
         }
 
-
-
         let profile =
           null;
-
-
 
         if (
           Array.isArray(data)
@@ -2085,14 +2313,11 @@
 
         }
 
-
-
         if (profile) {
 
           usernameInput.value =
             profile.username ||
             "";
-
 
           displayNameInput.value =
             profile.display_name ||
@@ -2101,11 +2326,9 @@
               ?.display_name ||
             "";
 
-
           avatarUrlInput.value =
             profile.avatar_url ||
             "";
-
 
           bioInput.value =
             profile.bio ||
@@ -2123,8 +2346,6 @@
 
         }
 
-
-
         updatePreview();
 
       }
@@ -2136,23 +2357,13 @@
           error
         );
 
-
-        /*
-          Even if profile loading fails,
-          the page can still open so the
-          user isn't trapped.
-        */
-
-
         displayNameInput.value =
           currentUser
             .user_metadata
             ?.display_name ||
           "";
 
-
         updatePreview();
-
 
         showMessage(
           "DogEar couldn't load your existing profile details.",
@@ -2163,12 +2374,131 @@
 
     }
 
+    /* =====================================================
+       LOAD PUBLIC PROFILE
+       ===================================================== */
 
+    async function loadPublicProfile() {
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .rpc(
+              "get_public_profile",
+              {
+                check_user_id:
+                  viewedUserId
+              }
+            );
+
+        if (error) {
+
+          throw error;
+
+        }
+
+        let profile =
+          null;
+
+        if (
+          Array.isArray(data)
+        ) {
+
+          profile =
+            data[0];
+
+        }
+
+        else {
+
+          profile =
+            data;
+
+        }
+
+        if (!profile) {
+
+          throw new Error(
+            "This DogEar profile could not be found."
+          );
+
+        }
+
+        showPublicProfile(
+          profile
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Public profile loading error:",
+          error
+        );
+
+        editProfileCard.classList.add(
+          "hidden"
+        );
+
+        publicProfileCard.classList.add(
+          "show"
+        );
+
+        publicActions.classList.add(
+          "show"
+        );
+
+        profileEyebrow.textContent =
+          "Profile unavailable";
+
+        pageHeading.textContent =
+          "We couldn't find that reader.";
+
+        pageIntro.textContent =
+          error.message ||
+          "This profile may no longer be available.";
+
+        displayNamePreview.textContent =
+          "Unknown Reader";
+
+        usernamePreview.textContent =
+          "";
+
+        bioPreview.textContent =
+          "This profile could not be loaded.";
+
+        bioPreview.classList.add(
+          "preview-placeholder"
+        );
+
+        showAvatarInitial(
+          "Unknown Reader"
+        );
+
+        publicDisplayName.textContent =
+          "Unavailable";
+
+        publicUsername.textContent =
+          "Unavailable";
+
+        publicBio.textContent =
+          "This profile could not be loaded.";
+
+        reportProfileButton.style.display =
+          "none";
+
+      }
+
+    }
 
     /* =====================================================
        SAVE PROFILE
        ===================================================== */
-
 
     profileForm.addEventListener(
       "submit",
@@ -2176,35 +2506,35 @@
 
         event.preventDefault();
 
+        if (
+          !viewingOwnProfile
+        ) {
+
+          return;
+
+        }
 
         clearMessage();
-
-
 
         const username =
           cleanUsername(
             usernameInput.value.trim()
           );
 
-
         const displayName =
           displayNameInput
             .value
             .trim();
-
 
         const avatarUrl =
           avatarUrlInput
             .value
             .trim();
 
-
         const bio =
           bioInput
             .value
             .trim();
-
-
 
         if (
           username.length < 3
@@ -2219,8 +2549,6 @@
 
         }
 
-
-
         if (
           displayName.length < 1
         ) {
@@ -2233,8 +2561,6 @@
           return;
 
         }
-
-
 
         if (
           bio.length > 500
@@ -2249,43 +2575,13 @@
 
         }
 
-
-
         saveButton.disabled =
           true;
-
 
         saveButton.textContent =
           "Saving...";
 
-
-
         try {
-
-          /*
-            IMPORTANT:
-
-            This calls the protected DogEar function
-            named update_my_profile.
-
-            That function should only allow the
-            logged-in user to change:
-
-              username
-              display_name
-              avatar_url
-              bio
-
-            It should NOT allow users to change:
-
-              platform_role
-              account_status
-              club limits
-              admin status
-
-            We will create that Supabase function next.
-          */
-
 
           const {
             data,
@@ -2313,18 +2609,13 @@
                 }
               );
 
-
-
           if (error) {
 
             throw error;
 
           }
 
-
-
           updatePreview();
-
 
           showMessage(
             "Your DogEar profile has been saved.",
@@ -2340,13 +2631,9 @@
             error
           );
 
-
-
           let message =
             error.message ||
             "DogEar couldn't save your profile.";
-
-
 
           if (
             message
@@ -2361,8 +2648,6 @@
 
           }
 
-
-
           showMessage(
             message,
             "error"
@@ -2375,7 +2660,6 @@
           saveButton.disabled =
             false;
 
-
           saveButton.textContent =
             "Save Profile";
 
@@ -2384,12 +2668,9 @@
       }
     );
 
-
-
     /* =====================================================
        LOG OUT
        ===================================================== */
-
 
     logoutButton.addEventListener(
       "click",
@@ -2398,17 +2679,12 @@
         logoutButton.disabled =
           true;
 
-
         logoutButton.textContent =
           "Logging Out...";
-
-
 
         await supabaseClient
           .auth
           .signOut();
-
-
 
         window.location.href =
           "auth.html#login";
@@ -2416,17 +2692,13 @@
       }
     );
 
-
-
     /* =====================================================
        START PAGE
        ===================================================== */
 
-
     loadUser();
 
   </script>
-
 
 </body>
 </html>
