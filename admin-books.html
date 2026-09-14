@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DogEar — Book Administration</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --ink:#090b0a;
+  --panel:#101410;
+  --panel2:#0d110e;
+  --cream:#f1e7cf;
+  --gold:#c79b59;
+  --gold2:#dfbd7e;
+  --green:#26362b;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.22);
+  --line-soft:rgba(199,155,89,.11);
+  --danger:#e6a09a;
+  --ok:#b9d6b2;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--cream);
+  background:
+    radial-gradient(circle at 10% 0%,rgba(53,73,59,.24),transparent 28%),
+    var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+a{
+  color:inherit;
+}
+
+.topbar{
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:0 clamp(18px,4vw,60px);
+  border-bottom:1px solid var(--line);
+  background:rgba(9,11,10,.94);
+  position:sticky;
+  top:0;
+  z-index:30;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  text-decoration:none;
+  color:var(--gold2);
+  font:800 13px Arial;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  transform:rotate(-8deg);
+}
+
+.nav{
+  display:flex;
+  gap:24px;
+  font:700 11px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.nav a:hover,
+.nav .active{
+  color:var(--gold2);
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:var(--green);
+  text-decoration:none;
+  font:800 13px Arial;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.page{
+  width:min(1220px,calc(100% - 32px));
+  margin:auto;
+  padding:38px 0 110px;
+}
+
+.hero{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:24px;
+  padding-bottom:28px;
+  border-bottom:1px solid var(--line);
+}
+
+.eyebrow{
+  color:var(--gold);
+  font:800 10px Arial;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+
+h1{
+  margin:0;
+  font-size:clamp(42px,6vw,70px);
+  line-height:.96;
+  font-weight:400;
+  letter-spacing:-.04em;
+}
+
+.subtitle{
+  margin-top:12px;
+  max-width:700px;
+  color:var(--muted);
+  font:13px/1.65 Arial;
+}
+
+.btn{
+  min-height:44px;
+  padding:0 17px;
+  border-radius:999px;
+  cursor:pointer;
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+}
+
+.primary{
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:#17130e;
+}
+
+.secondary{
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--gold2);
+}
+
+.danger{
+  border:1px solid rgba(230,160,154,.45);
+  background:transparent;
+  color:var(--danger);
+}
+
+.btn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.toolbar{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  margin:26px 0 18px;
+}
+
+.search{
+  width:min(460px,100%);
+  height:46px;
+  padding:0 14px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--panel2);
+  color:var(--cream);
+  outline:none;
+  font:13px Arial;
+}
+
+.search:focus{
+  border-color:var(--gold);
+}
+
+.library{
+  display:grid;
+  gap:12px;
+}
+
+.book-row{
+  display:grid;
+  grid-template-columns:72px minmax(0,1fr) auto;
+  gap:16px;
+  align-items:center;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:rgba(16,20,16,.86);
+}
+
+.book-cover{
+  width:72px;
+  aspect-ratio:2/3;
+  border-radius:7px;
+  overflow:hidden;
+  background:#171c18;
+  display:grid;
+  place-items:center;
+  color:var(--muted);
+  font:700 8px Arial;
+  text-align:center;
+}
+
+.book-cover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.book-title{
+  margin:0 0 4px;
+  font-size:20px;
+  font-weight:400;
+}
+
+.book-author{
+  color:var(--gold2);
+  font:700 11px Arial;
+  margin-bottom:7px;
+}
+
+.book-meta{
+  color:var(--muted);
+  font:10px/1.5 Arial;
+}
+
+.row-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.empty{
+  padding:60px 20px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  text-align:center;
+  color:var(--muted);
+  font:12px/1.7 Arial;
+}
+
+.empty strong{
+  display:block;
+  margin-bottom:8px;
+  color:var(--cream);
+  font-size:24px;
+  font-weight:400;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:60;
+  display:none;
+  place-items:center;
+  padding:20px;
+  background:rgba(0,0,0,.8);
+}
+
+.modal.show{
+  display:grid;
+}
+
+.modal-card{
+  width:min(760px,100%);
+  max-height:90vh;
+  overflow:auto;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:#0e120f;
+  box-shadow:0 30px 90px rgba(0,0,0,.55);
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  padding:20px 22px;
+  border-bottom:1px solid var(--line);
+}
+
+.modal-head h2{
+  margin:0;
+  font-size:27px;
+  font-weight:400;
+}
+
+.close{
+  border:0;
+  background:none;
+  color:var(--muted);
+  cursor:pointer;
+  font-size:25px;
+}
+
+.form{
+  padding:22px;
+}
+
+.field{
+  margin-bottom:18px;
+}
+
+.field label{
+  display:block;
+  margin-bottom:7px;
+  color:var(--gold2);
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:var(--panel2);
+  color:var(--cream);
+  outline:none;
+  font:13px Arial;
+}
+
+.field input,
+.field select{
+  height:44px;
+  padding:0 12px;
+}
+
+.field textarea{
+  min-height:120px;
+  padding:12px;
+  resize:vertical;
+  line-height:1.5;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  border-color:var(--gold);
+}
+
+.two-col{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.form-actions{
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+  margin-top:22px;
+}
+
+.message{
+  display:none;
+  margin-bottom:16px;
+  padding:11px 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  font:11px/1.5 Arial;
+}
+
+.message.show{display:block}
+.message.error{color:var(--danger)}
+.message.success{color:var(--ok)}
+
+.loading{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:grid;
+  place-items:center;
+  background:var(--ink);
+}
+
+.loading.hidden{
+  display:none;
+}
+
+.loading span{
+  color:var(--gold2);
+  font:800 10px Arial;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+.locked{
+  padding:70px 24px;
+  text-align:center;
+  color:var(--muted);
+  font:13px/1.7 Arial;
+}
+
+.locked strong{
+  display:block;
+  margin-bottom:8px;
+  color:var(--cream);
+  font:400 25px Georgia;
+}
+
+@media(max-width:760px){
+  .nav{display:none}
+
+  .hero{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .toolbar{
+    flex-direction:column;
+  }
+
+  .book-row{
+    grid-template-columns:65px minmax(0,1fr);
+  }
+
+  .row-actions{
+    grid-column:1/-1;
+    justify-content:flex-start;
+  }
+
+  .two-col{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="loading" id="loading">
+  <span>Opening Milo's book desk...</span>
+</div>
+
+<header class="topbar">
+
+  <a class="brand" href="dashboard.html">
+    <span class="brand-mark"></span>
+    DogEar
+  </a>
+
+  <nav class="nav">
+    <a href="dashboard.html">Home</a>
+    <a href="discover.html">Discover</a>
+    <a href="clubs.html">Clubs</a>
+    <a class="active" href="marketplace.html">Books</a>
+  </nav>
+
+  <a class="avatar" id="navAvatar" href="profile.html">?</a>
+
+</header>
+
+<main class="page">
+
+  <section class="hero">
+
+    <div>
+
+      <div class="eyebrow">
+        DogEar Administration
+      </div>
+
+      <h1>
+        Book Desk
+      </h1>
+
+      <div class="subtitle">
+        Manage books DogEar can sell, attach affiliate links, and manually
+        add books you want featured in the marketplace.
+      </div>
+
+    </div>
+
+    <button
+      class="btn primary"
+      id="addBookBtn"
+      type="button">
+      + Add Book to Sell
+    </button>
+
+  </section>
+
+  <div id="adminArea">
+
+    <div class="toolbar">
+
+      <input
+        class="search"
+        id="librarySearch"
+        type="search"
+        placeholder="Search books, authors, ISBNs…">
+
+      <a
+        class="btn secondary"
+        href="marketplace.html">
+        View Marketplace
+      </a>
+
+    </div>
+
+    <section class="library" id="bookLibrary"></section>
+
+  </div>
+
+</main>
+
+<!-- ADD / EDIT BOOK MODAL -->
+
+<div class="modal" id="bookModal">
+
+  <div class="modal-card">
+
+    <div class="modal-head">
+
+      <h2 id="modalTitle">
+        Add Book to Sell
+      </h2>
+
+      <button
+        class="close"
+        id="closeModal"
+        type="button">
+        ×
+      </button>
+
+    </div>
+
+    <form class="form" id="bookForm">
+
+      <div class="message" id="formMessage"></div>
+
+      <input
+        id="editingId"
+        type="hidden">
+
+      <div class="field">
+
+        <label for="title">
+          Book Title
+        </label>
+
+        <input
+          id="title"
+          required>
+
+      </div>
+
+      <div class="field">
+
+        <label for="author">
+          Author
+        </label>
+
+        <input
+          id="author"
+          required>
+
+      </div>
+
+      <div class="two-col">
+
+        <div class="field">
+
+          <label for="isbn">
+            ISBN
+          </label>
+
+          <input id="isbn">
+
+        </div>
+
+        <div class="field">
+
+          <label for="googleBooksId">
+            Google Books ID
+          </label>
+
+          <input id="googleBooksId">
+
+        </div>
+
+      </div>
+
+      <div class="two-col">
+
+        <div class="field">
+
+          <label for="publisher">
+            Publisher
+          </label>
+
+          <input id="publisher">
+
+        </div>
+
+        <div class="field">
+
+          <label for="publishedDate">
+            Publication Date
+          </label>
+
+          <input
+            id="publishedDate"
+            placeholder="2026 or 2026-09-14">
+
+        </div>
+
+      </div>
+
+      <div class="field">
+
+        <label for="coverUrl">
+          Cover Image URL
+        </label>
+
+        <input
+          id="coverUrl"
+          type="url"
+          placeholder="https://...">
+
+      </div>
+
+      <div class="field">
+
+        <label for="description">
+          Description
+        </label>
+
+        <textarea id="description"></textarea>
+
+      </div>
+
+      <div class="field">
+
+        <label for="affiliateSource">
+          Affiliate Source
+        </label>
+
+        <select id="affiliateSource">
+
+          <option value="">
+            None Yet
+          </option>
+
+          <option value="Bookshop.org">
+            Bookshop.org
+          </option>
+
+          <option value="Amazon">
+            Amazon
+          </option>
+
+          <option value="Publisher">
+            Publisher
+          </option>
+
+          <option value="Other">
+            Other
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="field">
+
+        <label for="affiliateUrl">
+          Affiliate / Purchase URL
+        </label>
+
+        <input
+          id="affiliateUrl"
+          type="url"
+          placeholder="https://...">
+
+      </div>
+
+      <div class="form-actions">
+
+        <button
+          class="btn secondary"
+          id="cancelBtn"
+          type="button">
+          Cancel
+        </button>
+
+        <button
+          class="btn primary"
+          id="saveBtn"
+          type="submit">
+          Save Book
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+<script>
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+const $ =
+  id => document.getElementById(id);
+
+let currentUser = null;
+let books = [];
+
+/*
+  IMPORTANT:
+  This page needs to be protected by your database/RLS,
+  not only by the browser.
+
+  The browser-side admin check below is for interface behavior.
+  Supabase policies should ultimately decide who may edit books.
+*/
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(value=""){
+
+  return String(value)
+    .replace(
+      /[&<>"']/g,
+      character => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[character])
+    );
+
+}
+
+function showFormMessage(text,type=""){
+
+  $("formMessage").textContent =
+    text;
+
+  $("formMessage").className =
+    "message show " + type;
+
+}
+
+function clearFormMessage(){
+
+  $("formMessage").textContent = "";
+  $("formMessage").className = "message";
+
+}
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+async function loadProfile(){
+
+  let display =
+    currentUser?.user_metadata?.display_name ||
+    "Reader";
+
+  let avatar = "";
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "get_public_profile",
+        {
+          check_user_id:
+            currentUser.id
+        }
+      );
+
+    if(error)
+      throw error;
+
+    const profile =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+    if(profile){
+
+      display =
+        profile.display_name ||
+        display;
+
+      avatar =
+        profile.avatar_url ||
+        "";
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Profile lookup:",
+      error.message
+    );
+
+  }
+
+  const holder =
+    $("navAvatar");
+
+  holder.innerHTML = "";
+
+  if(avatar){
+
+    const image =
+      document.createElement("img");
+
+    image.src = avatar;
+    image.alt = display;
+
+    image.onerror =
+      () => {
+
+        holder.innerHTML = "";
+
+        holder.textContent =
+          display.charAt(0).toUpperCase();
+
+      };
+
+    holder.appendChild(image);
+
+  }
+  else{
+
+    holder.textContent =
+      display.charAt(0).toUpperCase();
+
+  }
+
+}
+
+/* =========================================================
+   ADMIN CHECK
+========================================================= */
+
+async function verifyAdmin(){
+
+  /*
+    Preferred long-term setup:
+    an RPC such as is_site_admin() or a protected
+    admin_users table.
+
+    For now this page attempts an admin_users lookup.
+
+    Expected fields:
+      user_id
+      active
+  */
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("admin_users")
+        .select("user_id,active")
+        .eq("user_id",currentUser.id)
+        .maybeSingle();
+
+    if(error)
+      throw error;
+
+    return (
+      data &&
+      data.active !== false
+    );
+
+  }
+  catch(error){
+
+    console.warn(
+      "Admin lookup:",
+      error.message
+    );
+
+    /*
+      This intentionally fails closed.
+    */
+
+    return false;
+
+  }
+
+}
+
+function showLocked(){
+
+  $("adminArea").innerHTML = `
+
+    <div class="locked">
+
+      <strong>
+        This page is for DogEar administration.
+      </strong>
+
+      Your account does not currently have permission
+      to manage marketplace books.
+
+    </div>
+  `;
+
+  $("addBookBtn").disabled =
+    true;
+
+}
+
+/* =========================================================
+   LOAD BOOKS
+========================================================= */
+
+async function loadBooks(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("books")
+        .select("*")
+        .order("created_at",{
+          ascending:false
+        });
+
+    if(error)
+      throw error;
+
+    books =
+      data || [];
+
+  }
+  catch(error){
+
+    console.error(
+      "Book lookup:",
+      error
+    );
+
+    books = [];
+
+  }
+
+  renderBooks(books);
+
+}
+
+function renderBooks(list){
+
+  const library =
+    $("bookLibrary");
+
+  library.innerHTML = "";
+
+  if(!list.length){
+
+    library.innerHTML = `
+
+      <div class="empty">
+
+        <strong>
+          No books are in the sales catalog yet.
+        </strong>
+
+        Use “Add Book to Sell” to create the first one.
+
+      </div>
+    `;
+
+    return;
+
+  }
+
+  for(const book of list){
+
+    const title =
+      book.title ||
+      "Untitled Book";
+
+    const author =
+      book.author ||
+      "Unknown author";
+
+    const cover =
+      book.cover_url ||
+      book.image_url ||
+      "";
+
+    const isbn =
+      book.isbn ||
+      "";
+
+    const affiliate =
+      book.affiliate_url ||
+      book.purchase_url ||
+      "";
+
+    const source =
+      book.affiliate_source ||
+      book.seller_name ||
+      "";
+
+    const row =
+      document.createElement("article");
+
+    row.className =
+      "book-row";
+
+    row.innerHTML = `
+
+      <div class="book-cover">
+
+        ${
+          cover
+            ? `
+              <img
+                src="${escapeHtml(cover)}"
+                alt="${escapeHtml(title)} cover">
+            `
+            : "No cover"
+        }
+
+      </div>
+
+      <div>
+
+        <h2 class="book-title">
+          ${escapeHtml(title)}
+        </h2>
+
+        <div class="book-author">
+          ${escapeHtml(author)}
+        </div>
+
+        <div class="book-meta">
+
+          ${
+            isbn
+              ? `
+                ISBN:
+                ${escapeHtml(isbn)}
+                <br>
+              `
+              : ""
+          }
+
+          ${
+            affiliate
+              ? `
+                Affiliate:
+                ${escapeHtml(
+                  source ||
+                  "Linked"
+                )}
+              `
+              : "No affiliate link"
+          }
+
+        </div>
+
+      </div>
+
+      <div class="row-actions">
+
+        <a
+          class="btn secondary"
+          href="book.html?id=${encodeURIComponent(book.id)}">
+          View
+        </a>
+
+        <button
+          class="btn secondary edit-book"
+          type="button"
+          data-id="${escapeHtml(book.id)}">
+          Edit
+        </button>
+
+      </div>
+    `;
+
+    library.appendChild(row);
+
+  }
+
+  library
+    .querySelectorAll(".edit-book")
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            editBook(
+              button.dataset.id
+            )
+        );
+
+      }
+    );
+
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+$("librarySearch")
+  .addEventListener(
+    "input",
+    event => {
+
+      const query =
+        event.target.value
+          .trim()
+          .toLowerCase();
+
+      if(!query){
+
+        renderBooks(books);
+        return;
+
+      }
+
+      const filtered =
+        books.filter(
+          book => {
+
+            const haystack =
+              [
+                book.title,
+                book.author,
+                book.isbn,
+                book.publisher,
+                book.affiliate_source
+              ]
+              .filter(Boolean)
+              .join(" ")
+              .toLowerCase();
+
+            return haystack.includes(query);
+
+          }
+        );
+
+      renderBooks(filtered);
+
+    }
+  );
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function openModal(){
+
+  $("bookModal")
+    .classList
+    .add("show");
+
+}
+
+function closeModal(){
+
+  $("bookModal")
+    .classList
+    .remove("show");
+
+  clearFormMessage();
+
+}
+
+$("closeModal")
+  .addEventListener(
+    "click",
+    closeModal
+  );
+
+$("cancelBtn")
+  .addEventListener(
+    "click",
+    closeModal
+  );
+
+$("bookModal")
+  .addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target ===
+        $("bookModal")
+      ){
+
+        closeModal();
+
+      }
+
+    }
+  );
+
+/* =========================================================
+   ADD BOOK
+========================================================= */
+
+function resetForm(){
+
+  $("editingId").value = "";
+  $("title").value = "";
+  $("author").value = "";
+  $("isbn").value = "";
+  $("googleBooksId").value = "";
+  $("publisher").value = "";
+  $("publishedDate").value = "";
+  $("coverUrl").value = "";
+  $("description").value = "";
+  $("affiliateSource").value = "";
+  $("affiliateUrl").value = "";
+
+}
+
+$("addBookBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      resetForm();
+
+      $("modalTitle").textContent =
+        "Add Book to Sell";
+
+      $("saveBtn").textContent =
+        "Add Book";
+
+      openModal();
+
+    }
+  );
+
+/* =========================================================
+   EDIT BOOK
+========================================================= */
+
+function editBook(id){
+
+  const book =
+    books.find(
+      item =>
+        String(item.id) ===
+        String(id)
+    );
+
+  if(!book)
+    return;
+
+  resetForm();
+
+  $("editingId").value =
+    book.id;
+
+  $("title").value =
+    book.title ||
+    "";
+
+  $("author").value =
+    book.author ||
+    "";
+
+  $("isbn").value =
+    book.isbn ||
+    "";
+
+  $("googleBooksId").value =
+    book.google_books_id ||
+    "";
+
+  $("publisher").value =
+    book.publisher ||
+    "";
+
+  $("publishedDate").value =
+    book.published_date ||
+    book.publication_date ||
+    "";
+
+  $("coverUrl").value =
+    book.cover_url ||
+    book.image_url ||
+    "";
+
+  $("description").value =
+    book.description ||
+    book.summary ||
+    "";
+
+  $("affiliateSource").value =
+    book.affiliate_source ||
+    "";
+
+  $("affiliateUrl").value =
+    book.affiliate_url ||
+    book.purchase_url ||
+    "";
+
+  $("modalTitle").textContent =
+    "Edit Book";
+
+  $("saveBtn").textContent =
+    "Save Changes";
+
+  openModal();
+
+}
+
+/* =========================================================
+   SAVE
+========================================================= */
+
+$("bookForm")
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+      clearFormMessage();
+
+      const save =
+        $("saveBtn");
+
+      save.disabled =
+        true;
+
+      save.textContent =
+        "Saving...";
+
+      const editingId =
+        $("editingId").value;
+
+      const payload = {
+
+        title:
+          $("title")
+            .value
+            .trim(),
+
+        author:
+          $("author")
+            .value
+            .trim(),
+
+        isbn:
+          $("isbn")
+            .value
+            .trim() ||
+          null,
+
+        google_books_id:
+          $("googleBooksId")
+            .value
+            .trim() ||
+          null,
+
+        publisher:
+          $("publisher")
+            .value
+            .trim() ||
+          null,
+
+        published_date:
+          $("publishedDate")
+            .value
+            .trim() ||
+          null,
+
+        cover_url:
+          $("coverUrl")
+            .value
+            .trim() ||
+          null,
+
+        description:
+          $("description")
+            .value
+            .trim() ||
+          null,
+
+        affiliate_source:
+          $("affiliateSource")
+            .value ||
+          null,
+
+        affiliate_url:
+          $("affiliateUrl")
+            .value
+            .trim() ||
+          null
+
+      };
+
+      try{
+
+        let response;
+
+        if(editingId){
+
+          response =
+            await supabaseClient
+              .from("books")
+              .update(payload)
+              .eq("id",editingId)
+              .select()
+              .single();
+
+        }
+        else{
+
+          response =
+            await supabaseClient
+              .from("books")
+              .insert(payload)
+              .select()
+              .single();
+
+        }
+
+        if(response.error)
+          throw response.error;
+
+        showFormMessage(
+          editingId
+            ? "Book updated."
+            : "Book added to DogEar.",
+          "success"
+        );
+
+        await loadBooks();
+
+        setTimeout(
+          closeModal,
+          500
+        );
+
+      }
+      catch(error){
+
+        console.error(error);
+
+        showFormMessage(
+          "DogEar couldn't save this book: " +
+          (
+            error.message ||
+            "Unknown error"
+          ),
+          "error"
+        );
+
+      }
+      finally{
+
+        save.disabled =
+          false;
+
+        save.textContent =
+          editingId
+            ? "Save Changes"
+            : "Add Book";
+
+      }
+
+    }
+  );
+
+/* =========================================================
+   START
+========================================================= */
+
+async function start(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+  if(
+    error ||
+    !data.user
+  ){
+
+    location.href =
+      "auth.html#login";
+
+    return;
+
+  }
+
+  currentUser =
+    data.user;
+
+  await loadProfile();
+
+  const allowed =
+    await verifyAdmin();
+
+  if(!allowed){
+
+    showLocked();
+
+    $("loading")
+      .classList
+      .add("hidden");
+
+    return;
+
+  }
+
+  await loadBooks();
+
+  $("loading")
+    .classList
+    .add("hidden");
+
+}
+
+start();
+</script>
+
+</body>
+</html>
