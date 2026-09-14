@@ -1,1626 +1,2695 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DogEar — Club Discussions</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-:root{
-  --ink:#090b0a;
-  --panel:#101410;
-  --panel2:#0d110e;
-  --cream:#f1e7cf;
-  --gold:#c79b59;
-  --gold2:#dfbd7e;
-  --green:#26362b;
-  --muted:#aaa18f;
-  --line:rgba(199,155,89,.22);
-  --danger:#e6a09a;
-  --ok:#b9d6b2;
-}
-
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  min-height:100vh;
-  color:var(--cream);
-  background:
-    radial-gradient(circle at 10% 0%,rgba(53,73,59,.24),transparent 28%),
-    var(--ink);
-  font-family:Georgia,"Times New Roman",serif;
-}
-
-a{color:inherit}
-
-.topbar{
-  min-height:76px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:24px;
-  padding:0 clamp(18px,4vw,60px);
-  border-bottom:1px solid var(--line);
-  background:rgba(9,11,10,.94);
-  position:sticky;
-  top:0;
-  z-index:20;
-}
-
-.brand{
-  display:flex;
-  gap:11px;
-  align-items:center;
-  text-decoration:none;
-  color:var(--gold2);
-  font:800 13px Arial;
-  letter-spacing:.17em;
-  text-transform:uppercase;
-}
-
-.brand-mark{
-  width:34px;
-  height:34px;
-  border:1px solid var(--gold);
-  border-radius:50% 50% 50% 12%;
-  transform:rotate(-8deg);
-}
-
-.nav{
-  display:flex;
-  gap:24px;
-  font:700 11px Arial;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-}
-
-.nav a{
-  color:var(--muted);
-  text-decoration:none;
-}
-
-.nav a:hover,
-.nav .active{
-  color:var(--gold2);
-}
-
-.avatar{
-  width:38px;
-  height:38px;
-  border:1px solid var(--line);
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:var(--green);
-  text-decoration:none;
-  font:800 13px Arial;
-  overflow:hidden;
-}
-
-.avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.page{
-  width:min(1180px,calc(100% - 32px));
-  margin:auto;
-  padding:36px 0 100px;
-}
-
-.back{
-  color:var(--gold2);
-  text-decoration:none;
-  font:800 10px Arial;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-}
-
-.club-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:end;
-  gap:22px;
-  margin:24px 0 22px;
-  padding-bottom:24px;
-  border-bottom:1px solid var(--line);
-}
-
-.eyebrow{
-  color:var(--gold);
-  font:800 10px Arial;
-  letter-spacing:.18em;
-  text-transform:uppercase;
-  margin-bottom:9px;
-}
-
-h1{
-  font-size:clamp(42px,6vw,68px);
-  font-weight:400;
-  line-height:.96;
-  letter-spacing:-.035em;
-  margin:0;
-}
-
-.club-sub{
-  color:var(--muted);
-  font:13px/1.6 Arial;
-  margin-top:12px;
-}
-
-.btn{
-  min-height:44px;
-  padding:0 18px;
-  border-radius:999px;
-  font:800 10px Arial;
-  letter-spacing:.09em;
-  text-transform:uppercase;
-  cursor:pointer;
-  text-decoration:none;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.primary{
-  border:1px solid var(--gold);
-  background:var(--gold);
-  color:#17130e;
-}
-
-.secondary{
-  border:1px solid var(--line);
-  background:transparent;
-  color:var(--gold2);
-}
-
-.btn:disabled{
-  opacity:.55;
-  cursor:wait;
-}
-
-.club-nav{
-  display:flex;
-  gap:9px;
-  flex-wrap:wrap;
-  margin-bottom:26px;
-}
-
-.club-nav a{
-  padding:9px 12px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  color:var(--muted);
-  text-decoration:none;
-  font:800 9px Arial;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-
-.club-nav a:hover,
-.club-nav a.active{
-  color:var(--gold2);
-  border-color:var(--gold);
-}
-
-.layout{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) 320px;
-  gap:24px;
-  align-items:start;
-}
-
-.card{
-  border:1px solid var(--line);
-  border-radius:20px;
-  background:rgba(16,20,16,.88);
-  overflow:hidden;
-  box-shadow:0 20px 60px rgba(0,0,0,.28);
-}
-
-.card-head{
-  padding:20px 22px;
-  border-bottom:1px solid var(--line);
-  display:flex;
-  justify-content:space-between;
-  gap:14px;
-  align-items:center;
-}
-
-.card-head h2{
-  font-weight:400;
-  font-size:26px;
-  margin:0;
-}
-
-.card-head p{
-  margin:5px 0 0;
-  color:var(--muted);
-  font:12px/1.5 Arial;
-}
-
-.toolbar{
-  padding:16px 18px;
-  border-bottom:1px solid rgba(199,155,89,.12);
-  display:flex;
-  gap:10px;
-}
-
-.search{
-  width:100%;
-  height:44px;
-  border:1px solid rgba(199,155,89,.2);
-  border-radius:12px;
-  background:var(--panel2);
-  color:var(--cream);
-  outline:none;
-  padding:0 14px;
-  font:13px Arial;
-}
-
-.search:focus{
-  border-color:var(--gold);
-}
-
-.thread-list{
-  padding:4px 18px 10px;
-}
-
-.thread{
-  display:grid;
-  grid-template-columns:46px minmax(0,1fr) auto;
-  gap:14px;
-  align-items:center;
-  padding:17px 4px;
-  border-bottom:1px solid rgba(199,155,89,.11);
-  text-decoration:none;
-}
-
-.thread:last-child{
-  border-bottom:0;
-}
-
-.thread:hover .thread-title{
-  color:var(--gold2);
-}
-
-.thread-icon{
-  width:42px;
-  height:42px;
-  border:1px solid var(--line);
-  border-radius:13px;
-  display:grid;
-  place-items:center;
-  background:var(--green);
-  color:var(--gold2);
-  font:800 14px Arial;
-}
-
-.thread-title{
-  font-size:18px;
-  line-height:1.25;
-  margin-bottom:5px;
-}
-
-.thread-meta,
-.thread-preview{
-  color:var(--muted);
-  font:11px/1.5 Arial;
-}
-
-.thread-preview{
-  margin-top:4px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.thread-stats{
-  text-align:right;
-  color:var(--muted);
-  font:10px/1.5 Arial;
-  white-space:nowrap;
-}
-
-.thread-stats strong{
-  display:block;
-  color:var(--gold2);
-  font-size:14px;
-}
-
-.side-body{
-  padding:18px;
-}
-
-.side-section{
-  padding:3px 0 18px;
-  margin-bottom:18px;
-  border-bottom:1px solid rgba(199,155,89,.11);
-}
-
-.side-section:last-child{
-  border-bottom:0;
-  margin-bottom:0;
-}
-
-.side-section h3{
-  font-size:17px;
-  font-weight:400;
-  margin:0 0 9px;
-}
-
-.side-section p{
-  color:var(--muted);
-  font:11px/1.6 Arial;
-  margin:0;
-}
-
-.pill{
-  display:inline-block;
-  margin-top:10px;
-  padding:6px 9px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  color:var(--gold2);
-  font:800 9px Arial;
-  text-transform:uppercase;
-}
-
-.empty{
-  padding:48px 24px;
-  text-align:center;
-  color:var(--muted);
-  font:13px/1.65 Arial;
-}
-
-.empty strong{
-  display:block;
-  color:var(--cream);
-  font-size:22px;
-  font-weight:400;
-  margin-bottom:8px;
-}
-
-.loading{
-  position:fixed;
-  inset:0;
-  display:grid;
-  place-items:center;
-  background:var(--ink);
-  z-index:100;
-}
-
-.loading.hidden{
-  display:none;
-}
-
-.loading span{
-  color:var(--gold2);
-  font:800 10px Arial;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-}
-
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.72);
-  display:none;
-  place-items:center;
-  padding:20px;
-  z-index:50;
-}
-
-.modal.show{
-  display:grid;
-}
-
-.modal-card{
-  width:min(680px,100%);
-  border:1px solid var(--line);
-  border-radius:20px;
-  background:#0e120f;
-  box-shadow:0 30px 90px rgba(0,0,0,.5);
-  overflow:hidden;
-}
-
-.modal-head{
-  padding:20px 22px;
-  border-bottom:1px solid var(--line);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.modal-head h2{
-  font-weight:400;
-  margin:0;
-  font-size:26px;
-}
-
-.close{
-  background:none;
-  border:0;
-  color:var(--muted);
-  font-size:24px;
-  cursor:pointer;
-}
-
-.form{
-  padding:22px;
-}
-
-.field{
-  margin-bottom:18px;
-}
-
-.field label{
-  display:block;
-  color:var(--gold2);
-  font:800 10px Arial;
-  letter-spacing:.09em;
-  text-transform:uppercase;
-  margin-bottom:8px;
-}
-
-.field input,
-.field textarea{
-  width:100%;
-  border:1px solid rgba(199,155,89,.2);
-  border-radius:12px;
-  background:var(--panel2);
-  color:var(--cream);
-  outline:none;
-  font:14px Arial;
-}
-
-.field input{
-  height:48px;
-  padding:0 14px;
-}
-
-.field textarea{
-  min-height:170px;
-  padding:14px;
-  resize:vertical;
-  line-height:1.55;
-}
-
-.field input:focus,
-.field textarea:focus{
-  border-color:var(--gold);
-}
-
-.form-actions{
-  display:flex;
-  justify-content:flex-end;
-  gap:10px;
-}
-
-.message{
-  display:none;
-  margin-bottom:16px;
-  padding:12px 14px;
-  border:1px solid var(--line);
-  border-radius:11px;
-  font:12px/1.5 Arial;
-}
-
-.message.show{display:block}
-.message.error{color:var(--danger)}
-.message.success{color:var(--ok)}
-
-@media(max-width:900px){
-  .layout{
-    grid-template-columns:1fr;
-  }
-
-  .club-head{
-    align-items:start;
-    flex-direction:column;
-  }
-}
-
-@media(max-width:700px){
-  .nav{
-    display:none;
-  }
-
-  .thread{
-    grid-template-columns:40px minmax(0,1fr);
-  }
-
-  .thread-stats{
-    display:none;
-  }
-
-  .form-actions{
-    flex-direction:column;
-  }
-
-  .form-actions .btn{
-    width:100%;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="DogEar club discussions."
+  >
+
+  <title>DogEar — Club Discussions</title>
+
+  <style>
+    :root {
+      --ink:#090b0a;
+      --panel:#101410;
+      --panel2:#151b16;
+      --cream:#f1e7cf;
+      --gold:#c79b59;
+      --gold2:#dfbd7e;
+      --green:#26362b;
+      --muted:#aaa18f;
+      --success:#b9d6b2;
+      --warning:#e3c58c;
+      --danger:#e6a09a;
+      --line:rgba(199,155,89,.22);
+      --shadow:0 20px 60px rgba(0,0,0,.32);
+      --radius:20px;
+    }
+
+    * {
+      box-sizing:border-box;
+    }
+
+    html {
+      scroll-behavior:smooth;
+    }
+
+    body {
+      margin:0;
+      min-height:100vh;
+
+      background:
+        radial-gradient(
+          circle at 8% 0%,
+          rgba(53,73,59,.24),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at 92% 8%,
+          rgba(199,155,89,.09),
+          transparent 24%
+        ),
+        var(--ink);
+
+      color:var(--cream);
+
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+    }
+
+    button,
+    input,
+    textarea {
+      font:inherit;
+    }
+
+    a {
+      color:inherit;
+    }
+
+    /* =====================================
+       TOP NAV
+       ===================================== */
+
+    .topbar {
+      min-height:76px;
+
+      position:sticky;
+      top:0;
+      z-index:100;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+
+      gap:30px;
+
+      padding:
+        0
+        clamp(18px,4vw,60px);
+
+      border-bottom:
+        1px solid var(--line);
+
+      background:
+        rgba(9,11,10,.92);
+
+      backdrop-filter:
+        blur(14px);
+    }
+
+    .brand {
+      display:inline-flex;
+      align-items:center;
+
+      gap:11px;
+
+      color:var(--gold2);
+
+      text-decoration:none;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size:13px;
+      font-weight:800;
+
+      letter-spacing:.17em;
+      text-transform:uppercase;
+    }
+
+    .brand-mark {
+      width:34px;
+      height:34px;
+
+      position:relative;
+
+      border:
+        1px solid var(--gold);
+
+      border-radius:
+        50%
+        50%
+        50%
+        12%;
+
+      transform:
+        rotate(-8deg);
+    }
+
+    .brand-mark::after {
+      content:"";
+
+      position:absolute;
+
+      width:11px;
+      height:11px;
+
+      right:2px;
+      top:2px;
+
+      border-left:
+        1px solid var(--gold);
+
+      border-bottom:
+        1px solid var(--gold);
+
+      background:var(--ink);
+    }
+
+    .nav-links {
+      display:flex;
+      align-items:center;
+
+      gap:26px;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size:11px;
+      font-weight:700;
+
+      letter-spacing:.1em;
+      text-transform:uppercase;
+    }
+
+    .nav-links a {
+      color:var(--muted);
+      text-decoration:none;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color:var(--gold2);
+    }
+
+    .nav-avatar {
+      width:38px;
+      height:38px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      overflow:hidden;
+
+      border:
+        1px solid var(--line);
+
+      border-radius:50%;
+
+      background:var(--green);
+
+      color:var(--gold2);
+
+      text-decoration:none;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .nav-avatar img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    /* =====================================
+       PAGE
+       ===================================== */
+
+    .page {
+      width:
+        min(
+          1180px,
+          calc(100% - 36px)
+        );
+
+      margin:
+        0 auto;
+
+      padding:
+        44px
+        0
+        110px;
+    }
+
+    .back-row {
+      margin-bottom:27px;
+    }
+
+    .back-link {
+      color:var(--gold2);
+
+      text-decoration:none;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size:10px;
+      font-weight:800;
+
+      letter-spacing:.1em;
+      text-transform:uppercase;
+    }
+
+    /* =====================================
+       HERO
+       ===================================== */
+
+    .hero {
+      margin-bottom:28px;
+
+      display:grid;
+
+      grid-template-columns:
+        minmax(0,1fr)
+        auto;
+
+      gap:24px;
+
+      align-items:end;
+    }
+
+    .eyebrow {
+      margin-bottom:10px;
+
+      color:var(--gold);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size:10px;
+      font-weight:800;
+
+      letter-spacing:.18em;
+      text-transform:uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top:0;
+    }
+
+    h1 {
+      margin-bottom:12px;
+
+      font-size:
+        clamp(
+          46px,
+          6vw,
+          76px
+        );
+
+      line-height:.97;
+      font-weight:400;
+
+      letter-spacing:-.04em;
+    }
+
+    .hero p {
+      max-width:760px;
+
+      margin-bottom:0;
+
+      color:var(--muted);
+
+      font-size:16px;
+      line-height:1.7;
+    }
+
+    .primary-button,
+    .secondary-button,
+    .danger-button {
+      min-height:42px;
+
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+
+      padding:
+        0
+        17px;
+
+      border-radius:999px;
+
+      cursor:pointer;
+
+      text-decoration:none;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size:9px;
+      font-weight:800;
+
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .primary-button {
+      border:
+        1px solid var(--gold);
+
+      background:var(--gold);
+
+      color:#17130e;
+    }
+
+    .primary-button:hover {
+      background:var(--gold2);
+    }
+
+    .secondary-button {
+      border:
+        1px solid var(--line);
+
+      background:transparent;
+
+      color:var(--gold2);
+    }
+
+    .secondary-button:hover {
+      border-color:var(--gold);
+    }
+
+    .danger-button {
+      border:
+        1px solid rgba(230,160,154,.35);
+
+      background:transparent;
+
+      color:var(--danger);
+    }
+
+    /* =====================================
+       CLUB NAV
+       ===================================== */
+
+    .club-nav {
+      margin-bottom:26px;
+
+      padding:10px;
+
+      display:flex;
+      align-items:center;
+
+      gap:8px;
+
+      overflow-x:auto;
+
+      border:
+        1px solid var(--line);
+
+      border-radius:16px;
+
+      background:
+        rgba(16,20,16,.8);
+    }
+
+    .club-nav a {
+      flex:0 0 auto;
+
+      padding:
+        10px
+        15px;
+
+      border-radius:999px;
+
+      color:var(--muted);
+
+      text-decoration:none;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size:9px;
+      font-weight:800;
+
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .club-nav a:hover,
+    .club-nav a.active {
+      background:
+        rgba(199,155,89,.08);
+
+      color:var(--gold2);
+    }
+
+    /* =====================================
+       MESSAGE
+       ===================================== */
+
+    .message {
+      display:none;
+
+      margin-bottom:24px;
+
+      padding:
+        16px
+        18px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius:13px;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    .message.show {
+      display:block;
+    }
+
+    .message.success {
+      color:var(--success);
+
+      border-color:
+        rgba(185,214,178,.3);
+    }
+
+    .message.warning {
+      color:var(--warning);
+
+      border-color:
+        rgba(227,197,140,.3);
+    }
+
+    .message.error {
+      color:var(--danger);
+
+      border-color:
+        rgba(230,160,154,.3);
+    }
+
+    /* =====================================
+       TOOLS
+       ===================================== */
+
+    .tools {
+      margin-bottom:20px;
+
+      display:grid;
+
+      grid-template-columns:
+        minmax(0,1fr)
+        auto;
+
+      gap:12px;
+    }
+
+    .search {
+      min-height:43px;
+
+      padding:
+        0
+        15px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius:999px;
+
+      background:#0d110e;
+
+      color:var(--cream);
+
+      outline:none;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size:12px;
+    }
+
+    .search:focus {
+      border-color:var(--gold);
+    }
+
+    /* =====================================
+       CARD
+       ===================================== */
+
+    .card {
+      overflow:hidden;
+
+      border:
+        1px solid var(--line);
+
+      border-radius:var(--radius);
+
+      background:
+        rgba(16,20,16,.84);
+
+      box-shadow:var(--shadow);
+    }
+
+    .card-header {
+      padding:
+        22px
+        25px;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+
+      gap:18px;
+
+      border-bottom:
+        1px solid var(--line);
+    }
+
+    .card-header h2 {
+      margin-bottom:0;
+
+      font-size:27px;
+      font-weight:400;
+    }
+
+    /* =====================================
+       DISCUSSION LIST
+       ===================================== */
+
+    .discussion-list {
+      padding:
+        0
+        24px;
+    }
+
+    .discussion-row {
+      padding:
+        22px
+        0;
+
+      display:grid;
+
+      grid-template-columns:
+        48px
+        minmax(0,1fr)
+        auto;
+
+      gap:15px;
+
+      align-items:start;
+
+      border-bottom:
+        1px solid rgba(199,155,89,.11);
+    }
+
+    .discussion-row:last-child {
+      border-bottom:0;
+    }
+
+    .author-avatar {
+      width:46px;
+      height:46px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      overflow:hidden;
+
+      border-radius:50%;
+
+      background:var(--green);
+
+      color:var(--gold2);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .author-avatar img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .discussion-title {
+      display:inline-block;
+
+      margin-bottom:7px;
+
+      color:var(--cream);
+
+      text-decoration:none;
+
+      font-size:19px;
+      line-height:1.35;
+    }
+
+    .discussion-title:hover {
+      color:var(--gold2);
+    }
+
+    .discussion-preview {
+      margin-bottom:10px;
+
+      color:var(--muted);
+
+      font-size:14px;
+      line-height:1.6;
+
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+
+    .discussion-meta {
+      display:flex;
+      flex-wrap:wrap;
+
+      gap:7px;
+
+      color:#827a6e;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size:9px;
+
+      text-transform:uppercase;
+    }
+
+    .discussion-meta a {
+      color:var(--gold2);
+      text-decoration:none;
+    }
+
+    .row-actions {
+      display:flex;
+      flex-direction:column;
+
+      gap:7px;
+    }
+
+    .row-button {
+      min-height:32px;
+
+      padding:
+        0
+        10px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius:999px;
+
+      background:transparent;
+
+      color:var(--gold2);
+
+      cursor:pointer;
+
+      text-decoration:none;
+
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size:8px;
+      font-weight:800;
+
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+
+    .row-button:hover {
+      border-color:var(--gold);
+    }
+
+    .row-button.report {
+      color:var(--danger);
+    }
+
+    /* =====================================
+       EMPTY
+       ===================================== */
+
+    .empty {
+      padding:
+        60px
+        24px;
+
+      text-align:center;
+
+      color:var(--muted);
+
+      line-height:1.65;
+    }
+
+    .empty strong {
+      display:block;
+
+      margin-bottom:8px;
+
+      color:var(--cream);
+
+      font-size:20px;
+      font-weight:400;
+    }
+
+    /* =====================================
+       MODAL
+       ===================================== */
+
+    .modal-backdrop {
+      position:fixed;
+      inset:0;
+
+      z-index:500;
+
+      display:none;
+      align-items:center;
+      justify-content:center;
+
+      padding:20px;
+
+      background:
+        rgba(0,0,0,.72);
+
+      backdrop-filter:
+        blur(6px);
+    }
+
+    .modal-backdrop.show {
+      display:flex;
+    }
+
+    .modal {
+      width:min(650px,100%);
+
+      max-height:
+        calc(100vh - 40px);
+
+      overflow:auto;
+
+      padding:26px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius:20px;
+
+      background:var(--panel);
+
+      box-shadow:var(--shadow);
+    }
+
+    .modal h2 {
+      margin-bottom:8px;
+
+      font-size:30px;
+      font-weight:400;
+    }
+
+    .modal-intro {
+      margin-bottom:22px;
+
+      color:var(--muted);
+
+      line-height:1.65;
+    }
+
+    .field {
+      margin-bottom:18px;
+    }
+
+    .field label {
+      display:block;
+
+      margin-bottom:7px;
+
+      color:var(--gold);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size:9px;
+      font-weight:800;
+
+      letter-spacing:.1em;
+      text-transform:uppercase;
+    }
+
+    .field input,
+    .field textarea {
+      width:100%;
+
+      padding:
+        12px
+        13px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius:12px;
+
+      background:#0d110e;
+
+      color:var(--cream);
+
+      outline:none;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-color:var(--gold);
+    }
+
+    .field textarea {
+      min-height:180px;
+      resize:vertical;
+
+      line-height:1.55;
+    }
+
+    .helper {
+      margin-top:7px;
+
+      color:#81796e;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size:10px;
+      line-height:1.5;
+    }
+
+    .modal-actions {
+      display:flex;
+      flex-wrap:wrap;
+
+      gap:10px;
+
+      justify-content:flex-end;
+    }
+
+    /* =====================================
+       LOADING
+       ===================================== */
+
+    .loading-screen {
+      position:fixed;
+      inset:0;
+
+      z-index:1000;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      flex-direction:column;
+
+      gap:15px;
+
+      background:var(--ink);
+
+      color:var(--gold2);
+    }
+
+    .loading-screen.hidden {
+      display:none;
+    }
+
+    .loading-mark {
+      width:48px;
+      height:48px;
+
+      border:
+        1px solid var(--gold);
+
+      border-radius:
+        50%
+        50%
+        50%
+        12%;
+
+      animation:
+        pulse
+        1.1s
+        infinite
+        alternate;
+    }
+
+    @keyframes pulse {
+      from {
+        opacity:.3;
+
+        transform:
+          rotate(-8deg)
+          scale(.94);
+      }
+
+      to {
+        opacity:1;
+
+        transform:
+          rotate(-8deg)
+          scale(1.05);
+      }
+    }
+
+    .loading-text {
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      font-size:10px;
+      font-weight:800;
+
+      letter-spacing:.17em;
+      text-transform:uppercase;
+    }
+
+    /* =====================================
+       MOBILE
+       ===================================== */
+
+    .mobile-nav {
+      display:none;
+    }
+
+    @media (max-width:760px) {
+
+      .nav-links {
+        display:none;
+      }
+
+      .hero {
+        grid-template-columns:1fr;
+      }
+
+      .tools {
+        grid-template-columns:1fr;
+      }
+
+      .discussion-row {
+        grid-template-columns:
+          46px
+          1fr;
+      }
+
+      .row-actions {
+        grid-column:1 / -1;
+
+        flex-direction:row;
+
+        padding-left:61px;
+      }
+
+      .mobile-nav {
+        position:fixed;
+
+        left:12px;
+        right:12px;
+        bottom:12px;
+
+        z-index:200;
+
+        min-height:64px;
+
+        display:grid;
+
+        grid-template-columns:
+          repeat(4,1fr);
+
+        border:
+          1px solid var(--line);
+
+        border-radius:18px;
+
+        background:
+          rgba(9,11,10,.95);
+
+        backdrop-filter:
+          blur(14px);
+      }
+
+      .mobile-nav a {
+        display:flex;
+        flex-direction:column;
+
+        align-items:center;
+        justify-content:center;
+
+        gap:4px;
+
+        color:var(--muted);
+
+        text-decoration:none;
+
+        font-family:
+          Arial,
+          Helvetica,
+          sans-serif;
+
+        font-size:9px;
+        text-transform:uppercase;
+      }
+
+      .mobile-nav a span:first-child {
+        color:var(--gold2);
+        font-size:17px;
+      }
+
+      .page {
+        padding-bottom:120px;
+      }
+    }
+
+    @media (max-width:520px) {
+
+      .page {
+        width:
+          calc(100% - 22px);
+      }
+
+      .row-actions {
+        padding-left:0;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="loading" id="loading">
-  <span>Opening the discussion room...</span>
-</div>
+  <!-- =====================================
+       LOADING
+       ===================================== -->
 
-<header class="topbar">
-  <a class="brand" href="dashboard.html">
-    <span class="brand-mark"></span>
-    DogEar
-  </a>
+  <div
+    class="loading-screen"
+    id="loadingScreen"
+  >
+    <div class="loading-mark"></div>
 
-  <nav class="nav">
-    <a href="dashboard.html">Home</a>
-    <a href="discover.html">Discover</a>
-    <a class="active" href="clubs.html">Clubs</a>
-    <a href="marketplace.html">Books</a>
-  </nav>
-
-  <a class="avatar" id="navAvatar" href="profile.html">?</a>
-</header>
-
-<main class="page">
-
-  <a class="back" id="backLink" href="clubs.html">
-    ← Back to Club
-  </a>
-
-  <section class="club-head">
-    <div>
-      <div class="eyebrow">Club Discussions</div>
-
-      <h1 id="clubName">
-        Book Club
-      </h1>
-
-      <div class="club-sub" id="clubMeta">
-        Loading club details…
-      </div>
+    <div class="loading-text">
+      Opening the conversation...
     </div>
+  </div>
 
-    <button
-      class="btn primary"
-      id="newThreadBtn"
-      type="button">
-      Start a Discussion
-    </button>
-  </section>
+  <!-- =====================================
+       TOP NAV
+       ===================================== -->
 
-  <nav class="club-nav" aria-label="Club navigation">
-    <a id="overviewLink" href="club.html">
-      Overview
-    </a>
-
-    <a id="membersLink" href="club-members.html">
-      Members
-    </a>
+  <header class="topbar">
 
     <a
-      class="active"
-      id="discussionsLink"
-      href="club-discussions.html">
-      Discussions
+      class="brand"
+      href="dashboard.html"
+    >
+      <span class="brand-mark"></span>
+      DogEar
     </a>
 
-    <a id="voteLink" href="club-vote.html">
-      Monthly Vote
+    <nav class="nav-links">
+
+      <a href="dashboard.html">
+        Home
+      </a>
+
+      <a href="discover.html">
+        Discover
+      </a>
+
+      <a
+        class="active"
+        href="clubs.html"
+      >
+        Clubs
+      </a>
+
+      <a href="marketplace.html">
+        Books
+      </a>
+
+    </nav>
+
+    <a
+      class="nav-avatar"
+      id="navAvatar"
+      href="profile.html"
+    >
+      ?
     </a>
 
-    <a id="booksLink" href="club-books.html">
-      Bookshelf
-    </a>
+  </header>
 
-    <a id="settingsLink" href="club-settings.html">
-      Settings
-    </a>
-  </nav>
+  <!-- =====================================
+       PAGE
+       ===================================== -->
 
-  <div class="layout">
+  <main class="page">
+
+    <div class="back-row">
+
+      <a
+        class="back-link"
+        id="backLink"
+        href="clubs.html"
+      >
+        ← Back to Club
+      </a>
+
+    </div>
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <div>
+
+        <div class="eyebrow">
+          Club Conversations
+        </div>
+
+        <h1 id="clubName">
+          Discussions
+        </h1>
+
+        <p id="heroText">
+          Talk about the book, the club, and all the
+          literary rabbit holes along the way.
+        </p>
+
+      </div>
+
+      <button
+        class="primary-button"
+        id="newDiscussionButton"
+        type="button"
+      >
+        + New Discussion
+      </button>
+
+    </section>
+
+    <!-- =====================================
+         CLUB NAV
+         ===================================== -->
+
+    <nav class="club-nav">
+
+      <a
+        id="overviewNavLink"
+        href="club.html"
+      >
+        Overview
+      </a>
+
+      <a
+        id="membersNavLink"
+        href="club-members.html"
+      >
+        Members
+      </a>
+
+      <a
+        class="active"
+        id="discussionsNavLink"
+        href="club-discussions.html"
+      >
+        Discussions
+      </a>
+
+      <a
+        id="voteNavLink"
+        href="club-vote.html"
+      >
+        Monthly Vote
+      </a>
+
+      <a
+        id="booksNavLink"
+        href="club-books.html"
+      >
+        Bookshelf
+      </a>
+
+      <a
+        id="settingsNavLink"
+        href="club-settings.html"
+      >
+        Settings
+      </a>
+
+    </nav>
+
+    <!-- MESSAGE -->
+
+    <div
+      class="message"
+      id="messageBox"
+    ></div>
+
+    <!-- TOOLS -->
+
+    <div class="tools">
+
+      <input
+        class="search"
+        id="discussionSearch"
+        type="search"
+        placeholder="Search club discussions..."
+      >
+
+      <a
+        class="secondary-button"
+        id="reportClubLink"
+        href="report.html"
+      >
+        Report Club
+      </a>
+
+    </div>
+
+    <!-- DISCUSSIONS -->
 
     <section class="card">
 
-      <div class="card-head">
-        <div>
-          <h2>Conversation Board</h2>
+      <div class="card-header">
 
-          <p>
-            Talk about the current read, recommendations,
-            club business, or whatever the table has wandered into.
-          </p>
+        <h2>
+          Conversations
+        </h2>
+
+      </div>
+
+      <div
+        class="discussion-list"
+        id="discussionList"
+      >
+
+        <div class="empty">
+          Loading discussions...
         </div>
-      </div>
 
-      <div class="toolbar">
-        <input
-          class="search"
-          id="threadSearch"
-          type="search"
-          placeholder="Search discussions…"
-          autocomplete="off">
-      </div>
-
-      <div
-        class="thread-list"
-        id="threadList">
-      </div>
-
-      <div
-        class="empty"
-        id="emptyState"
-        hidden>
-
-        <strong>No discussions yet.</strong>
-
-        Be the person who puts the first thought on the table.
       </div>
 
     </section>
 
-    <aside class="card">
+  </main>
 
-      <div class="card-head">
-        <div>
-          <h2>The Room</h2>
-          <p>Quick club context.</p>
-        </div>
-      </div>
-
-      <div class="side-body">
-
-        <div class="side-section">
-          <h3>Current Read</h3>
-
-          <p id="currentBook">
-            No current book has been selected yet.
-          </p>
-
-          <a
-            class="pill"
-            id="voteSideLink"
-            href="club-vote.html">
-            View Monthly Vote
-          </a>
-        </div>
-
-        <div class="side-section">
-          <h3>Discussion etiquette</h3>
-
-          <p>
-            Critique books freely. Treat people gently.
-            Use spoiler warnings when a thread title or
-            opening post would reveal a major plot point.
-          </p>
-        </div>
-
-        <div class="side-section">
-          <h3>Club members</h3>
-
-          <p id="memberCount">
-            Loading membership…
-          </p>
-
-          <a
-            class="pill"
-            id="membersSideLink"
-            href="club-members.html">
-            See Members
-          </a>
-        </div>
-
-      </div>
-    </aside>
-
-  </div>
-</main>
-
-<div
-  class="modal"
-  id="newThreadModal"
-  aria-hidden="true">
+  <!-- =====================================
+       NEW DISCUSSION MODAL
+       ===================================== -->
 
   <div
-    class="modal-card"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="newThreadTitle">
+    class="modal-backdrop"
+    id="discussionModal"
+  >
 
-    <div class="modal-head">
+    <div
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="discussionModalTitle"
+    >
 
-      <h2 id="newThreadTitle">
-        Start a Discussion
+      <div class="eyebrow">
+        Start a Conversation
+      </div>
+
+      <h2 id="discussionModalTitle">
+        New Discussion
       </h2>
 
-      <button
-        class="close"
-        id="closeModal"
-        type="button"
-        aria-label="Close">
-        ×
-      </button>
-
-    </div>
-
-    <form
-      class="form"
-      id="newThreadForm">
-
-      <div
-        class="message"
-        id="message">
-      </div>
+      <p class="modal-intro">
+        Give the conversation a clear title and enough
+        context for the other readers around the table.
+      </p>
 
       <div class="field">
 
-        <label for="threadTitle">
+        <label for="discussionTitle">
           Title
         </label>
 
         <input
-          id="threadTitle"
-          maxlength="140"
-          required
-          placeholder="What are we talking about?">
+          id="discussionTitle"
+          type="text"
+          maxlength="160"
+          placeholder="What are we talking about?"
+        >
 
       </div>
 
       <div class="field">
 
-        <label for="threadBody">
+        <label for="discussionBody">
           Opening Post
         </label>
 
         <textarea
-          id="threadBody"
-          maxlength="5000"
-          required
-          placeholder="Start the conversation…"></textarea>
+          id="discussionBody"
+          maxlength="10000"
+          placeholder="Start the conversation..."
+        ></textarea>
+
+        <div class="helper">
+          External URLs are stored as ordinary text and
+          are not turned into clickable links.
+        </div>
 
       </div>
 
-      <div class="form-actions">
+      <div class="modal-actions">
 
         <button
-          class="btn secondary"
-          id="cancelThread"
-          type="button">
+          class="secondary-button"
+          id="cancelDiscussionButton"
+          type="button"
+        >
           Cancel
         </button>
 
         <button
-          class="btn primary"
-          id="postThread"
-          type="submit">
-          Post Discussion
+          class="primary-button"
+          id="publishDiscussionButton"
+          type="button"
+        >
+          Publish Discussion
         </button>
 
       </div>
 
-    </form>
+    </div>
+
   </div>
-</div>
 
-<script>
-const SUPABASE_URL =
-  "https://nrtutxjznkfvvbmaagum.supabase.co";
+  <!-- =====================================
+       MOBILE NAV
+       ===================================== -->
 
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+  <nav class="mobile-nav">
 
-const supabaseClient =
-  supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
+    <a href="dashboard.html">
+      <span>⌂</span>
+      Home
+    </a>
 
-const $ = id =>
-  document.getElementById(id);
+    <a href="discover.html">
+      <span>⌕</span>
+      Discover
+    </a>
 
-const params =
-  new URLSearchParams(location.search);
+    <a href="clubs.html">
+      <span>◉</span>
+      Clubs
+    </a>
 
-const clubId =
-  params.get("id");
+    <a href="profile.html">
+      <span>☺</span>
+      Profile
+    </a>
 
-let currentUser = null;
-let allThreads = [];
+  </nav>
 
-function withClub(filename){
+  <!-- =====================================
+       SUPABASE
+       ===================================== -->
 
-  return clubId
-    ? filename + "?id=" + encodeURIComponent(clubId)
-    : filename;
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
 
-}
+  <script>
+    const SUPABASE_URL =
+      "https://nrtutxjznkfvvbmaagum.supabase.co";
 
-function wireLinks(){
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
 
-  $("backLink").href =
-    withClub("club.html");
-
-  $("overviewLink").href =
-    withClub("club.html");
-
-  $("membersLink").href =
-    withClub("club-members.html");
-
-  $("discussionsLink").href =
-    withClub("club-discussions.html");
-
-  $("voteLink").href =
-    withClub("club-vote.html");
-
-  $("booksLink").href =
-    withClub("club-books.html");
-
-  $("settingsLink").href =
-    withClub("club-settings.html");
-
-  $("voteSideLink").href =
-    withClub("club-vote.html");
-
-  $("membersSideLink").href =
-    withClub("club-members.html");
-
-}
-
-function msg(text,type=""){
-
-  $("message").textContent = text;
-
-  $("message").className =
-    "message show " + type;
-
-}
-
-function escapeHtml(v=""){
-
-  return v.replace(
-    /[&<>"']/g,
-    m => ({
-      "&":"&amp;",
-      "<":"&lt;",
-      ">":"&gt;",
-      '"':"&quot;",
-      "'":"&#039;"
-    }[m])
-  );
-
-}
-
-function formatDate(v){
-
-  if(!v) return "";
-
-  const d =
-    new Date(v);
-
-  if(Number.isNaN(d.getTime()))
-    return "";
-
-  return d.toLocaleDateString(
-    undefined,
-    {
-      month:"short",
-      day:"numeric",
-      year:
-        d.getFullYear() !==
-        new Date().getFullYear()
-          ? "numeric"
-          : undefined
-    }
-  );
-
-}
-
-function openModal(){
-
-  $("newThreadModal")
-    .classList.add("show");
-
-  $("newThreadModal")
-    .setAttribute(
-      "aria-hidden",
-      "false"
-    );
-
-  setTimeout(
-    () => $("threadTitle").focus(),
-    30
-  );
-
-}
-
-function closeModal(){
-
-  $("newThreadModal")
-    .classList.remove("show");
-
-  $("newThreadModal")
-    .setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-}
-
-function renderThreads(list){
-
-  const box =
-    $("threadList");
-
-  box.innerHTML = "";
-
-  $("emptyState").hidden =
-    list.length !== 0;
-
-  for(const t of list){
-
-    const a =
-      document.createElement("a");
-
-    a.className =
-      "thread";
-
-    const threadId =
-      t.id ||
-      t.discussion_id ||
-      "";
-
-    a.href =
-      threadId
-        ? "discussion.html?id=" +
-          encodeURIComponent(threadId) +
-          "&club=" +
-          encodeURIComponent(clubId || "")
-        : withClub(
-            "club-discussions.html"
-          );
-
-    const title =
-      t.title ||
-      "Untitled discussion";
-
-    const author =
-      t.author_name ||
-      t.display_name ||
-      "Club member";
-
-    const body =
-      t.body ||
-      t.content ||
-      t.opening_post ||
-      "";
-
-    const replies =
-      t.reply_count ??
-      t.comments_count ??
-      0;
-
-    const updated =
-      t.updated_at ||
-      t.created_at;
-
-    a.innerHTML = `
-      <div class="thread-icon">
-        ${escapeHtml(
-          title.charAt(0).toUpperCase() || "D"
-        )}
-      </div>
-
-      <div>
-
-        <div class="thread-title">
-          ${escapeHtml(title)}
-        </div>
-
-        <div class="thread-meta">
-          Started by
-          ${escapeHtml(author)}
-          ${
-            updated
-              ? " · " +
-                escapeHtml(
-                  formatDate(updated)
-                )
-              : ""
-          }
-        </div>
-
-        <div class="thread-preview">
-          ${escapeHtml(body)}
-        </div>
-
-      </div>
-
-      <div class="thread-stats">
-
-        <strong>
-          ${Number(replies) || 0}
-        </strong>
-
-        ${
-          Number(replies) === 1
-            ? "reply"
-            : "replies"
-        }
-
-      </div>
-    `;
-
-    box.appendChild(a);
-
-  }
-
-}
-
-async function loadProfile(){
-
-  let display =
-    currentUser?.user_metadata
-      ?.display_name ||
-    "Reader";
-
-  let avatar = "";
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient.rpc(
-        "get_public_profile",
-        {
-          check_user_id:
-            currentUser.id
-        }
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
       );
 
-    if(error)
-      throw error;
+    let currentUser = null;
+    let clubId = null;
+    let clubData = null;
+    let myMembership = null;
+    let discussions = [];
 
-    const p =
-      Array.isArray(data)
-        ? data[0]
-        : data;
-
-    if(p){
-
-      display =
-        p.display_name ||
-        display;
-
-      avatar =
-        p.avatar_url ||
-        "";
-
-    }
-
-  }
-  catch(e){
-
-    console.warn(
-      "Profile lookup:",
-      e.message
-    );
-
-  }
-
-  const a =
-    $("navAvatar");
-
-  a.innerHTML = "";
-
-  if(avatar){
-
-    const img =
-      document.createElement("img");
-
-    img.src =
-      avatar;
-
-    img.alt =
-      display;
-
-    img.onerror = () => {
-
-      a.textContent =
-        display?.[0]
-          ?.toUpperCase() ||
-        "?";
-
-    };
-
-    a.appendChild(img);
-
-  }
-  else{
-
-    a.textContent =
-      display?.[0]
-        ?.toUpperCase() ||
-      "?";
-
-  }
-
-}
-
-async function loadClub(){
-
-  if(!clubId){
-
-    $("clubMeta").textContent =
-      "No club ID was supplied.";
-
-    return;
-
-  }
-
-  try{
-
-    let {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("clubs")
-        .select("*")
-        .eq("id",clubId)
-        .maybeSingle();
-
-    if(error)
-      throw error;
-
-    if(data){
-
-      $("clubName").textContent =
-        data.name ||
-        "Book Club";
-
-      const bits = [];
-
-      if(data.genre)
-        bits.push(data.genre);
-
-      bits.push(
-        data.is_public === false
-          ? "Private club"
-          : "Public club"
+    const loadingScreen =
+      document.getElementById(
+        "loadingScreen"
       );
 
-      $("clubMeta").textContent =
-        bits.join(" · ");
-
-      if(
-        data.current_book_title
-      ){
-
-        $("currentBook").textContent =
-          data.current_book_author
-            ? data.current_book_title +
-              " by " +
-              data.current_book_author
-            : data.current_book_title;
-
-      }
-
-    }
-
-  }
-  catch(e){
-
-    console.warn(
-      "Club lookup:",
-      e.message
-    );
-
-    $("clubMeta").textContent =
-      "Club discussion room";
-
-  }
-
-}
-
-async function loadMembers(){
-
-  if(!clubId)
-    return;
-
-  try{
-
-    const {
-      count,
-      error
-    } =
-      await supabaseClient
-        .from("club_members")
-        .select(
-          "*",
-          {
-            count:"exact",
-            head:true
-          }
-        )
-        .eq("club_id",clubId);
-
-    if(error)
-      throw error;
-
-    $("memberCount").textContent =
-      (count || 0) +
-      " " +
-      (
-        (count || 0) === 1
-          ? "member"
-          : "members"
-      ) +
-      " in this club.";
-
-  }
-  catch(e){
-
-    console.warn(
-      "Member count:",
-      e.message
-    );
-
-    $("memberCount").textContent =
-      "Member list available from the club roster.";
-
-  }
-
-}
-
-async function loadThreads(){
-
-  if(!clubId){
-
-    renderThreads([]);
-
-    return;
-
-  }
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("club_discussions")
-        .select("*")
-        .eq("club_id",clubId)
-        .order(
-          "updated_at",
-          {
-            ascending:false
-          }
-        );
-
-    if(error)
-      throw error;
-
-    allThreads =
-      data || [];
-
-    renderThreads(
-      allThreads
-    );
-
-  }
-  catch(e){
-
-    console.warn(
-      "Discussion lookup:",
-      e.message
-    );
-
-    allThreads = [];
-
-    renderThreads([]);
-
-  }
-
-}
-
-$("threadSearch")
-  .addEventListener(
-    "input",
-    e => {
-
-      const q =
-        e.target.value
-          .trim()
-          .toLowerCase();
-
-      if(!q){
-
-        renderThreads(
-          allThreads
-        );
-
-        return;
-
-      }
-
-      renderThreads(
-        allThreads.filter(
-          t =>
-
-            String(
-              t.title ||
-              ""
-            )
-              .toLowerCase()
-              .includes(q)
-
-            ||
-
-            String(
-              t.body ||
-              t.content ||
-              t.opening_post ||
-              ""
-            )
-              .toLowerCase()
-              .includes(q)
-
-            ||
-
-            String(
-              t.author_name ||
-              t.display_name ||
-              ""
-            )
-              .toLowerCase()
-              .includes(q)
-
-        )
+    const navAvatar =
+      document.getElementById(
+        "navAvatar"
       );
 
-    }
-  );
+    const clubName =
+      document.getElementById(
+        "clubName"
+      );
 
-$("newThreadBtn")
-  .addEventListener(
-    "click",
-    openModal
-  );
+    const heroText =
+      document.getElementById(
+        "heroText"
+      );
 
-$("closeModal")
-  .addEventListener(
-    "click",
-    closeModal
-  );
+    const discussionList =
+      document.getElementById(
+        "discussionList"
+      );
 
-$("cancelThread")
-  .addEventListener(
-    "click",
-    closeModal
-  );
+    const discussionSearch =
+      document.getElementById(
+        "discussionSearch"
+      );
 
-$("newThreadModal")
-  .addEventListener(
-    "click",
-    e => {
+    const messageBox =
+      document.getElementById(
+        "messageBox"
+      );
 
-      if(
-        e.target ===
-        $("newThreadModal")
-      ){
+    const discussionModal =
+      document.getElementById(
+        "discussionModal"
+      );
 
-        closeModal();
+    const newDiscussionButton =
+      document.getElementById(
+        "newDiscussionButton"
+      );
 
-      }
+    const cancelDiscussionButton =
+      document.getElementById(
+        "cancelDiscussionButton"
+      );
 
-    }
-  );
+    const publishDiscussionButton =
+      document.getElementById(
+        "publishDiscussionButton"
+      );
 
-document
-  .addEventListener(
-    "keydown",
-    e => {
+    const discussionTitle =
+      document.getElementById(
+        "discussionTitle"
+      );
 
-      if(e.key === "Escape")
-        closeModal();
+    const discussionBody =
+      document.getElementById(
+        "discussionBody"
+      );
 
-    }
-  );
+    /* =====================================
+       START
+       ===================================== */
 
-$("newThreadForm")
-  .addEventListener(
-    "submit",
-    async e => {
+    async function startPage() {
 
-      e.preventDefault();
-
-      const title =
-        $("threadTitle")
-          .value
-          .trim();
-
-      const body =
-        $("threadBody")
-          .value
-          .trim();
-
-      if(!clubId){
-
-        msg(
-          "This page needs a club ID in the URL.",
-          "error"
+      const params =
+        new URLSearchParams(
+          window.location.search
         );
 
-        return;
+      clubId =
+        params.get("id");
 
+      if (!clubId) {
+
+        window.location.href =
+          "clubs.html";
+
+        return;
       }
 
-      if(!title || !body){
+      wireLinks();
 
-        msg(
-          "Add both a title and an opening post.",
-          "error"
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .auth
+          .getUser();
+
+      if (
+        error ||
+        !data.user
+      ) {
+
+        window.location.href =
+          "auth.html#login";
+
+        return;
+      }
+
+      currentUser =
+        data.user;
+
+      await loadMyProfile();
+      await loadClub();
+      await loadMyMembership();
+
+      configurePosting();
+
+      await loadDiscussions();
+
+      loadingScreen
+        .classList
+        .add("hidden");
+    }
+
+    /* =====================================
+       LINKS
+       ===================================== */
+
+    function wireLinks() {
+
+      const id =
+        encodeURIComponent(
+          clubId
         );
 
-        return;
+      document.getElementById(
+        "backLink"
+      ).href =
+        "club.html?id=" +
+        id;
 
-      }
+      document.getElementById(
+        "overviewNavLink"
+      ).href =
+        "club.html?id=" +
+        id;
 
-      const b =
-        $("postThread");
+      document.getElementById(
+        "membersNavLink"
+      ).href =
+        "club-members.html?id=" +
+        id;
 
-      b.disabled =
-        true;
+      document.getElementById(
+        "discussionsNavLink"
+      ).href =
+        "club-discussions.html?id=" +
+        id;
 
-      b.textContent =
-        "Posting...";
+      document.getElementById(
+        "voteNavLink"
+      ).href =
+        "club-vote.html?id=" +
+        id;
 
-      try{
+      document.getElementById(
+        "booksNavLink"
+      ).href =
+        "club-books.html?id=" +
+        id;
 
-        const payload = {
+      document.getElementById(
+        "settingsNavLink"
+      ).href =
+        "club-settings.html?id=" +
+        id;
 
-          club_id:
-            clubId,
+      const returnUrl =
+        "club-discussions.html?id=" +
+        id;
 
-          author_id:
-            currentUser.id,
+      document.getElementById(
+        "reportClubLink"
+      ).href =
+        "report.html?" +
+        new URLSearchParams({
+          type:"club",
+          target:clubId,
+          club:clubId,
+          return:returnUrl
+        }).toString();
+    }
 
-          title,
+    /* =====================================
+       MY PROFILE
+       ===================================== */
 
-          body
+    async function loadMyProfile() {
 
-        };
+      let displayName =
+        currentUser
+          ?.user_metadata
+          ?.display_name ||
+        "Reader";
+
+      let avatarUrl = "";
+
+      try {
 
         const {
           data,
           error
         } =
           await supabaseClient
+            .rpc(
+              "get_public_profile",
+              {
+                check_user_id:
+                  currentUser.id
+              }
+            );
 
-            .from(
-              "club_discussions"
-            )
-
-            .insert(
-              payload
-            )
-
-            .select()
-
-            .single();
-
-        if(error)
+        if (error) {
           throw error;
-
-        msg(
-          "Discussion posted.",
-          "success"
-        );
-
-        $("threadTitle").value =
-          "";
-
-        $("threadBody").value =
-          "";
-
-        await loadThreads();
-
-        setTimeout(
-          closeModal,
-          350
-        );
-
-        if(data?.id){
-
-          /*
-            Thread links are already
-            wired to discussion.html.
-          */
-
         }
 
+        const profile =
+          Array.isArray(data)
+            ? data[0]
+            : data;
+
+        if (profile) {
+
+          displayName =
+            profile.display_name ||
+            displayName;
+
+          avatarUrl =
+            profile.avatar_url ||
+            "";
+        }
       }
-      catch(err){
 
-        console.error(err);
+      catch (error) {
 
-        msg(
-          "DogEar couldn't post this discussion: " +
+        console.error(
+          "Profile error:",
+          error
+        );
+      }
+
+      setAvatar(
+        navAvatar,
+        avatarUrl,
+        displayName
+      );
+    }
+
+    /* =====================================
+       CLUB
+       ===================================== */
+
+    async function loadClub() {
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from("clubs")
+            .select("*")
+            .eq(
+              "id",
+              clubId
+            )
+            .single();
+
+        if (error) {
+          throw error;
+        }
+
+        clubData = data;
+
+        clubName.textContent =
+          data.name ||
+          "Club Discussions";
+
+        heroText.textContent =
+          "Conversations happening around the table at " +
           (
-            err.message ||
-            "Unknown error"
-          ),
-          "error"
+            data.name ||
+            "this club"
+          ) +
+          ".";
+
+        document.title =
+          "DogEar — " +
+          (
+            data.name ||
+            "Club"
+          ) +
+          " Discussions";
+      }
+
+      catch (error) {
+
+        console.error(
+          "Club error:",
+          error
         );
 
+        showMessage(
+          "DogEar couldn't load this club.",
+          "error"
+        );
       }
-      finally{
+    }
 
-        b.disabled =
+    /* =====================================
+       MEMBERSHIP
+       ===================================== */
+
+    async function loadMyMembership() {
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from("club_members")
+            .select(
+              "user_id, role, status"
+            )
+            .eq(
+              "club_id",
+              clubId
+            )
+            .eq(
+              "user_id",
+              currentUser.id
+            )
+            .maybeSingle();
+
+        if (error) {
+          throw error;
+        }
+
+        myMembership = data;
+      }
+
+      catch (error) {
+
+        console.error(
+          "Membership error:",
+          error
+        );
+
+        myMembership = null;
+      }
+    }
+
+    function isActiveMember() {
+
+      return (
+        myMembership?.status ===
+        "active"
+      );
+    }
+
+    function configurePosting() {
+
+      if (!isActiveMember()) {
+
+        newDiscussionButton.disabled =
+          true;
+
+        newDiscussionButton.textContent =
+          "Members Only";
+
+        newDiscussionButton.style.opacity =
+          ".55";
+
+        newDiscussionButton.style.cursor =
+          "default";
+      }
+    }
+
+    /* =====================================
+       DISCUSSIONS
+       ===================================== */
+
+    async function loadDiscussions() {
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from("club_discussions")
+            .select("*")
+            .eq(
+              "club_id",
+              clubId
+            )
+            .order(
+              "created_at",
+              {
+                ascending:false
+              }
+            );
+
+        if (error) {
+          throw error;
+        }
+
+        discussions =
+          data || [];
+
+        await attachDiscussionProfiles();
+
+        renderDiscussions();
+      }
+
+      catch (error) {
+
+        console.error(
+          "Discussion load error:",
+          error
+        );
+
+        discussionList.innerHTML =
+          `
+            <div class="empty">
+              <strong>
+                Discussions couldn't be loaded.
+              </strong>
+
+              DogEar wasn't able to retrieve
+              this club's conversations.
+            </div>
+          `;
+      }
+    }
+
+    async function attachDiscussionProfiles() {
+
+      for (
+        const discussion of discussions
+      ) {
+
+        const authorId =
+          discussion.author_id ||
+          discussion.user_id;
+
+        discussion.authorProfile =
+          null;
+
+        if (!authorId) {
+          continue;
+        }
+
+        try {
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient
+              .rpc(
+                "get_public_profile",
+                {
+                  check_user_id:
+                    authorId
+                }
+              );
+
+          if (error) {
+            throw error;
+          }
+
+          discussion.authorProfile =
+            Array.isArray(data)
+              ? data[0]
+              : data;
+        }
+
+        catch (error) {
+
+          console.error(
+            "Discussion author error:",
+            error
+          );
+        }
+      }
+    }
+
+    /* =====================================
+       SEARCH
+       ===================================== */
+
+    discussionSearch.addEventListener(
+      "input",
+      renderDiscussions
+    );
+
+    /* =====================================
+       RENDER
+       ===================================== */
+
+    function renderDiscussions() {
+
+      const search =
+        discussionSearch
+          .value
+          .trim()
+          .toLowerCase();
+
+      let filtered =
+        discussions;
+
+      if (search) {
+
+        filtered =
+          discussions.filter(
+            discussion => {
+
+              const title =
+                (
+                  discussion.title ||
+                  ""
+                ).toLowerCase();
+
+              const body =
+                (
+                  discussion.body ||
+                  discussion.content ||
+                  ""
+                ).toLowerCase();
+
+              const author =
+                (
+                  discussion
+                    .authorProfile
+                    ?.display_name ||
+                  discussion
+                    .authorProfile
+                    ?.username ||
+                  ""
+                ).toLowerCase();
+
+              return (
+                title.includes(search) ||
+                body.includes(search) ||
+                author.includes(search)
+              );
+            }
+          );
+      }
+
+      discussionList.innerHTML = "";
+
+      if (
+        filtered.length === 0
+      ) {
+
+        discussionList.innerHTML =
+          `
+            <div class="empty">
+              <strong>
+                No conversations yet.
+              </strong>
+
+              Somebody has to be the first reader
+              to say something.
+            </div>
+          `;
+
+        return;
+      }
+
+      filtered.forEach(
+        discussion => {
+
+          discussionList.appendChild(
+            buildDiscussionRow(
+              discussion
+            )
+          );
+        }
+      );
+    }
+
+    function buildDiscussionRow(
+      discussion
+    ) {
+
+      const row =
+        document.createElement(
+          "article"
+        );
+
+      row.className =
+        "discussion-row";
+
+      const avatar =
+        document.createElement(
+          "div"
+        );
+
+      avatar.className =
+        "author-avatar";
+
+      const authorName =
+        discussion
+          .authorProfile
+          ?.display_name ||
+        discussion
+          .authorProfile
+          ?.username ||
+        "DogEar Reader";
+
+      setAvatar(
+        avatar,
+        discussion
+          .authorProfile
+          ?.avatar_url,
+        authorName
+      );
+
+      const main =
+        document.createElement(
+          "div"
+        );
+
+      const title =
+        document.createElement(
+          "a"
+        );
+
+      title.className =
+        "discussion-title";
+
+      title.href =
+        "discussion.html?id=" +
+        encodeURIComponent(
+          discussion.id
+        ) +
+        "&club=" +
+        encodeURIComponent(
+          clubId
+        );
+
+      title.textContent =
+        discussion.title ||
+        "Untitled Discussion";
+
+      const preview =
+        document.createElement(
+          "div"
+        );
+
+      preview.className =
+        "discussion-preview";
+
+      /*
+        IMPORTANT:
+
+        We use textContent here instead of innerHTML.
+
+        That means URLs remain ordinary text instead
+        of becoming clickable external hyperlinks.
+      */
+
+      const body =
+        discussion.body ||
+        discussion.content ||
+        "";
+
+      preview.textContent =
+        truncateText(
+          body,
+          340
+        );
+
+      const meta =
+        document.createElement(
+          "div"
+        );
+
+      meta.className =
+        "discussion-meta";
+
+      const authorId =
+        discussion.author_id ||
+        discussion.user_id;
+
+      if (authorId) {
+
+        const authorLink =
+          document.createElement(
+            "a"
+          );
+
+        authorLink.href =
+          "profile.html?id=" +
+          encodeURIComponent(
+            authorId
+          );
+
+        authorLink.textContent =
+          authorName;
+
+        meta.appendChild(
+          authorLink
+        );
+      }
+
+      const date =
+        document.createElement(
+          "span"
+        );
+
+      date.textContent =
+        formatDate(
+          discussion.created_at
+        );
+
+      meta.appendChild(
+        date
+      );
+
+      if (
+        typeof discussion.reply_count ===
+        "number"
+      ) {
+
+        const replies =
+          document.createElement(
+            "span"
+          );
+
+        replies.textContent =
+          discussion.reply_count +
+          (
+            discussion.reply_count === 1
+              ? " reply"
+              : " replies"
+          );
+
+        meta.appendChild(
+          replies
+        );
+      }
+
+      main.appendChild(
+        title
+      );
+
+      if (body) {
+
+        main.appendChild(
+          preview
+        );
+      }
+
+      main.appendChild(
+        meta
+      );
+
+      const actions =
+        document.createElement(
+          "div"
+        );
+
+      actions.className =
+        "row-actions";
+
+      const openButton =
+        document.createElement(
+          "a"
+        );
+
+      openButton.className =
+        "row-button";
+
+      openButton.href =
+        title.href;
+
+      openButton.textContent =
+        "Open";
+
+      actions.appendChild(
+        openButton
+      );
+
+      const reportButton =
+        document.createElement(
+          "a"
+        );
+
+      reportButton.className =
+        "row-button report";
+
+      reportButton.href =
+        buildDiscussionReportUrl(
+          discussion
+        );
+
+      reportButton.textContent =
+        "Report";
+
+      actions.appendChild(
+        reportButton
+      );
+
+      row.appendChild(
+        avatar
+      );
+
+      row.appendChild(
+        main
+      );
+
+      row.appendChild(
+        actions
+      );
+
+      return row;
+    }
+
+    /* =====================================
+       REPORTING
+       ===================================== */
+
+    function buildDiscussionReportUrl(
+      discussion
+    ) {
+
+      const returnUrl =
+        "club-discussions.html?id=" +
+        encodeURIComponent(
+          clubId
+        );
+
+      const params =
+        new URLSearchParams({
+          type:"discussion",
+          target:discussion.id,
+          club:clubId,
+          return:returnUrl
+        });
+
+      const authorId =
+        discussion.author_id ||
+        discussion.user_id;
+
+      if (authorId) {
+
+        params.set(
+          "user",
+          authorId
+        );
+      }
+
+      return (
+        "report.html?" +
+        params.toString()
+      );
+    }
+
+    /* =====================================
+       NEW DISCUSSION MODAL
+       ===================================== */
+
+    newDiscussionButton
+      .addEventListener(
+        "click",
+        function () {
+
+          if (!isActiveMember()) {
+
+            showMessage(
+              "Only active club members can start discussions.",
+              "warning"
+            );
+
+            return;
+          }
+
+          discussionModal
+            .classList
+            .add("show");
+
+          discussionTitle.focus();
+        }
+      );
+
+    cancelDiscussionButton
+      .addEventListener(
+        "click",
+        closeDiscussionModal
+      );
+
+    discussionModal
+      .addEventListener(
+        "click",
+        function (event) {
+
+          if (
+            event.target ===
+            discussionModal
+          ) {
+
+            closeDiscussionModal();
+          }
+        }
+      );
+
+    function closeDiscussionModal() {
+
+      discussionModal
+        .classList
+        .remove("show");
+    }
+
+    /* =====================================
+       PUBLISH DISCUSSION
+       ===================================== */
+
+    publishDiscussionButton
+      .addEventListener(
+        "click",
+        publishDiscussion
+      );
+
+    async function publishDiscussion() {
+
+      if (!isActiveMember()) {
+
+        showMessage(
+          "Only active members can post discussions.",
+          "warning"
+        );
+
+        return;
+      }
+
+      const title =
+        discussionTitle
+          .value
+          .trim();
+
+      const body =
+        discussionBody
+          .value
+          .trim();
+
+      if (!title) {
+
+        showMessage(
+          "Give the discussion a title first.",
+          "warning"
+        );
+
+        return;
+      }
+
+      if (!body) {
+
+        showMessage(
+          "Write an opening post before publishing.",
+          "warning"
+        );
+
+        return;
+      }
+
+      publishDiscussionButton.disabled =
+        true;
+
+      publishDiscussionButton.textContent =
+        "Publishing...";
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from("club_discussions")
+            .insert({
+              club_id:
+                clubId,
+
+              author_id:
+                currentUser.id,
+
+              title:
+                title,
+
+              body:
+                body
+            })
+            .select()
+            .single();
+
+        if (error) {
+          throw error;
+        }
+
+        discussionTitle.value = "";
+        discussionBody.value = "";
+
+        closeDiscussionModal();
+
+        if (
+          data?.id
+        ) {
+
+          window.location.href =
+            "discussion.html?id=" +
+            encodeURIComponent(
+              data.id
+            ) +
+            "&club=" +
+            encodeURIComponent(
+              clubId
+            );
+
+          return;
+        }
+
+        await loadDiscussions();
+
+        showMessage(
+          "Discussion published.",
+          "success"
+        );
+      }
+
+      catch (error) {
+
+        console.error(
+          "Publish discussion error:",
+          error
+        );
+
+        showMessage(
+          "DogEar couldn't publish that discussion. The database permissions or discussion schema may still need to be connected.",
+          "error"
+        );
+      }
+
+      finally {
+
+        publishDiscussionButton.disabled =
           false;
 
-        b.textContent =
-          "Post Discussion";
+        publishDiscussionButton.textContent =
+          "Publish Discussion";
+      }
+    }
 
+    /* =====================================
+       HELPERS
+       ===================================== */
+
+    function setAvatar(
+      container,
+      avatarUrl,
+      displayName
+    ) {
+
+      container.innerHTML = "";
+
+      if (avatarUrl) {
+
+        const image =
+          document.createElement(
+            "img"
+          );
+
+        image.src =
+          avatarUrl;
+
+        image.alt =
+          displayName ||
+          "Profile";
+
+        image.onerror =
+          function () {
+
+            container.innerHTML = "";
+
+            container.textContent =
+              displayName
+                ? displayName
+                    .charAt(0)
+                    .toUpperCase()
+                : "?";
+          };
+
+        container.appendChild(
+          image
+        );
       }
 
+      else {
+
+        container.textContent =
+          displayName
+            ? displayName
+                .charAt(0)
+                .toUpperCase()
+            : "?";
+      }
     }
-  );
 
-async function start(){
+    function truncateText(
+      text,
+      maxLength
+    ) {
 
-  wireLinks();
+      const clean =
+        String(
+          text || ""
+        ).trim();
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .auth
-      .getUser();
+      if (
+        clean.length <=
+        maxLength
+      ) {
 
-  if(
-    error ||
-    !data.user
-  ){
+        return clean;
+      }
 
-    location.href =
-      "auth.html#login";
+      return (
+        clean.slice(
+          0,
+          maxLength
+        ).trim() +
+        "…"
+      );
+    }
 
-    return;
+    function formatDate(
+      value
+    ) {
 
-  }
+      if (!value) {
+        return "";
+      }
 
-  currentUser =
-    data.user;
+      const date =
+        new Date(value);
 
-  await Promise.all([
-    loadProfile(),
-    loadClub(),
-    loadMembers(),
-    loadThreads()
-  ]);
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
 
-  $("loading")
-    .classList
-    .add("hidden");
+        return "";
+      }
 
-}
+      return date.toLocaleDateString(
+        undefined,
+        {
+          month:"short",
+          day:"numeric",
+          year:"numeric"
+        }
+      );
+    }
 
-start();
-</script>
+    function showMessage(
+      text,
+      type
+    ) {
 
+      messageBox.textContent =
+        text;
+
+      messageBox.className =
+        "message show";
+
+      if (type) {
+
+        messageBox
+          .classList
+          .add(type);
+      }
+    }
+
+    startPage();
+  </script>
 </body>
 </html>
