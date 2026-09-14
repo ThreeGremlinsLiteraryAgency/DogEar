@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DogEar — Report</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --ink:#090b0a;
+  --panel:#101410;
+  --panel2:#0d110e;
+  --cream:#f1e7cf;
+  --gold:#c79b59;
+  --gold2:#dfbd7e;
+  --green:#26362b;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.22);
+  --line-soft:rgba(199,155,89,.11);
+  --danger:#e6a09a;
+  --ok:#b9d6b2;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--cream);
+  background:
+    radial-gradient(circle at 10% 0%,rgba(53,73,59,.24),transparent 28%),
+    var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+a{
+  color:inherit;
+}
+
+.topbar{
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:0 clamp(18px,4vw,60px);
+  border-bottom:1px solid var(--line);
+  background:rgba(9,11,10,.94);
+  position:sticky;
+  top:0;
+  z-index:30;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 13px Arial;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  transform:rotate(-8deg);
+}
+
+.nav{
+  display:flex;
+  gap:24px;
+  font:700 11px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.nav a:hover{
+  color:var(--gold2);
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:var(--green);
+  text-decoration:none;
+  font:800 13px Arial;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.page{
+  width:min(860px,calc(100% - 32px));
+  margin:auto;
+  padding:38px 0 110px;
+}
+
+.back{
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 10px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.hero{
+  margin-top:22px;
+  padding-bottom:28px;
+  border-bottom:1px solid var(--line);
+}
+
+.eyebrow{
+  color:var(--gold);
+  font:800 10px Arial;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+
+h1{
+  margin:0;
+  font-size:clamp(42px,7vw,68px);
+  line-height:.96;
+  font-weight:400;
+  letter-spacing:-.04em;
+}
+
+.subtitle{
+  margin-top:12px;
+  max-width:720px;
+  color:var(--muted);
+  font:13px/1.65 Arial;
+}
+
+.card{
+  margin-top:26px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(16,20,16,.86);
+  overflow:hidden;
+}
+
+.card-head{
+  padding:18px 20px;
+  border-bottom:1px solid var(--line);
+}
+
+.card-head h2{
+  margin:0;
+  font-size:24px;
+  font-weight:400;
+}
+
+.card-head p{
+  margin:7px 0 0;
+  color:var(--muted);
+  font:11px/1.55 Arial;
+}
+
+.card-body{
+  padding:20px;
+}
+
+.context-box{
+  display:none;
+  margin-bottom:20px;
+  padding:14px;
+  border:1px solid var(--line-soft);
+  border-radius:12px;
+  background:rgba(38,54,43,.18);
+}
+
+.context-box.show{
+  display:block;
+}
+
+.context-label{
+  color:var(--gold);
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.context-value{
+  margin-top:6px;
+  color:var(--muted);
+  font:11px/1.55 Arial;
+  overflow-wrap:anywhere;
+}
+
+.field{
+  margin-bottom:18px;
+}
+
+.field:last-child{
+  margin-bottom:0;
+}
+
+.field label{
+  display:block;
+  margin-bottom:7px;
+  color:var(--gold2);
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.field select,
+.field textarea,
+.field input{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:var(--panel2);
+  color:var(--cream);
+  outline:none;
+}
+
+.field select,
+.field input{
+  height:46px;
+  padding:0 12px;
+}
+
+.field textarea{
+  min-height:145px;
+  padding:12px;
+  resize:vertical;
+  font:12px/1.55 Arial;
+}
+
+.field select:focus,
+.field textarea:focus,
+.field input:focus{
+  border-color:var(--gold);
+}
+
+.help{
+  margin-top:6px;
+  color:var(--muted);
+  font:10px/1.5 Arial;
+}
+
+.note{
+  margin-top:20px;
+  padding:15px;
+  border:1px solid var(--line-soft);
+  border-radius:12px;
+  background:rgba(38,54,43,.18);
+  color:var(--muted);
+  font:11px/1.65 Arial;
+}
+
+.actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:22px;
+}
+
+.btn{
+  min-height:42px;
+  padding:0 15px;
+  border-radius:999px;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font:800 9px Arial;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.primary{
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:#17130e;
+}
+
+.secondary{
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--gold2);
+}
+
+.btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.message{
+  display:none;
+  margin-top:16px;
+  padding:12px 14px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  font:11px/1.55 Arial;
+}
+
+.message.show{display:block}
+.message.success{color:var(--ok)}
+.message.error{color:var(--danger)}
+
+.success-box{
+  display:none;
+  margin-top:26px;
+  padding:44px 24px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  text-align:center;
+  background:rgba(16,20,16,.86);
+}
+
+.success-box.show{
+  display:block;
+}
+
+.success-box h2{
+  margin:0 0 8px;
+  font-size:28px;
+  font-weight:400;
+}
+
+.success-box p{
+  margin:0 auto;
+  max-width:560px;
+  color:var(--muted);
+  font:12px/1.65 Arial;
+}
+
+.success-actions{
+  margin-top:20px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.loading{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:grid;
+  place-items:center;
+  background:var(--ink);
+}
+
+.loading.hidden{
+  display:none;
+}
+
+.loading span{
+  color:var(--gold2);
+  font:800 10px Arial;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+@media(max-width:650px){
+  .nav{display:none}
+}
+</style>
+</head>
+
+<body>
+
+<div class="loading" id="loading">
+  <span>Opening report form...</span>
+</div>
+
+<header class="topbar">
+
+  <a class="brand" href="dashboard.html">
+    <span class="brand-mark"></span>
+    DogEar
+  </a>
+
+  <nav class="nav">
+    <a href="dashboard.html">Home</a>
+    <a href="discover.html">Discover</a>
+    <a href="clubs.html">Clubs</a>
+    <a href="marketplace.html">Books</a>
+  </nav>
+
+  <a class="avatar" id="navAvatar" href="profile.html">?</a>
+
+</header>
+
+<main class="page">
+
+  <a class="back" id="backLink" href="dashboard.html">
+    ← Go Back
+  </a>
+
+  <section class="hero">
+
+    <div class="eyebrow">
+      DogEar Safety
+    </div>
+
+    <h1>
+      Report Something
+    </h1>
+
+    <div class="subtitle">
+      Tell DogEar about behavior or content that may violate community rules.
+      Reports are sent to the moderation queue for review.
+    </div>
+
+  </section>
+
+  <section class="card" id="reportCard">
+
+    <div class="card-head">
+
+      <h2>
+        What happened?
+      </h2>
+
+      <p>
+        Include enough detail for a moderator to understand the issue without
+        reposting sensitive information unnecessarily.
+      </p>
+
+    </div>
+
+    <div class="card-body">
+
+      <div class="context-box" id="contextBox">
+
+        <div class="context-label">
+          Reporting
+        </div>
+
+        <div class="context-value" id="contextValue">
+          —
+        </div>
+
+      </div>
+
+      <div class="field">
+
+        <label for="reason">
+          Reason
+        </label>
+
+        <select id="reason">
+
+          <option value="">
+            Choose a reason
+          </option>
+
+          <option value="Harassment or bullying">
+            Harassment or bullying
+          </option>
+
+          <option value="Hate or discriminatory behavior">
+            Hate or discriminatory behavior
+          </option>
+
+          <option value="Threats or violence">
+            Threats or violence
+          </option>
+
+          <option value="Sexual harassment or unwanted sexual content">
+            Sexual harassment or unwanted sexual content
+          </option>
+
+          <option value="Spam or scams">
+            Spam or scams
+          </option>
+
+          <option value="Impersonation">
+            Impersonation
+          </option>
+
+          <option value="Dangerous or illegal activity">
+            Dangerous or illegal activity
+          </option>
+
+          <option value="Privacy or personal information">
+            Privacy or personal information
+          </option>
+
+          <option value="Club rule or community issue">
+            Club rule or community issue
+          </option>
+
+          <option value="Other">
+            Other
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="field">
+
+        <label for="details">
+          What should moderators know?
+        </label>
+
+        <textarea
+          id="details"
+          maxlength="3000"
+          placeholder="Describe what happened and why you're reporting it."></textarea>
+
+        <div class="help">
+          Maximum 3,000 characters.
+        </div>
+
+      </div>
+
+      <div class="field">
+
+        <label for="reportedUserId">
+          Reported User ID
+        </label>
+
+        <input
+          id="reportedUserId"
+          type="text"
+          placeholder="Filled automatically when available">
+
+        <div class="help">
+          Usually filled automatically from the page that sent you here.
+        </div>
+
+      </div>
+
+      <div class="note">
+        Reports are not public. DogEar may use the report, the referenced
+        content, and relevant account activity to investigate. A report does
+        not automatically suspend another member or remove content.
+      </div>
+
+      <div class="actions">
+
+        <a
+          class="btn secondary"
+          id="cancelLink"
+          href="dashboard.html">
+          Cancel
+        </a>
+
+        <button
+          class="btn primary"
+          id="submitBtn"
+          type="button">
+          Submit Report
+        </button>
+
+      </div>
+
+      <div class="message" id="message"></div>
+
+    </div>
+
+  </section>
+
+  <section class="success-box" id="successBox">
+
+    <h2>
+      Report sent.
+    </h2>
+
+    <p>
+      It has been added to DogEar's moderation queue. You do not need to submit
+      the same issue repeatedly unless something materially changes.
+    </p>
+
+    <div class="success-actions">
+
+      <a
+        class="btn primary"
+        id="returnLink"
+        href="dashboard.html">
+        Return
+      </a>
+
+      <a
+        class="btn secondary"
+        href="dashboard.html">
+        Home
+      </a>
+
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+const $ =
+  id => document.getElementById(id);
+
+let currentUser = null;
+
+/* =========================================================
+   URL CONTEXT
+
+   Supported examples:
+
+   report.html?type=user&target=<user-id>
+   report.html?type=club&target=<club-id>
+   report.html?type=discussion&target=<discussion-id>&club=<club-id>
+   report.html?type=reply&target=<reply-id>&club=<club-id>&discussion=<discussion-id>
+
+   Optional:
+   &user=<reported-user-id>
+   &return=<encoded-return-url>
+
+========================================================= */
+
+const params =
+  new URLSearchParams(
+    location.search
+  );
+
+const targetType =
+  (
+    params.get("type") ||
+    ""
+  ).toLowerCase();
+
+const targetId =
+  params.get("target") ||
+  "";
+
+const clubId =
+  params.get("club") ||
+  "";
+
+const discussionId =
+  params.get("discussion") ||
+  "";
+
+const suppliedUserId =
+  params.get("user") ||
+  "";
+
+const suppliedReturn =
+  params.get("return") ||
+  "";
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function showMessage(text,type=""){
+
+  $("message").textContent =
+    text;
+
+  $("message").className =
+    "message show " + type;
+
+}
+
+function clearMessage(){
+
+  $("message").textContent = "";
+  $("message").className = "message";
+
+}
+
+function safeReturnUrl(){
+
+  /*
+    Only permit local DogEar HTML navigation.
+    This avoids turning ?return= into an open redirect.
+  */
+
+  if(!suppliedReturn)
+    return defaultReturnUrl();
+
+  try{
+
+    const decoded =
+      decodeURIComponent(
+        suppliedReturn
+      );
+
+    if(
+      decoded.startsWith("http://") ||
+      decoded.startsWith("https://") ||
+      decoded.startsWith("//")
+    )
+      return defaultReturnUrl();
+
+    if(
+      !decoded.endsWith(".html") &&
+      !decoded.includes(".html?")
+    )
+      return defaultReturnUrl();
+
+    return decoded;
+
+  }
+  catch(error){
+
+    return defaultReturnUrl();
+
+  }
+
+}
+
+function defaultReturnUrl(){
+
+  if(
+    targetType === "discussion" &&
+    targetId &&
+    clubId
+  ){
+
+    return (
+      "discussion.html?id=" +
+      encodeURIComponent(targetId) +
+      "&club=" +
+      encodeURIComponent(clubId)
+    );
+
+  }
+
+  if(
+    targetType === "reply" &&
+    discussionId &&
+    clubId
+  ){
+
+    return (
+      "discussion.html?id=" +
+      encodeURIComponent(discussionId) +
+      "&club=" +
+      encodeURIComponent(clubId)
+    );
+
+  }
+
+  if(
+    targetType === "club" &&
+    targetId
+  ){
+
+    return (
+      "club.html?id=" +
+      encodeURIComponent(targetId)
+    );
+
+  }
+
+  if(
+    (
+      targetType === "user" ||
+      targetType === "profile"
+    ) &&
+    targetId
+  ){
+
+    return (
+      "profile.html?id=" +
+      encodeURIComponent(targetId)
+    );
+
+  }
+
+  return "dashboard.html";
+
+}
+
+function contextDescription(){
+
+  if(
+    targetType === "user" ||
+    targetType === "profile"
+  )
+    return "Member profile · " + targetId;
+
+  if(targetType === "club")
+    return "Book club · " + targetId;
+
+  if(targetType === "discussion")
+    return "Discussion · " + targetId;
+
+  if(targetType === "reply")
+    return "Discussion reply · " + targetId;
+
+  return "";
+
+}
+
+/* =========================================================
+   NAV PROFILE
+========================================================= */
+
+async function loadProfile(){
+
+  let display =
+    currentUser?.user_metadata?.display_name ||
+    "Reader";
+
+  let avatar = "";
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "get_public_profile",
+        {
+          check_user_id:
+            currentUser.id
+        }
+      );
+
+    if(error)
+      throw error;
+
+    const profile =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+    if(profile){
+
+      display =
+        profile.display_name ||
+        display;
+
+      avatar =
+        profile.avatar_url ||
+        "";
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Profile lookup:",
+      error.message
+    );
+
+  }
+
+  const holder =
+    $("navAvatar");
+
+  holder.innerHTML = "";
+
+  if(avatar){
+
+    const image =
+      document.createElement("img");
+
+    image.src = avatar;
+    image.alt = display;
+
+    image.onerror =
+      () => {
+
+        holder.innerHTML = "";
+
+        holder.textContent =
+          display
+            .charAt(0)
+            .toUpperCase();
+
+      };
+
+    holder.appendChild(image);
+
+  }
+  else{
+
+    holder.textContent =
+      display
+        .charAt(0)
+        .toUpperCase();
+
+  }
+
+}
+
+/* =========================================================
+   CONTEXT SETUP
+========================================================= */
+
+function setContext(){
+
+  const returnUrl =
+    safeReturnUrl();
+
+  $("backLink").href =
+    returnUrl;
+
+  $("cancelLink").href =
+    returnUrl;
+
+  $("returnLink").href =
+    returnUrl;
+
+  const description =
+    contextDescription();
+
+  if(description){
+
+    $("contextValue").textContent =
+      description;
+
+    $("contextBox")
+      .classList
+      .add("show");
+
+  }
+
+  let reportedUser =
+    suppliedUserId;
+
+  if(
+    !reportedUser &&
+    (
+      targetType === "user" ||
+      targetType === "profile"
+    )
+  ){
+
+    reportedUser =
+      targetId;
+
+  }
+
+  $("reportedUserId").value =
+    reportedUser;
+
+}
+
+/* =========================================================
+   CAPTURE REFERENCED CONTENT
+========================================================= */
+
+async function captureTargetContent(){
+
+  /*
+    This deliberately captures only text needed for moderator
+    context and does not render it back to the reporting user.
+
+    It helps preserve a snapshot if content is later edited.
+
+    Adjust field names if your final schema differs.
+  */
+
+  try{
+
+    if(
+      targetType === "discussion" &&
+      targetId
+    ){
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("club_discussions")
+          .select(
+            "title,body,author_id"
+          )
+          .eq(
+            "id",
+            targetId
+          )
+          .maybeSingle();
+
+      if(error)
+        throw error;
+
+      if(!data)
+        return {
+          captured_content:null,
+          reported_user_id:null
+        };
+
+      return {
+
+        captured_content:
+          [
+            data.title,
+            data.body
+          ]
+          .filter(Boolean)
+          .join("\n\n"),
+
+        reported_user_id:
+          data.author_id ||
+          null
+
+      };
+
+    }
+
+    if(
+      targetType === "reply" &&
+      targetId
+    ){
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from("discussion_replies")
+          .select(
+            "body,author_id"
+          )
+          .eq(
+            "id",
+            targetId
+          )
+          .maybeSingle();
+
+      if(error)
+        throw error;
+
+      if(!data)
+        return {
+          captured_content:null,
+          reported_user_id:null
+        };
+
+      return {
+
+        captured_content:
+          data.body ||
+          null,
+
+        reported_user_id:
+          data.author_id ||
+          null
+
+      };
+
+    }
+
+    return {
+      captured_content:null,
+      reported_user_id:null
+    };
+
+  }
+  catch(error){
+
+    console.warn(
+      "Content snapshot:",
+      error.message
+    );
+
+    return {
+      captured_content:null,
+      reported_user_id:null
+    };
+
+  }
+
+}
+
+/* =========================================================
+   SUBMIT REPORT
+========================================================= */
+
+$("submitBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      clearMessage();
+
+      const reason =
+        $("reason").value;
+
+      const details =
+        $("details")
+          .value
+          .trim();
+
+      let reportedUserId =
+        $("reportedUserId")
+          .value
+          .trim() ||
+        null;
+
+      if(!reason){
+
+        showMessage(
+          "Choose a reason for the report.",
+          "error"
+        );
+
+        return;
+
+      }
+
+      if(details.length < 10){
+
+        showMessage(
+          "Please add a little more detail so moderators know what to review.",
+          "error"
+        );
+
+        return;
+
+      }
+
+      if(
+        reportedUserId ===
+        currentUser.id
+      ){
+
+        showMessage(
+          "You can't report your own account.",
+          "error"
+        );
+
+        return;
+
+      }
+
+      const button =
+        $("submitBtn");
+
+      button.disabled =
+        true;
+
+      button.textContent =
+        "Sending...";
+
+      try{
+
+        const snapshot =
+          await captureTargetContent();
+
+        if(
+          !reportedUserId &&
+          snapshot.reported_user_id
+        ){
+
+          reportedUserId =
+            snapshot.reported_user_id;
+
+        }
+
+        /*
+          Expected moderation_reports table:
+
+            id
+            reporter_id
+            reported_user_id
+            club_id
+            target_type
+            target_id
+            reason
+            details
+            captured_content
+            severity
+            status
+            created_at
+
+          RLS should allow an authenticated user to INSERT
+          a report where reporter_id = auth.uid(), but should
+          NOT allow ordinary users to read the moderation queue.
+        */
+
+        const payload = {
+
+          reporter_id:
+            currentUser.id,
+
+          reported_user_id:
+            reportedUserId,
+
+          club_id:
+            clubId ||
+            null,
+
+          target_type:
+            targetType ||
+            "other",
+
+          target_id:
+            targetId ||
+            null,
+
+          reason,
+
+          details,
+
+          captured_content:
+            snapshot.captured_content,
+
+          severity:
+            "medium",
+
+          status:
+            "open",
+
+          created_at:
+            new Date().toISOString()
+
+        };
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .from("moderation_reports")
+            .insert(payload);
+
+        if(error)
+          throw error;
+
+        $("reportCard").style.display =
+          "none";
+
+        $("successBox")
+          .classList
+          .add("show");
+
+      }
+      catch(error){
+
+        console.error(error);
+
+        showMessage(
+          "DogEar couldn't send this report: " +
+          (
+            error.message ||
+            "Unknown error"
+          ),
+          "error"
+        );
+
+      }
+      finally{
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Submit Report";
+
+      }
+
+    }
+  );
+
+/* =========================================================
+   START
+========================================================= */
+
+async function start(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+  if(
+    error ||
+    !data.user
+  ){
+
+    location.href =
+      "auth.html#login";
+
+    return;
+
+  }
+
+  currentUser =
+    data.user;
+
+  setContext();
+
+  await loadProfile();
+
+  $("loading")
+    .classList
+    .add("hidden");
+
+}
+
+start();
+</script>
+
+</body>
+</html>
