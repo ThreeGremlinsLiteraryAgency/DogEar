@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Logs | DogEar Admin</title>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     :root {
       --bg: #0d0d0f;
@@ -14,15 +16,12 @@
       --border: #313138;
       --text: #f5f2ea;
       --muted: #aaa7a0;
-
       --gold: #d4af37;
       --gold-light: #f1d66e;
-
       --green: #5fc786;
       --blue: #6d9bea;
       --orange: #dfa55d;
       --red: #e16a66;
-
       --radius: 16px;
       --shadow: 0 12px 32px rgba(0,0,0,.32);
     }
@@ -31,6 +30,10 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -57,9 +60,31 @@
       cursor: pointer;
     }
 
-    /* ======================================================
-       TOP BAR
-    ====================================================== */
+    button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: grid;
+      place-items: center;
+      background: var(--bg);
+    }
+
+    .loading-screen.hidden {
+      display: none;
+    }
+
+    .loading-screen span {
+      color: var(--gold-light);
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
 
     .topbar {
       position: sticky;
@@ -119,14 +144,10 @@
       color: var(--gold-light);
     }
 
-    /* ======================================================
-       LAYOUT
-    ====================================================== */
-
     .app-shell {
       min-height: calc(100vh - 72px);
       display: grid;
-      grid-template-columns: 250px minmax(0, 1fr);
+      grid-template-columns: 250px minmax(0,1fr);
     }
 
     .sidebar {
@@ -180,10 +201,6 @@
       padding: 34px;
     }
 
-    /* ======================================================
-       HEADER
-    ====================================================== */
-
     .page-header {
       display: flex;
       align-items: flex-start;
@@ -202,7 +219,8 @@
     }
 
     h1 {
-      font-size: clamp(2rem, 4vw, 3rem);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2rem,4vw,3rem);
       letter-spacing: -1px;
       margin-bottom: 8px;
     }
@@ -248,13 +266,34 @@
       color: var(--gold-light);
     }
 
-    /* ======================================================
-       STATS
-    ====================================================== */
+    .message {
+      display: none;
+      margin-bottom: 18px;
+      padding: 13px 15px;
+      border-radius: 11px;
+      font-size: .86rem;
+      line-height: 1.5;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      color: #a5dfb8;
+      background: rgba(95,199,134,.08);
+      border: 1px solid rgba(95,199,134,.3);
+    }
+
+    .message.error {
+      color: #f0a19d;
+      background: rgba(225,106,102,.08);
+      border: 1px solid rgba(225,106,102,.3);
+    }
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(4,minmax(0,1fr));
       gap: 16px;
       margin-bottom: 24px;
     }
@@ -291,17 +330,9 @@
       margin-top: 6px;
     }
 
-    /* ======================================================
-       FILTERS
-    ====================================================== */
-
     .toolbar {
       display: grid;
-      grid-template-columns:
-        minmax(250px, 1fr)
-        170px
-        170px
-        190px;
+      grid-template-columns: minmax(250px,1fr) 170px 170px 190px;
       gap: 12px;
       padding: 18px;
       margin-bottom: 18px;
@@ -344,10 +375,6 @@
       border-color: var(--gold);
       box-shadow: 0 0 0 3px rgba(212,175,55,.08);
     }
-
-    /* ======================================================
-       TABLE
-    ====================================================== */
 
     .table-card {
       border: 1px solid var(--border);
@@ -441,10 +468,6 @@
       font-size: .8rem;
     }
 
-    /* ======================================================
-       BADGES
-    ====================================================== */
-
     .badge {
       display: inline-flex;
       align-items: center;
@@ -495,10 +518,6 @@
       font-size: .74rem;
     }
 
-    /* ======================================================
-       ACTIONS
-    ====================================================== */
-
     .row-actions {
       display: flex;
       gap: 7px;
@@ -518,10 +537,6 @@
       border-color: var(--gold);
       color: var(--gold-light);
     }
-
-    /* ======================================================
-       EMPTY / LOADING
-    ====================================================== */
 
     .empty-state {
       display: none;
@@ -562,9 +577,29 @@
       color: var(--muted);
     }
 
-    /* ======================================================
-       MODAL
-    ====================================================== */
+    .locked {
+      display: none;
+      max-width: 760px;
+      margin: 70px auto;
+      padding: 42px;
+      text-align: center;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--panel);
+    }
+
+    .locked.show {
+      display: block;
+    }
+
+    .locked h2 {
+      margin-bottom: 10px;
+    }
+
+    .locked p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
 
     .modal-backdrop {
       position: fixed;
@@ -583,7 +618,7 @@
     }
 
     .modal {
-      width: min(760px, 100%);
+      width: min(760px,100%);
       max-height: 90vh;
       overflow-y: auto;
       background: var(--panel);
@@ -671,13 +706,9 @@
       border-top: 1px solid var(--border);
     }
 
-    /* ======================================================
-       RESPONSIVE
-    ====================================================== */
-
-    @media (max-width: 1100px) {
+    @media (max-width:1100px) {
       .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2,1fr);
       }
 
       .toolbar {
@@ -685,7 +716,7 @@
       }
     }
 
-    @media (max-width: 900px) {
+    @media (max-width:900px) {
       .app-shell {
         grid-template-columns: 1fr;
       }
@@ -719,7 +750,7 @@
       }
     }
 
-    @media (max-width: 650px) {
+    @media (max-width:650px) {
       .topbar {
         padding: 0 15px;
       }
@@ -756,1686 +787,1783 @@
 
 <body>
 
-<header class="topbar">
-
-  <a href="dashboard.html" class="brand">
-    <div class="brand-mark">D</div>
-    <span class="brand-name">DogEar</span>
-  </a>
-
-  <div class="top-actions">
-    <a href="dashboard.html" class="top-btn view-site">
-      View Site
-    </a>
-
-    <a href="login.html" class="top-btn">
-      Log Out
-    </a>
+  <div class="loading-screen" id="loadingScreen">
+    <span>Opening activity logs...</span>
   </div>
 
-</header>
+  <header class="topbar">
 
+    <a href="dashboard.html" class="brand">
+      <div class="brand-mark">D</div>
+      <span class="brand-name">DogEar</span>
+    </a>
 
-<div class="app-shell">
+    <div class="top-actions">
 
-  <!-- ====================================================
-       ADMIN NAVIGATION
-  ===================================================== -->
-
-  <aside class="sidebar">
-
-    <div class="sidebar-title">
-      Administration
-    </div>
-
-    <nav class="admin-nav">
-
-      <a href="admin.html">
-        Overview
+      <a href="dashboard.html" class="top-btn view-site">
+        View Site
       </a>
 
-      <a href="admin-users.html">
-        Users
-      </a>
-
-      <a href="admin-datasets.html">
-        Datasets
-      </a>
-
-      <a href="admin-uploads.html">
-        Uploads
-      </a>
-
-      <a href="admin-logs.html" class="active">
-        Logs
-      </a>
-
-      <a href="admin-settings.html">
-        Settings
-      </a>
-
-    </nav>
-
-
-    <div class="sidebar-divider"></div>
-
-
-    <nav class="admin-nav">
-
-      <a href="dashboard.html">
-        Dashboard
-      </a>
-
-      <a href="discover.html">
-        Discover
-      </a>
-
-      <a href="clubs.html">
-        Book Clubs
-      </a>
-
-      <a href="marketplace.html">
-        Marketplace
-      </a>
-
-      <a href="profile.html">
-        My Profile
-      </a>
-
-    </nav>
-
-  </aside>
-
-
-  <!-- ====================================================
-       MAIN
-  ===================================================== -->
-
-  <main class="main">
-
-    <div class="page-header">
-
-      <div>
-
-        <div class="eyebrow">
-          DogEar Administration
-        </div>
-
-        <h1>
-          Activity Logs
-        </h1>
-
-        <p class="page-subtitle">
-          Review important DogEar activity including administrative
-          actions, account events, moderation activity, system events,
-          marketplace changes, uploads, and security-related events.
-        </p>
-
-      </div>
-
-
-      <div class="header-actions">
-
-        <button
-          type="button"
-          class="secondary-btn"
-          id="refreshBtn"
-        >
-          Refresh
-        </button>
-
-        <button
-          type="button"
-          class="primary-btn"
-          id="exportBtn"
-        >
-          Export CSV
-        </button>
-
-      </div>
+      <button type="button" class="top-btn" id="logoutBtn">
+        Log Out
+      </button>
 
     </div>
 
+  </header>
 
-    <!-- ====================================================
-         STATS
-    ===================================================== -->
+  <div class="app-shell">
 
-    <section class="stats-grid">
+    <aside class="sidebar">
 
-      <div class="stat-card">
-        <div class="stat-label">
-          Total Events
-        </div>
-
-        <div
-          class="stat-value"
-          id="totalEvents"
-        >
-          0
-        </div>
-
-        <div class="stat-note">
-          Loaded activity records
-        </div>
+      <div class="sidebar-title">
+        Administration
       </div>
 
+      <nav class="admin-nav">
 
-      <div class="stat-card">
-        <div class="stat-label">
-          Admin Actions
-        </div>
+        <a href="admin-dashboard.html">
+          Overview
+        </a>
 
-        <div
-          class="stat-value"
-          id="adminEvents"
-        >
-          0
-        </div>
+        <a href="admin-users.html">
+          Users
+        </a>
 
-        <div class="stat-note">
-          Administrative activity
-        </div>
-      </div>
+        <a href="admin-datasets.html">
+          Datasets
+        </a>
 
+        <a href="admin-uploads.html">
+          Uploads
+        </a>
 
-      <div class="stat-card">
-        <div class="stat-label">
-          Warnings
-        </div>
+        <a href="admin-logs.html" class="active">
+          Logs
+        </a>
 
-        <div
-          class="stat-value"
-          id="warningEvents"
-        >
-          0
-        </div>
+        <a href="admin-settings.html">
+          Settings
+        </a>
 
-        <div class="stat-note">
-          Events needing attention
-        </div>
-      </div>
+      </nav>
 
+      <div class="sidebar-divider"></div>
 
-      <div class="stat-card">
-        <div class="stat-label">
-          Critical
-        </div>
+      <nav class="admin-nav">
 
-        <div
-          class="stat-value"
-          id="criticalEvents"
-        >
-          0
-        </div>
+        <a href="dashboard.html">
+          Dashboard
+        </a>
 
-        <div class="stat-note">
-          Serious events
-        </div>
-      </div>
+        <a href="discover.html">
+          Discover
+        </a>
 
-    </section>
+        <a href="clubs.html">
+          Book Clubs
+        </a>
 
-
-    <!-- ====================================================
-         FILTERS
-    ===================================================== -->
-
-    <section class="toolbar">
-
-      <div class="search-wrap">
-
-        <span class="search-icon">
-          ⌕
-        </span>
-
-        <input
-          id="searchInput"
-          type="search"
-          placeholder="Search logs..."
-          autocomplete="off"
-        />
-
-      </div>
-
-
-      <select id="typeFilter">
-
-        <option value="">
-          All event types
-        </option>
-
-        <option value="admin">
-          Admin
-        </option>
-
-        <option value="account">
-          Account
-        </option>
-
-        <option value="moderation">
-          Moderation
-        </option>
-
-        <option value="security">
-          Security
-        </option>
-
-        <option value="marketplace">
+        <a href="marketplace.html">
           Marketplace
-        </option>
+        </a>
 
-        <option value="upload">
-          Upload
-        </option>
+        <a href="profile.html">
+          My Profile
+        </a>
 
-        <option value="club">
-          Book Club
-        </option>
+      </nav>
 
-        <option value="system">
-          System
-        </option>
+    </aside>
 
-      </select>
+    <main class="main">
 
+      <div id="adminArea">
 
-      <select id="severityFilter">
+        <div class="page-header">
 
-        <option value="">
-          All severities
-        </option>
+          <div>
 
-        <option value="info">
-          Info
-        </option>
+            <div class="eyebrow">
+              DogEar Administration
+            </div>
 
-        <option value="success">
-          Success
-        </option>
+            <h1>
+              Activity Logs
+            </h1>
 
-        <option value="warning">
-          Warning
-        </option>
+            <p class="page-subtitle">
+              Review important DogEar activity including administrative
+              actions, account events, moderation activity, system events,
+              marketplace changes, uploads, book clubs, and security events.
+            </p>
 
-        <option value="error">
-          Error
-        </option>
-
-        <option value="critical">
-          Critical
-        </option>
-
-      </select>
-
-
-      <select id="timeFilter">
-
-        <option value="">
-          Any time
-        </option>
-
-        <option value="24h">
-          Last 24 hours
-        </option>
-
-        <option value="7d">
-          Last 7 days
-        </option>
-
-        <option value="30d">
-          Last 30 days
-        </option>
-
-      </select>
-
-    </section>
-
-
-    <!-- ====================================================
-         LOG TABLE
-    ===================================================== -->
-
-    <section class="table-card">
-
-      <div class="table-heading">
-
-        <h2>
-          Event History
-        </h2>
-
-        <span id="visibleLogCount">
-          0 events
-        </span>
-
-      </div>
-
-
-      <div class="table-scroll">
-
-        <table>
-
-          <thead>
-
-            <tr>
-              <th>Event</th>
-              <th>Type</th>
-              <th>Severity</th>
-              <th>Actor</th>
-              <th>IP / Source</th>
-              <th>Time</th>
-              <th></th>
-            </tr>
-
-          </thead>
-
-
-          <tbody id="logTableBody">
-
-            <tr class="loading-row">
-
-              <td colspan="7">
-                Loading activity logs...
-              </td>
-
-            </tr>
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-
-      <div
-        class="empty-state"
-        id="emptyState"
-      >
-
-        <div class="empty-icon">
-          ≡
-        </div>
-
-        <h3>
-          No logs found
-        </h3>
-
-        <p id="emptyMessage">
-          DogEar does not currently have any activity logs connected
-          to this page.
-        </p>
-
-      </div>
-
-    </section>
-
-  </main>
-
-</div>
-
-
-<!-- ========================================================
-     DETAILS MODAL
-========================================================= -->
-
-<div
-  class="modal-backdrop"
-  id="detailsModal"
-  aria-hidden="true"
->
-
-  <div class="modal">
-
-    <div class="modal-header">
-
-      <div>
-
-        <h2 id="modalEventName">
-          Event Details
-        </h2>
-
-        <p id="modalEventDescription">
-          DogEar activity record
-        </p>
-
-      </div>
-
-
-      <button
-        type="button"
-        class="close-btn"
-        id="closeModalBtn"
-        aria-label="Close"
-      >
-        ×
-      </button>
-
-    </div>
-
-
-    <div class="modal-body">
-
-      <div class="detail-grid">
-
-        <div class="detail-item">
-
-          <div class="detail-label">
-            Event ID
           </div>
 
-          <div
-            class="detail-value mono"
-            id="detailId"
-          >
-            —
-          </div>
-
-        </div>
-
-
-        <div class="detail-item">
-
-          <div class="detail-label">
-            Timestamp
-          </div>
-
-          <div
-            class="detail-value"
-            id="detailTimestamp"
-          >
-            —
-          </div>
-
-        </div>
-
-
-        <div class="detail-item">
-
-          <div class="detail-label">
-            Type
-          </div>
-
-          <div
-            class="detail-value"
-            id="detailType"
-          >
-            —
-          </div>
-
-        </div>
-
-
-        <div class="detail-item">
-
-          <div class="detail-label">
-            Severity
-          </div>
-
-          <div
-            class="detail-value"
-            id="detailSeverity"
-          >
-            —
-          </div>
-
-        </div>
-
-
-        <div class="detail-item">
-
-          <div class="detail-label">
-            Actor
-          </div>
-
-          <div
-            class="detail-value"
-            id="detailActor"
-          >
-            —
-          </div>
-
-        </div>
-
-
-        <div class="detail-item">
-
-          <div class="detail-label">
-            User ID
-          </div>
-
-          <div
-            class="detail-value mono"
-            id="detailActorId"
-          >
-            —
-          </div>
-
-        </div>
-
-
-        <div class="detail-item">
-
-          <div class="detail-label">
-            IP / Source
-          </div>
-
-          <div
-            class="detail-value mono"
-            id="detailSource"
-          >
-            —
-          </div>
-
-        </div>
-
-
-        <div class="detail-item">
-
-          <div class="detail-label">
-            Target
-          </div>
-
-          <div
-            class="detail-value"
-            id="detailTarget"
-          >
-            —
-          </div>
-
-        </div>
-
-
-        <div class="detail-item detail-full">
-
-          <div class="detail-label">
-            Message
-          </div>
-
-          <div
-            class="detail-value"
-            id="detailMessage"
-          >
-            —
-          </div>
-
-        </div>
-
-
-        <div class="detail-item detail-full">
-
-          <div class="detail-label">
-            Metadata
-          </div>
-
-          <div
-            class="detail-value metadata-box"
-            id="detailMetadata"
-          >
-            {}
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="modal-footer">
-
-      <button
-        type="button"
-        class="secondary-btn"
-        id="modalCloseBtn"
-      >
-        Close
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<script>
-
-  /*
-  ===========================================================
-  DOGEAR ADMIN LOGS
-
-  This page intentionally does NOT assume DogEar's real
-  Supabase audit-log table name.
-
-  Once the real schema is confirmed, connect loadLogs()
-  to the appropriate table or RPC.
-  ===========================================================
-  */
-
-
-  let logs = [];
-
-  let filteredLogs = [];
-
-
-  /* ========================================================
-     ELEMENTS
-  ========================================================= */
-
-  const logTableBody =
-    document.getElementById("logTableBody");
-
-  const emptyState =
-    document.getElementById("emptyState");
-
-  const emptyMessage =
-    document.getElementById("emptyMessage");
-
-  const searchInput =
-    document.getElementById("searchInput");
-
-  const typeFilter =
-    document.getElementById("typeFilter");
-
-  const severityFilter =
-    document.getElementById("severityFilter");
-
-  const timeFilter =
-    document.getElementById("timeFilter");
-
-  const detailsModal =
-    document.getElementById("detailsModal");
-
-
-  /* ========================================================
-     LOAD LOGS
-
-     Expected data shape:
-
-     {
-       id: "uuid",
-       event: "User suspended",
-       description: "Admin suspended a user account.",
-       type: "admin",
-       severity: "warning",
-       actorName: "Milo",
-       actorEmail: "example@email.com",
-       actorId: "uuid",
-       source: "192.168.1.1",
-       target: "User: example",
-       message: "Account suspended.",
-       metadata: {},
-       createdAt: "2026-09-14T14:00:00Z"
-     }
-  ========================================================= */
-
-  async function loadLogs() {
-
-    setLoadingState();
-
-
-    try {
-
-      /*
-      ========================================================
-      CONNECT DOGEAR'S REAL BACKEND HERE.
-
-      Example structure only:
-
-      const { data, error } = await supabase
-        .from("REAL_LOG_TABLE")
-        .select("*")
-        .order("created_at", {
-          ascending: false
-        })
-        .limit(500);
-
-      if (error) {
-        throw error;
-      }
-
-      logs = data.map(row => ({
-        ...
-      }));
-
-      ========================================================
-      */
-
-
-      logs = [];
-
-
-      applyFilters();
-
-
-    } catch (error) {
-
-      console.error(
-        "Unable to load activity logs:",
-        error
-      );
-
-
-      logs = [];
-
-
-      renderLogs();
-
-
-      showEmpty(
-        "DogEar couldn't load activity logs. Check the browser console for details."
-      );
-
-    }
-
-  }
-
-
-  /* ========================================================
-     FILTERING
-  ========================================================= */
-
-  function applyFilters() {
-
-    const search =
-      searchInput
-        .value
-        .trim()
-        .toLowerCase();
-
-
-    const selectedType =
-      typeFilter.value;
-
-
-    const selectedSeverity =
-      severityFilter.value;
-
-
-    const selectedTime =
-      timeFilter.value;
-
-
-    filteredLogs =
-      logs.filter(log => {
-
-        const searchable =
-          [
-            log.event,
-            log.description,
-            log.actorName,
-            log.actorEmail,
-            log.actorId,
-            log.source,
-            log.target,
-            log.message,
-            JSON.stringify(log.metadata || {})
-          ]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase();
-
-
-        const matchesSearch =
-          !search ||
-          searchable.includes(search);
-
-
-        const matchesType =
-          !selectedType ||
-          log.type === selectedType;
-
-
-        const matchesSeverity =
-          !selectedSeverity ||
-          log.severity === selectedSeverity;
-
-
-        const matchesTime =
-          !selectedTime ||
-          isWithinTimeRange(
-            log.createdAt,
-            selectedTime
-          );
-
-
-        return (
-          matchesSearch &&
-          matchesType &&
-          matchesSeverity &&
-          matchesTime
-        );
-
-      });
-
-
-    renderLogs();
-
-    updateStats();
-
-  }
-
-
-  /* ========================================================
-     RENDER LOGS
-  ========================================================= */
-
-  function renderLogs() {
-
-    logTableBody.innerHTML = "";
-
-
-    if (!filteredLogs.length) {
-
-      showEmpty(
-        logs.length
-          ? "No activity logs match your current filters."
-          : "No DogEar activity logs have been connected to this admin page yet."
-      );
-
-
-      document.getElementById(
-        "visibleLogCount"
-      ).textContent =
-        "0 events";
-
-
-      return;
-
-    }
-
-
-    hideEmpty();
-
-
-    filteredLogs.forEach(log => {
-
-      const row =
-        document.createElement("tr");
-
-
-      row.innerHTML = `
-
-        <td>
-
-          <div class="event-name">
-            ${escapeHtml(log.event || "System Event")}
-          </div>
-
-          <div class="event-description">
-            ${escapeHtml(log.description || log.message || "")}
-          </div>
-
-        </td>
-
-
-        <td>
-
-          <span class="type-badge">
-            ${formatType(log.type)}
-          </span>
-
-        </td>
-
-
-        <td>
-
-          ${severityBadge(log.severity)}
-
-        </td>
-
-
-        <td>
-
-          <div class="actor-name">
-            ${escapeHtml(log.actorName || "System")}
-          </div>
-
-          <div class="actor-email">
-            ${escapeHtml(log.actorEmail || "")}
-          </div>
-
-        </td>
-
-
-        <td class="mono">
-
-          ${escapeHtml(log.source || "—")}
-
-        </td>
-
-
-        <td>
-
-          ${formatDate(log.createdAt)}
-
-        </td>
-
-
-        <td>
-
-          <div class="row-actions">
+          <div class="header-actions">
 
             <button
               type="button"
-              class="icon-btn"
-              data-action="details"
-              data-id="${escapeAttribute(log.id)}"
+              class="secondary-btn"
+              id="refreshBtn"
             >
-              Details
+              Refresh
+            </button>
+
+            <button
+              type="button"
+              class="primary-btn"
+              id="exportBtn"
+            >
+              Export CSV
             </button>
 
           </div>
 
-        </td>
+        </div>
 
-      `;
+        <div class="message" id="pageMessage"></div>
 
+        <section class="stats-grid">
 
-      logTableBody.appendChild(row);
+          <div class="stat-card">
 
-    });
+            <div class="stat-label">
+              Total Events
+            </div>
 
+            <div class="stat-value" id="totalEvents">
+              0
+            </div>
 
-    document.getElementById(
-      "visibleLogCount"
-    ).textContent =
-      `${filteredLogs.length} ${pluralize(
-        filteredLogs.length,
-        "event"
-      )}`;
+            <div class="stat-note">
+              Loaded activity records
+            </div>
 
-  }
+          </div>
 
+          <div class="stat-card">
 
-  /* ========================================================
-     STATS
-  ========================================================= */
+            <div class="stat-label">
+              Admin Actions
+            </div>
 
-  function updateStats() {
+            <div class="stat-value" id="adminEvents">
+              0
+            </div>
 
-    const adminCount =
-      logs.filter(
-        log => log.type === "admin"
-      ).length;
+            <div class="stat-note">
+              Administrative activity
+            </div>
 
+          </div>
 
-    const warningCount =
-      logs.filter(
-        log => log.severity === "warning"
-      ).length;
+          <div class="stat-card">
 
+            <div class="stat-label">
+              Warnings
+            </div>
 
-    const criticalCount =
-      logs.filter(
-        log =>
-          log.severity === "critical" ||
-          log.severity === "error"
-      ).length;
+            <div class="stat-value" id="warningEvents">
+              0
+            </div>
 
+            <div class="stat-note">
+              Events needing attention
+            </div>
 
-    document.getElementById(
-      "totalEvents"
-    ).textContent =
-      formatNumber(logs.length);
+          </div>
 
+          <div class="stat-card">
 
-    document.getElementById(
-      "adminEvents"
-    ).textContent =
-      formatNumber(adminCount);
+            <div class="stat-label">
+              Critical
+            </div>
 
+            <div class="stat-value" id="criticalEvents">
+              0
+            </div>
 
-    document.getElementById(
-      "warningEvents"
-    ).textContent =
-      formatNumber(warningCount);
+            <div class="stat-note">
+              Errors and critical events
+            </div>
 
+          </div>
 
-    document.getElementById(
-      "criticalEvents"
-    ).textContent =
-      formatNumber(criticalCount);
+        </section>
 
-  }
+        <section class="toolbar">
 
+          <div class="search-wrap">
 
-  /* ========================================================
-     DETAILS
-  ========================================================= */
+            <span class="search-icon">
+              ⌕
+            </span>
 
-  function openLogDetails(logId) {
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="Search logs..."
+              autocomplete="off"
+            />
 
-    const log =
-      logs.find(
-        item =>
-          String(item.id) ===
-          String(logId)
+          </div>
+
+          <select id="typeFilter">
+
+            <option value="">
+              All event types
+            </option>
+
+            <option value="admin">
+              Admin
+            </option>
+
+            <option value="account">
+              Account
+            </option>
+
+            <option value="moderation">
+              Moderation
+            </option>
+
+            <option value="security">
+              Security
+            </option>
+
+            <option value="marketplace">
+              Marketplace
+            </option>
+
+            <option value="upload">
+              Upload
+            </option>
+
+            <option value="club">
+              Book Club
+            </option>
+
+            <option value="system">
+              System
+            </option>
+
+          </select>
+
+          <select id="severityFilter">
+
+            <option value="">
+              All severities
+            </option>
+
+            <option value="info">
+              Info
+            </option>
+
+            <option value="success">
+              Success
+            </option>
+
+            <option value="warning">
+              Warning
+            </option>
+
+            <option value="error">
+              Error
+            </option>
+
+            <option value="critical">
+              Critical
+            </option>
+
+          </select>
+
+          <select id="timeFilter">
+
+            <option value="">
+              Any time
+            </option>
+
+            <option value="24h">
+              Last 24 hours
+            </option>
+
+            <option value="7d">
+              Last 7 days
+            </option>
+
+            <option value="30d">
+              Last 30 days
+            </option>
+
+          </select>
+
+        </section>
+
+        <section class="table-card">
+
+          <div class="table-heading">
+
+            <h2>
+              Event History
+            </h2>
+
+            <span id="visibleLogCount">
+              0 events
+            </span>
+
+          </div>
+
+          <div class="table-scroll">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>Event</th>
+                  <th>Type</th>
+                  <th>Severity</th>
+                  <th>Actor</th>
+                  <th>IP / Source</th>
+                  <th>Time</th>
+                  <th></th>
+                </tr>
+
+              </thead>
+
+              <tbody id="logTableBody">
+
+                <tr class="loading-row">
+                  <td colspan="7">
+                    Loading activity logs...
+                  </td>
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+          <div class="empty-state" id="emptyState">
+
+            <div class="empty-icon">
+              ≡
+            </div>
+
+            <h3>
+              No logs found
+            </h3>
+
+            <p id="emptyMessage">
+              DogEar does not currently have any activity logs.
+            </p>
+
+          </div>
+
+        </section>
+
+      </div>
+
+      <section class="locked" id="lockedArea">
+
+        <h2>
+          Administrator access required.
+        </h2>
+
+        <p>
+          Your account does not currently have permission
+          to view DogEar activity logs.
+        </p>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <div
+    class="modal-backdrop"
+    id="detailsModal"
+    aria-hidden="true"
+  >
+
+    <div class="modal">
+
+      <div class="modal-header">
+
+        <div>
+
+          <h2 id="modalEventName">
+            Event Details
+          </h2>
+
+          <p id="modalEventDescription">
+            DogEar activity record
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="close-btn"
+          id="closeModalBtn"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="modal-body">
+
+        <div class="detail-grid">
+
+          <div class="detail-item">
+
+            <div class="detail-label">
+              Event ID
+            </div>
+
+            <div
+              class="detail-value mono"
+              id="detailId"
+            >
+              —
+            </div>
+
+          </div>
+
+          <div class="detail-item">
+
+            <div class="detail-label">
+              Timestamp
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailTimestamp"
+            >
+              —
+            </div>
+
+          </div>
+
+          <div class="detail-item">
+
+            <div class="detail-label">
+              Type
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailType"
+            >
+              —
+            </div>
+
+          </div>
+
+          <div class="detail-item">
+
+            <div class="detail-label">
+              Severity
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailSeverity"
+            >
+              —
+            </div>
+
+          </div>
+
+          <div class="detail-item">
+
+            <div class="detail-label">
+              Actor
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailActor"
+            >
+              —
+            </div>
+
+          </div>
+
+          <div class="detail-item">
+
+            <div class="detail-label">
+              User ID
+            </div>
+
+            <div
+              class="detail-value mono"
+              id="detailActorId"
+            >
+              —
+            </div>
+
+          </div>
+
+          <div class="detail-item">
+
+            <div class="detail-label">
+              IP / Source
+            </div>
+
+            <div
+              class="detail-value mono"
+              id="detailSource"
+            >
+              —
+            </div>
+
+          </div>
+
+          <div class="detail-item">
+
+            <div class="detail-label">
+              Target
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailTarget"
+            >
+              —
+            </div>
+
+          </div>
+
+          <div class="detail-item detail-full">
+
+            <div class="detail-label">
+              Message
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailMessage"
+            >
+              —
+            </div>
+
+          </div>
+
+          <div class="detail-item detail-full">
+
+            <div class="detail-label">
+              Metadata
+            </div>
+
+            <div
+              class="detail-value metadata-box"
+              id="detailMetadata"
+            >
+              {}
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="secondary-btn"
+          id="modalCloseBtn"
+        >
+          Close
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    const SUPABASE_URL =
+      "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
       );
 
+    const $ =
+      id =>
+        document.getElementById(id);
 
-    if (!log) {
-      return;
+    let currentUser = null;
+    let logs = [];
+    let filteredLogs = [];
+    let logLoadError = "";
+
+    function showPageMessage(
+      text,
+      type = ""
+    ) {
+      const message =
+        $("pageMessage");
+
+      message.textContent =
+        text;
+
+      message.className =
+        "message show " + type;
     }
 
+    function clearPageMessage() {
+      const message =
+        $("pageMessage");
 
-    document.getElementById(
-      "modalEventName"
-    ).textContent =
-      log.event || "Event Details";
-
-
-    document.getElementById(
-      "modalEventDescription"
-    ).textContent =
-      log.description ||
-      "DogEar activity record";
-
-
-    document.getElementById(
-      "detailId"
-    ).textContent =
-      log.id ?? "—";
-
-
-    document.getElementById(
-      "detailTimestamp"
-    ).textContent =
-      formatDate(log.createdAt);
-
-
-    document.getElementById(
-      "detailType"
-    ).textContent =
-      formatType(log.type);
-
-
-    document.getElementById(
-      "detailSeverity"
-    ).textContent =
-      formatSeverity(log.severity);
-
-
-    document.getElementById(
-      "detailActor"
-    ).textContent =
-      log.actorEmail
-        ? `${log.actorName || "Unknown"} (${log.actorEmail})`
-        : (log.actorName || "System");
-
-
-    document.getElementById(
-      "detailActorId"
-    ).textContent =
-      log.actorId || "—";
-
-
-    document.getElementById(
-      "detailSource"
-    ).textContent =
-      log.source || "—";
-
-
-    document.getElementById(
-      "detailTarget"
-    ).textContent =
-      log.target || "—";
-
-
-    document.getElementById(
-      "detailMessage"
-    ).textContent =
-      log.message ||
-      log.description ||
-      "—";
-
-
-    document.getElementById(
-      "detailMetadata"
-    ).textContent =
-      JSON.stringify(
-        log.metadata || {},
-        null,
-        2
-      );
-
-
-    detailsModal.classList.add("show");
-
-    detailsModal.setAttribute(
-      "aria-hidden",
-      "false"
-    );
-
-  }
-
-
-  function closeModal() {
-
-    detailsModal.classList.remove(
-      "show"
-    );
-
-
-    detailsModal.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-  }
-
-
-  /* ========================================================
-     CSV EXPORT
-  ========================================================= */
-
-  function exportVisibleLogs() {
-
-    if (!filteredLogs.length) {
-
-      alert(
-        "There are no visible logs to export."
-      );
-
-      return;
-
+      message.textContent = "";
+      message.className = "message";
     }
 
+    async function verifyAdmin() {
+      try {
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from("admin_users")
+            .select("user_id,active")
+            .eq(
+              "user_id",
+              currentUser.id
+            )
+            .maybeSingle();
 
-    const rows = [
-
-      [
-        "ID",
-        "Event",
-        "Type",
-        "Severity",
-        "Actor",
-        "Actor Email",
-        "Actor ID",
-        "Source",
-        "Target",
-        "Message",
-        "Created At"
-      ],
-
-
-      ...filteredLogs.map(log => [
-
-        log.id || "",
-        log.event || "",
-        log.type || "",
-        log.severity || "",
-        log.actorName || "",
-        log.actorEmail || "",
-        log.actorId || "",
-        log.source || "",
-        log.target || "",
-        log.message || "",
-        log.createdAt || ""
-
-      ])
-
-    ];
-
-
-    const csv =
-      rows
-        .map(
-          row =>
-            row
-              .map(csvEscape)
-              .join(",")
-        )
-        .join("\n");
-
-
-    const blob =
-      new Blob(
-        [csv],
-        {
-          type:
-            "text/csv;charset=utf-8;"
+        if (error) {
+          throw error;
         }
-      );
 
-
-    const url =
-      URL.createObjectURL(blob);
-
-
-    const link =
-      document.createElement("a");
-
-
-    link.href = url;
-
-    link.download =
-      `dogear-logs-${new Date()
-        .toISOString()
-        .slice(0,10)}.csv`;
-
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    link.remove();
-
-    URL.revokeObjectURL(url);
-
-  }
-
-
-  /* ========================================================
-     UI STATES
-  ========================================================= */
-
-  function setLoadingState() {
-
-    emptyState.classList.remove("show");
-
-
-    logTableBody.innerHTML = `
-
-      <tr class="loading-row">
-
-        <td colspan="7">
-
-          Loading activity logs...
-
-        </td>
-
-      </tr>
-
-    `;
-
-  }
-
-
-  function showEmpty(message) {
-
-    logTableBody.innerHTML = "";
-
-    emptyMessage.textContent =
-      message;
-
-    emptyState.classList.add("show");
-
-  }
-
-
-  function hideEmpty() {
-
-    emptyState.classList.remove("show");
-
-  }
-
-
-  /* ========================================================
-     HELPERS
-  ========================================================= */
-
-  function severityBadge(severity) {
-
-    const safe =
-      severity || "info";
-
-
-    const allowed =
-      [
-        "info",
-        "success",
-        "warning",
-        "error",
-        "critical"
-      ];
-
-
-    const badgeClass =
-      allowed.includes(safe)
-        ? `badge-${safe}`
-        : "badge-info";
-
-
-    return `
-
-      <span class="badge ${badgeClass}">
-
-        ${formatSeverity(safe)}
-
-      </span>
-
-    `;
-
-  }
-
-
-  function formatSeverity(severity) {
-
-    const labels = {
-      info: "Info",
-      success: "Success",
-      warning: "Warning",
-      error: "Error",
-      critical: "Critical"
-    };
-
-
-    return labels[severity] || "Info";
-
-  }
-
-
-  function formatType(type) {
-
-    const labels = {
-      admin: "Admin",
-      account: "Account",
-      moderation: "Moderation",
-      security: "Security",
-      marketplace: "Marketplace",
-      upload: "Upload",
-      club: "Book Club",
-      system: "System"
-    };
-
-
-    return labels[type] || "Other";
-
-  }
-
-
-  function isWithinTimeRange(
-    createdAt,
-    range
-  ) {
-
-    if (!createdAt) {
-      return false;
-    }
-
-
-    const timestamp =
-      new Date(createdAt).getTime();
-
-
-    if (Number.isNaN(timestamp)) {
-      return false;
-    }
-
-
-    const now =
-      Date.now();
-
-
-    const ranges = {
-      "24h": 24 * 60 * 60 * 1000,
-      "7d": 7 * 24 * 60 * 60 * 1000,
-      "30d": 30 * 24 * 60 * 60 * 1000
-    };
-
-
-    return (
-      now - timestamp <=
-      ranges[range]
-    );
-
-  }
-
-
-  function formatDate(value) {
-
-    if (!value) {
-      return "Unknown";
-    }
-
-
-    const date =
-      new Date(value);
-
-
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
-      return "Unknown";
-    }
-
-
-    return new Intl.DateTimeFormat(
-      "en-US",
-      {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "2-digit"
+        return (
+          data &&
+          data.active !== false
+        );
       }
-    ).format(date);
-
-  }
-
-
-  function formatNumber(value) {
-
-    return new Intl.NumberFormat(
-      "en-US"
-    ).format(
-      Number(value || 0)
-    );
-
-  }
-
-
-  function pluralize(
-    count,
-    word
-  ) {
-
-    return count === 1
-      ? word
-      : `${word}s`;
-
-  }
-
-
-  function csvEscape(value) {
-
-    const string =
-      String(value ?? "");
-
-
-    if (
-      string.includes(",") ||
-      string.includes('"') ||
-      string.includes("\n")
-    ) {
-
-      return `"${string.replaceAll(
-        '"',
-        '""'
-      )}"`;
-
-    }
-
-
-    return string;
-
-  }
-
-
-  function escapeHtml(value) {
-
-    return String(value ?? "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-
-  }
-
-
-  function escapeAttribute(value) {
-
-    return escapeHtml(
-      String(value ?? "")
-    );
-
-  }
-
-
-  /* ========================================================
-     EVENTS
-  ========================================================= */
-
-  searchInput.addEventListener(
-    "input",
-    applyFilters
-  );
-
-
-  typeFilter.addEventListener(
-    "change",
-    applyFilters
-  );
-
-
-  severityFilter.addEventListener(
-    "change",
-    applyFilters
-  );
-
-
-  timeFilter.addEventListener(
-    "change",
-    applyFilters
-  );
-
-
-  document.getElementById(
-    "refreshBtn"
-  ).addEventListener(
-    "click",
-    async event => {
-
-      const button =
-        event.currentTarget;
-
-
-      button.disabled = true;
-
-      button.textContent =
-        "Refreshing...";
-
-
-      await loadLogs();
-
-
-      button.disabled = false;
-
-      button.textContent =
-        "Refresh";
-
-    }
-  );
-
-
-  document.getElementById(
-    "exportBtn"
-  ).addEventListener(
-    "click",
-    exportVisibleLogs
-  );
-
-
-  logTableBody.addEventListener(
-    "click",
-    event => {
-
-      const button =
-        event.target.closest(
-          "[data-action]"
+      catch (error) {
+        console.error(
+          "Admin verification error:",
+          error
         );
 
+        return false;
+      }
+    }
 
-      if (!button) {
+    function showLocked() {
+      $("adminArea")
+        .style
+        .display =
+          "none";
+
+      $("lockedArea")
+        .classList
+        .add("show");
+    }
+
+    async function loadLogs() {
+      setLoadingState();
+      clearPageMessage();
+
+      logLoadError =
+        "";
+
+      try {
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from("admin_logs")
+            .select(`
+              id,
+              event,
+              description,
+              type,
+              severity,
+              actor_id,
+              actor_name,
+              actor_email,
+              source,
+              target,
+              message,
+              metadata,
+              created_at
+            `)
+            .order(
+              "created_at",
+              {
+                ascending: false
+              }
+            )
+            .limit(1000);
+
+        if (error) {
+          throw error;
+        }
+
+        logs =
+          (data || [])
+            .map(
+              row => ({
+                id:
+                  row.id,
+
+                event:
+                  row.event || "System Event",
+
+                description:
+                  row.description || "",
+
+                type:
+                  row.type || "system",
+
+                severity:
+                  row.severity || "info",
+
+                actorName:
+                  row.actor_name || "",
+
+                actorEmail:
+                  row.actor_email || "",
+
+                actorId:
+                  row.actor_id || "",
+
+                source:
+                  row.source || "",
+
+                target:
+                  row.target || "",
+
+                message:
+                  row.message || "",
+
+                metadata:
+                  row.metadata || {},
+
+                createdAt:
+                  row.created_at
+              })
+            );
+
+        applyFilters();
+      }
+      catch (error) {
+        console.error(
+          "Unable to load activity logs:",
+          error
+        );
+
+        logs = [];
+        filteredLogs = [];
+
+        logLoadError =
+          error?.message ||
+          "Unknown error";
+
+        renderLogs();
+        updateStats();
+
+        showPageMessage(
+          "DogEar couldn't load activity logs: " +
+          logLoadError,
+          "error"
+        );
+      }
+    }
+
+    function applyFilters() {
+      const search =
+        $("searchInput")
+          .value
+          .trim()
+          .toLowerCase();
+
+      const selectedType =
+        $("typeFilter").value;
+
+      const selectedSeverity =
+        $("severityFilter").value;
+
+      const selectedTime =
+        $("timeFilter").value;
+
+      filteredLogs =
+        logs.filter(
+          log => {
+            const searchable =
+              [
+                log.event,
+                log.description,
+                log.actorName,
+                log.actorEmail,
+                log.actorId,
+                log.source,
+                log.target,
+                log.message,
+                JSON.stringify(
+                  log.metadata || {}
+                )
+              ]
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
+
+            const matchesSearch =
+              !search ||
+              searchable.includes(search);
+
+            const matchesType =
+              !selectedType ||
+              log.type ===
+                selectedType;
+
+            const matchesSeverity =
+              !selectedSeverity ||
+              log.severity ===
+                selectedSeverity;
+
+            const matchesTime =
+              !selectedTime ||
+              isWithinTimeRange(
+                log.createdAt,
+                selectedTime
+              );
+
+            return (
+              matchesSearch &&
+              matchesType &&
+              matchesSeverity &&
+              matchesTime
+            );
+          }
+        );
+
+      renderLogs();
+      updateStats();
+    }
+
+    function renderLogs() {
+      const body =
+        $("logTableBody");
+
+      body.innerHTML =
+        "";
+
+      if (!filteredLogs.length) {
+        if (logLoadError) {
+          showEmpty(
+            "DogEar couldn't load activity logs."
+          );
+        }
+        else if (logs.length) {
+          showEmpty(
+            "No activity logs match your current filters."
+          );
+        }
+        else {
+          showEmpty(
+            "The activity log table is connected, but no events have been recorded yet."
+          );
+        }
+
+        $("visibleLogCount")
+          .textContent =
+            "0 events";
+
         return;
       }
 
+      hideEmpty();
 
-      if (
-        button.dataset.action ===
-        "details"
-      ) {
+      filteredLogs.forEach(
+        log => {
+          const row =
+            document.createElement(
+              "tr"
+            );
 
-        openLogDetails(
-          button.dataset.id
+          row.innerHTML = `
+            <td>
+              <div class="event-name">
+                ${escapeHtml(
+                  log.event ||
+                  "System Event"
+                )}
+              </div>
+
+              <div class="event-description">
+                ${escapeHtml(
+                  log.description ||
+                  log.message ||
+                  ""
+                )}
+              </div>
+            </td>
+
+            <td>
+              <span class="type-badge">
+                ${escapeHtml(
+                  formatType(
+                    log.type
+                  )
+                )}
+              </span>
+            </td>
+
+            <td>
+              ${severityBadge(
+                log.severity
+              )}
+            </td>
+
+            <td>
+              <div class="actor-name">
+                ${escapeHtml(
+                  log.actorName ||
+                  "System"
+                )}
+              </div>
+
+              <div class="actor-email">
+                ${escapeHtml(
+                  log.actorEmail ||
+                  ""
+                )}
+              </div>
+            </td>
+
+            <td class="mono">
+              ${escapeHtml(
+                log.source ||
+                "—"
+              )}
+            </td>
+
+            <td>
+              ${formatDate(
+                log.createdAt
+              )}
+            </td>
+
+            <td>
+              <div class="row-actions">
+                <button
+                  type="button"
+                  class="icon-btn"
+                  data-action="details"
+                  data-id="${escapeAttribute(
+                    log.id
+                  )}"
+                >
+                  Details
+                </button>
+              </div>
+            </td>
+          `;
+
+          body.appendChild(
+            row
+          );
+        }
+      );
+
+      $("visibleLogCount")
+        .textContent =
+          `${filteredLogs.length} ${
+            pluralize(
+              filteredLogs.length,
+              "event"
+            )
+          }`;
+    }
+
+    function updateStats() {
+      const adminCount =
+        logs.filter(
+          log =>
+            log.type ===
+            "admin"
+        ).length;
+
+      const warningCount =
+        logs.filter(
+          log =>
+            log.severity ===
+            "warning"
+        ).length;
+
+      const criticalCount =
+        logs.filter(
+          log =>
+            log.severity ===
+              "critical" ||
+            log.severity ===
+              "error"
+        ).length;
+
+      $("totalEvents")
+        .textContent =
+          formatNumber(
+            logs.length
+          );
+
+      $("adminEvents")
+        .textContent =
+          formatNumber(
+            adminCount
+          );
+
+      $("warningEvents")
+        .textContent =
+          formatNumber(
+            warningCount
+          );
+
+      $("criticalEvents")
+        .textContent =
+          formatNumber(
+            criticalCount
+          );
+    }
+
+    function openLogDetails(
+      logId
+    ) {
+      const log =
+        logs.find(
+          item =>
+            String(item.id) ===
+            String(logId)
         );
 
+      if (!log) {
+        return;
       }
 
+      $("modalEventName")
+        .textContent =
+          log.event ||
+          "Event Details";
+
+      $("modalEventDescription")
+        .textContent =
+          log.description ||
+          "DogEar activity record";
+
+      $("detailId")
+        .textContent =
+          log.id ||
+          "—";
+
+      $("detailTimestamp")
+        .textContent =
+          formatDate(
+            log.createdAt
+          );
+
+      $("detailType")
+        .textContent =
+          formatType(
+            log.type
+          );
+
+      $("detailSeverity")
+        .textContent =
+          formatSeverity(
+            log.severity
+          );
+
+      $("detailActor")
+        .textContent =
+          log.actorEmail
+            ? `${
+                log.actorName ||
+                "Unknown"
+              } (${log.actorEmail})`
+            : (
+                log.actorName ||
+                "System"
+              );
+
+      $("detailActorId")
+        .textContent =
+          log.actorId ||
+          "—";
+
+      $("detailSource")
+        .textContent =
+          log.source ||
+          "—";
+
+      $("detailTarget")
+        .textContent =
+          log.target ||
+          "—";
+
+      $("detailMessage")
+        .textContent =
+          log.message ||
+          log.description ||
+          "—";
+
+      $("detailMetadata")
+        .textContent =
+          JSON.stringify(
+            log.metadata || {},
+            null,
+            2
+          );
+
+      $("detailsModal")
+        .classList
+        .add("show");
+
+      $("detailsModal")
+        .setAttribute(
+          "aria-hidden",
+          "false"
+        );
     }
-  );
 
+    function closeModal() {
+      $("detailsModal")
+        .classList
+        .remove("show");
 
-  document.getElementById(
-    "closeModalBtn"
-  ).addEventListener(
-    "click",
-    closeModal
-  );
+      $("detailsModal")
+        .setAttribute(
+          "aria-hidden",
+          "true"
+        );
+    }
 
+    function exportVisibleLogs() {
+      if (
+        !filteredLogs.length
+      ) {
+        showPageMessage(
+          "There are no visible logs to export.",
+          "error"
+        );
 
-  document.getElementById(
-    "modalCloseBtn"
-  ).addEventListener(
-    "click",
-    closeModal
-  );
+        return;
+      }
 
+      const rows = [
+        [
+          "ID",
+          "Event",
+          "Description",
+          "Type",
+          "Severity",
+          "Actor",
+          "Actor Email",
+          "Actor ID",
+          "Source",
+          "Target",
+          "Message",
+          "Metadata",
+          "Created At"
+        ],
 
-  detailsModal.addEventListener(
-    "click",
-    event => {
+        ...filteredLogs.map(
+          log => [
+            log.id || "",
+            log.event || "",
+            log.description || "",
+            log.type || "",
+            log.severity || "",
+            log.actorName || "",
+            log.actorEmail || "",
+            log.actorId || "",
+            log.source || "",
+            log.target || "",
+            log.message || "",
+            JSON.stringify(
+              log.metadata || {}
+            ),
+            log.createdAt || ""
+          ]
+        )
+      ];
+
+      const csv =
+        rows
+          .map(
+            row =>
+              row
+                .map(csvEscape)
+                .join(",")
+          )
+          .join("\n");
+
+      const blob =
+        new Blob(
+          [csv],
+          {
+            type:
+              "text/csv;charset=utf-8;"
+          }
+        );
+
+      const url =
+        URL.createObjectURL(
+          blob
+        );
+
+      const link =
+        document.createElement(
+          "a"
+        );
+
+      link.href =
+        url;
+
+      link.download =
+        `dogear-logs-${new Date()
+          .toISOString()
+          .slice(0,10)}.csv`;
+
+      document.body
+        .appendChild(
+          link
+        );
+
+      link.click();
+      link.remove();
+
+      URL.revokeObjectURL(
+        url
+      );
+
+      showPageMessage(
+        "Visible activity logs exported.",
+        "success"
+      );
+    }
+
+    function setLoadingState() {
+      hideEmpty();
+
+      $("logTableBody")
+        .innerHTML = `
+          <tr class="loading-row">
+            <td colspan="7">
+              Loading activity logs...
+            </td>
+          </tr>
+        `;
+    }
+
+    function showEmpty(
+      message
+    ) {
+      $("logTableBody")
+        .innerHTML =
+          "";
+
+      $("emptyMessage")
+        .textContent =
+          message;
+
+      $("emptyState")
+        .classList
+        .add("show");
+    }
+
+    function hideEmpty() {
+      $("emptyState")
+        .classList
+        .remove("show");
+    }
+
+    function severityBadge(
+      severity
+    ) {
+      const safe =
+        severity ||
+        "info";
+
+      const allowed =
+        [
+          "info",
+          "success",
+          "warning",
+          "error",
+          "critical"
+        ];
+
+      const badgeClass =
+        allowed.includes(safe)
+          ? `badge-${safe}`
+          : "badge-info";
+
+      return `
+        <span class="badge ${badgeClass}">
+          ${escapeHtml(
+            formatSeverity(
+              safe
+            )
+          )}
+        </span>
+      `;
+    }
+
+    function formatSeverity(
+      severity
+    ) {
+      const labels = {
+        info:
+          "Info",
+
+        success:
+          "Success",
+
+        warning:
+          "Warning",
+
+        error:
+          "Error",
+
+        critical:
+          "Critical"
+      };
+
+      return (
+        labels[severity] ||
+        "Info"
+      );
+    }
+
+    function formatType(
+      type
+    ) {
+      const labels = {
+        admin:
+          "Admin",
+
+        account:
+          "Account",
+
+        moderation:
+          "Moderation",
+
+        security:
+          "Security",
+
+        marketplace:
+          "Marketplace",
+
+        upload:
+          "Upload",
+
+        club:
+          "Book Club",
+
+        system:
+          "System"
+      };
+
+      return (
+        labels[type] ||
+        "Other"
+      );
+    }
+
+    function isWithinTimeRange(
+      createdAt,
+      range
+    ) {
+      if (!createdAt) {
+        return false;
+      }
+
+      const timestamp =
+        new Date(
+          createdAt
+        ).getTime();
 
       if (
-        event.target ===
-        detailsModal
+        Number.isNaN(
+          timestamp
+        )
       ) {
-
-        closeModal();
-
+        return false;
       }
 
+      const ranges = {
+        "24h":
+          24 *
+          60 *
+          60 *
+          1000,
+
+        "7d":
+          7 *
+          24 *
+          60 *
+          60 *
+          1000,
+
+        "30d":
+          30 *
+          24 *
+          60 *
+          60 *
+          1000
+      };
+
+      return (
+        Date.now() -
+          timestamp <=
+        ranges[range]
+      );
     }
-  );
 
+    function formatDate(
+      value
+    ) {
+      if (!value) {
+        return "Unknown";
+      }
 
-  document.addEventListener(
-    "keydown",
-    event => {
+      const date =
+        new Date(value);
 
       if (
-        event.key === "Escape"
+        Number.isNaN(
+          date.getTime()
+        )
       ) {
-
-        closeModal();
-
+        return "Unknown";
       }
 
+      return new Intl
+        .DateTimeFormat(
+          "en-US",
+          {
+            month:
+              "short",
+
+            day:
+              "numeric",
+
+            year:
+              "numeric",
+
+            hour:
+              "numeric",
+
+            minute:
+              "2-digit"
+          }
+        )
+        .format(
+          date
+        );
     }
-  );
 
+    function formatNumber(
+      value
+    ) {
+      return new Intl
+        .NumberFormat(
+          "en-US"
+        )
+        .format(
+          Number(
+            value ||
+            0
+          )
+        );
+    }
 
-  /* ========================================================
-     START
-  ========================================================= */
+    function pluralize(
+      count,
+      word
+    ) {
+      return (
+        count === 1
+          ? word
+          : `${word}s`
+      );
+    }
 
-  loadLogs();
+    function csvEscape(
+      value
+    ) {
+      const string =
+        String(
+          value ??
+          ""
+        );
 
-</script>
+      if (
+        string.includes(",") ||
+        string.includes('"') ||
+        string.includes("\n")
+      ) {
+        return `"${string.replaceAll(
+          '"',
+          '""'
+        )}"`;
+      }
+
+      return string;
+    }
+
+    function escapeHtml(
+      value
+    ) {
+      return String(
+        value ??
+        ""
+      )
+        .replaceAll(
+          "&",
+          "&amp;"
+        )
+        .replaceAll(
+          "<",
+          "&lt;"
+        )
+        .replaceAll(
+          ">",
+          "&gt;"
+        )
+        .replaceAll(
+          '"',
+          "&quot;"
+        )
+        .replaceAll(
+          "'",
+          "&#039;"
+        );
+    }
+
+    function escapeAttribute(
+      value
+    ) {
+      return escapeHtml(
+        String(
+          value ??
+          ""
+        )
+      );
+    }
+
+    $("searchInput")
+      .addEventListener(
+        "input",
+        applyFilters
+      );
+
+    $("typeFilter")
+      .addEventListener(
+        "change",
+        applyFilters
+      );
+
+    $("severityFilter")
+      .addEventListener(
+        "change",
+        applyFilters
+      );
+
+    $("timeFilter")
+      .addEventListener(
+        "change",
+        applyFilters
+      );
+
+    $("refreshBtn")
+      .addEventListener(
+        "click",
+        async event => {
+          const button =
+            event.currentTarget;
+
+          button.disabled =
+            true;
+
+          button.textContent =
+            "Refreshing...";
+
+          await loadLogs();
+
+          button.disabled =
+            false;
+
+          button.textContent =
+            "Refresh";
+        }
+      );
+
+    $("exportBtn")
+      .addEventListener(
+        "click",
+        exportVisibleLogs
+      );
+
+    $("logTableBody")
+      .addEventListener(
+        "click",
+        event => {
+          const button =
+            event.target.closest(
+              "[data-action]"
+            );
+
+          if (!button) {
+            return;
+          }
+
+          if (
+            button.dataset.action ===
+            "details"
+          ) {
+            openLogDetails(
+              button.dataset.id
+            );
+          }
+        }
+      );
+
+    $("closeModalBtn")
+      .addEventListener(
+        "click",
+        closeModal
+      );
+
+    $("modalCloseBtn")
+      .addEventListener(
+        "click",
+        closeModal
+      );
+
+    $("detailsModal")
+      .addEventListener(
+        "click",
+        event => {
+          if (
+            event.target ===
+            $("detailsModal")
+          ) {
+            closeModal();
+          }
+        }
+      );
+
+    document
+      .addEventListener(
+        "keydown",
+        event => {
+          if (
+            event.key ===
+            "Escape"
+          ) {
+            closeModal();
+          }
+        }
+      );
+
+    $("logoutBtn")
+      .addEventListener(
+        "click",
+        async () => {
+          try {
+            await supabaseClient
+              .auth
+              .signOut();
+          }
+          catch (error) {
+            console.warn(
+              "Sign out error:",
+              error
+            );
+          }
+
+          location.href =
+            "auth.html#login";
+        }
+      );
+
+    async function start() {
+      try {
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .auth
+            .getUser();
+
+        if (
+          error ||
+          !data.user
+        ) {
+          location.href =
+            "auth.html#login";
+
+          return;
+        }
+
+        currentUser =
+          data.user;
+
+        const allowed =
+          await verifyAdmin();
+
+        if (!allowed) {
+          showLocked();
+          return;
+        }
+
+        await loadLogs();
+      }
+      catch (error) {
+        console.error(
+          "Admin logs startup error:",
+          error
+        );
+
+        showPageMessage(
+          "DogEar couldn't open activity logs: " +
+          (
+            error?.message ||
+            "Unknown error"
+          ),
+          "error"
+        );
+      }
+      finally {
+        $("loadingScreen")
+          .classList
+          .add("hidden");
+      }
+    }
+
+    start();
+  </script>
 
 </body>
 </html>
