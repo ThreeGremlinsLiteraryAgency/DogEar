@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Uploads | DogEar Admin</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root {
@@ -33,10 +36,19 @@
       padding: 0;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       min-height: 100vh;
+
       background:
-        radial-gradient(circle at top right, rgba(212,175,55,.07), transparent 35%),
+        radial-gradient(
+          circle at top right,
+          rgba(212,175,55,.07),
+          transparent 35%
+        ),
         var(--bg);
 
       color: var(--text);
@@ -63,6 +75,39 @@
       cursor: pointer;
     }
 
+    button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    /* =====================================================
+       LOADING SCREEN
+    ===================================================== */
+
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+
+      display: grid;
+      place-items: center;
+
+      background: var(--bg);
+    }
+
+    .loading-screen.hidden {
+      display: none;
+    }
+
+    .loading-screen span {
+      color: var(--gold-light);
+
+      font-size: .76rem;
+      font-weight: 800;
+
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
 
     /* =====================================================
        HEADER
@@ -148,7 +193,6 @@
       border-color: var(--gold);
       color: var(--gold-light);
     }
-
 
     /* =====================================================
        PAGE SHELL
@@ -240,7 +284,6 @@
 
       padding: 34px;
     }
-
 
     /* =====================================================
        PAGE HEADER
@@ -358,6 +401,47 @@
         rgba(225,106,102,.16);
     }
 
+    /* =====================================================
+       MESSAGE
+    ===================================================== */
+
+    .message {
+      display: none;
+
+      margin-bottom: 18px;
+
+      padding: 13px 15px;
+
+      border-radius: 11px;
+
+      font-size: .86rem;
+
+      line-height: 1.5;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      color: #a5dfb8;
+
+      background:
+        rgba(95,199,134,.08);
+
+      border:
+        1px solid rgba(95,199,134,.3);
+    }
+
+    .message.error {
+      color: #f0a19d;
+
+      background:
+        rgba(225,106,102,.08);
+
+      border:
+        1px solid rgba(225,106,102,.3);
+    }
 
     /* =====================================================
        STAT CARDS
@@ -421,7 +505,6 @@
 
       margin-top: 6px;
     }
-
 
     /* =====================================================
        TOOLBAR
@@ -503,7 +586,6 @@
         0 0 0 3px
         rgba(212,175,55,.08);
     }
-
 
     /* =====================================================
        UPLOAD TABLE
@@ -669,7 +751,6 @@
       margin-top: 3px;
     }
 
-
     /* =====================================================
        STATUS BADGES
     ===================================================== */
@@ -740,7 +821,6 @@
         rgba(170,167,160,.1);
     }
 
-
     /* =====================================================
        ACTIONS
     ===================================================== */
@@ -781,7 +861,6 @@
 
       color: #ef9a97;
     }
-
 
     /* =====================================================
        EMPTY / LOADING
@@ -844,6 +923,44 @@
       padding: 42px;
     }
 
+    /* =====================================================
+       ACCESS LOCK
+    ===================================================== */
+
+    .locked {
+      display: none;
+
+      max-width: 760px;
+
+      margin:
+        70px auto;
+
+      padding: 42px;
+
+      text-align: center;
+
+      border-radius:
+        var(--radius);
+
+      border:
+        1px solid var(--border);
+
+      background: var(--panel);
+    }
+
+    .locked.show {
+      display: block;
+    }
+
+    .locked h2 {
+      margin-bottom: 10px;
+    }
+
+    .locked p {
+      color: var(--muted);
+
+      line-height: 1.6;
+    }
 
     /* =====================================================
        MODAL
@@ -1006,7 +1123,6 @@
         var(--border);
     }
 
-
     /* =====================================================
        RESPONSIVE
     ===================================================== */
@@ -1104,1889 +1220,2402 @@
       }
 
     }
-
   </style>
 </head>
 
 <body>
 
-<header class="topbar">
+  <!-- =========================================================
+       LOADING SCREEN
+  ========================================================= -->
 
-  <a
-    href="dashboard.html"
-    class="brand"
+  <div
+    class="loading-screen"
+    id="loadingScreen"
   >
-
-    <div class="brand-mark">
-      D
-    </div>
-
-    <span class="brand-name">
-      DogEar
+    <span>
+      Opening upload administration...
     </span>
+  </div>
 
-  </a>
 
+  <!-- =========================================================
+       HEADER
+  ========================================================= -->
 
-  <div class="top-actions">
+  <header class="topbar">
 
     <a
       href="dashboard.html"
-      class="top-btn view-site"
+      class="brand"
     >
-      View Site
+
+      <div class="brand-mark">
+        D
+      </div>
+
+      <span class="brand-name">
+        DogEar
+      </span>
+
     </a>
 
-    <a
-      href="login.html"
-      class="top-btn"
-    >
-      Log Out
-    </a>
 
-  </div>
-
-</header>
-
-
-<div class="app-shell">
-
-  <!-- =====================================================
-       ADMIN NAVIGATION
-  ====================================================== -->
-
-  <aside class="sidebar">
-
-    <div class="sidebar-title">
-      Administration
-    </div>
-
-    <nav class="admin-nav">
-
-      <a href="admin.html">
-        Overview
-      </a>
-
-      <a href="admin-users.html">
-        Users
-      </a>
-
-      <a href="admin-datasets.html">
-        Datasets
-      </a>
+    <div class="top-actions">
 
       <a
-        href="admin-uploads.html"
-        class="active"
+        href="dashboard.html"
+        class="top-btn view-site"
       >
-        Uploads
+        View Site
       </a>
 
-      <a href="admin-logs.html">
-        Logs
-      </a>
+      <button
+        type="button"
+        class="top-btn"
+        id="logoutBtn"
+      >
+        Log Out
+      </button>
 
-      <a href="admin-settings.html">
-        Settings
-      </a>
+    </div>
 
-    </nav>
-
-
-    <div class="sidebar-divider"></div>
-
-
-    <nav class="admin-nav">
-
-      <a href="dashboard.html">
-        Dashboard
-      </a>
-
-      <a href="discover.html">
-        Discover
-      </a>
-
-      <a href="clubs.html">
-        Book Clubs
-      </a>
-
-      <a href="marketplace.html">
-        Marketplace
-      </a>
-
-      <a href="profile.html">
-        My Profile
-      </a>
-
-    </nav>
-
-  </aside>
+  </header>
 
 
-  <!-- =====================================================
-       MAIN
-  ====================================================== -->
+  <!-- =========================================================
+       APP SHELL
+  ========================================================= -->
 
-  <main class="main">
+  <div class="app-shell">
 
-    <div class="page-header">
+    <!-- =======================================================
+         SIDEBAR
+    ======================================================== -->
 
-      <div>
+    <aside class="sidebar">
 
-        <div class="eyebrow">
-          DogEar Administration
+      <div class="sidebar-title">
+        Administration
+      </div>
+
+
+      <nav class="admin-nav">
+
+        <a href="admin-dashboard.html">
+          Overview
+        </a>
+
+        <a href="admin-users.html">
+          Users
+        </a>
+
+        <a href="admin-datasets.html">
+          Datasets
+        </a>
+
+        <a
+          href="admin-uploads.html"
+          class="active"
+        >
+          Uploads
+        </a>
+
+        <a href="admin-logs.html">
+          Logs
+        </a>
+
+        <a href="admin-settings.html">
+          Settings
+        </a>
+
+      </nav>
+
+
+      <div class="sidebar-divider"></div>
+
+
+      <nav class="admin-nav">
+
+        <a href="dashboard.html">
+          Dashboard
+        </a>
+
+        <a href="discover.html">
+          Discover
+        </a>
+
+        <a href="clubs.html">
+          Book Clubs
+        </a>
+
+        <a href="marketplace.html">
+          Marketplace
+        </a>
+
+        <a href="profile.html">
+          My Profile
+        </a>
+
+      </nav>
+
+    </aside>
+
+
+    <!-- =======================================================
+         MAIN
+    ======================================================== -->
+
+    <main class="main">
+
+      <div id="adminArea">
+
+        <div class="page-header">
+
+          <div>
+
+            <div class="eyebrow">
+              DogEar Administration
+            </div>
+
+            <h1>
+              Uploads
+            </h1>
+
+            <p class="page-subtitle">
+              Review files registered with DogEar, monitor processing status,
+              identify questionable content, and disable uploads that should
+              no longer be available on the platform.
+            </p>
+
+          </div>
+
+
+          <div class="header-actions">
+
+            <button
+              type="button"
+              class="secondary-btn"
+              id="refreshBtn"
+            >
+              Refresh
+            </button>
+
+          </div>
+
         </div>
 
-        <h1>
-          Uploads
-        </h1>
 
-        <p class="page-subtitle">
-          Review files uploaded to DogEar, monitor processing status,
-          identify questionable content, and remove uploads that should
-          no longer be available on the platform.
-        </p>
+        <!-- ===================================================
+             MESSAGE
+        ==================================================== -->
+
+        <div
+          class="message"
+          id="pageMessage"
+        ></div>
+
+
+        <!-- ===================================================
+             STATS
+        ==================================================== -->
+
+        <section class="stats-grid">
+
+          <div class="stat-card">
+
+            <div class="stat-label">
+              Total Uploads
+            </div>
+
+            <div
+              class="stat-value"
+              id="totalUploads"
+            >
+              0
+            </div>
+
+            <div class="stat-note">
+              Files currently tracked
+            </div>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <div class="stat-label">
+              Processing
+            </div>
+
+            <div
+              class="stat-value"
+              id="processingUploads"
+            >
+              0
+            </div>
+
+            <div class="stat-note">
+              Awaiting processing
+            </div>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <div class="stat-label">
+              Needs Review
+            </div>
+
+            <div
+              class="stat-value"
+              id="reviewUploads"
+            >
+              0
+            </div>
+
+            <div class="stat-note">
+              Requires admin attention
+            </div>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <div class="stat-label">
+              Storage Tracked
+            </div>
+
+            <div
+              class="stat-value"
+              id="storageUsed"
+            >
+              0 B
+            </div>
+
+            <div class="stat-note">
+              Metadata-reported file size
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ===================================================
+             FILTERS
+        ==================================================== -->
+
+        <section class="toolbar">
+
+          <div class="search-wrap">
+
+            <span class="search-icon">
+              ⌕
+            </span>
+
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="Search filename, uploader, or purpose..."
+              autocomplete="off"
+            />
+
+          </div>
+
+
+          <select id="typeFilter">
+
+            <option value="">
+              All file types
+            </option>
+
+            <option value="image">
+              Images
+            </option>
+
+            <option value="document">
+              Documents
+            </option>
+
+            <option value="audio">
+              Audio
+            </option>
+
+            <option value="video">
+              Video
+            </option>
+
+            <option value="other">
+              Other
+            </option>
+
+          </select>
+
+
+          <select id="statusFilter">
+
+            <option value="">
+              All statuses
+            </option>
+
+            <option value="ready">
+              Ready
+            </option>
+
+            <option value="processing">
+              Processing
+            </option>
+
+            <option value="review">
+              Needs Review
+            </option>
+
+            <option value="rejected">
+              Rejected
+            </option>
+
+            <option value="deleted">
+              Deleted
+            </option>
+
+          </select>
+
+        </section>
+
+
+        <!-- ===================================================
+             TABLE
+        ==================================================== -->
+
+        <section class="table-card">
+
+          <div class="table-heading">
+
+            <h2>
+              Uploaded Files
+            </h2>
+
+            <span id="visibleUploadCount">
+              0 uploads
+            </span>
+
+          </div>
+
+
+          <div class="table-scroll">
+
+            <table>
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    File
+                  </th>
+
+                  <th>
+                    Uploaded By
+                  </th>
+
+                  <th>
+                    Purpose
+                  </th>
+
+                  <th>
+                    Size
+                  </th>
+
+                  <th>
+                    Status
+                  </th>
+
+                  <th>
+                    Uploaded
+                  </th>
+
+                  <th></th>
+
+                </tr>
+
+              </thead>
+
+
+              <tbody id="uploadTableBody">
+
+                <tr class="loading-row">
+
+                  <td colspan="7">
+                    Loading uploads...
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+
+          <div
+            class="empty-state"
+            id="emptyState"
+          >
+
+            <div class="empty-icon">
+              ↑
+            </div>
+
+            <h3>
+              No uploads found
+            </h3>
+
+            <p id="emptyMessage">
+              DogEar does not currently have any uploads registered.
+            </p>
+
+          </div>
+
+        </section>
 
       </div>
 
 
-      <div class="header-actions">
+      <!-- =====================================================
+           LOCKED
+      ====================================================== -->
+
+      <section
+        class="locked"
+        id="lockedArea"
+      >
+
+        <h2>
+          Administrator access required.
+        </h2>
+
+        <p>
+          Your account does not currently have permission
+          to view DogEar upload administration.
+        </p>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <!-- =========================================================
+       UPLOAD DETAILS MODAL
+  ========================================================= -->
+
+  <div
+    class="modal-backdrop"
+    id="detailsModal"
+    aria-hidden="true"
+  >
+
+    <div class="modal">
+
+      <div class="modal-header">
+
+        <div>
+
+          <h2 id="modalFileName">
+            Upload
+          </h2>
+
+          <p>
+            Upload details
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="close-btn"
+          id="closeModalBtn"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="modal-body">
+
+        <div class="detail-grid">
+
+          <div class="detail-item">
+
+            <div class="detail-label">
+              Upload ID
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailId"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <div class="detail-label">
+              Status
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailStatus"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <div class="detail-label">
+              Type
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailType"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <div class="detail-label">
+              Size
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailSize"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <div class="detail-label">
+              Uploader
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailUploader"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <div class="detail-label">
+              Uploaded
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailCreated"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <div class="detail-label">
+              Updated
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailUpdated"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <div class="detail-label">
+              Deleted
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailDeleted"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="detail-item detail-full">
+
+            <div class="detail-label">
+              Purpose
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailPurpose"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="detail-item detail-full">
+
+            <div class="detail-label">
+              Storage Bucket
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailBucket"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="detail-item detail-full">
+
+            <div class="detail-label">
+              Storage Path
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailLocation"
+            >
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="modal-footer">
 
         <button
           type="button"
           class="secondary-btn"
-          id="refreshBtn"
+          id="modalCloseBtn"
         >
-          Refresh
+          Close
+        </button>
+
+        <button
+          type="button"
+          class="danger-btn"
+          id="deleteUploadBtn"
+        >
+          Delete Upload
         </button>
 
       </div>
 
     </div>
 
-
-    <!-- =====================================================
-         STATS
-    ====================================================== -->
-
-    <section class="stats-grid">
-
-      <div class="stat-card">
-
-        <div class="stat-label">
-          Total Uploads
-        </div>
-
-        <div
-          class="stat-value"
-          id="totalUploads"
-        >
-          0
-        </div>
-
-        <div class="stat-note">
-          Files currently tracked
-        </div>
-
-      </div>
-
-
-      <div class="stat-card">
-
-        <div class="stat-label">
-          Processing
-        </div>
-
-        <div
-          class="stat-value"
-          id="processingUploads"
-        >
-          0
-        </div>
-
-        <div class="stat-note">
-          Awaiting processing
-        </div>
-
-      </div>
-
-
-      <div class="stat-card">
-
-        <div class="stat-label">
-          Needs Review
-        </div>
-
-        <div
-          class="stat-value"
-          id="reviewUploads"
-        >
-          0
-        </div>
-
-        <div class="stat-note">
-          Requires admin attention
-        </div>
-
-      </div>
-
-
-      <div class="stat-card">
-
-        <div class="stat-label">
-          Storage Used
-        </div>
-
-        <div
-          class="stat-value"
-          id="storageUsed"
-        >
-          0 MB
-        </div>
-
-        <div class="stat-note">
-          Tracked upload storage
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         FILTERS
-    ====================================================== -->
-
-    <section class="toolbar">
-
-      <div class="search-wrap">
-
-        <span class="search-icon">
-          ⌕
-        </span>
-
-        <input
-          id="searchInput"
-          type="search"
-          placeholder="Search filename, uploader, or purpose..."
-          autocomplete="off"
-        />
-
-      </div>
-
-
-      <select id="typeFilter">
-
-        <option value="">
-          All file types
-        </option>
-
-        <option value="image">
-          Images
-        </option>
-
-        <option value="document">
-          Documents
-        </option>
-
-        <option value="audio">
-          Audio
-        </option>
-
-        <option value="video">
-          Video
-        </option>
-
-        <option value="other">
-          Other
-        </option>
-
-      </select>
-
-
-      <select id="statusFilter">
-
-        <option value="">
-          All statuses
-        </option>
-
-        <option value="ready">
-          Ready
-        </option>
-
-        <option value="processing">
-          Processing
-        </option>
-
-        <option value="review">
-          Needs Review
-        </option>
-
-        <option value="rejected">
-          Rejected
-        </option>
-
-        <option value="deleted">
-          Deleted
-        </option>
-
-      </select>
-
-    </section>
-
-
-    <!-- =====================================================
-         UPLOAD TABLE
-    ====================================================== -->
-
-    <section class="table-card">
-
-      <div class="table-heading">
-
-        <h2>
-          Uploaded Files
-        </h2>
-
-        <span id="visibleUploadCount">
-          0 uploads
-        </span>
-
-      </div>
-
-
-      <div class="table-scroll">
-
-        <table>
-
-          <thead>
-
-            <tr>
-
-              <th>
-                File
-              </th>
-
-              <th>
-                Uploaded By
-              </th>
-
-              <th>
-                Purpose
-              </th>
-
-              <th>
-                Size
-              </th>
-
-              <th>
-                Status
-              </th>
-
-              <th>
-                Uploaded
-              </th>
-
-              <th></th>
-
-            </tr>
-
-          </thead>
-
-
-          <tbody id="uploadTableBody">
-
-            <tr class="loading-row">
-
-              <td colspan="7">
-                Loading uploads...
-              </td>
-
-            </tr>
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-
-      <div
-        class="empty-state"
-        id="emptyState"
-      >
-
-        <div class="empty-icon">
-          ↑
-        </div>
-
-        <h3>
-          No uploads found
-        </h3>
-
-        <p id="emptyMessage">
-          DogEar does not currently have any uploaded files connected
-          to this admin page.
-        </p>
-
-      </div>
-
-    </section>
-
-  </main>
-
-</div>
-
-
-<!-- =========================================================
-     UPLOAD DETAILS MODAL
-========================================================= -->
-
-<div
-  class="modal-backdrop"
-  id="detailsModal"
-  aria-hidden="true"
->
-
-  <div class="modal">
-
-    <div class="modal-header">
-
-      <div>
-
-        <h2 id="modalFileName">
-          Upload
-        </h2>
-
-        <p>
-          Upload details
-        </p>
-
-      </div>
-
-
-      <button
-        type="button"
-        class="close-btn"
-        id="closeModalBtn"
-        aria-label="Close"
-      >
-        ×
-      </button>
-
-    </div>
-
-
-    <div class="modal-body">
-
-      <div class="detail-grid">
-
-        <div class="detail-item">
-
-          <div class="detail-label">
-            Upload ID
-          </div>
-
-          <div
-            class="detail-value"
-            id="detailId"
-          >
-            —
-          </div>
-
-        </div>
-
-
-        <div class="detail-item">
-
-          <div class="detail-label">
-            Status
-          </div>
-
-          <div
-            class="detail-value"
-            id="detailStatus"
-          >
-            —
-          </div>
-
-        </div>
-
-
-        <div class="detail-item">
-
-          <div class="detail-label">
-            Type
-          </div>
-
-          <div
-            class="detail-value"
-            id="detailType"
-          >
-            —
-          </div>
-
-        </div>
-
-
-        <div class="detail-item">
-
-          <div class="detail-label">
-            Size
-          </div>
-
-          <div
-            class="detail-value"
-            id="detailSize"
-          >
-            —
-          </div>
-
-        </div>
-
-
-        <div class="detail-item">
-
-          <div class="detail-label">
-            Uploader
-          </div>
-
-          <div
-            class="detail-value"
-            id="detailUploader"
-          >
-            —
-          </div>
-
-        </div>
-
-
-        <div class="detail-item">
-
-          <div class="detail-label">
-            Uploaded
-          </div>
-
-          <div
-            class="detail-value"
-            id="detailCreated"
-          >
-            —
-          </div>
-
-        </div>
-
-
-        <div class="detail-item detail-full">
-
-          <div class="detail-label">
-            Purpose
-          </div>
-
-          <div
-            class="detail-value"
-            id="detailPurpose"
-          >
-            —
-          </div>
-
-        </div>
-
-
-        <div class="detail-item detail-full">
-
-          <div class="detail-label">
-            File Location
-          </div>
-
-          <div
-            class="detail-value"
-            id="detailLocation"
-          >
-            —
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="modal-footer">
-
-      <button
-        type="button"
-        class="secondary-btn"
-        id="modalCloseBtn"
-      >
-        Close
-      </button>
-
-      <button
-        type="button"
-        class="danger-btn"
-        id="deleteUploadBtn"
-      >
-        Delete Upload
-      </button>
-
-    </div>
-
   </div>
 
-</div>
+
+  <script>
+
+    /* =========================================================
+       SUPABASE
+    ========================================================= */
+
+    const SUPABASE_URL =
+      "https://nrtutxjznkfvvbmaagum.supabase.co";
 
 
-<script>
-
-  /*
-  ============================================================
-  DOGEAR ADMIN UPLOADS
-
-  This page intentionally does NOT assume the name of DogEar's
-  Supabase upload table or storage bucket.
-
-  Wire loadUploads() and deleteUpload() to your real backend
-  once those names are confirmed.
-  ============================================================
-  */
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
 
 
-  let uploads = [];
-
-  let filteredUploads = [];
-
-  let selectedUploadId = null;
-
-
-  /* =========================================================
-     ELEMENTS
-  ========================================================= */
-
-  const uploadTableBody =
-    document.getElementById(
-      "uploadTableBody"
-    );
-
-
-  const emptyState =
-    document.getElementById(
-      "emptyState"
-    );
-
-
-  const emptyMessage =
-    document.getElementById(
-      "emptyMessage"
-    );
-
-
-  const searchInput =
-    document.getElementById(
-      "searchInput"
-    );
-
-
-  const typeFilter =
-    document.getElementById(
-      "typeFilter"
-    );
-
-
-  const statusFilter =
-    document.getElementById(
-      "statusFilter"
-    );
-
-
-  const detailsModal =
-    document.getElementById(
-      "detailsModal"
-    );
-
-
-  /*
-  ============================================================
-  LOAD UPLOADS
-
-  Expected object shape:
-
-  {
-    id: "uuid",
-    fileName: "cover.jpg",
-    fileType: "image",
-    mimeType: "image/jpeg",
-    sizeBytes: 248391,
-    uploaderName: "Milo",
-    uploaderEmail: "example@email.com",
-    uploaderId: "uuid",
-    purpose: "Book cover",
-    status: "ready",
-    createdAt: "2026-09-14T15:00:00Z",
-    location: "bucket/path/file.jpg"
-  }
-
-  ============================================================
-  */
-
-
-  async function loadUploads() {
-
-    setLoadingState();
-
-
-    try {
-
-      /*
-      --------------------------------------------------------
-      CONNECT DOGEAR'S REAL BACKEND HERE.
-
-      Example structure only:
-
-      const { data, error } = await supabase
-        .from("REAL_UPLOAD_TABLE")
-        .select("*")
-        .order("created_at", {
-          ascending: false
-        });
-
-      if (error) {
-        throw error;
-      }
-
-      uploads = data.map(row => ({
-        ...
-      }));
-      --------------------------------------------------------
-      */
-
-
-      uploads = [];
-
-
-      applyFilters();
-
-
-    } catch (error) {
-
-      console.error(
-        "Unable to load uploads:",
-        error
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
       );
 
 
-      uploads = [];
+    const $ =
+      id =>
+        document.getElementById(id);
+
+
+    let currentUser =
+      null;
+
+
+    let uploads =
+      [];
+
+
+    let filteredUploads =
+      [];
+
+
+    let selectedUploadId =
+      null;
+
+
+    let uploadLoadError =
+      "";
+
+
+    /* =========================================================
+       MESSAGE
+    ========================================================= */
+
+    function showPageMessage(
+      text,
+      type = ""
+    ) {
+
+      const message =
+        $("pageMessage");
+
+
+      message.textContent =
+        text;
+
+
+      message.className =
+        "message show " + type;
+
+    }
+
+
+    function clearPageMessage() {
+
+      const message =
+        $("pageMessage");
+
+
+      message.textContent =
+        "";
+
+
+      message.className =
+        "message";
+
+    }
+
+
+    /* =========================================================
+       ADMIN ACCESS
+    ========================================================= */
+
+    async function verifyAdmin() {
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from("admin_users")
+            .select("user_id,active")
+            .eq(
+              "user_id",
+              currentUser.id
+            )
+            .maybeSingle();
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        return (
+          data &&
+          data.active !== false
+        );
+
+      }
+      catch (error) {
+
+        console.error(
+          "Admin lookup:",
+          error
+        );
+
+
+        return false;
+
+      }
+
+    }
+
+
+    function showLocked() {
+
+      $("adminArea")
+        .style
+        .display =
+          "none";
+
+
+      $("lockedArea")
+        .classList
+        .add("show");
+
+    }
+
+
+    /* =========================================================
+       LOAD UPLOADS
+    ========================================================= */
+
+    async function loadUploads() {
+
+      setLoadingState();
+
+      uploadLoadError =
+        "";
+
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from("admin_uploads")
+            .select(`
+              id,
+              file_name,
+              file_type,
+              mime_type,
+              size_bytes,
+              uploader_id,
+              uploader_name,
+              uploader_email,
+              purpose,
+              status,
+              storage_bucket,
+              storage_path,
+              created_at,
+              updated_at,
+              deleted_at
+            `)
+            .order(
+              "created_at",
+              {
+                ascending: false
+              }
+            );
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        uploads =
+          (data || [])
+            .map(
+              row => ({
+                id:
+                  row.id,
+
+                fileName:
+                  row.file_name,
+
+                fileType:
+                  row.file_type || "other",
+
+                mimeType:
+                  row.mime_type || "",
+
+                sizeBytes:
+                  Number(
+                    row.size_bytes || 0
+                  ),
+
+                uploaderId:
+                  row.uploader_id,
+
+                uploaderName:
+                  row.uploader_name || "",
+
+                uploaderEmail:
+                  row.uploader_email || "",
+
+                purpose:
+                  row.purpose || "",
+
+                status:
+                  row.status || "processing",
+
+                storageBucket:
+                  row.storage_bucket || "",
+
+                location:
+                  row.storage_path || "",
+
+                createdAt:
+                  row.created_at,
+
+                updatedAt:
+                  row.updated_at,
+
+                deletedAt:
+                  row.deleted_at
+              })
+            );
+
+
+        applyFilters();
+
+      }
+      catch (error) {
+
+        console.error(
+          "Unable to load uploads:",
+          error
+        );
+
+
+        uploads =
+          [];
+
+
+        filteredUploads =
+          [];
+
+
+        uploadLoadError =
+          error?.message ||
+          "Unknown error";
+
+
+        renderUploads();
+
+        updateStats();
+
+
+        showPageMessage(
+          "DogEar couldn't load uploaded files: " +
+          uploadLoadError,
+          "error"
+        );
+
+      }
+
+    }
+
+
+    /* =========================================================
+       FILTERING
+    ========================================================= */
+
+    function applyFilters() {
+
+      const search =
+        $("searchInput")
+          .value
+          .trim()
+          .toLowerCase();
+
+
+      const selectedType =
+        $("typeFilter")
+          .value;
+
+
+      const selectedStatus =
+        $("statusFilter")
+          .value;
+
+
+      filteredUploads =
+        uploads.filter(
+          upload => {
+
+            const searchable =
+              [
+                upload.fileName,
+                upload.uploaderName,
+                upload.uploaderEmail,
+                upload.purpose,
+                upload.mimeType,
+                upload.storageBucket,
+                upload.location
+              ]
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
+
+
+            const matchesSearch =
+              !search ||
+              searchable.includes(
+                search
+              );
+
+
+            const matchesType =
+              !selectedType ||
+              upload.fileType ===
+                selectedType;
+
+
+            const matchesStatus =
+              !selectedStatus ||
+              upload.status ===
+                selectedStatus;
+
+
+            return (
+              matchesSearch &&
+              matchesType &&
+              matchesStatus
+            );
+
+          }
+        );
 
 
       renderUploads();
 
-
-      showEmpty(
-        "DogEar couldn't load uploaded files. Check the browser console for details."
-      );
+      updateStats();
 
     }
 
-  }
+
+    /* =========================================================
+       RENDER TABLE
+    ========================================================= */
+
+    function renderUploads() {
+
+      const uploadTableBody =
+        $("uploadTableBody");
 
 
-  /* =========================================================
-     FILTERING
-  ========================================================= */
-
-  function applyFilters() {
-
-    const search =
-      searchInput
-        .value
-        .trim()
-        .toLowerCase();
+      uploadTableBody.innerHTML =
+        "";
 
 
-    const selectedType =
-      typeFilter.value;
+      if (
+        !filteredUploads.length
+      ) {
+
+        if (
+          uploadLoadError
+        ) {
+
+          showEmpty(
+            "DogEar couldn't load uploaded files."
+          );
+
+        }
+        else if (
+          uploads.length
+        ) {
+
+          showEmpty(
+            "No uploads match your current filters."
+          );
+
+        }
+        else {
+
+          showEmpty(
+            "The upload registry is connected, but no uploads have been registered yet."
+          );
+
+        }
 
 
-    const selectedStatus =
-      statusFilter.value;
+        $("visibleUploadCount")
+          .textContent =
+            "0 uploads";
 
 
-    filteredUploads =
-      uploads.filter(
+        return;
+
+      }
+
+
+      hideEmpty();
+
+
+      filteredUploads.forEach(
         upload => {
 
-          const searchable =
-            [
-              upload.fileName,
-              upload.uploaderName,
-              upload.uploaderEmail,
-              upload.purpose,
-              upload.mimeType
-            ]
-            .filter(Boolean)
-            .join(" ")
-            .toLowerCase();
-
-
-          const matchesSearch =
-            !search ||
-            searchable.includes(
-              search
+          const row =
+            document.createElement(
+              "tr"
             );
 
 
-          const matchesType =
-            !selectedType ||
-            upload.fileType ===
-              selectedType;
+          row.innerHTML = `
+
+            <td>
+
+              <div class="file-wrap">
+
+                <div class="file-icon">
+
+                  ${fileIcon(
+                    upload
+                  )}
+
+                </div>
 
 
-          const matchesStatus =
-            !selectedStatus ||
-            upload.status ===
-              selectedStatus;
+                <div>
+
+                  <div class="file-name">
+
+                    ${escapeHtml(
+                      upload.fileName ||
+                      "Unnamed file"
+                    )}
+
+                  </div>
 
 
-          return (
-            matchesSearch &&
-            matchesType &&
-            matchesStatus
+                  <div class="file-meta">
+
+                    ${escapeHtml(
+                      upload.mimeType ||
+                      formatType(
+                        upload.fileType
+                      )
+                    )}
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <td>
+
+              <div class="user-cell">
+
+                ${
+                  escapeHtml(
+                    upload.uploaderName ||
+                    "Unknown User"
+                  )
+                }
+
+
+                <div class="user-email">
+
+                  ${
+                    escapeHtml(
+                      upload.uploaderEmail ||
+                      ""
+                    )
+                  }
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <td>
+
+              ${
+                escapeHtml(
+                  upload.purpose ||
+                  "—"
+                )
+              }
+
+            </td>
+
+
+            <td>
+
+              ${formatBytes(
+                upload.sizeBytes
+              )}
+
+            </td>
+
+
+            <td>
+
+              ${statusBadge(
+                upload.status
+              )}
+
+            </td>
+
+
+            <td>
+
+              ${formatDate(
+                upload.createdAt
+              )}
+
+            </td>
+
+
+            <td>
+
+              <div class="row-actions">
+
+                <button
+                  type="button"
+                  class="icon-btn"
+                  data-action="details"
+                  data-id="${escapeAttribute(
+                    upload.id
+                  )}"
+                >
+                  Details
+                </button>
+
+
+                ${
+                  upload.status !== "deleted"
+                    ? `
+                      <button
+                        type="button"
+                        class="icon-btn delete"
+                        data-action="delete"
+                        data-id="${escapeAttribute(
+                          upload.id
+                        )}"
+                      >
+                        Delete
+                      </button>
+                    `
+                    : ""
+                }
+
+              </div>
+
+            </td>
+
+          `;
+
+
+          uploadTableBody.appendChild(
+            row
           );
 
         }
       );
 
 
-    renderUploads();
-
-    updateStats();
-
-  }
-
-
-  /* =========================================================
-     RENDER TABLE
-  ========================================================= */
-
-  function renderUploads() {
-
-    uploadTableBody.innerHTML =
-      "";
-
-
-    if (
-      !filteredUploads.length
-    ) {
-
-      showEmpty(
-        uploads.length
-          ? "No uploads match your current filters."
-          : "No DogEar uploads have been connected to this admin page yet."
-      );
-
-
-      document.getElementById(
-        "visibleUploadCount"
-      ).textContent =
-        "0 uploads";
-
-
-      return;
+      $("visibleUploadCount")
+        .textContent =
+          `${filteredUploads.length} ${
+            pluralize(
+              filteredUploads.length,
+              "upload"
+            )
+          }`;
 
     }
 
 
-    hideEmpty();
+    /* =========================================================
+       STATS
+    ========================================================= */
+
+    function updateStats() {
+
+      const processing =
+        uploads.filter(
+          upload =>
+            upload.status ===
+            "processing"
+        ).length;
 
 
-    filteredUploads.forEach(
-      upload => {
+      const review =
+        uploads.filter(
+          upload =>
+            upload.status ===
+            "review"
+        ).length;
 
-        const row =
-          document.createElement(
-            "tr"
+
+      const activeUploads =
+        uploads.filter(
+          upload =>
+            upload.status !==
+            "deleted"
+        );
+
+
+      const totalBytes =
+        activeUploads.reduce(
+          (
+            total,
+            upload
+          ) =>
+            total +
+            Number(
+              upload.sizeBytes ||
+              0
+            ),
+          0
+        );
+
+
+      $("totalUploads")
+        .textContent =
+          formatNumber(
+            uploads.length
           );
 
 
-        row.innerHTML = `
+      $("processingUploads")
+        .textContent =
+          formatNumber(
+            processing
+          );
 
-          <td>
 
-            <div class="file-wrap">
+      $("reviewUploads")
+        .textContent =
+          formatNumber(
+            review
+          );
 
-              <div class="file-icon">
 
-                ${fileIcon(
-                  upload
-                )}
+      $("storageUsed")
+        .textContent =
+          formatBytes(
+            totalBytes
+          );
 
-              </div>
-
-
-              <div>
-
-                <div class="file-name">
-
-                  ${escapeHtml(
-                    upload.fileName ||
-                    "Unnamed file"
-                  )}
-
-                </div>
-
-
-                <div class="file-meta">
-
-                  ${escapeHtml(
-                    upload.mimeType ||
-                    formatType(
-                      upload.fileType
-                    )
-                  )}
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </td>
-
-
-          <td>
-
-            <div class="user-cell">
-
-              ${
-                escapeHtml(
-                  upload.uploaderName ||
-                  "Unknown User"
-                )
-              }
-
-
-              <div class="user-email">
-
-                ${
-                  escapeHtml(
-                    upload.uploaderEmail ||
-                    ""
-                  )
-                }
-
-              </div>
-
-            </div>
-
-          </td>
-
-
-          <td>
-
-            ${
-              escapeHtml(
-                upload.purpose ||
-                "—"
-              )
-            }
-
-          </td>
-
-
-          <td>
-
-            ${formatBytes(
-              upload.sizeBytes
-            )}
-
-          </td>
-
-
-          <td>
-
-            ${statusBadge(
-              upload.status
-            )}
-
-          </td>
-
-
-          <td>
-
-            ${formatDate(
-              upload.createdAt
-            )}
-
-          </td>
-
-
-          <td>
-
-            <div class="row-actions">
-
-              <button
-                type="button"
-                class="icon-btn"
-                data-action="details"
-                data-id="${escapeAttribute(
-                  upload.id
-                )}"
-              >
-                Details
-              </button>
-
-
-              <button
-                type="button"
-                class="icon-btn delete"
-                data-action="delete"
-                data-id="${escapeAttribute(
-                  upload.id
-                )}"
-              >
-                Delete
-              </button>
-
-            </div>
-
-          </td>
-
-        `;
-
-
-        uploadTableBody.appendChild(
-          row
-        );
-
-      }
-    );
-
-
-    document.getElementById(
-      "visibleUploadCount"
-    ).textContent =
-      `${filteredUploads.length} ${
-        pluralize(
-          filteredUploads.length,
-          "upload"
-        )
-      }`;
-
-  }
-
-
-  /* =========================================================
-     STATS
-  ========================================================= */
-
-  function updateStats() {
-
-    const processing =
-      uploads.filter(
-        upload =>
-          upload.status ===
-          "processing"
-      ).length;
-
-
-    const review =
-      uploads.filter(
-        upload =>
-          upload.status ===
-          "review"
-      ).length;
-
-
-    const totalBytes =
-      uploads.reduce(
-        (
-          total,
-          upload
-        ) =>
-          total +
-          Number(
-            upload.sizeBytes ||
-            0
-          ),
-        0
-      );
-
-
-    document.getElementById(
-      "totalUploads"
-    ).textContent =
-      formatNumber(
-        uploads.length
-      );
-
-
-    document.getElementById(
-      "processingUploads"
-    ).textContent =
-      formatNumber(
-        processing
-      );
-
-
-    document.getElementById(
-      "reviewUploads"
-    ).textContent =
-      formatNumber(
-        review
-      );
-
-
-    document.getElementById(
-      "storageUsed"
-    ).textContent =
-      formatBytes(
-        totalBytes
-      );
-
-  }
-
-
-  /* =========================================================
-     DETAILS MODAL
-  ========================================================= */
-
-  function openUploadDetails(
-    uploadId
-  ) {
-
-    const upload =
-      uploads.find(
-        item =>
-          String(item.id) ===
-          String(uploadId)
-      );
-
-
-    if (!upload) {
-      return;
     }
 
 
-    selectedUploadId =
-      upload.id;
+    /* =========================================================
+       DETAILS MODAL
+    ========================================================= */
 
+    function openUploadDetails(
+      uploadId
+    ) {
 
-    document.getElementById(
-      "modalFileName"
-    ).textContent =
-      upload.fileName ||
-      "Upload";
-
-
-    document.getElementById(
-      "detailId"
-    ).textContent =
-      upload.id ??
-      "—";
-
-
-    document.getElementById(
-      "detailStatus"
-    ).textContent =
-      formatStatus(
-        upload.status
-      );
-
-
-    document.getElementById(
-      "detailType"
-    ).textContent =
-      upload.mimeType ||
-      formatType(
-        upload.fileType
-      );
-
-
-    document.getElementById(
-      "detailSize"
-    ).textContent =
-      formatBytes(
-        upload.sizeBytes
-      );
-
-
-    document.getElementById(
-      "detailUploader"
-    ).textContent =
-      upload.uploaderEmail
-        ? `${
-            upload.uploaderName ||
-            "Unknown User"
-          } (${upload.uploaderEmail})`
-        : (
-          upload.uploaderName ||
-          "Unknown User"
-        );
-
-
-    document.getElementById(
-      "detailCreated"
-    ).textContent =
-      formatDate(
-        upload.createdAt
-      );
-
-
-    document.getElementById(
-      "detailPurpose"
-    ).textContent =
-      upload.purpose ||
-      "—";
-
-
-    document.getElementById(
-      "detailLocation"
-    ).textContent =
-      upload.location ||
-      "—";
-
-
-    detailsModal.classList.add(
-      "show"
-    );
-
-
-    detailsModal.setAttribute(
-      "aria-hidden",
-      "false"
-    );
-
-  }
-
-
-  function closeModal() {
-
-    detailsModal.classList.remove(
-      "show"
-    );
-
-
-    detailsModal.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-
-    selectedUploadId = null;
-
-  }
-
-
-  /* =========================================================
-     DELETE UPLOAD
-
-     IMPORTANT:
-     This currently updates the page only.
-
-     Once the real storage bucket/table are known, replace
-     this with:
-       1. delete from Supabase Storage
-       2. delete/update database row
-       3. refresh uploads
-  ========================================================= */
-
-  async function deleteUpload(
-    uploadId
-  ) {
-
-    const upload =
-      uploads.find(
-        item =>
-          String(item.id) ===
-          String(uploadId)
-      );
-
-
-    if (!upload) {
-      return;
-    }
-
-
-    const confirmed =
-      window.confirm(
-        `Delete "${upload.fileName}"?\n\nThis action should permanently remove the uploaded file once the real backend delete operation is connected.`
-      );
-
-
-    if (!confirmed) {
-      return;
-    }
-
-
-    try {
-
-      /*
-      --------------------------------------------------------
-      CONNECT REAL DELETE LOGIC HERE.
-      --------------------------------------------------------
-      */
-
-
-      uploads =
-        uploads.filter(
+      const upload =
+        uploads.find(
           item =>
-            String(item.id) !==
+            String(item.id) ===
             String(uploadId)
         );
 
 
-      closeModal();
-
-      applyFilters();
-
-
-    } catch (error) {
-
-      console.error(
-        "Unable to delete upload:",
-        error
-      );
-
-
-      alert(
-        "DogEar could not delete this upload."
-      );
-
-    }
-
-  }
-
-
-  /* =========================================================
-     UI STATES
-  ========================================================= */
-
-  function setLoadingState() {
-
-    emptyState.classList.remove(
-      "show"
-    );
-
-
-    uploadTableBody.innerHTML = `
-
-      <tr class="loading-row">
-
-        <td colspan="7">
-
-          Loading uploads...
-
-        </td>
-
-      </tr>
-
-    `;
-
-  }
-
-
-  function showEmpty(
-    message
-  ) {
-
-    uploadTableBody.innerHTML =
-      "";
-
-
-    emptyMessage.textContent =
-      message;
-
-
-    emptyState.classList.add(
-      "show"
-    );
-
-  }
-
-
-  function hideEmpty() {
-
-    emptyState.classList.remove(
-      "show"
-    );
-
-  }
-
-
-  /* =========================================================
-     FORMATTERS
-  ========================================================= */
-
-  function fileIcon(
-    upload
-  ) {
-
-    const type =
-      upload.fileType;
-
-
-    switch (type) {
-
-      case "image":
-        return "IMG";
-
-      case "document":
-        return "DOC";
-
-      case "audio":
-        return "AUD";
-
-      case "video":
-        return "VID";
-
-      default:
-        return "FILE";
-
-    }
-
-  }
-
-
-  function statusBadge(
-    status
-  ) {
-
-    let className =
-      "badge-deleted";
-
-
-    if (
-      status === "ready"
-    ) {
-      className =
-        "badge-ready";
-    }
-
-
-    if (
-      status ===
-      "processing"
-    ) {
-      className =
-        "badge-processing";
-    }
-
-
-    if (
-      status ===
-      "review"
-    ) {
-      className =
-        "badge-review";
-    }
-
-
-    if (
-      status ===
-      "rejected"
-    ) {
-      className =
-        "badge-rejected";
-    }
-
-
-    return `
-
-      <span
-        class="badge ${className}"
-      >
-
-        ${formatStatus(
-          status
-        )}
-
-      </span>
-
-    `;
-
-  }
-
-
-  function formatStatus(
-    status
-  ) {
-
-    const labels = {
-      ready: "Ready",
-      processing: "Processing",
-      review: "Needs Review",
-      rejected: "Rejected",
-      deleted: "Deleted"
-    };
-
-
-    return (
-      labels[status] ||
-      "Unknown"
-    );
-
-  }
-
-
-  function formatType(
-    type
-  ) {
-
-    const labels = {
-      image: "Image",
-      document: "Document",
-      audio: "Audio",
-      video: "Video",
-      other: "Other"
-    };
-
-
-    return (
-      labels[type] ||
-      "Other"
-    );
-
-  }
-
-
-  function formatBytes(
-    bytes
-  ) {
-
-    const value =
-      Number(bytes || 0);
-
-
-    if (
-      value === 0
-    ) {
-      return "0 B";
-    }
-
-
-    const units =
-      [
-        "B",
-        "KB",
-        "MB",
-        "GB",
-        "TB"
-      ];
-
-
-    const index =
-      Math.floor(
-        Math.log(value) /
-        Math.log(1024)
-      );
-
-
-    const sized =
-      value /
-      Math.pow(
-        1024,
-        index
-      );
-
-
-    return `${
-      sized.toFixed(
-        sized >= 10 ||
-        index === 0
-          ? 0
-          : 1
-      )
-    } ${units[index]}`;
-
-  }
-
-
-  function formatNumber(
-    value
-  ) {
-
-    return new Intl.NumberFormat(
-      "en-US"
-    ).format(
-      Number(value || 0)
-    );
-
-  }
-
-
-  function formatDate(
-    value
-  ) {
-
-    if (!value) {
-      return "Unknown";
-    }
-
-
-    const date =
-      new Date(value);
-
-
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
-      return "Unknown";
-    }
-
-
-    return new Intl.DateTimeFormat(
-      "en-US",
-      {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "2-digit"
-      }
-    ).format(date);
-
-  }
-
-
-  function pluralize(
-    count,
-    word
-  ) {
-
-    return count === 1
-      ? word
-      : `${word}s`;
-
-  }
-
-
-  function escapeHtml(
-    value
-  ) {
-
-    return String(
-      value ?? ""
-    )
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
-  }
-
-
-  function escapeAttribute(
-    value
-  ) {
-
-    return escapeHtml(
-      String(
-        value ?? ""
-      )
-    );
-
-  }
-
-
-  /* =========================================================
-     EVENTS
-  ========================================================= */
-
-  searchInput.addEventListener(
-    "input",
-    applyFilters
-  );
-
-
-  typeFilter.addEventListener(
-    "change",
-    applyFilters
-  );
-
-
-  statusFilter.addEventListener(
-    "change",
-    applyFilters
-  );
-
-
-  document.getElementById(
-    "refreshBtn"
-  ).addEventListener(
-    "click",
-    async event => {
-
-      const button =
-        event.currentTarget;
-
-
-      button.disabled =
-        true;
-
-
-      button.textContent =
-        "Refreshing...";
-
-
-      await loadUploads();
-
-
-      button.disabled =
-        false;
-
-
-      button.textContent =
-        "Refresh";
-
-    }
-  );
-
-
-  uploadTableBody.addEventListener(
-    "click",
-    event => {
-
-      const button =
-        event.target.closest(
-          "[data-action]"
-        );
-
-
-      if (!button) {
+      if (!upload) {
         return;
       }
 
 
-      const action =
-        button.dataset.action;
+      selectedUploadId =
+        upload.id;
 
 
-      const id =
-        button.dataset.id;
+      $("modalFileName")
+        .textContent =
+          upload.fileName ||
+          "Upload";
+
+
+      $("detailId")
+        .textContent =
+          upload.id ??
+          "—";
+
+
+      $("detailStatus")
+        .textContent =
+          formatStatus(
+            upload.status
+          );
+
+
+      $("detailType")
+        .textContent =
+          upload.mimeType ||
+          formatType(
+            upload.fileType
+          );
+
+
+      $("detailSize")
+        .textContent =
+          formatBytes(
+            upload.sizeBytes
+          );
+
+
+      $("detailUploader")
+        .textContent =
+          upload.uploaderEmail
+            ? `${
+                upload.uploaderName ||
+                "Unknown User"
+              } (${upload.uploaderEmail})`
+            : (
+                upload.uploaderName ||
+                "Unknown User"
+              );
+
+
+      $("detailCreated")
+        .textContent =
+          formatDate(
+            upload.createdAt
+          );
+
+
+      $("detailUpdated")
+        .textContent =
+          formatDate(
+            upload.updatedAt
+          );
+
+
+      $("detailDeleted")
+        .textContent =
+          upload.deletedAt
+            ? formatDate(
+                upload.deletedAt
+              )
+            : "Not deleted";
+
+
+      $("detailPurpose")
+        .textContent =
+          upload.purpose ||
+          "—";
+
+
+      $("detailBucket")
+        .textContent =
+          upload.storageBucket ||
+          "Not registered";
+
+
+      $("detailLocation")
+        .textContent =
+          upload.location ||
+          "Not registered";
 
 
       if (
-        action ===
-        "details"
+        upload.status ===
+        "deleted"
       ) {
 
-        openUploadDetails(
-          id
-        );
+        $("deleteUploadBtn")
+          .style
+          .display =
+            "none";
+
+      }
+      else {
+
+        $("deleteUploadBtn")
+          .style
+          .display =
+            "";
 
       }
 
 
-      if (
-        action ===
-        "delete"
-      ) {
+      $("detailsModal")
+        .classList
+        .add("show");
 
-        deleteUpload(
-          id
+
+      $("detailsModal")
+        .setAttribute(
+          "aria-hidden",
+          "false"
         );
-
-      }
 
     }
-  );
 
 
-  document.getElementById(
-    "closeModalBtn"
-  ).addEventListener(
-    "click",
-    closeModal
-  );
+    function closeModal() {
+
+      $("detailsModal")
+        .classList
+        .remove("show");
 
 
-  document.getElementById(
-    "modalCloseBtn"
-  ).addEventListener(
-    "click",
-    closeModal
-  );
+      $("detailsModal")
+        .setAttribute(
+          "aria-hidden",
+          "true"
+        );
 
 
-  document.getElementById(
-    "deleteUploadBtn"
-  ).addEventListener(
-    "click",
-    () => {
+      selectedUploadId =
+        null;
+
+    }
+
+
+    /* =========================================================
+       DELETE / SOFT DELETE
+    ========================================================= */
+
+    async function deleteUpload(
+      uploadId
+    ) {
+
+      const upload =
+        uploads.find(
+          item =>
+            String(item.id) ===
+            String(uploadId)
+        );
+
+
+      if (!upload) {
+        return;
+      }
+
 
       if (
-        selectedUploadId
+        upload.status ===
+        "deleted"
       ) {
 
-        deleteUpload(
-          selectedUploadId
+        showPageMessage(
+          "This upload is already marked deleted.",
+          "error"
         );
+
+        return;
 
       }
 
-    }
-  );
+
+      const confirmed =
+        window.confirm(
+          `Delete "${upload.fileName}"?\n\nThis will mark the upload as deleted in DogEar's database. The physical Storage file will not be removed until its storage bucket is connected.`
+        );
 
 
-  detailsModal.addEventListener(
-    "click",
-    event => {
+      if (!confirmed) {
+        return;
+      }
 
-      if (
-        event.target ===
-        detailsModal
-      ) {
+
+      clearPageMessage();
+
+
+      try {
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .from("admin_uploads")
+            .update({
+              status:
+                "deleted",
+
+              deleted_at:
+                new Date()
+                  .toISOString()
+            })
+            .eq(
+              "id",
+              uploadId
+            );
+
+
+        if (error) {
+          throw error;
+        }
+
 
         closeModal();
 
+
+        await loadUploads();
+
+
+        showPageMessage(
+          "Upload marked deleted successfully.",
+          "success"
+        );
+
+      }
+      catch (error) {
+
+        console.error(
+          "Unable to delete upload:",
+          error
+        );
+
+
+        showPageMessage(
+          "DogEar could not delete this upload: " +
+          (
+            error?.message ||
+            "Unknown error"
+          ),
+          "error"
+        );
+
       }
 
     }
-  );
 
 
-  document.addEventListener(
-    "keydown",
-    event => {
+    /* =========================================================
+       UI STATES
+    ========================================================= */
+
+    function setLoadingState() {
+
+      $("emptyState")
+        .classList
+        .remove("show");
+
+
+      $("uploadTableBody")
+        .innerHTML = `
+
+          <tr class="loading-row">
+
+            <td colspan="7">
+              Loading uploads...
+            </td>
+
+          </tr>
+
+        `;
+
+    }
+
+
+    function showEmpty(
+      message
+    ) {
+
+      $("uploadTableBody")
+        .innerHTML =
+          "";
+
+
+      $("emptyMessage")
+        .textContent =
+          message;
+
+
+      $("emptyState")
+        .classList
+        .add("show");
+
+    }
+
+
+    function hideEmpty() {
+
+      $("emptyState")
+        .classList
+        .remove("show");
+
+    }
+
+
+    /* =========================================================
+       FORMATTERS
+    ========================================================= */
+
+    function fileIcon(
+      upload
+    ) {
+
+      const type =
+        upload.fileType;
+
+
+      switch (type) {
+
+        case "image":
+          return "IMG";
+
+        case "document":
+          return "DOC";
+
+        case "audio":
+          return "AUD";
+
+        case "video":
+          return "VID";
+
+        default:
+          return "FILE";
+
+      }
+
+    }
+
+
+    function statusBadge(
+      status
+    ) {
+
+      let className =
+        "badge-deleted";
+
 
       if (
-        event.key ===
-        "Escape"
+        status ===
+        "ready"
       ) {
 
-        closeModal();
+        className =
+          "badge-ready";
+
+      }
+
+
+      if (
+        status ===
+        "processing"
+      ) {
+
+        className =
+          "badge-processing";
+
+      }
+
+
+      if (
+        status ===
+        "review"
+      ) {
+
+        className =
+          "badge-review";
+
+      }
+
+
+      if (
+        status ===
+        "rejected"
+      ) {
+
+        className =
+          "badge-rejected";
+
+      }
+
+
+      return `
+
+        <span
+          class="badge ${className}"
+        >
+
+          ${escapeHtml(
+            formatStatus(
+              status
+            )
+          )}
+
+        </span>
+
+      `;
+
+    }
+
+
+    function formatStatus(
+      status
+    ) {
+
+      const labels = {
+        ready:
+          "Ready",
+
+        processing:
+          "Processing",
+
+        review:
+          "Needs Review",
+
+        rejected:
+          "Rejected",
+
+        deleted:
+          "Deleted"
+      };
+
+
+      return (
+        labels[status] ||
+        "Unknown"
+      );
+
+    }
+
+
+    function formatType(
+      type
+    ) {
+
+      const labels = {
+        image:
+          "Image",
+
+        document:
+          "Document",
+
+        audio:
+          "Audio",
+
+        video:
+          "Video",
+
+        other:
+          "Other"
+      };
+
+
+      return (
+        labels[type] ||
+        "Other"
+      );
+
+    }
+
+
+    function formatBytes(
+      bytes
+    ) {
+
+      const value =
+        Number(
+          bytes || 0
+        );
+
+
+      if (
+        value === 0
+      ) {
+
+        return "0 B";
+
+      }
+
+
+      const units =
+        [
+          "B",
+          "KB",
+          "MB",
+          "GB",
+          "TB"
+        ];
+
+
+      const index =
+        Math.min(
+          Math.floor(
+            Math.log(value) /
+            Math.log(1024)
+          ),
+          units.length - 1
+        );
+
+
+      const sized =
+        value /
+        Math.pow(
+          1024,
+          index
+        );
+
+
+      return `${
+        sized.toFixed(
+          sized >= 10 ||
+          index === 0
+            ? 0
+            : 1
+        )
+      } ${units[index]}`;
+
+    }
+
+
+    function formatNumber(
+      value
+    ) {
+
+      return new Intl
+        .NumberFormat(
+          "en-US"
+        )
+        .format(
+          Number(
+            value || 0
+          )
+        );
+
+    }
+
+
+    function formatDate(
+      value
+    ) {
+
+      if (!value) {
+        return "Unknown";
+      }
+
+
+      const date =
+        new Date(value);
+
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+
+        return "Unknown";
+
+      }
+
+
+      return new Intl
+        .DateTimeFormat(
+          "en-US",
+          {
+            month:
+              "short",
+
+            day:
+              "numeric",
+
+            year:
+              "numeric",
+
+            hour:
+              "numeric",
+
+            minute:
+              "2-digit"
+          }
+        )
+        .format(
+          date
+        );
+
+    }
+
+
+    function pluralize(
+      count,
+      word
+    ) {
+
+      return (
+        count === 1
+          ? word
+          : `${word}s`
+      );
+
+    }
+
+
+    function escapeHtml(
+      value
+    ) {
+
+      return String(
+        value ?? ""
+      )
+        .replaceAll(
+          "&",
+          "&amp;"
+        )
+        .replaceAll(
+          "<",
+          "&lt;"
+        )
+        .replaceAll(
+          ">",
+          "&gt;"
+        )
+        .replaceAll(
+          '"',
+          "&quot;"
+        )
+        .replaceAll(
+          "'",
+          "&#039;"
+        );
+
+    }
+
+
+    function escapeAttribute(
+      value
+    ) {
+
+      return escapeHtml(
+        String(
+          value ?? ""
+        )
+      );
+
+    }
+
+
+    /* =========================================================
+       EVENTS
+    ========================================================= */
+
+    $("searchInput")
+      .addEventListener(
+        "input",
+        applyFilters
+      );
+
+
+    $("typeFilter")
+      .addEventListener(
+        "change",
+        applyFilters
+      );
+
+
+    $("statusFilter")
+      .addEventListener(
+        "change",
+        applyFilters
+      );
+
+
+    $("refreshBtn")
+      .addEventListener(
+        "click",
+        async event => {
+
+          const button =
+            event.currentTarget;
+
+
+          button.disabled =
+            true;
+
+
+          button.textContent =
+            "Refreshing...";
+
+
+          clearPageMessage();
+
+
+          await loadUploads();
+
+
+          button.disabled =
+            false;
+
+
+          button.textContent =
+            "Refresh";
+
+        }
+      );
+
+
+    $("uploadTableBody")
+      .addEventListener(
+        "click",
+        event => {
+
+          const button =
+            event.target.closest(
+              "[data-action]"
+            );
+
+
+          if (!button) {
+            return;
+          }
+
+
+          const action =
+            button.dataset.action;
+
+
+          const id =
+            button.dataset.id;
+
+
+          if (
+            action ===
+            "details"
+          ) {
+
+            openUploadDetails(
+              id
+            );
+
+          }
+
+
+          if (
+            action ===
+            "delete"
+          ) {
+
+            deleteUpload(
+              id
+            );
+
+          }
+
+        }
+      );
+
+
+    $("closeModalBtn")
+      .addEventListener(
+        "click",
+        closeModal
+      );
+
+
+    $("modalCloseBtn")
+      .addEventListener(
+        "click",
+        closeModal
+      );
+
+
+    $("deleteUploadBtn")
+      .addEventListener(
+        "click",
+        () => {
+
+          if (
+            selectedUploadId
+          ) {
+
+            deleteUpload(
+              selectedUploadId
+            );
+
+          }
+
+        }
+      );
+
+
+    $("detailsModal")
+      .addEventListener(
+        "click",
+        event => {
+
+          if (
+            event.target ===
+            $("detailsModal")
+          ) {
+
+            closeModal();
+
+          }
+
+        }
+      );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key ===
+          "Escape"
+        ) {
+
+          closeModal();
+
+        }
+
+      }
+    );
+
+
+    $("logoutBtn")
+      .addEventListener(
+        "click",
+        async () => {
+
+          try {
+
+            await supabaseClient
+              .auth
+              .signOut();
+
+          }
+          catch (error) {
+
+            console.warn(
+              "Sign out:",
+              error
+            );
+
+          }
+
+
+          location.href =
+            "auth.html#login";
+
+        }
+      );
+
+
+    /* =========================================================
+       START
+    ========================================================= */
+
+    async function start() {
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .auth
+            .getUser();
+
+
+        if (
+          error ||
+          !data.user
+        ) {
+
+          location.href =
+            "auth.html#login";
+
+          return;
+
+        }
+
+
+        currentUser =
+          data.user;
+
+
+        const allowed =
+          await verifyAdmin();
+
+
+        if (!allowed) {
+
+          showLocked();
+
+          return;
+
+        }
+
+
+        await loadUploads();
+
+      }
+      catch (error) {
+
+        console.error(
+          "Upload admin startup error:",
+          error
+        );
+
+
+        showPageMessage(
+          "DogEar couldn't open upload administration: " +
+          (
+            error?.message ||
+            "Unknown error"
+          ),
+          "error"
+        );
+
+      }
+      finally {
+
+        $("loadingScreen")
+          .classList
+          .add("hidden");
 
       }
 
     }
-  );
 
 
-  /* =========================================================
-     START
-  ========================================================= */
+    start();
 
-  loadUploads();
-
-</script>
+  </script>
 
 </body>
-</html> 
+</html>
