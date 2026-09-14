@@ -21,21 +21,38 @@
   --line-soft:rgba(199,155,89,.11);
   --danger:#e6a09a;
   --ok:#b9d6b2;
+  --warning:#e3c58c;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
   min-height:100vh;
   color:var(--cream);
   background:
-    radial-gradient(circle at 10% 0%,rgba(53,73,59,.24),transparent 28%),
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(53,73,59,.24),
+      transparent 28%
+    ),
     var(--ink);
   font-family:Georgia,"Times New Roman",serif;
 }
 
-a{color:inherit}
+a{
+  color:inherit;
+}
+
+button{
+  font:inherit;
+}
+
+/* =========================================
+   TOP NAV
+   ========================================= */
 
 .topbar{
   min-height:76px;
@@ -68,6 +85,19 @@ a{color:inherit}
   border:1px solid var(--gold);
   border-radius:50% 50% 50% 12%;
   transform:rotate(-8deg);
+  position:relative;
+}
+
+.brand-mark::after{
+  content:"";
+  position:absolute;
+  width:11px;
+  height:11px;
+  right:2px;
+  top:2px;
+  border-left:1px solid var(--gold);
+  border-bottom:1px solid var(--gold);
+  background:var(--ink);
 }
 
 .nav{
@@ -106,6 +136,10 @@ a{color:inherit}
   height:100%;
   object-fit:cover;
 }
+
+/* =========================================
+   PAGE
+   ========================================= */
 
 .page{
   width:min(1180px,calc(100% - 32px));
@@ -153,6 +187,52 @@ h1{
   margin-top:12px;
 }
 
+/* =========================================
+   BUTTONS
+   ========================================= */
+
+.btn{
+  min-height:42px;
+  padding:0 16px;
+  border-radius:999px;
+  cursor:pointer;
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.primary-btn{
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:#17130e;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.primary-btn:hover{
+  background:var(--gold2);
+}
+
+.secondary-btn{
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--gold2);
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.secondary-btn:hover{
+  border-color:var(--gold);
+}
+
+/* =========================================
+   CLUB NAV
+   ========================================= */
+
 .club-nav{
   display:flex;
   gap:9px;
@@ -176,6 +256,10 @@ h1{
   color:var(--gold2);
   border-color:var(--gold);
 }
+
+/* =========================================
+   LAYOUT
+   ========================================= */
 
 .vote-layout{
   display:grid;
@@ -208,6 +292,10 @@ h1{
   color:var(--muted);
   font:12px/1.5 Arial;
 }
+
+/* =========================================
+   BALLOT
+   ========================================= */
 
 .ballot{
   padding:20px;
@@ -268,6 +356,12 @@ h1{
   margin-bottom:10px;
 }
 
+.edition{
+  color:#81796e;
+  font:10px/1.5 Arial;
+  margin-bottom:10px;
+}
+
 .description{
   color:var(--muted);
   font:12px/1.65 Arial;
@@ -292,16 +386,6 @@ h1{
   font-size:14px;
 }
 
-.btn{
-  min-height:42px;
-  padding:0 16px;
-  border-radius:999px;
-  cursor:pointer;
-  font:800 9px Arial;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-
 .vote-btn{
   border:1px solid var(--gold);
   background:transparent;
@@ -315,9 +399,13 @@ h1{
 }
 
 .vote-btn:disabled{
-  opacity:.55;
+  opacity:.5;
   cursor:not-allowed;
 }
+
+/* =========================================
+   SIDEBAR
+   ========================================= */
 
 .side-body{
   padding:18px;
@@ -357,6 +445,22 @@ h1{
   text-transform:uppercase;
 }
 
+.status.closed{
+  color:var(--muted);
+}
+
+.status.warning{
+  color:var(--warning);
+}
+
+.status.ok{
+  color:var(--ok);
+}
+
+/* =========================================
+   MESSAGES / EMPTY
+   ========================================= */
+
 .message{
   display:none;
   margin:0 20px 20px;
@@ -366,9 +470,21 @@ h1{
   font:12px/1.5 Arial;
 }
 
-.message.show{display:block}
-.message.error{color:var(--danger)}
-.message.success{color:var(--ok)}
+.message.show{
+  display:block;
+}
+
+.message.error{
+  color:var(--danger);
+}
+
+.message.success{
+  color:var(--ok);
+}
+
+.message.warning{
+  color:var(--warning);
+}
 
 .empty{
   padding:52px 24px;
@@ -385,6 +501,10 @@ h1{
   margin-bottom:8px;
 }
 
+/* =========================================
+   LOADING
+   ========================================= */
+
 .loading{
   position:fixed;
   inset:0;
@@ -394,7 +514,9 @@ h1{
   z-index:100;
 }
 
-.loading.hidden{display:none}
+.loading.hidden{
+  display:none;
+}
 
 .loading span{
   color:var(--gold2);
@@ -403,15 +525,73 @@ h1{
   text-transform:uppercase;
 }
 
+/* =========================================
+   MOBILE
+   ========================================= */
+
+.mobile-nav{
+  display:none;
+}
+
 @media(max-width:900px){
-  .vote-layout{grid-template-columns:1fr}
-  .club-head{flex-direction:column;align-items:start}
+  .vote-layout{
+    grid-template-columns:1fr;
+  }
+
+  .club-head{
+    flex-direction:column;
+    align-items:start;
+  }
 }
 
 @media(max-width:650px){
-  .nav{display:none}
-  .book-option{grid-template-columns:72px minmax(0,1fr)}
-  .cover{width:72px}
+  .nav{
+    display:none;
+  }
+
+  .book-option{
+    grid-template-columns:72px minmax(0,1fr);
+  }
+
+  .cover{
+    width:72px;
+  }
+
+  .mobile-nav{
+    position:fixed;
+    left:12px;
+    right:12px;
+    bottom:12px;
+    z-index:200;
+    min-height:64px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:rgba(9,11,10,.95);
+    backdrop-filter:blur(14px);
+  }
+
+  .mobile-nav a{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    color:var(--muted);
+    text-decoration:none;
+    font:9px Arial;
+    text-transform:uppercase;
+  }
+
+  .mobile-nav a span:first-child{
+    color:var(--gold2);
+    font-size:17px;
+  }
+
+  .page{
+    padding-bottom:120px;
+  }
 }
 </style>
 </head>
@@ -436,55 +616,107 @@ h1{
     <a href="marketplace.html">Books</a>
   </nav>
 
-  <a class="avatar" id="navAvatar" href="profile.html">?</a>
+  <a
+    class="avatar"
+    id="navAvatar"
+    href="profile.html"
+  >
+    ?
+  </a>
 
 </header>
 
 <main class="page">
 
-  <a class="back" id="backLink" href="club.html">
+  <a
+    class="back"
+    id="backLink"
+    href="club.html"
+  >
     ← Back to Club
   </a>
 
   <section class="club-head">
 
     <div>
-      <div class="eyebrow">Monthly Ballot</div>
+
+      <div class="eyebrow">
+        Monthly Ballot
+      </div>
 
       <h1 id="clubName">
         Book Club
       </h1>
 
-      <div class="club-sub" id="clubMeta">
+      <div
+        class="club-sub"
+        id="clubMeta"
+      >
         Choose the book you want the club to read next.
       </div>
+
     </div>
+
+    <a
+      class="btn primary-btn"
+      id="manageBallotButton"
+      href="club-ballot-admin.html"
+      hidden
+    >
+      Manage Ballot
+    </a>
 
   </section>
 
-  <nav class="club-nav" aria-label="Club navigation">
+  <!-- =====================================
+       CLUB NAV
+       ===================================== -->
 
-    <a id="overviewLink" href="club.html">
+  <nav
+    class="club-nav"
+    aria-label="Club navigation"
+  >
+
+    <a
+      id="overviewLink"
+      href="club.html"
+    >
       Overview
     </a>
 
-    <a id="membersLink" href="club-members.html">
+    <a
+      id="membersLink"
+      href="club-members.html"
+    >
       Members
     </a>
 
-    <a id="discussionsLink" href="club-discussions.html">
+    <a
+      id="discussionsLink"
+      href="club-discussions.html"
+    >
       Discussions
     </a>
 
-    <a class="active" id="voteLink" href="club-vote.html">
+    <a
+      class="active"
+      id="voteLink"
+      href="club-vote.html"
+    >
       Monthly Vote
     </a>
 
-    <a id="booksLink" href="club-books.html">
+    <a
+      id="booksLink"
+      href="club-books.html"
+    >
       Bookshelf
     </a>
 
-    <a id="settingsLink" href="club-settings.html">
+    <a
+      id="settingsLink"
+      href="club-settings.html"
+    >
       Settings
     </a>
 
@@ -492,69 +724,131 @@ h1{
 
   <div class="vote-layout">
 
+    <!-- =====================================
+         BALLOT
+         ===================================== -->
+
     <section class="card">
 
       <div class="card-head">
-        <h2>This Month's Choices</h2>
+
+        <h2>
+          This Month's Choices
+        </h2>
 
         <p>
-          Each ballot contains three exact editions.
-          One vote per member.
+          Each ballot contains exactly three exact
+          editions. One vote per active club member.
         </p>
+
       </div>
 
-      <div class="ballot" id="ballot"></div>
+      <div
+        class="ballot"
+        id="ballot"
+      ></div>
 
-      <div class="empty" id="emptyState" hidden>
-        <strong>No ballot is open yet.</strong>
-        The club president or administrator can add this month's three choices.
+      <div
+        class="empty"
+        id="emptyState"
+        hidden
+      >
+
+        <strong>
+          No ballot is open yet.
+        </strong>
+
+        The club president or administrator can prepare
+        this month's three choices.
+
       </div>
 
-      <div class="message" id="message"></div>
+      <div
+        class="message"
+        id="message"
+      ></div>
 
     </section>
+
+    <!-- =====================================
+         SIDEBAR
+         ===================================== -->
 
     <aside class="card">
 
       <div class="card-head">
-        <h2>Voting Room</h2>
+
+        <h2>
+          Voting Room
+        </h2>
 
         <p>
           One club, three books, one tiny democracy.
         </p>
+
       </div>
 
       <div class="side-body">
 
         <div class="side-section">
-          <h3>Your Vote</h3>
+
+          <h3>
+            Your Vote
+          </h3>
 
           <p id="yourVoteText">
             You haven't voted yet.
           </p>
 
-          <div class="status" id="voteStatus">
-            Vote Open
+          <div
+            class="status"
+            id="voteStatus"
+          >
+            Checking Ballot...
           </div>
+
         </div>
 
         <div class="side-section">
-          <h3>How it works</h3>
 
-          <p>
-            Members can cast one vote while the ballot is open.
-            If the club allows vote changes, choosing another title will replace
-            the previous vote.
+          <h3>
+            How it works
+          </h3>
+
+          <p id="howItWorksText">
+            Active club members can cast one vote while
+            the ballot is open.
           </p>
+
         </div>
 
         <div class="side-section">
-          <h3>Results</h3>
+
+          <h3>
+            Results
+          </h3>
 
           <p>
-            Current totals are shown on each book. Final selection should be
-            enforced by your backend rules or club administrator workflow.
+            Current totals are shown beside each book.
+            When voting closes, the winning exact edition
+            becomes the club's next selection.
           </p>
+
+        </div>
+
+        <div
+          class="side-section"
+          id="memberStatusSection"
+        >
+
+          <h3>
+            Membership
+          </h3>
+
+          <p id="memberStatusText">
+            Checking your club membership...
+          </p>
+
         </div>
 
       </div>
@@ -564,6 +858,30 @@ h1{
   </div>
 
 </main>
+
+<nav class="mobile-nav">
+
+  <a href="dashboard.html">
+    <span>⌂</span>
+    Home
+  </a>
+
+  <a href="discover.html">
+    <span>⌕</span>
+    Discover
+  </a>
+
+  <a href="clubs.html">
+    <span>◉</span>
+    Clubs
+  </a>
+
+  <a href="profile.html">
+    <span>☺</span>
+    Profile
+  </a>
+
+</nav>
 
 <script>
 const SUPABASE_URL =
@@ -591,8 +909,22 @@ const clubId =
   params.get("id");
 
 let currentUser = null;
+
+let clubData = null;
+
+let membership = null;
+
 let choices = [];
+
 let userVote = null;
+
+let ballotOpen = false;
+
+let allowVoteChanges = true;
+
+/* =========================================
+   URL HELPERS
+   ========================================= */
 
 function withClub(filename){
 
@@ -627,7 +959,16 @@ function wireLinks(){
   $("settingsLink").href =
     withClub("club-settings.html");
 
+  $("manageBallotButton").href =
+    withClub(
+      "club-ballot-admin.html"
+    );
+
 }
+
+/* =========================================
+   HELPERS
+   ========================================= */
 
 function escapeHtml(value=""){
 
@@ -690,6 +1031,56 @@ function clearMessage(){
     "message";
 
 }
+
+function normalizeRole(role=""){
+
+  return String(role)
+    .trim()
+    .toLowerCase();
+
+}
+
+function isActiveMember(){
+
+  return (
+    membership &&
+    membership.status === "active"
+  );
+
+}
+
+function isLeadership(){
+
+  if(!isActiveMember())
+    return false;
+
+  const role =
+    normalizeRole(
+      membership.role
+    );
+
+  return [
+    "president",
+    "administrator",
+    "admin",
+    "owner"
+  ].includes(role);
+
+}
+
+function canCastVote(){
+
+  return (
+    isActiveMember() &&
+    ballotOpen &&
+    choices.length === 3
+  );
+
+}
+
+/* =========================================
+   PROFILE
+   ========================================= */
 
 async function loadProfile(){
 
@@ -754,7 +1145,9 @@ async function loadProfile(){
   if(avatar){
 
     const image =
-      document.createElement("img");
+      document.createElement(
+        "img"
+      );
 
     image.src =
       avatar;
@@ -787,6 +1180,10 @@ async function loadProfile(){
 
 }
 
+/* =========================================
+   CLUB
+   ========================================= */
+
 async function loadClub(){
 
   if(!clubId)
@@ -799,38 +1196,98 @@ async function loadClub(){
       error
     } =
       await supabaseClient
-
         .from("clubs")
-
         .select("*")
-
         .eq(
           "id",
           clubId
         )
-
         .maybeSingle();
 
     if(error)
       throw error;
 
-    if(data){
+    clubData =
+      data || null;
 
-      $("clubName").textContent =
-        data.name ||
-        "Book Club";
+    if(!clubData)
+      return;
 
-      const bits = [];
+    $("clubName").textContent =
+      clubData.name ||
+      "Book Club";
 
-      if(data.genre)
-        bits.push(data.genre);
+    const bits = [];
 
+    if(clubData.genre)
       bits.push(
-        "Monthly book vote"
+        clubData.genre
       );
 
-      $("clubMeta").textContent =
-        bits.join(" · ");
+    bits.push(
+      "Monthly book vote"
+    );
+
+    $("clubMeta").textContent =
+      bits.join(" · ");
+
+    /*
+      Compatibility:
+
+      Current DogEar work has referenced ballot_open,
+      while older versions may use voting_open.
+
+      If neither column exists yet, the page treats a
+      complete three-book ballot as open so the current
+      prototype continues working.
+    */
+
+    if(
+      typeof clubData.ballot_open ===
+      "boolean"
+    ){
+
+      ballotOpen =
+        clubData.ballot_open;
+
+    }
+    else if(
+      typeof clubData.voting_open ===
+      "boolean"
+    ){
+
+      ballotOpen =
+        clubData.voting_open;
+
+    }
+    else{
+
+      ballotOpen =
+        true;
+
+    }
+
+    /*
+      Default to allowing changes for compatibility
+      with the original DogEar voting page.
+
+      Once allow_vote_changes exists in the clubs
+      table, its value controls this behavior.
+    */
+
+    if(
+      typeof clubData.allow_vote_changes ===
+      "boolean"
+    ){
+
+      allowVoteChanges =
+        clubData.allow_vote_changes;
+
+    }
+    else{
+
+      allowVoteChanges =
+        true;
 
     }
 
@@ -846,9 +1303,16 @@ async function loadClub(){
 
 }
 
-async function loadUserVote(){
+/* =========================================
+   MEMBERSHIP
+   ========================================= */
 
-  if(!clubId)
+async function loadMembership(){
+
+  if(
+    !clubId ||
+    !currentUser
+  )
     return;
 
   try{
@@ -858,21 +1322,135 @@ async function loadUserVote(){
       error
     } =
       await supabaseClient
-
-        .from("club_votes")
-
-        .select("*")
-
+        .from("club_members")
+        .select(
+          "role,status"
+        )
         .eq(
           "club_id",
           clubId
         )
-
         .eq(
           "user_id",
           currentUser.id
         )
+        .maybeSingle();
 
+    if(error)
+      throw error;
+
+    membership =
+      data || null;
+
+  }
+  catch(error){
+
+    console.warn(
+      "Membership lookup:",
+      error.message
+    );
+
+    membership =
+      null;
+
+  }
+
+  updateMembershipUI();
+
+}
+
+/* =========================================
+   MEMBERSHIP UI
+   ========================================= */
+
+function updateMembershipUI(){
+
+  if(!membership){
+
+    $("memberStatusText")
+      .textContent =
+      "You are not currently a member of this club. You can view the ballot, but only active members can vote.";
+
+    return;
+
+  }
+
+  if(
+    membership.status !==
+    "active"
+  ){
+
+    $("memberStatusText")
+      .textContent =
+      "Your club membership is currently " +
+      membership.status +
+      ". Voting is available only to active members.";
+
+    return;
+
+  }
+
+  const role =
+    normalizeRole(
+      membership.role
+    );
+
+  if(isLeadership()){
+
+    $("memberStatusText")
+      .textContent =
+      "You are an active club " +
+      (
+        role === "president"
+          ? "President"
+          : "Administrator"
+      ) +
+      ".";
+
+    $("manageBallotButton")
+      .hidden =
+      false;
+
+  }
+  else{
+
+    $("memberStatusText")
+      .textContent =
+      "You are an active member and can vote while the ballot is open.";
+
+  }
+
+}
+
+/* =========================================
+   USER VOTE
+   ========================================= */
+
+async function loadUserVote(){
+
+  if(
+    !clubId ||
+    !currentUser
+  )
+    return;
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("club_votes")
+        .select("*")
+        .eq(
+          "club_id",
+          clubId
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        )
         .maybeSingle();
 
     if(error)
@@ -896,6 +1474,10 @@ async function loadUserVote(){
 
 }
 
+/* =========================================
+   BALLOT
+   ========================================= */
+
 async function loadBallot(){
 
   if(!clubId){
@@ -914,21 +1496,18 @@ async function loadBallot(){
       error
     } =
       await supabaseClient
-
-        .from("club_ballot_options")
-
+        .from(
+          "club_ballot_options"
+        )
         .select("*")
-
         .eq(
           "club_id",
           clubId
         )
-
         .eq(
           "is_active",
           true
         )
-
         .order(
           "position",
           {
@@ -942,10 +1521,44 @@ async function loadBallot(){
     choices =
       data || [];
 
-    if(!choices.length){
+    /*
+      DogEar monthly ballots are exactly
+      three choices.
+
+      Anything other than three is treated
+      as an incomplete ballot.
+    */
+
+    if(
+      choices.length !== 3
+    ){
+
+      ballotOpen =
+        false;
+
+      $("ballot").innerHTML =
+        "";
 
       $("emptyState").hidden =
         false;
+
+      if(
+        choices.length > 0
+      ){
+
+        $("emptyState").innerHTML =
+          `
+            <strong>
+              This ballot isn't ready yet.
+            </strong>
+
+            A DogEar monthly ballot needs exactly
+            three book choices before voting can open.
+          `;
+
+      }
+
+      updateVotingUI();
 
       return;
 
@@ -955,6 +1568,8 @@ async function loadBallot(){
       true;
 
     await renderChoices();
+
+    updateVotingUI();
 
   }
   catch(error){
@@ -967,11 +1582,22 @@ async function loadBallot(){
     $("emptyState").hidden =
       false;
 
+    ballotOpen =
+      false;
+
+    updateVotingUI();
+
   }
 
 }
 
-async function loadVoteCount(optionId){
+/* =========================================
+   VOTE COUNTS
+   ========================================= */
+
+async function loadVoteCount(
+  optionId
+){
 
   try{
 
@@ -980,9 +1606,7 @@ async function loadVoteCount(optionId){
       error
     } =
       await supabaseClient
-
         .from("club_votes")
-
         .select(
           "*",
           {
@@ -990,7 +1614,6 @@ async function loadVoteCount(optionId){
             head:true
           }
         )
-
         .eq(
           "option_id",
           optionId
@@ -1014,6 +1637,10 @@ async function loadVoteCount(optionId){
   }
 
 }
+
+/* =========================================
+   RENDER BALLOT
+   ========================================= */
 
 async function renderChoices(){
 
@@ -1073,6 +1700,75 @@ async function renderChoices(){
       choice.summary ||
       "No description has been added for this edition.";
 
+    const editionBits = [];
+
+    if(choice.publisher)
+      editionBits.push(
+        choice.publisher
+      );
+
+    if(choice.published_date)
+      editionBits.push(
+        choice.published_date
+      );
+
+    if(choice.isbn)
+      editionBits.push(
+        "ISBN " +
+        choice.isbn
+      );
+
+    let buttonText =
+      "Vote for This Book";
+
+    let buttonDisabled =
+      false;
+
+    if(selected){
+
+      buttonText =
+        "Your Vote";
+
+      /*
+        Clicking the currently selected book
+        does not need to create another write.
+      */
+
+      buttonDisabled =
+        true;
+
+    }
+    else if(!isActiveMember()){
+
+      buttonText =
+        "Members Only";
+
+      buttonDisabled =
+        true;
+
+    }
+    else if(!ballotOpen){
+
+      buttonText =
+        "Voting Closed";
+
+      buttonDisabled =
+        true;
+
+    }
+    else if(
+      userVote &&
+      !allowVoteChanges
+    ){
+
+      buttonText =
+        "Vote Locked";
+
+      buttonDisabled =
+        true;
+
+    }
+
     option.innerHTML = `
 
       <div class="cover">
@@ -1101,6 +1797,20 @@ async function renderChoices(){
           ${escapeHtml(author)}
         </div>
 
+        ${
+          editionBits.length
+
+            ? `
+              <div class="edition">
+                ${escapeHtml(
+                  editionBits.join(" · ")
+                )}
+              </div>
+            `
+
+            : ""
+        }
+
         <div class="description">
           ${escapeHtml(description)}
         </div>
@@ -1124,13 +1834,10 @@ async function renderChoices(){
           <button
             class="btn vote-btn"
             type="button"
-            data-option-id="${escapeHtml(choice.id)}">
+            data-option-id="${escapeHtml(choice.id)}"
+            ${buttonDisabled ? "disabled" : ""}>
 
-            ${
-              selected
-                ? "Your Vote"
-                : "Vote for This Book"
-            }
+            ${buttonText}
 
           </button>
 
@@ -1144,18 +1851,22 @@ async function renderChoices(){
         ".vote-btn"
       );
 
-    button.addEventListener(
-      "click",
-      async () => {
+    if(!buttonDisabled){
 
-        await castVote(
-          choice.id,
-          title,
-          button
-        );
+      button.addEventListener(
+        "click",
+        async () => {
 
-      }
-    );
+          await castVote(
+            choice.id,
+            title,
+            button
+          );
+
+        }
+      );
+
+    }
 
     ballot.appendChild(
       option
@@ -1167,12 +1878,103 @@ async function renderChoices(){
 
 }
 
+/* =========================================
+   VOTING UI
+   ========================================= */
+
+function updateVotingUI(){
+
+  const status =
+    $("voteStatus");
+
+  status.className =
+    "status";
+
+  if(
+    choices.length !== 3
+  ){
+
+    status.textContent =
+      "Ballot Not Ready";
+
+    status.classList.add(
+      "warning"
+    );
+
+  }
+  else if(!ballotOpen){
+
+    status.textContent =
+      "Voting Closed";
+
+    status.classList.add(
+      "closed"
+    );
+
+  }
+  else if(!isActiveMember()){
+
+    status.textContent =
+      "Members Only";
+
+    status.classList.add(
+      "warning"
+    );
+
+  }
+  else{
+
+    status.textContent =
+      "Vote Open";
+
+    status.classList.add(
+      "ok"
+    );
+
+  }
+
+  if(allowVoteChanges){
+
+    $("howItWorksText")
+      .textContent =
+      "Active club members can cast one vote while the ballot is open. If you change your mind, choosing another book replaces your previous vote.";
+
+  }
+  else{
+
+    $("howItWorksText")
+      .textContent =
+      "Active club members can cast one vote while the ballot is open. Once submitted, your vote cannot be changed.";
+
+  }
+
+  updateVoteSummary();
+
+}
+
+/* =========================================
+   VOTE SUMMARY
+   ========================================= */
+
 function updateVoteSummary(){
+
+  if(!isActiveMember()){
+
+    $("yourVoteText")
+      .textContent =
+      "Only active club members can vote.";
+
+    return;
+
+  }
 
   if(!userVote){
 
-    $("yourVoteText").textContent =
-      "You haven't voted yet.";
+    $("yourVoteText")
+      .textContent =
+      ballotOpen
+        ? "You haven't voted yet."
+        : "You did not cast a vote on this ballot.";
 
     return;
 
@@ -1185,7 +1987,8 @@ function updateVoteSummary(){
         userVote.option_id
     );
 
-  $("yourVoteText").textContent =
+  $("yourVoteText")
+    .textContent =
     selected
       ? "You voted for " +
         (
@@ -1197,6 +2000,10 @@ function updateVoteSummary(){
       : "Your vote has been recorded.";
 
 }
+
+/* =========================================
+   CAST VOTE
+   ========================================= */
 
 async function castVote(
   optionId,
@@ -1210,6 +2017,96 @@ async function castVote(
 
     showMessage(
       "You need to be logged in to vote.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  /*
+    Client-side membership check.
+
+    Supabase RLS should ALSO enforce this on
+    the database side so browser manipulation
+    cannot bypass the rule.
+  */
+
+  if(!isActiveMember()){
+
+    showMessage(
+      "Only active members of this club can vote.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  if(
+    choices.length !== 3
+  ){
+
+    showMessage(
+      "This ballot isn't ready. A monthly ballot must contain exactly three choices.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  if(!ballotOpen){
+
+    showMessage(
+      "Voting is currently closed.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  const validChoice =
+    choices.some(
+      choice =>
+        choice.id ===
+        optionId
+    );
+
+  if(!validChoice){
+
+    showMessage(
+      "That book is not part of the current ballot.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  if(
+    userVote &&
+    userVote.option_id ===
+    optionId
+  ){
+
+    showMessage(
+      "That's already your vote.",
+      "success"
+    );
+
+    return;
+
+  }
+
+  if(
+    userVote &&
+    !allowVoteChanges
+  ){
+
+    showMessage(
+      "This club does not allow votes to be changed after they are submitted.",
       "error"
     );
 
@@ -1235,21 +2132,24 @@ async function castVote(
         error
       } =
         await supabaseClient
-
           .from("club_votes")
-
           .update({
             option_id:
               optionId
           })
-
           .eq(
             "id",
             userVote.id
           )
-
+          .eq(
+            "user_id",
+            currentUser.id
+          )
+          .eq(
+            "club_id",
+            clubId
+          )
           .select()
-
           .single();
 
       if(error)
@@ -1266,11 +2166,8 @@ async function castVote(
         error
       } =
         await supabaseClient
-
           .from("club_votes")
-
           .insert({
-
             club_id:
               clubId,
 
@@ -1279,11 +2176,8 @@ async function castVote(
 
             user_id:
               currentUser.id
-
           })
-
           .select()
-
           .single();
 
       if(error)
@@ -1303,10 +2197,13 @@ async function castVote(
 
     await renderChoices();
 
+    updateVotingUI();
+
   }
   catch(error){
 
     console.error(
+      "Vote save error:",
       error
     );
 
@@ -1329,7 +2226,20 @@ async function castVote(
 
 }
 
+/* =========================================
+   START
+   ========================================= */
+
 async function start(){
+
+  if(!clubId){
+
+    location.href =
+      "clubs.html";
+
+    return;
+
+  }
 
   wireLinks();
 
@@ -1356,14 +2266,40 @@ async function start(){
   currentUser =
     data.user;
 
+  /*
+    Load identity, club and membership first.
+
+    Membership must be known before the ballot
+    is rendered so voting buttons cannot briefly
+    appear enabled to non-members.
+  */
+
   await Promise.all([
     loadProfile(),
-    loadClub()
+    loadClub(),
+    loadMembership()
   ]);
+
+  /*
+    Leadership controls are determined only
+    after membership has been loaded.
+  */
+
+  if(isLeadership()){
+
+    $("manageBallotButton")
+      .hidden =
+      false;
+
+  }
 
   await loadUserVote();
 
   await loadBallot();
+
+  updateMembershipUI();
+
+  updateVotingUI();
 
   $("loading")
     .classList
