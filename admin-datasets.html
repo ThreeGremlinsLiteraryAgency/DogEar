@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Datasets | DogEar Admin</title>
 
@@ -24,7 +25,7 @@
       --blue: #6d9bea;
       --orange: #dfa55d;
       --radius: 16px;
-      --shadow: 0 12px 32px rgba(0,0,0,.32);
+      --shadow: 0 12px 32px rgba(0, 0, 0, .32);
     }
 
     * {
@@ -42,12 +43,18 @@
       background:
         radial-gradient(
           circle at top right,
-          rgba(212,175,55,.07),
+          rgba(212, 175, 55, .07),
           transparent 35%
         ),
         var(--bg);
+
       color: var(--text);
-      font-family: Inter, Arial, Helvetica, sans-serif;
+
+      font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
     }
 
     a {
@@ -78,8 +85,10 @@
       position: fixed;
       inset: 0;
       z-index: 1000;
+
       display: grid;
       place-items: center;
+
       background: var(--bg);
     }
 
@@ -89,8 +98,10 @@
 
     .loading-screen span {
       color: var(--gold-light);
+
       font-size: .76rem;
       font-weight: 800;
+
       letter-spacing: 1.5px;
       text-transform: uppercase;
     }
@@ -103,13 +114,20 @@
       position: sticky;
       top: 0;
       z-index: 100;
+
       height: 72px;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       padding: 0 28px;
-      background: rgba(13,13,15,.95);
-      border-bottom: 1px solid var(--border);
+
+      background: rgba(13, 13, 15, .95);
+
+      border-bottom:
+        1px solid var(--border);
+
       backdrop-filter: blur(16px);
     }
 
@@ -117,6 +135,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
+
       font-size: 1.4rem;
       font-weight: 800;
     }
@@ -124,19 +143,25 @@
     .brand-mark {
       width: 38px;
       height: 38px;
+
       display: grid;
       place-items: center;
+
       border-radius: 11px;
+
       background:
         linear-gradient(
           145deg,
           var(--gold-light),
           var(--gold)
         );
+
       color: #111;
+
       font-weight: 900;
+
       box-shadow:
-        0 5px 18px rgba(212,175,55,.18);
+        0 5px 18px rgba(212, 175, 55, .18);
     }
 
     .brand-name {
@@ -151,10 +176,16 @@
 
     .top-btn {
       padding: 10px 14px;
+
       border-radius: 10px;
-      border: 1px solid var(--border);
+
+      border:
+        1px solid var(--border);
+
       background: var(--panel);
+
       color: var(--text);
+
       transition: .2s ease;
     }
 
@@ -168,23 +199,35 @@
     ========================================================= */
 
     .app-shell {
-      min-height: calc(100vh - 72px);
+      min-height:
+        calc(100vh - 72px);
+
       display: grid;
-      grid-template-columns: 250px minmax(0, 1fr);
+
+      grid-template-columns:
+        250px minmax(0, 1fr);
     }
 
     .sidebar {
       padding: 24px 16px;
+
       background: #111114;
-      border-right: 1px solid var(--border);
+
+      border-right:
+        1px solid var(--border);
     }
 
     .sidebar-title {
       color: var(--muted);
+
       text-transform: uppercase;
+
       font-size: .7rem;
+
       letter-spacing: 1.5px;
-      padding: 0 12px 10px;
+
+      padding:
+        0 12px 10px;
     }
 
     .admin-nav {
@@ -195,8 +238,11 @@
 
     .admin-nav a {
       padding: 12px 14px;
+
       border-radius: 10px;
+
       color: #cfcdc7;
+
       transition: .18s ease;
     }
 
@@ -206,52 +252,30 @@
     }
 
     .admin-nav a.active {
-      background: rgba(212,175,55,.12);
-      border: 1px solid rgba(212,175,55,.28);
+      background:
+        rgba(212, 175, 55, .12);
+
+      border:
+        1px solid rgba(212, 175, 55, .28);
+
       color: var(--gold-light);
     }
 
     .sidebar-divider {
       height: 1px;
+
       background: var(--border);
+
       margin: 18px 8px;
     }
 
     .main {
       width: 100%;
       max-width: 1500px;
+
       margin: 0 auto;
+
       padding: 34px;
-    }
-
-    /* =========================================================
-       LOCKED
-    ========================================================= */
-
-    .locked {
-      display: none;
-      max-width: 760px;
-      margin: 70px auto;
-      padding: 42px;
-      text-align: center;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      background: var(--panel);
-      box-shadow: var(--shadow);
-    }
-
-    .locked.show {
-      display: block;
-    }
-
-    .locked h2 {
-      margin-bottom: 10px;
-      font-size: 1.8rem;
-    }
-
-    .locked p {
-      color: var(--muted);
-      line-height: 1.6;
     }
 
     /* =========================================================
@@ -260,87 +284,134 @@
 
     .page-header {
       display: flex;
+
       align-items: flex-start;
       justify-content: space-between;
+
       gap: 20px;
+
       margin-bottom: 28px;
     }
 
     .eyebrow {
       color: var(--gold);
+
       font-size: .74rem;
       font-weight: 800;
+
       text-transform: uppercase;
+
       letter-spacing: 1.5px;
+
       margin-bottom: 8px;
     }
 
     h1 {
-      font-size: clamp(2rem, 4vw, 3rem);
+      font-size:
+        clamp(2rem, 4vw, 3rem);
+
       letter-spacing: -1px;
+
       margin-bottom: 8px;
     }
 
     .page-subtitle {
       color: var(--muted);
+
       line-height: 1.55;
+
       max-width: 760px;
     }
 
     .header-actions {
       display: flex;
+
       gap: 10px;
+
       flex-wrap: wrap;
     }
 
     .primary-btn,
     .secondary-btn {
       border-radius: 10px;
+
       padding: 11px 16px;
+
       font-weight: 800;
+
       transition: .2s ease;
     }
 
     .primary-btn {
       border: 0;
+
       background: var(--gold);
+
       color: #111;
     }
 
     .primary-btn:hover {
       background: var(--gold-light);
-      transform: translateY(-1px);
+
+      transform:
+        translateY(-1px);
     }
 
     .secondary-btn {
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
+
       background: var(--panel);
+
       color: var(--text);
     }
 
     .secondary-btn:hover {
       border-color: var(--gold);
+
       color: var(--gold-light);
     }
 
     /* =========================================================
-       ERROR BANNER
+       MESSAGE
     ========================================================= */
 
-    .error-banner {
+    .message {
       display: none;
-      padding: 14px 16px;
+
       margin-bottom: 18px;
-      border-radius: 12px;
-      border: 1px solid rgba(225,106,102,.32);
-      background: rgba(225,106,102,.08);
-      color: #f0a19d;
+
+      padding: 13px 15px;
+
+      border-radius: 11px;
+
+      font-size: .86rem;
+
       line-height: 1.5;
-      font-size: .88rem;
     }
 
-    .error-banner.show {
+    .message.show {
       display: block;
+    }
+
+    .message.success {
+      color: #a5dfb8;
+
+      background:
+        rgba(95, 199, 134, .08);
+
+      border:
+        1px solid rgba(95, 199, 134, .3);
+    }
+
+    .message.error {
+      color: #f0a19d;
+
+      background:
+        rgba(225, 106, 102, .08);
+
+      border:
+        1px solid rgba(225, 106, 102, .3);
     }
 
     /* =========================================================
@@ -349,40 +420,58 @@
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
+
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
       gap: 16px;
+
       margin-bottom: 24px;
     }
 
     .stat-card {
       padding: 20px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
+
+      border-radius:
+        var(--radius);
+
+      border:
+        1px solid var(--border);
+
       background:
         linear-gradient(
           145deg,
-          rgba(29,29,34,.98),
-          rgba(21,21,25,.98)
+          rgba(29, 29, 34, .98),
+          rgba(21, 21, 25, .98)
         );
-      box-shadow: var(--shadow);
+
+      box-shadow:
+        var(--shadow);
     }
 
     .stat-label {
       color: var(--muted);
+
       font-size: .78rem;
+
       text-transform: uppercase;
+
       letter-spacing: 1px;
+
       margin-bottom: 8px;
     }
 
     .stat-value {
       font-size: 1.9rem;
+
       font-weight: 800;
     }
 
     .stat-note {
       margin-top: 6px;
+
       font-size: .78rem;
+
       color: var(--muted);
     }
 
@@ -392,15 +481,23 @@
 
     .toolbar {
       display: grid;
+
       grid-template-columns:
-        minmax(220px,1fr)
+        minmax(220px, 1fr)
         190px
         190px;
+
       gap: 12px;
+
       padding: 18px;
+
       margin-bottom: 18px;
+
       background: var(--panel);
-      border: 1px solid var(--border);
+
+      border:
+        1px solid var(--border);
+
       border-radius: 14px;
     }
 
@@ -411,12 +508,20 @@
     .search-wrap input,
     .toolbar select {
       width: 100%;
+
       height: 44px;
-      border: 1px solid var(--border);
+
+      border:
+        1px solid var(--border);
+
       border-radius: 10px;
+
       background: #111114;
+
       color: var(--text);
+
       outline: none;
+
       padding: 0 12px;
     }
 
@@ -426,18 +531,24 @@
 
     .search-icon {
       position: absolute;
+
       left: 14px;
       top: 50%;
-      transform: translateY(-50%);
+
+      transform:
+        translateY(-50%);
+
       color: var(--muted);
+
       pointer-events: none;
     }
 
     .search-wrap input:focus,
     .toolbar select:focus {
       border-color: var(--gold);
+
       box-shadow:
-        0 0 0 3px rgba(212,175,55,.08);
+        0 0 0 3px rgba(212, 175, 55, .08);
     }
 
     /* =========================================================
@@ -445,19 +556,31 @@
     ========================================================= */
 
     .table-card {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        var(--radius);
+
       overflow: hidden;
+
       background: var(--panel);
-      box-shadow: var(--shadow);
+
+      box-shadow:
+        var(--shadow);
     }
 
     .table-heading {
       padding: 19px 20px;
-      border-bottom: 1px solid var(--border);
+
+      border-bottom:
+        1px solid var(--border);
+
       display: flex;
+
       align-items: center;
       justify-content: space-between;
+
       gap: 10px;
     }
 
@@ -467,6 +590,7 @@
 
     .table-heading span {
       color: var(--muted);
+
       font-size: .84rem;
     }
 
@@ -476,25 +600,37 @@
 
     table {
       width: 100%;
+
       border-collapse: collapse;
+
       min-width: 980px;
     }
 
     thead th {
       text-align: left;
+
       padding: 13px 16px;
+
       color: var(--muted);
+
       background: #141417;
+
       font-size: .73rem;
+
       text-transform: uppercase;
+
       letter-spacing: .9px;
-      border-bottom: 1px solid var(--border);
+
+      border-bottom:
+        1px solid var(--border);
     }
 
     tbody td {
       padding: 15px 16px;
+
       border-bottom:
-        1px solid rgba(49,49,56,.72);
+        1px solid rgba(49, 49, 56, .72);
+
       vertical-align: middle;
     }
 
@@ -503,7 +639,8 @@
     }
 
     tbody tr:hover {
-      background: rgba(255,255,255,.025);
+      background:
+        rgba(255, 255, 255, .025);
     }
 
     tbody tr:last-child td {
@@ -512,70 +649,104 @@
 
     .dataset-name {
       display: flex;
+
       align-items: center;
+
       gap: 12px;
     }
 
     .dataset-icon {
       width: 38px;
       height: 38px;
-      flex: 0 0 38px;
+
+      flex:
+        0 0 38px;
+
       border-radius: 10px;
-      background: rgba(212,175,55,.11);
-      color: var(--gold-light);
+
+      background:
+        rgba(212, 175, 55, .11);
+
+      color:
+        var(--gold-light);
+
       display: grid;
+
       place-items: center;
+
       font-weight: 800;
     }
 
     .dataset-title {
       font-weight: 800;
+
       margin-bottom: 3px;
     }
 
     .dataset-description {
       color: var(--muted);
+
       font-size: .78rem;
+
       max-width: 340px;
     }
 
     .badge {
       display: inline-flex;
+
       align-items: center;
+
       gap: 6px;
+
       border-radius: 999px;
+
       padding: 6px 9px;
+
       font-size: .72rem;
+
       font-weight: 800;
+
       white-space: nowrap;
     }
 
     .badge::before {
       content: "";
+
       width: 7px;
       height: 7px;
+
       border-radius: 50%;
-      background: currentColor;
+
+      background:
+        currentColor;
     }
 
     .badge-active {
       color: #8bddaa;
-      background: rgba(95,199,134,.1);
+
+      background:
+        rgba(95, 199, 134, .1);
     }
 
     .badge-syncing {
       color: #83acec;
-      background: rgba(109,155,234,.1);
+
+      background:
+        rgba(109, 155, 234, .1);
     }
 
     .badge-warning {
       color: #edb76f;
-      background: rgba(223,165,93,.1);
+
+      background:
+        rgba(223, 165, 93, .1);
     }
 
     .badge-disabled {
       color: #aaa7a0;
-      background: rgba(170,167,160,.1);
+
+      background:
+        rgba(170, 167, 160, .1);
     }
 
     .mono {
@@ -585,27 +756,38 @@
         Menlo,
         Consolas,
         monospace;
+
       color: #d4d1ca;
+
       font-size: .82rem;
     }
 
     .row-actions {
       display: flex;
+
       gap: 7px;
     }
 
     .icon-btn {
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
+
       background: #111114;
+
       color: var(--text);
+
       padding: 8px 10px;
+
       border-radius: 8px;
+
       transition: .16s ease;
+
       white-space: nowrap;
     }
 
     .icon-btn:hover {
       color: var(--gold-light);
+
       border-color: var(--gold);
     }
 
@@ -615,7 +797,9 @@
 
     .empty-state {
       display: none;
+
       text-align: center;
+
       padding: 68px 20px;
     }
 
@@ -626,12 +810,22 @@
     .empty-icon {
       width: 62px;
       height: 62px;
+
       display: grid;
+
       place-items: center;
-      margin: 0 auto 16px;
+
+      margin:
+        0 auto 16px;
+
       border-radius: 18px;
-      background: rgba(212,175,55,.09);
-      color: var(--gold-light);
+
+      background:
+        rgba(212, 175, 55, .09);
+
+      color:
+        var(--gold-light);
+
       font-size: 1.7rem;
     }
 
@@ -641,15 +835,59 @@
 
     .empty-state p {
       color: var(--muted);
+
       max-width: 560px;
+
       margin: auto;
+
       line-height: 1.5;
     }
 
     .loading-row td {
       text-align: center;
+
       color: var(--muted);
+
       padding: 42px;
+    }
+
+    /* =========================================================
+       LOCKED
+    ========================================================= */
+
+    .locked {
+      display: none;
+
+      max-width: 760px;
+
+      margin:
+        70px auto;
+
+      padding: 42px;
+
+      text-align: center;
+
+      border-radius:
+        var(--radius);
+
+      border:
+        1px solid var(--border);
+
+      background: var(--panel);
+    }
+
+    .locked.show {
+      display: block;
+    }
+
+    .locked h2 {
+      margin-bottom: 10px;
+    }
+
+    .locked p {
+      color: var(--muted);
+
+      line-height: 1.6;
     }
 
     /* =========================================================
@@ -658,14 +896,23 @@
 
     .modal-backdrop {
       position: fixed;
+
       inset: 0;
+
       z-index: 500;
+
       display: none;
+
       align-items: center;
       justify-content: center;
+
       padding: 20px;
-      background: rgba(0,0,0,.72);
-      backdrop-filter: blur(5px);
+
+      background:
+        rgba(0, 0, 0, .72);
+
+      backdrop-filter:
+        blur(5px);
     }
 
     .modal-backdrop.show {
@@ -673,41 +920,65 @@
     }
 
     .modal {
-      width: min(680px,100%);
+      width:
+        min(680px, 100%);
+
       max-height: 90vh;
+
       overflow-y: auto;
-      background: var(--panel);
-      border: 1px solid var(--border);
+
+      background:
+        var(--panel);
+
+      border:
+        1px solid var(--border);
+
       border-radius: 18px;
+
       box-shadow:
-        0 24px 60px rgba(0,0,0,.55);
+        0 24px 60px rgba(0, 0, 0, .55);
     }
 
     .modal-header {
       padding: 21px 22px;
-      border-bottom: 1px solid var(--border);
+
+      border-bottom:
+        1px solid var(--border);
+
       display: flex;
-      justify-content: space-between;
+
+      justify-content:
+        space-between;
+
       gap: 15px;
-      align-items: flex-start;
+
+      align-items:
+        flex-start;
     }
 
     .modal-header h2 {
       font-size: 1.25rem;
+
       margin-bottom: 5px;
     }
 
     .modal-header p {
       color: var(--muted);
+
       font-size: .85rem;
+
       line-height: 1.5;
     }
 
     .close-btn {
       border: 0;
+
       background: transparent;
+
       color: var(--muted);
+
       font-size: 1.5rem;
+
       line-height: 1;
     }
 
@@ -721,36 +992,54 @@
 
     .detail-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+
+      grid-template-columns:
+        1fr 1fr;
+
       gap: 13px;
     }
 
     .detail-item {
       background: #111114;
-      border: 1px solid var(--border);
+
+      border:
+        1px solid var(--border);
+
       padding: 14px;
+
       border-radius: 10px;
     }
 
     .detail-label {
       color: var(--muted);
+
       font-size: .7rem;
+
       text-transform: uppercase;
+
       letter-spacing: .8px;
+
       margin-bottom: 6px;
     }
 
     .detail-value {
       font-weight: 700;
-      word-break: break-word;
+
+      word-break:
+        break-word;
     }
 
     .modal-footer {
       display: flex;
+
       justify-content: flex-end;
+
       gap: 9px;
+
       padding: 18px 22px;
-      border-top: 1px solid var(--border);
+
+      border-top:
+        1px solid var(--border);
     }
 
     /* =========================================================
@@ -758,19 +1047,27 @@
     ========================================================= */
 
     @media (max-width: 1050px) {
+
       .stats-grid {
-        grid-template-columns: repeat(2,1fr);
+        grid-template-columns:
+          repeat(2, 1fr);
       }
+
     }
 
     @media (max-width: 900px) {
+
       .app-shell {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+          1fr;
       }
 
       .sidebar {
         border-right: 0;
-        border-bottom: 1px solid var(--border);
+
+        border-bottom:
+          1px solid var(--border);
+
         padding: 12px 14px;
       }
 
@@ -781,6 +1078,7 @@
 
       .admin-nav {
         flex-direction: row;
+
         overflow-x: auto;
       }
 
@@ -793,17 +1091,22 @@
       }
 
       .main {
-        padding: 24px 18px 40px;
+        padding:
+          24px 18px 40px;
       }
 
       .toolbar {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+          1fr;
       }
+
     }
 
     @media (max-width: 650px) {
+
       .topbar {
-        padding: 0 15px;
+        padding:
+          0 15px;
       }
 
       .brand-name,
@@ -822,16 +1125,20 @@
       .header-actions button,
       .header-actions a {
         flex: 1;
+
         text-align: center;
       }
 
       .stats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+          1fr;
       }
 
       .detail-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+          1fr;
       }
+
     }
   </style>
 </head>
@@ -862,6 +1169,7 @@
       href="dashboard.html"
       class="brand"
     >
+
       <div class="brand-mark">
         D
       </div>
@@ -869,6 +1177,7 @@
       <span class="brand-name">
         DogEar
       </span>
+
     </a>
 
 
@@ -894,10 +1203,14 @@
   </header>
 
 
+  <!-- =========================================================
+       APP
+  ========================================================== -->
+
   <div class="app-shell">
 
     <!-- =======================================================
-         ADMIN NAVIGATION
+         SIDEBAR
     ======================================================== -->
 
     <aside class="sidebar">
@@ -975,11 +1288,11 @@
 
     <main class="main">
 
-      <!-- =====================================================
-           ADMIN CONTENT
-      ====================================================== -->
-
       <div id="adminArea">
+
+        <!-- ===================================================
+             HEADER
+        ==================================================== -->
 
         <div class="page-header">
 
@@ -1010,7 +1323,7 @@
               class="secondary-btn"
               id="refreshAllBtn"
             >
-              Refresh
+              Refresh Counts
             </button>
 
             <a
@@ -1025,9 +1338,13 @@
         </div>
 
 
+        <!-- ===================================================
+             MESSAGE
+        ==================================================== -->
+
         <div
-          class="error-banner"
-          id="errorBanner"
+          class="message"
+          id="pageMessage"
         ></div>
 
 
@@ -1136,7 +1453,7 @@
               type="search"
               placeholder="Search datasets..."
               autocomplete="off"
-            />
+            >
 
           </div>
 
@@ -1231,13 +1548,33 @@
               <thead>
 
                 <tr>
-                  <th>Dataset</th>
-                  <th>Type</th>
-                  <th>Source</th>
-                  <th>Records</th>
-                  <th>Status</th>
-                  <th>Last Updated</th>
+
+                  <th>
+                    Dataset
+                  </th>
+
+                  <th>
+                    Type
+                  </th>
+
+                  <th>
+                    Source
+                  </th>
+
+                  <th>
+                    Records
+                  </th>
+
+                  <th>
+                    Status
+                  </th>
+
+                  <th>
+                    Last Updated
+                  </th>
+
                   <th></th>
+
                 </tr>
 
               </thead>
@@ -1274,8 +1611,7 @@
             </h3>
 
             <p id="emptyMessage">
-              DogEar does not currently have any datasets
-              available through this admin page.
+              DogEar does not currently have any datasets available.
             </p>
 
           </div>
@@ -1511,6 +1847,7 @@
     const SUPABASE_URL =
       "https://nrtutxjznkfvvbmaagum.supabase.co";
 
+
     const SUPABASE_PUBLISHABLE_KEY =
       "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
 
@@ -1527,17 +1864,63 @@
         document.getElementById(id);
 
 
-    let currentUser = null;
+    let currentUser =
+      null;
 
-    let datasets = [];
 
-    let filteredDatasets = [];
+    let datasets =
+      [];
 
-    let datasetLoadError = "";
+
+    let filteredDatasets =
+      [];
+
+
+    let datasetLoadError =
+      "";
 
 
     /* =========================================================
-       AUTH / ADMIN
+       MESSAGE
+    ========================================================= */
+
+    function showPageMessage(
+      text,
+      type = ""
+    ) {
+
+      const message =
+        $("pageMessage");
+
+
+      message.textContent =
+        text;
+
+
+      message.className =
+        "message show " + type;
+
+    }
+
+
+    function clearPageMessage() {
+
+      const message =
+        $("pageMessage");
+
+
+      message.textContent =
+        "";
+
+
+      message.className =
+        "message";
+
+    }
+
+
+    /* =========================================================
+       ADMIN CHECK
     ========================================================= */
 
     async function verifyAdmin() {
@@ -1576,6 +1959,7 @@
           error
         );
 
+
         return false;
 
       }
@@ -1585,8 +1969,11 @@
 
     function showLocked() {
 
-      $("adminArea").style.display =
-        "none";
+      $("adminArea")
+        .style
+        .display =
+          "none";
+
 
       $("lockedArea")
         .classList
@@ -1603,10 +1990,6 @@
 
       datasetLoadError =
         "";
-
-      hideError();
-
-      setLoadingState();
 
 
       try {
@@ -1644,44 +2027,45 @@
 
 
         datasets =
-          (data || []).map(
-            row => ({
-              id:
-                row.id,
+          (data || [])
+            .map(
+              row => ({
+                id:
+                  row.id,
 
-              datasetKey:
-                row.dataset_key,
+                datasetKey:
+                  row.dataset_key,
 
-              name:
-                row.name,
+                name:
+                  row.name,
 
-              description:
-                row.description || "",
+                description:
+                  row.description || "",
 
-              type:
-                row.type || "other",
+                type:
+                  row.type || "other",
 
-              source:
-                row.source || "DogEar",
+                source:
+                  row.source || "DogEar",
 
-              recordCount:
-                Number(
-                  row.record_count || 0
-                ),
+                recordCount:
+                  Number(
+                    row.record_count || 0
+                  ),
 
-              status:
-                row.status || "disabled",
+                status:
+                  row.status || "disabled",
 
-              lastSyncedAt:
-                row.last_synced_at,
+                lastSyncedAt:
+                  row.last_synced_at,
 
-              createdAt:
-                row.created_at,
+                createdAt:
+                  row.created_at,
 
-              updatedAt:
-                row.updated_at
-            })
-          );
+                updatedAt:
+                  row.updated_at
+              })
+            );
 
 
         applyFilters();
@@ -1698,6 +2082,7 @@
         datasets =
           [];
 
+
         filteredDatasets =
           [];
 
@@ -1711,10 +2096,90 @@
 
         updateStats();
 
-        showError(
+
+        showPageMessage(
           "DogEar couldn't load datasets: " +
-          datasetLoadError
+          datasetLoadError,
+          "error"
         );
+
+      }
+
+    }
+
+
+    /* =========================================================
+       REFRESH COUNTS
+    ========================================================= */
+
+    async function refreshDatasetCounts() {
+
+      const button =
+        $("refreshAllBtn");
+
+
+      button.disabled =
+        true;
+
+
+      button.textContent =
+        "Refreshing...";
+
+
+      clearPageMessage();
+
+
+      try {
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .rpc(
+              "refresh_admin_dataset_counts"
+            );
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        await loadDatasets();
+
+
+        showPageMessage(
+          "Dataset counts refreshed successfully.",
+          "success"
+        );
+
+      }
+      catch (error) {
+
+        console.error(
+          "Dataset refresh failed:",
+          error
+        );
+
+
+        showPageMessage(
+          "DogEar couldn't refresh dataset counts: " +
+          (
+            error?.message ||
+            "Unknown error"
+          ),
+          "error"
+        );
+
+      }
+      finally {
+
+        button.disabled =
+          false;
+
+
+        button.textContent =
+          "Refresh Counts";
 
       }
 
@@ -1798,29 +2263,35 @@
 
 
     /* =========================================================
-       RENDER
+       RENDER DATASETS
     ========================================================= */
 
     function renderDatasets() {
 
-      const body =
+      const holder =
         $("datasetTableBody");
 
 
-      body.innerHTML =
+      holder.innerHTML =
         "";
 
 
-      if (!filteredDatasets.length) {
+      if (
+        !filteredDatasets.length
+      ) {
 
-        if (datasetLoadError) {
+        if (
+          datasetLoadError
+        ) {
 
           showEmpty(
             "DogEar couldn't load the dataset catalog."
           );
 
         }
-        else if (datasets.length) {
+        else if (
+          datasets.length
+        ) {
 
           showEmpty(
             "No datasets match your current filters."
@@ -1873,17 +2344,21 @@
               <div>
 
                 <div class="dataset-title">
+
                   ${escapeHtml(
                     dataset.name ||
                     "Untitled Dataset"
                   )}
+
                 </div>
 
                 <div class="dataset-description">
+
                   ${escapeHtml(
                     dataset.description ||
                     ""
                   )}
+
                 </div>
 
               </div>
@@ -1894,42 +2369,52 @@
 
 
           <td>
+
             ${escapeHtml(
               formatType(
                 dataset.type
               )
             )}
+
           </td>
 
 
           <td>
+
             ${escapeHtml(
               dataset.source ||
               "DogEar"
             )}
+
           </td>
 
 
           <td>
+
             ${formatNumber(
               dataset.recordCount
             )}
+
           </td>
 
 
           <td>
+
             ${statusBadge(
               dataset.status
             )}
+
           </td>
 
 
           <td>
+
             ${escapeHtml(
               formatDate(
                 dataset.updatedAt
               )
             )}
+
           </td>
 
 
@@ -1955,7 +2440,7 @@
         `;
 
 
-        body.appendChild(
+        holder.appendChild(
           row
         );
 
@@ -2075,7 +2560,7 @@
 
       $("detailId")
         .textContent =
-          dataset.id ??
+          dataset.id ||
           "—";
 
 
@@ -2157,28 +2642,8 @@
 
 
     /* =========================================================
-       UI STATES
+       EMPTY STATE
     ========================================================= */
-
-    function setLoadingState() {
-
-      hideEmpty();
-
-      $("datasetTableBody")
-        .innerHTML = `
-
-          <tr class="loading-row">
-
-            <td colspan="7">
-              Loading datasets...
-            </td>
-
-          </tr>
-
-        `;
-
-    }
-
 
     function showEmpty(
       message
@@ -2204,36 +2669,6 @@
     function hideEmpty() {
 
       $("emptyState")
-        .classList
-        .remove("show");
-
-    }
-
-
-    function showError(
-      message
-    ) {
-
-      $("errorBanner")
-        .textContent =
-          message;
-
-
-      $("errorBanner")
-        .classList
-        .add("show");
-
-    }
-
-
-    function hideError() {
-
-      $("errorBanner")
-        .textContent =
-          "";
-
-
-      $("errorBanner")
         .classList
         .remove("show");
 
@@ -2293,8 +2728,10 @@
         safeStatus ===
         "active"
       ) {
+
         className =
           "badge-active";
+
       }
 
 
@@ -2302,8 +2739,10 @@
         safeStatus ===
         "syncing"
       ) {
+
         className =
           "badge-syncing";
+
       }
 
 
@@ -2311,19 +2750,23 @@
         safeStatus ===
         "warning"
       ) {
+
         className =
           "badge-warning";
+
       }
 
 
       return `
 
         <span class="badge ${className}">
+
           ${escapeHtml(
             formatStatus(
               safeStatus
             )
           )}
+
         </span>
 
       `;
@@ -2369,13 +2812,26 @@
 
 
       const labels = {
-        books: "Books",
-        users: "Users",
-        clubs: "Book Clubs",
-        marketplace: "Marketplace",
-        analytics: "Analytics",
-        moderation: "Moderation",
-        other: "Other"
+        books:
+          "Books",
+
+        users:
+          "Users",
+
+        clubs:
+          "Book Clubs",
+
+        marketplace:
+          "Marketplace",
+
+        analytics:
+          "Analytics",
+
+        moderation:
+          "Moderation",
+
+        other:
+          "Other"
       };
 
 
@@ -2397,11 +2853,13 @@
         );
 
 
-      return new Intl.NumberFormat(
-        "en-US"
-      ).format(
-        number
-      );
+      return new Intl
+        .NumberFormat(
+          "en-US"
+        )
+        .format(
+          number
+        );
 
     }
 
@@ -2424,22 +2882,26 @@
           date.getTime()
         )
       ) {
+
         return "Unknown";
+
       }
 
 
-      return new Intl.DateTimeFormat(
-        "en-US",
-        {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-          hour: "numeric",
-          minute: "2-digit"
-        }
-      ).format(
-        date
-      );
+      return new Intl
+        .DateTimeFormat(
+          "en-US",
+          {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "2-digit"
+          }
+        )
+        .format(
+          date
+        );
 
     }
 
@@ -2464,9 +2926,11 @@
       word
     ) {
 
-      return count === 1
-        ? word
-        : `${word}s`;
+      return (
+        count === 1
+          ? word
+          : `${word}s`
+      );
 
     }
 
@@ -2543,31 +3007,7 @@
     $("refreshAllBtn")
       .addEventListener(
         "click",
-        async () => {
-
-          const button =
-            $("refreshAllBtn");
-
-
-          button.disabled =
-            true;
-
-
-          button.textContent =
-            "Refreshing...";
-
-
-          await loadDatasets();
-
-
-          button.disabled =
-            false;
-
-
-          button.textContent =
-            "Refresh";
-
-        }
+        refreshDatasetCounts
       );
 
 
@@ -2738,12 +3178,13 @@
         );
 
 
-        showError(
+        showPageMessage(
           "DogEar couldn't open dataset administration: " +
           (
             error?.message ||
             "Unknown error"
-          )
+          ),
+          "error"
         );
 
       }
