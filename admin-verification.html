@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DogEar — Verification Queue</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --ink:#090b0a;
+  --panel:#101410;
+  --panel2:#0d110e;
+  --cream:#f1e7cf;
+  --gold:#c79b59;
+  --gold2:#dfbd7e;
+  --green:#26362b;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.22);
+  --line-soft:rgba(199,155,89,.11);
+  --danger:#e6a09a;
+  --ok:#b9d6b2;
+  --warn:#e1c28b;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--cream);
+  background:
+    radial-gradient(circle at 10% 0%,rgba(53,73,59,.24),transparent 28%),
+    var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+a{
+  color:inherit;
+}
+
+.topbar{
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:0 clamp(18px,4vw,60px);
+  border-bottom:1px solid var(--line);
+  background:rgba(9,11,10,.94);
+  position:sticky;
+  top:0;
+  z-index:30;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 13px Arial;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  transform:rotate(-8deg);
+}
+
+.nav{
+  display:flex;
+  gap:24px;
+  font:700 11px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.nav a:hover{
+  color:var(--gold2);
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:var(--green);
+  text-decoration:none;
+  font:800 13px Arial;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.page{
+  width:min(1220px,calc(100% - 32px));
+  margin:auto;
+  padding:38px 0 110px;
+}
+
+.back{
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 10px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.hero{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:24px;
+  margin-top:22px;
+  padding-bottom:28px;
+  border-bottom:1px solid var(--line);
+}
+
+.eyebrow{
+  color:var(--gold);
+  font:800 10px Arial;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+
+h1{
+  margin:0;
+  font-size:clamp(42px,6vw,68px);
+  line-height:.96;
+  font-weight:400;
+  letter-spacing:-.04em;
+}
+
+.subtitle{
+  margin-top:12px;
+  max-width:760px;
+  color:var(--muted);
+  font:13px/1.65 Arial;
+}
+
+.toolbar{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:26px 0 18px;
+}
+
+.search{
+  flex:1 1 360px;
+  min-width:0;
+  height:46px;
+  padding:0 14px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--panel2);
+  color:var(--cream);
+  outline:none;
+  font:13px Arial;
+}
+
+.search:focus{
+  border-color:var(--gold);
+}
+
+.select{
+  min-width:175px;
+  height:46px;
+  padding:0 12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--panel2);
+  color:var(--cream);
+  outline:none;
+  font:12px Arial;
+}
+
+.summary{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.summary-pill{
+  padding:8px 11px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--muted);
+  font:800 9px Arial;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.queue{
+  display:grid;
+  gap:12px;
+}
+
+.request{
+  display:grid;
+  grid-template-columns:58px minmax(0,1fr) 140px auto;
+  gap:16px;
+  align-items:center;
+  padding:15px;
+  border:1px solid var(--line);
+  border-radius:17px;
+  background:rgba(16,20,16,.86);
+}
+
+.request-avatar{
+  width:58px;
+  height:58px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:var(--green);
+  color:var(--gold2);
+  font:800 13px Arial;
+}
+
+.request-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.request-name{
+  margin-bottom:4px;
+  font-size:19px;
+}
+
+.request-meta{
+  color:var(--muted);
+  font:10px/1.55 Arial;
+  overflow-wrap:anywhere;
+}
+
+.badge{
+  justify-self:start;
+  padding:7px 9px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  font:800 8px Arial;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.badge.pending{color:var(--warn)}
+.badge.approved{color:var(--ok)}
+.badge.denied{color:var(--danger)}
+.badge.reverify{color:var(--gold2)}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  justify-content:flex-end;
+}
+
+.btn{
+  min-height:38px;
+  padding:0 13px;
+  border-radius:999px;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font:800 8px Arial;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.primary{
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:#17130e;
+}
+
+.secondary{
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--gold2);
+}
+
+.danger{
+  border:1px solid rgba(230,160,154,.4);
+  background:transparent;
+  color:var(--danger);
+}
+
+.btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.empty{
+  padding:60px 20px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  text-align:center;
+  color:var(--muted);
+  font:12px/1.7 Arial;
+}
+
+.empty strong{
+  display:block;
+  margin-bottom:8px;
+  color:var(--cream);
+  font:400 24px Georgia;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:60;
+  display:none;
+  place-items:center;
+  padding:20px;
+  background:rgba(0,0,0,.8);
+}
+
+.modal.show{
+  display:grid;
+}
+
+.modal-card{
+  width:min(680px,100%);
+  max-height:90vh;
+  overflow:auto;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:#0e120f;
+  box-shadow:0 30px 90px rgba(0,0,0,.55);
+}
+
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:20px 22px;
+  border-bottom:1px solid var(--line);
+}
+
+.modal-head h2{
+  margin:0;
+  font-size:27px;
+  font-weight:400;
+}
+
+.close{
+  border:0;
+  background:none;
+  color:var(--muted);
+  cursor:pointer;
+  font-size:25px;
+}
+
+.modal-body{
+  padding:22px;
+}
+
+.detail-grid{
+  display:grid;
+  grid-template-columns:160px minmax(0,1fr);
+  gap:11px 18px;
+}
+
+.detail-label{
+  color:var(--gold);
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.detail-value{
+  color:var(--muted);
+  font:12px/1.55 Arial;
+  overflow-wrap:anywhere;
+}
+
+.note{
+  margin-top:20px;
+  padding:15px;
+  border:1px solid var(--line-soft);
+  border-radius:12px;
+  background:rgba(38,54,43,.22);
+  color:var(--muted);
+  font:11px/1.65 Arial;
+}
+
+.field{
+  margin-top:18px;
+}
+
+.field label{
+  display:block;
+  margin-bottom:7px;
+  color:var(--gold2);
+  font:800 9px Arial;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.field textarea{
+  width:100%;
+  min-height:100px;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:var(--panel2);
+  color:var(--cream);
+  outline:none;
+  resize:vertical;
+  font:12px/1.5 Arial;
+}
+
+.field textarea:focus{
+  border-color:var(--gold);
+}
+
+.modal-actions{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  margin-top:22px;
+}
+
+.message{
+  display:none;
+  margin-top:14px;
+  padding:11px 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  font:11px/1.5 Arial;
+}
+
+.message.show{display:block}
+.message.error{color:var(--danger)}
+.message.success{color:var(--ok)}
+
+.loading{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:grid;
+  place-items:center;
+  background:var(--ink);
+}
+
+.loading.hidden{
+  display:none;
+}
+
+.loading span{
+  color:var(--gold2);
+  font:800 10px Arial;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+.locked{
+  display:none;
+  padding:70px 24px;
+  margin-top:28px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  text-align:center;
+  color:var(--muted);
+  font:13px/1.7 Arial;
+}
+
+.locked.show{
+  display:block;
+}
+
+.locked strong{
+  display:block;
+  margin-bottom:8px;
+  color:var(--cream);
+  font:400 25px Georgia;
+}
+
+@media(max-width:850px){
+  .request{
+    grid-template-columns:58px minmax(0,1fr);
+  }
+
+  .status-col{
+    grid-column:2/3;
+  }
+
+  .actions{
+    grid-column:1/-1;
+    justify-content:flex-start;
+  }
+}
+
+@media(max-width:650px){
+  .nav{display:none}
+
+  .hero{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .detail-grid{
+    grid-template-columns:1fr;
+    gap:5px;
+  }
+
+  .detail-value{
+    margin-bottom:9px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="loading" id="loading">
+  <span>Opening verification queue...</span>
+</div>
+
+<header class="topbar">
+
+  <a class="brand" href="dashboard.html">
+    <span class="brand-mark"></span>
+    DogEar
+  </a>
+
+  <nav class="nav">
+    <a href="dashboard.html">Home</a>
+    <a href="discover.html">Discover</a>
+    <a href="clubs.html">Clubs</a>
+    <a href="marketplace.html">Books</a>
+  </nav>
+
+  <a class="avatar" id="navAvatar" href="profile.html">?</a>
+
+</header>
+
+<main class="page">
+
+  <a class="back" href="admin-dashboard.html">
+    ← Back to Control Room
+  </a>
+
+  <section class="hero">
+
+    <div>
+
+      <div class="eyebrow">
+        DogEar Administration
+      </div>
+
+      <h1>
+        Verification Queue
+      </h1>
+
+      <div class="subtitle">
+        Review verification requests, approve trusted accounts, reject
+        incomplete requests, and require re-verification when an account's
+        identity or access status needs to be checked again.
+      </div>
+
+    </div>
+
+  </section>
+
+  <div id="adminArea">
+
+    <div class="toolbar">
+
+      <input
+        class="search"
+        id="searchInput"
+        type="search"
+        placeholder="Search member or account ID…">
+
+      <select
+        class="select"
+        id="statusFilter">
+
+        <option value="">
+          All Requests
+        </option>
+
+        <option value="pending">
+          Pending
+        </option>
+
+        <option value="approved">
+          Approved
+        </option>
+
+        <option value="denied">
+          Denied
+        </option>
+
+        <option value="reverify">
+          Re-verification
+        </option>
+
+      </select>
+
+      <a
+        class="btn secondary"
+        href="admin-users.html">
+        Member Administration
+      </a>
+
+    </div>
+
+    <div class="summary">
+
+      <div class="summary-pill" id="pendingSummary">
+        0 Pending
+      </div>
+
+      <div class="summary-pill" id="approvedSummary">
+        0 Approved
+      </div>
+
+      <div class="summary-pill" id="reverifySummary">
+        0 Reverify
+      </div>
+
+    </div>
+
+    <section
+      class="queue"
+      id="queue">
+    </section>
+
+  </div>
+
+  <section
+    class="locked"
+    id="locked">
+
+    <strong>
+      Administrator access required.
+    </strong>
+
+    Your account does not currently have permission to review DogEar
+    verification requests.
+
+  </section>
+
+</main>
+
+<!-- REVIEW MODAL -->
+
+<div
+  class="modal"
+  id="reviewModal">
+
+  <div class="modal-card">
+
+    <div class="modal-head">
+
+      <h2 id="modalName">
+        Verification Request
+      </h2>
+
+      <button
+        class="close"
+        id="closeModal"
+        type="button">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div class="detail-grid">
+
+        <div class="detail-label">
+          Account ID
+        </div>
+
+        <div
+          class="detail-value"
+          id="detailUserId">
+          —
+        </div>
+
+        <div class="detail-label">
+          Username
+        </div>
+
+        <div
+          class="detail-value"
+          id="detailUsername">
+          —
+        </div>
+
+        <div class="detail-label">
+          Requested
+        </div>
+
+        <div
+          class="detail-value"
+          id="detailRequested">
+          —
+        </div>
+
+        <div class="detail-label">
+          Status
+        </div>
+
+        <div
+          class="detail-value"
+          id="detailStatus">
+          —
+        </div>
+
+        <div class="detail-label">
+          Verification Type
+        </div>
+
+        <div
+          class="detail-value"
+          id="detailType">
+          —
+        </div>
+
+      </div>
+
+      <div class="note">
+        Verification should indicate that DogEar has completed whatever
+        account-checking process you establish. It should not imply that
+        DogEar endorses a member, guarantees their identity beyond that
+        process, or considers them safe in every context.
+      </div>
+
+      <div class="field">
+
+        <label for="adminNote">
+          Internal Review Note
+        </label>
+
+        <textarea
+          id="adminNote"
+          placeholder="Optional note for DogEar administrators…"></textarea>
+
+      </div>
+
+      <div class="modal-actions">
+
+        <button
+          class="btn secondary"
+          id="cancelBtn"
+          type="button">
+          Cancel
+        </button>
+
+        <button
+          class="btn danger"
+          id="denyBtn"
+          type="button">
+          Deny
+        </button>
+
+        <button
+          class="btn secondary"
+          id="reverifyBtn"
+          type="button">
+          Require Re-verification
+        </button>
+
+        <button
+          class="btn primary"
+          id="approveBtn"
+          type="button">
+          Approve
+        </button>
+
+      </div>
+
+      <div
+        class="message"
+        id="modalMessage">
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+const $ =
+  id => document.getElementById(id);
+
+let currentUser = null;
+let requests = [];
+let selectedRequest = null;
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(value=""){
+
+  return String(value)
+    .replace(
+      /[&<>"']/g,
+      character => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[character])
+    );
+
+}
+
+function formatDate(value){
+
+  if(!value)
+    return "—";
+
+  const date =
+    new Date(value);
+
+  if(Number.isNaN(date.getTime()))
+    return "—";
+
+  return date.toLocaleDateString(
+    undefined,
+    {
+      month:"short",
+      day:"numeric",
+      year:"numeric"
+    }
+  );
+
+}
+
+function requestStatus(request){
+
+  return String(
+    request.status ||
+    "pending"
+  ).toLowerCase();
+
+}
+
+function showMessage(text,type=""){
+
+  $("modalMessage").textContent =
+    text;
+
+  $("modalMessage").className =
+    "message show " + type;
+
+}
+
+function clearMessage(){
+
+  $("modalMessage").textContent = "";
+  $("modalMessage").className = "message";
+
+}
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+async function loadProfile(){
+
+  let display =
+    currentUser?.user_metadata?.display_name ||
+    "Reader";
+
+  let avatar = "";
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "get_public_profile",
+        {
+          check_user_id:
+            currentUser.id
+        }
+      );
+
+    if(error)
+      throw error;
+
+    const profile =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+    if(profile){
+
+      display =
+        profile.display_name ||
+        display;
+
+      avatar =
+        profile.avatar_url ||
+        "";
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Profile lookup:",
+      error.message
+    );
+
+  }
+
+  const holder =
+    $("navAvatar");
+
+  holder.innerHTML = "";
+
+  if(avatar){
+
+    const image =
+      document.createElement("img");
+
+    image.src = avatar;
+    image.alt = display;
+
+    image.onerror =
+      () => {
+
+        holder.innerHTML = "";
+
+        holder.textContent =
+          display.charAt(0).toUpperCase();
+
+      };
+
+    holder.appendChild(image);
+
+  }
+  else{
+
+    holder.textContent =
+      display.charAt(0).toUpperCase();
+
+  }
+
+}
+
+/* =========================================================
+   ADMIN CHECK
+========================================================= */
+
+async function verifyAdmin(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("admin_users")
+        .select("user_id,active")
+        .eq("user_id",currentUser.id)
+        .maybeSingle();
+
+    if(error)
+      throw error;
+
+    return (
+      data &&
+      data.active !== false
+    );
+
+  }
+  catch(error){
+
+    console.warn(
+      "Admin lookup:",
+      error.message
+    );
+
+    return false;
+
+  }
+
+}
+
+function showLocked(){
+
+  $("adminArea").style.display =
+    "none";
+
+  $("locked")
+    .classList
+    .add("show");
+
+}
+
+/* =========================================================
+   LOAD REQUESTS
+========================================================= */
+
+async function loadRequests(){
+
+  /*
+    Expected future table:
+
+    verification_requests
+      id
+      user_id
+      status
+      verification_type
+      admin_note
+      created_at
+      reviewed_at
+      reviewed_by
+
+    This query also assumes a profiles relationship based
+    on verification_requests.user_id -> profiles.id.
+  */
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("verification_requests")
+        .select(`
+          *,
+          profiles (
+            id,
+            display_name,
+            username,
+            avatar_url,
+            verified
+          )
+        `)
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        );
+
+    if(error)
+      throw error;
+
+    requests =
+      data || [];
+
+  }
+  catch(error){
+
+    console.warn(
+      "Verification request lookup:",
+      error.message
+    );
+
+    requests = [];
+
+  }
+
+  renderQueue();
+  updateSummary();
+
+}
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+function updateSummary(){
+
+  const pending =
+    requests.filter(
+      request =>
+        requestStatus(request) ===
+        "pending"
+    ).length;
+
+  const approved =
+    requests.filter(
+      request =>
+        requestStatus(request) ===
+        "approved"
+    ).length;
+
+  const reverify =
+    requests.filter(
+      request =>
+        requestStatus(request) ===
+        "reverify"
+    ).length;
+
+  $("pendingSummary").textContent =
+    pending.toLocaleString() +
+    " Pending";
+
+  $("approvedSummary").textContent =
+    approved.toLocaleString() +
+    " Approved";
+
+  $("reverifySummary").textContent =
+    reverify.toLocaleString() +
+    " Reverify";
+
+}
+
+/* =========================================================
+   FILTERING
+========================================================= */
+
+function filteredRequests(){
+
+  const search =
+    $("searchInput")
+      .value
+      .trim()
+      .toLowerCase();
+
+  const filter =
+    $("statusFilter").value;
+
+  return requests.filter(
+    request => {
+
+      if(
+        filter &&
+        requestStatus(request) !==
+        filter
+      )
+        return false;
+
+      if(search){
+
+        const profile =
+          request.profiles || {};
+
+        const haystack =
+          [
+            profile.display_name,
+            profile.username,
+            request.user_id,
+            request.id
+          ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+
+        if(!haystack.includes(search))
+          return false;
+
+      }
+
+      return true;
+
+    }
+  );
+
+}
+
+$("searchInput")
+  .addEventListener(
+    "input",
+    renderQueue
+  );
+
+$("statusFilter")
+  .addEventListener(
+    "change",
+    renderQueue
+  );
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function renderQueue(){
+
+  const holder =
+    $("queue");
+
+  const list =
+    filteredRequests();
+
+  holder.innerHTML = "";
+
+  if(!list.length){
+
+    holder.innerHTML = `
+
+      <div class="empty">
+
+        <strong>
+          Nothing in this queue.
+        </strong>
+
+        No verification requests match the current filters.
+
+      </div>
+    `;
+
+    return;
+
+  }
+
+  for(const request of list){
+
+    const profile =
+      request.profiles || {};
+
+    const name =
+      profile.display_name ||
+      profile.username ||
+      "DogEar Member";
+
+    const username =
+      profile.username
+        ? "@" + profile.username
+        : "No username";
+
+    const avatar =
+      profile.avatar_url ||
+      "";
+
+    const status =
+      requestStatus(request);
+
+    const row =
+      document.createElement("article");
+
+    row.className =
+      "request";
+
+    row.innerHTML = `
+
+      <div class="request-avatar">
+
+        ${
+          avatar
+            ? `
+              <img
+                src="${escapeHtml(avatar)}"
+                alt="${escapeHtml(name)}">
+            `
+            : escapeHtml(
+                name.charAt(0).toUpperCase()
+              )
+        }
+
+      </div>
+
+      <div>
+
+        <div class="request-name">
+          ${escapeHtml(name)}
+        </div>
+
+        <div class="request-meta">
+
+          ${escapeHtml(username)}
+          <br>
+
+          Requested:
+          ${escapeHtml(
+            formatDate(
+              request.created_at
+            )
+          )}
+
+        </div>
+
+      </div>
+
+      <div class="status-col">
+
+        <span class="badge ${escapeHtml(status)}">
+          ${escapeHtml(status)}
+        </span>
+
+      </div>
+
+      <div class="actions">
+
+        <a
+          class="btn secondary"
+          href="profile.html?id=${encodeURIComponent(request.user_id)}">
+          Profile
+        </a>
+
+        <button
+          class="btn secondary review-btn"
+          type="button"
+          data-id="${escapeHtml(request.id)}">
+          Review
+        </button>
+
+      </div>
+    `;
+
+    holder.appendChild(row);
+
+  }
+
+  holder
+    .querySelectorAll(".review-btn")
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            openReview(
+              button.dataset.id
+            )
+        );
+
+      }
+    );
+
+}
+
+/* =========================================================
+   REVIEW MODAL
+========================================================= */
+
+function openReview(id){
+
+  selectedRequest =
+    requests.find(
+      request =>
+        String(request.id) ===
+        String(id)
+    );
+
+  if(!selectedRequest)
+    return;
+
+  clearMessage();
+
+  const profile =
+    selectedRequest.profiles ||
+    {};
+
+  const name =
+    profile.display_name ||
+    profile.username ||
+    "DogEar Member";
+
+  $("modalName").textContent =
+    name;
+
+  $("detailUserId").textContent =
+    selectedRequest.user_id ||
+    "—";
+
+  $("detailUsername").textContent =
+    profile.username
+      ? "@" + profile.username
+      : "—";
+
+  $("detailRequested").textContent =
+    formatDate(
+      selectedRequest.created_at
+    );
+
+  $("detailStatus").textContent =
+    requestStatus(
+      selectedRequest
+    );
+
+  $("detailType").textContent =
+    selectedRequest.verification_type ||
+    "Standard account verification";
+
+  $("adminNote").value =
+    selectedRequest.admin_note ||
+    "";
+
+  $("reviewModal")
+    .classList
+    .add("show");
+
+}
+
+function closeModal(){
+
+  selectedRequest =
+    null;
+
+  $("reviewModal")
+    .classList
+    .remove("show");
+
+  clearMessage();
+
+}
+
+$("closeModal")
+  .addEventListener(
+    "click",
+    closeModal
+  );
+
+$("cancelBtn")
+  .addEventListener(
+    "click",
+    closeModal
+  );
+
+$("reviewModal")
+  .addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target ===
+        $("reviewModal")
+      )
+        closeModal();
+
+    }
+  );
+
+/* =========================================================
+   REVIEW ACTION
+========================================================= */
+
+async function reviewRequest(status){
+
+  if(!selectedRequest)
+    return;
+
+  try{
+
+    const note =
+      $("adminNote")
+        .value
+        .trim() ||
+      null;
+
+    /*
+      For production, this is better as one protected RPC
+      so updating the request + user's verified state +
+      activity log happen atomically.
+
+      Prototype behavior is implemented below.
+    */
+
+    const {
+      data:updatedRequest,
+      error:requestError
+    } =
+      await supabaseClient
+        .from("verification_requests")
+        .update({
+          status,
+          admin_note:note,
+          reviewed_at:
+            new Date().toISOString(),
+          reviewed_by:
+            currentUser.id
+        })
+        .eq(
+          "id",
+          selectedRequest.id
+        )
+        .select(`
+          *,
+          profiles (
+            id,
+            display_name,
+            username,
+            avatar_url,
+            verified
+          )
+        `)
+        .single();
+
+    if(requestError)
+      throw requestError;
+
+    let verifiedValue =
+      null;
+
+    if(status === "approved")
+      verifiedValue = true;
+
+    if(
+      status === "denied" ||
+      status === "reverify"
+    )
+      verifiedValue = false;
+
+    if(verifiedValue !== null){
+
+      const {
+        error:profileError
+      } =
+        await supabaseClient
+          .from("profiles")
+          .update({
+            verified:
+              verifiedValue
+          })
+          .eq(
+            "id",
+            selectedRequest.user_id
+          );
+
+      if(profileError)
+        throw profileError;
+
+    }
+
+    const index =
+      requests.findIndex(
+        request =>
+          String(request.id) ===
+          String(updatedRequest.id)
+      );
+
+    if(index >= 0)
+      requests[index] =
+        updatedRequest;
+
+    selectedRequest =
+      updatedRequest;
+
+    $("detailStatus").textContent =
+      requestStatus(
+        updatedRequest
+      );
+
+    updateSummary();
+    renderQueue();
+
+    showMessage(
+      status === "approved"
+        ? "Verification approved."
+        : status === "denied"
+          ? "Verification denied."
+          : "Re-verification required.",
+      "success"
+    );
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    showMessage(
+      "DogEar couldn't update this request: " +
+      (
+        error.message ||
+        "Unknown error"
+      ),
+      "error"
+    );
+
+  }
+
+}
+
+$("approveBtn")
+  .addEventListener(
+    "click",
+    () =>
+      reviewRequest(
+        "approved"
+      )
+  );
+
+$("denyBtn")
+  .addEventListener(
+    "click",
+    () =>
+      reviewRequest(
+        "denied"
+      )
+  );
+
+$("reverifyBtn")
+  .addEventListener(
+    "click",
+    () =>
+      reviewRequest(
+        "reverify"
+      )
+  );
+
+/* =========================================================
+   START
+========================================================= */
+
+async function start(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+  if(
+    error ||
+    !data.user
+  ){
+
+    location.href =
+      "auth.html#login";
+
+    return;
+
+  }
+
+  currentUser =
+    data.user;
+
+  await loadProfile();
+
+  const allowed =
+    await verifyAdmin();
+
+  if(!allowed){
+
+    showLocked();
+
+    $("loading")
+      .classList
+      .add("hidden");
+
+    return;
+
+  }
+
+  await loadRequests();
+
+  $("loading")
+    .classList
+    .add("hidden");
+
+}
+
+start();
+</script>
+
+</body>
+</html>
