@@ -12,7 +12,6 @@
 :root{
   --ink:#090b0a;
   --panel:#101410;
-  --panel2:#0d110e;
   --cream:#f1e7cf;
   --gold:#c79b59;
   --gold2:#dfbd7e;
@@ -84,9 +83,7 @@ a{color:inherit}
   text-decoration:none;
 }
 
-.nav a:hover{
-  color:var(--gold2);
-}
+.nav a:hover{color:var(--gold2)}
 
 .avatar{
   width:38px;
@@ -156,6 +153,11 @@ h1{
   text-transform:uppercase;
 }
 
+.role-pill.owner{
+  background:rgba(199,155,89,.12);
+  border-color:var(--gold);
+}
+
 .stats{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
@@ -218,6 +220,21 @@ h1{
   border-color:var(--gold);
 }
 
+.tool.owner-tool{
+  display:none;
+  border-color:rgba(199,155,89,.4);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(199,155,89,.09),
+      rgba(16,20,16,.86)
+    );
+}
+
+.tool.owner-tool.show{
+  display:flex;
+}
+
 .tool-icon{
   width:42px;
   height:42px;
@@ -262,6 +279,10 @@ h1{
 .activity-head{
   padding:18px 20px;
   border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
 }
 
 .activity-head h2{
@@ -270,9 +291,15 @@ h1{
   font-weight:400;
 }
 
-.activity-list{
-  display:grid;
+.activity-head a{
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
 }
+
+.activity-list{display:grid}
 
 .activity-row{
   display:flex;
@@ -282,12 +309,14 @@ h1{
   border-bottom:1px solid var(--line-soft);
 }
 
-.activity-row:last-child{
-  border-bottom:0;
-}
+.activity-row:last-child{border-bottom:0}
 
-.activity-main{
-  font-size:14px;
+.activity-main{font-size:14px}
+
+.activity-description{
+  margin-top:4px;
+  color:var(--muted);
+  font:11px/1.5 Arial;
 }
 
 .activity-meta{
@@ -313,9 +342,7 @@ h1{
   font:13px/1.7 Arial;
 }
 
-.locked.show{
-  display:block;
-}
+.locked.show{display:block}
 
 .locked strong{
   display:block;
@@ -333,9 +360,7 @@ h1{
   background:var(--ink);
 }
 
-.loading.hidden{
-  display:none;
-}
+.loading.hidden{display:none}
 
 .loading span{
   color:var(--gold2);
@@ -345,14 +370,8 @@ h1{
 }
 
 @media(max-width:900px){
-  .stats{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-
-  .tools{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tools{grid-template-columns:repeat(2,minmax(0,1fr))}
   .hero{
     align-items:flex-start;
     flex-direction:column;
@@ -361,15 +380,8 @@ h1{
 
 @media(max-width:650px){
   .nav{display:none}
-
-  .stats{
-    grid-template-columns:1fr;
-  }
-
-  .tools{
-    grid-template-columns:1fr;
-  }
-
+  .stats{grid-template-columns:1fr}
+  .tools{grid-template-columns:1fr}
   .activity-row{
     flex-direction:column;
     gap:6px;
@@ -407,24 +419,21 @@ h1{
   <section class="hero">
 
     <div>
-
       <div class="eyebrow">
         DogEar Administration
       </div>
 
-      <h1>
-        Control Room
-      </h1>
+      <h1>Control Room</h1>
 
       <div class="subtitle">
-        Manage books, members, clubs, verification, moderation, and the
-        machinery behind DogEar without cluttering the reader-facing site.
+        Manage members, clubs, marketplace activity, moderation,
+        verification, and the machinery behind DogEar without
+        cluttering the reader-facing site.
       </div>
-
     </div>
 
-    <div class="role-pill">
-      Site Administrator
+    <div class="role-pill" id="rolePill">
+      Administrator
     </div>
 
   </section>
@@ -434,201 +443,125 @@ h1{
     <section class="stats">
 
       <article class="stat">
-
-        <div class="stat-label">
-          Members
-        </div>
-
-        <div class="stat-value" id="memberCount">
-          —
-        </div>
-
-        <div class="stat-note">
-          Registered DogEar accounts
-        </div>
-
+        <div class="stat-label">Members</div>
+        <div class="stat-value" id="memberCount">—</div>
+        <div class="stat-note">Registered DogEar accounts</div>
       </article>
 
       <article class="stat">
-
-        <div class="stat-label">
-          Clubs
-        </div>
-
-        <div class="stat-value" id="clubCount">
-          —
-        </div>
-
-        <div class="stat-note">
-          Book clubs on the platform
-        </div>
-
+        <div class="stat-label">Clubs</div>
+        <div class="stat-value" id="clubCount">—</div>
+        <div class="stat-note">Book clubs on the platform</div>
       </article>
 
       <article class="stat">
-
-        <div class="stat-label">
-          Books
-        </div>
-
-        <div class="stat-value" id="bookCount">
-          —
-        </div>
-
-        <div class="stat-note">
-          Books in DogEar's catalog
-        </div>
-
+        <div class="stat-label">Books</div>
+        <div class="stat-value" id="bookCount">—</div>
+        <div class="stat-note">Books in DogEar's catalog</div>
       </article>
 
       <article class="stat">
-
-        <div class="stat-label">
-          Pending
-        </div>
-
-        <div class="stat-value" id="pendingCount">
-          —
-        </div>
-
-        <div class="stat-note">
-          Accounts awaiting review
-        </div>
-
+        <div class="stat-label">Pending</div>
+        <div class="stat-value" id="pendingCount">—</div>
+        <div class="stat-note">Accounts awaiting review</div>
       </article>
 
     </section>
 
-    <h2 class="section-title">
-      Administration
-    </h2>
+    <h2 class="section-title">Administration</h2>
 
     <section class="tools">
 
       <a class="tool" href="admin-books.html">
-
-        <div class="tool-icon">
-          BK
-        </div>
-
-        <h2>
-          Books & Affiliates
-        </h2>
-
+        <div class="tool-icon">MK</div>
+        <h2>Marketplace</h2>
         <p>
-          Add books DogEar wants to sell, edit book records, attach affiliate
-          links, and manage marketplace inventory.
+          Curate DogEar's book marketplace, manage featured books,
+          control coin availability, and maintain reward inventory.
         </p>
-
         <div class="tool-footer">
-          Open Book Desk →
+          Open Marketplace Manager →
         </div>
-
       </a>
 
       <a class="tool" href="admin-users.html">
-
-        <div class="tool-icon">
-          US
-        </div>
-
-        <h2>
-          Members
-        </h2>
-
+        <div class="tool-icon">US</div>
+        <h2>Members</h2>
         <p>
-          Review accounts, change account status, inspect verification, and
-          manage suspensions or access restrictions.
+          Review accounts, change account status, inspect verification,
+          and manage suspensions or access restrictions.
         </p>
-
         <div class="tool-footer">
           Manage Members →
         </div>
-
       </a>
 
       <a class="tool" href="admin-verification.html">
-
-        <div class="tool-icon">
-          ✓
-        </div>
-
-        <h2>
-          Verification
-        </h2>
-
+        <div class="tool-icon">✓</div>
+        <h2>Verification</h2>
         <p>
-          Review verification requests, approve trusted accounts, and manage
-          accounts that need re-verification.
+          Review verification requests, approve trusted accounts,
+          and manage accounts that need re-verification.
         </p>
-
         <div class="tool-footer">
           Review Requests →
         </div>
-
       </a>
 
       <a class="tool" href="admin-clubs.html">
-
-        <div class="tool-icon">
-          CL
-        </div>
-
-        <h2>
-          Clubs
-        </h2>
-
+        <div class="tool-icon">CL</div>
+        <h2>Clubs</h2>
         <p>
-          Inspect active clubs, review ownership, investigate reports, and
-          intervene when a club needs administrative action.
+          Inspect active clubs, review ownership, investigate reports,
+          and intervene when a club needs administrative action.
         </p>
-
         <div class="tool-footer">
           Manage Clubs →
         </div>
-
       </a>
 
       <a class="tool" href="admin-moderation.html">
-
-        <div class="tool-icon">
-          MD
-        </div>
-
-        <h2>
-          Moderation
-        </h2>
-
+        <div class="tool-icon">MD</div>
+        <h2>Moderation</h2>
         <p>
-          Review reports, flagged discussions, blocked accounts, and other
-          platform safety issues.
+          Review reports, flagged discussions, blocked accounts,
+          and other platform safety issues.
         </p>
-
         <div class="tool-footer">
           Moderation Queue →
         </div>
-
       </a>
 
       <a class="tool" href="admin-settings.html">
-
-        <div class="tool-icon">
-          ⚙
-        </div>
-
-        <h2>
-          Platform Settings
-        </h2>
-
+        <div class="tool-icon">⚙</div>
+        <h2>Platform Settings</h2>
         <p>
-          Manage global limits, marketplace settings, verification behavior,
-          token rules, and other site-wide controls.
+          Manage global limits, verification behavior, platform
+          controls, and other site-wide settings.
         </p>
-
         <div class="tool-footer">
           Open Settings →
         </div>
+      </a>
 
+      <a
+        class="tool owner-tool"
+        id="adminManagementTool"
+        href="admin-management.html"
+      >
+        <div class="tool-icon">AD</div>
+
+        <h2>Admin Management</h2>
+
+        <p>
+          Promote trusted DogEar members to administrator,
+          deactivate administrator access, and review who
+          has control-room privileges.
+        </p>
+
+        <div class="tool-footer">
+          Manage Administrators →
+        </div>
       </a>
 
     </section>
@@ -636,19 +569,17 @@ h1{
     <section class="activity">
 
       <div class="activity-head">
+        <h2>Recent Activity</h2>
 
-        <h2>
-          Recent Activity
-        </h2>
-
+        <a href="admin-logs.html">
+          View Logs →
+        </a>
       </div>
 
       <div class="activity-list" id="activityList">
-
         <div class="empty">
-          Administrative activity will appear here once the event log is connected.
+          No administrative activity has been recorded yet.
         </div>
-
       </div>
 
     </section>
@@ -656,19 +587,16 @@ h1{
   </div>
 
   <section class="locked" id="locked">
+    <strong>Administrator access required.</strong>
 
-    <strong>
-      Administrator access required.
-    </strong>
-
-    Your account does not currently have permission to open DogEar's
-    administration dashboard.
-
+    Your account does not currently have permission to open
+    DogEar's administration dashboard.
   </section>
 
 </main>
 
 <script>
+
 const SUPABASE_URL =
   "https://nrtutxjznkfvvbmaagum.supabase.co";
 
@@ -685,10 +613,7 @@ const $ =
   id => document.getElementById(id);
 
 let currentUser = null;
-
-/* =========================================================
-   PROFILE
-========================================================= */
+let currentAdmin = null;
 
 async function loadProfile(){
 
@@ -721,7 +646,6 @@ async function loadProfile(){
         : data;
 
     if(profile){
-
       display =
         profile.display_name ||
         display;
@@ -729,17 +653,14 @@ async function loadProfile(){
       avatar =
         profile.avatar_url ||
         "";
-
     }
 
   }
   catch(error){
-
     console.warn(
       "Profile lookup:",
       error.message
     );
-
   }
 
   const holder =
@@ -757,42 +678,22 @@ async function loadProfile(){
 
     image.onerror =
       () => {
-
         holder.innerHTML = "";
-
         holder.textContent =
           display.charAt(0).toUpperCase();
-
       };
 
     holder.appendChild(image);
 
   }
   else{
-
     holder.textContent =
       display.charAt(0).toUpperCase();
-
   }
 
 }
 
-/* =========================================================
-   ADMIN CHECK
-========================================================= */
-
 async function verifyAdmin(){
-
-  /*
-    Browser checks only control the interface.
-
-    Supabase RLS should still protect every administrative
-    table and mutation.
-
-    Expected admin_users fields:
-      user_id
-      active
-  */
 
   try{
 
@@ -802,17 +703,52 @@ async function verifyAdmin(){
     } =
       await supabaseClient
         .from("admin_users")
-        .select("user_id,active")
-        .eq("user_id",currentUser.id)
+        .select(
+          "user_id,active,admin_role,can_manage_admins"
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        )
         .maybeSingle();
 
     if(error)
       throw error;
 
-    return (
-      data &&
-      data.active !== false
-    );
+    if(
+      !data ||
+      data.active !== true
+    ){
+      return false;
+    }
+
+    currentAdmin = data;
+
+    const isOwner =
+      data.admin_role === "owner";
+
+    $("rolePill").textContent =
+      isOwner
+        ? "Owner"
+        : "Administrator";
+
+    $("rolePill")
+      .classList
+      .toggle(
+        "owner",
+        isOwner
+      );
+
+    if(
+      isOwner ||
+      data.can_manage_admins === true
+    ){
+      $("adminManagementTool")
+        .classList
+        .add("show");
+    }
+
+    return true;
 
   }
   catch(error){
@@ -823,14 +759,9 @@ async function verifyAdmin(){
     );
 
     return false;
-
   }
 
 }
-
-/* =========================================================
-   STATS
-========================================================= */
 
 async function countTable(
   table,
@@ -842,19 +773,20 @@ async function countTable(
     let query =
       supabaseClient
         .from(table)
-        .select("*",{
-          count:"exact",
-          head:true
-        });
+        .select(
+          "*",
+          {
+            count:"exact",
+            head:true
+          }
+        );
 
     for(const filter of filters){
-
       query =
         query.eq(
           filter.column,
           filter.value
         );
-
     }
 
     const {
@@ -877,7 +809,6 @@ async function countTable(
     );
 
     return null;
-
   }
 
 }
@@ -886,27 +817,14 @@ function showCount(
   element,
   value
 ){
-
   element.textContent =
     value === null
       ? "—"
       : Number(value)
           .toLocaleString();
-
 }
 
 async function loadStats(){
-
-  /*
-    These table names are easy to change if your final
-    Supabase schema uses different names.
-
-    profiles = platform users
-    clubs = book clubs
-    books = DogEar book catalog
-
-    Pending accounts below assumes profiles.status = pending.
-  */
 
   const [
     members,
@@ -956,23 +874,7 @@ async function loadStats(){
 
 }
 
-/* =========================================================
-   ACTIVITY
-========================================================= */
-
 async function loadActivity(){
-
-  /*
-    Future schema assumption:
-
-    admin_activity
-      id
-      action
-      details
-      created_at
-
-    The page fails gracefully until this table exists.
-  */
 
   try{
 
@@ -981,21 +883,35 @@ async function loadActivity(){
       error
     } =
       await supabaseClient
-        .from("admin_activity")
-        .select("*")
-        .order("created_at",{
-          ascending:false
-        })
+        .from("admin_logs")
+        .select(
+          "id,event,description,severity,actor_name,target,message,created_at"
+        )
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        )
         .limit(8);
 
     if(error)
       throw error;
 
-    if(!data?.length)
-      return;
-
     const holder =
       $("activityList");
+
+    if(!data?.length){
+
+      holder.innerHTML =
+        `
+          <div class="empty">
+            No administrative activity has been recorded yet.
+          </div>
+        `;
+
+      return;
+    }
 
     holder.innerHTML = "";
 
@@ -1007,36 +923,50 @@ async function loadActivity(){
       row.className =
         "activity-row";
 
-      row.innerHTML = `
+      const mainText =
+        item.event ||
+        item.message ||
+        "Administrative action";
 
-        <div class="activity-main">
-          ${
-            escapeHtml(
-              item.action ||
-              item.details ||
-              "Administrative action"
-            )
-          }
-        </div>
+      const description =
+        item.description ||
+        item.message ||
+        "";
 
-        <div class="activity-meta">
-          ${
-            formatDate(
-              item.created_at
-            )
-          }
-        </div>
-      `;
+      row.innerHTML =
+        `
+          <div>
+
+            <div class="activity-main">
+              ${escapeHtml(mainText)}
+            </div>
+
+            ${
+              description &&
+              description !== mainText
+                ? `
+                    <div class="activity-description">
+                      ${escapeHtml(description)}
+                    </div>
+                  `
+                : ""
+            }
+
+          </div>
+
+          <div class="activity-meta">
+            ${formatDate(item.created_at)}
+          </div>
+        `;
 
       holder.appendChild(row);
-
     }
 
   }
   catch(error){
 
     console.warn(
-      "Admin activity:",
+      "Admin logs:",
       error.message
     );
 
@@ -1075,20 +1005,18 @@ function formatDate(value){
   )
     return "";
 
-  return date.toLocaleDateString(
+  return date.toLocaleString(
     undefined,
     {
       month:"short",
       day:"numeric",
-      year:"numeric"
+      year:"numeric",
+      hour:"numeric",
+      minute:"2-digit"
     }
   );
 
 }
-
-/* =========================================================
-   LOCK
-========================================================= */
 
 function showLocked(){
 
@@ -1100,10 +1028,6 @@ function showLocked(){
     .add("show");
 
 }
-
-/* =========================================================
-   START
-========================================================= */
 
 async function start(){
 
@@ -1124,7 +1048,6 @@ async function start(){
       "auth.html#login";
 
     return;
-
   }
 
   currentUser =
@@ -1144,7 +1067,6 @@ async function start(){
       .add("hidden");
 
     return;
-
   }
 
   await Promise.all([
@@ -1159,6 +1081,7 @@ async function start(){
 }
 
 start();
+
 </script>
 
 </body>
