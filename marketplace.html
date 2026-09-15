@@ -1,0 +1,3297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DogEar — Book Marketplace</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+:root{
+  --ink:#090b0a;
+  --ink2:#0d100e;
+  --panel:#101410;
+  --panel2:#151a15;
+  --cream:#f1e7cf;
+  --cream2:#d9cfb8;
+  --gold:#c79b59;
+  --gold2:#dfbd7e;
+  --green:#26362b;
+  --green2:#34483a;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.22);
+  --line-soft:rgba(199,155,89,.11);
+  --danger:#e6a09a;
+  --ok:#b9d6b2;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--cream);
+  background:
+    radial-gradient(
+      circle at 8% 0%,
+      rgba(53,73,59,.28),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 90% 15%,
+      rgba(199,155,89,.07),
+      transparent 24%
+    ),
+    var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+body.loading-lock{
+  overflow:hidden;
+}
+
+button,
+input,
+select{
+  font:inherit;
+}
+
+button{
+  color:inherit;
+}
+
+a{
+  color:inherit;
+}
+
+.topbar{
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:0 clamp(18px,4vw,60px);
+  border-bottom:1px solid var(--line);
+  background:rgba(9,11,10,.95);
+  backdrop-filter:blur(14px);
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 13px Arial,sans-serif;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  transform:rotate(-8deg);
+  position:relative;
+}
+
+.brand-mark::after{
+  content:"";
+  position:absolute;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--gold);
+  right:7px;
+  top:7px;
+}
+
+.nav{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:24px;
+  font:700 11px Arial,sans-serif;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+  transition:.16s ease;
+}
+
+.nav a:hover,
+.nav a.active{
+  color:var(--gold2);
+}
+
+.nav-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.admin-link{
+  display:none;
+  min-height:36px;
+  padding:0 13px;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 9px Arial,sans-serif;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.admin-link.show{
+  display:flex;
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:var(--green);
+  text-decoration:none;
+  font:800 13px Arial,sans-serif;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.page{
+  width:min(1320px,calc(100% - 32px));
+  margin:auto;
+  padding:46px 0 110px;
+}
+
+.hero{
+  min-height:380px;
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);
+  align-items:stretch;
+  border:1px solid var(--line);
+  border-radius:28px;
+  overflow:hidden;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(38,54,43,.76),
+      rgba(16,20,16,.9) 58%,
+      rgba(199,155,89,.06)
+    );
+}
+
+.hero-copy{
+  padding:clamp(34px,6vw,76px);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.eyebrow{
+  margin-bottom:14px;
+  color:var(--gold);
+  font:800 10px Arial,sans-serif;
+  letter-spacing:.19em;
+  text-transform:uppercase;
+}
+
+h1{
+  margin:0;
+  max-width:760px;
+  font-size:clamp(50px,7vw,92px);
+  line-height:.91;
+  font-weight:400;
+  letter-spacing:-.055em;
+}
+
+.hero-description{
+  max-width:680px;
+  margin:22px 0 0;
+  color:var(--cream2);
+  font:14px/1.75 Arial,sans-serif;
+}
+
+.hero-actions{
+  margin-top:28px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.primary-button,
+.secondary-button{
+  min-height:45px;
+  padding:0 18px;
+  border-radius:999px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  cursor:pointer;
+  font:800 9px Arial,sans-serif;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  transition:.18s ease;
+}
+
+.primary-button{
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:#11130f;
+}
+
+.primary-button:hover{
+  background:var(--gold2);
+  border-color:var(--gold2);
+}
+
+.secondary-button{
+  border:1px solid var(--line);
+  background:rgba(9,11,10,.35);
+  color:var(--gold2);
+}
+
+.secondary-button:hover{
+  border-color:var(--gold);
+}
+
+.hero-art{
+  position:relative;
+  min-height:380px;
+  border-left:1px solid var(--line);
+  overflow:hidden;
+}
+
+.hero-art::before,
+.hero-art::after{
+  content:"";
+  position:absolute;
+  border:1px solid rgba(199,155,89,.35);
+  background:rgba(9,11,10,.22);
+  box-shadow:0 30px 70px rgba(0,0,0,.35);
+}
+
+.hero-art::before{
+  width:155px;
+  height:235px;
+  left:18%;
+  top:21%;
+  transform:rotate(-10deg);
+}
+
+.hero-art::after{
+  width:170px;
+  height:255px;
+  right:12%;
+  top:12%;
+  transform:rotate(9deg);
+}
+
+.hero-book{
+  position:absolute;
+  width:165px;
+  height:245px;
+  left:42%;
+  top:28%;
+  transform:translate(-50%,-5%) rotate(2deg);
+  z-index:3;
+  border:1px solid var(--gold);
+  background:
+    linear-gradient(
+      145deg,
+      var(--green2),
+      #141915
+    );
+  box-shadow:0 34px 80px rgba(0,0,0,.5);
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.hero-book-small{
+  color:var(--gold);
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.hero-book-title{
+  font-size:31px;
+  line-height:.92;
+}
+
+.hero-book-foot{
+  color:var(--muted);
+  font:9px Arial,sans-serif;
+}
+
+.search-shell{
+  margin-top:26px;
+  padding:18px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(16,20,16,.86);
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:12px;
+  align-items:center;
+}
+
+.search-wrap{
+  position:relative;
+}
+
+.search-icon{
+  position:absolute;
+  left:16px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--gold);
+  font:800 12px Arial,sans-serif;
+}
+
+.search-input{
+  width:100%;
+  min-height:50px;
+  padding:0 16px 0 43px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  outline:none;
+  background:#0b0e0c;
+  color:var(--cream);
+  font:13px Arial,sans-serif;
+}
+
+.search-input:focus{
+  border-color:var(--gold);
+}
+
+.search-input::placeholder{
+  color:#746e62;
+}
+
+.search-meta{
+  min-width:150px;
+  text-align:right;
+  color:var(--muted);
+  font:10px Arial,sans-serif;
+}
+
+.section{
+  margin-top:54px;
+}
+
+.section.hidden{
+  display:none;
+}
+
+.section-head{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:24px;
+  margin-bottom:18px;
+}
+
+.section-kicker{
+  margin-bottom:7px;
+  color:var(--gold);
+  font:800 9px Arial,sans-serif;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+.section-title{
+  margin:0;
+  font-size:clamp(28px,4vw,42px);
+  font-weight:400;
+  letter-spacing:-.025em;
+}
+
+.section-description{
+  max-width:560px;
+  margin-top:7px;
+  color:var(--muted);
+  font:11px/1.6 Arial,sans-serif;
+}
+
+.section-count{
+  flex:0 0 auto;
+  color:var(--muted);
+  font:10px Arial,sans-serif;
+}
+
+.book-grid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:18px;
+}
+
+.book-card{
+  min-width:0;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(16,20,16,.88);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  transition:.2s ease;
+}
+
+.book-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(199,155,89,.55);
+  box-shadow:0 24px 50px rgba(0,0,0,.22);
+}
+
+.book-cover-link{
+  display:block;
+  text-decoration:none;
+}
+
+.book-cover{
+  position:relative;
+  aspect-ratio:2 / 3;
+  overflow:hidden;
+  background:
+    linear-gradient(
+      145deg,
+      #29382d,
+      #111512
+    );
+  border-bottom:1px solid var(--line-soft);
+}
+
+.book-cover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform .25s ease;
+}
+
+.book-card:hover .book-cover img{
+  transform:scale(1.025);
+}
+
+.cover-placeholder{
+  width:100%;
+  height:100%;
+  padding:24px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(199,155,89,.11),
+      rgba(38,54,43,.72)
+    );
+}
+
+.placeholder-brand{
+  color:var(--gold);
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.placeholder-title{
+  font-size:clamp(19px,2vw,29px);
+  line-height:.95;
+  overflow-wrap:anywhere;
+}
+
+.book-badges{
+  position:absolute;
+  top:10px;
+  left:10px;
+  right:10px;
+  z-index:2;
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  pointer-events:none;
+}
+
+.book-badge{
+  padding:6px 8px;
+  border-radius:999px;
+  border:1px solid rgba(199,155,89,.45);
+  background:rgba(9,11,10,.88);
+  color:var(--gold2);
+  font:800 7px Arial,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  backdrop-filter:blur(8px);
+}
+
+.book-info{
+  padding:15px;
+  display:flex;
+  flex-direction:column;
+  flex:1;
+}
+
+.book-title-link{
+  color:var(--cream);
+  text-decoration:none;
+}
+
+.book-title{
+  margin:0;
+  font-size:19px;
+  line-height:1.05;
+  font-weight:400;
+  overflow-wrap:anywhere;
+}
+
+.book-title-link:hover{
+  color:var(--gold2);
+}
+
+.book-author{
+  margin-top:7px;
+  color:var(--muted);
+  font:10px/1.45 Arial,sans-serif;
+  min-height:29px;
+}
+
+.book-meta{
+  margin-top:11px;
+  color:#7f786b;
+  font:9px/1.5 Arial,sans-serif;
+}
+
+.book-actions{
+  margin-top:auto;
+  padding-top:15px;
+  display:grid;
+  gap:8px;
+}
+
+.book-action{
+  min-height:38px;
+  width:100%;
+  padding:0 11px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  text-decoration:none;
+  cursor:pointer;
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.book-action.details{
+  border:1px solid var(--line);
+  color:var(--gold2);
+  background:transparent;
+}
+
+.book-action.buy{
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:#11130f;
+}
+
+.book-action.buy:hover{
+  background:var(--gold2);
+  border-color:var(--gold2);
+}
+
+.book-action.unavailable{
+  border:1px solid var(--line-soft);
+  color:#6f695f;
+  cursor:default;
+  background:transparent;
+}
+
+.empty-state{
+  grid-column:1 / -1;
+  padding:55px 25px;
+  border:1px dashed var(--line);
+  border-radius:18px;
+  text-align:center;
+  background:rgba(16,20,16,.45);
+}
+
+.empty-state strong{
+  display:block;
+  margin-bottom:8px;
+  color:var(--cream);
+  font-size:22px;
+  font-weight:400;
+}
+
+.empty-state span{
+  color:var(--muted);
+  font:11px/1.6 Arial,sans-serif;
+}
+
+.catalog-toolbar{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.sort-select{
+  min-height:38px;
+  padding:0 34px 0 12px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#0b0e0c;
+  color:var(--cream2);
+  outline:none;
+  font:800 9px Arial,sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+
+.reward-shell{
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:clamp(22px,4vw,36px);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(38,54,43,.48),
+      rgba(16,20,16,.9)
+    );
+}
+
+.reward-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:16px;
+}
+
+.reward-card{
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  background:rgba(9,11,10,.45);
+}
+
+.reward-image{
+  aspect-ratio:1.25 / 1;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(199,155,89,.1),
+      rgba(38,54,43,.75)
+    );
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+
+.reward-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.reward-placeholder{
+  color:var(--gold2);
+  font-size:36px;
+}
+
+.reward-body{
+  padding:16px;
+}
+
+.reward-type{
+  color:var(--gold);
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+
+.reward-title{
+  margin-top:6px;
+  font-size:20px;
+  line-height:1.05;
+}
+
+.reward-description{
+  margin-top:8px;
+  color:var(--muted);
+  font:10px/1.55 Arial,sans-serif;
+}
+
+.reward-footer{
+  margin-top:16px;
+  padding-top:13px;
+  border-top:1px solid var(--line-soft);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.coin-price{
+  color:var(--gold2);
+  font:800 12px Arial,sans-serif;
+}
+
+.reward-status{
+  color:var(--muted);
+  font:9px Arial,sans-serif;
+}
+
+.marketplace-foot{
+  margin-top:65px;
+  padding-top:26px;
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  gap:30px;
+  color:var(--muted);
+  font:10px/1.6 Arial,sans-serif;
+}
+
+.marketplace-foot strong{
+  color:var(--cream2);
+}
+
+.loading-screen{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  display:grid;
+  place-items:center;
+  background:var(--ink);
+  transition:opacity .2s ease;
+}
+
+.loading-screen.hidden{
+  opacity:0;
+  pointer-events:none;
+}
+
+.loading-inner{
+  text-align:center;
+}
+
+.loading-mark{
+  width:48px;
+  height:48px;
+  margin:0 auto 18px;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  animation:floatMark 1.5s ease-in-out infinite;
+}
+
+.loading-text{
+  color:var(--gold2);
+  font:800 10px Arial,sans-serif;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+@keyframes floatMark{
+  0%,100%{
+    transform:translateY(0) rotate(-8deg);
+  }
+  50%{
+    transform:translateY(-6px) rotate(-8deg);
+  }
+}
+
+.toast{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:150;
+  max-width:360px;
+  padding:14px 16px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:#111512;
+  box-shadow:0 20px 60px rgba(0,0,0,.4);
+  color:var(--cream2);
+  font:11px/1.5 Arial,sans-serif;
+  opacity:0;
+  transform:translateY(10px);
+  pointer-events:none;
+  transition:.18s ease;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.toast.error{
+  border-color:rgba(230,160,154,.4);
+  color:var(--danger);
+}
+
+@media(max-width:1120px){
+
+  .book-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+
+  .reward-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+
+}
+
+@media(max-width:900px){
+
+  .hero{
+    grid-template-columns:1fr;
+  }
+
+  .hero-art{
+    display:none;
+  }
+
+  .book-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+
+  .reward-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+}
+
+@media(max-width:720px){
+
+  .nav{
+    display:none;
+  }
+
+  .page{
+    width:min(100% - 24px,1320px);
+    padding-top:24px;
+  }
+
+  .hero-copy{
+    padding:38px 25px;
+  }
+
+  .search-shell{
+    grid-template-columns:1fr;
+  }
+
+  .search-meta{
+    text-align:left;
+  }
+
+  .section-head{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .catalog-toolbar{
+    width:100%;
+  }
+
+  .sort-select{
+    width:100%;
+  }
+
+  .book-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+  }
+
+  .marketplace-foot{
+    flex-direction:column;
+  }
+
+}
+
+@media(max-width:460px){
+
+  .brand{
+    font-size:11px;
+  }
+
+  .admin-link{
+    display:none !important;
+  }
+
+  .book-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .book-info{
+    padding:12px;
+  }
+
+  .book-title{
+    font-size:16px;
+  }
+
+  .reward-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+</head>
+
+<body class="loading-lock">
+
+<div
+  class="loading-screen"
+  id="loadingScreen"
+>
+  <div class="loading-inner">
+    <div class="loading-mark"></div>
+    <div class="loading-text">
+      Opening the shelves...
+    </div>
+  </div>
+</div>
+
+<header class="topbar">
+
+  <a
+    class="brand"
+    href="dashboard.html"
+  >
+    <span class="brand-mark"></span>
+    DogEar
+  </a>
+
+  <nav class="nav">
+
+    <a href="dashboard.html">
+      Home
+    </a>
+
+    <a href="discover.html">
+      Discover
+    </a>
+
+    <a href="clubs.html">
+      Clubs
+    </a>
+
+    <a
+      class="active"
+      href="marketplace.html"
+    >
+      Books
+    </a>
+
+  </nav>
+
+  <div class="nav-right">
+
+    <a
+      class="admin-link"
+      id="adminLink"
+      href="admin-dashboard.html"
+    >
+      Admin
+    </a>
+
+    <a
+      class="avatar"
+      id="navAvatar"
+      href="profile.html"
+    >
+      ?
+    </a>
+
+  </div>
+
+</header>
+
+<main class="page">
+
+  <section class="hero">
+
+    <div class="hero-copy">
+
+      <div class="eyebrow">
+        The DogEar Book Marketplace
+      </div>
+
+      <h1>
+        Find your next favorite book.
+      </h1>
+
+      <p class="hero-description">
+        Browse books being read, discussed, and loved across DogEar.
+        Discover staff picks, featured titles, and new additions —
+        then support independent bookstores when you buy through
+        Bookshop.org.
+      </p>
+
+      <div class="hero-actions">
+
+        <a
+          class="primary-button"
+          href="#featured"
+        >
+          Browse Books
+        </a>
+
+        <a
+          class="secondary-button"
+          href="clubs.html"
+        >
+          Explore Book Clubs
+        </a>
+
+      </div>
+
+    </div>
+
+    <div
+      class="hero-art"
+      aria-hidden="true"
+    >
+
+      <div class="hero-book">
+
+        <div class="hero-book-small">
+          DogEar
+        </div>
+
+        <div class="hero-book-title">
+          Read.<br>
+          Talk.<br>
+          Discover.
+        </div>
+
+        <div class="hero-book-foot">
+          Books are better together.
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="search-shell">
+
+    <div class="search-wrap">
+
+      <span class="search-icon">
+        ⌕
+      </span>
+
+      <input
+        class="search-input"
+        id="bookSearch"
+        type="search"
+        placeholder="Search books, authors, publishers, or ISBN..."
+        autocomplete="off"
+      >
+
+    </div>
+
+    <div
+      class="search-meta"
+      id="searchMeta"
+    >
+      Loading books...
+    </div>
+
+  </section>
+
+  <section
+    class="section hidden"
+    id="searchResultsSection"
+  >
+
+    <div class="section-head">
+
+      <div>
+
+        <div class="section-kicker">
+          Search
+        </div>
+
+        <h2 class="section-title">
+          Search Results
+        </h2>
+
+        <div
+          class="section-description"
+          id="searchDescription"
+        >
+          Books matching your search.
+        </div>
+
+      </div>
+
+      <div
+        class="section-count"
+        id="searchCount"
+      ></div>
+
+    </div>
+
+    <div
+      class="book-grid"
+      id="searchResultsGrid"
+    ></div>
+
+  </section>
+
+  <section
+    class="section"
+    id="featured"
+  >
+
+    <div class="section-head">
+
+      <div>
+
+        <div class="section-kicker">
+          From DogEar
+        </div>
+
+        <h2 class="section-title">
+          Featured Books
+        </h2>
+
+        <div class="section-description">
+          Books currently being highlighted by the DogEar team.
+        </div>
+
+      </div>
+
+      <div
+        class="section-count"
+        id="featuredCount"
+      ></div>
+
+    </div>
+
+    <div
+      class="book-grid"
+      id="featuredGrid"
+    ></div>
+
+  </section>
+
+  <section
+    class="section"
+    id="staffPicks"
+  >
+
+    <div class="section-head">
+
+      <div>
+
+        <div class="section-kicker">
+          Handpicked
+        </div>
+
+        <h2 class="section-title">
+          Staff Picks
+        </h2>
+
+        <div class="section-description">
+          Books the DogEar team thinks deserve a place on your shelf.
+        </div>
+
+      </div>
+
+      <div
+        class="section-count"
+        id="staffCount"
+      ></div>
+
+    </div>
+
+    <div
+      class="book-grid"
+      id="staffGrid"
+    ></div>
+
+  </section>
+
+  <section
+    class="section"
+    id="newBooks"
+  >
+
+    <div class="section-head">
+
+      <div>
+
+        <div class="section-kicker">
+          Fresh Finds
+        </div>
+
+        <h2 class="section-title">
+          New &amp; Noteworthy
+        </h2>
+
+        <div class="section-description">
+          Recently highlighted titles and books worth discovering.
+        </div>
+
+      </div>
+
+      <div
+        class="section-count"
+        id="newCount"
+      ></div>
+
+    </div>
+
+    <div
+      class="book-grid"
+      id="newGrid"
+    ></div>
+
+  </section>
+
+  <section
+    class="section"
+    id="allBooks"
+  >
+
+    <div class="section-head">
+
+      <div>
+
+        <div class="section-kicker">
+          The Shelves
+        </div>
+
+        <h2 class="section-title">
+          Browse All Books
+        </h2>
+
+        <div class="section-description">
+          Explore books currently available in the DogEar catalog.
+        </div>
+
+      </div>
+
+      <div class="catalog-toolbar">
+
+        <select
+          class="sort-select"
+          id="sortBooks"
+          aria-label="Sort books"
+        >
+          <option value="title">
+            Title A–Z
+          </option>
+
+          <option value="title-desc">
+            Title Z–A
+          </option>
+
+          <option value="newest">
+            Recently Added
+          </option>
+
+          <option value="author">
+            Author
+          </option>
+        </select>
+
+      </div>
+
+    </div>
+
+    <div
+      class="book-grid"
+      id="allBooksGrid"
+    ></div>
+
+  </section>
+
+  <!--
+    IMPORTANT:
+    This entire section remains hidden unless BOTH
+    coins_enabled and coin_marketplace_enabled are true.
+  -->
+
+  <section
+    class="section hidden"
+    id="coinMarketplaceSection"
+  >
+
+    <div class="reward-shell">
+
+      <div class="section-head">
+
+        <div>
+
+          <div class="section-kicker">
+            DogEar Rewards
+          </div>
+
+          <h2 class="section-title">
+            Spend Coins
+          </h2>
+
+          <div class="section-description">
+            Use DogEar coins on rewards offered directly by DogEar.
+          </div>
+
+        </div>
+
+      </div>
+
+      <div
+        class="reward-grid"
+        id="rewardGrid"
+      ></div>
+
+    </div>
+
+  </section>
+
+  <footer class="marketplace-foot">
+
+    <div>
+      <strong>Buying a book?</strong><br>
+      Eligible purchase links on this page use DogEar's
+      Bookshop.org affiliate relationship.
+    </div>
+
+    <div>
+      Purchases are completed on Bookshop.org.
+      DogEar does not set Bookshop.org prices,
+      inventory, shipping, or fulfillment.
+    </div>
+
+  </footer>
+
+</main>
+
+<div
+  class="toast"
+  id="toast"
+></div>
+
+<script>
+
+/* =========================================================
+   DOGEAR MARKETPLACE
+   ========================================================= */
+
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const BOOKSHOP_AFFILIATE_ID =
+  "128186";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+const $ =
+  id => document.getElementById(id);
+
+let currentUser = null;
+
+let allBooks = [];
+
+let curatedRows = [];
+
+let curatedByBookId =
+  new Map();
+
+let coinSettings = {
+  coins_enabled:false,
+  coin_marketplace_enabled:false
+};
+
+let rewards = [];
+
+let searchTimer = null;
+
+
+/* =========================================================
+   STARTUP
+   ========================================================= */
+
+async function start(){
+
+  try{
+
+    await loadSession();
+
+    if(currentUser){
+
+      await Promise.all([
+        loadProfile(),
+        loadAdminAccess()
+      ]);
+
+    }
+
+    await Promise.all([
+      loadMarketplaceSettings(),
+      loadBooks(),
+      loadCuratedBooks()
+    ]);
+
+    buildCuratedMap();
+
+    renderMarketplace();
+
+    await loadCoinMarketplace();
+
+  }
+  catch(error){
+
+    console.error(
+      "Marketplace startup:",
+      error
+    );
+
+    showToast(
+      error.message ||
+      "DogEar could not load the marketplace.",
+      true
+    );
+
+  }
+  finally{
+
+    document.body.classList.remove(
+      "loading-lock"
+    );
+
+    $("loadingScreen")
+      .classList
+      .add("hidden");
+
+  }
+
+}
+
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+
+async function loadSession(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+  if(error){
+
+    console.warn(
+      "Auth lookup:",
+      error.message
+    );
+
+    return;
+
+  }
+
+  currentUser =
+    data?.user ||
+    null;
+
+}
+
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+
+async function loadProfile(){
+
+  if(!currentUser)
+    return;
+
+  let display =
+    currentUser.user_metadata?.display_name ||
+    currentUser.email ||
+    "Reader";
+
+  let avatar = "";
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "get_public_profile",
+        {
+          check_user_id:
+            currentUser.id
+        }
+      );
+
+    if(error)
+      throw error;
+
+    const profile =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+    if(profile){
+
+      display =
+        profile.display_name ||
+        profile.username ||
+        display;
+
+      avatar =
+        profile.avatar_url ||
+        "";
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Profile lookup:",
+      error.message
+    );
+
+  }
+
+  const holder =
+    $("navAvatar");
+
+  holder.innerHTML = "";
+
+  if(avatar){
+
+    const image =
+      document.createElement("img");
+
+    image.src =
+      avatar;
+
+    image.alt =
+      display;
+
+    image.onerror =
+      () => {
+
+        holder.innerHTML = "";
+
+        holder.textContent =
+          firstLetter(display);
+
+      };
+
+    holder.appendChild(image);
+
+  }
+  else{
+
+    holder.textContent =
+      firstLetter(display);
+
+  }
+
+}
+
+
+/* =========================================================
+   ADMIN ACCESS
+   ========================================================= */
+
+async function loadAdminAccess(){
+
+  if(!currentUser)
+    return;
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("admin_users")
+        .select(
+          "user_id,active"
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .maybeSingle();
+
+    if(error)
+      throw error;
+
+    if(
+      data &&
+      data.active === true
+    ){
+
+      $("adminLink")
+        .classList
+        .add("show");
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Admin access:",
+      error.message
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   MARKETPLACE SETTINGS
+   ========================================================= */
+
+async function loadMarketplaceSettings(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("marketplace_settings")
+        .select(
+          "coins_enabled,coin_marketplace_enabled"
+        )
+        .eq(
+          "id",
+          1
+        )
+        .maybeSingle();
+
+    if(error)
+      throw error;
+
+    if(data){
+
+      coinSettings = {
+        coins_enabled:
+          data.coins_enabled === true,
+
+        coin_marketplace_enabled:
+          data.coin_marketplace_enabled === true
+      };
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Marketplace settings:",
+      error.message
+    );
+
+    /*
+      SAFETY DEFAULT:
+      If settings cannot be loaded,
+      coins remain completely disabled.
+    */
+
+    coinSettings = {
+      coins_enabled:false,
+      coin_marketplace_enabled:false
+    };
+
+  }
+
+}
+
+
+/* =========================================================
+   BOOK DATA
+   ========================================================= */
+
+async function loadBooks(){
+
+  /*
+    We use the existing marketplace_books VIEW.
+    It is based on DogEar's books data.
+  */
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("marketplace_books")
+      .select("*");
+
+  if(error)
+    throw error;
+
+  allBooks =
+    Array.isArray(data)
+      ? data
+      : [];
+
+}
+
+
+async function loadCuratedBooks(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("marketplace_curated_books")
+        .select(
+          "id,book_id,active,featured,staff_pick,new_and_noteworthy,sort_order,admin_note,starts_at,ends_at,created_at,updated_at"
+        )
+        .eq(
+          "active",
+          true
+        )
+        .order(
+          "sort_order",
+          {
+            ascending:true
+          }
+        );
+
+    if(error)
+      throw error;
+
+    curatedRows =
+      (data || [])
+        .filter(
+          row => isCurrentListing(row)
+        );
+
+  }
+  catch(error){
+
+    console.warn(
+      "Curated books:",
+      error.message
+    );
+
+    curatedRows = [];
+
+  }
+
+}
+
+
+function buildCuratedMap(){
+
+  curatedByBookId =
+    new Map();
+
+  for(const row of curatedRows){
+
+    curatedByBookId.set(
+      String(row.book_id),
+      row
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   DATE / LISTING HELPERS
+   ========================================================= */
+
+function isCurrentListing(row){
+
+  const now =
+    Date.now();
+
+  if(row.starts_at){
+
+    const start =
+      new Date(
+        row.starts_at
+      ).getTime();
+
+    if(
+      !Number.isNaN(start) &&
+      now < start
+    )
+      return false;
+
+  }
+
+  if(row.ends_at){
+
+    const end =
+      new Date(
+        row.ends_at
+      ).getTime();
+
+    if(
+      !Number.isNaN(end) &&
+      now > end
+    )
+      return false;
+
+  }
+
+  return true;
+
+}
+
+
+/* =========================================================
+   RENDER MARKETPLACE
+   ========================================================= */
+
+function renderMarketplace(){
+
+  const featured =
+    curatedRows
+      .filter(
+        row =>
+          row.featured === true
+      )
+      .map(
+        row =>
+          findBook(row.book_id)
+      )
+      .filter(Boolean);
+
+  const staff =
+    curatedRows
+      .filter(
+        row =>
+          row.staff_pick === true
+      )
+      .map(
+        row =>
+          findBook(row.book_id)
+      )
+      .filter(Boolean);
+
+  const noteworthy =
+    curatedRows
+      .filter(
+        row =>
+          row.new_and_noteworthy === true
+      )
+      .map(
+        row =>
+          findBook(row.book_id)
+      )
+      .filter(Boolean);
+
+  renderBookSection(
+    "featured",
+    "featuredGrid",
+    "featuredCount",
+    featured,
+    "No featured books yet.",
+    "Books selected as Featured in the Marketplace Manager will appear here."
+  );
+
+  renderBookSection(
+    "staffPicks",
+    "staffGrid",
+    "staffCount",
+    staff,
+    "No staff picks yet.",
+    "DogEar staff picks will appear here once Milo adds them in the Marketplace Manager."
+  );
+
+  renderBookSection(
+    "newBooks",
+    "newGrid",
+    "newCount",
+    noteworthy,
+    "Nothing new has been highlighted yet.",
+    "Books marked New & Noteworthy will appear here."
+  );
+
+  renderAllBooks();
+
+  updateSearchMeta();
+
+}
+
+
+function renderBookSection(
+  sectionId,
+  gridId,
+  countId,
+  books,
+  emptyTitle,
+  emptyText
+){
+
+  const section =
+    $(sectionId);
+
+  const grid =
+    $(gridId);
+
+  const count =
+    $(countId);
+
+  /*
+    Curated sections remain visible even if empty
+    so the marketplace doesn't look broken during
+    early testing.
+  */
+
+  section.classList.remove(
+    "hidden"
+  );
+
+  count.textContent =
+    formatBookCount(
+      books.length
+    );
+
+  if(!books.length){
+
+    grid.innerHTML =
+      emptyMarkup(
+        emptyTitle,
+        emptyText
+      );
+
+    return;
+
+  }
+
+  grid.innerHTML =
+    books
+      .map(
+        book =>
+          bookCardMarkup(book)
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   ALL BOOKS
+   ========================================================= */
+
+function renderAllBooks(){
+
+  let books =
+    [...allBooks];
+
+  const sort =
+    $("sortBooks").value;
+
+  if(sort === "title"){
+
+    books.sort(
+      (a,b) =>
+        compareText(
+          a.title,
+          b.title
+        )
+    );
+
+  }
+  else if(
+    sort === "title-desc"
+  ){
+
+    books.sort(
+      (a,b) =>
+        compareText(
+          b.title,
+          a.title
+        )
+    );
+
+  }
+  else if(
+    sort === "author"
+  ){
+
+    books.sort(
+      (a,b) =>
+        compareText(
+          authorText(a.authors),
+          authorText(b.authors)
+        )
+    );
+
+  }
+  else if(
+    sort === "newest"
+  ){
+
+    books.sort(
+      (a,b) =>
+        dateValue(b.created_at) -
+        dateValue(a.created_at)
+    );
+
+  }
+
+  const grid =
+    $("allBooksGrid");
+
+  if(!books.length){
+
+    grid.innerHTML =
+      emptyMarkup(
+        "The shelves are waiting.",
+        "Books will appear here as they are added to DogEar."
+      );
+
+    return;
+
+  }
+
+  grid.innerHTML =
+    books
+      .map(
+        book =>
+          bookCardMarkup(book)
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   BOOK CARDS
+   ========================================================= */
+
+function bookCardMarkup(book){
+
+  const id =
+    String(
+      book.id ?? ""
+    );
+
+  const title =
+    book.title ||
+    "Untitled";
+
+  const author =
+    authorText(
+      book.authors
+    );
+
+  const publisher =
+    book.publisher ||
+    "";
+
+  const published =
+    book.published_date ||
+    "";
+
+  const detailsUrl =
+    "book.html?id=" +
+    encodeURIComponent(id);
+
+  const cover =
+    book.cover_url ||
+    "";
+
+  const buyUrl =
+    bookshopAffiliateUrl(book);
+
+  const curated =
+    curatedByBookId.get(id);
+
+  const badges = [];
+
+  if(curated?.featured)
+    badges.push("Featured");
+
+  if(curated?.staff_pick)
+    badges.push("Staff Pick");
+
+  if(
+    curated?.new_and_noteworthy
+  )
+    badges.push("New");
+
+  const badgeMarkup =
+    badges.length
+      ? `
+          <div class="book-badges">
+            ${
+              badges
+                .map(
+                  badge =>
+                    `
+                      <span class="book-badge">
+                        ${escapeHtml(badge)}
+                      </span>
+                    `
+                )
+                .join("")
+            }
+          </div>
+        `
+      : "";
+
+  const coverMarkup =
+    cover
+      ? `
+          <img
+            src="${escapeAttribute(cover)}"
+            alt="${escapeAttribute(title)} cover"
+            loading="lazy"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          >
+
+          <div
+            class="cover-placeholder"
+            style="display:none;"
+          >
+            <div class="placeholder-brand">
+              DogEar
+            </div>
+
+            <div class="placeholder-title">
+              ${escapeHtml(title)}
+            </div>
+          </div>
+        `
+      : `
+          <div class="cover-placeholder">
+
+            <div class="placeholder-brand">
+              DogEar
+            </div>
+
+            <div class="placeholder-title">
+              ${escapeHtml(title)}
+            </div>
+
+          </div>
+        `;
+
+  const metaParts = [];
+
+  if(publisher)
+    metaParts.push(
+      publisher
+    );
+
+  if(published)
+    metaParts.push(
+      published
+    );
+
+  const meta =
+    metaParts.join(" · ");
+
+  const buyMarkup =
+    buyUrl
+      ? `
+          <a
+            class="book-action buy"
+            href="${escapeAttribute(buyUrl)}"
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+          >
+            Buy on Bookshop.org
+          </a>
+        `
+      : `
+          <div
+            class="book-action unavailable"
+            title="DogEar does not have a usable ISBN for this book yet."
+          >
+            Purchase Link Unavailable
+          </div>
+        `;
+
+  return `
+    <article class="book-card">
+
+      <a
+        class="book-cover-link"
+        href="${escapeAttribute(detailsUrl)}"
+        aria-label="View ${escapeAttribute(title)}"
+      >
+
+        <div class="book-cover">
+
+          ${badgeMarkup}
+
+          ${coverMarkup}
+
+        </div>
+
+      </a>
+
+      <div class="book-info">
+
+        <a
+          class="book-title-link"
+          href="${escapeAttribute(detailsUrl)}"
+        >
+          <h3 class="book-title">
+            ${escapeHtml(title)}
+          </h3>
+        </a>
+
+        <div class="book-author">
+          ${
+            author
+              ? "by " +
+                escapeHtml(author)
+              : "Author unavailable"
+          }
+        </div>
+
+        ${
+          meta
+            ? `
+                <div class="book-meta">
+                  ${escapeHtml(meta)}
+                </div>
+              `
+            : ""
+        }
+
+        <div class="book-actions">
+
+          <a
+            class="book-action details"
+            href="${escapeAttribute(detailsUrl)}"
+          >
+            View Book
+          </a>
+
+          ${buyMarkup}
+
+        </div>
+
+      </div>
+
+    </article>
+  `;
+
+}
+
+
+/* =========================================================
+   BOOKSHOP AFFILIATE LINKS
+   ========================================================= */
+
+function bookshopAffiliateUrl(book){
+
+  const isbn13 =
+    resolvedIsbn13(book);
+
+  if(!isbn13)
+    return "";
+
+  return (
+    "https://bookshop.org/a/" +
+    encodeURIComponent(
+      BOOKSHOP_AFFILIATE_ID
+    ) +
+    "/" +
+    encodeURIComponent(
+      isbn13
+    )
+  );
+
+}
+
+
+function resolvedIsbn13(book){
+
+  const isbn13 =
+    cleanIsbn(
+      book.isbn_13
+    );
+
+  if(
+    /^\d{13}$/.test(
+      isbn13
+    ) &&
+    isValidIsbn13(isbn13)
+  ){
+
+    return isbn13;
+
+  }
+
+  const isbn10 =
+    cleanIsbn(
+      book.isbn_10
+    );
+
+  if(
+    /^[0-9]{9}[0-9X]$/.test(
+      isbn10
+    ) &&
+    isValidIsbn10(isbn10)
+  ){
+
+    return isbn10To13(
+      isbn10
+    );
+
+  }
+
+  return "";
+
+}
+
+
+function cleanIsbn(value){
+
+  return String(
+    value || ""
+  )
+    .toUpperCase()
+    .replace(
+      /[^0-9X]/g,
+      ""
+    );
+
+}
+
+
+function isValidIsbn10(isbn){
+
+  if(
+    !/^[0-9]{9}[0-9X]$/.test(
+      isbn
+    )
+  )
+    return false;
+
+  let sum = 0;
+
+  for(
+    let index = 0;
+    index < 10;
+    index++
+  ){
+
+    const character =
+      isbn[index];
+
+    const value =
+      character === "X"
+        ? 10
+        : Number(character);
+
+    sum +=
+      value *
+      (10 - index);
+
+  }
+
+  return (
+    sum % 11 === 0
+  );
+
+}
+
+
+function isValidIsbn13(isbn){
+
+  if(
+    !/^\d{13}$/.test(
+      isbn
+    )
+  )
+    return false;
+
+  let sum = 0;
+
+  for(
+    let index = 0;
+    index < 12;
+    index++
+  ){
+
+    const digit =
+      Number(
+        isbn[index]
+      );
+
+    sum +=
+      digit *
+      (
+        index % 2 === 0
+          ? 1
+          : 3
+      );
+
+  }
+
+  const check =
+    (
+      10 -
+      (
+        sum % 10
+      )
+    ) % 10;
+
+  return (
+    check ===
+    Number(
+      isbn[12]
+    )
+  );
+
+}
+
+
+function isbn10To13(isbn10){
+
+  if(
+    !isValidIsbn10(isbn10)
+  )
+    return "";
+
+  const firstNine =
+    isbn10.slice(
+      0,
+      9
+    );
+
+  const base =
+    "978" +
+    firstNine;
+
+  let sum = 0;
+
+  for(
+    let index = 0;
+    index < 12;
+    index++
+  ){
+
+    sum +=
+      Number(
+        base[index]
+      ) *
+      (
+        index % 2 === 0
+          ? 1
+          : 3
+      );
+
+  }
+
+  const check =
+    (
+      10 -
+      (
+        sum % 10
+      )
+    ) % 10;
+
+  return (
+    base +
+    String(check)
+  );
+
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+$("bookSearch")
+  .addEventListener(
+    "input",
+    () => {
+
+      clearTimeout(
+        searchTimer
+      );
+
+      searchTimer =
+        setTimeout(
+          runSearch,
+          120
+        );
+
+    }
+  );
+
+
+function runSearch(){
+
+  const query =
+    $("bookSearch")
+      .value
+      .trim()
+      .toLowerCase();
+
+  const section =
+    $("searchResultsSection");
+
+  if(!query){
+
+    section.classList.add(
+      "hidden"
+    );
+
+    updateSearchMeta();
+
+    return;
+
+  }
+
+  const compactQuery =
+    query.replace(
+      /[^0-9x]/gi,
+      ""
+    );
+
+  const results =
+    allBooks.filter(
+      book => {
+
+        const searchable =
+          [
+            book.title,
+            book.subtitle,
+            authorText(
+              book.authors
+            ),
+            book.publisher,
+            book.isbn_13,
+            book.isbn_10,
+            categoryText(
+              book.categories
+            )
+          ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+
+        if(
+          searchable.includes(
+            query
+          )
+        )
+          return true;
+
+        if(
+          compactQuery &&
+          (
+            cleanIsbn(
+              book.isbn_13
+            ).toLowerCase()
+              .includes(
+                compactQuery
+              ) ||
+            cleanIsbn(
+              book.isbn_10
+            ).toLowerCase()
+              .includes(
+                compactQuery
+              )
+          )
+        )
+          return true;
+
+        return false;
+
+      }
+    );
+
+  section.classList.remove(
+    "hidden"
+  );
+
+  $("searchDescription").textContent =
+    'Books matching "' +
+    $("bookSearch")
+      .value
+      .trim() +
+    '".';
+
+  $("searchCount").textContent =
+    formatBookCount(
+      results.length
+    );
+
+  $("searchMeta").textContent =
+    formatBookCount(
+      results.length
+    ) +
+    " found";
+
+  const grid =
+    $("searchResultsGrid");
+
+  if(!results.length){
+
+    grid.innerHTML =
+      emptyMarkup(
+        "No books found.",
+        "Try another title, author, publisher, or ISBN."
+      );
+
+    return;
+
+  }
+
+  grid.innerHTML =
+    results
+      .slice(
+        0,
+        40
+      )
+      .map(
+        book =>
+          bookCardMarkup(book)
+      )
+      .join("");
+
+}
+
+
+function updateSearchMeta(){
+
+  $("searchMeta").textContent =
+    formatBookCount(
+      allBooks.length
+    ) +
+    " on the shelves";
+
+}
+
+
+/* =========================================================
+   SORT
+   ========================================================= */
+
+$("sortBooks")
+  .addEventListener(
+    "change",
+    renderAllBooks
+  );
+
+
+/* =========================================================
+   COIN MARKETPLACE
+   ========================================================= */
+
+async function loadCoinMarketplace(){
+
+  /*
+    MASTER SAFETY RULE:
+
+    If coins are disabled, there is NO coin UI.
+    If the marketplace is disabled, there is NO coin UI.
+
+    We don't even query rewards unless BOTH switches
+    are enabled.
+  */
+
+  if(
+    coinSettings.coins_enabled !== true ||
+    coinSettings.coin_marketplace_enabled !== true
+  ){
+
+    $("coinMarketplaceSection")
+      .classList
+      .add("hidden");
+
+    return;
+
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("coin_rewards")
+        .select(
+          "id,title,description,reward_type,image_url,coin_price,quantity_available,per_user_limit,shipping_required,active,featured,sort_order,starts_at,ends_at"
+        )
+        .eq(
+          "active",
+          true
+        )
+        .order(
+          "featured",
+          {
+            ascending:false
+          }
+        )
+        .order(
+          "sort_order",
+          {
+            ascending:true
+          }
+        );
+
+    if(error)
+      throw error;
+
+    rewards =
+      (data || [])
+        .filter(
+          reward =>
+            isCurrentListing(
+              reward
+            )
+        );
+
+    if(!rewards.length){
+
+      /*
+        If coins are on but there are no rewards,
+        we still hide the entire marketplace rather
+        than presenting users with an empty coin area.
+      */
+
+      $("coinMarketplaceSection")
+        .classList
+        .add("hidden");
+
+      return;
+
+    }
+
+    renderRewards();
+
+    $("coinMarketplaceSection")
+      .classList
+      .remove("hidden");
+
+  }
+  catch(error){
+
+    console.warn(
+      "Coin marketplace:",
+      error.message
+    );
+
+    /*
+      Fail closed:
+      a reward query error never causes fake or stale
+      coin inventory to appear.
+    */
+
+    $("coinMarketplaceSection")
+      .classList
+      .add("hidden");
+
+  }
+
+}
+
+
+function renderRewards(){
+
+  const grid =
+    $("rewardGrid");
+
+  grid.innerHTML =
+    rewards
+      .map(
+        reward =>
+          rewardCardMarkup(
+            reward
+          )
+      )
+      .join("");
+
+}
+
+
+function rewardCardMarkup(reward){
+
+  const title =
+    reward.title ||
+    "DogEar Reward";
+
+  const type =
+    formatRewardType(
+      reward.reward_type
+    );
+
+  const description =
+    reward.description ||
+    "";
+
+  const image =
+    reward.image_url ||
+    "";
+
+  const price =
+    Number(
+      reward.coin_price || 0
+    );
+
+  let availability =
+    "Available";
+
+  if(
+    reward.quantity_available !== null &&
+    reward.quantity_available !== undefined
+  ){
+
+    const quantity =
+      Number(
+        reward.quantity_available
+      );
+
+    if(quantity <= 0){
+
+      availability =
+        "Out of stock";
+
+    }
+    else{
+
+      availability =
+        quantity.toLocaleString() +
+        (
+          quantity === 1
+            ? " available"
+            : " available"
+        );
+
+    }
+
+  }
+
+  const imageMarkup =
+    image
+      ? `
+          <img
+            src="${escapeAttribute(image)}"
+            alt="${escapeAttribute(title)}"
+            loading="lazy"
+          >
+        `
+      : `
+          <div class="reward-placeholder">
+            ✦
+          </div>
+        `;
+
+  return `
+    <article class="reward-card">
+
+      <div class="reward-image">
+        ${imageMarkup}
+      </div>
+
+      <div class="reward-body">
+
+        <div class="reward-type">
+          ${escapeHtml(type)}
+        </div>
+
+        <div class="reward-title">
+          ${escapeHtml(title)}
+        </div>
+
+        ${
+          description
+            ? `
+                <div class="reward-description">
+                  ${escapeHtml(description)}
+                </div>
+              `
+            : ""
+        }
+
+        <div class="reward-footer">
+
+          <div class="coin-price">
+            ${price.toLocaleString()}
+            coins
+          </div>
+
+          <div class="reward-status">
+            ${escapeHtml(availability)}
+          </div>
+
+        </div>
+
+      </div>
+
+    </article>
+  `;
+
+}
+
+
+/*
+  IMPORTANT:
+
+  This page intentionally DOES NOT contain a browser-side
+  "Redeem" button yet.
+
+  Coin redemption must eventually use a protected,
+  transactional Supabase RPC that:
+
+  1. checks coins_enabled
+  2. checks coin_marketplace_enabled
+  3. locks/checks inventory
+  4. checks user balance
+  5. checks per-user limits
+  6. deducts coins server-side
+  7. creates the redemption record
+  8. rolls back everything if any step fails
+
+  We will not fake that security in browser JavaScript.
+*/
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function findBook(bookId){
+
+  return allBooks.find(
+    book =>
+      String(book.id) ===
+      String(bookId)
+  );
+
+}
+
+
+function authorText(authors){
+
+  if(!authors)
+    return "";
+
+  if(
+    Array.isArray(authors)
+  ){
+
+    return authors
+      .filter(Boolean)
+      .join(", ");
+
+  }
+
+  if(
+    typeof authors === "string"
+  ){
+
+    /*
+      Handles both normal strings and JSON-looking
+      arrays without requiring the database to use
+      one exact representation.
+    */
+
+    const trimmed =
+      authors.trim();
+
+    if(
+      trimmed.startsWith("[") &&
+      trimmed.endsWith("]")
+    ){
+
+      try{
+
+        const parsed =
+          JSON.parse(trimmed);
+
+        if(
+          Array.isArray(parsed)
+        ){
+
+          return parsed
+            .filter(Boolean)
+            .join(", ");
+
+        }
+
+      }
+      catch(error){
+        // Use original string.
+      }
+
+    }
+
+    return trimmed;
+
+  }
+
+  return String(authors);
+
+}
+
+
+function categoryText(categories){
+
+  if(!categories)
+    return "";
+
+  if(
+    Array.isArray(categories)
+  ){
+
+    return categories
+      .filter(Boolean)
+      .join(" ");
+
+  }
+
+  return String(categories);
+
+}
+
+
+function compareText(a,b){
+
+  return String(
+    a || ""
+  )
+    .localeCompare(
+      String(
+        b || ""
+      ),
+      undefined,
+      {
+        sensitivity:"base"
+      }
+    );
+
+}
+
+
+function dateValue(value){
+
+  if(!value)
+    return 0;
+
+  const time =
+    new Date(value)
+      .getTime();
+
+  return Number.isNaN(time)
+    ? 0
+    : time;
+
+}
+
+
+function formatBookCount(count){
+
+  const number =
+    Number(count || 0);
+
+  return (
+    number.toLocaleString() +
+    (
+      number === 1
+        ? " book"
+        : " books"
+    )
+  );
+
+}
+
+
+function formatRewardType(type){
+
+  const labels = {
+    book:"Book",
+    signed_book:"Signed Book",
+    special_edition:"Special Edition",
+    merch:"Merchandise",
+    digital:"Digital Reward",
+    gift:"Gift",
+    other:"Reward"
+  };
+
+  return (
+    labels[type] ||
+    "Reward"
+  );
+
+}
+
+
+function emptyMarkup(
+  title,
+  text
+){
+
+  return `
+    <div class="empty-state">
+
+      <strong>
+        ${escapeHtml(title)}
+      </strong>
+
+      <span>
+        ${escapeHtml(text)}
+      </span>
+
+    </div>
+  `;
+
+}
+
+
+function firstLetter(value){
+
+  const text =
+    String(
+      value || "?"
+    )
+      .trim();
+
+  return (
+    text.charAt(0)
+      .toUpperCase() ||
+    "?"
+  );
+
+}
+
+
+function escapeHtml(value=""){
+
+  return String(value)
+    .replace(
+      /[&<>"']/g,
+      character => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[character])
+    );
+
+}
+
+
+function escapeAttribute(value=""){
+
+  return escapeHtml(
+    value
+  );
+
+}
+
+
+let toastTimer = null;
+
+function showToast(
+  message,
+  isError=false
+){
+
+  clearTimeout(
+    toastTimer
+  );
+
+  const toast =
+    $("toast");
+
+  toast.textContent =
+    message;
+
+  toast.className =
+    "toast show" +
+    (
+      isError
+        ? " error"
+        : ""
+    );
+
+  toastTimer =
+    setTimeout(
+      () => {
+
+        toast.className =
+          "toast";
+
+      },
+      4500
+    );
+
+}
+
+
+/* =========================================================
+   RUN
+   ========================================================= */
+
+start();
+
+</script>
+
+</body>
+</html>
