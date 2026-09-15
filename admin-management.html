@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DogEar — Admin Management</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --ink:#090b0a;
+  --panel:#101410;
+  --cream:#f1e7cf;
+  --gold:#c79b59;
+  --gold2:#dfbd7e;
+  --green:#26362b;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.22);
+  --line-soft:rgba(199,155,89,.11);
+  --danger:#e6a09a;
+  --ok:#b9d6b2;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(53,73,59,.24),
+      transparent 28%
+    ),
+    var(--ink);
+  color:var(--cream);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+a{color:inherit}
+
+button,
+input{
+  font:inherit;
+}
+
+.topbar{
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:0 clamp(18px,4vw,60px);
+  border-bottom:1px solid var(--line);
+  background:rgba(9,11,10,.94);
+  position:sticky;
+  top:0;
+  z-index:30;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 13px Arial;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  transform:rotate(-8deg);
+}
+
+.nav{
+  display:flex;
+  align-items:center;
+  gap:24px;
+  font:700 11px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.nav a:hover,
+.nav a.active{
+  color:var(--gold2);
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:var(--green);
+  text-decoration:none;
+  font:800 13px Arial;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.page{
+  width:min(1180px,calc(100% - 32px));
+  margin:auto;
+  padding:38px 0 100px;
+}
+
+.back{
+  display:inline-flex;
+  margin-bottom:26px;
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 10px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.hero{
+  padding-bottom:28px;
+  border-bottom:1px solid var(--line);
+}
+
+.eyebrow{
+  margin-bottom:10px;
+  color:var(--gold);
+  font:800 10px Arial;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+}
+
+h1{
+  margin:0;
+  font-size:clamp(42px,6vw,68px);
+  line-height:.96;
+  font-weight:400;
+  letter-spacing:-.04em;
+}
+
+.subtitle{
+  max-width:760px;
+  margin-top:13px;
+  color:var(--muted);
+  font:13px/1.65 Arial;
+}
+
+.notice{
+  margin:24px 0;
+  padding:17px 19px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(199,155,89,.06);
+  color:var(--muted);
+  font:12px/1.6 Arial;
+}
+
+.notice strong{
+  color:var(--gold2);
+}
+
+.search-panel{
+  margin-top:24px;
+  padding:22px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(16,20,16,.86);
+}
+
+.search-label{
+  display:block;
+  margin-bottom:9px;
+  color:var(--gold);
+  font:800 9px Arial;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.search{
+  width:100%;
+  min-height:48px;
+  padding:0 16px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  outline:none;
+  background:#0b0e0c;
+  color:var(--cream);
+  font:13px Arial;
+}
+
+.search:focus{
+  border-color:var(--gold);
+}
+
+.section-head{
+  margin:34px 0 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:20px;
+}
+
+.section-head h2{
+  margin:0;
+  font-size:27px;
+  font-weight:400;
+}
+
+.section-note{
+  color:var(--muted);
+  font:10px Arial;
+}
+
+.user-list{
+  display:grid;
+  gap:12px;
+}
+
+.user-card{
+  padding:18px 20px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:rgba(16,20,16,.86);
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:20px;
+}
+
+.user-main{
+  min-width:0;
+}
+
+.user-name{
+  font-size:19px;
+  overflow-wrap:anywhere;
+}
+
+.user-email{
+  margin-top:5px;
+  color:var(--muted);
+  font:11px Arial;
+  overflow-wrap:anywhere;
+}
+
+.user-meta{
+  margin-top:9px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.pill{
+  padding:6px 9px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--muted);
+  font:800 8px Arial;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.pill.owner{
+  color:var(--gold2);
+  border-color:var(--gold);
+}
+
+.pill.active{
+  color:var(--ok);
+}
+
+.pill.inactive{
+  color:var(--danger);
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:8px;
+}
+
+.button{
+  min-height:38px;
+  padding:0 14px;
+  border:1px solid var(--gold);
+  border-radius:999px;
+  background:transparent;
+  color:var(--gold2);
+  cursor:pointer;
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.button:hover{
+  background:rgba(199,155,89,.1);
+}
+
+.button.danger{
+  border-color:rgba(230,160,154,.5);
+  color:var(--danger);
+}
+
+.button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.empty{
+  padding:34px 20px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  color:var(--muted);
+  text-align:center;
+  font:12px/1.6 Arial;
+}
+
+.message{
+  display:none;
+  margin-top:18px;
+  padding:14px 16px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  font:11px/1.5 Arial;
+}
+
+.message.show{
+  display:block;
+}
+
+.message.success{
+  color:var(--ok);
+  border-color:rgba(185,214,178,.35);
+}
+
+.message.error{
+  color:var(--danger);
+  border-color:rgba(230,160,154,.35);
+}
+
+.locked{
+  display:none;
+  margin-top:30px;
+  padding:70px 24px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  text-align:center;
+  color:var(--muted);
+  font:13px/1.7 Arial;
+}
+
+.locked.show{
+  display:block;
+}
+
+.locked strong{
+  display:block;
+  margin-bottom:8px;
+  color:var(--cream);
+  font:400 25px Georgia;
+}
+
+.loading{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:grid;
+  place-items:center;
+  background:var(--ink);
+}
+
+.loading.hidden{
+  display:none;
+}
+
+.loading span{
+  color:var(--gold2);
+  font:800 10px Arial;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+@media(max-width:700px){
+
+  .nav{
+    display:none;
+  }
+
+  .user-card{
+    grid-template-columns:1fr;
+  }
+
+  .actions{
+    justify-content:flex-start;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="loading" id="loading">
+  <span>
+    Opening administrator management...
+  </span>
+</div>
+
+<header class="topbar">
+
+  <a class="brand" href="dashboard.html">
+    <span class="brand-mark"></span>
+    DogEar
+  </a>
+
+  <nav class="nav">
+
+    <a href="admin-dashboard.html">
+      Admin
+    </a>
+
+    <a href="admin-users.html">
+      Users
+    </a>
+
+    <a
+      class="active"
+      href="admin-management.html"
+    >
+      Administrators
+    </a>
+
+    <a href="admin-books.html">
+      Marketplace
+    </a>
+
+    <a href="admin-logs.html">
+      Logs
+    </a>
+
+    <a href="dashboard.html">
+      View Site
+    </a>
+
+  </nav>
+
+  <a
+    class="avatar"
+    id="navAvatar"
+    href="profile.html"
+  >
+    ?
+  </a>
+
+</header>
+
+<main class="page">
+
+  <a
+    class="back"
+    href="admin-dashboard.html"
+  >
+    ← Control Room
+  </a>
+
+  <section class="hero">
+
+    <div class="eyebrow">
+      DogEar Administration
+    </div>
+
+    <h1>
+      Administrators
+    </h1>
+
+    <div class="subtitle">
+      Decide who can enter DogEar's Control Room.
+      Administrator access is attached to a normal DogEar account;
+      no separate administrator account is required.
+    </div>
+
+  </section>
+
+  <div id="managementArea">
+
+    <div class="notice">
+      <strong>Owner protection:</strong>
+      the Owner cannot be removed from this page. New administrators
+      receive ordinary administrator access and do not automatically
+      receive permission to manage other administrators.
+    </div>
+
+    <section class="search-panel">
+
+      <label
+        class="search-label"
+        for="userSearch"
+      >
+        Find a DogEar Member
+      </label>
+
+      <input
+        class="search"
+        id="userSearch"
+        type="search"
+        placeholder="Search by name, username, or email..."
+        autocomplete="off"
+      >
+
+      <div
+        class="message"
+        id="message"
+      ></div>
+
+    </section>
+
+    <div class="section-head">
+
+      <h2>
+        DogEar Accounts
+      </h2>
+
+      <div
+        class="section-note"
+        id="accountCount"
+      >
+        —
+      </div>
+
+    </div>
+
+    <section
+      class="user-list"
+      id="userList"
+    >
+
+      <div class="empty">
+        Loading DogEar accounts...
+      </div>
+
+    </section>
+
+  </div>
+
+  <section
+    class="locked"
+    id="locked"
+  >
+
+    <strong>
+      Owner-level permission required.
+    </strong>
+
+    Your account does not have permission to manage
+    DogEar administrators.
+
+  </section>
+
+</main>
+
+<script>
+
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+const $ =
+  id => document.getElementById(id);
+
+let currentUser = null;
+let accounts = [];
+
+async function loadProfile(){
+
+  let display =
+    currentUser?.user_metadata?.display_name ||
+    "Reader";
+
+  let avatar = "";
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "get_public_profile",
+        {
+          check_user_id:
+            currentUser.id
+        }
+      );
+
+    if(error)
+      throw error;
+
+    const profile =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+    if(profile){
+
+      display =
+        profile.display_name ||
+        display;
+
+      avatar =
+        profile.avatar_url ||
+        "";
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Profile:",
+      error.message
+    );
+
+  }
+
+  const holder =
+    $("navAvatar");
+
+  holder.innerHTML = "";
+
+  if(avatar){
+
+    const image =
+      document.createElement("img");
+
+    image.src = avatar;
+    image.alt = display;
+
+    image.onerror =
+      () => {
+
+        holder.innerHTML = "";
+
+        holder.textContent =
+          display.charAt(0).toUpperCase();
+
+      };
+
+    holder.appendChild(image);
+
+  }
+  else{
+
+    holder.textContent =
+      display.charAt(0).toUpperCase();
+
+  }
+
+}
+
+async function verifyPermission(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "can_manage_dogear_admins"
+      );
+
+    if(error)
+      throw error;
+
+    return data === true;
+
+  }
+  catch(error){
+
+    console.warn(
+      "Admin management permission:",
+      error.message
+    );
+
+    return false;
+
+  }
+
+}
+
+async function loadAccounts(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.rpc(
+      "get_dogear_admin_candidates"
+    );
+
+  if(error)
+    throw error;
+
+  accounts =
+    Array.isArray(data)
+      ? data
+      : [];
+
+  renderAccounts();
+
+}
+
+function renderAccounts(){
+
+  const search =
+    $("userSearch")
+      .value
+      .trim()
+      .toLowerCase();
+
+  const filtered =
+    accounts.filter(
+      account => {
+
+        const haystack =
+          [
+            account.display_name,
+            account.username,
+            account.email
+          ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+
+        return haystack.includes(search);
+
+      }
+    );
+
+  $("accountCount").textContent =
+    filtered.length.toLocaleString() +
+    (
+      filtered.length === 1
+        ? " account"
+        : " accounts"
+    );
+
+  const holder =
+    $("userList");
+
+  if(!filtered.length){
+
+    holder.innerHTML =
+      `
+        <div class="empty">
+          No DogEar accounts match that search.
+        </div>
+      `;
+
+    return;
+
+  }
+
+  holder.innerHTML = "";
+
+  for(const account of filtered){
+
+    const card =
+      document.createElement("article");
+
+    card.className =
+      "user-card";
+
+    const display =
+      account.display_name ||
+      account.username ||
+      account.email ||
+      "DogEar Member";
+
+    const isOwner =
+      account.admin_role === "owner";
+
+    const activeAdmin =
+      account.is_admin === true &&
+      account.admin_active === true;
+
+    const inactiveAdmin =
+      account.is_admin === true &&
+      account.admin_active !== true;
+
+    let roleMarkup = "";
+
+    if(isOwner){
+
+      roleMarkup =
+        `
+          <span class="pill owner">
+            Owner
+          </span>
+        `;
+
+    }
+    else if(activeAdmin){
+
+      roleMarkup =
+        `
+          <span class="pill active">
+            Administrator
+          </span>
+        `;
+
+    }
+    else if(inactiveAdmin){
+
+      roleMarkup =
+        `
+          <span class="pill inactive">
+            Admin Disabled
+          </span>
+        `;
+
+    }
+    else{
+
+      roleMarkup =
+        `
+          <span class="pill">
+            Member
+          </span>
+        `;
+
+    }
+
+    let actions = "";
+
+    if(isOwner){
+
+      actions =
+        `
+          <button
+            class="button"
+            type="button"
+            disabled
+          >
+            Protected Owner
+          </button>
+        `;
+
+    }
+    else if(activeAdmin){
+
+      actions =
+        `
+          <button
+            class="button danger"
+            type="button"
+            data-action="deactivate"
+            data-user-id="${escapeHtml(account.user_id)}"
+            data-name="${escapeHtml(display)}"
+          >
+            Remove Admin
+          </button>
+        `;
+
+    }
+    else if(inactiveAdmin){
+
+      actions =
+        `
+          <button
+            class="button"
+            type="button"
+            data-action="reactivate"
+            data-user-id="${escapeHtml(account.user_id)}"
+            data-name="${escapeHtml(display)}"
+          >
+            Restore Admin
+          </button>
+        `;
+
+    }
+    else{
+
+      actions =
+        `
+          <button
+            class="button"
+            type="button"
+            data-action="promote"
+            data-user-id="${escapeHtml(account.user_id)}"
+            data-name="${escapeHtml(display)}"
+          >
+            Make Admin
+          </button>
+        `;
+
+    }
+
+    card.innerHTML =
+      `
+        <div class="user-main">
+
+          <div class="user-name">
+            ${escapeHtml(display)}
+          </div>
+
+          <div class="user-email">
+            ${escapeHtml(account.email || "")}
+            ${
+              account.username
+                ? " · @" +
+                  escapeHtml(account.username)
+                : ""
+            }
+          </div>
+
+          <div class="user-meta">
+
+            ${roleMarkup}
+
+            ${
+              account.can_manage_admins === true &&
+              !isOwner
+                ? `
+                    <span class="pill">
+                      Can Manage Admins
+                    </span>
+                  `
+                : ""
+            }
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+          ${actions}
+        </div>
+      `;
+
+    holder.appendChild(card);
+
+  }
+
+}
+
+async function promoteAdmin(
+  userId,
+  name
+){
+
+  const confirmed =
+    confirm(
+      "Make " +
+      name +
+      " a DogEar administrator?\n\n" +
+      "They will gain access to DogEar's administrative tools."
+    );
+
+  if(!confirmed)
+    return;
+
+  setMessage(
+    "Promoting " + name + "...",
+    ""
+  );
+
+  const {
+    error
+  } =
+    await supabaseClient.rpc(
+      "promote_dogear_admin",
+      {
+        target_user_id:
+          userId
+      }
+    );
+
+  if(error)
+    throw error;
+
+  await logEvent(
+    "Administrator promoted",
+    name + " was granted DogEar administrator access.",
+    userId
+  );
+
+  setMessage(
+    name + " is now a DogEar administrator.",
+    "success"
+  );
+
+  await loadAccounts();
+
+}
+
+async function deactivateAdmin(
+  userId,
+  name
+){
+
+  const confirmed =
+    confirm(
+      "Remove administrator access from " +
+      name +
+      "?\n\n" +
+      "Their normal DogEar account will remain active."
+    );
+
+  if(!confirmed)
+    return;
+
+  setMessage(
+    "Removing administrator access...",
+    ""
+  );
+
+  const {
+    error
+  } =
+    await supabaseClient.rpc(
+      "deactivate_dogear_admin",
+      {
+        target_user_id:
+          userId
+      }
+    );
+
+  if(error)
+    throw error;
+
+  await logEvent(
+    "Administrator deactivated",
+    name + "'s DogEar administrator access was disabled.",
+    userId
+  );
+
+  setMessage(
+    name +
+    " is no longer an active DogEar administrator.",
+    "success"
+  );
+
+  await loadAccounts();
+
+}
+
+async function reactivateAdmin(
+  userId,
+  name
+){
+
+  const confirmed =
+    confirm(
+      "Restore administrator access for " +
+      name +
+      "?"
+    );
+
+  if(!confirmed)
+    return;
+
+  setMessage(
+    "Restoring administrator access...",
+    ""
+  );
+
+  const {
+    error
+  } =
+    await supabaseClient.rpc(
+      "reactivate_dogear_admin",
+      {
+        target_user_id:
+          userId
+      }
+    );
+
+  if(error)
+    throw error;
+
+  await logEvent(
+    "Administrator reactivated",
+    name + "'s DogEar administrator access was restored.",
+    userId
+  );
+
+  setMessage(
+    name +
+    " is an active DogEar administrator again.",
+    "success"
+  );
+
+  await loadAccounts();
+
+}
+
+async function logEvent(
+  event,
+  description,
+  target
+){
+
+  try{
+
+    const {
+      error
+    } =
+      await supabaseClient.rpc(
+        "log_admin_event",
+        {
+          p_event:
+            event,
+
+          p_description:
+            description,
+
+          p_severity:
+            "info",
+
+          p_target:
+            target,
+
+          p_message:
+            description,
+
+          p_metadata:
+            {}
+        }
+      );
+
+    if(error)
+      throw error;
+
+  }
+  catch(error){
+
+    console.warn(
+      "Admin audit log:",
+      error.message
+    );
+
+  }
+
+}
+
+$("userSearch")
+  .addEventListener(
+    "input",
+    renderAccounts
+  );
+
+$("userList")
+  .addEventListener(
+    "click",
+    async event => {
+
+      const button =
+        event.target.closest(
+          "[data-action]"
+        );
+
+      if(!button)
+        return;
+
+      const action =
+        button.dataset.action;
+
+      const userId =
+        button.dataset.userId;
+
+      const name =
+        button.dataset.name ||
+        "this member";
+
+      button.disabled = true;
+
+      try{
+
+        if(action === "promote"){
+
+          await promoteAdmin(
+            userId,
+            name
+          );
+
+        }
+        else if(action === "deactivate"){
+
+          await deactivateAdmin(
+            userId,
+            name
+          );
+
+        }
+        else if(action === "reactivate"){
+
+          await reactivateAdmin(
+            userId,
+            name
+          );
+
+        }
+
+      }
+      catch(error){
+
+        console.error(
+          "Administrator action:",
+          error
+        );
+
+        setMessage(
+          error.message ||
+          "The administrator change could not be completed.",
+          "error"
+        );
+
+      }
+      finally{
+
+        button.disabled = false;
+
+      }
+
+    }
+  );
+
+function setMessage(
+  text,
+  type
+){
+
+  const holder =
+    $("message");
+
+  holder.textContent =
+    text;
+
+  holder.className =
+    "message show";
+
+  if(type)
+    holder.classList.add(type);
+
+}
+
+function escapeHtml(value=""){
+
+  return String(value)
+    .replace(
+      /[&<>"']/g,
+      character => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[character])
+    );
+
+}
+
+function showLocked(){
+
+  $("managementArea").style.display =
+    "none";
+
+  $("locked")
+    .classList
+    .add("show");
+
+}
+
+async function start(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .auth
+        .getUser();
+
+    if(
+      error ||
+      !data.user
+    ){
+
+      location.href =
+        "auth.html#login";
+
+      return;
+
+    }
+
+    currentUser =
+      data.user;
+
+    await loadProfile();
+
+    const allowed =
+      await verifyPermission();
+
+    if(!allowed){
+
+      showLocked();
+
+      $("loading")
+        .classList
+        .add("hidden");
+
+      return;
+
+    }
+
+    await loadAccounts();
+
+    $("loading")
+      .classList
+      .add("hidden");
+
+  }
+  catch(error){
+
+    console.error(
+      "Admin Management startup:",
+      error
+    );
+
+    setMessage(
+      error.message ||
+      "DogEar could not load administrator management.",
+      "error"
+    );
+
+    $("loading")
+      .classList
+      .add("hidden");
+
+  }
+
+}
+
+start();
+
+</script>
+
+</body>
+</html>
