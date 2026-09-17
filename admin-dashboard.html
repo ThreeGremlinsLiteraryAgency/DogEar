@@ -21,21 +21,30 @@
   --line-soft:rgba(199,155,89,.11);
   --danger:#e6a09a;
   --ok:#b9d6b2;
+  --warning:#e7c27d;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
   min-height:100vh;
   color:var(--cream);
   background:
-    radial-gradient(circle at 10% 0%,rgba(53,73,59,.24),transparent 28%),
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(53,73,59,.24),
+      transparent 28%
+    ),
     var(--ink);
   font-family:Georgia,"Times New Roman",serif;
 }
 
-a{color:inherit}
+a{
+  color:inherit;
+}
 
 .topbar{
   min-height:76px;
@@ -83,7 +92,9 @@ a{color:inherit}
   text-decoration:none;
 }
 
-.nav a:hover{color:var(--gold2)}
+.nav a:hover{
+  color:var(--gold2);
+}
 
 .avatar{
   width:38px;
@@ -158,6 +169,82 @@ h1{
   border-color:var(--gold);
 }
 
+/* =========================================================
+   ATTENTION / VERIFICATION
+========================================================= */
+
+.attention{
+  display:none;
+  margin-top:26px;
+  padding:20px 22px;
+  border:1px solid rgba(231,194,125,.5);
+  border-radius:18px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(199,155,89,.14),
+      rgba(16,20,16,.88)
+    );
+  text-decoration:none;
+  transition:.18s ease;
+}
+
+.attention.show{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:22px;
+}
+
+.attention:hover{
+  border-color:var(--gold2);
+  transform:translateY(-1px);
+}
+
+.attention-main{
+  display:flex;
+  align-items:center;
+  gap:17px;
+}
+
+.attention-number{
+  min-width:58px;
+  height:58px;
+  padding:0 12px;
+  border:1px solid var(--gold);
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  color:var(--gold2);
+  background:rgba(199,155,89,.09);
+  font:400 30px Georgia;
+}
+
+.attention-copy strong{
+  display:block;
+  margin-bottom:5px;
+  color:var(--cream);
+  font-size:20px;
+  font-weight:400;
+}
+
+.attention-copy span{
+  color:var(--muted);
+  font:11px/1.55 Arial;
+}
+
+.attention-action{
+  flex:0 0 auto;
+  color:var(--gold2);
+  font:800 9px Arial;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+/* =========================================================
+   STATS
+========================================================= */
+
 .stats{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
@@ -170,6 +257,20 @@ h1{
   border:1px solid var(--line);
   border-radius:18px;
   background:rgba(16,20,16,.86);
+}
+
+.stat.clickable{
+  text-decoration:none;
+  transition:.18s ease;
+}
+
+.stat.clickable:hover{
+  border-color:var(--gold);
+  transform:translateY(-2px);
+}
+
+.stat.attention-stat{
+  border-color:rgba(231,194,125,.38);
 }
 
 .stat-label{
@@ -191,11 +292,186 @@ h1{
   font:10px/1.5 Arial;
 }
 
+/* =========================================================
+   ROLLOUT
+========================================================= */
+
 .section-title{
   margin:34px 0 14px;
   font-size:26px;
   font-weight:400;
 }
+
+.rollout-panel{
+  border:1px solid var(--line);
+  border-radius:18px;
+  overflow:hidden;
+  background:rgba(16,20,16,.86);
+}
+
+.rollout-head{
+  padding:18px 20px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+}
+
+.rollout-head h2{
+  margin:0;
+  font-size:24px;
+  font-weight:400;
+}
+
+.rollout-head a{
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 9px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.rollout-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+.rollout-item{
+  padding:18px 20px;
+  border-right:1px solid var(--line-soft);
+}
+
+.rollout-item:last-child{
+  border-right:0;
+}
+
+.rollout-name{
+  font-size:16px;
+}
+
+.rollout-phase{
+  margin-top:4px;
+  color:var(--muted);
+  font:9px Arial;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.state-pill{
+  display:inline-block;
+  margin-top:12px;
+  padding:6px 9px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--muted);
+  font:800 8px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.state-pill.on{
+  color:var(--ok);
+  border-color:rgba(185,214,178,.4);
+  background:rgba(185,214,178,.06);
+}
+
+.state-pill.admins_only{
+  color:var(--gold2);
+  border-color:rgba(199,155,89,.45);
+  background:rgba(199,155,89,.08);
+}
+
+.state-pill.off{
+  color:var(--muted);
+}
+
+/* =========================================================
+   ADMIN TEST EXPERIENCES
+========================================================= */
+
+.experience-panel{
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:20px;
+  background:rgba(16,20,16,.86);
+}
+
+.experience-head{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  align-items:flex-start;
+  margin-bottom:18px;
+}
+
+.experience-head h2{
+  margin:0 0 5px;
+  font-size:24px;
+  font-weight:400;
+}
+
+.experience-head p{
+  margin:0;
+  color:var(--muted);
+  font:11px/1.6 Arial;
+}
+
+.experience-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+}
+
+.experience{
+  min-height:120px;
+  padding:15px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(9,11,10,.42);
+  display:flex;
+  flex-direction:column;
+}
+
+.experience-name{
+  font-size:17px;
+}
+
+.experience-status{
+  margin-top:5px;
+  color:var(--muted);
+  font:9px/1.5 Arial;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+
+.experience-link{
+  display:none;
+  margin-top:auto;
+  padding-top:16px;
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 8px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.experience-link.show{
+  display:block;
+}
+
+.experience-disabled{
+  margin-top:auto;
+  padding-top:16px;
+  color:var(--muted);
+  font:800 8px Arial;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+/* =========================================================
+   TOOLS
+========================================================= */
 
 .tools{
   display:grid;
@@ -213,6 +489,7 @@ h1{
   display:flex;
   flex-direction:column;
   transition:.18s ease;
+  position:relative;
 }
 
 .tool:hover{
@@ -268,6 +545,31 @@ h1{
   text-transform:uppercase;
 }
 
+.tool-badge{
+  display:none;
+  position:absolute;
+  top:16px;
+  right:16px;
+  min-width:25px;
+  height:25px;
+  padding:0 7px;
+  border:1px solid var(--gold);
+  border-radius:999px;
+  align-items:center;
+  justify-content:center;
+  background:rgba(199,155,89,.14);
+  color:var(--gold2);
+  font:800 10px Arial;
+}
+
+.tool-badge.show{
+  display:flex;
+}
+
+/* =========================================================
+   ACTIVITY
+========================================================= */
+
 .activity{
   margin-top:34px;
   border:1px solid var(--line);
@@ -299,7 +601,9 @@ h1{
   text-transform:uppercase;
 }
 
-.activity-list{display:grid}
+.activity-list{
+  display:grid;
+}
 
 .activity-row{
   display:flex;
@@ -309,9 +613,13 @@ h1{
   border-bottom:1px solid var(--line-soft);
 }
 
-.activity-row:last-child{border-bottom:0}
+.activity-row:last-child{
+  border-bottom:0;
+}
 
-.activity-main{font-size:14px}
+.activity-main{
+  font-size:14px;
+}
 
 .activity-description{
   margin-top:4px;
@@ -331,6 +639,10 @@ h1{
   font:12px/1.6 Arial;
 }
 
+/* =========================================================
+   LOCKED / LOADING
+========================================================= */
+
 .locked{
   display:none;
   margin-top:28px;
@@ -342,7 +654,9 @@ h1{
   font:13px/1.7 Arial;
 }
 
-.locked.show{display:block}
+.locked.show{
+  display:block;
+}
 
 .locked strong{
   display:block;
@@ -360,7 +674,9 @@ h1{
   background:var(--ink);
 }
 
-.loading.hidden{display:none}
+.loading.hidden{
+  display:none;
+}
 
 .loading span{
   color:var(--gold2);
@@ -369,9 +685,33 @@ h1{
   text-transform:uppercase;
 }
 
+@media(max-width:1000px){
+  .rollout-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .rollout-item:nth-child(2){
+    border-right:0;
+  }
+
+  .rollout-item:nth-child(-n+2){
+    border-bottom:1px solid var(--line-soft);
+  }
+
+  .experience-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
 @media(max-width:900px){
-  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .tools{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .tools{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
   .hero{
     align-items:flex-start;
     flex-direction:column;
@@ -379,12 +719,47 @@ h1{
 }
 
 @media(max-width:650px){
-  .nav{display:none}
-  .stats{grid-template-columns:1fr}
-  .tools{grid-template-columns:1fr}
+  .nav{
+    display:none;
+  }
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .tools{
+    grid-template-columns:1fr;
+  }
+
+  .rollout-grid{
+    grid-template-columns:1fr;
+  }
+
+  .rollout-item{
+    border-right:0;
+    border-bottom:1px solid var(--line-soft);
+  }
+
+  .rollout-item:last-child{
+    border-bottom:0;
+  }
+
+  .experience-grid{
+    grid-template-columns:1fr;
+  }
+
   .activity-row{
     flex-direction:column;
     gap:6px;
+  }
+
+  .attention.show{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .attention-action{
+    padding-left:75px;
   }
 }
 </style>
@@ -410,7 +785,14 @@ h1{
     <a href="marketplace.html">Books</a>
   </nav>
 
-  <a class="avatar" id="navAvatar" href="profile.html">?</a>
+  <a
+    class="avatar"
+    id="navAvatar"
+    href="profile.html"
+    aria-label="Your profile"
+  >
+    ?
+  </a>
 
 </header>
 
@@ -419,6 +801,7 @@ h1{
   <section class="hero">
 
     <div>
+
       <div class="eyebrow">
         DogEar Administration
       </div>
@@ -427,9 +810,10 @@ h1{
 
       <div class="subtitle">
         Manage members, clubs, marketplace activity, moderation,
-        verification, and the machinery behind DogEar without
-        cluttering the reader-facing site.
+        verification, platform rollout, and the machinery behind
+        DogEar without cluttering the reader-facing site.
       </div>
+
     </div>
 
     <div class="role-pill" id="rolePill">
@@ -440,108 +824,624 @@ h1{
 
   <div id="dashboardArea">
 
+    <!-- =====================================================
+         PENDING VERIFICATION ALERT
+    ====================================================== -->
+
+    <a
+      class="attention"
+      id="verificationAlert"
+      href="admin-verification.html"
+    >
+
+      <div class="attention-main">
+
+        <div
+          class="attention-number"
+          id="verificationAlertCount"
+        >
+          0
+        </div>
+
+        <div class="attention-copy">
+
+          <strong id="verificationAlertTitle">
+            Verification applications are waiting
+          </strong>
+
+          <span id="verificationBreakdown">
+            Open the verification queue to review them.
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="attention-action">
+        Review Applications →
+      </div>
+
+    </a>
+
+    <!-- =====================================================
+         STATS
+    ====================================================== -->
+
     <section class="stats">
 
       <article class="stat">
-        <div class="stat-label">Members</div>
-        <div class="stat-value" id="memberCount">—</div>
-        <div class="stat-note">Registered DogEar accounts</div>
+
+        <div class="stat-label">
+          Members
+        </div>
+
+        <div
+          class="stat-value"
+          id="memberCount"
+        >
+          —
+        </div>
+
+        <div class="stat-note">
+          Registered DogEar accounts
+        </div>
+
       </article>
 
       <article class="stat">
-        <div class="stat-label">Clubs</div>
-        <div class="stat-value" id="clubCount">—</div>
-        <div class="stat-note">Book clubs on the platform</div>
+
+        <div class="stat-label">
+          Clubs
+        </div>
+
+        <div
+          class="stat-value"
+          id="clubCount"
+        >
+          —
+        </div>
+
+        <div class="stat-note">
+          Book clubs on the platform
+        </div>
+
       </article>
 
       <article class="stat">
-        <div class="stat-label">Books</div>
-        <div class="stat-value" id="bookCount">—</div>
-        <div class="stat-note">Books in DogEar's catalog</div>
+
+        <div class="stat-label">
+          Books
+        </div>
+
+        <div
+          class="stat-value"
+          id="bookCount"
+        >
+          —
+        </div>
+
+        <div class="stat-note">
+          Books in DogEar's catalog
+        </div>
+
       </article>
 
-      <article class="stat">
-        <div class="stat-label">Pending</div>
-        <div class="stat-value" id="pendingCount">—</div>
-        <div class="stat-note">Accounts awaiting review</div>
-      </article>
+      <a
+        class="stat clickable attention-stat"
+        href="admin-verification.html"
+      >
+
+        <div class="stat-label">
+          Pending Verification
+        </div>
+
+        <div
+          class="stat-value"
+          id="pendingVerificationCount"
+        >
+          —
+        </div>
+
+        <div
+          class="stat-note"
+          id="pendingVerificationNote"
+        >
+          Professional applications awaiting review
+        </div>
+
+      </a>
 
     </section>
 
-    <h2 class="section-title">Administration</h2>
+    <!-- =====================================================
+         PLATFORM ROLLOUT
+    ====================================================== -->
+
+    <h2 class="section-title">
+      Platform Rollout
+    </h2>
+
+    <section class="rollout-panel">
+
+      <div class="rollout-head">
+
+        <h2>
+          Rollout Status
+        </h2>
+
+        <a href="admin-settings.html">
+          Manage Rollout →
+        </a>
+
+      </div>
+
+      <div class="rollout-grid">
+
+        <div class="rollout-item">
+
+          <div class="rollout-name">
+            Readers
+          </div>
+
+          <div class="rollout-phase">
+            Phase 1
+          </div>
+
+          <div
+            class="state-pill"
+            id="readerState"
+          >
+            Loading
+          </div>
+
+        </div>
+
+        <div class="rollout-item">
+
+          <div class="rollout-name">
+            Authors
+          </div>
+
+          <div class="rollout-phase">
+            Phase 2
+          </div>
+
+          <div
+            class="state-pill"
+            id="authorState"
+          >
+            Loading
+          </div>
+
+        </div>
+
+        <div class="rollout-item">
+
+          <div class="rollout-name">
+            Agents
+          </div>
+
+          <div class="rollout-phase">
+            Phase 3
+          </div>
+
+          <div
+            class="state-pill"
+            id="agentState"
+          >
+            Loading
+          </div>
+
+        </div>
+
+        <div class="rollout-item">
+
+          <div class="rollout-name">
+            Publishers
+          </div>
+
+          <div class="rollout-phase">
+            Phase 4
+          </div>
+
+          <div
+            class="state-pill"
+            id="publisherState"
+          >
+            Loading
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =====================================================
+         ADMIN TEST EXPERIENCES
+    ====================================================== -->
+
+    <h2 class="section-title">
+      Test Platform Experiences
+    </h2>
+
+    <section class="experience-panel">
+
+      <div class="experience-head">
+
+        <div>
+
+          <h2>
+            Admin Testing
+          </h2>
+
+          <p>
+            System administrators can preview experiences that are
+            available for admin testing without changing their real
+            DogEar account distinctions.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="experience-grid">
+
+        <div class="experience">
+
+          <div class="experience-name">
+            Reader
+          </div>
+
+          <div
+            class="experience-status"
+            id="readerExperienceStatus"
+          >
+            Checking availability...
+          </div>
+
+          <a
+            class="experience-link"
+            id="readerExperienceLink"
+            href="dashboard.html"
+          >
+            Open Reader Experience →
+          </a>
+
+          <div
+            class="experience-disabled"
+            id="readerExperienceDisabled"
+          >
+            Unavailable
+          </div>
+
+        </div>
+
+        <div class="experience">
+
+          <div class="experience-name">
+            Author
+          </div>
+
+          <div
+            class="experience-status"
+            id="authorExperienceStatus"
+          >
+            Checking availability...
+          </div>
+
+          <a
+            class="experience-link"
+            id="authorExperienceLink"
+            href="author-dashboard.html?admin_preview=1"
+          >
+            Preview Author Experience →
+          </a>
+
+          <div
+            class="experience-disabled"
+            id="authorExperienceDisabled"
+          >
+            Unavailable
+          </div>
+
+        </div>
+
+        <div class="experience">
+
+          <div class="experience-name">
+            Agent
+          </div>
+
+          <div
+            class="experience-status"
+            id="agentExperienceStatus"
+          >
+            Checking availability...
+          </div>
+
+          <a
+            class="experience-link"
+            id="agentExperienceLink"
+            href="agent-dashboard.html?admin_preview=1"
+          >
+            Preview Agent Experience →
+          </a>
+
+          <div
+            class="experience-disabled"
+            id="agentExperienceDisabled"
+          >
+            Unavailable
+          </div>
+
+        </div>
+
+        <div class="experience">
+
+          <div class="experience-name">
+            Publisher
+          </div>
+
+          <div
+            class="experience-status"
+            id="publisherExperienceStatus"
+          >
+            Checking availability...
+          </div>
+
+          <a
+            class="experience-link"
+            id="publisherExperienceLink"
+            href="publisher-dashboard.html?admin_preview=1"
+          >
+            Preview Publisher Experience →
+          </a>
+
+          <div
+            class="experience-disabled"
+            id="publisherExperienceDisabled"
+          >
+            Unavailable
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =====================================================
+         ADMINISTRATION
+    ====================================================== -->
+
+    <h2 class="section-title">
+      Administration
+    </h2>
 
     <section class="tools">
 
-      <a class="tool" href="admin-books.html">
-        <div class="tool-icon">MK</div>
-        <h2>Marketplace</h2>
+      <a
+        class="tool"
+        href="admin-books.html"
+      >
+
+        <div class="tool-icon">
+          MK
+        </div>
+
+        <h2>
+          Marketplace
+        </h2>
+
         <p>
           Curate DogEar's book marketplace, manage featured books,
           control coin availability, and maintain reward inventory.
         </p>
+
         <div class="tool-footer">
           Open Marketplace Manager →
         </div>
+
       </a>
 
-      <a class="tool" href="admin-users.html">
-        <div class="tool-icon">US</div>
-        <h2>Members</h2>
+      <a
+        class="tool"
+        href="admin-users.html"
+      >
+
+        <div class="tool-icon">
+          US
+        </div>
+
+        <h2>
+          Members
+        </h2>
+
         <p>
-          Review accounts, change account status, inspect verification,
-          and manage suspensions or access restrictions.
+          Review accounts, change account status, inspect member
+          distinctions, and manage suspensions or access restrictions.
         </p>
+
         <div class="tool-footer">
           Manage Members →
         </div>
+
       </a>
 
-      <a class="tool" href="admin-verification.html">
-        <div class="tool-icon">✓</div>
-        <h2>Verification</h2>
+      <a
+        class="tool"
+        href="admin-verification.html"
+      >
+
+        <div
+          class="tool-badge"
+          id="verificationToolBadge"
+        >
+          0
+        </div>
+
+        <div class="tool-icon">
+          ✓
+        </div>
+
+        <h2>
+          Verification
+        </h2>
+
         <p>
-          Review verification requests, approve trusted accounts,
-          and manage accounts that need re-verification.
+          Review Agent, Editor, and Publisher verification requests
+          before professional functionality is unlocked.
         </p>
+
         <div class="tool-footer">
           Review Requests →
         </div>
+
       </a>
 
-      <a class="tool" href="admin-clubs.html">
-        <div class="tool-icon">CL</div>
-        <h2>Clubs</h2>
+      <a
+        class="tool"
+        href="admin-clubs.html"
+      >
+
+        <div class="tool-icon">
+          CL
+        </div>
+
+        <h2>
+          Clubs
+        </h2>
+
         <p>
           Inspect active clubs, review ownership, investigate reports,
-          and intervene when a club needs administrative action.
+          and intervene when a club needs system-level action.
         </p>
+
         <div class="tool-footer">
           Manage Clubs →
         </div>
+
       </a>
 
-      <a class="tool" href="admin-moderation.html">
-        <div class="tool-icon">MD</div>
-        <h2>Moderation</h2>
+      <a
+        class="tool"
+        href="admin-moderation.html"
+      >
+
+        <div class="tool-icon">
+          MD
+        </div>
+
+        <h2>
+          Moderation
+        </h2>
+
         <p>
           Review reports, flagged discussions, blocked accounts,
           and other platform safety issues.
         </p>
+
         <div class="tool-footer">
           Moderation Queue →
         </div>
+
       </a>
 
-      <a class="tool" href="admin-settings.html">
-        <div class="tool-icon">⚙</div>
-        <h2>Platform Settings</h2>
+      <a
+        class="tool"
+        href="admin-settings.html"
+      >
+
+        <div class="tool-icon">
+          ⚙
+        </div>
+
+        <h2>
+          Platform Settings
+        </h2>
+
         <p>
-          Manage global limits, verification behavior, platform
-          controls, and other site-wide settings.
+          Control feature rollout, global platform behavior,
+          verification settings, and site-wide functionality.
         </p>
+
         <div class="tool-footer">
           Open Settings →
         </div>
+
+      </a>
+
+      <a
+        class="tool"
+        href="admin-datasets.html"
+      >
+
+        <div class="tool-icon">
+          DB
+        </div>
+
+        <h2>
+          Datasets
+        </h2>
+
+        <p>
+          Monitor DogEar's internal data collections and the systems
+          that will eventually power analytics and recommendations.
+        </p>
+
+        <div class="tool-footer">
+          View Datasets →
+        </div>
+
+      </a>
+
+      <a
+        class="tool"
+        href="admin-uploads.html"
+      >
+
+        <div class="tool-icon">
+          UP
+        </div>
+
+        <h2>
+          Uploads
+        </h2>
+
+        <p>
+          Review and manage files uploaded to DogEar and monitor
+          their processing or moderation status.
+        </p>
+
+        <div class="tool-footer">
+          Manage Uploads →
+        </div>
+
+      </a>
+
+      <a
+        class="tool"
+        href="admin-logs.html"
+      >
+
+        <div class="tool-icon">
+          LG
+        </div>
+
+        <h2>
+          Activity Logs
+        </h2>
+
+        <p>
+          Review administrative actions, security events,
+          moderation activity, and other important system events.
+        </p>
+
+        <div class="tool-footer">
+          View Logs →
+        </div>
+
       </a>
 
       <a
@@ -549,53 +1449,83 @@ h1{
         id="adminManagementTool"
         href="admin-management.html"
       >
-        <div class="tool-icon">AD</div>
 
-        <h2>Admin Management</h2>
+        <div class="tool-icon">
+          AD
+        </div>
+
+        <h2>
+          Admin Management
+        </h2>
 
         <p>
-          Promote trusted DogEar members to administrator,
-          deactivate administrator access, and review who
-          has control-room privileges.
+          Promote trusted DogEar members to system administrator,
+          deactivate administrator access, and review who has
+          control-room privileges.
         </p>
 
         <div class="tool-footer">
           Manage Administrators →
         </div>
+
       </a>
 
     </section>
 
+    <!-- =====================================================
+         RECENT ACTIVITY
+    ====================================================== -->
+
     <section class="activity">
 
       <div class="activity-head">
-        <h2>Recent Activity</h2>
+
+        <h2>
+          Recent Activity
+        </h2>
 
         <a href="admin-logs.html">
           View Logs →
         </a>
+
       </div>
 
-      <div class="activity-list" id="activityList">
+      <div
+        class="activity-list"
+        id="activityList"
+      >
+
         <div class="empty">
           No administrative activity has been recorded yet.
         </div>
+
       </div>
 
     </section>
 
   </div>
 
-  <section class="locked" id="locked">
-    <strong>Administrator access required.</strong>
+  <section
+    class="locked"
+    id="locked"
+  >
+
+    <strong>
+      Administrator access required.
+    </strong>
 
     Your account does not currently have permission to open
-    DogEar's administration dashboard.
+    DogEar's system administration dashboard.
+
   </section>
 
 </main>
 
 <script>
+
+/* =========================================================
+   SUPABASE
+========================================================= */
 
 const SUPABASE_URL =
   "https://nrtutxjznkfvvbmaagum.supabase.co";
@@ -614,6 +1544,11 @@ const $ =
 
 let currentUser = null;
 let currentAdmin = null;
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
 
 async function loadProfile(){
 
@@ -637,8 +1572,9 @@ async function loadProfile(){
         }
       );
 
-    if(error)
+    if(error){
       throw error;
+    }
 
     const profile =
       Array.isArray(data)
@@ -646,6 +1582,7 @@ async function loadProfile(){
         : data;
 
     if(profile){
+
       display =
         profile.display_name ||
         display;
@@ -653,14 +1590,17 @@ async function loadProfile(){
       avatar =
         profile.avatar_url ||
         "";
+
     }
 
   }
   catch(error){
+
     console.warn(
       "Profile lookup:",
       error.message
     );
+
   }
 
   const holder =
@@ -673,25 +1613,45 @@ async function loadProfile(){
     const image =
       document.createElement("img");
 
-    image.src = avatar;
-    image.alt = display;
+    image.src =
+      avatar;
+
+    image.alt =
+      display;
 
     image.onerror =
       () => {
-        holder.innerHTML = "";
+
+        holder.innerHTML =
+          "";
+
         holder.textContent =
-          display.charAt(0).toUpperCase();
+          display
+            .charAt(0)
+            .toUpperCase();
+
       };
 
-    holder.appendChild(image);
+    holder.appendChild(
+      image
+    );
 
   }
   else{
+
     holder.textContent =
-      display.charAt(0).toUpperCase();
+      display
+        .charAt(0)
+        .toUpperCase();
+
   }
 
 }
+
+
+/* =========================================================
+   SYSTEM ADMIN CHECK
+========================================================= */
 
 async function verifyAdmin(){
 
@@ -712,25 +1672,30 @@ async function verifyAdmin(){
         )
         .maybeSingle();
 
-    if(error)
+    if(error){
       throw error;
+    }
 
     if(
       !data ||
       data.active !== true
     ){
+
       return false;
+
     }
 
-    currentAdmin = data;
+    currentAdmin =
+      data;
 
     const isOwner =
-      data.admin_role === "owner";
+      data.admin_role ===
+      "owner";
 
     $("rolePill").textContent =
       isOwner
-        ? "Owner"
-        : "Administrator";
+        ? "System Owner"
+        : "System Administrator";
 
     $("rolePill")
       .classList
@@ -743,9 +1708,11 @@ async function verifyAdmin(){
       isOwner ||
       data.can_manage_admins === true
     ){
+
       $("adminManagementTool")
         .classList
         .add("show");
+
     }
 
     return true;
@@ -754,14 +1721,20 @@ async function verifyAdmin(){
   catch(error){
 
     console.warn(
-      "Admin lookup:",
+      "System admin lookup:",
       error.message
     );
 
     return false;
+
   }
 
 }
+
+
+/* =========================================================
+   BASIC TABLE COUNTS
+========================================================= */
 
 async function countTable(
   table,
@@ -781,12 +1754,17 @@ async function countTable(
           }
         );
 
-    for(const filter of filters){
+    for(
+      const filter
+      of filters
+    ){
+
       query =
         query.eq(
           filter.column,
           filter.value
         );
+
     }
 
     const {
@@ -795,8 +1773,9 @@ async function countTable(
     } =
       await query;
 
-    if(error)
+    if(error){
       throw error;
+    }
 
     return count ?? 0;
 
@@ -809,45 +1788,250 @@ async function countTable(
     );
 
     return null;
+
   }
 
 }
+
 
 function showCount(
   element,
   value
 ){
+
   element.textContent =
     value === null
       ? "—"
       : Number(value)
           .toLocaleString();
+
 }
+
+
+/* =========================================================
+   VERIFICATION COUNTS
+========================================================= */
+
+async function loadVerification(){
+
+  let total = null;
+  let summary = [];
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "admin_pending_verification_count"
+      );
+
+    if(error){
+      throw error;
+    }
+
+    total =
+      Number(data ?? 0);
+
+  }
+  catch(error){
+
+    console.warn(
+      "Pending verification count:",
+      error.message
+    );
+
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "admin_pending_verification_summary"
+      );
+
+    if(error){
+      throw error;
+    }
+
+    summary =
+      Array.isArray(data)
+        ? data
+        : [];
+
+  }
+  catch(error){
+
+    console.warn(
+      "Pending verification summary:",
+      error.message
+    );
+
+  }
+
+  showCount(
+    $("pendingVerificationCount"),
+    total
+  );
+
+  if(total === null){
+
+    $("pendingVerificationNote")
+      .textContent =
+        "Verification count unavailable";
+
+    return;
+
+  }
+
+  const badge =
+    $("verificationToolBadge");
+
+  const alert =
+    $("verificationAlert");
+
+  if(total > 0){
+
+    badge.textContent =
+      total > 99
+        ? "99+"
+        : String(total);
+
+    badge.classList.add(
+      "show"
+    );
+
+    $("verificationAlertCount")
+      .textContent =
+        total > 999
+          ? "999+"
+          : String(total);
+
+    $("verificationAlertTitle")
+      .textContent =
+        total === 1
+          ? "1 verification application is waiting"
+          : `${total.toLocaleString()} verification applications are waiting`;
+
+    const pieces =
+      summary
+        .filter(
+          item =>
+            Number(
+              item.pending_count
+            ) > 0
+        )
+        .map(
+          item => {
+
+            const count =
+              Number(
+                item.pending_count
+              );
+
+            const label =
+              formatCapability(
+                item.capability,
+                count
+              );
+
+            return `${count.toLocaleString()} ${label}`;
+
+          }
+        );
+
+    $("verificationBreakdown")
+      .textContent =
+        pieces.length
+          ? pieces.join(" · ")
+          : "Open the verification queue to review them.";
+
+    $("pendingVerificationNote")
+      .textContent =
+        pieces.length
+          ? pieces.join(" · ")
+          : "Professional applications awaiting review";
+
+    alert.classList.add(
+      "show"
+    );
+
+  }
+  else{
+
+    badge.classList.remove(
+      "show"
+    );
+
+    alert.classList.remove(
+      "show"
+    );
+
+    $("pendingVerificationNote")
+      .textContent =
+        "No professional applications awaiting review";
+
+  }
+
+}
+
+
+function formatCapability(
+  capability,
+  count
+){
+
+  const labels = {
+    agent:
+      count === 1
+        ? "Agent"
+        : "Agents",
+
+    editor:
+      count === 1
+        ? "Editor"
+        : "Editors",
+
+    publisher:
+      count === 1
+        ? "Publisher"
+        : "Publishers"
+  };
+
+  return labels[capability] ||
+    String(capability || "")
+      .replaceAll("_"," ");
+
+}
+
+
+/* =========================================================
+   GENERAL STATS
+========================================================= */
 
 async function loadStats(){
 
   const [
     members,
     clubs,
-    books,
-    pending
+    books
   ] =
     await Promise.all([
 
-      countTable("profiles"),
-
-      countTable("clubs"),
-
-      countTable("books"),
+      countTable(
+        "profiles"
+      ),
 
       countTable(
-        "profiles",
-        [
-          {
-            column:"status",
-            value:"pending"
-          }
-        ]
+        "clubs"
+      ),
+
+      countTable(
+        "books"
       )
 
     ]);
@@ -867,12 +2051,311 @@ async function loadStats(){
     books
   );
 
-  showCount(
-    $("pendingCount"),
-    pending
+}
+
+
+/* =========================================================
+   PLATFORM ROLLOUT
+========================================================= */
+
+async function loadRollout(){
+
+  const featureMap = {
+    reader_platform:{
+      pill:"readerState",
+      experience:"reader"
+    },
+
+    author_platform:{
+      pill:"authorState",
+      experience:"author"
+    },
+
+    agent_platform:{
+      pill:"agentState",
+      experience:"agent"
+    },
+
+    publisher_platform:{
+      pill:"publisherState",
+      experience:"publisher"
+    }
+  };
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "platform_features"
+        )
+        .select(
+          "feature_key,rollout_state,rollout_phase"
+        )
+        .in(
+          "feature_key",
+          Object.keys(
+            featureMap
+          )
+        );
+
+    if(error){
+      throw error;
+    }
+
+    const returned =
+      new Set();
+
+    for(
+      const feature
+      of data || []
+    ){
+
+      returned.add(
+        feature.feature_key
+      );
+
+      const mapping =
+        featureMap[
+          feature.feature_key
+        ];
+
+      setStatePill(
+        mapping.pill,
+        feature.rollout_state
+      );
+
+      setExperienceState(
+        mapping.experience,
+        feature.rollout_state
+      );
+
+    }
+
+    for(
+      const [
+        key,
+        mapping
+      ]
+      of Object.entries(
+        featureMap
+      )
+    ){
+
+      if(
+        !returned.has(key)
+      ){
+
+        setStatePill(
+          mapping.pill,
+          "off"
+        );
+
+        setExperienceState(
+          mapping.experience,
+          "off"
+        );
+
+      }
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Platform rollout:",
+      error.message
+    );
+
+    for(
+      const mapping
+      of Object.values(
+        featureMap
+      )
+    ){
+
+      setStatePill(
+        mapping.pill,
+        null
+      );
+
+      setExperienceState(
+        mapping.experience,
+        null
+      );
+
+    }
+
+  }
+
+}
+
+
+function setStatePill(
+  elementId,
+  state
+){
+
+  const element =
+    $(elementId);
+
+  element.className =
+    "state-pill";
+
+  if(
+    state === "on"
+  ){
+
+    element.textContent =
+      "On";
+
+    element.classList.add(
+      "on"
+    );
+
+    return;
+
+  }
+
+  if(
+    state ===
+    "admins_only"
+  ){
+
+    element.textContent =
+      "Admins Only";
+
+    element.classList.add(
+      "admins_only"
+    );
+
+    return;
+
+  }
+
+  if(
+    state === "off"
+  ){
+
+    element.textContent =
+      "Off";
+
+    element.classList.add(
+      "off"
+    );
+
+    return;
+
+  }
+
+  element.textContent =
+    "Unavailable";
+
+  element.classList.add(
+    "off"
   );
 
 }
+
+
+/* =========================================================
+   ADMIN EXPERIENCE PREVIEW
+========================================================= */
+
+function setExperienceState(
+  experience,
+  state
+){
+
+  const status =
+    $(
+      `${experience}ExperienceStatus`
+    );
+
+  const link =
+    $(
+      `${experience}ExperienceLink`
+    );
+
+  const disabled =
+    $(
+      `${experience}ExperienceDisabled`
+    );
+
+  link.classList.remove(
+    "show"
+  );
+
+  disabled.style.display =
+    "block";
+
+  if(
+    state === "off"
+  ){
+
+    status.textContent =
+      "Feature rollout is OFF.";
+
+    disabled.textContent =
+      "Disabled by rollout";
+
+    return;
+
+  }
+
+  if(
+    state ===
+    "admins_only"
+  ){
+
+    status.textContent =
+      "Available to system administrators for testing.";
+
+    link.classList.add(
+      "show"
+    );
+
+    disabled.style.display =
+      "none";
+
+    return;
+
+  }
+
+  if(
+    state === "on"
+  ){
+
+    status.textContent =
+      "Feature is live. Admin preview remains available.";
+
+    link.classList.add(
+      "show"
+    );
+
+    disabled.style.display =
+      "none";
+
+    return;
+
+  }
+
+  status.textContent =
+    "Could not determine feature availability.";
+
+  disabled.textContent =
+    "Unavailable";
+
+}
+
+
+/* =========================================================
+   RECENT ACTIVITY
+========================================================= */
 
 async function loadActivity(){
 
@@ -883,7 +2366,9 @@ async function loadActivity(){
       error
     } =
       await supabaseClient
-        .from("admin_logs")
+        .from(
+          "admin_logs"
+        )
         .select(
           "id,event,description,severity,actor_name,target,message,created_at"
         )
@@ -895,13 +2380,16 @@ async function loadActivity(){
         )
         .limit(8);
 
-    if(error)
+    if(error){
       throw error;
+    }
 
     const holder =
       $("activityList");
 
-    if(!data?.length){
+    if(
+      !data?.length
+    ){
 
       holder.innerHTML =
         `
@@ -911,14 +2399,21 @@ async function loadActivity(){
         `;
 
       return;
+
     }
 
-    holder.innerHTML = "";
+    holder.innerHTML =
+      "";
 
-    for(const item of data){
+    for(
+      const item
+      of data
+    ){
 
       const row =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       row.className =
         "activity-row";
@@ -943,7 +2438,8 @@ async function loadActivity(){
 
             ${
               description &&
-              description !== mainText
+              description !==
+                mainText
                 ? `
                     <div class="activity-description">
                       ${escapeHtml(description)}
@@ -959,7 +2455,10 @@ async function loadActivity(){
           </div>
         `;
 
-      holder.appendChild(row);
+      holder.appendChild(
+        row
+      );
+
     }
 
   }
@@ -974,7 +2473,14 @@ async function loadActivity(){
 
 }
 
-function escapeHtml(value=""){
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(
+  value=""
+){
 
   return String(value)
     .replace(
@@ -990,10 +2496,14 @@ function escapeHtml(value=""){
 
 }
 
-function formatDate(value){
 
-  if(!value)
+function formatDate(
+  value
+){
+
+  if(!value){
     return "";
+  }
 
   const date =
     new Date(value);
@@ -1002,8 +2512,11 @@ function formatDate(value){
     Number.isNaN(
       date.getTime()
     )
-  )
+  ){
+
     return "";
+
+  }
 
   return date.toLocaleString(
     undefined,
@@ -1018,16 +2531,24 @@ function formatDate(value){
 
 }
 
+
 function showLocked(){
 
-  $("dashboardArea").style.display =
-    "none";
+  $("dashboardArea")
+    .style
+    .display =
+      "none";
 
   $("locked")
     .classList
     .add("show");
 
 }
+
+
+/* =========================================================
+   START
+========================================================= */
 
 async function start(){
 
@@ -1048,6 +2569,7 @@ async function start(){
       "auth.html#login";
 
     return;
+
   }
 
   currentUser =
@@ -1058,7 +2580,9 @@ async function start(){
   const allowed =
     await verifyAdmin();
 
-  if(!allowed){
+  if(
+    !allowed
+  ){
 
     showLocked();
 
@@ -1067,10 +2591,13 @@ async function start(){
       .add("hidden");
 
     return;
+
   }
 
   await Promise.all([
     loadStats(),
+    loadVerification(),
+    loadRollout(),
     loadActivity()
   ]);
 
