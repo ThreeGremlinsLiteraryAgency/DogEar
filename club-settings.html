@@ -2,22 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Club Settings | DogEar</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
 :root{
   --bg:#f4efe6;
   --paper:#fffaf2;
-  --paper-2:#f9f2e7;
+  --paper2:#f9f2e7;
   --ink:#2f2924;
   --muted:#766d64;
   --line:#ded3c4;
@@ -27,7 +22,6 @@
   --green:#66785e;
   --green-soft:#e2eadf;
   --red:#8a554c;
-  --red-dark:#6d3f38;
   --red-soft:#f3e1dd;
   --gold:#8c7444;
   --gold-soft:#eee5cc;
@@ -53,14 +47,7 @@ body{
     ),
     var(--bg);
   color:var(--ink);
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
-}
-
-body.loading-lock{
-  overflow:hidden;
+  font-family:Georgia,"Times New Roman",serif;
 }
 
 a{
@@ -79,13 +66,18 @@ button{
   cursor:pointer;
 }
 
+button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
 .hidden{
-  display:none !important;
+  display:none!important;
 }
 
 /* =========================================================
    LOADING
-========================================================= */
+   ========================================================= */
 
 .loading-screen{
   position:fixed;
@@ -150,7 +142,7 @@ button{
 
 /* =========================================================
    TOP BAR
-========================================================= */
+   ========================================================= */
 
 .topbar{
   height:72px;
@@ -182,7 +174,6 @@ button{
   border:1.8px solid var(--accent);
   border-radius:50% 50% 45% 55%;
   position:relative;
-  display:inline-block;
 }
 
 .brand-mark::after{
@@ -210,14 +201,10 @@ button{
   font-size:14px;
 }
 
-.nav a:hover{
-  color:var(--ink);
-  background:rgba(255,255,255,.68);
-}
-
+.nav a:hover,
 .nav a.active{
   color:var(--ink);
-  background:rgba(255,255,255,.72);
+  background:rgba(255,255,255,.68);
 }
 
 .nav-right{
@@ -226,20 +213,17 @@ button{
   gap:11px;
 }
 
-.search-link{
+.search-link,
+.admin-link{
   padding:9px 13px;
   border-radius:999px;
   background:rgba(255,255,255,.68);
-  color:var(--ink);
+  color:var(--muted);
   font-size:13px;
 }
 
 .admin-link{
   display:none;
-  padding:9px 12px;
-  border-radius:999px;
-  color:var(--muted);
-  font-size:13px;
 }
 
 .avatar{
@@ -264,36 +248,22 @@ button{
 
 /* =========================================================
    PAGE
-========================================================= */
+   ========================================================= */
 
 .page{
   width:min(1100px,calc(100% - 48px));
   margin:0 auto;
-  padding:38px 0 100px;
-}
-
-/* =========================================================
-   CLUB HEADER
-========================================================= */
-
-.club-header{
-  margin-bottom:20px;
+  padding:40px 0 100px;
 }
 
 .back-link{
   display:inline-flex;
-  align-items:center;
-  gap:7px;
-  margin-bottom:18px;
+  margin-bottom:24px;
   color:var(--muted);
   font-size:11px;
 }
 
-.back-link:hover{
-  color:var(--ink);
-}
-
-.club-eyebrow{
+.eyebrow{
   color:var(--accent);
   text-transform:uppercase;
   letter-spacing:.14em;
@@ -301,64 +271,59 @@ button{
   font-weight:700;
 }
 
-.club-header h1{
-  margin:7px 0 0;
-  font-size:clamp(36px,5vw,54px);
-  line-height:1.03;
+.hero h1{
+  margin:8px 0 0;
+  font-size:clamp(38px,6vw,58px);
+  line-height:1.02;
   font-weight:500;
-  letter-spacing:-.035em;
+  letter-spacing:-.04em;
 }
 
-.club-header p{
-  max-width:650px;
-  margin:10px 0 0;
+.hero p{
+  max-width:700px;
+  margin:13px 0 0;
   color:var(--muted);
   font-size:12px;
-  line-height:1.65;
+  line-height:1.7;
 }
 
 /* =========================================================
    CLUB NAV
-========================================================= */
+   ========================================================= */
 
 .club-nav{
-  margin:26px 0;
-  padding:6px;
-  border:1px solid var(--line);
-  border-radius:16px;
-  background:rgba(255,250,242,.72);
+  margin-top:25px;
   display:flex;
-  gap:4px;
+  gap:7px;
   overflow-x:auto;
+  padding-bottom:4px;
 }
 
 .club-nav a{
   flex:0 0 auto;
-  padding:10px 13px;
-  border-radius:11px;
+  padding:9px 13px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:rgba(255,255,255,.52);
   color:var(--muted);
-  font-size:11px;
-  white-space:nowrap;
+  font-size:10px;
 }
 
-.club-nav a:hover{
-  color:var(--ink);
-  background:var(--paper);
-}
-
+.club-nav a:hover,
 .club-nav a.active{
-  color:var(--accent-dark);
-  background:var(--accent-soft);
+  color:var(--ink);
+  border-color:#c6b4a5;
+  background:#fffdf8;
 }
 
 /* =========================================================
    STATUS
-========================================================= */
+   ========================================================= */
 
 .status-message{
   display:none;
-  margin-bottom:20px;
-  padding:13px 15px;
+  margin:20px 0 0;
+  padding:14px 16px;
   border:1px solid var(--line);
   border-radius:14px;
   background:var(--paper);
@@ -383,55 +348,48 @@ button{
   color:var(--green);
 }
 
+.status-message.warning{
+  border-color:#d9c89e;
+  background:var(--gold-soft);
+  color:#75633f;
+}
+
 /* =========================================================
    SETTINGS LAYOUT
-========================================================= */
+   ========================================================= */
 
 .settings-layout{
+  margin-top:20px;
   display:grid;
-  grid-template-columns:220px minmax(0,1fr);
-  gap:22px;
+  grid-template-columns:210px minmax(0,1fr);
+  gap:18px;
   align-items:start;
 }
 
 .settings-menu{
   position:sticky;
-  top:94px;
-  padding:8px;
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:rgba(255,250,242,.78);
+  top:92px;
+  display:grid;
+  gap:7px;
 }
 
 .settings-menu button{
   width:100%;
-  padding:11px 12px;
-  border:0;
-  border-radius:11px;
-  background:transparent;
+  padding:12px 14px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:rgba(255,255,255,.52);
   color:var(--muted);
   text-align:left;
   font-size:10px;
 }
 
-.settings-menu button:hover{
-  background:var(--paper);
-  color:var(--ink);
-}
-
+.settings-menu button:hover,
 .settings-menu button.active{
-  background:var(--accent-soft);
-  color:var(--accent-dark);
-  font-weight:700;
+  color:var(--ink);
+  border-color:#c6b4a5;
+  background:#fffdf8;
 }
-
-.settings-content{
-  min-width:0;
-}
-
-/* =========================================================
-   SETTINGS CARD
-========================================================= */
 
 .settings-panel{
   display:none;
@@ -442,7 +400,6 @@ button{
 }
 
 .settings-card{
-  margin-bottom:18px;
   border:1px solid var(--line);
   border-radius:var(--radius);
   background:var(--paper);
@@ -450,8 +407,12 @@ button{
   overflow:hidden;
 }
 
+.settings-card + .settings-card{
+  margin-top:18px;
+}
+
 .card-head{
-  padding:21px 22px;
+  padding:20px 22px;
   border-bottom:1px solid var(--line);
 }
 
@@ -473,229 +434,125 @@ button{
 }
 
 /* =========================================================
-   FORM
-========================================================= */
+   FORMS
+   ========================================================= */
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
 
 .form-group{
-  margin-bottom:20px;
+  margin-bottom:16px;
 }
 
-.form-group:last-child{
-  margin-bottom:0;
+.form-group.full{
+  grid-column:1 / -1;
 }
 
-.form-label{
+label{
   display:block;
   margin-bottom:7px;
-  color:var(--ink);
-  font-size:10px;
-  font-weight:700;
-}
-
-.form-help{
-  margin:6px 0 0;
   color:var(--muted);
   font-size:9px;
-  line-height:1.55;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.06em;
 }
 
-.form-control{
+input,
+textarea,
+select{
   width:100%;
-  min-height:44px;
   padding:11px 13px;
   border:1px solid var(--line);
   border-radius:12px;
-  outline:none;
   background:#fffdf8;
   color:var(--ink);
+  outline:none;
   font-size:11px;
 }
 
-textarea.form-control{
-  min-height:130px;
+textarea{
+  min-height:120px;
   resize:vertical;
   line-height:1.6;
 }
 
-.form-control:focus{
+input:focus,
+textarea:focus,
+select:focus{
   border-color:var(--accent);
   box-shadow:0 0 0 3px rgba(143,102,82,.09);
 }
 
-.form-control:disabled{
-  opacity:.65;
-  cursor:not-allowed;
-}
-
-.character-count{
-  margin-top:5px;
-  color:var(--muted);
-  text-align:right;
-  font-size:8px;
-}
-
-/* =========================================================
-   OPTIONS
-========================================================= */
-
-.option-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
-
-.option-card{
-  position:relative;
-}
-
-.option-card input{
-  position:absolute;
-  opacity:0;
-  pointer-events:none;
-}
-
-.option-card label{
-  height:100%;
-  padding:15px;
-  border:1px solid var(--line);
-  border-radius:14px;
-  background:#fffdf8;
-  display:block;
-  cursor:pointer;
-}
-
-.option-card label:hover{
-  border-color:#c7b7a7;
-}
-
-.option-card input:checked + label{
-  border-color:var(--accent);
-  background:var(--accent-soft);
-}
-
-.option-title{
-  display:block;
-  font-size:11px;
-  font-weight:700;
-}
-
-.option-description{
-  display:block;
-  margin-top:5px;
+.help-text{
+  margin-top:6px;
   color:var(--muted);
   font-size:9px;
   line-height:1.5;
 }
 
-/* =========================================================
-   TOGGLE ROW
-========================================================= */
-
-.toggle-row{
-  padding:15px 0;
+.checkbox-row{
+  padding:13px 0;
   border-bottom:1px solid var(--line);
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:space-between;
   gap:20px;
 }
 
-.toggle-row:first-child{
-  padding-top:0;
-}
-
-.toggle-row:last-child{
-  padding-bottom:0;
+.checkbox-row:last-child{
   border-bottom:0;
 }
 
-.toggle-copy{
-  min-width:0;
+.checkbox-copy h3{
+  margin:0;
+  font-size:12px;
 }
 
-.toggle-title{
-  font-size:11px;
-  font-weight:700;
-}
-
-.toggle-description{
-  max-width:530px;
-  margin-top:5px;
+.checkbox-copy p{
+  margin:4px 0 0;
   color:var(--muted);
   font-size:9px;
-  line-height:1.55;
+  line-height:1.5;
 }
 
-.switch{
-  position:relative;
-  width:46px;
-  height:26px;
-  flex:0 0 46px;
+.checkbox-row input{
+  width:18px;
+  height:18px;
+  margin:1px 0 0;
+  accent-color:var(--accent-dark);
 }
 
-.switch input{
-  position:absolute;
-  opacity:0;
-}
-
-.slider{
-  position:absolute;
-  inset:0;
-  border:1px solid var(--line);
-  border-radius:999px;
-  background:#ded8cf;
-  cursor:pointer;
-  transition:.18s ease;
-}
-
-.slider::before{
-  content:"";
-  position:absolute;
-  width:20px;
-  height:20px;
-  left:2px;
-  top:2px;
-  border-radius:50%;
-  background:#fff;
-  box-shadow:0 2px 6px rgba(0,0,0,.12);
-  transition:.18s ease;
-}
-
-.switch input:checked + .slider{
-  border-color:var(--accent);
-  background:var(--accent);
-}
-
-.switch input:checked + .slider::before{
-  transform:translateX(20px);
+.form-actions{
+  margin-top:20px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
 }
 
 /* =========================================================
    BUTTONS
-========================================================= */
-
-.form-actions{
-  margin-top:22px;
-  padding-top:18px;
-  border-top:1px solid var(--line);
-  display:flex;
-  justify-content:flex-end;
-  gap:8px;
-}
+   ========================================================= */
 
 .button{
-  min-height:39px;
-  padding:0 15px;
+  min-height:38px;
+  padding:0 14px;
   border:1px solid var(--line);
   border-radius:999px;
   background:#fffdf8;
   color:var(--muted);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
   font-size:10px;
 }
 
 .button:hover{
   color:var(--ink);
-  border-color:#c8b8a8;
+  border-color:#c6b4a5;
 }
 
 .button.primary{
@@ -704,52 +561,36 @@ textarea.form-control{
   color:#fff;
 }
 
-.button.primary:hover{
-  background:#583b2e;
-}
-
 .button.danger{
   border-color:#d4aaa2;
   background:var(--red-soft);
   color:var(--red);
 }
 
-.button.danger:hover{
-  border-color:var(--red);
-  color:var(--red-dark);
-}
-
-.button:disabled{
-  opacity:.55;
-  cursor:not-allowed;
-}
-
 /* =========================================================
    LEADERSHIP
-========================================================= */
+   ========================================================= */
 
 .leader-card{
-  padding:16px;
+  padding:15px;
   border:1px solid var(--line);
-  border-radius:15px;
+  border-radius:16px;
   background:#fffdf8;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:16px;
+  gap:14px;
 }
 
 .leader-person{
-  min-width:0;
   display:flex;
   align-items:center;
   gap:12px;
 }
 
 .leader-avatar{
-  width:44px;
-  height:44px;
-  flex:0 0 44px;
+  width:48px;
+  height:48px;
   overflow:hidden;
   border-radius:50%;
   background:var(--gold-soft);
@@ -757,7 +598,7 @@ textarea.form-control{
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:12px;
+  font-size:13px;
   font-weight:700;
 }
 
@@ -768,35 +609,30 @@ textarea.form-control{
 }
 
 .leader-name{
-  font-size:12px;
+  font-size:13px;
   font-weight:700;
 }
 
 .leader-role{
-  margin-top:4px;
+  margin-top:3px;
   color:var(--muted);
   font-size:9px;
 }
 
 /* =========================================================
    DANGER ZONE
-========================================================= */
+   ========================================================= */
 
 .danger-card{
-  border-color:#d8b9b1;
+  border-color:#d7b8b1;
 }
 
 .danger-card .card-head{
-  border-bottom-color:#e4c9c3;
-  background:rgba(243,225,221,.48);
-}
-
-.danger-card .card-head h2{
-  color:var(--red-dark);
+  background:var(--red-soft);
 }
 
 .danger-action{
-  padding:17px 0;
+  padding:16px 0;
   border-bottom:1px solid var(--line);
   display:flex;
   align-items:center;
@@ -804,85 +640,66 @@ textarea.form-control{
   gap:20px;
 }
 
-.danger-action:first-child{
-  padding-top:0;
-}
-
 .danger-action:last-child{
-  padding-bottom:0;
   border-bottom:0;
 }
 
 .danger-copy h3{
   margin:0;
-  font-size:11px;
+  font-size:13px;
 }
 
 .danger-copy p{
-  max-width:520px;
+  max-width:470px;
   margin:5px 0 0;
   color:var(--muted);
   font-size:9px;
-  line-height:1.55;
-}
-
-/* =========================================================
-   MODAL
-========================================================= */
-
-.modal-backdrop{
-  position:fixed;
-  inset:0;
-  z-index:1000;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  background:rgba(47,41,36,.48);
-  backdrop-filter:blur(5px);
-}
-
-.modal-backdrop.show{
-  display:flex;
-}
-
-.modal{
-  width:min(460px,100%);
-  padding:24px;
-  border:1px solid var(--line);
-  border-radius:22px;
-  background:var(--paper);
-  box-shadow:0 24px 70px rgba(0,0,0,.18);
-}
-
-.modal h2{
-  margin:0;
-  font-size:21px;
-  font-weight:500;
-}
-
-.modal p{
-  margin:10px 0 0;
-  color:var(--muted);
-  font-size:11px;
   line-height:1.6;
 }
 
-.modal-input{
-  width:100%;
-  min-height:43px;
-  margin-top:16px;
-  padding:10px 12px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:#fffdf8;
-  outline:none;
-  color:var(--ink);
-  font-size:11px;
+/* =========================================================
+   CONFIRM MODAL
+   ========================================================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  padding:20px;
+  background:rgba(42,34,29,.48);
+  display:none;
+  align-items:center;
+  justify-content:center;
 }
 
-.modal-input:focus{
-  border-color:var(--accent);
+.modal.show{
+  display:flex;
+}
+
+.modal-card{
+  width:min(500px,100%);
+  padding:25px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:var(--paper);
+  box-shadow:0 30px 80px rgba(31,24,20,.24);
+}
+
+.modal-card h2{
+  margin:0;
+  font-size:22px;
+  font-weight:500;
+}
+
+.modal-card p{
+  margin:9px 0 0;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.65;
+}
+
+.modal-input{
+  margin-top:17px;
 }
 
 .modal-actions{
@@ -893,18 +710,14 @@ textarea.form-control{
 }
 
 /* =========================================================
-   MOBILE NAV
-========================================================= */
+   MOBILE
+   ========================================================= */
 
 .mobile-nav{
   display:none;
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media(max-width:800px){
+@media(max-width:850px){
 
   body{
     padding-bottom:70px;
@@ -915,13 +728,10 @@ textarea.form-control{
     padding:0 18px;
   }
 
-  .nav{
-    display:none;
-  }
-
+  .nav,
   .search-link,
   .admin-link{
-    display:none !important;
+    display:none!important;
   }
 
   .page{
@@ -942,14 +752,18 @@ textarea.form-control{
   .settings-menu button{
     width:auto;
     flex:0 0 auto;
-    white-space:nowrap;
   }
 
-  .option-grid{
+  .form-grid{
     grid-template-columns:1fr;
   }
 
-  .danger-action{
+  .form-group.full{
+    grid-column:auto;
+  }
+
+  .danger-action,
+  .leader-card{
     align-items:flex-start;
     flex-direction:column;
   }
@@ -986,73 +800,37 @@ textarea.form-control{
   .mobile-icon{
     font-size:17px;
   }
-
 }
 
 </style>
 </head>
 
-<body class="loading-lock">
-
-<!-- =======================================================
-     LOADING
-======================================================== -->
+<body>
 
 <div
   class="loading-screen"
   id="loadingScreen"
 >
-
   <div class="loading-inner">
-
     <div class="loading-mark"></div>
-
     <div class="loading-text">
-      Opening club settings...
+      Organizing the club...
     </div>
-
   </div>
-
 </div>
-
-<!-- =======================================================
-     TOP BAR
-======================================================== -->
 
 <header class="topbar">
 
-  <a
-    class="brand"
-    href="dashboard.html"
-  >
-
+  <a class="brand" href="dashboard.html">
     <span class="brand-mark"></span>
-
     DogEar
-
   </a>
 
   <nav class="nav">
-
-    <a href="dashboard.html">
-      Home
-    </a>
-
-    <a href="discover.html">
-      Discover
-    </a>
-
-    <a
-      class="active"
-      href="clubs.html"
-    >
-      Clubs
-    </a>
-
-    <a href="marketplace.html">
-      Books
-    </a>
-
+    <a href="dashboard.html">Home</a>
+    <a href="discover.html">Discover</a>
+    <a class="active" href="clubs.html">Clubs</a>
+    <a href="marketplace.html">Books</a>
   </nav>
 
   <div class="nav-right">
@@ -1076,7 +854,6 @@ textarea.form-control{
       class="avatar"
       id="navAvatar"
       href="profile.html"
-      aria-label="Your profile"
     >
       ?
     </a>
@@ -1085,27 +862,23 @@ textarea.form-control{
 
 </header>
 
-<!-- =======================================================
-     PAGE
-======================================================== -->
-
 <main class="page">
 
-  <section class="club-header">
+  <a
+    class="back-link"
+    id="backLink"
+    href="club.html"
+  >
+    ← Back to Club
+  </a>
 
-    <a
-      class="back-link"
-      id="backToClub"
-      href="clubs.html"
-    >
-      ← Back to Club
-    </a>
+  <section class="hero">
 
-    <div class="club-eyebrow">
+    <div class="eyebrow">
       Club Management
     </div>
 
-    <h1 id="clubHeading">
+    <h1 id="pageTitle">
       Club Settings
     </h1>
 
@@ -1115,10 +888,6 @@ textarea.form-control{
     </p>
 
   </section>
-
-  <!-- =====================================================
-       CLUB NAV
-  ====================================================== -->
 
   <nav class="club-nav">
 
@@ -1155,10 +924,6 @@ textarea.form-control{
     class="status-message"
     id="statusMessage"
   ></div>
-
-  <!-- =====================================================
-       SETTINGS
-  ====================================================== -->
 
   <div class="settings-layout">
 
@@ -1210,185 +975,88 @@ textarea.form-control{
         <div class="settings-card">
 
           <div class="card-head">
-
-            <h2>
-              Club Details
-            </h2>
-
+            <h2>Club Details</h2>
             <p>
               Change the basic information readers see
               when they visit your club.
             </p>
-
           </div>
 
           <div class="card-body">
 
-            <form id="generalForm">
+            <div class="form-grid">
 
-              <div class="form-group">
+              <div class="form-group full">
 
-                <label
-                  class="form-label"
-                  for="clubName"
-                >
+                <label for="clubNameInput">
                   Club Name
                 </label>
 
                 <input
-                  class="form-control"
-                  id="clubName"
+                  id="clubNameInput"
+                  maxlength="120"
                   type="text"
-                  maxlength="80"
-                  required
                 >
-
-                <div
-                  class="character-count"
-                  id="nameCount"
-                >
-                  0 / 80
-                </div>
 
               </div>
 
               <div class="form-group">
 
-                <label
-                  class="form-label"
-                  for="clubDescription"
+                <label for="clubGenreInput">
+                  Genre
+                </label>
+
+                <input
+                  id="clubGenreInput"
+                  maxlength="100"
+                  type="text"
                 >
+
+              </div>
+
+              <div class="form-group">
+
+                <label for="clubVisibilityInput">
+                  Visibility
+                </label>
+
+                <select id="clubVisibilityInput">
+                  <option value="public">
+                    Public
+                  </option>
+                  <option value="private">
+                    Private
+                  </option>
+                </select>
+
+              </div>
+
+              <div class="form-group full">
+
+                <label for="clubDescriptionInput">
                   Description
                 </label>
 
                 <textarea
-                  class="form-control"
-                  id="clubDescription"
-                  maxlength="500"
+                  id="clubDescriptionInput"
+                  maxlength="2000"
                 ></textarea>
 
-                <div
-                  class="character-count"
-                  id="descriptionCount"
-                >
-                  0 / 500
-                </div>
-
               </div>
 
-              <div class="form-group">
+            </div>
 
-                <label
-                  class="form-label"
-                  for="clubGenre"
-                >
-                  Favorite Genre
-                </label>
+            <div class="form-actions">
 
-                <select
-                  class="form-control"
-                  id="clubGenre"
-                >
+              <button
+                class="button primary"
+                id="saveGeneralButton"
+                type="button"
+              >
+                Save Club Details
+              </button>
 
-                  <option value="">
-                    Anything goes
-                  </option>
-
-                  <option value="Fantasy">
-                    Fantasy
-                  </option>
-
-                  <option value="Romance">
-                    Romance
-                  </option>
-
-                  <option value="Science Fiction">
-                    Science Fiction
-                  </option>
-
-                  <option value="Mystery & Thriller">
-                    Mystery & Thriller
-                  </option>
-
-                  <option value="Horror">
-                    Horror
-                  </option>
-
-                  <option value="Historical Fiction">
-                    Historical Fiction
-                  </option>
-
-                  <option value="Literary Fiction">
-                    Literary Fiction
-                  </option>
-
-                  <option value="Young Adult">
-                    Young Adult
-                  </option>
-
-                  <option value="Nonfiction">
-                    Nonfiction
-                  </option>
-
-                  <option value="Memoir & Biography">
-                    Memoir & Biography
-                  </option>
-
-                  <option value="Classics">
-                    Classics
-                  </option>
-
-                  <option value="Mixed">
-                    Mixed
-                  </option>
-
-                </select>
-
-              </div>
-
-              <div class="form-group">
-
-                <label
-                  class="form-label"
-                  for="clubType"
-                >
-                  Club Type
-                </label>
-
-                <select
-                  class="form-control"
-                  id="clubType"
-                >
-
-                  <option value="Online">
-                    Online
-                  </option>
-
-                  <option value="Local">
-                    Local / In Person
-                  </option>
-
-                  <option value="Hybrid">
-                    Hybrid
-                  </option>
-
-                </select>
-
-              </div>
-
-              <div class="form-actions">
-
-                <button
-                  class="button primary"
-                  id="saveGeneralButton"
-                  type="submit"
-                >
-                  Save Changes
-                </button>
-
-              </div>
-
-            </form>
+            </div>
 
           </div>
 
@@ -1408,117 +1076,162 @@ textarea.form-control{
         <div class="settings-card">
 
           <div class="card-head">
-
-            <h2>
-              Club Visibility
-            </h2>
-
+            <h2>Member Permissions</h2>
             <p>
-              Decide whether readers can discover this club.
+              Control what readers can see and do
+              inside the club.
             </p>
-
           </div>
 
           <div class="card-body">
 
-            <div class="option-grid">
+            <div class="checkbox-row">
 
-              <div class="option-card">
-
-                <input
-                  id="visibilityPublic"
-                  type="radio"
-                  name="visibility"
-                  value="public"
-                >
-
-                <label for="visibilityPublic">
-
-                  <span class="option-title">
-                    Public
-                  </span>
-
-                  <span class="option-description">
-                    Readers can discover the club and view
-                    its public information.
-                  </span>
-
-                </label>
-
+              <div class="checkbox-copy">
+                <h3>Members can post</h3>
+                <p>
+                  Allow active members to participate
+                  in club discussions.
+                </p>
               </div>
 
-              <div class="option-card">
-
-                <input
-                  id="visibilityPrivate"
-                  type="radio"
-                  name="visibility"
-                  value="private"
-                >
-
-                <label for="visibilityPrivate">
-
-                  <span class="option-title">
-                    Private
-                  </span>
-
-                  <span class="option-description">
-                    The club stays out of public discovery.
-                  </span>
-
-                </label>
-
-              </div>
+              <input
+                id="membersCanPostInput"
+                type="checkbox"
+              >
 
             </div>
 
-          </div>
+            <div class="checkbox-row">
 
-        </div>
-
-        <div class="settings-card">
-
-          <div class="card-head">
-
-            <h2>
-              Joining the Club
-            </h2>
-
-            <p>
-              Control what happens when a reader wants
-              to become a member.
-            </p>
-
-          </div>
-
-          <div class="card-body">
-
-            <div class="toggle-row">
-
-              <div class="toggle-copy">
-
-                <div class="toggle-title">
-                  Require Approval
-                </div>
-
-                <div class="toggle-description">
-                  New readers must be approved by the
-                  President or an Admin before becoming
-                  members.
-                </div>
-
+              <div class="checkbox-copy">
+                <h3>Allow vote changes</h3>
+                <p>
+                  Members may change their selection
+                  while the ballot remains open.
+                </p>
               </div>
 
-              <label class="switch">
+              <input
+                id="allowVoteChangesInput"
+                type="checkbox"
+              >
 
-                <input
-                  id="approvalRequired"
-                  type="checkbox"
-                >
+            </div>
 
-                <span class="slider"></span>
+            <div class="checkbox-row">
 
-              </label>
+              <div class="checkbox-copy">
+                <h3>Show vote totals</h3>
+                <p>
+                  Display ballot totals when DogEar's
+                  voting interface allows them.
+                </p>
+              </div>
+
+              <input
+                id="showVoteTotalsInput"
+                type="checkbox"
+              >
+
+            </div>
+
+            <div class="checkbox-row">
+
+              <div class="checkbox-copy">
+                <h3>Public can view members</h3>
+                <p>
+                  Let non-members see the club member list.
+                </p>
+              </div>
+
+              <input
+                id="publicMembersInput"
+                type="checkbox"
+              >
+
+            </div>
+
+            <div class="checkbox-row">
+
+              <div class="checkbox-copy">
+                <h3>Public can view Book of the Month</h3>
+                <p>
+                  Show the current club book publicly.
+                </p>
+              </div>
+
+              <input
+                id="publicBookInput"
+                type="checkbox"
+              >
+
+            </div>
+
+            <div class="checkbox-row">
+
+              <div class="checkbox-copy">
+                <h3>Public can view voting options</h3>
+                <p>
+                  Let visitors see the books currently
+                  being considered.
+                </p>
+              </div>
+
+              <input
+                id="publicVotingInput"
+                type="checkbox"
+              >
+
+            </div>
+
+            <div class="checkbox-row">
+
+              <div class="checkbox-copy">
+                <h3>Public can view vote results</h3>
+                <p>
+                  Let visitors see voting results where
+                  the voting page supports them.
+                </p>
+              </div>
+
+              <input
+                id="publicResultsInput"
+                type="checkbox"
+              >
+
+            </div>
+
+            <div class="checkbox-row">
+
+              <div class="checkbox-copy">
+                <h3>Public can view forums</h3>
+                <p>
+                  Let visitors read club discussions.
+                </p>
+              </div>
+
+              <input
+                id="publicForumsInput"
+                type="checkbox"
+              >
+
+            </div>
+
+            <div class="checkbox-row">
+
+              <div class="checkbox-copy">
+                <h3>Public can view past books</h3>
+                <p>
+                  Let visitors browse the club's
+                  reading history.
+                </p>
+              </div>
+
+              <input
+                id="publicPastBooksInput"
+                type="checkbox"
+              >
 
             </div>
 
@@ -1540,7 +1253,7 @@ textarea.form-control{
 
       </section>
 
-      <!-- =================================================
+           <!-- =================================================
            LEADERSHIP
       ================================================== -->
 
@@ -1552,16 +1265,11 @@ textarea.form-control{
         <div class="settings-card">
 
           <div class="card-head">
-
-            <h2>
-              Club President
-            </h2>
-
+            <h2>Club Leadership</h2>
             <p>
-              The President has final control over club
-              settings and leadership.
+              Administrators help manage the club.
+              The President retains final control.
             </p>
-
           </div>
 
           <div class="card-body">
@@ -1586,7 +1294,7 @@ textarea.form-control{
                     class="leader-name"
                     id="presidentName"
                   >
-                    Loading...
+                    Club President
                   </div>
 
                   <div class="leader-role">
@@ -1599,55 +1307,28 @@ textarea.form-control{
 
               <a
                 class="button"
-                id="presidentProfileLink"
-                href="profile.html"
+                id="membersButton"
+                href="club-members.html"
               >
-                View Profile
+                Manage Members
               </a>
 
             </div>
 
             <div
               class="form-actions president-only"
+              id="presidentActions"
             >
 
-              <button
+              <a
                 class="button"
                 id="transferPresidentButton"
-                type="button"
+                href="club-president-transfer.html"
               >
                 Transfer Presidency
-              </button>
+              </a>
 
             </div>
-
-          </div>
-
-        </div>
-
-        <div class="settings-card">
-
-          <div class="card-head">
-
-            <h2>
-              Club Admins
-            </h2>
-
-            <p>
-              Admin roles can be managed from the club
-              member list.
-            </p>
-
-          </div>
-
-          <div class="card-body">
-
-            <a
-              class="button"
-              id="manageMembersButton"
-            >
-              Manage Members & Admins
-            </a>
 
           </div>
 
@@ -1667,31 +1348,29 @@ textarea.form-control{
         <div class="settings-card danger-card">
 
           <div class="card-head">
-
-            <h2>
-              Danger Zone
-            </h2>
-
+            <h2>Danger Zone</h2>
             <p>
-              These actions affect the entire club.
-              Only the President can use them.
+              High-impact club actions are restricted
+              to the Club President.
             </p>
-
           </div>
 
           <div class="card-body">
 
-            <div class="danger-action">
+            <div
+              class="danger-action"
+              id="suspendAction"
+            >
 
               <div class="danger-copy">
 
-                <h3>
+                <h3 id="suspendTitle">
                   Suspend Club
                 </h3>
 
-                <p>
+                <p id="suspendDescription">
                   Temporarily disable normal club activity
-                  without permanently deleting the club.
+                  without deleting club data.
                 </p>
 
               </div>
@@ -1706,18 +1385,41 @@ textarea.form-control{
 
             </div>
 
+            <div
+              class="danger-action hidden"
+              id="restoreAction"
+            >
+
+              <div class="danger-copy">
+
+                <h3>Restore Club</h3>
+
+                <p>
+                  Return this suspended club to active status.
+                </p>
+
+              </div>
+
+              <button
+                class="button"
+                id="restoreClubButton"
+                type="button"
+              >
+                Restore Club
+              </button>
+
+            </div>
+
             <div class="danger-action">
 
               <div class="danger-copy">
 
-                <h3>
-                  Delete Club
-                </h3>
+                <h3>Delete Club</h3>
 
                 <p>
-                  Permanently remove this club. You will
-                  be asked to type the club name before
-                  deletion is attempted.
+                  Archive this club and remove it from normal
+                  use. DogEar preserves the underlying records
+                  for safety and audit history.
                 </p>
 
               </div>
@@ -1744,41 +1446,51 @@ textarea.form-control{
 
 </main>
 
-<!-- =======================================================
+<!-- =====================================================
      CONFIRMATION MODAL
-======================================================== -->
+====================================================== -->
 
 <div
-  class="modal-backdrop"
-  id="confirmModal"
+  class="modal"
+  id="confirmationModal"
+  aria-hidden="true"
 >
 
-  <div
-    class="modal"
-    role="dialog"
-    aria-modal="true"
-  >
+  <div class="modal-card">
 
-    <h2 id="confirmTitle">
-      Confirm action
+    <h2 id="confirmationTitle">
+      Confirm Action
     </h2>
 
-    <p id="confirmText">
-      Are you sure?
-    </p>
+    <p id="confirmationText"></p>
 
-    <input
+    <div
       class="modal-input hidden"
-      id="confirmInput"
-      type="text"
-      autocomplete="off"
+      id="confirmationInputWrap"
     >
+
+      <label for="confirmationInput">
+        Confirmation
+      </label>
+
+      <input
+        id="confirmationInput"
+        type="text"
+        autocomplete="off"
+      >
+
+      <div
+        class="help-text"
+        id="confirmationHelp"
+      ></div>
+
+    </div>
 
     <div class="modal-actions">
 
       <button
         class="button"
-        id="cancelConfirmButton"
+        id="cancelConfirmationButton"
         type="button"
       >
         Cancel
@@ -1797,10 +1509,6 @@ textarea.form-control{
   </div>
 
 </div>
-
-<!-- =======================================================
-     MOBILE NAV
-======================================================== -->
 
 <nav class="mobile-nav">
 
@@ -1836,10 +1544,6 @@ textarea.form-control{
 
 <script>
 
-/* =========================================================
-   SUPABASE
-========================================================= */
-
 const SUPABASE_URL =
   "https://nrtutxjznkfvvbmaagum.supabase.co";
 
@@ -1852,40 +1556,28 @@ const supabaseClient =
     SUPABASE_PUBLISHABLE_KEY
   );
 
-/* =========================================================
-   STATE
-========================================================= */
+const params =
+  new URLSearchParams(
+    location.search
+  );
 
-let currentUser =
-  null;
+const clubId =
+  params.get("id");
 
-let clubData =
-  null;
+let currentUser = null;
+let currentProfile = null;
+let clubData = null;
+let membership = null;
+let presidentProfile = null;
+let siteAdmin = false;
 
-let myMembership =
-  null;
+let confirmationCallback = null;
+let confirmationRequiredText = null;
 
-let memberRows =
-  [];
-
-let presidentMembership =
-  null;
-
-let presidentProfile =
-  null;
-
-let currentPanel =
-  "general";
-
-let confirmCallback =
-  null;
-
-let confirmRequiredText =
-  null;
 
 /* =========================================================
    ELEMENTS
-========================================================= */
+   ========================================================= */
 
 const loadingScreen =
   document.getElementById(
@@ -1897,64 +1589,99 @@ const statusMessage =
     "statusMessage"
   );
 
-const generalForm =
-  document.getElementById(
-    "generalForm"
-  );
-
 const clubNameInput =
   document.getElementById(
-    "clubName"
-  );
-
-const clubDescriptionInput =
-  document.getElementById(
-    "clubDescription"
+    "clubNameInput"
   );
 
 const clubGenreInput =
   document.getElementById(
-    "clubGenre"
+    "clubGenreInput"
   );
 
-const clubTypeInput =
+const clubVisibilityInput =
   document.getElementById(
-    "clubType"
+    "clubVisibilityInput"
   );
 
-const approvalRequiredInput =
+const clubDescriptionInput =
   document.getElementById(
-    "approvalRequired"
+    "clubDescriptionInput"
   );
 
-const saveGeneralButton =
+const membersCanPostInput =
   document.getElementById(
-    "saveGeneralButton"
+    "membersCanPostInput"
   );
 
-const saveMembershipButton =
+const allowVoteChangesInput =
   document.getElementById(
-    "saveMembershipButton"
+    "allowVoteChangesInput"
   );
 
-const confirmModal =
+const showVoteTotalsInput =
   document.getElementById(
-    "confirmModal"
+    "showVoteTotalsInput"
   );
 
-const confirmTitle =
+const publicMembersInput =
   document.getElementById(
-    "confirmTitle"
+    "publicMembersInput"
   );
 
-const confirmText =
+const publicBookInput =
   document.getElementById(
-    "confirmText"
+    "publicBookInput"
   );
 
-const confirmInput =
+const publicVotingInput =
   document.getElementById(
-    "confirmInput"
+    "publicVotingInput"
+  );
+
+const publicResultsInput =
+  document.getElementById(
+    "publicResultsInput"
+  );
+
+const publicForumsInput =
+  document.getElementById(
+    "publicForumsInput"
+  );
+
+const publicPastBooksInput =
+  document.getElementById(
+    "publicPastBooksInput"
+  );
+
+const confirmationModal =
+  document.getElementById(
+    "confirmationModal"
+  );
+
+const confirmationTitle =
+  document.getElementById(
+    "confirmationTitle"
+  );
+
+const confirmationText =
+  document.getElementById(
+    "confirmationText"
+  );
+
+const confirmationInputWrap =
+  document.getElementById(
+    "confirmationInputWrap"
+  );
+
+const confirmationInput =
+  document.getElementById(
+    "confirmationInput"
+  );
+
+const confirmationHelp =
+  document.getElementById(
+    "confirmationHelp"
   );
 
 const confirmActionButton =
@@ -1962,95 +1689,23 @@ const confirmActionButton =
     "confirmActionButton"
   );
 
-const cancelConfirmButton =
-  document.getElementById(
-    "cancelConfirmButton"
-  );
-
-/* =========================================================
-   CLUB ID
-========================================================= */
-
-const params =
-  new URLSearchParams(
-    location.search
-  );
-
-const clubId =
-  params.get("id");
-
-function withClub(
-  filename
-){
-
-  if(!clubId){
-    return filename;
-  }
-
-  return (
-    filename +
-    "?id=" +
-    encodeURIComponent(
-      clubId
-    )
-  );
-
-}
 
 /* =========================================================
    HELPERS
-========================================================= */
+   ========================================================= */
 
-function normalize(
-  value
-){
+function normalize(value){
 
-  return String(
-    value ?? ""
-  )
+  return String(value ?? "")
     .trim()
     .toLowerCase();
 
 }
 
-function escapeHtml(
-  value
-){
-
-  return String(
-    value ?? ""
-  )
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
-}
-
-function initials(
-  name
-){
+function initials(name){
 
   const parts =
-    String(
-      name || ""
-    )
+    String(name || "")
       .trim()
       .split(/\s+/)
       .filter(Boolean);
@@ -2063,19 +1718,27 @@ function initials(
     .slice(0,2)
     .map(
       part =>
-        part
-          .charAt(0)
-          .toUpperCase()
+        part.charAt(0).toUpperCase()
     )
     .join("");
 
 }
 
-function hideLoading(){
+function withClub(filename){
 
-  document.body.classList.remove(
-    "loading-lock"
+  if(!clubId){
+    return filename;
+  }
+
+  return (
+    filename +
+    "?id=" +
+    encodeURIComponent(clubId)
   );
+
+}
+
+function hideLoading(){
 
   loadingScreen.classList.add(
     "hidden"
@@ -2102,121 +1765,32 @@ function showStatus(
 
   }
 
-  statusMessage.scrollIntoView({
-    behavior:"smooth",
-    block:"nearest"
-  });
-
 }
 
 function clearStatus(){
 
-  statusMessage.textContent =
-    "";
+  statusMessage.textContent = "";
 
   statusMessage.className =
     "status-message";
 
 }
 
-function rowUserId(
-  row
-){
-
-  return (
-    row?.user_id ||
-    row?.member_id ||
-    null
-  );
-
-}
-
-function rowRole(
-  row
-){
-
-  return (
-    row?.role ||
-    row?.member_role ||
-    "Member"
-  );
-
-}
-
-function isPresident(
-  row
-){
-
-  const role =
-    normalize(
-      rowRole(row)
-    );
-
-  return (
-    role === "president" ||
-    role === "owner"
-  );
-
-}
-
-function isAdmin(
-  row
-){
-
-  const role =
-    normalize(
-      rowRole(row)
-    );
-
-  return (
-    role === "admin" ||
-    role === "president" ||
-    role === "owner"
-  );
-
-}
-
-function canManageSettings(){
-
-  return isAdmin(
-    myMembership
-  );
-
-}
-
-function currentUserIsPresident(){
-
-  return isPresident(
-    myMembership
-  );
-
-}
-  /* =========================================================
-   PROFILE HELPERS
-========================================================= */
-
 function profileName(
   profile,
-  userId
+  fallback = "DogEar Reader"
 ){
 
   return (
     profile?.display_name ||
     profile?.name ||
     profile?.username ||
-    (
-      userId === currentUser?.id
-        ? currentUser?.email
-        : ""
-    ) ||
-    "DogEar Reader"
+    fallback
   );
 
 }
 
-function profileAvatar(
-  profile
-){
+function profileAvatar(profile){
 
   return (
     profile?.avatar_url ||
@@ -2226,90 +1800,77 @@ function profileAvatar(
 
 }
 
+function currentRole(){
 
-/* =========================================================
-   PUBLIC PROFILE
-========================================================= */
+  return normalize(
+    membership?.club_role ||
+    membership?.role ||
+    membership?.member_role ||
+    ""
+  );
 
-async function loadPublicProfile(
-  userId
-){
+}
 
-  if(!userId){
-    return null;
+function currentMembershipStatus(){
+
+  return normalize(
+    membership?.membership_status ||
+    membership?.status ||
+    ""
+  );
+
+}
+
+function currentUserIsPresident(){
+
+  if(!currentUser){
+    return false;
   }
 
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .rpc(
-          "get_public_profile",
-          {
-            check_user_id:userId
-          }
-        );
-
-    if(error){
-      throw error;
-    }
-
-    const profile =
-      Array.isArray(data)
-        ? (
-            data[0] ||
-            null
-          )
-        : (
-            data ||
-            null
-          );
-
-    if(!profile){
-      return null;
-    }
-
-    return {
-      ...profile,
-
-      id:
-        profile.id ||
-        profile.user_id ||
-        userId,
-
-      user_id:
-        profile.user_id ||
-        profile.id ||
-        userId
-    };
-
+  if(
+    String(clubData?.president_id) ===
+    String(currentUser.id)
+  ){
+    return true;
   }
 
-  catch(error){
+  return (
+    currentRole() === "president" &&
+    currentMembershipStatus() ===
+      "active"
+  );
 
-    console.warn(
-      "Public profile:",
-      error.message
-    );
+}
 
-    return null;
+function currentUserIsLeader(){
 
+  if(siteAdmin){
+    return true;
   }
+
+  if(
+    currentMembershipStatus() !==
+    "active"
+  ){
+    return false;
+  }
+
+  return (
+    currentRole() === "president" ||
+    currentRole() === "administrator"
+  );
 
 }
 
 
 /* =========================================================
-   CLUB NAVIGATION
-========================================================= */
+   LINKS
+   ========================================================= */
 
-function wireClubLinks(){
+function wireLinks(){
 
   document.getElementById(
-    "backToClub"
+    "backLink"
   ).href =
     withClub(
       "club.html"
@@ -2358,163 +1919,29 @@ function wireClubLinks(){
     );
 
   document.getElementById(
-    "manageMembersButton"
+    "membersButton"
   ).href =
     withClub(
       "club-members.html"
     );
 
+  document.getElementById(
+    "transferPresidentButton"
+  ).href =
+    withClub(
+      "club-president-transfer.html"
+    );
+
 }
 
 
 /* =========================================================
-   CHARACTER COUNTS
-========================================================= */
-
-function updateCharacterCounts(){
-
-  document.getElementById(
-    "nameCount"
-  ).textContent =
-    `${clubNameInput.value.length} / 80`;
-
-  document.getElementById(
-    "descriptionCount"
-  ).textContent =
-    `${clubDescriptionInput.value.length} / 500`;
-
-}
-
-clubNameInput.addEventListener(
-  "input",
-  updateCharacterCounts
-);
-
-clubDescriptionInput.addEventListener(
-  "input",
-  updateCharacterCounts
-);
-
-
-/* =========================================================
-   SETTINGS PANELS
-========================================================= */
-
-function setPanel(
-  panel
-){
-
-  const allowed =
-    [
-      "general",
-      "membership",
-      "leadership",
-      "danger"
-    ];
-
-  if(
-    !allowed.includes(
-      panel
-    )
-  ){
-
-    panel =
-      "general";
-
-  }
-
-  if(
-    panel === "danger" &&
-    !currentUserIsPresident()
-  ){
-
-    panel =
-      "general";
-
-  }
-
-  currentPanel =
-    panel;
-
-  document
-    .querySelectorAll(
-      ".settings-panel"
-    )
-    .forEach(
-      element => {
-
-        element.classList.remove(
-          "active"
-        );
-
-      }
-    );
-
-  document
-    .querySelectorAll(
-      ".settings-menu button"
-    )
-    .forEach(
-      button => {
-
-        button.classList.toggle(
-          "active",
-          button.dataset.panel ===
-            panel
-        );
-
-      }
-    );
-
-  const panelElement =
-    document.getElementById(
-      `${panel}Panel`
-    );
-
-  if(panelElement){
-
-    panelElement.classList.add(
-      "active"
-    );
-
-  }
-
-  const url =
-    new URL(
-      location.href
-    );
-
-  if(
-    panel === "general"
-  ){
-
-    url.searchParams.delete(
-      "panel"
-    );
-
-  }
-
-  else{
-
-    url.searchParams.set(
-      "panel",
-      panel
-    );
-
-  }
-
-  history.replaceState(
-    {},
-    "",
-    url
-  );
-
-}
-
+   SETTINGS TABS
+   ========================================================= */
 
 document
   .querySelectorAll(
-    ".settings-menu button"
+    "[data-panel]"
   )
   .forEach(
     button => {
@@ -2523,9 +1950,39 @@ document
         "click",
         () => {
 
-          setPanel(
-            button.dataset.panel ||
-            "general"
+          const panelName =
+            button.dataset.panel;
+
+          document
+            .querySelectorAll(
+              "[data-panel]"
+            )
+            .forEach(
+              item =>
+                item.classList.remove(
+                  "active"
+                )
+            );
+
+          document
+            .querySelectorAll(
+              ".settings-panel"
+            )
+            .forEach(
+              panel =>
+                panel.classList.remove(
+                  "active"
+                )
+            );
+
+          button.classList.add(
+            "active"
+          );
+
+          document.getElementById(
+            `${panelName}Panel`
+          )?.classList.add(
+            "active"
           );
 
         }
@@ -2536,8 +1993,219 @@ document
 
 
 /* =========================================================
-   LOAD CLUB
-========================================================= */
+   AUTH
+   ========================================================= */
+
+async function requireSession(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+  if(error){
+    throw error;
+  }
+
+  if(!data?.session?.user){
+
+    const currentPage =
+      location.pathname
+        .split("/")
+        .pop() +
+      location.search;
+
+    location.href =
+      "index.html?next=" +
+      encodeURIComponent(
+        currentPage
+      );
+
+    return false;
+  }
+
+  currentUser =
+    data.session.user;
+
+  return true;
+
+}
+
+
+/* =========================================================
+   PUBLIC PROFILE
+   ========================================================= */
+
+async function loadPublicProfile(
+  userId
+){
+
+  if(!userId){
+    return null;
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "get_public_profile",
+        {
+          check_user_id:
+            userId
+        }
+      );
+
+    if(error){
+      throw error;
+    }
+
+    return Array.isArray(data)
+      ? data[0] || null
+      : data || null;
+
+  }
+  catch(error){
+
+    console.warn(
+      "Public profile:",
+      error.message
+    );
+
+    return null;
+  }
+
+}
+
+
+/* =========================================================
+   CURRENT PROFILE
+   ========================================================= */
+
+async function loadCurrentProfile(){
+
+  currentProfile =
+    await loadPublicProfile(
+      currentUser.id
+    );
+
+  const name =
+    profileName(
+      currentProfile,
+      currentUser.email ||
+      "DogEar Reader"
+    );
+
+  const avatar =
+    profileAvatar(
+      currentProfile
+    );
+
+  const holder =
+    document.getElementById(
+      "navAvatar"
+    );
+
+  holder.innerHTML = "";
+
+  if(avatar){
+
+    const image =
+      document.createElement(
+        "img"
+      );
+
+    image.src = avatar;
+    image.alt = name;
+
+    image.onerror =
+      () => {
+
+        holder.innerHTML = "";
+
+        holder.textContent =
+          initials(name);
+
+      };
+
+    holder.appendChild(
+      image
+    );
+
+  }
+  else{
+
+    holder.textContent =
+      initials(name);
+
+  }
+
+}
+
+
+/* =========================================================
+   SITE ADMIN
+   ========================================================= */
+
+async function loadSiteAdmin(){
+
+  siteAdmin = false;
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("admin_users")
+        .select("user_id,active")
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .eq(
+          "active",
+          true
+        )
+        .maybeSingle();
+
+    if(error){
+      throw error;
+    }
+
+    if(data){
+
+      siteAdmin = true;
+
+      document.getElementById(
+        "adminLink"
+      ).style.display =
+        "inline-flex";
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Admin status:",
+      error.message
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   CLUB DATA
+   ========================================================= */
 
 async function loadClub(){
 
@@ -2558,76 +2226,16 @@ async function loadClub(){
     throw error;
   }
 
-  clubData =
-    data;
-
-  const clubName =
-    clubData?.name ||
-    clubData?.title ||
-    "Book Club";
-
-  document.getElementById(
-    "clubHeading"
-  ).textContent =
-    `${clubName} Settings`;
-
-  document.title =
-    `${clubName} Settings | DogEar`;
-
-  clubNameInput.value =
-    clubName;
-
-  clubDescriptionInput.value =
-    clubData?.description ||
-    "";
-
-  clubGenreInput.value =
-    clubData?.genre ||
-    clubData?.favorite_genre ||
-    "";
-
-  clubTypeInput.value =
-    clubData?.club_type ||
-    clubData?.type ||
-    "Online";
-
-  const visibility =
-    normalize(
-      clubData?.visibility
-    );
-
-  const isPublic =
-    typeof clubData?.is_public ===
-    "boolean"
-      ? clubData.is_public
-      : visibility !== "private";
-
-  document.getElementById(
-    "visibilityPublic"
-  ).checked =
-    isPublic;
-
-  document.getElementById(
-    "visibilityPrivate"
-  ).checked =
-    !isPublic;
-
-  approvalRequiredInput.checked =
-    typeof clubData?.approval_required ===
-    "boolean"
-      ? clubData.approval_required
-      : true;
-
-  updateCharacterCounts();
+  clubData = data;
 
 }
 
 
 /* =========================================================
-   LOAD MEMBERSHIP
-========================================================= */
+   MEMBERSHIP
+   ========================================================= */
 
-async function loadMemberships(){
+async function loadMembership(){
 
   const {
     data,
@@ -2639,101 +2247,62 @@ async function loadMemberships(){
       .eq(
         "club_id",
         clubId
-      );
+      )
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+      .maybeSingle();
 
   if(error){
     throw error;
   }
 
-  memberRows =
-    (data || [])
-      .filter(
-        row => {
-
-          const status =
-            normalize(
-              row.status
-            );
-
-          return !(
-            status === "pending" ||
-            status === "rejected" ||
-            status === "denied" ||
-            status === "removed" ||
-            status === "banned"
-          );
-
-        }
-      );
-
-  myMembership =
-    memberRows.find(
-      row =>
-        String(
-          rowUserId(row)
-        ) ===
-        String(
-          currentUser.id
-        )
-    ) ||
-    null;
-
-  presidentMembership =
-    memberRows.find(
-      row =>
-        isPresident(row)
-    ) ||
-    null;
+  membership =
+    data || null;
 
 }
 
 
 /* =========================================================
-   ACCESS CONTROL
-========================================================= */
+   ACCESS
+   ========================================================= */
 
-function updateAccessControls(){
+function verifyAccess(){
 
   if(
-    !canManageSettings()
+    !currentUserIsLeader()
   ){
 
-    generalForm
-      .querySelectorAll(
-        "input, textarea, select, button"
-      )
-      .forEach(
-        element => {
-
-          element.disabled =
-            true;
-
-        }
-      );
-
-    document
-      .querySelectorAll(
-        "#membershipPanel input, #membershipPanel button"
-      )
-      .forEach(
-        element => {
-
-          element.disabled =
-            true;
-
-        }
-      );
-
     showStatus(
-      "Only the club President and Admins can change club settings.",
+      "Only club leadership can access these settings.",
       "error"
     );
 
+    document
+      .querySelectorAll(
+        "button, input, textarea, select"
+      )
+      .forEach(
+        element => {
+
+          if(
+            !element.closest(
+              ".modal"
+            )
+          ){
+            element.disabled =
+              true;
+          }
+
+        }
+      );
+
+    return false;
   }
 
-  /*
-    Only the President sees President-specific controls.
-  */
+  const president =
+    currentUserIsPresident();
 
   document
     .querySelectorAll(
@@ -2744,59 +2313,111 @@ function updateAccessControls(){
 
         element.classList.toggle(
           "hidden",
-          !currentUserIsPresident()
+          !president
         );
 
       }
     );
 
+  return true;
+
 }
 
 
 /* =========================================================
-   PRESIDENT CARD
-========================================================= */
+   POPULATE FORM
+   ========================================================= */
 
-async function renderPresident(){
+function populateSettings(){
+
+  const clubName =
+    clubData?.name ||
+    "Book Club";
+
+  document.getElementById(
+    "pageTitle"
+  ).textContent =
+    `${clubName} Settings`;
+
+  document.title =
+    `${clubName} Settings | DogEar`;
+
+  clubNameInput.value =
+    clubData?.name || "";
+
+  clubGenreInput.value =
+    clubData?.genre || "";
+
+  clubDescriptionInput.value =
+    clubData?.description || "";
+
+  clubVisibilityInput.value =
+    clubData?.is_public === false
+      ? "private"
+      : "public";
+
+  membersCanPostInput.checked =
+    clubData?.members_can_post !==
+    false;
+
+  allowVoteChangesInput.checked =
+    clubData?.allow_vote_changes !==
+    false;
+
+  showVoteTotalsInput.checked =
+    clubData?.show_vote_totals !==
+    false;
+
+  publicMembersInput.checked =
+    clubData?.public_can_view_members ===
+    true;
+
+  publicBookInput.checked =
+    clubData?.public_can_view_book_of_month !==
+    false;
+
+  publicVotingInput.checked =
+    clubData?.public_can_view_voting_options ===
+    true;
+
+  publicResultsInput.checked =
+    clubData?.public_can_view_vote_results ===
+    true;
+
+  publicForumsInput.checked =
+    clubData?.public_can_view_forums ===
+    true;
+
+  publicPastBooksInput.checked =
+    clubData?.public_can_view_past_books !==
+    false;
+
+}
+
+
+/* =========================================================
+   PRESIDENT
+   ========================================================= */
+
+async function loadPresident(){
+
+  presidentProfile = null;
 
   if(
-    !presidentMembership
+    clubData?.president_id
   ){
 
-    document.getElementById(
-      "presidentName"
-    ).textContent =
-      "No President assigned";
-
-    document.getElementById(
-      "presidentProfileLink"
-    ).classList.add(
-      "hidden"
-    );
-
-    return;
+    presidentProfile =
+      await loadPublicProfile(
+        clubData.president_id
+      );
 
   }
-
-  const userId =
-    rowUserId(
-      presidentMembership
-    );
-
-  presidentProfile =
-    await loadPublicProfile(
-      userId
-    );
 
   const name =
     profileName(
       presidentProfile,
-      userId
-    );
-
-  const avatar =
-    profileAvatar(
-      presidentProfile
+      "Club President"
     );
 
   document.getElementById(
@@ -2804,13 +2425,17 @@ async function renderPresident(){
   ).textContent =
     name;
 
-  const avatarElement =
+  const avatar =
+    profileAvatar(
+      presidentProfile
+    );
+
+  const holder =
     document.getElementById(
       "presidentAvatar"
     );
 
-  avatarElement.innerHTML =
-    "";
+  holder.innerHTML = "";
 
   if(avatar){
 
@@ -2819,97 +2444,143 @@ async function renderPresident(){
         "img"
       );
 
-    image.src =
-      avatar;
-
-    image.alt =
-      name;
+    image.src = avatar;
+    image.alt = name;
 
     image.onerror =
       () => {
 
-        avatarElement.innerHTML =
-          "";
+        holder.innerHTML = "";
 
-        avatarElement.textContent =
+        holder.textContent =
           initials(name);
 
       };
 
-    avatarElement.appendChild(
+    holder.appendChild(
       image
     );
 
   }
-
   else{
 
-    avatarElement.textContent =
+    holder.textContent =
       initials(name);
 
   }
 
-  const profileLink =
-    document.getElementById(
-      "presidentProfileLink"
+}
+
+
+/* =========================================================
+   LIFECYCLE DISPLAY
+   ========================================================= */
+
+function renderLifecycle(){
+
+  const status =
+    normalize(
+      clubData?.status
     );
 
-  profileLink.href =
-    "profile.html?id=" +
-    encodeURIComponent(
-      userId
-    );
+  const suspended =
+    status === "suspended";
 
-  profileLink.classList.remove(
-    "hidden"
+  const deleted =
+    status === "deleted";
+
+  document.getElementById(
+    "suspendAction"
+  ).classList.toggle(
+    "hidden",
+    suspended || deleted
   );
+
+  document.getElementById(
+    "restoreAction"
+  ).classList.toggle(
+    "hidden",
+    !suspended
+  );
+
+  document.getElementById(
+    "deleteClubButton"
+  ).disabled =
+    deleted;
 
 }
 
 
 /* =========================================================
-   SCHEMA ERROR HELPER
-========================================================= */
+   SAVE GENERAL SETTINGS
+   ========================================================= */
 
-function isSchemaError(
-  error
-){
+async function saveGeneralSettings(){
 
-  if(!error){
-    return false;
+  clearStatus();
+
+  if(
+    !currentUserIsLeader()
+  ){
+
+    showStatus(
+      "Only club leadership can change club settings.",
+      "error"
+    );
+
+    return;
   }
 
-  const message =
-    normalize(
-      error.message
+  const name =
+    clubNameInput.value.trim();
+
+  if(!name){
+
+    showStatus(
+      "Your club needs a name.",
+      "warning"
     );
 
-  return (
-    message.includes("column") ||
-    message.includes("schema cache") ||
-    message.includes("could not find") ||
-    String(error.code || "") === "42703" ||
-    String(error.code || "") === "PGRST204"
-  );
+    clubNameInput.focus();
 
-}
+    return;
+  }
 
+  const button =
+    document.getElementById(
+      "saveGeneralButton"
+    );
 
-/* =========================================================
-   UPDATE CLUB WITH FALLBACK PAYLOADS
-========================================================= */
+  button.disabled = true;
+  button.textContent =
+    "Saving...";
 
-async function updateClubWithFallbacks(
-  payloads
-){
+  try{
 
-  let lastError =
-    null;
+    const payload = {
 
-  for(
-    const payload
-    of payloads
-  ){
+      name:name,
+
+      description:
+        clubDescriptionInput
+          .value
+          .trim() ||
+        null,
+
+      genre:
+        clubGenreInput
+          .value
+          .trim() ||
+        null,
+
+      is_public:
+        clubVisibilityInput.value ===
+        "public",
+
+      updated_at:
+        new Date().toISOString()
+
+    };
 
     const {
       data,
@@ -2923,345 +2594,172 @@ async function updateClubWithFallbacks(
           clubId
         )
         .select()
-        .maybeSingle();
+        .single();
 
-    if(!error){
-
-      if(data){
-
-        clubData = {
-          ...clubData,
-          ...data
-        };
-
-      }
-
-      else{
-
-        clubData = {
-          ...clubData,
-          ...payload
-        };
-
-      }
-
-      return (
-        data ||
-        clubData
-      );
-
-    }
-
-    lastError =
-      error;
-
-    if(
-      !isSchemaError(
-        error
-      )
-    ){
-
+    if(error){
       throw error;
-
     }
 
-  }
+    clubData =
+      data;
 
-  throw (
-    lastError ||
-    new Error(
-      "DogEar couldn't update the club."
-    )
-  );
+    populateSettings();
+
+    showStatus(
+      "Club details saved.",
+      "success"
+    );
+
+  }
+  catch(error){
+
+    console.error(
+      "Save general settings:",
+      error
+    );
+
+    showStatus(
+      error?.message ||
+      "DogEar couldn't save the club details.",
+      "error"
+    );
+
+  }
+  finally{
+
+    button.disabled = false;
+
+    button.textContent =
+      "Save Club Details";
+
+  }
 
 }
-
-
-/* =========================================================
-   SAVE GENERAL SETTINGS
-========================================================= */
-
-async function saveGeneralSettings(){
-
-  if(
-    !canManageSettings()
-  ){
-
-    throw new Error(
-      "You don't have permission to change club settings."
-    );
-
-  }
-
-  const name =
-    clubNameInput
-      .value
-      .trim();
-
-  const description =
-    clubDescriptionInput
-      .value
-      .trim();
-
-  const genre =
-    clubGenreInput.value;
-
-  const clubType =
-    clubTypeInput.value;
-
-  if(
-    !name
-  ){
-
-    throw new Error(
-      "Your club needs a name."
-    );
-
-  }
-
-  if(
-    name.length > 80
-  ){
-
-    throw new Error(
-      "Club names can be no longer than 80 characters."
-    );
-
-  }
-
-  if(
-    description.length > 500
-  ){
-
-    throw new Error(
-      "Club descriptions can be no longer than 500 characters."
-    );
-
-  }
-
-  const payloads = [
-
-    {
-      name,
-      description,
-      genre,
-      club_type:clubType
-    },
-
-    {
-      name,
-      description,
-      genre
-    },
-
-    {
-      name,
-      description,
-      favorite_genre:genre
-    },
-
-    {
-      name,
-      description
-    }
-
-  ];
-
-  await updateClubWithFallbacks(
-    payloads
-  );
-
-  document.getElementById(
-    "clubHeading"
-  ).textContent =
-    `${name} Settings`;
-
-  document.title =
-    `${name} Settings | DogEar`;
-
-  showStatus(
-    "Club details saved.",
-    "success"
-  );
-
-}
-
-
-/* =========================================================
-   GENERAL FORM
-========================================================= */
-
-generalForm.addEventListener(
-  "submit",
-  async event => {
-
-    event.preventDefault();
-
-    clearStatus();
-
-    saveGeneralButton.disabled =
-      true;
-
-    saveGeneralButton.textContent =
-      "Saving...";
-
-    try{
-
-      await saveGeneralSettings();
-
-    }
-
-    catch(error){
-
-      console.error(
-        "Save general settings:",
-        error
-      );
-
-      showStatus(
-        error?.message ||
-        "DogEar couldn't save those club settings.",
-        "error"
-      );
-
-    }
-
-    finally{
-
-      saveGeneralButton.disabled =
-        false;
-
-      saveGeneralButton.textContent =
-        "Save Changes";
-
-    }
-
-  }
-);
 
 
 /* =========================================================
    SAVE MEMBERSHIP SETTINGS
-========================================================= */
+   ========================================================= */
 
 async function saveMembershipSettings(){
 
+  clearStatus();
+
   if(
-    !canManageSettings()
+    !currentUserIsLeader()
   ){
 
-    throw new Error(
-      "You don't have permission to change membership settings."
+    showStatus(
+      "Only club leadership can change club settings.",
+      "error"
+    );
+
+    return;
+  }
+
+  const button =
+    document.getElementById(
+      "saveMembershipButton"
+    );
+
+  button.disabled = true;
+  button.textContent =
+    "Saving...";
+
+  try{
+
+    const payload = {
+
+      members_can_post:
+        membersCanPostInput.checked,
+
+      allow_vote_changes:
+        allowVoteChangesInput.checked,
+
+      show_vote_totals:
+        showVoteTotalsInput.checked,
+
+      public_can_view_members:
+        publicMembersInput.checked,
+
+      public_can_view_book_of_month:
+        publicBookInput.checked,
+
+      public_can_view_voting_options:
+        publicVotingInput.checked,
+
+      public_can_view_vote_results:
+        publicResultsInput.checked,
+
+      public_can_view_forums:
+        publicForumsInput.checked,
+
+      public_can_view_past_books:
+        publicPastBooksInput.checked,
+
+      updated_at:
+        new Date().toISOString()
+
+    };
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("clubs")
+        .update(payload)
+        .eq(
+          "id",
+          clubId
+        )
+        .select()
+        .single();
+
+    if(error){
+      throw error;
+    }
+
+    clubData =
+      data;
+
+    populateSettings();
+
+    showStatus(
+      "Membership settings saved.",
+      "success"
     );
 
   }
+  catch(error){
 
-  const publicSelected =
-    document.getElementById(
-      "visibilityPublic"
-    ).checked;
+    console.error(
+      "Save membership settings:",
+      error
+    );
 
-  const visibility =
-    publicSelected
-      ? "public"
-      : "private";
+    showStatus(
+      error?.message ||
+      "DogEar couldn't save the membership settings.",
+      "error"
+    );
 
-  const approvalRequired =
-    approvalRequiredInput.checked;
+  }
+  finally{
 
-  const payloads = [
+    button.disabled = false;
 
-    {
-      visibility,
-      is_public:publicSelected,
-      approval_required:
-        approvalRequired
-    },
+    button.textContent =
+      "Save Membership Settings";
 
-    {
-      visibility,
-      approval_required:
-        approvalRequired
-    },
-
-    {
-      is_public:publicSelected,
-      approval_required:
-        approvalRequired
-    },
-
-    {
-      visibility
-    },
-
-    {
-      is_public:publicSelected
-    }
-
-  ];
-
-  await updateClubWithFallbacks(
-    payloads
-  );
-
-  showStatus(
-    "Membership settings saved.",
-    "success"
-  );
+  }
 
 }
 
 
-saveMembershipButton.addEventListener(
-  "click",
-  async () => {
-
-    clearStatus();
-
-    saveMembershipButton.disabled =
-      true;
-
-    saveMembershipButton.textContent =
-      "Saving...";
-
-    try{
-
-      await saveMembershipSettings();
-
-    }
-
-    catch(error){
-
-      console.error(
-        "Save membership settings:",
-        error
-      );
-
-      showStatus(
-        error?.message ||
-        "DogEar couldn't save those membership settings.",
-        "error"
-      );
-
-    }
-
-    finally{
-
-      saveMembershipButton.disabled =
-        false;
-
-      saveMembershipButton.textContent =
-        "Save Membership Settings";
-
-    }
-
-  }
-);
-
-
 /* =========================================================
    CONFIRMATION MODAL
-========================================================= */
+   ========================================================= */
 
 function openConfirmation({
   title,
@@ -3271,47 +2769,48 @@ function openConfirmation({
   callback
 }){
 
-  confirmTitle.textContent =
+  confirmationCallback =
+    callback;
+
+  confirmationRequiredText =
+    requiredText;
+
+  confirmationTitle.textContent =
     title;
 
-  confirmText.textContent =
+  confirmationText.textContent =
     text;
 
   confirmActionButton.textContent =
     confirmText;
 
-  confirmRequiredText =
-    requiredText;
-
-  confirmCallback =
-    callback;
-
-  confirmInput.value =
+  confirmationInput.value =
     "";
 
-  if(
-    requiredText
-  ){
+  if(requiredText){
 
-    confirmInput.classList.remove(
-      "hidden"
-    );
+    confirmationInputWrap
+      .classList
+      .remove(
+        "hidden"
+      );
 
-    confirmInput.placeholder =
-      `Type: ${requiredText}`;
+    confirmationHelp.textContent =
+      `Type "${requiredText}" exactly to continue.`;
 
     confirmActionButton.disabled =
       true;
 
   }
-
   else{
 
-    confirmInput.classList.add(
-      "hidden"
-    );
+    confirmationInputWrap
+      .classList
+      .add(
+        "hidden"
+      );
 
-    confirmInput.placeholder =
+    confirmationHelp.textContent =
       "";
 
     confirmActionButton.disabled =
@@ -3319,17 +2818,20 @@ function openConfirmation({
 
   }
 
-  confirmModal.classList.add(
+  confirmationModal.classList.add(
     "show"
   );
 
-  if(
-    requiredText
-  ){
+  confirmationModal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  if(requiredText){
 
     setTimeout(
       () =>
-        confirmInput.focus(),
+        confirmationInput.focus(),
       50
     );
 
@@ -3337,68 +2839,70 @@ function openConfirmation({
 
 }
 
-
 function closeConfirmation(){
 
-  confirmModal.classList.remove(
+  confirmationModal.classList.remove(
     "show"
   );
 
-  confirmInput.value =
-    "";
-
-  confirmInput.classList.add(
-    "hidden"
+  confirmationModal.setAttribute(
+    "aria-hidden",
+    "true"
   );
 
-  confirmRequiredText =
+  confirmationCallback =
     null;
 
-  confirmCallback =
+  confirmationRequiredText =
     null;
+
+  confirmationInput.value =
+    "";
 
   confirmActionButton.disabled =
     false;
 
+  confirmActionButton.textContent =
+    "Confirm";
+
 }
 
-
-confirmInput.addEventListener(
+confirmationInput.addEventListener(
   "input",
   () => {
 
     if(
-      !confirmRequiredText
+      confirmationRequiredText ===
+      null
     ){
 
       confirmActionButton.disabled =
         false;
 
       return;
-
     }
 
     confirmActionButton.disabled =
-      confirmInput.value.trim() !==
-      confirmRequiredText;
+      confirmationInput.value !==
+      confirmationRequiredText;
 
   }
 );
 
-
-cancelConfirmButton.addEventListener(
+document.getElementById(
+  "cancelConfirmationButton"
+).addEventListener(
   "click",
   closeConfirmation
 );
 
-
-confirmModal.addEventListener(
+confirmationModal.addEventListener(
   "click",
   event => {
 
     if(
       event.target ===
-      confirmModal
+      confirmationModal
     ){
 
       closeConfirmation();
@@ -3407,7 +2911,6 @@ confirmModal.addEventListener(
 
   }
 );
-
 
 document.addEventListener(
   "keydown",
@@ -3415,9 +2918,11 @@ document.addEventListener(
 
     if(
       event.key === "Escape" &&
-      confirmModal.classList.contains(
-        "show"
-      )
+      confirmationModal
+        .classList
+        .contains(
+          "show"
+        )
     ){
 
       closeConfirmation();
@@ -3427,31 +2932,33 @@ document.addEventListener(
   }
 );
 
-
 confirmActionButton.addEventListener(
   "click",
   async () => {
 
     if(
-      typeof confirmCallback !==
-      "function"
+      !confirmationCallback
     ){
       return;
     }
 
     if(
-      confirmRequiredText &&
-      confirmInput.value.trim() !==
-        confirmRequiredText
+      confirmationRequiredText !==
+      null &&
+      confirmationInput.value !==
+      confirmationRequiredText
     ){
       return;
     }
 
     const callback =
-      confirmCallback;
+      confirmationCallback;
 
     confirmActionButton.disabled =
       true;
+
+    confirmActionButton.textContent =
+      "Working...";
 
     try{
 
@@ -3460,63 +2967,26 @@ confirmActionButton.addEventListener(
       closeConfirmation();
 
     }
-
     catch(error){
 
       console.error(
-        "Confirmed club action:",
+        "Confirmed action:",
         error
       );
 
       showStatus(
         error?.message ||
-        "DogEar couldn't complete that club action.",
+        "DogEar couldn't complete that action.",
         "error"
       );
 
       confirmActionButton.disabled =
         false;
 
-    }
-
-  }
-);
-
-
-/* =========================================================
-   TRANSFER PRESIDENT BUTTON
-========================================================= */
-
-document.getElementById(
-  "transferPresidentButton"
-).addEventListener(
-  "click",
-  () => {
-
-    if(
-      !currentUserIsPresident()
-    ){
-
-      showStatus(
-        "Only the current President can transfer the presidency.",
-        "error"
-      );
-
-      return;
+      confirmActionButton.textContent =
+        "Try Again";
 
     }
-
-    /*
-      President transfer gets its own dedicated page so
-      DogEar can require a deliberate selection and keep
-      this high-impact action separate from ordinary role
-      changes.
-    */
-
-    location.href =
-      withClub(
-        "club-president-transfer.html"
-      );
 
   }
 );
@@ -3524,252 +2994,155 @@ document.getElementById(
 
 /* =========================================================
    SUSPEND CLUB
-========================================================= */
+   PROTECTED BY MIGRATION #7 RPC
+   ========================================================= */
 
 async function suspendClub(){
 
   if(
-    !currentUserIsPresident()
+    !currentUserIsPresident() &&
+    !siteAdmin
   ){
 
     throw new Error(
-      "Only the club President can suspend the club."
+      "Only the Club President can suspend this club."
     );
 
   }
 
-  const payloads = [
+  const {
+    error
+  } =
+    await supabaseClient.rpc(
+      "suspend_club",
+      {
+        check_club_id:
+          Number(clubId)
+      }
+    );
 
-    {
-      status:"suspended"
-    },
+  if(error){
+    throw error;
+  }
 
-    {
-      is_active:false
-    },
+  clubData.status =
+    "suspended";
 
-    {
-      active:false
-    }
+  clubData.ballot_open =
+    false;
 
-  ];
-
-  await updateClubWithFallbacks(
-    payloads
-  );
+  renderLifecycle();
 
   showStatus(
-    "The club has been suspended.",
+    "The club has been suspended. Its data has been preserved.",
     "success"
-  );
-
-  setTimeout(
-    () => {
-
-      location.href =
-        withClub(
-          "club.html"
-        );
-
-    },
-    650
   );
 
 }
 
 
-document.getElementById(
-  "suspendClubButton"
-).addEventListener(
-  "click",
-  () => {
-
-    openConfirmation({
-      title:
-        "Suspend this club?",
-      text:
-        "Normal club activity may be disabled until the club is restored. No club data will intentionally be deleted.",
-      confirmText:
-        "Suspend Club",
-      callback:
-        suspendClub
-    });
-
-  }
-);
-
-
 /* =========================================================
-   DELETE BUTTON
-========================================================= */
+   RESTORE CLUB
+   PROTECTED BY MIGRATION #7 RPC
+   ========================================================= */
 
-document.getElementById(
-  "deleteClubButton"
-).addEventListener(
-  "click",
-  () => {
-
-    if(
-      !currentUserIsPresident()
-    ){
-
-      showStatus(
-        "Only the club President can delete the club.",
-        "error"
-      );
-
-      return;
-
-    }
-
-    const clubName =
-      clubData?.name ||
-      clubData?.title ||
-      clubNameInput.value.trim();
-
-    openConfirmation({
-      title:
-        "Delete this club?",
-      text:
-        `This is intended to permanently remove "${clubName}". Type the club name exactly to confirm.`,
-      confirmText:
-        "Delete Club",
-      requiredText:
-        clubName,
-      callback:
-        deleteClub
-    });
-
-  }
-);
-  /* =========================================================
-   DELETE CLUB
-========================================================= */
-
-async function deleteClub(){
+async function restoreClub(){
 
   if(
-    !currentUserIsPresident()
+    !currentUserIsPresident() &&
+    !siteAdmin
   ){
 
     throw new Error(
-      "Only the club President can delete the club."
+      "Only the Club President can restore this club."
     );
 
   }
 
-  /*
-    Prefer a soft-delete/status change first.
+  const {
+    error
+  } =
+    await supabaseClient.rpc(
+      "restore_club",
+      {
+        check_club_id:
+          Number(clubId)
+      }
+    );
 
-    This is safer for DogEar because clubs are connected
-    to memberships, discussions, votes, books, moderation
-    records, and other data.
+  if(error){
+    throw error;
+  }
 
-    A database-side cleanup function can later permanently
-    purge those records if desired.
-  */
+  clubData.status =
+    "active";
 
-  const softDeletePayloads = [
-
-    {
-      status:"deleted"
-    },
-
-    {
-      is_deleted:true
-    },
-
-    {
-      deleted:true
-    }
-
-  ];
-
-  let softDeleted =
-    false;
-
-  let lastError =
+  clubData.archived_at =
     null;
 
-  for(
-    const payload
-    of softDeletePayloads
-  ){
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("clubs")
-        .update(payload)
-        .eq(
-          "id",
-          clubId
-        );
-
-    if(!error){
-
-      softDeleted =
-        true;
-
-      break;
-
-    }
-
-    lastError =
-      error;
-
-    if(
-      !isSchemaError(
-        error
-      )
-    ){
-
-      throw error;
-
-    }
-
-  }
-
-  /*
-    If the database does not have any supported
-    soft-delete/status field, attempt a normal delete.
-
-    Supabase foreign-key rules and RLS still control
-    whether this is permitted.
-  */
-
-  if(
-    !softDeleted
-  ){
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("clubs")
-        .delete()
-        .eq(
-          "id",
-          clubId
-        );
-
-    if(error){
-
-      throw (
-        error ||
-        lastError ||
-        new Error(
-          "DogEar couldn't delete the club."
-        )
-      );
-
-    }
-
-  }
+  renderLifecycle();
 
   showStatus(
-    "The club has been deleted.",
+    "The club has been restored.",
+    "success"
+  );
+
+}
+
+
+/* =========================================================
+   DELETE CLUB
+   PROTECTED SOFT DELETE
+   ========================================================= */
+
+async function deleteClub(){
+
+  if(
+    !currentUserIsPresident() &&
+    !siteAdmin
+  ){
+
+    throw new Error(
+      "Only the Club President can delete this club."
+    );
+
+  }
+
+  const clubName =
+    clubData?.name ||
+    clubNameInput.value.trim();
+
+  const {
+    error
+  } =
+    await supabaseClient.rpc(
+      "delete_club",
+      {
+        check_club_id:
+          Number(clubId),
+
+        check_club_name:
+          clubName
+      }
+    );
+
+  if(error){
+    throw error;
+  }
+
+  clubData.status =
+    "deleted";
+
+  clubData.ballot_open =
+    false;
+
+  clubData.archived_at =
+    new Date().toISOString();
+
+  renderLifecycle();
+
+  showStatus(
+    "The club has been archived and removed from normal use.",
     "success"
   );
 
@@ -3780,294 +3153,170 @@ async function deleteClub(){
         "clubs.html";
 
     },
-    650
+    900
   );
 
 }
 
 
 /* =========================================================
-   CURRENT USER PROFILE
-========================================================= */
+   SAVE BUTTON EVENTS
+   ========================================================= */
 
-async function loadCurrentUserProfile(){
+document.getElementById(
+  "saveGeneralButton"
+).addEventListener(
+  "click",
+  saveGeneralSettings
+);
 
-  if(!currentUser){
-    return;
-  }
-
-  const navAvatar =
-    document.getElementById(
-      "navAvatar"
-    );
-
-  const profile =
-    await loadPublicProfile(
-      currentUser.id
-    );
-
-  const name =
-    profileName(
-      profile,
-      currentUser.id
-    );
-
-  const avatar =
-    profileAvatar(
-      profile
-    );
-
-  navAvatar.innerHTML =
-    "";
-
-  if(avatar){
-
-    const image =
-      document.createElement(
-        "img"
-      );
-
-    image.src =
-      avatar;
-
-    image.alt =
-      name;
-
-    image.onerror =
-      () => {
-
-        navAvatar.innerHTML =
-          "";
-
-        navAvatar.textContent =
-          initials(name);
-
-      };
-
-    navAvatar.appendChild(
-      image
-    );
-
-  }
-
-  else{
-
-    navAvatar.textContent =
-      initials(name);
-
-  }
-
-}
+document.getElementById(
+  "saveMembershipButton"
+).addEventListener(
+  "click",
+  saveMembershipSettings
+);
 
 
 /* =========================================================
-   SITE ADMIN STATUS
-========================================================= */
+   SUSPEND BUTTON
+   ========================================================= */
 
-async function loadAdminStatus(){
+document.getElementById(
+  "suspendClubButton"
+).addEventListener(
+  "click",
+  () => {
 
-  if(!currentUser){
-    return;
-  }
+    if(
+      !currentUserIsPresident() &&
+      !siteAdmin
+    ){
 
-  const adminLink =
-    document.getElementById(
-      "adminLink"
-    );
+      showStatus(
+        "Only the Club President can suspend this club.",
+        "error"
+      );
 
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("admin_users")
-        .select("*")
-        .eq(
-          "user_id",
-          currentUser.id
-        )
-        .maybeSingle();
-
-    if(error){
-      throw error;
+      return;
     }
 
-    if(data){
+    openConfirmation({
 
-      adminLink.style.display =
-        "inline-flex";
+      title:
+        "Suspend this club?",
 
+      text:
+        "Normal club activity will be disabled until the club is restored. Club data will not be deleted.",
+
+      confirmText:
+        "Suspend Club",
+
+      callback:
+        suspendClub
+
+    });
+
+  }
+);
+
+
+/* =========================================================
+   RESTORE BUTTON
+   ========================================================= */
+
+document.getElementById(
+  "restoreClubButton"
+).addEventListener(
+  "click",
+  () => {
+
+    if(
+      !currentUserIsPresident() &&
+      !siteAdmin
+    ){
+
+      showStatus(
+        "Only the Club President can restore this club.",
+        "error"
+      );
+
+      return;
     }
 
+    openConfirmation({
+
+      title:
+        "Restore this club?",
+
+      text:
+        "The club will return to active status and normal club activity can resume.",
+
+      confirmText:
+        "Restore Club",
+
+      callback:
+        restoreClub
+
+    });
+
   }
-
-  catch(error){
-
-    console.warn(
-      "Admin status:",
-      error.message
-    );
-
-  }
-
-}
+);
 
 
 /* =========================================================
-   RESTORE REQUESTED PANEL
-========================================================= */
+   DELETE BUTTON
+   ========================================================= */
 
-function restoreRequestedPanel(){
+document.getElementById(
+  "deleteClubButton"
+).addEventListener(
+  "click",
+  () => {
 
-  const requested =
-    normalize(
-      params.get("panel")
-    );
+    if(
+      !currentUserIsPresident() &&
+      !siteAdmin
+    ){
 
-  const allowed =
-    [
-      "general",
-      "membership",
-      "leadership",
-      "danger"
-    ];
-
-  if(
-    allowed.includes(
-      requested
-    )
-  ){
-
-    setPanel(
-      requested
-    );
-
-    return;
-
-  }
-
-  setPanel(
-    "general"
-  );
-
-}
-
-
-/* =========================================================
-   CLUB ACCESS
-========================================================= */
-
-function validateClubAccess(){
-
-  /*
-    Settings are intended for club leadership.
-
-    A normal member may reach this URL manually, but the
-    page will remain read-only rather than trusting the
-    browser to enforce security.
-
-    Supabase RLS remains the actual security boundary.
-  */
-
-  if(
-    !myMembership
-  ){
-
-    showStatus(
-      "You aren't currently a member of this club.",
-      "error"
-    );
-
-    generalForm
-      .querySelectorAll(
-        "input, textarea, select, button"
-      )
-      .forEach(
-        element => {
-
-          element.disabled =
-            true;
-
-        }
+      showStatus(
+        "Only the Club President can delete this club.",
+        "error"
       );
 
-    document
-      .querySelectorAll(
-        "#membershipPanel input, #membershipPanel button"
-      )
-      .forEach(
-        element => {
+      return;
+    }
 
-          element.disabled =
-            true;
+    const clubName =
+      clubData?.name ||
+      clubNameInput.value.trim();
 
-        }
-      );
+    openConfirmation({
 
-    return false;
+      title:
+        "Delete this club?",
 
-  }
+      text:
+        `This will archive "${clubName}" and remove it from normal DogEar use. Its underlying records will be preserved. Type the club name exactly to confirm.`,
 
-  return true;
+      confirmText:
+        "Delete Club",
 
-}
+      requiredText:
+        clubName,
 
+      callback:
+        deleteClub
 
-/* =========================================================
-   SESSION
-========================================================= */
-
-async function requireSession(){
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .auth
-      .getSession();
-
-  if(error){
-    throw error;
-  }
-
-  const session =
-    data?.session ||
-    null;
-
-  if(
-    !session?.user
-  ){
-
-    const currentPage =
-      location.pathname
-        .split("/")
-        .pop() +
-      location.search;
-
-    location.href =
-      "index.html?next=" +
-      encodeURIComponent(
-        currentPage
-      );
-
-    return false;
+    });
 
   }
-
-  currentUser =
-    session.user;
-
-  return true;
-
-}
+);
 
 
 /* =========================================================
    AUTH STATE
-========================================================= */
+   ========================================================= */
 
 supabaseClient
   .auth
@@ -4102,193 +3351,16 @@ supabaseClient
 
 
 /* =========================================================
-   LEADERSHIP FALLBACK
-========================================================= */
-
-function findPresidentFromClub(){
-
-  if(
-    presidentMembership
-  ){
-    return;
-  }
-
-  /*
-    Some earlier DogEar club schemas may store the founder
-    directly on the club row instead of immediately having
-    a President membership.
-
-    If that founder is also present in club_members, treat
-    their membership as the President for display purposes.
-  */
-
-  const possiblePresidentId =
-    clubData?.president_id ||
-    clubData?.owner_id ||
-    clubData?.created_by ||
-    clubData?.founder_id ||
-    null;
-
-  if(
-    !possiblePresidentId
-  ){
-    return;
-  }
-
-  const matchingMembership =
-    memberRows.find(
-      row =>
-        String(
-          rowUserId(row)
-        ) ===
-        String(
-          possiblePresidentId
-        )
-    );
-
-  if(
-    matchingMembership
-  ){
-
-    presidentMembership = {
-      ...matchingMembership,
-      role:"President"
-    };
-
-  }
-
-}
-
-
-/* =========================================================
-   FORM STATE FROM CLUB
-========================================================= */
-
-function refreshFormFromClub(){
-
-  if(
-    !clubData
-  ){
-    return;
-  }
-
-  clubNameInput.value =
-    clubData?.name ||
-    clubData?.title ||
-    "";
-
-  clubDescriptionInput.value =
-    clubData?.description ||
-    "";
-
-  const genre =
-    clubData?.genre ||
-    clubData?.favorite_genre ||
-    "";
-
-  /*
-    Only assign the value if the current select has that
-    option. Otherwise leave "Anything goes" selected.
-  */
-
-  const genreOptionExists =
-    Array.from(
-      clubGenreInput.options
-    ).some(
-      option =>
-        option.value === genre
-    );
-
-  clubGenreInput.value =
-    genreOptionExists
-      ? genre
-      : "";
-
-  const clubType =
-    clubData?.club_type ||
-    clubData?.type ||
-    "Online";
-
-  const typeOptionExists =
-    Array.from(
-      clubTypeInput.options
-    ).some(
-      option =>
-        option.value === clubType
-    );
-
-  clubTypeInput.value =
-    typeOptionExists
-      ? clubType
-      : "Online";
-
-  const visibility =
-    normalize(
-      clubData?.visibility
-    );
-
-  const isPublic =
-    typeof clubData?.is_public ===
-    "boolean"
-      ? clubData.is_public
-      : visibility !== "private";
-
-  document.getElementById(
-    "visibilityPublic"
-  ).checked =
-    isPublic;
-
-  document.getElementById(
-    "visibilityPrivate"
-  ).checked =
-    !isPublic;
-
-  approvalRequiredInput.checked =
-    typeof clubData?.approval_required ===
-    "boolean"
-      ? clubData.approval_required
-      : true;
-
-  updateCharacterCounts();
-
-}
-
-
-/* =========================================================
-   PAGE ERROR
-========================================================= */
-
-function disableSettingsPage(){
-
-  document
-    .querySelectorAll(
-      ".settings-content input, .settings-content textarea, .settings-content select, .settings-content button"
-    )
-    .forEach(
-      element => {
-
-        element.disabled =
-          true;
-
-      }
-    );
-
-}
-
-
-/* =========================================================
    START PAGE
-========================================================= */
+   ========================================================= */
 
-async function startSettingsPage(){
+async function startPage(){
 
   try{
 
     clearStatus();
 
-    if(
-      !clubId
-    ){
+    if(!clubId){
 
       location.href =
         "clubs.html";
@@ -4297,52 +3369,37 @@ async function startSettingsPage(){
 
     }
 
-    wireClubLinks();
+    wireLinks();
 
     const authenticated =
       await requireSession();
 
-    if(
-      !authenticated
-    ){
+    if(!authenticated){
       return;
     }
 
-    /*
-      Club information and membership information are the
-      two pieces required before permissions can be
-      determined.
-    */
-
     await Promise.all([
       loadClub(),
-      loadMemberships()
+      loadCurrentProfile(),
+      loadSiteAdmin()
     ]);
 
-    findPresidentFromClub();
+    await loadMembership();
 
-    refreshFormFromClub();
+    const allowed =
+      verifyAccess();
 
-    validateClubAccess();
+    if(!allowed){
+      return;
+    }
 
-    updateAccessControls();
+    populateSettings();
 
-    restoreRequestedPanel();
+    await loadPresident();
 
-    /*
-      These calls are presentation/navigation data and
-      should not stop the settings page from functioning
-      if one of them fails.
-    */
-
-    await Promise.allSettled([
-      renderPresident(),
-      loadCurrentUserProfile(),
-      loadAdminStatus()
-    ]);
+    renderLifecycle();
 
   }
-
   catch(error){
 
     console.error(
@@ -4352,14 +3409,11 @@ async function startSettingsPage(){
 
     showStatus(
       error?.message ||
-      "DogEar couldn't load this club's settings.",
+      "DogEar couldn't load these club settings.",
       "error"
     );
 
-    disableSettingsPage();
-
   }
-
   finally{
 
     hideLoading();
@@ -4370,10 +3424,10 @@ async function startSettingsPage(){
 
 
 /* =========================================================
-   START DOGEAR CLUB SETTINGS
-========================================================= */
+   START DOGEAR
+   ========================================================= */
 
-startSettingsPage();
+startPage();
 
 </script>
 
