@@ -158,6 +158,198 @@ h1{
   font:13px/1.65 Arial;
 }
 
+/* =========================================================
+   ROLLOUT
+========================================================= */
+
+.rollout-section{
+  margin-top:28px;
+}
+
+.rollout-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:20px;
+  margin-bottom:14px;
+}
+
+.rollout-header h2{
+  margin:0;
+  font-size:30px;
+  font-weight:400;
+}
+
+.rollout-header p{
+  margin:7px 0 0;
+  max-width:760px;
+  color:var(--muted);
+  font:11px/1.6 Arial;
+}
+
+.rollout-legend{
+  flex:0 0 auto;
+  color:var(--muted);
+  font:9px/1.6 Arial;
+  text-align:right;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+}
+
+.phase{
+  margin-top:16px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(16,20,16,.86);
+  overflow:hidden;
+}
+
+.phase-head{
+  padding:17px 20px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+
+.phase-title{
+  font-size:21px;
+}
+
+.phase-number{
+  color:var(--gold);
+  font:800 9px Arial;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+}
+
+.feature-list{
+  display:grid;
+}
+
+.feature-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 340px;
+  align-items:center;
+  gap:25px;
+  padding:18px 20px;
+  border-bottom:1px solid var(--line-soft);
+}
+
+.feature-row:last-child{
+  border-bottom:0;
+}
+
+.feature-title{
+  font-size:16px;
+}
+
+.feature-description{
+  margin-top:5px;
+  max-width:650px;
+  color:var(--muted);
+  font:10px/1.55 Arial;
+}
+
+.feature-control{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
+  padding:5px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:var(--panel2);
+}
+
+.feature-control button{
+  min-height:34px;
+  padding:5px 8px;
+  border:1px solid transparent;
+  border-radius:9px;
+  background:transparent;
+  color:var(--muted);
+  cursor:pointer;
+  font:800 8px Arial;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.feature-control button:hover{
+  color:var(--cream);
+}
+
+.feature-control button.selected{
+  border-color:var(--gold);
+  color:var(--gold2);
+  background:rgba(199,155,89,.1);
+}
+
+.feature-control button.selected[data-state="on"]{
+  border-color:rgba(185,214,178,.55);
+  color:var(--ok);
+  background:rgba(185,214,178,.08);
+}
+
+.feature-control button.selected[data-state="off"]{
+  border-color:rgba(230,160,154,.3);
+  color:var(--danger);
+  background:rgba(230,160,154,.05);
+}
+
+.feature-control button:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.rollout-actions{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:12px;
+  margin-top:16px;
+}
+
+.rollout-status{
+  margin-right:auto;
+  color:var(--muted);
+  font:10px/1.5 Arial;
+}
+
+.rollout-status.changed{
+  color:var(--warn);
+}
+
+.rollout-status.saved{
+  color:var(--ok);
+}
+
+.rollout-status.error{
+  color:var(--danger);
+}
+
+/* =========================================================
+   NORMAL SETTINGS
+========================================================= */
+
+.settings-heading{
+  margin:42px 0 -8px;
+  padding-top:30px;
+  border-top:1px solid var(--line);
+}
+
+.settings-heading h2{
+  margin:0;
+  font-size:30px;
+  font-weight:400;
+}
+
+.settings-heading p{
+  margin:7px 0 0;
+  color:var(--muted);
+  font:11px/1.6 Arial;
+}
+
 .settings-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -375,9 +567,17 @@ h1{
   font:11px/1.55 Arial;
 }
 
-.message.show{display:block}
-.message.success{color:var(--ok)}
-.message.error{color:var(--danger)}
+.message.show{
+  display:block;
+}
+
+.message.success{
+  color:var(--ok);
+}
+
+.message.error{
+  color:var(--danger);
+}
 
 .locked{
   display:none;
@@ -421,8 +621,21 @@ h1{
   text-transform:uppercase;
 }
 
+@media(max-width:900px){
+  .feature-row{
+    grid-template-columns:1fr;
+    gap:13px;
+  }
+
+  .feature-control{
+    max-width:420px;
+  }
+}
+
 @media(max-width:760px){
-  .nav{display:none}
+  .nav{
+    display:none;
+  }
 
   .settings-grid{
     grid-template-columns:1fr;
@@ -438,6 +651,21 @@ h1{
 
   .setting{
     align-items:flex-start;
+  }
+
+  .rollout-header{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .rollout-legend{
+    text-align:left;
+  }
+}
+
+@media(max-width:500px){
+  .feature-control{
+    grid-template-columns:1fr;
   }
 }
 </style>
@@ -463,7 +691,14 @@ h1{
     <a href="marketplace.html">Books</a>
   </nav>
 
-  <a class="avatar" id="navAvatar" href="profile.html">?</a>
+  <a
+    class="avatar"
+    id="navAvatar"
+    href="profile.html"
+    aria-label="Your profile"
+  >
+    ?
+  </a>
 
 </header>
 
@@ -484,23 +719,194 @@ h1{
     </h1>
 
     <div class="subtitle">
-      Configure DogEar-wide behavior for registrations, verification,
-      communities, marketplace behavior, and platform economics.
+      Control what DogEar is today and what becomes available as
+      the platform grows. Reader, Author, Agent, Publisher, and
+      economy features can be built now and released when you're ready.
     </div>
 
   </section>
 
   <div id="settingsArea">
 
+    <!-- =====================================================
+         FEATURE ROLLOUT
+    ====================================================== -->
+
+    <section class="rollout-section">
+
+      <div class="rollout-header">
+
+        <div>
+
+          <h2>
+            Feature Rollout
+          </h2>
+
+          <p>
+            OFF disables a feature for everyone. ADMINS ONLY lets
+            active DogEar system administrators test it. ON makes
+            the feature available to eligible users. Club Presidents
+            and club administrators do not receive system-admin access.
+          </p>
+
+        </div>
+
+        <div class="rollout-legend">
+          Off · Admins Only · On
+        </div>
+
+      </div>
+
+      <div id="rolloutContainer">
+
+        <div class="phase">
+
+          <div class="phase-head">
+
+            <div class="phase-title">
+              Readers
+            </div>
+
+            <div class="phase-number">
+              Phase 1
+            </div>
+
+          </div>
+
+          <div
+            class="feature-list"
+            id="phase1Features"
+          ></div>
+
+        </div>
+
+        <div class="phase">
+
+          <div class="phase-head">
+
+            <div class="phase-title">
+              Authors
+            </div>
+
+            <div class="phase-number">
+              Phase 2
+            </div>
+
+          </div>
+
+          <div
+            class="feature-list"
+            id="phase2Features"
+          ></div>
+
+        </div>
+
+        <div class="phase">
+
+          <div class="phase-head">
+
+            <div class="phase-title">
+              Agents
+            </div>
+
+            <div class="phase-number">
+              Phase 3
+            </div>
+
+          </div>
+
+          <div
+            class="feature-list"
+            id="phase3Features"
+          ></div>
+
+        </div>
+
+        <div class="phase">
+
+          <div class="phase-head">
+
+            <div class="phase-title">
+              Publishers & Editors
+            </div>
+
+            <div class="phase-number">
+              Phase 4
+            </div>
+
+          </div>
+
+          <div
+            class="feature-list"
+            id="phase4Features"
+          ></div>
+
+        </div>
+
+      </div>
+
+      <div class="rollout-actions">
+
+        <div
+          class="rollout-status"
+          id="rolloutStatus"
+        >
+          Loading rollout settings...
+        </div>
+
+        <button
+          class="btn secondary"
+          id="resetRolloutBtn"
+          type="button"
+          disabled
+        >
+          Undo Changes
+        </button>
+
+        <button
+          class="btn primary"
+          id="saveRolloutBtn"
+          type="button"
+          disabled
+        >
+          Save Rollout
+        </button>
+
+      </div>
+
+    </section>
+
+    <!-- =====================================================
+         EXISTING SETTINGS
+    ====================================================== -->
+
+    <div class="settings-heading">
+
+      <h2>
+        General Platform Settings
+      </h2>
+
+      <p>
+        Existing DogEar account, club, marketplace, economy,
+        safety, and maintenance settings.
+      </p>
+
+    </div>
+
     <section class="settings-grid">
 
       <article class="card">
 
         <div class="card-head">
-          <h2>Accounts & Access</h2>
+
+          <h2>
+            Accounts & Access
+          </h2>
+
           <p>
             Site-wide registration and account behavior.
           </p>
+
         </div>
 
         <div class="card-body">
@@ -508,17 +914,26 @@ h1{
           <div class="setting">
 
             <div class="setting-copy">
+
               <div class="setting-title">
                 Allow new registrations
               </div>
+
               <div class="setting-help">
                 Turns public account creation on or off.
               </div>
+
             </div>
 
             <label class="toggle">
-              <input type="checkbox" id="allowRegistrations">
+
+              <input
+                type="checkbox"
+                id="allowRegistrations"
+              >
+
               <span class="slider"></span>
+
             </label>
 
           </div>
@@ -526,17 +941,26 @@ h1{
           <div class="setting">
 
             <div class="setting-copy">
+
               <div class="setting-title">
                 Require admin approval
               </div>
+
               <div class="setting-help">
                 New accounts remain pending until accepted.
               </div>
+
             </div>
 
             <label class="toggle">
-              <input type="checkbox" id="requireApproval">
+
+              <input
+                type="checkbox"
+                id="requireApproval"
+              >
+
               <span class="slider"></span>
+
             </label>
 
           </div>
@@ -544,17 +968,26 @@ h1{
           <div class="setting">
 
             <div class="setting-copy">
+
               <div class="setting-title">
                 Require email verification
               </div>
+
               <div class="setting-help">
                 Accounts must verify their email before normal access.
               </div>
+
             </div>
 
             <label class="toggle">
-              <input type="checkbox" id="requireEmailVerification">
+
+              <input
+                type="checkbox"
+                id="requireEmailVerification"
+              >
+
               <span class="slider"></span>
+
             </label>
 
           </div>
@@ -566,10 +999,16 @@ h1{
       <article class="card">
 
         <div class="card-head">
-          <h2>Trust & Verification</h2>
+
+          <h2>
+            Trust & Verification
+          </h2>
+
           <p>
-            Rules for DogEar verified accounts.
+            General verification behavior. Professional Agent,
+            Editor, and Publisher verification is handled separately.
           </p>
+
         </div>
 
         <div class="card-body">
@@ -577,17 +1016,26 @@ h1{
           <div class="setting">
 
             <div class="setting-copy">
+
               <div class="setting-title">
                 Verification enabled
               </div>
+
               <div class="setting-help">
-                Allows members to request account verification.
+                Allows DogEar verification systems to operate.
               </div>
+
             </div>
 
             <label class="toggle">
-              <input type="checkbox" id="verificationEnabled">
+
+              <input
+                type="checkbox"
+                id="verificationEnabled"
+              >
+
               <span class="slider"></span>
+
             </label>
 
           </div>
@@ -595,22 +1043,34 @@ h1{
           <div class="setting">
 
             <div class="setting-copy">
+
               <div class="setting-title">
                 Verified accounts lift limits
               </div>
+
               <div class="setting-help">
                 Verified users may receive expanded platform limits.
               </div>
+
             </div>
 
             <label class="toggle">
-              <input type="checkbox" id="verifiedLiftLimits">
+
+              <input
+                type="checkbox"
+                id="verifiedLiftLimits"
+              >
+
               <span class="slider"></span>
+
             </label>
 
           </div>
 
-          <div class="field" style="margin-top:16px">
+          <div
+            class="field"
+            style="margin-top:16px"
+          >
 
             <label for="verificationLabel">
               Public Verification Label
@@ -619,7 +1079,8 @@ h1{
             <input
               id="verificationLabel"
               maxlength="40"
-              placeholder="Verified">
+              placeholder="Verified"
+            >
 
           </div>
 
@@ -630,10 +1091,15 @@ h1{
       <article class="card">
 
         <div class="card-head">
-          <h2>Book Clubs</h2>
+
+          <h2>
+            Book Clubs
+          </h2>
+
           <p>
             Global club and monthly ballot behavior.
           </p>
+
         </div>
 
         <div class="card-body">
@@ -641,17 +1107,26 @@ h1{
           <div class="setting">
 
             <div class="setting-copy">
+
               <div class="setting-title">
                 Allow new clubs
               </div>
+
               <div class="setting-help">
                 Members may create new book clubs.
               </div>
+
             </div>
 
             <label class="toggle">
-              <input type="checkbox" id="allowClubCreation">
+
+              <input
+                type="checkbox"
+                id="allowClubCreation"
+              >
+
               <span class="slider"></span>
+
             </label>
 
           </div>
@@ -659,22 +1134,34 @@ h1{
           <div class="setting">
 
             <div class="setting-copy">
+
               <div class="setting-title">
                 Allow private clubs
               </div>
+
               <div class="setting-help">
                 Presidents may create invitation-only clubs.
               </div>
+
             </div>
 
             <label class="toggle">
-              <input type="checkbox" id="allowPrivateClubs">
+
+              <input
+                type="checkbox"
+                id="allowPrivateClubs"
+              >
+
               <span class="slider"></span>
+
             </label>
 
           </div>
 
-          <div class="two-col" style="margin-top:16px">
+          <div
+            class="two-col"
+            style="margin-top:16px"
+          >
 
             <div class="field">
 
@@ -687,7 +1174,8 @@ h1{
                 type="number"
                 min="1"
                 max="100"
-                value="5">
+                value="5"
+              >
 
             </div>
 
@@ -702,7 +1190,8 @@ h1{
                 type="number"
                 min="2"
                 max="10"
-                value="3">
+                value="3"
+              >
 
             </div>
 
@@ -715,10 +1204,15 @@ h1{
       <article class="card">
 
         <div class="card-head">
-          <h2>Marketplace & Affiliates</h2>
+
+          <h2>
+            Marketplace & Affiliates
+          </h2>
+
           <p>
             Configure DogEar book-purchase behavior.
           </p>
+
         </div>
 
         <div class="card-body">
@@ -726,22 +1220,34 @@ h1{
           <div class="setting">
 
             <div class="setting-copy">
+
               <div class="setting-title">
                 Marketplace enabled
               </div>
+
               <div class="setting-help">
                 Shows purchase options and affiliate-linked books.
               </div>
+
             </div>
 
             <label class="toggle">
-              <input type="checkbox" id="marketplaceEnabled">
+
+              <input
+                type="checkbox"
+                id="marketplaceEnabled"
+              >
+
               <span class="slider"></span>
+
             </label>
 
           </div>
 
-          <div class="field" style="margin-top:16px">
+          <div
+            class="field"
+            style="margin-top:16px"
+          >
 
             <label for="preferredAffiliate">
               Preferred Affiliate Partner
@@ -771,9 +1277,7 @@ h1{
               Affiliate Disclosure
             </label>
 
-            <textarea id="affiliateDisclosure">
-DogEar may earn a commission from qualifying purchases made through affiliate links.
-            </textarea>
+            <textarea id="affiliateDisclosure">DogEar may earn a commission from qualifying purchases made through affiliate links.</textarea>
 
           </div>
 
@@ -784,10 +1288,16 @@ DogEar may earn a commission from qualifying purchases made through affiliate li
       <article class="card">
 
         <div class="card-head">
-          <h2>Tokens & Coins</h2>
+
+          <h2>
+            Tokens & Coins
+          </h2>
+
           <p>
-            Default platform economy values.
+            Default platform economy values. Actual coin availability
+            is controlled above through Feature Rollout.
           </p>
+
         </div>
 
         <div class="card-body">
@@ -805,7 +1315,8 @@ DogEar may earn a commission from qualifying purchases made through affiliate li
                 type="number"
                 min="0"
                 step="0.01"
-                value="10">
+                value="10"
+              >
 
             </div>
 
@@ -820,7 +1331,8 @@ DogEar may earn a commission from qualifying purchases made through affiliate li
                 type="number"
                 min="0"
                 step="1"
-                value="1000">
+                value="1000"
+              >
 
             </div>
 
@@ -838,7 +1350,8 @@ DogEar may earn a commission from qualifying purchases made through affiliate li
                 id="coinsPerDollar"
                 type="number"
                 min="1"
-                value="100">
+                value="100"
+              >
 
             </div>
 
@@ -854,7 +1367,8 @@ DogEar may earn a commission from qualifying purchases made through affiliate li
                 min="0"
                 max="200"
                 step="1"
-                value="100">
+                value="100"
+              >
 
             </div>
 
@@ -867,10 +1381,15 @@ DogEar may earn a commission from qualifying purchases made through affiliate li
       <article class="card">
 
         <div class="card-head">
-          <h2>Safety</h2>
+
+          <h2>
+            Safety
+          </h2>
+
           <p>
             Global platform safety behavior.
           </p>
+
         </div>
 
         <div class="card-body">
@@ -878,17 +1397,26 @@ DogEar may earn a commission from qualifying purchases made through affiliate li
           <div class="setting">
 
             <div class="setting-copy">
+
               <div class="setting-title">
                 Disable clickable links in club posts
               </div>
+
               <div class="setting-help">
                 Discussion text remains plain text even when URLs are posted.
               </div>
+
             </div>
 
             <label class="toggle">
-              <input type="checkbox" id="disableClubLinks">
+
+              <input
+                type="checkbox"
+                id="disableClubLinks"
+              >
+
               <span class="slider"></span>
+
             </label>
 
           </div>
@@ -896,17 +1424,26 @@ DogEar may earn a commission from qualifying purchases made through affiliate li
           <div class="setting">
 
             <div class="setting-copy">
+
               <div class="setting-title">
                 Disable images in club posts
               </div>
+
               <div class="setting-help">
                 Prevents discussion image uploads.
               </div>
+
             </div>
 
             <label class="toggle">
-              <input type="checkbox" id="disableClubImages">
+
+              <input
+                type="checkbox"
+                id="disableClubImages"
+              >
+
               <span class="slider"></span>
+
             </label>
 
           </div>
@@ -914,17 +1451,26 @@ DogEar may earn a commission from qualifying purchases made through affiliate li
           <div class="setting">
 
             <div class="setting-copy">
+
               <div class="setting-title">
                 Device/IP enforcement enabled
               </div>
+
               <div class="setting-help">
                 Makes platform-level ban enforcement available when supported.
               </div>
+
             </div>
 
             <label class="toggle">
-              <input type="checkbox" id="deviceEnforcement">
+
+              <input
+                type="checkbox"
+                id="deviceEnforcement"
+              >
+
               <span class="slider"></span>
+
             </label>
 
           </div>
@@ -936,10 +1482,15 @@ DogEar may earn a commission from qualifying purchases made through affiliate li
       <article class="card full">
 
         <div class="card-head">
-          <h2>Platform Status</h2>
+
+          <h2>
+            Platform Status
+          </h2>
+
           <p>
             Emergency controls and site-wide notices.
           </p>
+
         </div>
 
         <div class="card-body">
@@ -947,22 +1498,34 @@ DogEar may earn a commission from qualifying purchases made through affiliate li
           <div class="setting">
 
             <div class="setting-copy">
+
               <div class="setting-title">
                 Maintenance mode
               </div>
+
               <div class="setting-help">
                 Use this when normal member access needs to be temporarily disabled.
               </div>
+
             </div>
 
             <label class="toggle">
-              <input type="checkbox" id="maintenanceMode">
+
+              <input
+                type="checkbox"
+                id="maintenanceMode"
+              >
+
               <span class="slider"></span>
+
             </label>
 
           </div>
 
-          <div class="field" style="margin-top:16px">
+          <div
+            class="field"
+            style="margin-top:16px"
+          >
 
             <label for="siteNotice">
               Site-Wide Notice
@@ -970,7 +1533,8 @@ DogEar may earn a commission from qualifying purchases made through affiliate li
 
             <textarea
               id="siteNotice"
-              placeholder="Leave blank when there is no platform announcement."></textarea>
+              placeholder="Leave blank when there is no platform announcement."
+            ></textarea>
 
           </div>
 
@@ -984,14 +1548,16 @@ DogEar may earn a commission from qualifying purchases made through affiliate li
 
       <a
         class="btn secondary"
-        href="admin-dashboard.html">
+        href="admin-dashboard.html"
+      >
         Cancel
       </a>
 
       <button
         class="btn primary"
         id="saveBtn"
-        type="button">
+        type="button"
+      >
         Save Platform Settings
       </button>
 
@@ -999,25 +1565,33 @@ DogEar may earn a commission from qualifying purchases made through affiliate li
 
     <div
       class="message"
-      id="message">
-    </div>
+      id="message"
+    ></div>
 
   </div>
 
-  <section class="locked" id="locked">
+  <section
+    class="locked"
+    id="locked"
+  >
 
     <strong>
-      Administrator access required.
+      System administrator access required.
     </strong>
 
-    Your account does not currently have permission to change DogEar's
-    platform settings.
+    Your account does not currently have permission to change
+    DogEar's platform settings.
 
   </section>
 
 </main>
 
 <script>
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
 const SUPABASE_URL =
   "https://nrtutxjznkfvvbmaagum.supabase.co";
 
@@ -1035,8 +1609,13 @@ const $ =
 
 let currentUser = null;
 
+let rolloutFeatures = [];
+let savedRolloutStates = {};
+let pendingRolloutStates = {};
+
+
 /* =========================================================
-   DEFAULT SETTINGS
+   DEFAULT GENERAL SETTINGS
 ========================================================= */
 
 const DEFAULTS = {
@@ -1056,6 +1635,7 @@ const DEFAULTS = {
 
   marketplace_enabled:true,
   preferred_affiliate:"Bookshop.org",
+
   affiliate_disclosure:
     "DogEar may earn a commission from qualifying purchases made through affiliate links.",
 
@@ -1072,6 +1652,7 @@ const DEFAULTS = {
   site_notice:""
 
 };
+
 
 /* =========================================================
    PROFILE
@@ -1099,8 +1680,9 @@ async function loadProfile(){
         }
       );
 
-    if(error)
+    if(error){
       throw error;
+    }
 
     const profile =
       Array.isArray(data)
@@ -1139,8 +1721,11 @@ async function loadProfile(){
     const image =
       document.createElement("img");
 
-    image.src = avatar;
-    image.alt = display;
+    image.src =
+      avatar;
+
+    image.alt =
+      display;
 
     image.onerror =
       () => {
@@ -1148,24 +1733,31 @@ async function loadProfile(){
         holder.innerHTML = "";
 
         holder.textContent =
-          display.charAt(0).toUpperCase();
+          display
+            .charAt(0)
+            .toUpperCase();
 
       };
 
-    holder.appendChild(image);
+    holder.appendChild(
+      image
+    );
 
   }
   else{
 
     holder.textContent =
-      display.charAt(0).toUpperCase();
+      display
+        .charAt(0)
+        .toUpperCase();
 
   }
 
 }
 
+
 /* =========================================================
-   ADMIN CHECK
+   SYSTEM ADMIN CHECK
 ========================================================= */
 
 async function verifyAdmin(){
@@ -1178,23 +1770,29 @@ async function verifyAdmin(){
     } =
       await supabaseClient
         .from("admin_users")
-        .select("user_id,active")
-        .eq("user_id",currentUser.id)
+        .select(
+          "user_id,active"
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        )
         .maybeSingle();
 
-    if(error)
+    if(error){
       throw error;
+    }
 
-    return (
+    return Boolean(
       data &&
-      data.active !== false
+      data.active === true
     );
 
   }
   catch(error){
 
     console.warn(
-      "Admin lookup:",
+      "System admin lookup:",
       error.message
     );
 
@@ -1204,10 +1802,13 @@ async function verifyAdmin(){
 
 }
 
+
 function showLocked(){
 
-  $("settingsArea").style.display =
-    "none";
+  $("settingsArea")
+    .style
+    .display =
+      "none";
 
   $("locked")
     .classList
@@ -1215,11 +1816,613 @@ function showLocked(){
 
 }
 
+
 /* =========================================================
-   FORM MAPPING
+   FEATURE ROLLOUT
 ========================================================= */
 
-function applySettings(settings){
+async function loadRolloutFeatures(){
+
+  setRolloutStatus(
+    "Loading rollout settings..."
+  );
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "platform_features"
+        )
+        .select(
+          "feature_key,display_name,description,rollout_phase,rollout_state"
+        )
+        .order(
+          "rollout_phase",
+          {
+            ascending:true
+          }
+        )
+        .order(
+          "display_name",
+          {
+            ascending:true
+          }
+        );
+
+    if(error){
+      throw error;
+    }
+
+    rolloutFeatures =
+      Array.isArray(data)
+        ? data
+        : [];
+
+    savedRolloutStates = {};
+    pendingRolloutStates = {};
+
+    for(
+      const feature
+      of rolloutFeatures
+    ){
+
+      savedRolloutStates[
+        feature.feature_key
+      ] =
+        feature.rollout_state;
+
+      pendingRolloutStates[
+        feature.feature_key
+      ] =
+        feature.rollout_state;
+
+    }
+
+    renderRolloutFeatures();
+
+    setRolloutStatus(
+      "All rollout settings are saved.",
+      "saved"
+    );
+
+    updateRolloutButtons();
+
+  }
+  catch(error){
+
+    console.error(
+      "Rollout settings:",
+      error
+    );
+
+    setRolloutStatus(
+      "DogEar couldn't load feature rollout settings: " +
+      (
+        error.message ||
+        "Unknown error"
+      ),
+      "error"
+    );
+
+  }
+
+}
+
+
+function renderRolloutFeatures(){
+
+  for(
+    let phase = 1;
+    phase <= 4;
+    phase++
+  ){
+
+    const holder =
+      $(
+        `phase${phase}Features`
+      );
+
+    holder.innerHTML = "";
+
+    const features =
+      rolloutFeatures.filter(
+        feature =>
+          Number(
+            feature.rollout_phase
+          ) === phase
+      );
+
+    if(
+      !features.length
+    ){
+
+      holder.innerHTML =
+        `
+          <div
+            style="
+              padding:18px 20px;
+              color:var(--muted);
+              font:11px/1.5 Arial;
+            "
+          >
+            No features are currently assigned to this phase.
+          </div>
+        `;
+
+      continue;
+
+    }
+
+    for(
+      const feature
+      of features
+    ){
+
+      const row =
+        document.createElement(
+          "div"
+        );
+
+      row.className =
+        "feature-row";
+
+      const copy =
+        document.createElement(
+          "div"
+        );
+
+      const title =
+        document.createElement(
+          "div"
+        );
+
+      title.className =
+        "feature-title";
+
+      title.textContent =
+        feature.display_name ||
+        feature.feature_key;
+
+      const description =
+        document.createElement(
+          "div"
+        );
+
+      description.className =
+        "feature-description";
+
+      description.textContent =
+        feature.description ||
+        "DogEar platform feature.";
+
+      copy.appendChild(
+        title
+      );
+
+      copy.appendChild(
+        description
+      );
+
+      const control =
+        document.createElement(
+          "div"
+        );
+
+      control.className =
+        "feature-control";
+
+      control.dataset.featureKey =
+        feature.feature_key;
+
+      control.appendChild(
+        createStateButton(
+          feature.feature_key,
+          "off",
+          "Off"
+        )
+      );
+
+      control.appendChild(
+        createStateButton(
+          feature.feature_key,
+          "admins_only",
+          "Admins Only"
+        )
+      );
+
+      control.appendChild(
+        createStateButton(
+          feature.feature_key,
+          "on",
+          "On"
+        )
+      );
+
+      row.appendChild(
+        copy
+      );
+
+      row.appendChild(
+        control
+      );
+
+      holder.appendChild(
+        row
+      );
+
+      updateFeatureControl(
+        feature.feature_key
+      );
+
+    }
+
+  }
+
+}
+
+
+function createStateButton(
+  featureKey,
+  state,
+  label
+){
+
+  const button =
+    document.createElement(
+      "button"
+    );
+
+  button.type =
+    "button";
+
+  button.dataset.featureKey =
+    featureKey;
+
+  button.dataset.state =
+    state;
+
+  button.textContent =
+    label;
+
+  button.addEventListener(
+    "click",
+    () => {
+
+      pendingRolloutStates[
+        featureKey
+      ] =
+        state;
+
+      updateFeatureControl(
+        featureKey
+      );
+
+      updateRolloutButtons();
+
+    }
+  );
+
+  return button;
+
+}
+
+
+function updateFeatureControl(
+  featureKey
+){
+
+  const selectedState =
+    pendingRolloutStates[
+      featureKey
+    ];
+
+  document
+    .querySelectorAll(
+      `.feature-control button[data-feature-key="${featureKey}"]`
+    )
+    .forEach(
+      button => {
+
+        button.classList.toggle(
+          "selected",
+          button.dataset.state ===
+            selectedState
+        );
+
+      }
+    );
+
+}
+
+
+function rolloutHasChanges(){
+
+  return Object.keys(
+    pendingRolloutStates
+  )
+    .some(
+      featureKey =>
+        pendingRolloutStates[
+          featureKey
+        ] !==
+        savedRolloutStates[
+          featureKey
+        ]
+    );
+
+}
+
+
+function updateRolloutButtons(){
+
+  const changed =
+    rolloutHasChanges();
+
+  $("saveRolloutBtn")
+    .disabled =
+      !changed;
+
+  $("resetRolloutBtn")
+    .disabled =
+      !changed;
+
+  if(changed){
+
+    const count =
+      Object.keys(
+        pendingRolloutStates
+      )
+        .filter(
+          featureKey =>
+            pendingRolloutStates[
+              featureKey
+            ] !==
+            savedRolloutStates[
+              featureKey
+            ]
+        )
+        .length;
+
+    setRolloutStatus(
+      count === 1
+        ? "1 rollout change has not been saved."
+        : `${count} rollout changes have not been saved.`,
+      "changed"
+    );
+
+  }
+  else{
+
+    setRolloutStatus(
+      "All rollout settings are saved.",
+      "saved"
+    );
+
+  }
+
+}
+
+
+function setRolloutStatus(
+  text,
+  type=""
+){
+
+  const holder =
+    $("rolloutStatus");
+
+  holder.textContent =
+    text;
+
+  holder.className =
+    "rollout-status" +
+    (
+      type
+        ? " " + type
+        : ""
+    );
+
+}
+
+
+$("resetRolloutBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      pendingRolloutStates =
+        {
+          ...savedRolloutStates
+        };
+
+      for(
+        const feature
+        of rolloutFeatures
+      ){
+
+        updateFeatureControl(
+          feature.feature_key
+        );
+
+      }
+
+      updateRolloutButtons();
+
+    }
+  );
+
+
+$("saveRolloutBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      const changedFeatures =
+        Object.keys(
+          pendingRolloutStates
+        )
+          .filter(
+            featureKey =>
+              pendingRolloutStates[
+                featureKey
+              ] !==
+              savedRolloutStates[
+                featureKey
+              ]
+          );
+
+      if(
+        !changedFeatures.length
+      ){
+        return;
+      }
+
+      const saveButton =
+        $("saveRolloutBtn");
+
+      const resetButton =
+        $("resetRolloutBtn");
+
+      saveButton.disabled =
+        true;
+
+      resetButton.disabled =
+        true;
+
+      saveButton.textContent =
+        "Saving...";
+
+      setFeatureControlsDisabled(
+        true
+      );
+
+      setRolloutStatus(
+        "Saving rollout changes..."
+      );
+
+      try{
+
+        /*
+          Each change goes through the protected
+          SECURITY DEFINER RPC created in Migration #1.
+
+          The browser cannot directly update
+          platform_features.
+        */
+
+        for(
+          const featureKey
+          of changedFeatures
+        ){
+
+          const {
+            error
+          } =
+            await supabaseClient.rpc(
+              "admin_set_feature_state",
+              {
+                check_feature_key:
+                  featureKey,
+
+                new_rollout_state:
+                  pendingRolloutStates[
+                    featureKey
+                  ]
+              }
+            );
+
+          if(error){
+            throw error;
+          }
+
+        }
+
+        /*
+          Reload from the database after saving so the
+          page never assumes a write succeeded.
+        */
+
+        await loadRolloutFeatures();
+
+        setRolloutStatus(
+          "Feature rollout updated successfully.",
+          "saved"
+        );
+
+      }
+      catch(error){
+
+        console.error(
+          "Save rollout:",
+          error
+        );
+
+        setRolloutStatus(
+          "DogEar couldn't save the rollout changes: " +
+          (
+            error.message ||
+            "Unknown error"
+          ),
+          "error"
+        );
+
+        /*
+          Reload the authoritative database state.
+          This matters if several RPC updates succeeded
+          before one failed.
+        */
+
+        await loadRolloutFeatures();
+
+      }
+      finally{
+
+        saveButton.textContent =
+          "Save Rollout";
+
+        setFeatureControlsDisabled(
+          false
+        );
+
+        updateRolloutButtons();
+
+      }
+
+    }
+  );
+
+
+function setFeatureControlsDisabled(
+  disabled
+){
+
+  document
+    .querySelectorAll(
+      ".feature-control button"
+    )
+    .forEach(
+      button => {
+
+        button.disabled =
+          disabled;
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   GENERAL SETTINGS FORM
+========================================================= */
+
+function applySettings(
+  settings
+){
 
   const s =
     Object.assign(
@@ -1244,7 +2447,8 @@ function applySettings(settings){
     !!s.verified_lift_limits;
 
   $("verificationLabel").value =
-    s.verification_label || "";
+    s.verification_label ||
+    "";
 
   $("allowClubCreation").checked =
     !!s.allow_club_creation;
@@ -1294,28 +2498,35 @@ function applySettings(settings){
     !!s.maintenance_mode;
 
   $("siteNotice").value =
-    s.site_notice || "";
+    s.site_notice ||
+    "";
 
 }
+
 
 function collectSettings(){
 
   return {
 
     allow_registrations:
-      $("allowRegistrations").checked,
+      $("allowRegistrations")
+        .checked,
 
     require_approval:
-      $("requireApproval").checked,
+      $("requireApproval")
+        .checked,
 
     require_email_verification:
-      $("requireEmailVerification").checked,
+      $("requireEmailVerification")
+        .checked,
 
     verification_enabled:
-      $("verificationEnabled").checked,
+      $("verificationEnabled")
+        .checked,
 
     verified_lift_limits:
-      $("verifiedLiftLimits").checked,
+      $("verifiedLiftLimits")
+        .checked,
 
     verification_label:
       $("verificationLabel")
@@ -1324,26 +2535,32 @@ function collectSettings(){
       "Verified",
 
     allow_club_creation:
-      $("allowClubCreation").checked,
+      $("allowClubCreation")
+        .checked,
 
     allow_private_clubs:
-      $("allowPrivateClubs").checked,
+      $("allowPrivateClubs")
+        .checked,
 
     club_limit:
       Number(
-        $("clubLimit").value
+        $("clubLimit")
+          .value
       ) || 5,
 
     ballot_choice_count:
       Number(
-        $("ballotChoiceCount").value
+        $("ballotChoiceCount")
+          .value
       ) || 3,
 
     marketplace_enabled:
-      $("marketplaceEnabled").checked,
+      $("marketplaceEnabled")
+        .checked,
 
     preferred_affiliate:
-      $("preferredAffiliate").value,
+      $("preferredAffiliate")
+        .value,
 
     affiliate_disclosure:
       $("affiliateDisclosure")
@@ -1352,35 +2569,43 @@ function collectSettings(){
 
     premium_price:
       Number(
-        $("premiumPrice").value
+        $("premiumPrice")
+          .value
       ) || 0,
 
     premium_tokens:
       Number(
-        $("premiumTokens").value
+        $("premiumTokens")
+          .value
       ) || 0,
 
     coins_per_dollar:
       Number(
-        $("coinsPerDollar").value
+        $("coinsPerDollar")
+          .value
       ) || 100,
 
     reserve_percent:
       Number(
-        $("reservePercent").value
+        $("reservePercent")
+          .value
       ) || 0,
 
     disable_club_links:
-      $("disableClubLinks").checked,
+      $("disableClubLinks")
+        .checked,
 
     disable_club_images:
-      $("disableClubImages").checked,
+      $("disableClubImages")
+        .checked,
 
     device_enforcement:
-      $("deviceEnforcement").checked,
+      $("deviceEnforcement")
+        .checked,
 
     maintenance_mode:
-      $("maintenanceMode").checked,
+      $("maintenanceMode")
+        .checked,
 
     site_notice:
       $("siteNotice")
@@ -1391,45 +2616,12 @@ function collectSettings(){
 
 }
 
+
 /* =========================================================
-   LOAD SETTINGS
+   LOAD GENERAL SETTINGS
 ========================================================= */
 
 async function loadSettings(){
-
-  /*
-    Expected single-row table:
-
-    platform_settings
-      id
-      allow_registrations
-      require_approval
-      require_email_verification
-      verification_enabled
-      verified_lift_limits
-      verification_label
-      allow_club_creation
-      allow_private_clubs
-      club_limit
-      ballot_choice_count
-      marketplace_enabled
-      preferred_affiliate
-      affiliate_disclosure
-      premium_price
-      premium_tokens
-      coins_per_dollar
-      reserve_percent
-      disable_club_links
-      disable_club_images
-      device_enforcement
-      maintenance_mode
-      site_notice
-      updated_at
-      updated_by
-
-    This page uses a fixed row id:
-      global
-  */
 
   try{
 
@@ -1438,16 +2630,23 @@ async function loadSettings(){
       error
     } =
       await supabaseClient
-        .from("platform_settings")
+        .from(
+          "platform_settings"
+        )
         .select("*")
-        .eq("id","global")
+        .eq(
+          "id",
+          "global"
+        )
         .maybeSingle();
 
-    if(error)
+    if(error){
       throw error;
+    }
 
     applySettings(
-      data || DEFAULTS
+      data ||
+      DEFAULTS
     );
 
   }
@@ -1466,29 +2665,43 @@ async function loadSettings(){
 
 }
 
+
 /* =========================================================
-   MESSAGE
+   GENERAL SETTINGS MESSAGE
 ========================================================= */
 
-function showMessage(text,type=""){
+function showMessage(
+  text,
+  type=""
+){
 
-  $("message").textContent =
-    text;
+  $("message")
+    .textContent =
+      text;
 
-  $("message").className =
-    "message show " + type;
+  $("message")
+    .className =
+      "message show " +
+      type;
 
 }
+
 
 function clearMessage(){
 
-  $("message").textContent = "";
-  $("message").className = "message";
+  $("message")
+    .textContent =
+      "";
+
+  $("message")
+    .className =
+      "message";
 
 }
 
+
 /* =========================================================
-   SAVE
+   SAVE GENERAL SETTINGS
 ========================================================= */
 
 $("saveBtn")
@@ -1513,23 +2726,21 @@ $("saveBtn")
       try{
 
         /*
-          Prototype storage.
+          Existing DogEar platform_settings storage.
 
-          Production recommendation:
-          use a protected update_platform_settings RPC
-          rather than allowing browser-side writes directly.
-
-          RLS should guarantee only site administrators
-          may alter this row.
+          This remains separate from platform_features.
+          Feature rollout is protected through its RPC above.
         */
 
         const payload = {
 
           id:"global",
+
           ...settings,
 
           updated_at:
-            new Date().toISOString(),
+            new Date()
+              .toISOString(),
 
           updated_by:
             currentUser.id
@@ -1540,7 +2751,9 @@ $("saveBtn")
           error
         } =
           await supabaseClient
-            .from("platform_settings")
+            .from(
+              "platform_settings"
+            )
             .upsert(
               payload,
               {
@@ -1548,8 +2761,9 @@ $("saveBtn")
               }
             );
 
-        if(error)
+        if(error){
           throw error;
+        }
 
         showMessage(
           "DogEar platform settings saved.",
@@ -1559,7 +2773,9 @@ $("saveBtn")
       }
       catch(error){
 
-        console.error(error);
+        console.error(
+          error
+        );
 
         showMessage(
           "DogEar couldn't save these settings: " +
@@ -1583,6 +2799,7 @@ $("saveBtn")
 
     }
   );
+
 
 /* =========================================================
    START
@@ -1618,7 +2835,9 @@ async function start(){
   const allowed =
     await verifyAdmin();
 
-  if(!allowed){
+  if(
+    !allowed
+  ){
 
     showLocked();
 
@@ -1630,7 +2849,10 @@ async function start(){
 
   }
 
-  await loadSettings();
+  await Promise.all([
+    loadRolloutFeatures(),
+    loadSettings()
+  ]);
 
   $("loading")
     .classList
@@ -1639,6 +2861,7 @@ async function start(){
 }
 
 start();
+
 </script>
 
 </body>
