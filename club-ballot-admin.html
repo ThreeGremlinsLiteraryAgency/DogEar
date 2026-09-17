@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
 <title>DogEar — Build Monthly Ballot</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 :root{
   --ink:#090b0a;
   --panel:#101410;
@@ -29,18 +36,32 @@
   box-sizing:border-box;
 }
 
+html{
+  scroll-behavior:smooth;
+}
+
 body{
   margin:0;
   min-height:100vh;
   color:var(--cream);
+
   background:
     radial-gradient(
       circle at 10% 0%,
       rgba(53,73,59,.24),
       transparent 28%
     ),
+    radial-gradient(
+      circle at 90% 12%,
+      rgba(199,155,89,.06),
+      transparent 25%
+    ),
     var(--ink);
-  font-family:Georgia,"Times New Roman",serif;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
 }
 
 button,
@@ -48,9 +69,14 @@ input{
   font:inherit;
 }
 
+button{
+  color:inherit;
+}
+
 a{
   color:inherit;
 }
+
 
 /* =========================================================
    TOP NAV
@@ -58,26 +84,53 @@ a{
 
 .topbar{
   min-height:76px;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:24px;
-  padding:0 clamp(18px,4vw,60px);
-  border-bottom:1px solid var(--line);
-  background:rgba(9,11,10,.94);
+
+  padding:
+    0
+    clamp(
+      18px,
+      4vw,
+      60px
+    );
+
+  border-bottom:
+    1px solid
+    var(--line);
+
+  background:
+    rgba(
+      9,
+      11,
+      10,
+      .94
+    );
+
   position:sticky;
   top:0;
   z-index:30;
-  backdrop-filter:blur(14px);
+
+  backdrop-filter:
+    blur(14px);
 }
 
 .brand{
   display:flex;
   align-items:center;
   gap:11px;
+
   color:var(--gold2);
   text-decoration:none;
-  font:800 13px Arial;
+
+  font:
+    800 13px
+    Arial,
+    sans-serif;
+
   letter-spacing:.17em;
   text-transform:uppercase;
 }
@@ -85,28 +138,51 @@ a{
 .brand-mark{
   width:34px;
   height:34px;
+
   position:relative;
-  border:1px solid var(--gold);
-  border-radius:50% 50% 50% 12%;
-  transform:rotate(-8deg);
+
+  border:
+    1px solid
+    var(--gold);
+
+  border-radius:
+    50% 50% 50% 12%;
+
+  transform:
+    rotate(-8deg);
 }
 
 .brand-mark::after{
   content:"";
+
   position:absolute;
+
   width:11px;
   height:11px;
+
   right:2px;
   top:2px;
-  border-left:1px solid var(--gold);
-  border-bottom:1px solid var(--gold);
+
+  border-left:
+    1px solid
+    var(--gold);
+
+  border-bottom:
+    1px solid
+    var(--gold);
+
   background:var(--ink);
 }
 
 .nav{
   display:flex;
   gap:24px;
-  font:700 11px Arial;
+
+  font:
+    700 11px
+    Arial,
+    sans-serif;
+
   letter-spacing:.1em;
   text-transform:uppercase;
 }
@@ -124,15 +200,27 @@ a{
 .avatar{
   width:38px;
   height:38px;
-  border:1px solid var(--line);
+
+  border:
+    1px solid
+    var(--line);
+
   border-radius:50%;
+
   display:grid;
   place-items:center;
+
   overflow:hidden;
+
   background:var(--green);
   color:var(--gold2);
+
   text-decoration:none;
-  font:800 13px Arial;
+
+  font:
+    800 13px
+    Arial,
+    sans-serif;
 }
 
 .avatar img{
@@ -141,20 +229,35 @@ a{
   object-fit:cover;
 }
 
+
 /* =========================================================
    PAGE
    ========================================================= */
 
 .page{
-  width:min(1180px,calc(100% - 32px));
+  width:
+    min(
+      1180px,
+      calc(
+        100% - 32px
+      )
+    );
+
   margin:auto;
-  padding:36px 0 110px;
+
+  padding:
+    36px 0 110px;
 }
 
 .back{
   color:var(--gold2);
   text-decoration:none;
-  font:800 10px Arial;
+
+  font:
+    800 10px
+    Arial,
+    sans-serif;
+
   letter-spacing:.1em;
   text-transform:uppercase;
 }
@@ -164,22 +267,41 @@ a{
   align-items:end;
   justify-content:space-between;
   gap:24px;
-  margin:24px 0;
+
+  margin:
+    24px 0;
+
   padding-bottom:26px;
-  border-bottom:1px solid var(--line);
+
+  border-bottom:
+    1px solid
+    var(--line);
 }
 
 .eyebrow{
   margin-bottom:10px;
+
   color:var(--gold);
-  font:800 10px Arial;
+
+  font:
+    800 10px
+    Arial,
+    sans-serif;
+
   letter-spacing:.18em;
   text-transform:uppercase;
 }
 
 h1{
   margin:0;
-  font-size:clamp(40px,6vw,68px);
+
+  font-size:
+    clamp(
+      40px,
+      6vw,
+      68px
+    );
+
   line-height:.96;
   letter-spacing:-.035em;
   font-weight:400;
@@ -188,25 +310,74 @@ h1{
 .subtitle{
   max-width:700px;
   margin-top:13px;
+
   color:var(--muted);
-  font:13px/1.65 Arial;
+
+  font:
+    13px/1.65
+    Arial,
+    sans-serif;
 }
 
 .status-pill{
   flex:0 0 auto;
-  padding:9px 13px;
-  border:1px solid var(--line);
+
+  padding:
+    9px 13px;
+
+  border:
+    1px solid
+    var(--line);
+
   border-radius:999px;
+
   color:var(--gold2);
-  font:800 9px Arial;
+
+  font:
+    800 9px
+    Arial,
+    sans-serif;
+
   letter-spacing:.1em;
   text-transform:uppercase;
 }
 
 .status-pill.open{
-  border-color:rgba(185,214,178,.45);
+  border-color:
+    rgba(
+      185,
+      214,
+      178,
+      .45
+    );
+
   color:var(--ok);
 }
+
+.status-pill.closed{
+  border-color:
+    rgba(
+      227,
+      197,
+      140,
+      .42
+    );
+
+  color:var(--warning);
+}
+
+.status-pill.finalized{
+  border-color:
+    rgba(
+      199,
+      155,
+      89,
+      .52
+    );
+
+  color:var(--gold2);
+}
+
 
 /* =========================================================
    CLUB NAV
@@ -216,16 +387,28 @@ h1{
   display:flex;
   gap:9px;
   flex-wrap:wrap;
+
   margin-bottom:26px;
 }
 
 .club-nav a{
-  padding:9px 12px;
-  border:1px solid var(--line);
+  padding:
+    9px 12px;
+
+  border:
+    1px solid
+    var(--line);
+
   border-radius:999px;
+
   color:var(--muted);
   text-decoration:none;
-  font:800 9px Arial;
+
+  font:
+    800 9px
+    Arial,
+    sans-serif;
+
   letter-spacing:.08em;
   text-transform:uppercase;
 }
@@ -235,28 +418,56 @@ h1{
   border-color:var(--gold);
 }
 
+
 /* =========================================================
    LAYOUT
    ========================================================= */
 
 .layout{
   display:grid;
-  grid-template-columns:minmax(0,1fr) 310px;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    310px;
+
   gap:24px;
   align-items:start;
 }
 
 .card{
-  border:1px solid var(--line);
+  border:
+    1px solid
+    var(--line);
+
   border-radius:20px;
+
   overflow:hidden;
-  background:rgba(16,20,16,.88);
-  box-shadow:0 20px 60px rgba(0,0,0,.24);
+
+  background:
+    rgba(
+      16,
+      20,
+      16,
+      .88
+    );
+
+  box-shadow:
+    0 20px 60px
+    rgba(
+      0,
+      0,
+      0,
+      .24
+    );
 }
 
 .card-head{
-  padding:20px 22px;
-  border-bottom:1px solid var(--line);
+  padding:
+    20px 22px;
+
+  border-bottom:
+    1px solid
+    var(--line);
 }
 
 .card-head h2{
@@ -266,10 +477,17 @@ h1{
 }
 
 .card-head p{
-  margin:6px 0 0;
+  margin:
+    6px 0 0;
+
   color:var(--muted);
-  font:12px/1.55 Arial;
+
+  font:
+    12px/1.55
+    Arial,
+    sans-serif;
 }
+
 
 /* =========================================================
    BALLOT SLOTS
@@ -277,17 +495,36 @@ h1{
 
 .slots{
   padding:20px;
+
   display:grid;
   gap:16px;
 }
 
 .slot{
   min-height:190px;
-  border:1px dashed rgba(199,155,89,.32);
+
+  border:
+    1px dashed
+    rgba(
+      199,
+      155,
+      89,
+      .32
+    );
+
   border-radius:17px;
+
   padding:16px;
+
   position:relative;
-  background:rgba(13,17,14,.6);
+
+  background:
+    rgba(
+      13,
+      17,
+      14,
+      .6
+    );
 }
 
 .slot.filled{
@@ -296,51 +533,94 @@ h1{
 
 .slot-number{
   position:absolute;
+
   top:13px;
   right:13px;
-  padding:5px 8px;
-  border:1px solid var(--line);
+
+  padding:
+    5px 8px;
+
+  border:
+    1px solid
+    var(--line);
+
   border-radius:999px;
+
   color:var(--gold);
-  font:800 8px Arial;
+
+  font:
+    800 8px
+    Arial,
+    sans-serif;
+
   letter-spacing:.08em;
   text-transform:uppercase;
 }
 
 .empty-slot{
   min-height:155px;
+
   display:grid;
   place-items:center;
+
   text-align:center;
+
   color:var(--muted);
-  font:12px/1.6 Arial;
+
+  font:
+    12px/1.6
+    Arial,
+    sans-serif;
 }
 
 .empty-slot strong{
   display:block;
+
   margin-bottom:6px;
+
   color:var(--cream);
-  font:400 20px Georgia;
+
+  font:
+    400 20px
+    Georgia,
+    serif;
 }
 
 .book-selected{
   display:grid;
-  grid-template-columns:90px minmax(0,1fr);
+
+  grid-template-columns:
+    90px
+    minmax(0,1fr);
+
   gap:16px;
 }
 
 .cover{
   width:90px;
-  aspect-ratio:2/3;
+
+  aspect-ratio:
+    2 / 3;
+
   border-radius:9px;
   overflow:hidden;
-  border:1px solid var(--line-soft);
+
+  border:
+    1px solid
+    var(--line-soft);
+
   background:#171c18;
+
   display:grid;
   place-items:center;
+
   color:var(--muted);
-  font:700 9px Arial;
   text-align:center;
+
+  font:
+    700 9px
+    Arial,
+    sans-serif;
 }
 
 .cover img{
@@ -350,30 +630,295 @@ h1{
 }
 
 .book-selected h3{
-  margin:3px 55px 5px 0;
+  margin:
+    3px 55px 5px 0;
+
   font-size:21px;
   font-weight:400;
 }
 
 .book-author{
   margin-bottom:9px;
+
   color:var(--gold2);
-  font:700 11px Arial;
+
+  font:
+    700 11px
+    Arial,
+    sans-serif;
 }
 
 .edition-data{
   display:grid;
   gap:4px;
+
   color:var(--muted);
-  font:10px/1.45 Arial;
+
+  font:
+    10px/1.45
+    Arial,
+    sans-serif;
 }
 
 .slot-actions{
   display:flex;
   gap:8px;
   flex-wrap:wrap;
+
   margin-top:13px;
 }
+
+
+/* =========================================================
+   RESULTS / FINALIZATION
+   ========================================================= */
+
+.results-panel{
+  margin:
+    0 20px 20px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:17px;
+
+  overflow:hidden;
+
+  background:
+    rgba(
+      9,
+      11,
+      10,
+      .38
+    );
+}
+
+.results-panel[hidden]{
+  display:none;
+}
+
+.results-head{
+  padding:
+    18px 19px;
+
+  border-bottom:
+    1px solid
+    var(--line-soft);
+}
+
+.results-head h3{
+  margin:0;
+
+  font-size:22px;
+  font-weight:400;
+}
+
+.results-head p{
+  margin:
+    6px 0 0;
+
+  color:var(--muted);
+
+  font:
+    10px/1.6
+    Arial,
+    sans-serif;
+}
+
+.result-list{
+  padding:14px;
+
+  display:grid;
+  gap:10px;
+}
+
+.vote-result{
+  display:grid;
+
+  grid-template-columns:
+    54px
+    minmax(0,1fr)
+    auto;
+
+  gap:12px;
+  align-items:center;
+
+  padding:11px;
+
+  border:
+    1px solid
+    var(--line-soft);
+
+  border-radius:12px;
+
+  background:
+    rgba(
+      16,
+      20,
+      16,
+      .65
+    );
+}
+
+.vote-result.leading{
+  border-color:
+    rgba(
+      199,
+      155,
+      89,
+      .5
+    );
+}
+
+.vote-result.winner{
+  border-color:
+    rgba(
+      185,
+      214,
+      178,
+      .5
+    );
+}
+
+.result-cover-small{
+  width:54px;
+
+  aspect-ratio:
+    2 / 3;
+
+  border-radius:6px;
+  overflow:hidden;
+
+  background:#171c18;
+
+  display:grid;
+  place-items:center;
+
+  color:var(--muted);
+  text-align:center;
+
+  font:
+    700 7px
+    Arial,
+    sans-serif;
+}
+
+.result-cover-small img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.result-book-title{
+  margin-bottom:4px;
+
+  font-size:15px;
+  line-height:1.15;
+}
+
+.result-book-author{
+  color:var(--muted);
+
+  font:
+    9px/1.45
+    Arial,
+    sans-serif;
+}
+
+.result-votes{
+  min-width:66px;
+  text-align:right;
+
+  color:var(--gold2);
+
+  font:
+    800 10px
+    Arial,
+    sans-serif;
+
+  text-transform:uppercase;
+}
+
+.result-tag{
+  display:inline-block;
+
+  margin-top:5px;
+
+  padding:
+    4px 7px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:999px;
+
+  color:var(--gold);
+
+  font:
+    800 7px
+    Arial,
+    sans-serif;
+
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+
+.result-actions{
+  padding:
+    0 14px 15px;
+
+  display:grid;
+  gap:9px;
+}
+
+.tie-note{
+  padding:
+    11px 12px;
+
+  border:
+    1px solid
+    rgba(
+      227,
+      197,
+      140,
+      .28
+    );
+
+  border-radius:10px;
+
+  color:var(--warning);
+
+  font:
+    10px/1.55
+    Arial,
+    sans-serif;
+}
+
+.finalized-note{
+  padding:
+    11px 12px;
+
+  border:
+    1px solid
+    rgba(
+      185,
+      214,
+      178,
+      .28
+    );
+
+  border-radius:10px;
+
+  color:var(--ok);
+
+  font:
+    10px/1.55
+    Arial,
+    sans-serif;
+}
+
 
 /* =========================================================
    BUTTONS
@@ -381,36 +926,85 @@ h1{
 
 .btn{
   min-height:42px;
-  padding:0 16px;
+
+  padding:
+    0 16px;
+
   border-radius:999px;
+
   cursor:pointer;
-  font:800 9px Arial;
+
+  font:
+    800 9px
+    Arial,
+    sans-serif;
+
   letter-spacing:.08em;
   text-transform:uppercase;
 }
 
 .primary{
-  border:1px solid var(--gold);
+  border:
+    1px solid
+    var(--gold);
+
   background:var(--gold);
   color:#17130e;
 }
 
 .secondary{
-  border:1px solid var(--line);
+  border:
+    1px solid
+    var(--line);
+
   background:transparent;
   color:var(--gold2);
 }
 
 .danger{
-  border:1px solid rgba(230,160,154,.38);
+  border:
+    1px solid
+    rgba(
+      230,
+      160,
+      154,
+      .38
+    );
+
   background:transparent;
   color:var(--danger);
+}
+
+.success{
+  border:
+    1px solid
+    rgba(
+      185,
+      214,
+      178,
+      .45
+    );
+
+  background:
+    rgba(
+      185,
+      214,
+      178,
+      .08
+    );
+
+  color:var(--ok);
+}
+
+.btn:hover:not(:disabled){
+  filter:brightness(1.08);
 }
 
 .btn:disabled{
   opacity:.5;
   cursor:not-allowed;
 }
+
 
 /* =========================================================
    SIDEBAR
@@ -423,7 +1017,10 @@ h1{
 .side-section{
   padding-bottom:18px;
   margin-bottom:18px;
-  border-bottom:1px solid var(--line-soft);
+
+  border-bottom:
+    1px solid
+    var(--line-soft);
 }
 
 .side-section:last-child{
@@ -433,20 +1030,28 @@ h1{
 }
 
 .side-section h3{
-  margin:0 0 8px;
+  margin:
+    0 0 8px;
+
   font-size:17px;
   font-weight:400;
 }
 
 .side-section p{
   margin:0;
+
   color:var(--muted);
-  font:11px/1.65 Arial;
+
+  font:
+    11px/1.65
+    Arial,
+    sans-serif;
 }
 
 .side-actions{
   display:grid;
   gap:9px;
+
   margin-top:13px;
 }
 
@@ -456,6 +1061,7 @@ h1{
 
 .ballot-progress{
   margin-top:13px;
+
   display:grid;
   gap:7px;
 }
@@ -464,8 +1070,13 @@ h1{
   display:flex;
   justify-content:space-between;
   gap:10px;
+
   color:var(--muted);
-  font:10px Arial;
+
+  font:
+    10px
+    Arial,
+    sans-serif;
 }
 
 .progress-row strong{
@@ -474,11 +1085,22 @@ h1{
 
 .message{
   display:none;
+
   margin-top:12px;
-  padding:11px 12px;
-  border:1px solid var(--line);
+
+  padding:
+    11px 12px;
+
+  border:
+    1px solid
+    var(--line);
+
   border-radius:10px;
-  font:11px/1.5 Arial;
+
+  font:
+    11px/1.5
+    Arial,
+    sans-serif;
 }
 
 .message.show{
@@ -497,6 +1119,7 @@ h1{
   color:var(--warning);
 }
 
+
 /* =========================================================
    SEARCH MODAL
    ========================================================= */
@@ -504,11 +1127,21 @@ h1{
 .modal{
   position:fixed;
   inset:0;
+
   z-index:60;
+
   display:none;
   place-items:center;
+
   padding:20px;
-  background:rgba(0,0,0,.78);
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      .78
+    );
 }
 
 .modal.show{
@@ -516,15 +1149,39 @@ h1{
 }
 
 .modal-card{
-  width:min(850px,100%);
-  max-height:min(780px,90vh);
+  width:
+    min(
+      850px,
+      100%
+    );
+
+  max-height:
+    min(
+      780px,
+      90vh
+    );
+
   display:flex;
   flex-direction:column;
+
   overflow:hidden;
-  border:1px solid var(--line);
+
+  border:
+    1px solid
+    var(--line);
+
   border-radius:20px;
+
   background:#0e120f;
-  box-shadow:0 30px 90px rgba(0,0,0,.55);
+
+  box-shadow:
+    0 30px 90px
+    rgba(
+      0,
+      0,
+      0,
+      .55
+    );
 }
 
 .modal-head{
@@ -532,8 +1189,13 @@ h1{
   justify-content:space-between;
   align-items:center;
   gap:20px;
-  padding:20px 22px;
-  border-bottom:1px solid var(--line);
+
+  padding:
+    20px 22px;
+
+  border-bottom:
+    1px solid
+    var(--line);
 }
 
 .modal-head h2{
@@ -546,31 +1208,57 @@ h1{
   border:0;
   background:none;
   color:var(--muted);
+
   cursor:pointer;
   font-size:25px;
 }
 
 .search-area{
-  padding:16px 20px;
-  border-bottom:1px solid var(--line-soft);
+  padding:
+    16px 20px;
+
+  border-bottom:
+    1px solid
+    var(--line-soft);
 }
 
 .search-row{
   display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    auto;
+
   gap:10px;
 }
 
 .search-input{
   width:100%;
   height:45px;
-  padding:0 14px;
-  border:1px solid rgba(199,155,89,.22);
+
+  padding:
+    0 14px;
+
+  border:
+    1px solid
+    rgba(
+      199,
+      155,
+      89,
+      .22
+    );
+
   border-radius:12px;
+
   outline:none;
+
   background:var(--panel2);
   color:var(--cream);
-  font:13px Arial;
+
+  font:
+    13px
+    Arial,
+    sans-serif;
 }
 
 .search-input:focus{
@@ -579,38 +1267,73 @@ h1{
 
 .search-help{
   margin-top:8px;
+
   color:var(--muted);
-  font:10px/1.5 Arial;
+
+  font:
+    10px/1.5
+    Arial,
+    sans-serif;
 }
 
 .results{
-  padding:16px 20px 22px;
+  padding:
+    16px 20px 22px;
+
   overflow:auto;
+
   display:grid;
   gap:12px;
 }
 
 .result{
   display:grid;
-  grid-template-columns:65px minmax(0,1fr) auto;
+
+  grid-template-columns:
+    65px
+    minmax(0,1fr)
+    auto;
+
   gap:14px;
   align-items:center;
+
   padding:12px;
-  border:1px solid var(--line-soft);
+
+  border:
+    1px solid
+    var(--line-soft);
+
   border-radius:14px;
-  background:rgba(16,20,16,.72);
+
+  background:
+    rgba(
+      16,
+      20,
+      16,
+      .72
+    );
 }
 
 .result-cover{
   width:65px;
-  aspect-ratio:2/3;
+
+  aspect-ratio:
+    2 / 3;
+
   border-radius:6px;
   overflow:hidden;
+
   background:#171c18;
+
   display:grid;
   place-items:center;
+
   color:var(--muted);
-  font:700 8px Arial;
+
+  font:
+    700 8px
+    Arial,
+    sans-serif;
 }
 
 .result-cover img{
@@ -620,46 +1343,77 @@ h1{
 }
 
 .result h3{
-  margin:0 0 4px;
+  margin:
+    0 0 4px;
+
   font-size:17px;
   font-weight:400;
 }
 
 .result-author{
   margin-bottom:6px;
+
   color:var(--gold2);
-  font:700 10px Arial;
+
+  font:
+    700 10px
+    Arial,
+    sans-serif;
 }
 
 .result-meta{
   color:var(--muted);
-  font:9px/1.45 Arial;
+
+  font:
+    9px/1.45
+    Arial,
+    sans-serif;
 }
 
 .no-results{
-  padding:40px 20px;
+  padding:
+    40px 20px;
+
   text-align:center;
   color:var(--muted);
-  font:12px/1.6 Arial;
+
+  font:
+    12px/1.6
+    Arial,
+    sans-serif;
 }
+
 
 /* =========================================================
    LOCKED
    ========================================================= */
 
 .locked{
-  padding:55px 24px;
+  padding:
+    55px 24px;
+
   text-align:center;
   color:var(--muted);
-  font:13px/1.7 Arial;
+
+  font:
+    13px/1.7
+    Arial,
+    sans-serif;
 }
 
 .locked strong{
   display:block;
+
   margin-bottom:8px;
+
   color:var(--cream);
-  font:400 24px Georgia;
+
+  font:
+    400 24px
+    Georgia,
+    serif;
 }
+
 
 /* =========================================================
    LOADING
@@ -668,9 +1422,12 @@ h1{
 .loading{
   position:fixed;
   inset:0;
+
   z-index:100;
+
   display:grid;
   place-items:center;
+
   background:var(--ink);
 }
 
@@ -680,10 +1437,16 @@ h1{
 
 .loading span{
   color:var(--gold2);
-  font:800 10px Arial;
+
+  font:
+    800 10px
+    Arial,
+    sans-serif;
+
   letter-spacing:.16em;
   text-transform:uppercase;
 }
+
 
 /* =========================================================
    MOBILE
@@ -713,26 +1476,61 @@ h1{
   }
 
   .result{
-    grid-template-columns:55px minmax(0,1fr);
+    grid-template-columns:
+      55px
+      minmax(0,1fr);
   }
 
   .result .btn{
     grid-column:1/-1;
   }
 
+  .vote-result{
+    grid-template-columns:
+      46px
+      minmax(0,1fr);
+  }
+
+  .result-votes{
+    grid-column:2;
+    text-align:left;
+  }
+
   .mobile-nav{
     position:fixed;
+
     left:12px;
     right:12px;
     bottom:12px;
+
     z-index:200;
+
     min-height:64px;
+
     display:grid;
-    grid-template-columns:repeat(4,1fr);
-    border:1px solid var(--line);
+
+    grid-template-columns:
+      repeat(
+        4,
+        1fr
+      );
+
+    border:
+      1px solid
+      var(--line);
+
     border-radius:18px;
-    background:rgba(9,11,10,.95);
-    backdrop-filter:blur(14px);
+
+    background:
+      rgba(
+        9,
+        11,
+        10,
+        .95
+      );
+
+    backdrop-filter:
+      blur(14px);
   }
 
   .mobile-nav a{
@@ -741,9 +1539,15 @@ h1{
     align-items:center;
     justify-content:center;
     gap:4px;
+
     color:var(--muted);
     text-decoration:none;
-    font:9px Arial;
+
+    font:
+      9px
+      Arial,
+      sans-serif;
+
     text-transform:uppercase;
   }
 
@@ -761,7 +1565,9 @@ h1{
 @media(max-width:500px){
 
   .book-selected{
-    grid-template-columns:70px minmax(0,1fr);
+    grid-template-columns:
+      70px
+      minmax(0,1fr);
   }
 
   .cover{
@@ -773,28 +1579,61 @@ h1{
   }
 
 }
+
 </style>
+
 </head>
 
 <body>
 
-<div class="loading" id="loading">
-  <span>Opening the ballot desk...</span>
+
+<div
+  class="loading"
+  id="loading"
+>
+  <span>
+    Opening the ballot desk...
+  </span>
 </div>
+
 
 <header class="topbar">
 
-  <a class="brand" href="dashboard.html">
+  <a
+    class="brand"
+    href="dashboard.html"
+  >
+
     <span class="brand-mark"></span>
+
     DogEar
+
   </a>
 
+
   <nav class="nav">
-    <a href="dashboard.html">Home</a>
-    <a href="discover.html">Discover</a>
-    <a class="active" href="clubs.html">Clubs</a>
-    <a href="marketplace.html">Books</a>
+
+    <a href="dashboard.html">
+      Home
+    </a>
+
+    <a href="discover.html">
+      Discover
+    </a>
+
+    <a
+      class="active"
+      href="clubs.html"
+    >
+      Clubs
+    </a>
+
+    <a href="marketplace.html">
+      Books
+    </a>
+
   </nav>
+
 
   <a
     class="avatar"
@@ -806,7 +1645,9 @@ h1{
 
 </header>
 
+
 <main class="page">
+
 
   <a
     class="back"
@@ -815,6 +1656,7 @@ h1{
   >
     ← Back to Monthly Vote
   </a>
+
 
   <section class="hero">
 
@@ -837,6 +1679,7 @@ h1{
 
     </div>
 
+
     <div
       class="status-pill"
       id="ballotStatus"
@@ -846,38 +1689,59 @@ h1{
 
   </section>
 
+
   <nav
     class="club-nav"
     aria-label="Club navigation"
   >
 
-    <a id="overviewLink" href="club.html">
+    <a
+      id="overviewLink"
+      href="club.html"
+    >
       Overview
     </a>
 
-    <a id="membersLink" href="club-members.html">
+    <a
+      id="membersLink"
+      href="club-members.html"
+    >
       Members
     </a>
 
-    <a id="discussionsLink" href="club-discussions.html">
+    <a
+      id="discussionsLink"
+      href="club-discussions.html"
+    >
       Discussions
     </a>
 
-    <a id="voteLink" href="club-vote.html">
+    <a
+      id="voteLink"
+      href="club-vote.html"
+    >
       Monthly Vote
     </a>
 
-    <a id="booksLink" href="club-books.html">
+    <a
+      id="booksLink"
+      href="club-books.html"
+    >
       Bookshelf
     </a>
 
-    <a id="settingsLink" href="club-settings.html">
+    <a
+      id="settingsLink"
+      href="club-settings.html"
+    >
       Settings
     </a>
 
   </nav>
 
+
   <div class="layout">
+
 
     <section class="card">
 
@@ -893,6 +1757,7 @@ h1{
 
       </div>
 
+
       <div id="adminContent">
 
         <div
@@ -900,9 +1765,43 @@ h1{
           id="slots"
         ></div>
 
+
+        <section
+          class="results-panel"
+          id="resultsPanel"
+          hidden
+        >
+
+          <div class="results-head">
+
+            <h3 id="resultsTitle">
+              Ballot Results
+            </h3>
+
+            <p id="resultsSubtitle">
+              DogEar counts votes directly from the canonical club ballot.
+            </p>
+
+          </div>
+
+
+          <div
+            class="result-list"
+            id="resultList"
+          ></div>
+
+
+          <div
+            class="result-actions"
+            id="resultActions"
+          ></div>
+
+        </section>
+
       </div>
 
     </section>
+
 
     <aside class="card">
 
@@ -913,12 +1812,14 @@ h1{
         </h2>
 
         <p>
-          Finish all three choices before opening the vote.
+          Build, open, close, and finalize the monthly vote.
         </p>
 
       </div>
 
+
       <div class="side-body">
+
 
         <div class="side-section">
 
@@ -930,24 +1831,62 @@ h1{
             Loading ballot status…
           </p>
 
+
           <div class="ballot-progress">
 
             <div class="progress-row">
-              <span>Choices Ready</span>
-              <strong id="choiceCount">0 / 3</strong>
+
+              <span>
+                Choices Ready
+              </span>
+
+              <strong id="choiceCount">
+                0 / 3
+              </strong>
+
             </div>
 
-            <div class="progress-row">
-              <span>Leadership Access</span>
-              <strong id="accessStatus">Checking</strong>
-            </div>
 
             <div class="progress-row">
-              <span>Voting Month</span>
-              <strong id="monthStatus">—</strong>
+
+              <span>
+                Leadership Access
+              </span>
+
+              <strong id="accessStatus">
+                Checking
+              </strong>
+
+            </div>
+
+
+            <div class="progress-row">
+
+              <span>
+                Voting Month
+              </span>
+
+              <strong id="monthStatus">
+                —
+              </strong>
+
+            </div>
+
+
+            <div class="progress-row">
+
+              <span>
+                Votes Cast
+              </span>
+
+              <strong id="voteCountStatus">
+                —
+              </strong>
+
             </div>
 
           </div>
+
 
           <div class="side-actions">
 
@@ -959,6 +1898,7 @@ h1{
               Open Voting
             </button>
 
+
             <button
               class="btn secondary"
               id="closeBallotBtn"
@@ -967,7 +1907,18 @@ h1{
               Close Voting
             </button>
 
+
+            <button
+              class="btn success"
+              id="finalizeBallotBtn"
+              type="button"
+              hidden
+            >
+              Finalize Book of the Month
+            </button>
+
           </div>
+
 
           <div
             class="message"
@@ -975,6 +1926,7 @@ h1{
           ></div>
 
         </div>
+
 
         <div class="side-section">
 
@@ -991,6 +1943,24 @@ h1{
 
         </div>
 
+
+        <div class="side-section">
+
+          <h3>
+            Finalizing the winner
+          </h3>
+
+          <p>
+            Once voting is closed, DogEar counts the votes
+            on the server. A clear first-place book can be
+            finalized automatically. If first place is tied,
+            only the Club President can choose among the
+            tied books.
+          </p>
+
+        </div>
+
+
         <div class="side-section">
 
           <h3>
@@ -998,11 +1968,12 @@ h1{
           </h3>
 
           <p>
-            Each month now has its own ballot record. Votes from
-            one month cannot accidentally carry into another month.
+            Each month has its own ballot record. Votes from
+            one month cannot carry into another month's vote.
           </p>
 
         </div>
+
 
         <div class="side-section">
 
@@ -1011,8 +1982,10 @@ h1{
           </h3>
 
           <p>
-            See what club members will see before or after opening voting.
+            See exactly what club members see before,
+            during, or after voting.
           </p>
+
 
           <div class="side-actions">
 
@@ -1034,13 +2007,16 @@ h1{
 
         </div>
 
+
       </div>
 
     </aside>
 
+
   </div>
 
 </main>
+
 
 <nav class="mobile-nav">
 
@@ -1066,6 +2042,7 @@ h1{
 
 </nav>
 
+
 <!-- =========================================================
      GOOGLE BOOKS SEARCH MODAL
      ========================================================= -->
@@ -1076,6 +2053,7 @@ h1{
 >
 
   <div class="modal-card">
+
 
     <div class="modal-head">
 
@@ -1093,6 +2071,7 @@ h1{
       </button>
 
     </div>
+
 
     <div class="search-area">
 
@@ -1116,12 +2095,14 @@ h1{
 
       </div>
 
+
       <div class="search-help">
         For the most precise result, search by ISBN.
         DogEar recognizes ISBN-10 and ISBN-13 searches automatically.
       </div>
 
     </div>
+
 
     <div
       class="results"
@@ -1134,11 +2115,14 @@ h1{
 
     </div>
 
+
   </div>
 
 </div>
 
+
 <script>
+
 
 /* =========================================================
    CONFIG
@@ -1147,17 +2131,20 @@ h1{
 const SUPABASE_URL =
   "https://nrtutxjznkfvvbmaagum.supabase.co";
 
+
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
 
+
 /*
-  Basic Google Books search works without a key.
-  If you later put the website-restricted DogEar key here,
-  the page will automatically use it.
+  DogEar's website-restricted Google Books key can be placed
+  here in the deployed file. Google Books search also works
+  without it at lower unauthenticated quota.
 */
 
 const GOOGLE_BOOKS_API_KEY =
   "";
+
 
 const supabaseClient =
   supabase.createClient(
@@ -1165,51 +2152,110 @@ const supabaseClient =
     SUPABASE_PUBLISHABLE_KEY
   );
 
+
 /* =========================================================
    STATE
    ========================================================= */
 
 const $ =
   id =>
-    document.getElementById(id);
+    document.getElementById(
+      id
+    );
+
 
 const params =
   new URLSearchParams(
     location.search
   );
 
+
 const clubId =
-  params.get("id");
+  params.get(
+    "id"
+  );
+
 
 const incomingAction =
-  params.get("action");
+  params.get(
+    "action"
+  );
+
 
 const incomingBookId =
-  params.get("bookId");
+  params.get(
+    "bookId"
+  );
 
-let currentUser = null;
-let clubData = null;
-let membership = null;
 
-let ballot = null;
-let ballotId = null;
-let ballotOptions = [];
+let currentUser =
+  null;
 
-let selectedSlot = 1;
+
+let clubData =
+  null;
+
+
+let membership =
+  null;
+
+
+let systemAdmin =
+  false;
+
+
+let ballot =
+  null;
+
+
+let ballotId =
+  null;
+
+
+let ballotOptions =
+  [];
+
+
+let ballotVotes =
+  [];
+
+
+let voteResults =
+  [];
+
+
+let totalVotes =
+  0;
+
+
+let selectedSlot =
+  1;
+
+
+let actionBusy =
+  false;
+
 
 /* =========================================================
    URLS
    ========================================================= */
 
-function withClub(filename){
+function withClub(
+  filename
+){
 
   return clubId
-    ? filename +
-      "?id=" +
-      encodeURIComponent(clubId)
+    ? (
+        filename +
+        "?id=" +
+        encodeURIComponent(
+          clubId
+        )
+      )
     : filename;
 
 }
+
 
 function wireLinks(){
 
@@ -1218,35 +2264,42 @@ function wireLinks(){
       "club-vote.html"
     );
 
+
   $("overviewLink").href =
     withClub(
       "club.html"
     );
+
 
   $("membersLink").href =
     withClub(
       "club-members.html"
     );
 
+
   $("discussionsLink").href =
     withClub(
       "club-discussions.html"
     );
+
 
   $("voteLink").href =
     withClub(
       "club-vote.html"
     );
 
+
   $("booksLink").href =
     withClub(
       "club-books.html"
     );
 
+
   $("settingsLink").href =
     withClub(
       "club-settings.html"
     );
+
 
   $("previewLink").href =
     withClub(
@@ -1255,94 +2308,189 @@ function wireLinks(){
 
 }
 
+
 /* =========================================================
    GENERAL HELPERS
    ========================================================= */
 
-function escapeHtml(value=""){
+function escapeHtml(
+  value = ""
+){
 
-  return String(value)
+  return String(
+    value ?? ""
+  )
     .replace(
-      /[&<>"']/g,
-      character => ({
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#039;"
-      }[character])
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
     );
 
 }
 
+
 function showMessage(
   text,
-  type=""
+  type = ""
 ){
 
   $("message").textContent =
     text;
 
+
   $("message").className =
-    "message show " +
-    type;
+    "message show" +
+    (
+      type
+        ? " " + type
+        : ""
+    );
 
 }
+
 
 function clearMessage(){
 
   $("message").textContent =
     "";
 
+
   $("message").className =
     "message";
 
 }
 
-function initials(name="Reader"){
+
+function initials(
+  name = "Reader"
+){
 
   const pieces =
-    String(name)
+    String(
+      name
+    )
       .trim()
-      .split(/\s+/)
-      .filter(Boolean);
+      .split(
+        /\s+/
+      )
+      .filter(
+        Boolean
+      );
 
-  if(!pieces.length)
+
+  if(
+    !pieces.length
+  ){
+
     return "?";
 
-  if(pieces.length === 1)
-    return pieces[0][0]
+  }
+
+
+  if(
+    pieces.length === 1
+  ){
+
+    return pieces[0]
+      .charAt(0)
       .toUpperCase();
 
+  }
+
+
   return (
-    pieces[0][0] +
-    pieces[pieces.length - 1][0]
-  ).toUpperCase();
+    pieces[0]
+      .charAt(0) +
+    pieces[
+      pieces.length - 1
+    ]
+      .charAt(0)
+  )
+    .toUpperCase();
 
 }
 
-function normalizeRole(role=""){
 
-  return String(role)
+function normalizeRole(
+  role = ""
+){
+
+  const value =
+    String(
+      role
+    )
+      .trim()
+      .toLowerCase();
+
+
+  if(
+    value === "owner" ||
+    value === "founder"
+  ){
+
+    return "president";
+
+  }
+
+
+  if(
+    value === "admin"
+  ){
+
+    return "administrator";
+
+  }
+
+
+  return value;
+
+}
+
+
+function normalizeStatus(
+  status = ""
+){
+
+  return String(
+    status
+  )
     .trim()
     .toLowerCase();
 
 }
 
-function normalizeStatus(status=""){
 
-  return String(status)
-    .trim()
-    .toLowerCase();
+function normalizeCover(
+  url
+){
 
-}
+  if(
+    !url
+  ){
 
-function normalizeCover(url){
-
-  if(!url)
     return "";
 
-  return String(url)
+  }
+
+
+  return String(
+    url
+  )
     .replace(
       /^http:/,
       "https:"
@@ -1354,20 +2502,16 @@ function normalizeCover(url){
 
 }
 
+
 /* =========================================================
    BALLOT MONTH
-
-   DogEar's ballot is for the NEXT month.
-   Example:
-     September voting desk → October ballot.
-
-   Both this page and club-vote.html should use this convention.
    ========================================================= */
 
 function nextBallotMonth(){
 
   const now =
     new Date();
+
 
   return new Date(
     now.getFullYear(),
@@ -1377,18 +2521,26 @@ function nextBallotMonth(){
 
 }
 
+
 function ballotMonthISO(){
 
   const date =
     nextBallotMonth();
 
+
   const year =
     date.getFullYear();
+
 
   const month =
     String(
       date.getMonth() + 1
-    ).padStart(2,"0");
+    )
+      .padStart(
+        2,
+        "0"
+      );
+
 
   return (
     year +
@@ -1398,6 +2550,7 @@ function ballotMonthISO(){
   );
 
 }
+
 
 function ballotMonthLabel(){
 
@@ -1412,15 +2565,19 @@ function ballotMonthLabel(){
 
 }
 
+
 /* =========================================================
    GOOGLE BOOKS ISBN HELPERS
    ========================================================= */
 
-function getIdentifiers(info){
+function getIdentifiers(
+  info
+){
 
   const identifiers =
     info.industryIdentifiers ||
     [];
+
 
   const isbn13 =
     identifiers.find(
@@ -1431,6 +2588,7 @@ function getIdentifiers(info){
       ?.identifier ||
     "";
 
+
   const isbn10 =
     identifiers.find(
       item =>
@@ -1440,6 +2598,7 @@ function getIdentifiers(info){
       ?.identifier ||
     "";
 
+
   return {
     isbn13,
     isbn10
@@ -1447,20 +2606,27 @@ function getIdentifiers(info){
 
 }
 
-function buildGoogleQuery(rawQuery){
+
+function buildGoogleQuery(
+  rawQuery
+){
 
   const cleaned =
-    rawQuery
-      .replace(
-        /[-\s]/g,
-        ""
-      );
+    rawQuery.replace(
+      /[-\s]/g,
+      ""
+    );
+
 
   if(
     /^\d{9}[\dXx]$/
-      .test(cleaned) ||
+      .test(
+        cleaned
+      ) ||
     /^\d{13}$/
-      .test(cleaned)
+      .test(
+        cleaned
+      )
   ){
 
     return (
@@ -1470,21 +2636,26 @@ function buildGoogleQuery(rawQuery){
 
   }
 
+
   return rawQuery;
 
 }
 
+
 /* =========================================================
    PERMISSIONS
-   Existing database fields:
-     club_role
-     membership_status
    ========================================================= */
 
-function isAdmin(){
+function isClubLeader(){
 
-  if(!membership)
+  if(
+    !membership
+  ){
+
     return false;
+
+  }
+
 
   if(
     normalizeStatus(
@@ -1496,10 +2667,9 @@ function isAdmin(){
 
   }
 
+
   return [
     "president",
-    "owner",
-    "admin",
     "administrator"
   ]
     .includes(
@@ -1510,7 +2680,280 @@ function isAdmin(){
 
 }
 
+
+function isPresident(){
+
+  return Boolean(
+    membership &&
+    normalizeStatus(
+      membership.membership_status
+    ) === "active" &&
+    normalizeRole(
+      membership.club_role
+    ) === "president"
+  );
+
+}
+
+
+function hasLeadershipAccess(){
+
+  return (
+    isClubLeader() ||
+    systemAdmin
+  );
+
+}
+
+
+function canBreakTie(){
+
+  return (
+    isPresident() ||
+    systemAdmin
+  );
+
+}
+
+
 /* =========================================================
+   BALLOT STATE HELPERS
+   ========================================================= */
+
+function ballotStatus(){
+
+  return normalizeStatus(
+    ballot?.status ||
+    ""
+  );
+
+}
+
+
+function ballotIsDraft(){
+
+  return (
+    ballot &&
+    ballotStatus() === "draft"
+  );
+
+}
+
+
+function ballotIsOpen(){
+
+  return (
+    ballot &&
+    ballotStatus() === "open"
+  );
+
+}
+
+
+function ballotIsClosed(){
+
+  return (
+    ballot &&
+    ballotStatus() === "closed"
+  );
+
+}
+
+
+function ballotIsFinalized(){
+
+  return (
+    ballot &&
+    ballotStatus() === "finalized"
+  );
+
+}
+
+
+function ballotIsComplete(){
+
+  if(
+    ballotOptions.length !== 3
+  ){
+
+    return false;
+
+  }
+
+
+  const positions =
+    ballotOptions
+      .map(
+        option =>
+          Number(
+            option.position
+          )
+      )
+      .sort(
+        (
+          a,
+          b
+        ) =>
+          a - b
+      );
+
+
+  return (
+    positions[0] === 1 &&
+    positions[1] === 2 &&
+    positions[2] === 3
+  );
+
+}
+
+
+function optionForSlot(
+  slot
+){
+
+  return ballotOptions.find(
+    option =>
+      Number(
+        option.position
+      ) ===
+      Number(
+        slot
+      )
+  );
+
+}
+
+
+function optionById(
+  optionId
+){
+
+  return ballotOptions.find(
+    option =>
+      String(
+        option.id
+      ) ===
+      String(
+        optionId
+      )
+  ) ||
+  null;
+
+}
+
+
+function authorsText(
+  option
+){
+
+  if(
+    Array.isArray(
+      option?.authors
+    )
+  ){
+
+    return option.authors
+      .filter(
+        Boolean
+      )
+      .join(
+        ", "
+      ) ||
+      "Unknown author";
+
+  }
+
+
+  return (
+    option?.authors ||
+    "Unknown author"
+  );
+
+}
+
+
+/* =========================================================
+   RESULT HELPERS
+   ========================================================= */
+
+function highestVoteCount(){
+
+  if(
+    !voteResults.length
+  ){
+
+    return 0;
+
+  }
+
+
+  return Math.max(
+    ...voteResults.map(
+      result =>
+        Number(
+          result.vote_count ||
+          0
+        )
+    )
+  );
+
+}
+
+
+function firstPlaceResults(){
+
+  if(
+    !voteResults.length
+  ){
+
+    return [];
+
+  }
+
+
+  const top =
+    highestVoteCount();
+
+
+  return voteResults.filter(
+    result =>
+      Number(
+        result.vote_count ||
+        0
+      ) ===
+      top
+  );
+
+}
+
+
+function hasTieForFirst(){
+
+  return (
+    firstPlaceResults()
+      .length > 1
+  );
+
+}
+
+
+function uniqueWinner(){
+
+  const leaders =
+    firstPlaceResults();
+
+
+  return leaders.length === 1
+    ? leaders[0]
+    : null;
+
+}
+
+
+/* =========================================================
+   END PART 1
+   ========================================================= */
+  /* =========================================================
    PROFILE
    ========================================================= */
 
@@ -1522,7 +2965,10 @@ async function loadProfile(){
       ?.display_name ||
     "Reader";
 
-  let avatar = "";
+
+  let avatar =
+    "";
+
 
   try{
 
@@ -1538,19 +2984,32 @@ async function loadProfile(){
         }
       );
 
-    if(error)
+
+    if(
+      error
+    ){
+
       throw error;
 
+    }
+
+
     const profile =
-      Array.isArray(data)
+      Array.isArray(
+        data
+      )
         ? data[0]
         : data;
 
-    if(profile){
+
+    if(
+      profile
+    ){
 
       display =
         profile.display_name ||
         display;
+
 
       avatar =
         profile.avatar_url ||
@@ -1559,7 +3018,9 @@ async function loadProfile(){
     }
 
   }
-  catch(error){
+  catch(
+    error
+  ){
 
     console.warn(
       "Profile lookup:",
@@ -1568,24 +3029,32 @@ async function loadProfile(){
 
   }
 
+
   const holder =
     $("navAvatar");
+
 
   holder.innerHTML =
     "";
 
-  if(avatar){
+
+  if(
+    avatar
+  ){
 
     const image =
       document.createElement(
         "img"
       );
 
+
     image.src =
       avatar;
 
+
     image.alt =
       display;
+
 
     image.onerror =
       () => {
@@ -1593,10 +3062,14 @@ async function loadProfile(){
         holder.innerHTML =
           "";
 
+
         holder.textContent =
-          initials(display);
+          initials(
+            display
+          );
 
       };
+
 
     holder.appendChild(
       image
@@ -1606,11 +3079,81 @@ async function loadProfile(){
   else{
 
     holder.textContent =
-      initials(display);
+      initials(
+        display
+      );
 
   }
 
 }
+
+
+/* =========================================================
+   SYSTEM ADMIN CHECK
+   ========================================================= */
+
+async function loadSystemAdmin(){
+
+  systemAdmin =
+    false;
+
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "admin_users"
+        )
+        .select(
+          "user_id,active"
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .eq(
+          "active",
+          true
+        )
+        .maybeSingle();
+
+
+    if(
+      error
+    ){
+
+      throw error;
+
+    }
+
+
+    systemAdmin =
+      Boolean(
+        data
+      );
+
+  }
+  catch(
+    error
+  ){
+
+    console.warn(
+      "System admin lookup:",
+      error.message
+    );
+
+
+    systemAdmin =
+      false;
+
+  }
+
+}
+
 
 /* =========================================================
    CLUB
@@ -1623,28 +3166,44 @@ async function loadClub(){
     error
   } =
     await supabaseClient
-      .from("clubs")
-      .select("*")
+      .from(
+        "clubs"
+      )
+      .select(
+        "*"
+      )
       .eq(
         "id",
         clubId
       )
       .maybeSingle();
 
-  if(error)
+
+  if(
+    error
+  ){
+
     throw error;
 
-  if(!data){
+  }
+
+
+  if(
+    !data
+  ){
 
     location.href =
       "clubs.html";
+
 
     return;
 
   }
 
+
   clubData =
     data;
+
 
   $("clubSubtitle").textContent =
     "Build " +
@@ -1656,6 +3215,7 @@ async function loadClub(){
     ballotMonthLabel() +
     " three-book ballot.";
 
+
   document.title =
     "DogEar — " +
     (
@@ -1665,6 +3225,7 @@ async function loadClub(){
     " Ballot";
 
 }
+
 
 /* =========================================================
    MEMBERSHIP
@@ -1677,7 +3238,9 @@ async function loadMembership(){
     error
   } =
     await supabaseClient
-      .from("club_members")
+      .from(
+        "club_members"
+      )
       .select(
         "club_id,user_id,club_role,membership_status"
       )
@@ -1691,24 +3254,37 @@ async function loadMembership(){
       )
       .maybeSingle();
 
-  if(error)
+
+  if(
+    error
+  ){
+
     throw error;
 
+  }
+
+
   membership =
-    data || null;
+    data ||
+    null;
 
 }
 
+
 /* =========================================================
    GET / CREATE MONTHLY BALLOT
-
-   Leadership may create the draft.
    ========================================================= */
 
 async function ensureBallot(){
 
-  if(!isAdmin())
+  if(
+    !hasLeadershipAccess()
+  ){
+
     return;
+
+  }
+
 
   const {
     data,
@@ -1718,36 +3294,58 @@ async function ensureBallot(){
       "get_or_create_club_ballot",
       {
         p_club_id:
-          Number(clubId),
+          Number(
+            clubId
+          ),
 
         p_ballot_month:
           ballotMonthISO()
       }
     );
 
-  if(error)
+
+  if(
+    error
+  ){
+
     throw error;
 
+  }
+
+
   ballotId =
-    Number(data);
+    Number(
+      data
+    );
 
 }
 
-/* =========================================================
-   LOAD BALLOT RECORD
 
-   Non-leadership can still load an existing ballot.
+/* =========================================================
+   LOAD EXISTING BALLOT
    ========================================================= */
 
 async function loadExistingBallot(){
+
+  ballot =
+    null;
+
+
+  ballotId =
+    null;
+
 
   const {
     data,
     error
   } =
     await supabaseClient
-      .from("club_ballots")
-      .select("*")
+      .from(
+        "club_ballots"
+      )
+      .select(
+        "*"
+      )
       .eq(
         "club_id",
         clubId
@@ -1758,20 +3356,33 @@ async function loadExistingBallot(){
       )
       .maybeSingle();
 
-  if(error)
+
+  if(
+    error
+  ){
+
     throw error;
 
-  if(data){
+  }
+
+
+  if(
+    data
+  ){
 
     ballot =
       data;
 
+
     ballotId =
-      Number(data.id);
+      Number(
+        data.id
+      );
 
   }
 
 }
+
 
 /* =========================================================
    LOAD BALLOT OPTIONS
@@ -1779,25 +3390,33 @@ async function loadExistingBallot(){
 
 async function loadBallotOptions(){
 
-  if(!ballotId){
+  if(
+    !ballotId
+  ){
 
     ballotOptions =
       [];
 
+
     renderSlots();
-    updateStatus();
+
 
     return;
 
   }
+
 
   const {
     data,
     error
   } =
     await supabaseClient
-      .from("club_ballot_options")
-      .select("*")
+      .from(
+        "club_ballot_options"
+      )
+      .select(
+        "*"
+      )
       .eq(
         "ballot_id",
         ballotId
@@ -1813,16 +3432,577 @@ async function loadBallotOptions(){
         }
       );
 
-  if(error)
+
+  if(
+    error
+  ){
+
     throw error;
 
+  }
+
+
   ballotOptions =
-    data || [];
+    data ||
+    [];
+
 
   renderSlots();
-  updateStatus();
 
 }
+
+
+/* =========================================================
+   LOAD BALLOT VOTES
+   ========================================================= */
+
+async function loadBallotVotes(){
+
+  ballotVotes =
+    [];
+
+
+  totalVotes =
+    0;
+
+
+  if(
+    !ballotId
+  ){
+
+    return;
+
+  }
+
+
+  /*
+    Leadership does not need individual voter identities on
+    this page. We only need option_id values to calculate the
+    result display.
+
+    RLS remains the final authority over whether these rows
+    are visible to this account.
+  */
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "club_votes"
+      )
+      .select(
+        "option_id"
+      )
+      .eq(
+        "ballot_id",
+        ballotId
+      );
+
+
+  if(
+    error
+  ){
+
+    /*
+      A result RPC may still be able to return aggregate
+      results even when raw vote rows are intentionally
+      hidden by RLS. Do not crash the entire ballot builder.
+    */
+
+    console.warn(
+      "Direct ballot vote count:",
+      error.message
+    );
+
+
+    ballotVotes =
+      [];
+
+
+    totalVotes =
+      0;
+
+
+    return;
+
+  }
+
+
+  ballotVotes =
+    data ||
+    [];
+
+
+  totalVotes =
+    ballotVotes.length;
+
+}
+
+
+/* =========================================================
+   NORMALIZE RESULT RPC DATA
+   ========================================================= */
+
+function normalizeResultRows(
+  data
+){
+
+  if(
+    !data
+  ){
+
+    return [];
+
+  }
+
+
+  let rows;
+
+
+  if(
+    Array.isArray(
+      data
+    )
+  ){
+
+    rows =
+      data;
+
+  }
+  else if(
+    Array.isArray(
+      data.results
+    )
+  ){
+
+    rows =
+      data.results;
+
+  }
+  else if(
+    Array.isArray(
+      data.options
+    )
+  ){
+
+    rows =
+      data.options;
+
+  }
+  else{
+
+    rows =
+      [
+        data
+      ];
+
+  }
+
+
+  return rows
+    .map(
+      row => {
+
+        const optionId =
+          row.option_id ??
+          row.ballot_option_id ??
+          row.id ??
+          null;
+
+
+        const option =
+          optionById(
+            optionId
+          );
+
+
+        const voteCount =
+          Number(
+            row.vote_count ??
+            row.votes ??
+            row.count ??
+            row.total_votes ??
+            0
+          );
+
+
+        return {
+
+          option_id:
+            optionId,
+
+          vote_count:
+            Number.isFinite(
+              voteCount
+            )
+              ? voteCount
+              : 0,
+
+          position:
+            Number(
+              row.position ??
+              option?.position ??
+              0
+            ),
+
+          title:
+            row.title ??
+            option?.title ??
+            "Untitled Book",
+
+          authors:
+            row.authors ??
+            option?.authors ??
+            [],
+
+          cover_url:
+            row.cover_url ??
+            option?.cover_url ??
+            "",
+
+          book_id:
+            row.book_id ??
+            option?.book_id ??
+            null,
+
+          google_books_id:
+            row.google_books_id ??
+            option?.google_books_id ??
+            null,
+
+          isbn_13:
+            row.isbn_13 ??
+            option?.isbn_13 ??
+            null,
+
+          isbn_10:
+            row.isbn_10 ??
+            option?.isbn_10 ??
+            null,
+
+          publisher:
+            row.publisher ??
+            option?.publisher ??
+            null,
+
+          published_date:
+            row.published_date ??
+            option?.published_date ??
+            null
+
+        };
+
+      }
+    )
+    .filter(
+      row =>
+        row.option_id !==
+        null
+    )
+    .sort(
+      (
+        a,
+        b
+      ) => {
+
+        if(
+          b.vote_count !==
+          a.vote_count
+        ){
+
+          return (
+            b.vote_count -
+            a.vote_count
+          );
+
+        }
+
+
+        return (
+          a.position -
+          b.position
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   LOCAL RESULT FALLBACK
+   ========================================================= */
+
+function buildLocalResults(){
+
+  const counts =
+    new Map();
+
+
+  for(
+    const option
+    of ballotOptions
+  ){
+
+    counts.set(
+      String(
+        option.id
+      ),
+      0
+    );
+
+  }
+
+
+  for(
+    const vote
+    of ballotVotes
+  ){
+
+    const key =
+      String(
+        vote.option_id
+      );
+
+
+    counts.set(
+      key,
+      (
+        counts.get(
+          key
+        ) ||
+        0
+      ) + 1
+    );
+
+  }
+
+
+  return ballotOptions
+    .map(
+      option => ({
+
+        option_id:
+          option.id,
+
+        vote_count:
+          counts.get(
+            String(
+              option.id
+            )
+          ) ||
+          0,
+
+        position:
+          Number(
+            option.position
+          ),
+
+        title:
+          option.title ||
+          "Untitled Book",
+
+        authors:
+          option.authors ||
+          [],
+
+        cover_url:
+          option.cover_url ||
+          "",
+
+        book_id:
+          option.book_id ||
+          null,
+
+        google_books_id:
+          option.google_books_id ||
+          null,
+
+        isbn_13:
+          option.isbn_13 ||
+          null,
+
+        isbn_10:
+          option.isbn_10 ||
+          null,
+
+        publisher:
+          option.publisher ||
+          null,
+
+        published_date:
+          option.published_date ||
+          null
+
+      })
+    )
+    .sort(
+      (
+        a,
+        b
+      ) => {
+
+        if(
+          b.vote_count !==
+          a.vote_count
+        ){
+
+          return (
+            b.vote_count -
+            a.vote_count
+          );
+
+        }
+
+
+        return (
+          a.position -
+          b.position
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   LOAD SERVER RESULTS
+   ========================================================= */
+
+async function loadBallotResults(){
+
+  voteResults =
+    [];
+
+
+  if(
+    !ballotId
+  ){
+
+    renderResults();
+
+
+    return;
+
+  }
+
+
+  /*
+    Migration #3 provides the canonical server-side ballot
+    result path. If aggregate result access is unavailable
+    for any reason, the page can still display counts from
+    visible club_votes rows without breaking the builder.
+  */
+
+  let serverLoaded =
+    false;
+
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "get_club_ballot_results",
+        {
+          p_ballot_id:
+            Number(
+              ballotId
+            )
+        }
+      );
+
+
+    if(
+      error
+    ){
+
+      throw error;
+
+    }
+
+
+    const normalized =
+      normalizeResultRows(
+        data
+      );
+
+
+    if(
+      normalized.length
+    ){
+
+      voteResults =
+        normalized;
+
+
+      totalVotes =
+        normalized.reduce(
+          (
+            total,
+            row
+          ) =>
+            total +
+            Number(
+              row.vote_count ||
+              0
+            ),
+          0
+        );
+
+
+      serverLoaded =
+        true;
+
+    }
+
+  }
+  catch(
+    error
+  ){
+
+    console.warn(
+      "Server ballot results:",
+      error.message
+    );
+
+  }
+
+
+  if(
+    !serverLoaded
+  ){
+
+    voteResults =
+      buildLocalResults();
+
+
+    totalVotes =
+      voteResults.reduce(
+        (
+          total,
+          row
+        ) =>
+          total +
+          Number(
+            row.vote_count ||
+            0
+          ),
+        0
+      );
+
+  }
+
+
+  renderResults();
+
+}
+
 
 /* =========================================================
    RELOAD BALLOT
@@ -1832,78 +4012,20 @@ async function reloadBallot(){
 
   await loadExistingBallot();
 
+
   await loadBallotOptions();
 
-}
 
-/* =========================================================
-   BALLOT STATE HELPERS
-   ========================================================= */
+  await loadBallotVotes();
 
-function ballotIsOpen(){
 
-  return (
-    ballot &&
-    normalizeStatus(
-      ballot.status
-    ) === "open"
-  );
+  await loadBallotResults();
+
+
+  updateStatus();
 
 }
 
-function ballotIsFinalized(){
-
-  return (
-    ballot &&
-    normalizeStatus(
-      ballot.status
-    ) === "finalized"
-  );
-
-}
-
-function ballotIsComplete(){
-
-  if(
-    ballotOptions.length !== 3
-  ){
-
-    return false;
-
-  }
-
-  const positions =
-    ballotOptions
-      .map(
-        option =>
-          Number(
-            option.position
-          )
-      )
-      .sort(
-        (a,b) =>
-          a - b
-      );
-
-  return (
-    positions[0] === 1 &&
-    positions[1] === 2 &&
-    positions[2] === 3
-  );
-
-}
-
-function optionForSlot(slot){
-
-  return ballotOptions.find(
-    option =>
-      Number(
-        option.position
-      ) ===
-      Number(slot)
-  );
-
-}
 
 /* =========================================================
    STATUS
@@ -1914,48 +4036,84 @@ function updateStatus(){
   const status =
     $("ballotStatus");
 
-  status.classList
-    .remove("open");
+
+  status.classList.remove(
+    "open",
+    "closed",
+    "finalized"
+  );
+
 
   const open =
     ballotIsOpen();
 
+
+  const closed =
+    ballotIsClosed();
+
+
   const finalized =
     ballotIsFinalized();
 
-  if(finalized){
+
+  if(
+    finalized
+  ){
 
     status.textContent =
       "Ballot Finalized";
 
+
+    status.classList.add(
+      "finalized"
+    );
+
+
     $("statusText").textContent =
-      "This monthly ballot has already been finalized.";
+      "The winning book has been finalized as this month's club selection.";
 
   }
-  else if(open){
+  else if(
+    open
+  ){
 
     status.textContent =
       "Voting Open";
 
-    status.classList
-      .add("open");
+
+    status.classList.add(
+      "open"
+    );
+
 
     $("statusText").textContent =
-      "Members can currently vote. Close voting before changing ballot choices.";
+      "Members can currently vote. Close voting before finalizing the winner.";
+
+  }
+  else if(
+    closed
+  ){
+
+    status.textContent =
+      "Voting Closed";
+
+
+    status.classList.add(
+      "closed"
+    );
+
+
+    $("statusText").textContent =
+      hasTieForFirst()
+        ? "Voting is closed. First place is tied and requires a presidential tie-break."
+        : "Voting is closed. Review the results and finalize the winning book.";
 
   }
   else{
 
     status.textContent =
-      ballot
-        ? (
-            normalizeStatus(
-              ballot.status
-            ) === "closed"
-              ? "Voting Closed"
-              : "Ballot Draft"
-          )
-        : "Ballot Draft";
+      "Ballot Draft";
+
 
     $("statusText").textContent =
       ballotIsComplete()
@@ -1964,40 +4122,112 @@ function updateStatus(){
 
   }
 
+
   $("choiceCount").textContent =
-    [1,2,3]
+    [
+      1,
+      2,
+      3
+    ]
       .filter(
         slot =>
           Boolean(
-            optionForSlot(slot)
+            optionForSlot(
+              slot
+            )
           )
       )
       .length +
     " / 3";
 
+
   $("accessStatus").textContent =
-    isAdmin()
-      ? "Active"
+    hasLeadershipAccess()
+      ? (
+          systemAdmin &&
+          !isClubLeader()
+            ? "System Admin"
+            : (
+                isPresident()
+                  ? "President"
+                  : "Administrator"
+              )
+        )
       : "Locked";
+
 
   $("monthStatus").textContent =
     ballotMonthLabel();
+
+
+  $("voteCountStatus").textContent =
+    ballotId
+      ? String(
+          totalVotes
+        )
+      : "—";
+
 
   $("ballotMonthText").textContent =
     ballotMonthLabel() +
     " ballot · choose exactly three editions.";
 
+
   $("openBallotBtn").disabled =
-    !isAdmin() ||
+    actionBusy ||
+    !hasLeadershipAccess() ||
     open ||
+    closed ||
     finalized ||
     !ballotIsComplete();
 
+
   $("closeBallotBtn").disabled =
-    !isAdmin() ||
+    actionBusy ||
+    !hasLeadershipAccess() ||
     !open;
 
+
+  const finalizeButton =
+    $("finalizeBallotBtn");
+
+
+  if(
+    closed
+  ){
+
+    finalizeButton.hidden =
+      false;
+
+
+    finalizeButton.disabled =
+      actionBusy ||
+      !hasLeadershipAccess() ||
+      !ballotIsComplete() ||
+      (
+        hasTieForFirst() &&
+        !canBreakTie()
+      );
+
+
+    finalizeButton.textContent =
+      hasTieForFirst()
+        ? "Resolve Tie Below"
+        : "Finalize Book of the Month";
+
+  }
+  else{
+
+    finalizeButton.hidden =
+      true;
+
+  }
+
+
+  renderResults();
+
 }
+
 
 /* =========================================================
    RENDER BALLOT SLOTS
@@ -2008,8 +4238,10 @@ function renderSlots(){
   const container =
     $("slots");
 
+
   container.innerHTML =
     "";
+
 
   for(
     let slot = 1;
@@ -2018,12 +4250,16 @@ function renderSlots(){
   ){
 
     const option =
-      optionForSlot(slot);
+      optionForSlot(
+        slot
+      );
+
 
     const article =
       document.createElement(
         "article"
       );
+
 
     article.className =
       "slot" +
@@ -2033,7 +4269,10 @@ function renderSlots(){
           : ""
       );
 
-    if(!option){
+
+    if(
+      !option
+    ){
 
       article.innerHTML = `
 
@@ -2060,7 +4299,9 @@ function renderSlots(){
                 data-slot="${slot}"
                 ${
                   ballotIsOpen() ||
-                  ballotIsFinalized()
+                  ballotIsClosed() ||
+                  ballotIsFinalized() ||
+                  !hasLeadershipAccess()
                     ? "disabled"
                     : ""
                 }
@@ -2073,6 +4314,7 @@ function renderSlots(){
           </div>
 
         </div>
+
       `;
 
     }
@@ -2082,32 +4324,33 @@ function renderSlots(){
         option.title ||
         "Untitled Book";
 
+
       const authors =
-        Array.isArray(
-          option.authors
-        )
-          ? option.authors.join(", ")
-          : (
-              option.authors ||
-              "Unknown author"
-            );
+        authorsText(
+          option
+        );
+
 
       const cover =
         option.cover_url ||
         "";
+
 
       const isbn =
         option.isbn_13 ||
         option.isbn_10 ||
         "";
 
+
       const publisher =
         option.publisher ||
         "";
 
+
       const published =
         option.published_date ||
         "";
+
 
       article.innerHTML = `
 
@@ -2123,8 +4366,13 @@ function renderSlots(){
               cover
                 ? `
                   <img
-                    src="${escapeHtml(cover)}"
-                    alt="${escapeHtml(title)} cover">
+                    src="${escapeHtml(
+                      cover
+                    )}"
+                    alt="${escapeHtml(
+                      title
+                    )} cover"
+                  >
                 `
                 : "No cover"
             }
@@ -2134,11 +4382,15 @@ function renderSlots(){
           <div>
 
             <h3>
-              ${escapeHtml(title)}
+              ${escapeHtml(
+                title
+              )}
             </h3>
 
             <div class="book-author">
-              ${escapeHtml(authors)}
+              ${escapeHtml(
+                authors
+              )}
             </div>
 
             <div class="edition-data">
@@ -2148,7 +4400,9 @@ function renderSlots(){
                   ? `
                     <span>
                       ISBN:
-                      ${escapeHtml(isbn)}
+                      ${escapeHtml(
+                        isbn
+                      )}
                     </span>
                   `
                   : ""
@@ -2159,7 +4413,9 @@ function renderSlots(){
                   ? `
                     <span>
                       Publisher:
-                      ${escapeHtml(publisher)}
+                      ${escapeHtml(
+                        publisher
+                      )}
                     </span>
                   `
                   : ""
@@ -2170,7 +4426,9 @@ function renderSlots(){
                   ? `
                     <span>
                       Published:
-                      ${escapeHtml(published)}
+                      ${escapeHtml(
+                        published
+                      )}
                     </span>
                   `
                   : ""
@@ -2199,7 +4457,9 @@ function renderSlots(){
                 data-slot="${slot}"
                 ${
                   ballotIsOpen() ||
-                  ballotIsFinalized()
+                  ballotIsClosed() ||
+                  ballotIsFinalized() ||
+                  !hasLeadershipAccess()
                     ? "disabled"
                     : ""
                 }
@@ -2210,10 +4470,14 @@ function renderSlots(){
               <button
                 class="btn danger remove-book"
                 type="button"
-                data-id="${escapeHtml(option.id)}"
+                data-id="${escapeHtml(
+                  option.id
+                )}"
                 ${
                   ballotIsOpen() ||
-                  ballotIsFinalized()
+                  ballotIsClosed() ||
+                  ballotIsFinalized() ||
+                  !hasLeadershipAccess()
                     ? "disabled"
                     : ""
                 }
@@ -2226,15 +4490,18 @@ function renderSlots(){
           </div>
 
         </div>
+
       `;
 
     }
+
 
     container.appendChild(
       article
     );
 
   }
+
 
   container
     .querySelectorAll(
@@ -2249,43 +4516,72 @@ function renderSlots(){
 
             clearMessage();
 
-            if(!isAdmin()){
+
+            if(
+              !hasLeadershipAccess()
+            ){
 
               showMessage(
                 "Only active club leadership can edit the ballot.",
                 "error"
               );
 
+
               return;
 
             }
 
-            if(ballotIsOpen()){
+
+            if(
+              ballotIsOpen()
+            ){
 
               showMessage(
                 "Close voting before changing ballot choices.",
                 "error"
               );
 
+
               return;
 
             }
 
-            if(ballotIsFinalized()){
+
+            if(
+              ballotIsClosed()
+            ){
+
+              showMessage(
+                "This ballot has already been closed and cannot be edited.",
+                "error"
+              );
+
+
+              return;
+
+            }
+
+
+            if(
+              ballotIsFinalized()
+            ){
 
               showMessage(
                 "This ballot has already been finalized.",
                 "error"
               );
 
+
               return;
 
             }
+
 
             selectedSlot =
               Number(
                 button.dataset.slot
               );
+
 
             openSearch();
 
@@ -2294,6 +4590,7 @@ function renderSlots(){
 
       }
     );
+
 
   container
     .querySelectorAll(
@@ -2313,9 +4610,447 @@ function renderSlots(){
       }
     );
 
-  updateStatus();
+}
+
+
+/* =========================================================
+   RENDER RESULTS
+   ========================================================= */
+
+function renderResults(){
+
+  const panel =
+    $("resultsPanel");
+
+
+  const list =
+    $("resultList");
+
+
+  const actions =
+    $("resultActions");
+
+
+  if(
+    !panel ||
+    !list ||
+    !actions
+  ){
+
+    return;
+
+  }
+
+
+  const shouldShow =
+    Boolean(
+      ballotId &&
+      (
+        ballotIsOpen() ||
+        ballotIsClosed() ||
+        ballotIsFinalized()
+      )
+    );
+
+
+  panel.hidden =
+    !shouldShow;
+
+
+  if(
+    !shouldShow
+  ){
+
+    list.innerHTML =
+      "";
+
+
+    actions.innerHTML =
+      "";
+
+
+    return;
+
+  }
+
+
+  if(
+    ballotIsOpen()
+  ){
+
+    $("resultsTitle").textContent =
+      "Voting in Progress";
+
+
+    $("resultsSubtitle").textContent =
+      totalVotes +
+      (
+        totalVotes === 1
+          ? " vote has"
+          : " votes have"
+      ) +
+      " been cast. Results remain provisional until voting closes.";
+
+  }
+  else if(
+    ballotIsFinalized()
+  ){
+
+    $("resultsTitle").textContent =
+      "Final Ballot Results";
+
+
+    $("resultsSubtitle").textContent =
+      "This ballot has been finalized and the winning book is now part of the club's reading history.";
+
+  }
+  else{
+
+    $("resultsTitle").textContent =
+      "Ballot Results";
+
+
+    $("resultsSubtitle").textContent =
+      totalVotes +
+      (
+        totalVotes === 1
+          ? " vote was"
+          : " votes were"
+      ) +
+      " cast on this ballot.";
+
+  }
+
+
+  list.innerHTML =
+    "";
+
+
+  const leaders =
+    firstPlaceResults();
+
+
+  const leaderIds =
+    new Set(
+      leaders.map(
+        row =>
+          String(
+            row.option_id
+          )
+      )
+    );
+
+
+  for(
+    const result
+    of voteResults
+  ){
+
+    const article =
+      document.createElement(
+        "article"
+      );
+
+
+    const isLeader =
+      leaderIds.has(
+        String(
+          result.option_id
+        )
+      );
+
+
+    const finalizedWinner =
+      ballotIsFinalized() &&
+      (
+        String(
+          ballot?.winning_option_id ??
+          ballot?.winner_option_id ??
+          ""
+        ) ===
+        String(
+          result.option_id
+        )
+      );
+
+
+    article.className =
+      "vote-result" +
+      (
+        isLeader
+          ? " leading"
+          : ""
+      ) +
+      (
+        finalizedWinner
+          ? " winner"
+          : ""
+      );
+
+
+    const cover =
+      normalizeCover(
+        result.cover_url
+      );
+
+
+    const author =
+      Array.isArray(
+        result.authors
+      )
+        ? (
+            result.authors.join(
+              ", "
+            ) ||
+            "Unknown author"
+          )
+        : (
+            result.authors ||
+            "Unknown author"
+          );
+
+
+    article.innerHTML = `
+
+      <div class="result-cover-small">
+
+        ${
+          cover
+            ? `
+              <img
+                src="${escapeHtml(
+                  cover
+                )}"
+                alt="${escapeHtml(
+                  result.title
+                )} cover"
+              >
+            `
+            : "No cover"
+        }
+
+      </div>
+
+      <div>
+
+        <div class="result-book-title">
+          ${escapeHtml(
+            result.title
+          )}
+        </div>
+
+        <div class="result-book-author">
+          ${escapeHtml(
+            author
+          )}
+        </div>
+
+        ${
+          finalizedWinner
+            ? `
+              <span class="result-tag">
+                Book of the Month
+              </span>
+            `
+            : (
+                isLeader &&
+                ballotIsClosed()
+                  ? `
+                    <span class="result-tag">
+                      ${
+                        leaders.length > 1
+                          ? "Tied for First"
+                          : "Winner"
+                      }
+                    </span>
+                  `
+                  : ""
+              )
+        }
+
+      </div>
+
+      <div class="result-votes">
+
+        ${Number(
+          result.vote_count ||
+          0
+        )}
+
+        ${
+          Number(
+            result.vote_count ||
+            0
+          ) === 1
+            ? " vote"
+            : " votes"
+        }
+
+      </div>
+
+    `;
+
+
+    list.appendChild(
+      article
+    );
+
+  }
+
+
+  actions.innerHTML =
+    "";
+
+
+  if(
+    ballotIsClosed()
+  ){
+
+    if(
+      hasTieForFirst()
+    ){
+
+      const note =
+        document.createElement(
+          "div"
+        );
+
+
+      note.className =
+        "tie-note";
+
+
+      note.textContent =
+        canBreakTie()
+          ? "First place is tied. The Club President must choose the Book of the Month from the tied books below."
+          : "First place is tied. Only the Club President can choose the winner.";
+
+
+      actions.appendChild(
+        note
+      );
+
+
+      if(
+        canBreakTie()
+      ){
+
+        for(
+          const result
+          of leaders
+        ){
+
+          const button =
+            document.createElement(
+              "button"
+            );
+
+
+          button.className =
+            "btn success";
+
+
+          button.type =
+            "button";
+
+
+          button.textContent =
+            "Choose " +
+            result.title;
+
+
+          button.disabled =
+            actionBusy;
+
+
+          button.addEventListener(
+            "click",
+            () =>
+              finalizeBallot(
+                result.option_id
+              )
+          );
+
+
+          actions.appendChild(
+            button
+          );
+
+        }
+
+      }
+
+    }
+    else{
+
+      const winner =
+        uniqueWinner();
+
+
+      if(
+        winner
+      ){
+
+        const note =
+          document.createElement(
+            "div"
+          );
+
+
+        note.className =
+          "finalized-note";
+
+
+        note.textContent =
+          winner.title +
+          " finished in first place with " +
+          winner.vote_count +
+          (
+            Number(
+              winner.vote_count
+            ) === 1
+              ? " vote."
+              : " votes."
+          );
+
+
+        actions.appendChild(
+          note
+        );
+
+      }
+
+    }
+
+  }
+
+
+  if(
+    ballotIsFinalized()
+  ){
+
+    const note =
+      document.createElement(
+        "div"
+      );
+
+
+    note.className =
+      "finalized-note";
+
+
+    note.textContent =
+      "This ballot is complete. The result is preserved as part of the club's monthly history.";
+
+
+    actions.appendChild(
+      note
+    );
+
+  }
 
 }
+
 
 /* =========================================================
    SEARCH MODAL
@@ -2325,16 +5060,23 @@ function openSearch(){
 
   $("searchModal")
     .classList
-    .add("show");
+    .add(
+      "show"
+    );
+
 
   $("bookSearch").value =
     "";
 
+
   $("results").innerHTML = `
+
     <div class="no-results">
       Search by title, author, or ISBN.
     </div>
+
   `;
+
 
   setTimeout(
     () =>
@@ -2345,19 +5087,24 @@ function openSearch(){
 
 }
 
+
 function closeSearch(){
 
   $("searchModal")
     .classList
-    .remove("show");
+    .remove(
+      "show"
+    );
 
 }
+
 
 $("closeSearch")
   .addEventListener(
     "click",
     closeSearch
   );
+
 
 $("searchModal")
   .addEventListener(
@@ -2376,6 +5123,7 @@ $("searchModal")
     }
   );
 
+
 document
   .addEventListener(
     "keydown",
@@ -2385,7 +5133,9 @@ document
         event.key === "Escape" &&
         $("searchModal")
           .classList
-          .contains("show")
+          .contains(
+            "show"
+          )
       ){
 
         closeSearch();
@@ -2395,7 +5145,11 @@ document
     }
   );
 
+
 /* =========================================================
+   END PART 2
+   ========================================================= */
+  /* =========================================================
    GOOGLE BOOKS SEARCH
    ========================================================= */
 
@@ -2406,111 +5160,180 @@ async function searchBooks(){
       .value
       .trim();
 
-  if(!rawQuery)
+
+  if(
+    !rawQuery
+  ){
+
+    $("results").innerHTML = `
+
+      <div class="no-results">
+        Enter a title, author, or ISBN.
+      </div>
+
+    `;
+
+
     return;
 
-  const query =
-    buildGoogleQuery(
-      rawQuery
-    );
+  }
 
-  const results =
-    $("results");
 
-  results.innerHTML = `
+  $("results").innerHTML = `
+
     <div class="no-results">
-      Searching the stacks...
+      Searching Google Books…
     </div>
+
   `;
+
 
   try{
 
-    let url =
-      "https://www.googleapis.com/books/v1/volumes" +
-      "?q=" +
-      encodeURIComponent(query) +
-      "&maxResults=20";
+    const query =
+      buildGoogleQuery(
+        rawQuery
+      );
 
-    if(GOOGLE_BOOKS_API_KEY){
 
-      url +=
-        "&key=" +
-        encodeURIComponent(
-          GOOGLE_BOOKS_API_KEY
-        );
+    const url =
+      new URL(
+        "https://www.googleapis.com/books/v1/volumes"
+      );
 
-    }
 
-    const response =
-      await fetch(url);
+    url.searchParams.set(
+      "q",
+      query
+    );
 
-    if(!response.ok){
 
-      throw new Error(
-        "Google Books search failed."
+    url.searchParams.set(
+      "maxResults",
+      "20"
+    );
+
+
+    url.searchParams.set(
+      "printType",
+      "books"
+    );
+
+
+    if(
+      GOOGLE_BOOKS_API_KEY
+    ){
+
+      url.searchParams.set(
+        "key",
+        GOOGLE_BOOKS_API_KEY
       );
 
     }
 
-    const data =
-      await response.json();
 
-    const items =
-      data.items || [];
+    const response =
+      await fetch(
+        url.toString()
+      );
 
-    if(!items.length){
 
-      results.innerHTML = `
-        <div class="no-results">
-          No books found.
-          Try the title, author, or ISBN.
-        </div>
-      `;
+    if(
+      !response.ok
+    ){
 
-      return;
+      throw new Error(
+        "Google Books returned " +
+        response.status
+      );
 
     }
 
+
+    const payload =
+      await response.json();
+
+
     renderSearchResults(
-      items
+      payload.items ||
+      []
     );
 
   }
-  catch(error){
+  catch(
+    error
+  ){
 
-    console.error(error);
+    console.error(
+      "Google Books search:",
+      error
+    );
 
-    results.innerHTML = `
+
+    $("results").innerHTML = `
+
       <div class="no-results">
         DogEar couldn't search Google Books right now.
+        Please try again.
       </div>
+
     `;
 
   }
 
 }
 
-/* =========================================================
-   GOOGLE RESULT CARDS
-   ========================================================= */
 
-function renderSearchResults(items){
+function renderSearchResults(
+  items
+){
 
-  const results =
+  const container =
     $("results");
 
-  results.innerHTML =
+
+  container.innerHTML =
     "";
 
-  for(const item of items){
+
+  if(
+    !items.length
+  ){
+
+    container.innerHTML = `
+
+      <div class="no-results">
+        No editions matched that search.
+      </div>
+
+    `;
+
+
+    return;
+
+  }
+
+
+  for(
+    const item
+    of items
+  ){
 
     const info =
       item.volumeInfo ||
       {};
 
+
+    const identifiers =
+      getIdentifiers(
+        info
+      );
+
+
     const title =
       info.title ||
       "Untitled Book";
+
 
     const authors =
       Array.isArray(
@@ -2519,38 +5342,85 @@ function renderSearchResults(items){
         ? info.authors
         : [];
 
-    const authorDisplay =
-      authors.join(", ") ||
-      "Unknown author";
 
-    const {
-      isbn13,
-      isbn10
-    } =
-      getIdentifiers(info);
+    const cover =
+      normalizeCover(
+        info.imageLinks
+          ?.thumbnail ||
+        info.imageLinks
+          ?.smallThumbnail ||
+        ""
+      );
+
 
     const publisher =
       info.publisher ||
       "";
 
-    const published =
+
+    const publishedDate =
       info.publishedDate ||
       "";
 
-    const cover =
-      normalizeCover(
-        info.imageLinks?.thumbnail ||
-        info.imageLinks?.smallThumbnail ||
-        ""
-      );
+
+    const language =
+      info.language ||
+      "";
+
+
+    const pageCount =
+      info.pageCount ||
+      null;
+
 
     const result =
       document.createElement(
         "article"
       );
 
+
     result.className =
       "result";
+
+
+    const metadata =
+      [
+        identifiers.isbn13
+          ? (
+              "ISBN-13: " +
+              identifiers.isbn13
+            )
+          : "",
+
+        identifiers.isbn10
+          ? (
+              "ISBN-10: " +
+              identifiers.isbn10
+            )
+          : "",
+
+        publisher,
+
+        publishedDate,
+
+        pageCount
+          ? (
+              pageCount +
+              " pages"
+            )
+          : "",
+
+        language
+          ? language.toUpperCase()
+          : ""
+      ]
+        .filter(
+          Boolean
+        )
+        .join(
+          " · "
+        );
+
 
     result.innerHTML = `
 
@@ -2560,121 +5430,105 @@ function renderSearchResults(items){
           cover
             ? `
               <img
-                src="${escapeHtml(cover)}"
-                alt="${escapeHtml(title)} cover">
+                src="${escapeHtml(
+                  cover
+                )}"
+                alt="${escapeHtml(
+                  title
+                )} cover"
+              >
             `
             : "No cover"
         }
 
       </div>
 
+
       <div>
 
         <h3>
-          ${escapeHtml(title)}
+          ${escapeHtml(
+            title
+          )}
         </h3>
 
         <div class="result-author">
-          ${escapeHtml(authorDisplay)}
+
+          ${escapeHtml(
+            authors.join(
+              ", "
+            ) ||
+            "Unknown author"
+          )}
+
         </div>
 
         <div class="result-meta">
 
           ${
-            isbn13
-              ? `
-                ISBN-13:
-                ${escapeHtml(isbn13)}
-                <br>
-              `
-              : ""
-          }
-
-          ${
-            isbn10
-              ? `
-                ISBN-10:
-                ${escapeHtml(isbn10)}
-                <br>
-              `
-              : ""
-          }
-
-          ${
-            publisher
-              ? escapeHtml(publisher)
-              : ""
-          }
-
-          ${
-            published
-              ? `
-                · ${escapeHtml(published)}
-              `
-              : ""
-          }
-
-          ${
-            item.id
-              ? `
-                <br>
-                Google Books ID:
-                ${escapeHtml(item.id)}
-              `
-              : ""
+            escapeHtml(
+              metadata ||
+              "Edition details unavailable"
+            )
           }
 
         </div>
 
       </div>
 
+
       <button
         class="btn secondary"
         type="button"
       >
-        Choose
+        Use Edition
       </button>
+
     `;
 
+
     result
-      .querySelector("button")
+      .querySelector(
+        "button"
+      )
       .addEventListener(
         "click",
-        () => {
+        () =>
+          chooseEdition(
+            {
+              google_books_id:
+                item.id ||
+                null,
 
-          selectBook({
+              title,
 
-            google_books_id:
-              item.id,
+              authors,
 
-            title,
+              cover_url:
+                cover ||
+                null,
 
-            authors,
+              isbn_13:
+                identifiers.isbn13 ||
+                null,
 
-            isbn_13:
-              isbn13,
+              isbn_10:
+                identifiers.isbn10 ||
+                null,
 
-            isbn_10:
-              isbn10,
+              publisher:
+                publisher ||
+                null,
 
-            publisher,
-
-            published_date:
-              published,
-
-            cover_url:
-              cover,
-
-            description:
-              info.description ||
-              ""
-
-          });
-
-        }
+              published_date:
+                publishedDate ||
+                null
+            }
+          )
       );
 
-    results.appendChild(
+
+    container.appendChild(
       result
     );
 
@@ -2682,11 +5536,13 @@ function renderSearchResults(items){
 
 }
 
+
 $("searchBtn")
   .addEventListener(
     "click",
     searchBooks
   );
+
 
 $("bookSearch")
   .addEventListener(
@@ -2700,6 +5556,7 @@ $("bookSearch")
 
         event.preventDefault();
 
+
         searchBooks();
 
       }
@@ -2707,220 +5564,362 @@ $("bookSearch")
     }
   );
 
+
 /* =========================================================
-   DUPLICATE EDITION CHECK
+   MATCH GOOGLE EDITION TO CENTRAL DOGEAR BOOK
    ========================================================= */
 
-function duplicateEditionExists(
-  book,
-  ignoredSlot
+async function findCentralBook(
+  edition
 ){
 
-  return ballotOptions.some(
-    option => {
+  /*
+    Ballot options preserve the exact Google Books edition
+    even when DogEar does not yet have a matching central
+    catalog row.
+
+    When possible, connect the ballot option to books.id.
+  */
+
+  const attempts =
+    [];
+
+
+  if(
+    edition.isbn_13
+  ){
+
+    attempts.push(
+      [
+        "isbn_13",
+        edition.isbn_13
+      ]
+    );
+
+  }
+
+
+  if(
+    edition.isbn_10
+  ){
+
+    attempts.push(
+      [
+        "isbn_10",
+        edition.isbn_10
+      ]
+    );
+
+  }
+
+
+  if(
+    edition.google_books_id
+  ){
+
+    attempts.push(
+      [
+        "google_books_id",
+        edition.google_books_id
+      ]
+    );
+
+  }
+
+
+  for(
+    const [
+      column,
+      value
+    ]
+    of attempts
+  ){
+
+    try{
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from(
+            "books"
+          )
+          .select(
+            "id"
+          )
+          .eq(
+            column,
+            value
+          )
+          .limit(
+            1
+          )
+          .maybeSingle();
+
 
       if(
-        Number(
-          option.position
-        ) ===
-        Number(
-          ignoredSlot
-        )
+        error
       ){
 
-        return false;
+        /*
+          Older versions of the central books table may not
+          contain every lookup column. Continue to the next
+          matching strategy instead of breaking ballot entry.
+        */
+
+        console.warn(
+          "Central book match by " +
+          column +
+          ":",
+          error.message
+        );
+
+
+        continue;
 
       }
 
-      if(
-        book.google_books_id &&
-        option.google_books_id &&
-        book.google_books_id ===
-        option.google_books_id
-      ){
-
-        return true;
-
-      }
 
       if(
-        book.isbn_13 &&
-        option.isbn_13 &&
-        String(book.isbn_13) ===
-        String(option.isbn_13)
+        data?.id
       ){
 
-        return true;
+        return data.id;
 
       }
-
-      if(
-        book.isbn_10 &&
-        option.isbn_10 &&
-        String(book.isbn_10) ===
-        String(option.isbn_10)
-      ){
-
-        return true;
-
-      }
-
-      return false;
 
     }
-  );
+    catch(
+      error
+    ){
+
+      console.warn(
+        "Central book match:",
+        error.message
+      );
+
+    }
+
+  }
+
+
+  /*
+    Conservative title fallback.
+
+    Do not automatically connect two editions merely because
+    their titles resemble each other. Exact-edition ballot
+    metadata remains valid without a central book_id.
+  */
+
+  return null;
 
 }
 
+
 /* =========================================================
-   SAVE BOOK TO BALLOT SLOT
+   CHOOSE EDITION
    ========================================================= */
 
-async function selectBook(book){
+async function chooseEdition(
+  edition
+){
 
   clearMessage();
 
-  if(!isAdmin()){
+
+  if(
+    !hasLeadershipAccess()
+  ){
 
     showMessage(
-      "Only an active Club President or Administrator can edit the ballot.",
+      "Only active club leadership can edit the ballot.",
       "error"
     );
 
+
     closeSearch();
+
 
     return;
 
   }
 
-  if(ballotIsOpen()){
+
+  if(
+    ballotIsOpen()
+  ){
 
     showMessage(
       "Close voting before changing ballot choices.",
       "error"
     );
 
+
     closeSearch();
+
 
     return;
 
   }
 
-  if(ballotIsFinalized()){
-
-    showMessage(
-      "This ballot has already been finalized.",
-      "error"
-    );
-
-    closeSearch();
-
-    return;
-
-  }
-
-  if(!ballotId){
-
-    showMessage(
-      "DogEar couldn't identify this month's ballot.",
-      "error"
-    );
-
-    closeSearch();
-
-    return;
-
-  }
 
   if(
-    duplicateEditionExists(
-      book,
-      selectedSlot
-    )
+    ballotIsClosed()
   ){
 
     showMessage(
-      "That exact edition is already on this ballot.",
+      "This ballot has already closed and cannot be edited.",
       "error"
     );
 
+
     closeSearch();
+
 
     return;
 
   }
 
+
+  if(
+    ballotIsFinalized()
+  ){
+
+    showMessage(
+      "A finalized ballot cannot be edited.",
+      "error"
+    );
+
+
+    closeSearch();
+
+
+    return;
+
+  }
+
+
+  if(
+    !ballotId
+  ){
+
+    try{
+
+      await ensureBallot();
+
+
+      await loadExistingBallot();
+
+    }
+    catch(
+      error
+    ){
+
+      console.error(
+        "Create ballot:",
+        error
+      );
+
+
+      showMessage(
+        "DogEar couldn't create this month's ballot: " +
+        (
+          error.message ||
+          "Unknown error"
+        ),
+        "error"
+      );
+
+
+      closeSearch();
+
+
+      return;
+
+    }
+
+  }
+
+
   try{
+
+    const centralBookId =
+      await findCentralBook(
+        edition
+      );
+
 
     const existing =
       optionForSlot(
         selectedSlot
       );
 
+
     const payload = {
 
-      club_id:
-        Number(clubId),
-
       ballot_id:
-        Number(ballotId),
+        Number(
+          ballotId
+        ),
+
+      club_id:
+        Number(
+          clubId
+        ),
 
       position:
-        selectedSlot,
+        Number(
+          selectedSlot
+        ),
 
       book_id:
-        null,
+        centralBookId,
 
       google_books_id:
-        book.google_books_id ||
-        null,
-
-      isbn_13:
-        book.isbn_13 ||
-        null,
-
-      isbn_10:
-        book.isbn_10 ||
-        null,
+        edition.google_books_id,
 
       title:
-        book.title,
+        edition.title,
 
       authors:
-        book.authors ||
-        [],
-
-      publisher:
-        book.publisher ||
-        null,
-
-      published_date:
-        book.published_date ||
-        null,
+        edition.authors,
 
       cover_url:
-        book.cover_url ||
-        null,
+        edition.cover_url,
 
-      description:
-        book.description ||
-        null,
+      isbn_13:
+        edition.isbn_13,
+
+      isbn_10:
+        edition.isbn_10,
+
+      publisher:
+        edition.publisher,
+
+      published_date:
+        edition.published_date,
 
       is_active:
         true
 
     };
 
-    let response;
 
-    if(existing){
+    if(
+      existing
+    ){
 
-      response =
+      const {
+        error
+      } =
         await supabaseClient
           .from(
             "club_ballot_options"
           )
-          .update(payload)
+          .update(
+            payload
+          )
           .eq(
             "id",
             existing.id
@@ -2929,44 +5928,73 @@ async function selectBook(book){
             "ballot_id",
             ballotId
           )
-          .select()
-          .single();
+          .eq(
+            "club_id",
+            clubId
+          );
+
+
+      if(
+        error
+      ){
+
+        throw error;
+
+      }
 
     }
     else{
 
-      response =
+      const {
+        error
+      } =
         await supabaseClient
           .from(
             "club_ballot_options"
           )
-          .insert(payload)
-          .select()
-          .single();
+          .insert(
+            payload
+          );
+
+
+      if(
+        error
+      ){
+
+        throw error;
+
+      }
 
     }
 
-    if(response.error)
-      throw response.error;
 
     closeSearch();
 
-    showMessage(
-      "Choice " +
-      selectedSlot +
-      " updated.",
-      "success"
-    );
 
     await reloadBallot();
 
-  }
-  catch(error){
-
-    console.error(error);
 
     showMessage(
-      "DogEar couldn't save this book: " +
+      edition.title +
+      " is now Choice " +
+      selectedSlot +
+      ".",
+      "success"
+    );
+
+  }
+  catch(
+    error
+  ){
+
+    console.error(
+      "Save ballot option:",
+      error
+    );
+
+
+    showMessage(
+      "DogEar couldn't save this edition: " +
       (
         error.message ||
         "Unknown error"
@@ -2974,60 +6002,96 @@ async function selectBook(book){
       "error"
     );
 
-    closeSearch();
-
   }
 
 }
+
 
 /* =========================================================
    REMOVE BOOK
    ========================================================= */
 
-async function removeBook(optionId){
+async function removeBook(
+  optionId
+){
 
   clearMessage();
 
-  if(!isAdmin()){
+
+  if(
+    !hasLeadershipAccess()
+  ){
 
     showMessage(
-      "Only active club leadership can change the ballot.",
+      "Only active club leadership can edit the ballot.",
       "error"
     );
+
 
     return;
 
   }
 
-  if(ballotIsOpen()){
+
+  if(
+    ballotIsOpen()
+  ){
 
     showMessage(
       "Close voting before removing a ballot choice.",
       "error"
     );
 
+
     return;
 
   }
 
-  if(ballotIsFinalized()){
+
+  if(
+    ballotIsClosed()
+  ){
+
+    showMessage(
+      "A closed ballot cannot be edited.",
+      "error"
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    ballotIsFinalized()
+  ){
 
     showMessage(
       "A finalized ballot cannot be edited.",
       "error"
     );
 
+
     return;
 
   }
+
 
   const confirmed =
     confirm(
       "Remove this book from the monthly ballot?"
     );
 
-  if(!confirmed)
+
+  if(
+    !confirmed
+  ){
+
     return;
+
+  }
+
 
   try{
 
@@ -3052,20 +6116,34 @@ async function removeBook(optionId){
           clubId
         );
 
-    if(error)
+
+    if(
+      error
+    ){
+
       throw error;
+
+    }
+
+
+    await reloadBallot();
+
 
     showMessage(
       "Book removed from the ballot.",
       "success"
     );
 
-    await reloadBallot();
-
   }
-  catch(error){
+  catch(
+    error
+  ){
 
-    console.error(error);
+    console.error(
+      "Remove ballot book:",
+      error
+    );
+
 
     showMessage(
       "DogEar couldn't remove this book: " +
@@ -3080,55 +6158,130 @@ async function removeBook(optionId){
 
 }
 
+
 /* =========================================================
    OPEN VOTING
-   Secure RPC installed by DogEar V2 migration.
    ========================================================= */
 
 async function openVoting(){
 
   clearMessage();
 
-  if(!isAdmin()){
+
+  if(
+    actionBusy
+  ){
+
+    return;
+
+  }
+
+
+  if(
+    !hasLeadershipAccess()
+  ){
 
     showMessage(
       "Only active club leadership can open voting.",
       "error"
     );
 
-    return;
-
-  }
-
-  if(!ballotIsComplete()){
-
-    showMessage(
-      "All three ballot positions must be filled before voting can open.",
-      "error"
-    );
 
     return;
 
   }
 
-  if(!ballotId){
+
+  if(
+    !ballotId
+  ){
 
     showMessage(
       "No ballot is available to publish.",
       "error"
     );
 
+
     return;
 
   }
 
+
+  if(
+    !ballotIsComplete()
+  ){
+
+    showMessage(
+      "All three ballot positions must be filled before voting can open.",
+      "error"
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    ballotIsOpen()
+  ){
+
+    showMessage(
+      "Voting is already open.",
+      "warning"
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    ballotIsClosed() ||
+    ballotIsFinalized()
+  ){
+
+    showMessage(
+      "This ballot can no longer be opened.",
+      "error"
+    );
+
+
+    return;
+
+  }
+
+
+  const confirmed =
+    confirm(
+      "Open voting for " +
+      ballotMonthLabel() +
+      "? Members will be able to cast votes immediately."
+    );
+
+
+  if(
+    !confirmed
+  ){
+
+    return;
+
+  }
+
+
+  actionBusy =
+    true;
+
+
+  updateStatus();
+
+
+  $("openBallotBtn").textContent =
+    "Opening…";
+
+
   try{
-
-    $("openBallotBtn").disabled =
-      true;
-
-    $("openBallotBtn").textContent =
-      "Opening…";
 
     const {
       error
@@ -3137,14 +6290,24 @@ async function openVoting(){
         "publish_club_ballot",
         {
           p_ballot_id:
-            Number(ballotId)
+            Number(
+              ballotId
+            )
         }
       );
 
-    if(error)
+
+    if(
+      error
+    ){
+
       throw error;
 
+    }
+
+
     await reloadBallot();
+
 
     showMessage(
       "Voting is now open for " +
@@ -3154,15 +6317,20 @@ async function openVoting(){
     );
 
   }
-  catch(error){
+  catch(
+    error
+  ){
 
-    console.error(error);
+    console.error(
+      "Open voting:",
+      error
+    );
+
 
     showMessage(
-      "DogEar couldn't open voting: " +
-      (
-        error.message ||
-        "Unknown error"
+      friendlyBallotError(
+        error,
+        "DogEar couldn't open voting."
       ),
       "error"
     );
@@ -3170,14 +6338,20 @@ async function openVoting(){
   }
   finally{
 
+    actionBusy =
+      false;
+
+
     $("openBallotBtn").textContent =
       "Open Voting";
+
 
     updateStatus();
 
   }
 
 }
+
 
 /* =========================================================
    CLOSE VOTING
@@ -3187,38 +6361,90 @@ async function closeVoting(){
 
   clearMessage();
 
-  if(!isAdmin()){
+
+  if(
+    actionBusy
+  ){
+
+    return;
+
+  }
+
+
+  if(
+    !hasLeadershipAccess()
+  ){
 
     showMessage(
       "Only active club leadership can close voting.",
       "error"
     );
 
-    return;
-
-  }
-
-  if(!ballotId){
 
     return;
 
   }
+
+
+  if(
+    !ballotId
+  ){
+
+    showMessage(
+      "There is no ballot to close.",
+      "error"
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    !ballotIsOpen()
+  ){
+
+    showMessage(
+      ballotIsClosed()
+        ? "Voting is already closed."
+        : "This ballot is not currently open.",
+      "warning"
+    );
+
+
+    return;
+
+  }
+
 
   const confirmed =
     confirm(
-      "Close voting for this ballot?"
+      "Close voting for this ballot? Members will no longer be able to cast or change votes."
     );
 
-  if(!confirmed)
+
+  if(
+    !confirmed
+  ){
+
     return;
 
+  }
+
+
+  actionBusy =
+    true;
+
+
+  updateStatus();
+
+
+  $("closeBallotBtn").textContent =
+    "Closing…";
+
+
   try{
-
-    $("closeBallotBtn").disabled =
-      true;
-
-    $("closeBallotBtn").textContent =
-      "Closing…";
 
     const {
       error
@@ -3227,30 +6453,69 @@ async function closeVoting(){
         "close_club_ballot",
         {
           p_ballot_id:
-            Number(ballotId)
+            Number(
+              ballotId
+            )
         }
       );
 
-    if(error)
+
+    if(
+      error
+    ){
+
       throw error;
+
+    }
+
 
     await reloadBallot();
 
-    showMessage(
-      "Voting is now closed.",
-      "success"
-    );
+
+    if(
+      hasTieForFirst()
+    ){
+
+      showMessage(
+        "Voting is closed. First place is tied, so the Club President must choose among the tied books.",
+        "warning"
+      );
+
+    }
+    else{
+
+      const winner =
+        uniqueWinner();
+
+
+      showMessage(
+        winner
+          ? (
+              "Voting is closed. " +
+              winner.title +
+              " finished in first place."
+            )
+          : "Voting is now closed.",
+        "success"
+      );
+
+    }
 
   }
-  catch(error){
+  catch(
+    error
+  ){
 
-    console.error(error);
+    console.error(
+      "Close voting:",
+      error
+    );
+
 
     showMessage(
-      "DogEar couldn't close voting: " +
-      (
-        error.message ||
-        "Unknown error"
+      friendlyBallotError(
+        error,
+        "DogEar couldn't close voting."
       ),
       "error"
     );
@@ -3258,8 +6523,13 @@ async function closeVoting(){
   }
   finally{
 
+    actionBusy =
+      false;
+
+
     $("closeBallotBtn").textContent =
       "Close Voting";
+
 
     updateStatus();
 
@@ -3267,11 +6537,464 @@ async function closeVoting(){
 
 }
 
+
+/* =========================================================
+   FINALIZE BALLOT
+   ========================================================= */
+
+async function finalizeBallot(
+  tieBreakOptionId = null
+){
+
+  clearMessage();
+
+
+  if(
+    actionBusy
+  ){
+
+    return;
+
+  }
+
+
+  if(
+    !hasLeadershipAccess()
+  ){
+
+    showMessage(
+      "Only active club leadership can finalize this ballot.",
+      "error"
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    !ballotId
+  ){
+
+    showMessage(
+      "There is no ballot to finalize.",
+      "error"
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    !ballotIsClosed()
+  ){
+
+    showMessage(
+      ballotIsFinalized()
+        ? "This ballot has already been finalized."
+        : "Close voting before finalizing the winner.",
+      "error"
+    );
+
+
+    return;
+
+  }
+
+
+  const tied =
+    hasTieForFirst();
+
+
+  if(
+    tied &&
+    !tieBreakOptionId
+  ){
+
+    showMessage(
+      canBreakTie()
+        ? "First place is tied. Choose one of the tied books below."
+        : "First place is tied. Only the Club President can choose the winner.",
+      "warning"
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    tied &&
+    !canBreakTie()
+  ){
+
+    showMessage(
+      "Only the Club President can break a tied ballot.",
+      "error"
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    tied
+  ){
+
+    const validTieOption =
+      firstPlaceResults()
+        .some(
+          result =>
+            String(
+              result.option_id
+            ) ===
+            String(
+              tieBreakOptionId
+            )
+        );
+
+
+    if(
+      !validTieOption
+    ){
+
+      showMessage(
+        "The tie-break selection must be one of the books tied for first place.",
+        "error"
+      );
+
+
+      return;
+
+    }
+
+  }
+
+
+  const selectedWinner =
+    tied
+      ? voteResults.find(
+          result =>
+            String(
+              result.option_id
+            ) ===
+            String(
+              tieBreakOptionId
+            )
+        )
+      : uniqueWinner();
+
+
+  const confirmationText =
+    tied
+      ? (
+          "Choose “" +
+          (
+            selectedWinner?.title ||
+            "this book"
+          ) +
+          "” as the Book of the Month and finalize the ballot?"
+        )
+      : (
+          "Finalize “" +
+          (
+            selectedWinner?.title ||
+            "the first-place book"
+          ) +
+          "” as the Book of the Month?"
+        );
+
+
+  const confirmed =
+    confirm(
+      confirmationText
+    );
+
+
+  if(
+    !confirmed
+  ){
+
+    return;
+
+  }
+
+
+  actionBusy =
+    true;
+
+
+  updateStatus();
+
+
+  $("finalizeBallotBtn").textContent =
+    "Finalizing…";
+
+
+  try{
+
+    /*
+      Migration #3 is authoritative.
+
+      For a unique winner, p_winner_option_id is NULL and
+      PostgreSQL calculates first place itself.
+
+      For a tie, the selected option is sent to PostgreSQL,
+      which independently verifies that the option is truly
+      tied for first and that the caller is the President or
+      a DogEar system administrator.
+    */
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "finalize_club_ballot",
+        {
+          p_ballot_id:
+            Number(
+              ballotId
+            ),
+
+          p_winner_option_id:
+            tieBreakOptionId
+              ? Number(
+                  tieBreakOptionId
+                )
+              : null
+        }
+      );
+
+
+    if(
+      error
+    ){
+
+      throw error;
+
+    }
+
+
+    await reloadBallot();
+
+
+    const winner =
+      selectedWinner ||
+      voteResults.find(
+        result =>
+          String(
+            result.option_id
+          ) ===
+          String(
+            ballot?.winner_option_id ||
+            ballot?.winning_option_id ||
+            ""
+          )
+      );
+
+
+    showMessage(
+      (
+        winner?.title ||
+        "The winning book"
+      ) +
+      " is now the Book of the Month.",
+      "success"
+    );
+
+
+    console.log(
+      "Finalized club_books row:",
+      data
+    );
+
+  }
+  catch(
+    error
+  ){
+
+    console.error(
+      "Finalize ballot:",
+      error
+    );
+
+
+    showMessage(
+      friendlyBallotError(
+        error,
+        "DogEar couldn't finalize this ballot."
+      ),
+      "error"
+    );
+
+  }
+  finally{
+
+    actionBusy =
+      false;
+
+
+    $("finalizeBallotBtn").textContent =
+      hasTieForFirst()
+        ? "Resolve Tie Below"
+        : "Finalize Book of the Month";
+
+
+    updateStatus();
+
+  }
+
+}
+
+
+/* =========================================================
+   FRIENDLY BALLOT ERRORS
+   ========================================================= */
+
+function friendlyBallotError(
+  error,
+  fallback
+){
+
+  const message =
+    String(
+      error?.message ||
+      ""
+    );
+
+
+  const lower =
+    message
+      .toLowerCase();
+
+
+  if(
+    lower.includes(
+      "authentication required"
+    )
+  ){
+
+    return "Please sign in again before managing this ballot.";
+
+  }
+
+
+  if(
+    lower.includes(
+      "permission denied"
+    )
+  ){
+
+    return "Your account does not have permission to perform that ballot action.";
+
+  }
+
+
+  if(
+    lower.includes(
+      "exactly three"
+    )
+  ){
+
+    return "The ballot must contain exactly three active book choices.";
+
+  }
+
+
+  if(
+    lower.includes(
+      "voting must be closed"
+    )
+  ){
+
+    return "Close voting before finalizing the Book of the Month.";
+
+  }
+
+
+  if(
+    lower.includes(
+      "tied for first"
+    )
+  ){
+
+    return "First place is tied. The Club President must choose among the tied books.";
+
+  }
+
+
+  if(
+    lower.includes(
+      "only the club president"
+    )
+  ){
+
+    return "Only the Club President can break a tied ballot.";
+
+  }
+
+
+  if(
+    lower.includes(
+      "tied"
+    ) &&
+    lower.includes(
+      "selection"
+    )
+  ){
+
+    return "The tie-break selection must be one of the books tied for first place.";
+
+  }
+
+
+  if(
+    lower.includes(
+      "ballot not found"
+    )
+  ){
+
+    return "DogEar couldn't find this ballot. Refresh the page and try again.";
+
+  }
+
+
+  if(
+    lower.includes(
+      "finalized"
+    )
+  ){
+
+    return "This ballot has already been finalized.";
+
+  }
+
+
+  return (
+    message ||
+    fallback
+  );
+
+}
+
+
+/* =========================================================
+   BUTTON EVENTS
+   ========================================================= */
+
 $("openBallotBtn")
   .addEventListener(
     "click",
     openVoting
   );
+
 
 $("closeBallotBtn")
   .addEventListener(
@@ -3279,7 +7002,21 @@ $("closeBallotBtn")
     closeVoting
   );
 
+
+$("finalizeBallotBtn")
+  .addEventListener(
+    "click",
+    () =>
+      finalizeBallot(
+        null
+      )
+  );
+
+
 /* =========================================================
+   END PART 3
+   ========================================================= */
+  /* =========================================================
    PERMISSIONS
    ========================================================= */
 
@@ -3287,8 +7024,15 @@ function applyPermissions(){
 
   updateStatus();
 
-  if(isAdmin())
+
+  if(
+    hasLeadershipAccess()
+  ){
+
     return;
+
+  }
+
 
   $("adminContent").innerHTML = `
 
@@ -3302,15 +7046,27 @@ function applyPermissions(){
       can create or change the monthly ballot.
 
     </div>
+
   `;
+
 
   $("openBallotBtn").disabled =
     true;
 
+
   $("closeBallotBtn").disabled =
     true;
 
+
+  $("finalizeBallotBtn").disabled =
+    true;
+
+
+  $("finalizeBallotBtn").hidden =
+    true;
+
 }
+
 
 /* =========================================================
    OPTIONAL INCOMING CENTRAL BOOK
@@ -3321,8 +7077,9 @@ async function handleIncomingBook(){
   if(
     incomingAction !== "add" ||
     !incomingBookId ||
-    !isAdmin() ||
+    !hasLeadershipAccess() ||
     ballotIsOpen() ||
+    ballotIsClosed() ||
     ballotIsFinalized()
   ){
 
@@ -3330,15 +7087,6 @@ async function handleIncomingBook(){
 
   }
 
-  /*
-    The central DogEar catalog and Google Books represent
-    different things.
-
-    A DogEar book may represent one exact edition if it has
-    Google Books / ISBN information. If enough metadata exists,
-    we can help leadership locate that edition without assuming
-    a match.
-  */
 
   try{
 
@@ -3347,57 +7095,89 @@ async function handleIncomingBook(){
       error
     } =
       await supabaseClient
-        .from("books")
-        .select("*")
+        .from(
+          "books"
+        )
+        .select(
+          "*"
+        )
         .eq(
           "id",
           incomingBookId
         )
         .maybeSingle();
 
-    if(error)
+
+    if(
+      error
+    ){
+
       throw error;
 
-    if(!data){
+    }
+
+
+    if(
+      !data
+    ){
 
       showMessage(
         "A book was sent to the ballot builder. Choose its exact edition for one of the three slots.",
         "warning"
       );
 
+
       return;
 
     }
 
+
+    /*
+      If the central DogEar book already has enough exact
+      edition metadata, prefill the Google Books search with
+      the most precise identifier available.
+
+      We still let leadership explicitly choose the edition
+      rather than silently assuming a match.
+    */
+
     const searchValue =
       data.isbn_13 ||
       data.isbn_10 ||
+      data.google_books_id ||
       data.title ||
       "";
 
-    if(searchValue){
+
+    if(
+      searchValue
+    ){
 
       $("bookSearch").value =
         searchValue;
 
     }
 
+
     showMessage(
       (
         data.title ||
         "A book"
       ) +
-      " was sent to the ballot builder. Choose which slot to place its exact edition in.",
+      " was sent to the ballot builder. Choose the ballot slot, then select the exact edition.",
       "warning"
     );
 
   }
-  catch(error){
+  catch(
+    error
+  ){
 
     console.warn(
       "Incoming book lookup:",
       error.message
     );
+
 
     showMessage(
       "A book was sent to the ballot builder. Choose its exact edition for one of the three slots.",
@@ -3408,88 +7188,189 @@ async function handleIncomingBook(){
 
 }
 
+
+/* =========================================================
+   AUTH STATE
+   ========================================================= */
+
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    (
+      event,
+      session
+    ) => {
+
+      if(
+        event === "SIGNED_OUT"
+      ){
+
+        location.href =
+          "auth.html#login";
+
+      }
+
+
+      if(
+        event === "TOKEN_REFRESHED" &&
+        !session
+      ){
+
+        location.href =
+          "auth.html#login";
+
+      }
+
+    }
+  );
+
+
 /* =========================================================
    START
    ========================================================= */
 
 async function start(){
 
-  if(!clubId){
+  if(
+    !clubId
+  ){
 
     location.href =
       "clubs.html";
 
+
     return;
 
   }
 
+
   wireLinks();
+
 
   $("monthStatus").textContent =
     ballotMonthLabel();
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .auth
-      .getUser();
-
-  if(
-    error ||
-    !data.user
-  ){
-
-    location.href =
-      "auth.html#login";
-
-    return;
-
-  }
-
-  currentUser =
-    data.user;
 
   try{
 
-    await Promise.all([
-      loadProfile(),
-      loadClub(),
-      loadMembership()
-    ]);
+    /* -------------------------------------------------------
+       AUTHENTICATION
+       ------------------------------------------------------- */
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .auth
+        .getUser();
+
+
+    if(
+      error ||
+      !data.user
+    ){
+
+      location.href =
+        "auth.html#login";
+
+
+      return;
+
+    }
+
+
+    currentUser =
+      data.user;
+
+
+    /* -------------------------------------------------------
+       USER / CLUB CONTEXT
+       ------------------------------------------------------- */
+
+    await Promise.all(
+      [
+        loadProfile(),
+        loadClub(),
+        loadMembership(),
+        loadSystemAdmin()
+      ]
+    );
+
 
     /*
-      Leadership creates the month if it doesn't exist.
-      Everyone else may only load an existing ballot.
+      A normal club member may reach this URL manually.
+
+      We load the existing ballot first so the page can
+      identify its state, but only leadership/system admins
+      receive the management interface.
     */
 
     await loadExistingBallot();
 
+
+    /* -------------------------------------------------------
+       CREATE MONTHLY DRAFT FOR LEADERSHIP
+       ------------------------------------------------------- */
+
     if(
       !ballot &&
-      isAdmin()
+      hasLeadershipAccess()
     ){
 
       await ensureBallot();
+
 
       await loadExistingBallot();
 
     }
 
+
+    /* -------------------------------------------------------
+       LOAD CANONICAL BALLOT DATA
+       ------------------------------------------------------- */
+
     await loadBallotOptions();
+
+
+    await loadBallotVotes();
+
+
+    await loadBallotResults();
+
+
+    /* -------------------------------------------------------
+       APPLY ACCESS RULES
+       ------------------------------------------------------- */
 
     applyPermissions();
 
-    await handleIncomingBook();
+
+    /* -------------------------------------------------------
+       HANDLE BOOK SENT FROM CENTRAL CATALOG
+       ------------------------------------------------------- */
+
+    if(
+      hasLeadershipAccess()
+    ){
+
+      await handleIncomingBook();
+
+    }
+
+
+    updateStatus();
 
   }
-  catch(error){
+  catch(
+    error
+  ){
 
     console.error(
       "Ballot builder load:",
       error
     );
+
 
     showMessage(
       "DogEar couldn't load the ballot builder: " +
@@ -3500,19 +7381,50 @@ async function start(){
       "error"
     );
 
-    applyPermissions();
+
+    /*
+      Fail closed. If loading permissions or club state
+      failed, do not leave management controls usable.
+    */
+
+    $("openBallotBtn").disabled =
+      true;
+
+
+    $("closeBallotBtn").disabled =
+      true;
+
+
+    $("finalizeBallotBtn").disabled =
+      true;
+
+
+    $("finalizeBallotBtn").hidden =
+      true;
+
+  }
+  finally{
+
+    $("loading")
+      .classList
+      .add(
+        "hidden"
+      );
 
   }
 
-  $("loading")
-    .classList
-    .add("hidden");
-
 }
 
+
+/* =========================================================
+   START DOGEAR BALLOT DESK
+   ========================================================= */
+
 start();
+
 
 </script>
 
 </body>
+
 </html>
