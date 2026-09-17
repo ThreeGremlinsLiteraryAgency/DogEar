@@ -1,3244 +1,4658 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <meta
-    name="description"
-    content="Manage and browse members of a DogEar book club."
-  >
-
-  <title>DogEar — Club Members</title>
-
-  <style>
-    :root {
-      --ink:#090b0a;
-      --panel:#101410;
-      --panel2:#151b16;
-      --cream:#f1e7cf;
-      --gold:#c79b59;
-      --gold2:#dfbd7e;
-      --green:#26362b;
-      --muted:#aaa18f;
-      --success:#b9d6b2;
-      --warning:#e3c58c;
-      --danger:#e6a09a;
-      --line:rgba(199,155,89,.22);
-      --shadow:0 20px 60px rgba(0,0,0,.32);
-      --radius:20px;
-    }
-
-    * {
-      box-sizing:border-box;
-    }
-
-    html {
-      scroll-behavior:smooth;
-    }
-
-    body {
-      margin:0;
-      min-height:100vh;
-
-      background:
-        radial-gradient(
-          circle at 8% 0%,
-          rgba(53,73,59,.24),
-          transparent 28%
-        ),
-        radial-gradient(
-          circle at 92% 8%,
-          rgba(199,155,89,.09),
-          transparent 24%
-        ),
-        var(--ink);
-
-      color:var(--cream);
-
-      font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-    }
-
-    button,
-    input {
-      font:inherit;
-    }
-
-    a {
-      color:inherit;
-    }
-
-    /* =========================================
-       TOP NAV
-       ========================================= */
-
-    .topbar {
-      min-height:76px;
-
-      position:sticky;
-      top:0;
-      z-index:100;
-
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-
-      gap:30px;
-
-      padding:
-        0
-        clamp(18px,4vw,60px);
-
-      border-bottom:
-        1px solid var(--line);
-
-      background:
-        rgba(9,11,10,.92);
-
-      backdrop-filter:
-        blur(14px);
-    }
-
-    .brand {
-      display:inline-flex;
-      align-items:center;
-
-      gap:11px;
-
-      color:var(--gold2);
-
-      text-decoration:none;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size:13px;
-      font-weight:800;
-
-      letter-spacing:.17em;
-      text-transform:uppercase;
-    }
-
-    .brand-mark {
-      width:34px;
-      height:34px;
-
-      position:relative;
-
-      border:
-        1px solid var(--gold);
-
-      border-radius:
-        50%
-        50%
-        50%
-        12%;
-
-      transform:
-        rotate(-8deg);
-    }
-
-    .brand-mark::after {
-      content:"";
-
-      position:absolute;
-
-      width:11px;
-      height:11px;
-
-      right:2px;
-      top:2px;
-
-      border-left:
-        1px solid var(--gold);
-
-      border-bottom:
-        1px solid var(--gold);
-
-      background:
-        var(--ink);
-    }
-
-    .nav-links {
-      display:flex;
-      align-items:center;
-
-      gap:26px;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size:11px;
-      font-weight:700;
-
-      letter-spacing:.1em;
-      text-transform:uppercase;
-    }
-
-    .nav-links a {
-      color:var(--muted);
-      text-decoration:none;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      color:var(--gold2);
-    }
-
-    .nav-avatar {
-      width:38px;
-      height:38px;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      overflow:hidden;
-
-      border:
-        1px solid var(--line);
-
-      border-radius:50%;
-
-      background:
-        var(--green);
-
-      color:
-        var(--gold2);
-
-      text-decoration:none;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size:13px;
-      font-weight:800;
-    }
-
-    .nav-avatar img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
-
-    /* =========================================
-       PAGE
-       ========================================= */
-
-    .page {
-      width:
-        min(
-          1180px,
-          calc(100% - 36px)
-        );
-
-      margin:
-        0 auto;
-
-      padding:
-        44px
-        0
-        110px;
-    }
-
-    .back-row {
-      margin-bottom:27px;
-    }
-
-    .back-link {
-      color:var(--gold2);
-
-      text-decoration:none;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size:10px;
-      font-weight:800;
-
-      letter-spacing:.1em;
-      text-transform:uppercase;
-    }
-
-    /* =========================================
-       HERO
-       ========================================= */
-
-    .hero {
-      margin-bottom:28px;
-    }
-
-    .eyebrow {
-      margin-bottom:10px;
-
-      color:var(--gold);
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size:10px;
-      font-weight:800;
-
-      letter-spacing:.18em;
-      text-transform:uppercase;
-    }
-
-    h1,
-    h2,
-    h3,
-    p {
-      margin-top:0;
-    }
-
-    h1 {
-      margin-bottom:12px;
-
-      font-size:
-        clamp(
-          46px,
-          6vw,
-          76px
-        );
-
-      line-height:.97;
-      font-weight:400;
-
-      letter-spacing:-.04em;
-    }
-
-    .hero p {
-      max-width:760px;
-
-      margin-bottom:0;
-
-      color:var(--muted);
-
-      font-size:16px;
-      line-height:1.7;
-    }
-
-    /* =========================================
-       CLUB NAV
-       ========================================= */
-
-    .club-nav {
-      margin-bottom:26px;
-
-      padding:10px;
-
-      display:flex;
-      align-items:center;
-
-      gap:8px;
-
-      overflow-x:auto;
-
-      border:
-        1px solid var(--line);
-
-      border-radius:16px;
-
-      background:
-        rgba(16,20,16,.8);
-    }
-
-    .club-nav a {
-      flex:0 0 auto;
-
-      padding:
-        10px
-        15px;
-
-      border-radius:999px;
-
-      color:var(--muted);
-
-      text-decoration:none;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size:9px;
-      font-weight:800;
-
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .club-nav a:hover,
-    .club-nav a.active {
-      background:
-        rgba(199,155,89,.08);
-
-      color:var(--gold2);
-    }
-
-    /* =========================================
-       MESSAGE
-       ========================================= */
-
-    .message {
-      display:none;
-
-      margin-bottom:24px;
-
-      padding:
-        16px
-        18px;
-
-      border:
-        1px solid var(--line);
-
-      border-radius:13px;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size:12px;
-      line-height:1.6;
-    }
-
-    .message.show {
-      display:block;
-    }
-
-    .message.success {
-      color:var(--success);
-
-      border-color:
-        rgba(185,214,178,.3);
-    }
-
-    .message.warning {
-      color:var(--warning);
-
-      border-color:
-        rgba(227,197,140,.3);
-    }
-
-    .message.error {
-      color:var(--danger);
-
-      border-color:
-        rgba(230,160,154,.3);
-    }
-
-    /* =========================================
-       SUMMARY
-       ========================================= */
-
-    .summary-grid {
-      margin-bottom:26px;
-
-      display:grid;
-
-      grid-template-columns:
-        repeat(4,1fr);
-
-      gap:12px;
-    }
-
-    .summary-card {
-      padding:18px;
-
-      border:
-        1px solid var(--line);
-
-      border-radius:14px;
-
-      background:
-        rgba(16,20,16,.84);
-    }
-
-    .summary-number {
-      margin-bottom:5px;
-
-      color:var(--gold2);
-
-      font-size:27px;
-    }
-
-    .summary-label {
-      color:var(--muted);
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size:9px;
-      font-weight:800;
-
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    /* =========================================
-       FILTERS
-       ========================================= */
-
-    .tabs {
-      margin-bottom:20px;
-
-      display:flex;
-      flex-wrap:wrap;
-
-      gap:8px;
-    }
-
-    .tab {
-      min-height:39px;
-
-      padding:
-        0
-        16px;
-
-      border:
-        1px solid var(--line);
-
-      border-radius:999px;
-
-      background:transparent;
-
-      color:var(--muted);
-
-      cursor:pointer;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size:9px;
-      font-weight:800;
-
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .tab:hover,
-    .tab.active {
-      border-color:var(--gold);
-      color:var(--gold2);
-    }
-
-    /* =========================================
-       CARD
-       ========================================= */
-
-    .card {
-      overflow:hidden;
-
-      border:
-        1px solid var(--line);
-
-      border-radius:
-        var(--radius);
-
-      background:
-        rgba(16,20,16,.84);
-
-      box-shadow:
-        var(--shadow);
-    }
-
-    .card-header {
-      padding:
-        22px
-        25px;
-
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-
-      gap:18px;
-
-      border-bottom:
-        1px solid var(--line);
-    }
-
-    .card-header h2 {
-      margin-bottom:0;
-
-      font-size:27px;
-      font-weight:400;
-    }
-
-    .search {
-      width:230px;
-      max-width:100%;
-
-      min-height:39px;
-
-      padding:
-        0
-        13px;
-
-      border:
-        1px solid var(--line);
-
-      border-radius:999px;
-
-      background:#0d110e;
-
-      color:var(--cream);
-
-      outline:none;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size:11px;
-    }
-
-    .search:focus {
-      border-color:var(--gold);
-    }
-
-    /* =========================================
-       MEMBER ROW
-       ========================================= */
-
-    .member-list {
-      padding:
-        0
-        24px;
-    }
-
-    .member-row {
-      padding:
-        18px
-        0;
-
-      display:grid;
-
-      grid-template-columns:
-        52px
-        minmax(0,1fr)
-        auto;
-
-      gap:15px;
-
-      align-items:center;
-
-      border-bottom:
-        1px solid
-        rgba(199,155,89,.11);
-    }
-
-    .member-row:last-child {
-      border-bottom:0;
-    }
-
-    .member-avatar {
-      width:48px;
-      height:48px;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      overflow:hidden;
-
-      border-radius:50%;
-
-      background:
-        var(--green);
-
-      color:
-        var(--gold2);
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size:13px;
-      font-weight:800;
-    }
-
-    .member-avatar img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
-
-    .member-name {
-      display:inline-block;
-
-      margin-bottom:5px;
-
-      color:var(--cream);
-
-      text-decoration:none;
-
-      font-size:16px;
-    }
-
-    .member-name:hover {
-      color:var(--gold2);
-    }
-
-    .member-meta {
-      display:flex;
-      flex-wrap:wrap;
-
-      gap:6px;
-
-      color:var(--muted);
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size:9px;
-      text-transform:uppercase;
-    }
-
-    .badge {
-      display:inline-flex;
-
-      padding:
-        5px
-        8px;
-
-      border:
-        1px solid var(--line);
-
-      border-radius:999px;
-    }
-
-    .badge.president {
-      color:var(--gold2);
-    }
-
-    .badge.admin {
-      color:var(--success);
-    }
-
-    .badge.pending,
-    .badge.paused {
-      color:var(--warning);
-    }
-
-    .badge.banned {
-      color:var(--danger);
-    }
-
-    /* =========================================
-       ACTIONS
-       ========================================= */
-
-    .actions {
-      display:flex;
-      flex-wrap:wrap;
-
-      justify-content:flex-end;
-
-      gap:7px;
-    }
-
-    .action-button {
-      min-height:34px;
-
-      padding:
-        0
-        11px;
-
-      border:
-        1px solid var(--line);
-
-      border-radius:999px;
-
-      background:transparent;
-
-      color:var(--gold2);
-
-      cursor:pointer;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size:8px;
-      font-weight:800;
-
-      letter-spacing:.06em;
-      text-transform:uppercase;
-    }
-
-    .action-button:hover {
-      border-color:var(--gold);
-    }
-
-    .action-button.success {
-      color:var(--success);
-    }
-
-    .action-button.danger {
-      color:var(--danger);
-    }
-
-    /* =========================================
-       EMPTY
-       ========================================= */
-
-    .empty {
-      padding:
-        55px
-        24px;
-
-      text-align:center;
-
-      color:var(--muted);
-
-      line-height:1.6;
-    }
-
-    .empty strong {
-      display:block;
-
-      margin-bottom:7px;
-
-      color:var(--cream);
-
-      font-size:20px;
-      font-weight:400;
-    }
-
-    /* =========================================
-       LEADERSHIP
-       ========================================= */
-
-    .leadership-card {
-      display:none;
-
-      margin-top:26px;
-    }
-
-    .leadership-card.show {
-      display:block;
-    }
-
-    .leadership-body {
-      padding:24px;
-    }
-
-    .leadership-body p {
-      color:var(--muted);
-      line-height:1.65;
-    }
-
-    .leadership-actions {
-      display:flex;
-      flex-wrap:wrap;
-
-      gap:10px;
-    }
-
-    .large-button {
-      min-height:42px;
-
-      padding:
-        0
-        17px;
-
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-
-      border:
-        1px solid var(--line);
-
-      border-radius:999px;
-
-      background:transparent;
-
-      color:var(--gold2);
-
-      text-decoration:none;
-
-      cursor:pointer;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size:9px;
-      font-weight:800;
-
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .large-button:hover {
-      border-color:var(--gold);
-    }
-
-    /* =========================================
-       LOADING
-       ========================================= */
-
-    .loading-screen {
-      position:fixed;
-      inset:0;
-
-      z-index:1000;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      flex-direction:column;
-
-      gap:15px;
-
-      background:var(--ink);
-
-      color:var(--gold2);
-    }
-
-    .loading-screen.hidden {
-      display:none;
-    }
-
-    .loading-mark {
-      width:48px;
-      height:48px;
-
-      border:
-        1px solid var(--gold);
-
-      border-radius:
-        50%
-        50%
-        50%
-        12%;
-
-      animation:
-        pulse
-        1.1s
-        infinite
-        alternate;
-    }
-
-    @keyframes pulse {
-      from {
-        opacity:.3;
-
-        transform:
-          rotate(-8deg)
-          scale(.94);
-      }
-
-      to {
-        opacity:1;
-
-        transform:
-          rotate(-8deg)
-          scale(1.05);
-      }
-    }
-
-    .loading-text {
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size:10px;
-      font-weight:800;
-
-      letter-spacing:.17em;
-      text-transform:uppercase;
-    }
-
-    /* =========================================
-       MOBILE
-       ========================================= */
-
-    .mobile-nav {
-      display:none;
-    }
-
-    @media (max-width:850px) {
-      .summary-grid {
-        grid-template-columns:
-          1fr
-          1fr;
-      }
-
-      .member-row {
-        grid-template-columns:
-          48px
-          1fr;
-      }
-
-      .actions {
-        grid-column:
-          1 / -1;
-
-        justify-content:flex-start;
-
-        padding-left:63px;
-      }
-    }
-
-    @media (max-width:760px) {
-      .nav-links {
-        display:none;
-      }
-
-      .card-header {
-        align-items:flex-start;
-        flex-direction:column;
-      }
-
-      .search {
-        width:100%;
-      }
-
-      .mobile-nav {
-        position:fixed;
-
-        left:12px;
-        right:12px;
-        bottom:12px;
-
-        z-index:200;
-
-        min-height:64px;
-
-        display:grid;
-
-        grid-template-columns:
-          repeat(4,1fr);
-
-        border:
-          1px solid var(--line);
-
-        border-radius:18px;
-
-        background:
-          rgba(9,11,10,.95);
-
-        backdrop-filter:
-          blur(14px);
-      }
-
-      .mobile-nav a {
-        display:flex;
-        flex-direction:column;
-
-        align-items:center;
-        justify-content:center;
-
-        gap:4px;
-
-        color:var(--muted);
-
-        text-decoration:none;
-
-        font-family:
-          Arial,
-          Helvetica,
-          sans-serif;
-
-        font-size:9px;
-        text-transform:uppercase;
-      }
-
-      .mobile-nav a span:first-child {
-        color:var(--gold2);
-        font-size:17px;
-      }
-
-      .page {
-        padding-bottom:120px;
-      }
-    }
-
-    @media (max-width:520px) {
-      .page {
-        width:
-          calc(100% - 22px);
-      }
-
-      .summary-grid {
-        grid-template-columns:
-          1fr
-          1fr;
-      }
-
-      .actions {
-        padding-left:0;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>Club Members | DogEar</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+:root{
+  --bg:#f4efe6;
+  --paper:#fffaf2;
+  --paper-2:#f9f2e7;
+  --ink:#2f2924;
+  --muted:#766d64;
+  --line:#ded3c4;
+  --accent:#8f6652;
+  --accent-dark:#684838;
+  --accent-soft:#ead9ca;
+  --green:#66785e;
+  --green-soft:#e2eadf;
+  --red:#8a554c;
+  --red-soft:#f3e1dd;
+  --gold:#8c7444;
+  --gold-soft:#eee5cc;
+  --shadow:0 18px 50px rgba(59,43,32,.09);
+  --radius:22px;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  padding:0;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(255,255,255,.72),
+      transparent 34%
+    ),
+    var(--bg);
+  color:var(--ink);
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+}
+
+body.loading-lock{
+  overflow:hidden;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+button,
+input,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading-screen{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--bg);
+  transition:
+    opacity .25s ease,
+    visibility .25s ease;
+}
+
+.loading-screen.hidden{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+
+.loading-inner{
+  text-align:center;
+}
+
+.loading-mark{
+  width:48px;
+  height:48px;
+  margin:0 auto 16px;
+  border-radius:50% 50% 45% 55%;
+  border:2px solid var(--accent);
+  position:relative;
+  animation:floatMark 1.4s ease-in-out infinite;
+}
+
+.loading-mark::after{
+  content:"";
+  position:absolute;
+  width:13px;
+  height:17px;
+  right:-3px;
+  top:-4px;
+  background:var(--bg);
+  border-left:2px solid var(--accent);
+  transform:rotate(35deg);
+}
+
+.loading-text{
+  color:var(--muted);
+  font-size:14px;
+  letter-spacing:.06em;
+}
+
+@keyframes floatMark{
+  0%,100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-5px);
+  }
+}
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar{
+  height:72px;
+  padding:0 32px;
+  border-bottom:1px solid rgba(111,91,76,.13);
+  background:rgba(244,239,230,.92);
+  backdrop-filter:blur(16px);
+  position:sticky;
+  top:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.brand-mark{
+  width:28px;
+  height:28px;
+  border:1.8px solid var(--accent);
+  border-radius:50% 50% 45% 55%;
+  position:relative;
+  display:inline-block;
+}
+
+.brand-mark::after{
+  content:"";
+  position:absolute;
+  width:8px;
+  height:10px;
+  top:-3px;
+  right:-2px;
+  background:var(--bg);
+  border-left:1.8px solid var(--accent);
+  transform:rotate(35deg);
+}
+
+.nav{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.nav a{
+  padding:10px 15px;
+  border-radius:999px;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.nav a:hover{
+  color:var(--ink);
+  background:rgba(255,255,255,.68);
+}
+
+.nav a.active{
+  color:var(--ink);
+  background:rgba(255,255,255,.72);
+}
+
+.nav-right{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.search-link{
+  padding:9px 13px;
+  border-radius:999px;
+  background:rgba(255,255,255,.68);
+  color:var(--ink);
+  font-size:13px;
+}
+
+.admin-link{
+  display:none;
+  padding:9px 12px;
+  border-radius:999px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.avatar{
+  width:39px;
+  height:39px;
+  border-radius:50%;
+  overflow:hidden;
+  background:var(--accent-dark);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  font-weight:700;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.page{
+  width:min(1180px, calc(100% - 48px));
+  margin:0 auto;
+  padding:38px 0 100px;
+}
+
+/* =========================================================
+   CLUB HEADER
+========================================================= */
+
+.club-header{
+  margin-bottom:20px;
+}
+
+.back-link{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin-bottom:18px;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.back-link:hover{
+  color:var(--ink);
+}
+
+.club-eyebrow{
+  color:var(--accent);
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-size:9px;
+  font-weight:700;
+}
+
+.club-header-row{
+  margin-top:7px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.club-header h1{
+  margin:0;
+  font-size:clamp(36px,5vw,54px);
+  line-height:1.03;
+  font-weight:500;
+  letter-spacing:-.035em;
+}
+
+.club-header p{
+  max-width:650px;
+  margin:10px 0 0;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.65;
+}
+
+/* =========================================================
+   CLUB NAV
+========================================================= */
+
+.club-nav{
+  margin:26px 0;
+  padding:6px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:rgba(255,250,242,.72);
+  display:flex;
+  gap:4px;
+  overflow-x:auto;
+}
+
+.club-nav a{
+  flex:0 0 auto;
+  padding:10px 13px;
+  border-radius:11px;
+  color:var(--muted);
+  font-size:11px;
+  white-space:nowrap;
+}
+
+.club-nav a:hover{
+  color:var(--ink);
+  background:var(--paper);
+}
+
+.club-nav a.active{
+  color:var(--accent-dark);
+  background:var(--accent-soft);
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-message{
+  display:none;
+  margin-bottom:20px;
+  padding:13px 15px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:var(--paper);
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+}
+
+.status-message.show{
+  display:block;
+}
+
+.status-message.error{
+  border-color:#d8b9b1;
+  background:var(--red-soft);
+  color:var(--red);
+}
+
+.status-message.success{
+  border-color:#bdcdb8;
+  background:var(--green-soft);
+  color:var(--green);
+}
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.member-stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-bottom:22px;
+}
+
+.stat-card{
+  padding:17px;
+  border:1px solid var(--line);
+  border-radius:17px;
+  background:var(--paper);
+}
+
+.stat-number{
+  font-size:26px;
+  line-height:1;
+}
+
+.stat-label{
+  margin-top:7px;
+  color:var(--muted);
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+}
+
+/* =========================================================
+   TABS
+========================================================= */
+
+.tabs{
+  display:flex;
+  gap:6px;
+  margin-bottom:18px;
+}
+
+.tab{
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:9px 14px;
+  background:rgba(255,250,242,.65);
+  color:var(--muted);
+  font-size:10px;
+}
+
+.tab:hover{
+  color:var(--ink);
+}
+
+.tab.active{
+  border-color:var(--accent);
+  background:var(--accent-soft);
+  color:var(--accent-dark);
+}
+
+.tab-count{
+  margin-left:4px;
+  opacity:.72;
+}
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.member-section{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:var(--paper);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+
+.section-head{
+  padding:19px 21px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.section-head h2{
+  margin:0;
+  font-size:18px;
+  font-weight:500;
+}
+
+.section-head p{
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:10px;
+}
+
+.member-search{
+  width:230px;
+  height:39px;
+  padding:0 12px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  outline:none;
+  background:#fffdf8;
+  color:var(--ink);
+  font-size:10px;
+}
+
+.member-search:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(143,102,82,.09);
+}
+
+/* =========================================================
+   MEMBER LIST
+========================================================= */
+
+.member-list{
+  display:grid;
+}
+
+.member-row{
+  min-width:0;
+  padding:16px 21px;
+  border-bottom:1px solid var(--line);
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:16px;
+  align-items:center;
+}
+
+.member-row:last-child{
+  border-bottom:0;
+}
+
+.member-person{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+
+.member-avatar{
+  width:46px;
+  height:46px;
+  flex:0 0 46px;
+  overflow:hidden;
+  border-radius:50%;
+  background:var(--accent-soft);
+  color:var(--accent-dark);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:700;
+}
+
+.member-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.member-info{
+  min-width:0;
+}
+
+.member-name{
+  display:inline-block;
+  max-width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:14px;
+  font-weight:700;
+}
+
+.member-name:hover{
+  color:var(--accent-dark);
+}
+
+.member-username{
+  margin-top:3px;
+  color:var(--muted);
+  font-size:9px;
+}
+
+.member-meta{
+  margin-top:6px;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:6px;
+}
+
+.role-badge,
+.status-badge{
+  display:inline-flex;
+  align-items:center;
+  padding:5px 8px;
+  border-radius:999px;
+  background:var(--paper-2);
+  color:var(--muted);
+  font-size:8px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+
+.role-badge.president{
+  background:var(--gold-soft);
+  color:var(--gold);
+}
+
+.role-badge.admin{
+  background:var(--accent-soft);
+  color:var(--accent-dark);
+}
+
+.status-badge.pending{
+  background:var(--gold-soft);
+  color:var(--gold);
+}
+
+.member-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:7px;
+}
+
+.action-button{
+  min-height:34px;
+  padding:0 11px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#fffdf8;
+  color:var(--muted);
+  font-size:9px;
+}
+
+.action-button:hover{
+  color:var(--ink);
+  border-color:#c8b8a8;
+}
+
+.action-button.primary{
+  border-color:var(--accent-dark);
+  background:var(--accent-dark);
+  color:#fff;
+}
+
+.action-button.danger{
+  border-color:#d8b9b1;
+  color:var(--red);
+  background:var(--red-soft);
+}
+
+.role-select{
+  height:34px;
+  padding:0 9px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#fffdf8;
+  color:var(--ink);
+  outline:none;
+  font-size:9px;
+}
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty-state{
+  padding:52px 24px;
+  text-align:center;
+}
+
+.empty-symbol{
+  width:46px;
+  height:46px;
+  margin:0 auto 13px;
+  border-radius:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--accent-soft);
+  color:var(--accent-dark);
+  font-size:18px;
+}
+
+.empty-state h3{
+  margin:0;
+  font-size:17px;
+}
+
+.empty-state p{
+  max-width:430px;
+  margin:8px auto 0;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.6;
+}
+
+/* =========================================================
+   DANGER CONFIRMATION MODAL
+========================================================= */
+
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(47,41,36,.48);
+  backdrop-filter:blur(5px);
+}
+
+.modal-backdrop.show{
+  display:flex;
+}
+
+.modal{
+  width:min(430px,100%);
+  padding:24px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:var(--paper);
+  box-shadow:0 24px 70px rgba(0,0,0,.18);
+}
+
+.modal h2{
+  margin:0;
+  font-size:21px;
+  font-weight:500;
+}
+
+.modal p{
+  margin:10px 0 0;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.6;
+}
+
+.modal-actions{
+  margin-top:22px;
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+}
+
+/* =========================================================
+   MOBILE NAV
+========================================================= */
+
+.mobile-nav{
+  display:none;
+}
+
+/* =========================================================
+   UTILITY
+========================================================= */
+
+.hidden{
+  display:none !important;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:760px){
+
+  body{
+    padding-bottom:70px;
+  }
+
+  .topbar{
+    height:64px;
+    padding:0 18px;
+  }
+
+  .nav{
+    display:none;
+  }
+
+  .search-link,
+  .admin-link{
+    display:none !important;
+  }
+
+  .page{
+    width:min(100% - 24px,1180px);
+    padding-top:26px;
+  }
+
+  .club-header-row{
+    display:block;
+  }
+
+  .member-stats{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .section-head{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .member-search{
+    width:100%;
+  }
+
+  .member-row{
+    grid-template-columns:1fr;
+  }
+
+  .member-actions{
+    justify-content:flex-start;
+    padding-left:59px;
+    flex-wrap:wrap;
+  }
+
+  .mobile-nav{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:200;
+    height:66px;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    border-top:1px solid var(--line);
+    background:rgba(255,250,242,.96);
+    backdrop-filter:blur(16px);
+  }
+
+  .mobile-nav a{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+    color:var(--muted);
+    font-size:9px;
+    text-transform:uppercase;
+  }
+
+  .mobile-nav a.active{
+    color:var(--accent-dark);
+  }
+
+  .mobile-icon{
+    font-size:17px;
+  }
+
+}
+
+@media(max-width:480px){
+
+  .member-stats{
+    grid-template-columns:1fr;
+  }
+
+  .tabs{
+    overflow-x:auto;
+  }
+
+}
+
+</style>
 </head>
 
-<body>
+<body class="loading-lock">
 
-  <!-- =========================================
-       LOADING
-       ========================================= -->
+<!-- =======================================================
+     LOADING
+======================================================== -->
 
-  <div
-    class="loading-screen"
-    id="loadingScreen"
-  >
+<div
+  class="loading-screen"
+  id="loadingScreen"
+>
+
+  <div class="loading-inner">
+
     <div class="loading-mark"></div>
 
     <div class="loading-text">
-      Finding the book people...
+      Gathering the readers...
     </div>
+
   </div>
 
-  <!-- =========================================
-       TOP NAV
-       ========================================= -->
+</div>
 
-  <header class="topbar">
+<!-- =======================================================
+     TOP BAR
+======================================================== -->
 
-    <a
-      class="brand"
-      href="dashboard.html"
-    >
-      <span class="brand-mark"></span>
-      DogEar
-    </a>
+<header class="topbar">
 
-    <nav class="nav-links">
+  <a
+    class="brand"
+    href="dashboard.html"
+  >
 
-      <a href="dashboard.html">
-        Home
-      </a>
+    <span class="brand-mark"></span>
 
-      <a href="discover.html">
-        Discover
-      </a>
+    DogEar
 
-      <a
-        class="active"
-        href="clubs.html"
-      >
-        Clubs
-      </a>
+  </a>
 
-      <a href="marketplace.html">
-        Books
-      </a>
-
-    </nav>
-
-    <a
-      class="nav-avatar"
-      id="navAvatar"
-      href="profile.html"
-    >
-      ?
-    </a>
-
-  </header>
-
-  <!-- =========================================
-       PAGE
-       ========================================= -->
-
-  <main class="page">
-
-    <div class="back-row">
-
-      <a
-        class="back-link"
-        id="backLink"
-        href="clubs.html"
-      >
-        ← Back to Club
-      </a>
-
-    </div>
-
-    <!-- HERO -->
-
-    <section class="hero">
-
-      <div class="eyebrow">
-        Club Community
-      </div>
-
-      <h1 id="clubName">
-        Club Members
-      </h1>
-
-      <p id="heroText">
-        The readers gathered around this particular table.
-      </p>
-
-    </section>
-
-    <!-- =========================================
-         CLUB NAVIGATION
-         ========================================= -->
-
-    <nav class="club-nav">
-
-      <a
-        id="overviewNavLink"
-        href="club.html"
-      >
-        Overview
-      </a>
-
-      <a
-        class="active"
-        id="membersNavLink"
-        href="club-members.html"
-      >
-        Members
-      </a>
-
-      <a
-        id="discussionsNavLink"
-        href="club-discussions.html"
-      >
-        Discussions
-      </a>
-
-      <a
-        id="voteNavLink"
-        href="club-vote.html"
-      >
-        Monthly Vote
-      </a>
-
-      <a
-        id="booksNavLink"
-        href="club-books.html"
-      >
-        Bookshelf
-      </a>
-
-      <a
-        id="settingsNavLink"
-        href="club-settings.html"
-      >
-        Settings
-      </a>
-
-    </nav>
-
-    <div
-      class="message"
-      id="messageBox"
-    ></div>
-
-    <!-- =========================================
-         SUMMARY
-         ========================================= -->
-
-    <section class="summary-grid">
-
-      <div class="summary-card">
-
-        <div
-          class="summary-number"
-          id="activeCount"
-        >
-          —
-        </div>
-
-        <div class="summary-label">
-          Active Members
-        </div>
-
-      </div>
-
-      <div class="summary-card">
-
-        <div
-          class="summary-number"
-          id="adminCount"
-        >
-          —
-        </div>
-
-        <div class="summary-label">
-          Administrators
-        </div>
-
-      </div>
-
-      <div class="summary-card">
-
-        <div
-          class="summary-number"
-          id="pendingCount"
-        >
-          —
-        </div>
-
-        <div class="summary-label">
-          Pending
-        </div>
-
-      </div>
-
-      <div class="summary-card">
-
-        <div
-          class="summary-number"
-          id="pausedCount"
-        >
-          —
-        </div>
-
-        <div class="summary-label">
-          Paused
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- =========================================
-         FILTERS
-         ========================================= -->
-
-    <div class="tabs">
-
-      <button
-        class="tab active"
-        type="button"
-        data-filter="active"
-      >
-        Members
-      </button>
-
-      <button
-        class="tab"
-        type="button"
-        data-filter="administrators"
-      >
-        Leadership
-      </button>
-
-      <button
-        class="tab"
-        id="pendingTab"
-        type="button"
-        data-filter="pending"
-      >
-        Pending
-      </button>
-
-      <button
-        class="tab"
-        id="pausedTab"
-        type="button"
-        data-filter="paused"
-      >
-        Paused
-      </button>
-
-      <button
-        class="tab"
-        id="bannedTab"
-        type="button"
-        data-filter="banned"
-      >
-        Banned
-      </button>
-
-    </div>
-
-    <!-- =========================================
-         MEMBER LIST
-         ========================================= -->
-
-    <section class="card">
-
-      <div class="card-header">
-
-        <h2 id="listTitle">
-          Members
-        </h2>
-
-        <input
-          class="search"
-          id="memberSearch"
-          type="search"
-          placeholder="Search members..."
-        >
-
-      </div>
-
-      <div
-        class="member-list"
-        id="memberList"
-      >
-
-        <div class="empty">
-          Loading members...
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- =========================================
-         LEADERSHIP
-         ========================================= -->
-
-    <section
-      class="card leadership-card"
-      id="leadershipCard"
-    >
-
-      <div class="card-header">
-
-        <h2>
-          Club Leadership
-        </h2>
-
-      </div>
-
-      <div class="leadership-body">
-
-        <div class="eyebrow">
-          Presidency
-        </div>
-
-        <p>
-          The Club President controls club settings,
-          administrators, monthly voting selections,
-          bans, and transfer of leadership.
-        </p>
-
-        <div
-          class="leadership-actions"
-          id="leadershipActions"
-        ></div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-  <!-- =========================================
-       MOBILE NAV
-       ========================================= -->
-
-  <nav class="mobile-nav">
+  <nav class="nav">
 
     <a href="dashboard.html">
-      <span>⌂</span>
       Home
     </a>
 
     <a href="discover.html">
-      <span>⌕</span>
       Discover
     </a>
 
-    <a href="clubs.html">
-      <span>◉</span>
+    <a
+      class="active"
+      href="clubs.html"
+    >
       Clubs
     </a>
 
-    <a href="profile.html">
-      <span>☺</span>
-      Profile
+    <a href="marketplace.html">
+      Books
     </a>
 
   </nav>
 
-  <!-- =========================================
-       SUPABASE
-       ========================================= -->
+  <div class="nav-right">
 
-  <script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-  ></script>
+    <a
+      class="search-link"
+      href="search.html"
+    >
+      ⌕ Search
+    </a>
 
-  <script>
-    const SUPABASE_URL =
-      "https://nrtutxjznkfvvbmaagum.supabase.co";
+    <a
+      class="admin-link"
+      id="adminLink"
+      href="admin-dashboard.html"
+    >
+      Admin
+    </a>
 
-    const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+    <a
+      class="avatar"
+      id="navAvatar"
+      href="profile.html"
+      aria-label="Your profile"
+    >
+      ?
+    </a>
 
-    const supabaseClient =
-      supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-      );
+  </div>
 
-    let currentUser = null;
-    let clubId = null;
-    let clubData = null;
-    let myMembership = null;
-    let members = [];
-    let currentFilter = "active";
+</header>
 
-    const loadingScreen =
-      document.getElementById(
-        "loadingScreen"
-      );
+<!-- =======================================================
+     PAGE
+======================================================== -->
 
-    const navAvatar =
-      document.getElementById(
-        "navAvatar"
-      );
+<main class="page">
 
-    const backLink =
-      document.getElementById(
-        "backLink"
-      );
+  <section class="club-header">
 
-    const clubName =
-      document.getElementById(
-        "clubName"
-      );
+    <a
+      class="back-link"
+      id="backToClub"
+      href="clubs.html"
+    >
+      ← Back to Club
+    </a>
 
-    const heroText =
-      document.getElementById(
-        "heroText"
-      );
+    <div class="club-eyebrow">
+      Club Members
+    </div>
 
-    const messageBox =
-      document.getElementById(
-        "messageBox"
-      );
+    <div class="club-header-row">
 
-    const memberList =
-      document.getElementById(
-        "memberList"
-      );
+      <div>
 
-    const memberSearch =
-      document.getElementById(
-        "memberSearch"
-      );
+        <h1 id="clubName">
+          Your Club
+        </h1>
 
-    const listTitle =
-      document.getElementById(
-        "listTitle"
-      );
+        <p id="clubDescription">
+          Meet the readers who make this club what it is.
+        </p>
 
-    const activeCount =
-      document.getElementById(
-        "activeCount"
-      );
+      </div>
 
-    const adminCount =
-      document.getElementById(
-        "adminCount"
-      );
+    </div>
 
-    const pendingCount =
-      document.getElementById(
-        "pendingCount"
-      );
+  </section>
 
-    const pausedCount =
-      document.getElementById(
-        "pausedCount"
-      );
+  <!-- =====================================================
+       CLUB NAVIGATION
+  ====================================================== -->
 
-    const leadershipCard =
-      document.getElementById(
-        "leadershipCard"
-      );
+  <nav class="club-nav">
 
-    const leadershipActions =
-      document.getElementById(
-        "leadershipActions"
-      );
+    <a id="overviewNavLink">
+      Overview
+    </a>
 
-    /* =========================================
-       START
-       ========================================= */
+    <a
+      class="active"
+      id="membersNavLink"
+    >
+      Members
+    </a>
 
-    async function startPage() {
+    <a id="discussionsNavLink">
+      Discussions
+    </a>
 
-      const params =
-        new URLSearchParams(
-          window.location.search
+    <a id="voteNavLink">
+      Vote
+    </a>
+
+    <a id="booksNavLink">
+      Bookshelf
+    </a>
+
+    <a id="settingsNavLink">
+      Settings
+    </a>
+
+  </nav>
+
+  <div
+    class="status-message"
+    id="statusMessage"
+  ></div>
+
+  <!-- =====================================================
+       STATS
+  ====================================================== -->
+
+  <section class="member-stats">
+
+    <div class="stat-card">
+
+      <div
+        class="stat-number"
+        id="memberCount"
+      >
+        0
+      </div>
+
+      <div class="stat-label">
+        Members
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+
+      <div
+        class="stat-number"
+        id="adminCount"
+      >
+        0
+      </div>
+
+      <div class="stat-label">
+        Club Leadership
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+
+      <div
+        class="stat-number"
+        id="pendingCount"
+      >
+        0
+      </div>
+
+      <div class="stat-label">
+        Pending Requests
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- =====================================================
+       TABS
+  ====================================================== -->
+
+  <div class="tabs">
+
+    <button
+      class="tab active"
+      type="button"
+      data-tab="members"
+    >
+      Members
+      <span
+        class="tab-count"
+        id="memberTabCount"
+      >
+        (0)
+      </span>
+    </button>
+
+    <button
+      class="tab"
+      id="pendingTab"
+      type="button"
+      data-tab="pending"
+    >
+      Pending
+      <span
+        class="tab-count"
+        id="pendingTabCount"
+      >
+        (0)
+      </span>
+    </button>
+
+  </div>
+
+  <!-- =====================================================
+       MEMBERS SECTION
+  ====================================================== -->
+
+  <section
+    class="member-section"
+    id="membersSection"
+  >
+
+    <div class="section-head">
+
+      <div>
+
+        <h2>
+          Readers
+        </h2>
+
+        <p>
+          Everyone currently in this club.
+        </p>
+
+      </div>
+
+      <input
+        class="member-search"
+        id="memberSearch"
+        type="search"
+        placeholder="Search members..."
+        autocomplete="off"
+      >
+
+    </div>
+
+    <div
+      class="member-list"
+      id="memberList"
+    ></div>
+
+  </section>
+
+  <!-- =====================================================
+       PENDING SECTION
+  ====================================================== -->
+
+  <section
+    class="member-section hidden"
+    id="pendingSection"
+  >
+
+    <div class="section-head">
+
+      <div>
+
+        <h2>
+          Join Requests
+        </h2>
+
+        <p>
+          Readers waiting for approval to join this club.
+        </p>
+
+      </div>
+
+    </div>
+
+    <div
+      class="member-list"
+      id="pendingList"
+    ></div>
+
+  </section>
+
+</main>
+
+<!-- =======================================================
+     CONFIRMATION MODAL
+======================================================== -->
+
+<div
+  class="modal-backdrop"
+  id="confirmModal"
+>
+
+  <div
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="confirmTitle"
+  >
+
+    <h2 id="confirmTitle">
+      Confirm action
+    </h2>
+
+    <p id="confirmText">
+      Are you sure?
+    </p>
+
+    <div class="modal-actions">
+
+      <button
+        class="action-button"
+        id="cancelConfirmButton"
+        type="button"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="action-button danger"
+        id="confirmActionButton"
+        type="button"
+      >
+        Confirm
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =======================================================
+     MOBILE NAV
+======================================================== -->
+
+<nav class="mobile-nav">
+
+  <a href="dashboard.html">
+    <span class="mobile-icon">⌂</span>
+    Home
+  </a>
+
+  <a href="discover.html">
+    <span class="mobile-icon">⌕</span>
+    Discover
+  </a>
+
+  <a
+    class="active"
+    href="clubs.html"
+  >
+    <span class="mobile-icon">◉</span>
+    Clubs
+  </a>
+
+  <a href="marketplace.html">
+    <span class="mobile-icon">▱</span>
+    Books
+  </a>
+
+  <a href="profile.html">
+    <span class="mobile-icon">☺</span>
+    Profile
+  </a>
+
+</nav>
+
+<script>
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentUser =
+  null;
+
+let clubData =
+  null;
+
+let myMembership =
+  null;
+
+let memberRows =
+  [];
+
+let pendingRows =
+  [];
+
+let memberProfiles =
+  new Map();
+
+let pendingProfiles =
+  new Map();
+
+let currentTab =
+  "members";
+
+let confirmCallback =
+  null;
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const loadingScreen =
+  document.getElementById(
+    "loadingScreen"
+  );
+
+const statusMessage =
+  document.getElementById(
+    "statusMessage"
+  );
+
+const memberList =
+  document.getElementById(
+    "memberList"
+  );
+
+const pendingList =
+  document.getElementById(
+    "pendingList"
+  );
+
+const membersSection =
+  document.getElementById(
+    "membersSection"
+  );
+
+const pendingSection =
+  document.getElementById(
+    "pendingSection"
+  );
+
+const memberSearch =
+  document.getElementById(
+    "memberSearch"
+  );
+
+const confirmModal =
+  document.getElementById(
+    "confirmModal"
+  );
+
+const confirmTitle =
+  document.getElementById(
+    "confirmTitle"
+  );
+
+const confirmText =
+  document.getElementById(
+    "confirmText"
+  );
+
+const confirmActionButton =
+  document.getElementById(
+    "confirmActionButton"
+  );
+
+const cancelConfirmButton =
+  document.getElementById(
+    "cancelConfirmButton"
+  );
+
+/* =========================================================
+   URL / CLUB
+========================================================= */
+
+const params =
+  new URLSearchParams(
+    location.search
+  );
+
+const clubId =
+  params.get("id");
+
+function withClub(filename){
+
+  if(!clubId){
+    return filename;
+  }
+
+  return (
+    filename +
+    "?id=" +
+    encodeURIComponent(
+      clubId
+    )
+  );
+
+}
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(value){
+
+  return String(
+    value ?? ""
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+}
+
+function normalize(value){
+
+  return String(
+    value ?? ""
+  )
+    .trim()
+    .toLowerCase();
+
+}
+
+function initials(name){
+
+  const pieces =
+    String(
+      name || ""
+    )
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+  if(!pieces.length){
+    return "?";
+  }
+
+  return pieces
+    .slice(0,2)
+    .map(
+      piece =>
+        piece
+          .charAt(0)
+          .toUpperCase()
+    )
+    .join("");
+
+}
+
+function hideLoading(){
+
+  document.body.classList.remove(
+    "loading-lock"
+  );
+
+  loadingScreen.classList.add(
+    "hidden"
+  );
+
+}
+
+function showStatus(
+  message,
+  type = ""
+){
+
+  statusMessage.textContent =
+    message;
+
+  statusMessage.className =
+    "status-message show";
+
+  if(type){
+
+    statusMessage.classList.add(
+      type
+    );
+
+  }
+
+}
+
+function clearStatus(){
+
+  statusMessage.textContent =
+    "";
+
+  statusMessage.className =
+    "status-message";
+
+}
+
+function rowUserId(row){
+
+  return (
+    row?.user_id ||
+    row?.member_id ||
+    null
+  );
+
+}
+
+function rowRole(row){
+
+  return (
+    row?.role ||
+    row?.member_role ||
+    "Member"
+  );
+
+}
+
+function normalizedRole(row){
+
+  return normalize(
+    rowRole(row)
+  );
+
+}
+
+function isPresident(row){
+
+  const role =
+    normalizedRole(row);
+
+  return (
+    role === "president" ||
+    role === "owner"
+  );
+
+}
+
+function isAdmin(row){
+
+  const role =
+    normalizedRole(row);
+
+  return (
+    role === "admin" ||
+    isPresident(row)
+  );
+
+}
+
+function canManageMembers(){
+
+  return isAdmin(
+    myMembership
+  );
+
+}
+
+function canManageAdmins(){
+
+  return isPresident(
+    myMembership
+  );
+
+}
+  /* =========================================================
+   PROFILE HELPERS
+========================================================= */
+
+function profileName(
+  profile,
+  userId
+){
+
+  return (
+    profile?.display_name ||
+    profile?.name ||
+    profile?.username ||
+    (
+      userId === currentUser?.id
+        ? currentUser?.email
+        : ""
+    ) ||
+    "DogEar Reader"
+  );
+
+}
+
+function profileUsername(
+  profile
+){
+
+  const username =
+    profile?.username ||
+    "";
+
+  if(!username){
+    return "";
+  }
+
+  return username.startsWith("@")
+    ? username
+    : `@${username}`;
+
+}
+
+function profileAvatar(
+  profile
+){
+
+  return (
+    profile?.avatar_url ||
+    profile?.profile_image ||
+    ""
+  );
+
+}
+
+function profileUrl(
+  userId
+){
+
+  return (
+    "profile.html?id=" +
+    encodeURIComponent(
+      userId
+    )
+  );
+
+}
+
+
+/* =========================================================
+   PUBLIC PROFILE
+========================================================= */
+
+async function loadPublicProfile(
+  userId
+){
+
+  if(!userId){
+    return null;
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "get_public_profile",
+          {
+            check_user_id:
+              userId
+          }
         );
 
-      clubId =
-        params.get("id");
-
-      if (!clubId) {
-
-        window.location.href =
-          "clubs.html";
-
-        return;
-      }
-
-      wireClubLinks();
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .auth
-          .getUser();
-
-      if (
-        error ||
-        !data.user
-      ) {
-
-        window.location.href =
-          "auth.html#login";
-
-        return;
-      }
-
-      currentUser =
-        data.user;
-
-      await loadMyProfile();
-      await loadClub();
-      await loadMyMembership();
-
-      configurePermissions();
-
-      await loadMembers();
-
-      loadingScreen
-        .classList
-        .add("hidden");
+    if(error){
+      throw error;
     }
 
-    /* =========================================
-       CLUB LINKS
-       ========================================= */
+    const profile =
+      Array.isArray(data)
+        ? (
+            data[0] ||
+            null
+          )
+        : (
+            data ||
+            null
+          );
 
-    function wireClubLinks() {
+    if(!profile){
+      return null;
+    }
 
-      const id =
-        encodeURIComponent(
+    return {
+      ...profile,
+
+      id:
+        profile.id ||
+        profile.user_id ||
+        userId,
+
+      user_id:
+        profile.user_id ||
+        profile.id ||
+        userId
+    };
+
+  }
+
+  catch(error){
+
+    console.warn(
+      "Public profile:",
+      userId,
+      error.message
+    );
+
+    return null;
+
+  }
+
+}
+
+
+/* =========================================================
+   LOAD MEMBER PROFILES
+========================================================= */
+
+async function loadMemberProfiles(){
+
+  memberProfiles =
+    new Map();
+
+  const userIds =
+    [
+      ...new Set(
+        memberRows
+          .map(
+            row =>
+              rowUserId(row)
+          )
+          .filter(Boolean)
+          .map(String)
+      )
+    ];
+
+  await Promise.all(
+    userIds.map(
+      async userId => {
+
+        const profile =
+          await loadPublicProfile(
+            userId
+          );
+
+        memberProfiles.set(
+          String(userId),
+          profile
+        );
+
+      }
+    )
+  );
+
+}
+
+
+/* =========================================================
+   LOAD PENDING PROFILES
+========================================================= */
+
+async function loadPendingProfiles(){
+
+  pendingProfiles =
+    new Map();
+
+  const userIds =
+    [
+      ...new Set(
+        pendingRows
+          .map(
+            row =>
+              rowUserId(row)
+          )
+          .filter(Boolean)
+          .map(String)
+      )
+    ];
+
+  await Promise.all(
+    userIds.map(
+      async userId => {
+
+        const profile =
+          await loadPublicProfile(
+            userId
+          );
+
+        pendingProfiles.set(
+          String(userId),
+          profile
+        );
+
+      }
+    )
+  );
+
+}
+
+
+/* =========================================================
+   ROLE BADGE
+========================================================= */
+
+function roleBadgeMarkup(
+  row
+){
+
+  const role =
+    rowRole(row);
+
+  const normalized =
+    normalizedRole(row);
+
+  let className =
+    "";
+
+  if(
+    normalized === "president" ||
+    normalized === "owner"
+  ){
+
+    className =
+      "president";
+
+  }
+
+  else if(
+    normalized === "admin"
+  ){
+
+    className =
+      "admin";
+
+  }
+
+  return `
+    <span
+      class="role-badge ${className}"
+    >
+      ${escapeHtml(role)}
+    </span>
+  `;
+
+}
+
+
+/* =========================================================
+   AVATAR MARKUP
+========================================================= */
+
+function avatarMarkup(
+  profile,
+  name
+){
+
+  const avatar =
+    profileAvatar(
+      profile
+    );
+
+  if(avatar){
+
+    return `
+      <div class="member-avatar">
+
+        <img
+          src="${escapeHtml(avatar)}"
+          alt="${escapeHtml(name)}"
+          loading="lazy"
+          onerror="
+            this.style.display='none';
+            this.parentElement.textContent='${escapeHtml(
+              initials(name)
+            )}';
+          "
+        >
+
+      </div>
+    `;
+
+  }
+
+  return `
+    <div class="member-avatar">
+      ${escapeHtml(
+        initials(name)
+      )}
+    </div>
+  `;
+
+}
+
+
+/* =========================================================
+   MEMBER ACTIONS
+========================================================= */
+
+function memberActionsMarkup(
+  row
+){
+
+  const userId =
+    rowUserId(row);
+
+  if(!userId){
+    return "";
+  }
+
+  const isSelf =
+    String(userId) ===
+    String(currentUser?.id);
+
+  /*
+    Nobody manages their own role from this screen.
+    President transfer should be handled through the
+    dedicated President/election flow rather than turning
+    the current President into an Admin accidentally.
+  */
+
+  if(isSelf){
+    return "";
+  }
+
+  const targetIsPresident =
+    isPresident(row);
+
+  const targetIsAdmin =
+    normalizedRole(row) ===
+    "admin";
+
+  /*
+    Admins cannot manage the President.
+  */
+
+  if(
+    !canManageMembers() ||
+    targetIsPresident
+  ){
+    return "";
+  }
+
+  let roleControl =
+    "";
+
+  /*
+    Only the President can appoint/remove Admins.
+  */
+
+  if(
+    canManageAdmins()
+  ){
+
+    roleControl = `
+      <select
+        class="role-select"
+        data-role-user="${escapeHtml(
+          userId
+        )}"
+        aria-label="Change member role"
+      >
+
+        <option
+          value="Member"
+          ${
+            !targetIsAdmin
+              ? "selected"
+              : ""
+          }
+        >
+          Member
+        </option>
+
+        <option
+          value="Admin"
+          ${
+            targetIsAdmin
+              ? "selected"
+              : ""
+          }
+        >
+          Admin
+        </option>
+
+      </select>
+    `;
+
+  }
+
+  /*
+    An Admin may remove ordinary Members, but cannot remove
+    another Admin. The President may remove either.
+  */
+
+  const mayRemove =
+    canManageAdmins() ||
+    !targetIsAdmin;
+
+  return `
+    ${roleControl}
+
+    ${
+      mayRemove
+        ? `
+          <button
+            class="action-button danger"
+            type="button"
+            data-remove-user="${escapeHtml(
+              userId
+            )}"
+          >
+            Remove
+          </button>
+
+          <button
+            class="action-button danger"
+            type="button"
+            data-ban-user="${escapeHtml(
+              userId
+            )}"
+          >
+            Ban
+          </button>
+        `
+        : ""
+    }
+  `;
+
+}
+
+
+/* =========================================================
+   MEMBER ROW
+========================================================= */
+
+function memberRowMarkup(
+  row
+){
+
+  const userId =
+    rowUserId(row);
+
+  const profile =
+    memberProfiles.get(
+      String(userId)
+    ) ||
+    null;
+
+  const name =
+    profileName(
+      profile,
+      userId
+    );
+
+  const username =
+    profileUsername(
+      profile
+    );
+
+  return `
+    <div
+      class="member-row"
+      data-member-user="${escapeHtml(
+        userId
+      )}"
+    >
+
+      <div class="member-person">
+
+        <a
+          href="${escapeHtml(
+            profileUrl(userId)
+          )}"
+        >
+          ${avatarMarkup(
+            profile,
+            name
+          )}
+        </a>
+
+        <div class="member-info">
+
+          <a
+            class="member-name"
+            href="${escapeHtml(
+              profileUrl(userId)
+            )}"
+          >
+            ${escapeHtml(name)}
+          </a>
+
+          ${
+            username
+              ? `
+                <div class="member-username">
+                  ${escapeHtml(username)}
+                </div>
+              `
+              : ""
+          }
+
+          <div class="member-meta">
+
+            ${roleBadgeMarkup(row)}
+
+            ${
+              String(userId) ===
+              String(currentUser?.id)
+                ? `
+                  <span class="status-badge">
+                    You
+                  </span>
+                `
+                : ""
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="member-actions">
+        ${memberActionsMarkup(row)}
+      </div>
+
+    </div>
+  `;
+
+}
+
+
+/* =========================================================
+   SORT MEMBERS
+========================================================= */
+
+function memberSortWeight(
+  row
+){
+
+  const role =
+    normalizedRole(row);
+
+  if(
+    role === "president" ||
+    role === "owner"
+  ){
+    return 0;
+  }
+
+  if(
+    role === "admin"
+  ){
+    return 1;
+  }
+
+  return 2;
+
+}
+
+function sortedMembers(
+  rows
+){
+
+  return [
+    ...rows
+  ].sort(
+    (
+      first,
+      second
+    ) => {
+
+      const weightDifference =
+        memberSortWeight(first) -
+        memberSortWeight(second);
+
+      if(weightDifference){
+        return weightDifference;
+      }
+
+      const firstId =
+        rowUserId(first);
+
+      const secondId =
+        rowUserId(second);
+
+      const firstProfile =
+        memberProfiles.get(
+          String(firstId)
+        );
+
+      const secondProfile =
+        memberProfiles.get(
+          String(secondId)
+        );
+
+      return profileName(
+        firstProfile,
+        firstId
+      ).localeCompare(
+        profileName(
+          secondProfile,
+          secondId
+        )
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   RENDER MEMBERS
+========================================================= */
+
+function renderMembers(){
+
+  const query =
+    normalize(
+      memberSearch.value
+    );
+
+  let visibleRows =
+    sortedMembers(
+      memberRows
+    );
+
+  if(query){
+
+    visibleRows =
+      visibleRows.filter(
+        row => {
+
+          const userId =
+            rowUserId(row);
+
+          const profile =
+            memberProfiles.get(
+              String(userId)
+            );
+
+          const haystack =
+            normalize(
+              [
+                profileName(
+                  profile,
+                  userId
+                ),
+                profileUsername(
+                  profile
+                ),
+                rowRole(row)
+              ].join(" ")
+            );
+
+          return haystack.includes(
+            query
+          );
+
+        }
+      );
+
+  }
+
+  if(
+    !visibleRows.length
+  ){
+
+    memberList.innerHTML = `
+      <div class="empty-state">
+
+        <div class="empty-symbol">
+          ${
+            query
+              ? "⌕"
+              : "◉"
+          }
+        </div>
+
+        <h3>
+          ${
+            query
+              ? "No readers matched that search."
+              : "Nobody's here yet."
+          }
+        </h3>
+
+        <p>
+          ${
+            query
+              ? "Try another name or username."
+              : "Club members will appear here once readers join."
+          }
+        </p>
+
+      </div>
+    `;
+
+    return;
+
+  }
+
+  memberList.innerHTML =
+    visibleRows
+      .map(
+        row =>
+          memberRowMarkup(
+            row
+          )
+      )
+      .join("");
+
+  wireMemberActions();
+
+}
+
+
+/* =========================================================
+   PENDING ACTIONS
+========================================================= */
+
+function pendingActionsMarkup(
+  row
+){
+
+  if(
+    !canManageMembers()
+  ){
+    return "";
+  }
+
+  const userId =
+    rowUserId(row);
+
+  if(!userId){
+    return "";
+  }
+
+  return `
+    <button
+      class="action-button primary"
+      type="button"
+      data-approve-user="${escapeHtml(
+        userId
+      )}"
+    >
+      Approve
+    </button>
+
+    <button
+      class="action-button"
+      type="button"
+      data-deny-user="${escapeHtml(
+        userId
+      )}"
+    >
+      Deny
+    </button>
+
+    <button
+      class="action-button danger"
+      type="button"
+      data-ban-request-user="${escapeHtml(
+        userId
+      )}"
+    >
+      Ban
+    </button>
+  `;
+
+}
+
+
+/* =========================================================
+   PENDING ROW
+========================================================= */
+
+function pendingRowMarkup(
+  row
+){
+
+  const userId =
+    rowUserId(row);
+
+  const profile =
+    pendingProfiles.get(
+      String(userId)
+    ) ||
+    null;
+
+  const name =
+    profileName(
+      profile,
+      userId
+    );
+
+  const username =
+    profileUsername(
+      profile
+    );
+
+  return `
+    <div
+      class="member-row"
+      data-pending-user="${escapeHtml(
+        userId
+      )}"
+    >
+
+      <div class="member-person">
+
+        <a
+          href="${escapeHtml(
+            profileUrl(userId)
+          )}"
+        >
+          ${avatarMarkup(
+            profile,
+            name
+          )}
+        </a>
+
+        <div class="member-info">
+
+          <a
+            class="member-name"
+            href="${escapeHtml(
+              profileUrl(userId)
+            )}"
+          >
+            ${escapeHtml(name)}
+          </a>
+
+          ${
+            username
+              ? `
+                <div class="member-username">
+                  ${escapeHtml(username)}
+                </div>
+              `
+              : ""
+          }
+
+          <div class="member-meta">
+
+            <span class="status-badge pending">
+              Waiting for approval
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="member-actions">
+        ${pendingActionsMarkup(row)}
+      </div>
+
+    </div>
+  `;
+
+}
+
+
+/* =========================================================
+   RENDER PENDING
+========================================================= */
+
+function renderPending(){
+
+  /*
+    Ordinary members should not be shown the moderation
+    queue even if RLS happens to expose join_requests.
+  */
+
+  if(
+    !canManageMembers()
+  ){
+
+    pendingList.innerHTML = `
+      <div class="empty-state">
+
+        <div class="empty-symbol">
+          ◌
+        </div>
+
+        <h3>
+          Leadership only.
+        </h3>
+
+        <p>
+          Pending membership requests are managed by
+          the club President and Admins.
+        </p>
+
+      </div>
+    `;
+
+    return;
+
+  }
+
+  if(
+    !pendingRows.length
+  ){
+
+    pendingList.innerHTML = `
+      <div class="empty-state">
+
+        <div class="empty-symbol">
+          ✓
+        </div>
+
+        <h3>
+          Nobody is waiting.
+        </h3>
+
+        <p>
+          There are no pending join requests for this
+          club right now.
+        </p>
+
+      </div>
+    `;
+
+    return;
+
+  }
+
+  pendingList.innerHTML =
+    pendingRows
+      .map(
+        row =>
+          pendingRowMarkup(
+            row
+          )
+      )
+      .join("");
+
+  wirePendingActions();
+
+}
+
+
+/* =========================================================
+   UPDATE COUNTS
+========================================================= */
+
+function updateCounts(){
+
+  const leadershipCount =
+    memberRows.filter(
+      row =>
+        isAdmin(row)
+    ).length;
+
+  const visiblePendingCount =
+    canManageMembers()
+      ? pendingRows.length
+      : 0;
+
+  document.getElementById(
+    "memberCount"
+  ).textContent =
+    memberRows.length;
+
+  document.getElementById(
+    "adminCount"
+  ).textContent =
+    leadershipCount;
+
+  document.getElementById(
+    "pendingCount"
+  ).textContent =
+    visiblePendingCount;
+
+  document.getElementById(
+    "memberTabCount"
+  ).textContent =
+    `(${memberRows.length})`;
+
+  document.getElementById(
+    "pendingTabCount"
+  ).textContent =
+    `(${visiblePendingCount})`;
+
+}
+
+
+/* =========================================================
+   CLUB NAVIGATION
+========================================================= */
+
+function wireClubLinks(){
+
+  document.getElementById(
+    "backToClub"
+  ).href =
+    withClub(
+      "club.html"
+    );
+
+  document.getElementById(
+    "overviewNavLink"
+  ).href =
+    withClub(
+      "club.html"
+    );
+
+  document.getElementById(
+    "membersNavLink"
+  ).href =
+    withClub(
+      "club-members.html"
+    );
+
+  document.getElementById(
+    "discussionsNavLink"
+  ).href =
+    withClub(
+      "club-discussions.html"
+    );
+
+  document.getElementById(
+    "voteNavLink"
+  ).href =
+    withClub(
+      "club-vote.html"
+    );
+
+  document.getElementById(
+    "booksNavLink"
+  ).href =
+    withClub(
+      "club-books.html"
+    );
+
+  document.getElementById(
+    "settingsNavLink"
+  ).href =
+    withClub(
+      "club-settings.html"
+    );
+
+}
+
+
+/* =========================================================
+   LOAD CLUB
+========================================================= */
+
+async function loadClub(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("clubs")
+      .select("*")
+      .eq(
+        "id",
+        clubId
+      )
+      .single();
+
+  if(error){
+    throw error;
+  }
+
+  clubData =
+    data;
+
+  document.getElementById(
+    "clubName"
+  ).textContent =
+    clubData?.name ||
+    clubData?.title ||
+    "Book Club";
+
+  document.title =
+    (
+      clubData?.name ||
+      clubData?.title ||
+      "Club"
+    ) +
+    " Members | DogEar";
+
+}
+
+
+/* =========================================================
+   LOAD MEMBERS
+========================================================= */
+
+async function loadMembers(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("club_members")
+      .select("*")
+      .eq(
+        "club_id",
+        clubId
+      );
+
+  if(error){
+    throw error;
+  }
+
+  memberRows =
+    (data || [])
+      .filter(
+        row => {
+
+          const status =
+            normalize(
+              row.status
+            );
+
+          return !(
+            status === "pending" ||
+            status === "rejected" ||
+            status === "denied" ||
+            status === "removed" ||
+            status === "banned"
+          );
+
+        }
+      );
+
+  myMembership =
+    memberRows.find(
+      row =>
+        String(
+          rowUserId(row)
+        ) ===
+        String(
+          currentUser.id
+        )
+    ) ||
+    null;
+
+}
+
+
+/* =========================================================
+   LOAD PENDING REQUESTS
+========================================================= */
+
+async function loadPendingRequests(){
+
+  pendingRows =
+    [];
+
+  /*
+    Don't query the moderation queue for ordinary members.
+  */
+
+  if(
+    !canManageMembers()
+  ){
+    return;
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("join_requests")
+        .select("*")
+        .eq(
+          "club_id",
           clubId
         );
 
-      backLink.href =
-        "club.html?id=" +
-        id;
-
-      document.getElementById(
-        "overviewNavLink"
-      ).href =
-        "club.html?id=" +
-        id;
-
-      document.getElementById(
-        "membersNavLink"
-      ).href =
-        "club-members.html?id=" +
-        id;
-
-      document.getElementById(
-        "discussionsNavLink"
-      ).href =
-        "club-discussions.html?id=" +
-        id;
-
-      document.getElementById(
-        "voteNavLink"
-      ).href =
-        "club-vote.html?id=" +
-        id;
-
-      document.getElementById(
-        "booksNavLink"
-      ).href =
-        "club-books.html?id=" +
-        id;
-
-      document.getElementById(
-        "settingsNavLink"
-      ).href =
-        "club-settings.html?id=" +
-        id;
+    if(error){
+      throw error;
     }
 
-    /* =========================================
-       MY PROFILE
-       ========================================= */
+    pendingRows =
+      (data || [])
+        .filter(
+          row => {
 
-    async function loadMyProfile() {
+            const status =
+              normalize(
+                row.status
+              );
 
-      let displayName =
-        currentUser
-          ?.user_metadata
-          ?.display_name ||
-        "Reader";
-
-      let avatarUrl = "";
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient
-            .rpc(
-              "get_public_profile",
-              {
-                check_user_id:
-                  currentUser.id
-              }
+            return (
+              !status ||
+              status === "pending" ||
+              status === "requested" ||
+              status === "waiting"
             );
 
-        if (error) {
-          throw error;
-        }
-
-        const profile =
-          Array.isArray(data)
-            ? data[0]
-            : data;
-
-        if (profile) {
-
-          displayName =
-            profile.display_name ||
-            displayName;
-
-          avatarUrl =
-            profile.avatar_url ||
-            "";
-        }
-      }
-
-      catch (error) {
-
-        console.error(
-          "Profile error:",
-          error
+          }
         );
-      }
 
-      setAvatar(
-        navAvatar,
-        avatarUrl,
-        displayName
+  }
+
+  catch(error){
+
+    console.warn(
+      "Pending requests:",
+      error.message
+    );
+
+    pendingRows =
+      [];
+
+  }
+
+}
+
+
+/* =========================================================
+   CONFIRMATION MODAL
+========================================================= */
+
+function openConfirmation({
+  title,
+  text,
+  confirmText = "Confirm",
+  callback
+}){
+
+  confirmTitle.textContent =
+    title;
+
+  confirmText.textContent =
+    text;
+
+  confirmActionButton.textContent =
+    confirmText;
+
+  confirmCallback =
+    callback;
+
+  confirmModal.classList.add(
+    "show"
+  );
+
+}
+
+function closeConfirmation(){
+
+  confirmModal.classList.remove(
+    "show"
+  );
+
+  confirmCallback =
+    null;
+
+  confirmActionButton.disabled =
+    false;
+
+}
+
+cancelConfirmButton.addEventListener(
+  "click",
+  closeConfirmation
+);
+
+confirmModal.addEventListener(
+  "click",
+  event => {
+
+    if(
+      event.target ===
+      confirmModal
+    ){
+
+      closeConfirmation();
+
+    }
+
+  }
+);
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key === "Escape" &&
+      confirmModal.classList.contains(
+        "show"
+      )
+    ){
+
+      closeConfirmation();
+
+    }
+
+  }
+);
+
+confirmActionButton.addEventListener(
+  "click",
+  async () => {
+
+    if(
+      typeof confirmCallback !==
+      "function"
+    ){
+      return;
+    }
+
+    const callback =
+      confirmCallback;
+
+    confirmActionButton.disabled =
+      true;
+
+    try{
+
+      await callback();
+
+      closeConfirmation();
+
+    }
+
+    catch(error){
+
+      console.error(
+        "Confirmed member action:",
+        error
       );
+
+      confirmActionButton.disabled =
+        false;
+
+      showStatus(
+        error?.message ||
+        "DogEar couldn't complete that member action.",
+        "error"
+      );
+
     }
 
-    /* =========================================
-       CLUB
-       ========================================= */
+  }
+);
 
-    async function loadClub() {
 
-      try {
+/* =========================================================
+   REFRESH CLUB MEMBERS
+========================================================= */
 
-        const {
-          data,
-          error
-        } =
-          await supabaseClient
-            .from("clubs")
-            .select(
-              "id, name, description, president_id, status"
-            )
-            .eq(
-              "id",
-              clubId
-            )
-            .single();
+async function refreshMembers(){
 
-        if (error) {
-          throw error;
-        }
+  await loadMembers();
 
-        clubData = data;
+  await Promise.all([
+    loadMemberProfiles(),
+    loadPendingRequests()
+  ]);
 
-        clubName.textContent =
-          data.name;
+  await loadPendingProfiles();
 
-        heroText.textContent =
-          "Meet the readers of " +
-          data.name +
-          ".";
+  updateCounts();
 
-        document.title =
-          "DogEar — " +
-          data.name +
-          " Members";
-      }
+  renderMembers();
 
-      catch (error) {
+  renderPending();
 
-        console.error(
-          "Club error:",
-          error
-        );
+}
 
-        showMessage(
-          "DogEar couldn't load this club.",
-          "error"
-        );
-      }
+
+/* =========================================================
+   UPDATE MEMBER ROLE
+========================================================= */
+
+async function updateMemberRole(
+  userId,
+  newRole
+){
+
+  if(
+    !canManageAdmins()
+  ){
+
+    throw new Error(
+      "Only the club President can change Admin roles."
+    );
+
+  }
+
+  const target =
+    memberRows.find(
+      row =>
+        String(
+          rowUserId(row)
+        ) ===
+        String(userId)
+    );
+
+  if(!target){
+
+    throw new Error(
+      "That member could not be found."
+    );
+
+  }
+
+  if(
+    isPresident(target)
+  ){
+
+    throw new Error(
+      "The President role must be transferred through the President transfer process."
+    );
+
+  }
+
+  let {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("club_members")
+      .update({
+        role:newRole
+      })
+      .eq(
+        "club_id",
+        clubId
+      )
+      .eq(
+        "user_id",
+        userId
+      )
+      .select();
+
+  /*
+    Compatibility fallback for an older schema using
+    member_role rather than role.
+  */
+
+  if(error){
+
+    const message =
+      normalize(
+        error.message
+      );
+
+    const schemaProblem =
+      message.includes("column") ||
+      message.includes("schema cache") ||
+      message.includes("could not find") ||
+      String(error.code || "") === "42703" ||
+      String(error.code || "") === "PGRST204";
+
+    if(!schemaProblem){
+      throw error;
     }
 
-    /* =========================================
-       MY MEMBERSHIP
-       ========================================= */
-
-    async function loadMyMembership() {
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient
-            .from("club_members")
-            .select(
-              "user_id, role, status"
-            )
-            .eq(
-              "club_id",
-              clubId
-            )
-            .eq(
-              "user_id",
-              currentUser.id
-            )
-            .maybeSingle();
-
-        if (error) {
-          throw error;
-        }
-
-        myMembership = data;
-      }
-
-      catch (error) {
-
-        console.error(
-          "Membership error:",
-          error
-        );
-
-        myMembership = null;
-      }
-    }
-
-    /* =========================================
-       PERMISSIONS
-       ========================================= */
-
-    function isAdmin() {
-
-      return (
-        myMembership?.status ===
-          "active" &&
-        (
-          myMembership?.role ===
-            "administrator" ||
-
-          myMembership?.role ===
-            "admin" ||
-
-          myMembership?.role ===
-            "president" ||
-
-          myMembership?.role ===
-            "owner"
+    const fallback =
+      await supabaseClient
+        .from("club_members")
+        .update({
+          member_role:newRole
+        })
+        .eq(
+          "club_id",
+          clubId
         )
-      );
-    }
-
-    function isPresident() {
-
-      return (
-        myMembership?.status ===
-          "active" &&
-        (
-          myMembership?.role ===
-            "president" ||
-
-          myMembership?.role ===
-            "owner"
+        .eq(
+          "user_id",
+          userId
         )
+        .select();
+
+    data =
+      fallback.data;
+
+    error =
+      fallback.error;
+
+  }
+
+  if(error){
+    throw error;
+  }
+
+  showStatus(
+    `Member role changed to ${newRole}.`,
+    "success"
+  );
+
+  await refreshMembers();
+
+}
+
+
+/* =========================================================
+   REMOVE MEMBER
+========================================================= */
+
+async function removeMember(
+  userId
+){
+
+  if(
+    !canManageMembers()
+  ){
+
+    throw new Error(
+      "You don't have permission to remove members."
+    );
+
+  }
+
+  const target =
+    memberRows.find(
+      row =>
+        String(
+          rowUserId(row)
+        ) ===
+        String(userId)
+    );
+
+  if(!target){
+
+    throw new Error(
+      "That member could not be found."
+    );
+
+  }
+
+  if(
+    isPresident(target)
+  ){
+
+    throw new Error(
+      "The club President cannot be removed here."
+    );
+
+  }
+
+  if(
+    normalizedRole(target) === "admin" &&
+    !canManageAdmins()
+  ){
+
+    throw new Error(
+      "Only the President can remove a club Admin."
+    );
+
+  }
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("club_members")
+      .delete()
+      .eq(
+        "club_id",
+        clubId
+      )
+      .eq(
+        "user_id",
+        userId
       );
+
+  if(error){
+    throw error;
+  }
+
+  showStatus(
+    "The reader was removed from the club.",
+    "success"
+  );
+
+  await refreshMembers();
+
+}
+
+
+/* =========================================================
+   BAN MEMBER
+========================================================= */
+
+async function banMember(
+  userId
+){
+
+  if(
+    !canManageMembers()
+  ){
+
+    throw new Error(
+      "You don't have permission to ban members."
+    );
+
+  }
+
+  const target =
+    memberRows.find(
+      row =>
+        String(
+          rowUserId(row)
+        ) ===
+        String(userId)
+    );
+
+  if(
+    target &&
+    isPresident(target)
+  ){
+
+    throw new Error(
+      "The club President cannot be banned here."
+    );
+
+  }
+
+  if(
+    target &&
+    normalizedRole(target) === "admin" &&
+    !canManageAdmins()
+  ){
+
+    throw new Error(
+      "Only the President can ban a club Admin."
+    );
+
+  }
+
+  /*
+    Prefer a moderation/ban RPC if the database provides
+    one. If not, Part 3 supplies the safe table fallback.
+  */
+
+  await performClubBan(
+    userId
+  );
+
+  showStatus(
+    "The reader was banned from the club.",
+    "success"
+  );
+
+  await refreshMembers();
+
+}
+
+
+/* =========================================================
+   APPROVE JOIN REQUEST
+========================================================= */
+
+async function approveRequest(
+  userId
+){
+
+  if(
+    !canManageMembers()
+  ){
+
+    throw new Error(
+      "You don't have permission to approve members."
+    );
+
+  }
+
+  const existing =
+    memberRows.find(
+      row =>
+        String(
+          rowUserId(row)
+        ) ===
+        String(userId)
+    );
+
+  if(!existing){
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("club_members")
+        .insert({
+          club_id:clubId,
+          user_id:userId,
+          role:"Member"
+        });
+
+    if(error){
+
+      /*
+        Older schema compatibility.
+      */
+
+      const fallback =
+        await supabaseClient
+          .from("club_members")
+          .insert({
+            club_id:clubId,
+            user_id:userId,
+            member_role:"Member"
+          });
+
+      if(fallback.error){
+        throw fallback.error;
+      }
+
     }
 
-    function configurePermissions() {
+  }
 
-      if (!isAdmin()) {
+  /*
+    Remove the pending request after membership succeeds.
+  */
 
-        document.getElementById(
-          "pendingTab"
-        ).style.display =
-          "none";
+  const {
+    error:requestError
+  } =
+    await supabaseClient
+      .from("join_requests")
+      .delete()
+      .eq(
+        "club_id",
+        clubId
+      )
+      .eq(
+        "user_id",
+        userId
+      );
 
-        document.getElementById(
-          "pausedTab"
-        ).style.display =
-          "none";
+  if(requestError){
 
-        document.getElementById(
-          "bannedTab"
-        ).style.display =
-          "none";
+    console.warn(
+      "Could not remove approved join request:",
+      requestError.message
+    );
+
+  }
+
+  showStatus(
+    "The reader is now a member of the club.",
+    "success"
+  );
+
+  await refreshMembers();
+
+}
+
+
+/* =========================================================
+   DENY JOIN REQUEST
+========================================================= */
+
+async function denyRequest(
+  userId
+){
+
+  if(
+    !canManageMembers()
+  ){
+
+    throw new Error(
+      "You don't have permission to deny join requests."
+    );
+
+  }
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("join_requests")
+      .delete()
+      .eq(
+        "club_id",
+        clubId
+      )
+      .eq(
+        "user_id",
+        userId
+      );
+
+  if(error){
+    throw error;
+  }
+
+  showStatus(
+    "The join request was denied.",
+    "success"
+  );
+
+  await refreshMembers();
+
+}
+  /* =========================================================
+   CLUB BAN
+========================================================= */
+
+async function performClubBan(
+  userId
+){
+
+  /*
+    First remove the user from the active membership table.
+    We do this only after all permission checks in
+    banMember() have already passed.
+  */
+
+  const membershipDelete =
+    await supabaseClient
+      .from("club_members")
+      .delete()
+      .eq(
+        "club_id",
+        clubId
+      )
+      .eq(
+        "user_id",
+        userId
+      );
+
+  if(
+    membershipDelete.error
+  ){
+
+    throw membershipDelete.error;
+
+  }
+
+  /*
+    Remove any outstanding join request so the banned
+    reader does not remain in the pending queue.
+  */
+
+  try{
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("join_requests")
+        .delete()
+        .eq(
+          "club_id",
+          clubId
+        )
+        .eq(
+          "user_id",
+          userId
+        );
+
+    if(error){
+
+      console.warn(
+        "Could not clear join request during ban:",
+        error.message
+      );
+
+    }
+
+  }
+
+  catch(error){
+
+    console.warn(
+      "Join request cleanup during ban:",
+      error.message
+    );
+
+  }
+
+  /*
+    DogEar's schema has had moderation_logs available
+    during development. Try to record the ban there.
+
+    This is intentionally non-fatal because membership
+    removal is more important than the audit record.
+  */
+
+  const moderationPayloads = [
+
+    {
+      club_id:clubId,
+      user_id:userId,
+      target_user_id:userId,
+      moderator_id:currentUser.id,
+      action:"ban",
+      reason:"Banned from club"
+    },
+
+    {
+      club_id:clubId,
+      target_user_id:userId,
+      moderator_id:currentUser.id,
+      action:"ban"
+    },
+
+    {
+      club_id:clubId,
+      user_id:userId,
+      action:"ban"
+    }
+
+  ];
+
+  for(
+    const payload
+    of moderationPayloads
+  ){
+
+    try{
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from("moderation_logs")
+          .insert(payload);
+
+      if(!error){
+        break;
       }
 
-      if (isAdmin()) {
+      const message =
+        normalize(
+          error.message
+        );
 
-        leadershipCard
-          .classList
-          .add("show");
+      const schemaProblem =
+        message.includes("column") ||
+        message.includes("schema cache") ||
+        message.includes("could not find") ||
+        String(error.code || "") === "42703" ||
+        String(error.code || "") === "PGRST204";
+
+      if(!schemaProblem){
+
+        console.warn(
+          "Moderation log:",
+          error.message
+        );
+
+        break;
+
       }
 
-      if (
-        myMembership?.role ===
-          "administrator" ||
-        myMembership?.role ===
-          "admin"
-      ) {
+    }
 
-        const button =
-          document.createElement(
-            "button"
-          );
+    catch(error){
 
-        button.className =
-          "large-button";
+      console.warn(
+        "Moderation log:",
+        error.message
+      );
 
-        button.type =
-          "button";
+      break;
 
-        button.textContent =
-          "Call President Election";
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   BAN PENDING REQUEST
+========================================================= */
+
+async function banPendingRequest(
+  userId
+){
+
+  if(
+    !canManageMembers()
+  ){
+
+    throw new Error(
+      "You don't have permission to ban readers."
+    );
+
+  }
+
+  /*
+    Remove the request first.
+  */
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("join_requests")
+      .delete()
+      .eq(
+        "club_id",
+        clubId
+      )
+      .eq(
+        "user_id",
+        userId
+      );
+
+  if(error){
+    throw error;
+  }
+
+  /*
+    Record the moderation action if possible.
+  */
+
+  const payloads = [
+
+    {
+      club_id:clubId,
+      user_id:userId,
+      target_user_id:userId,
+      moderator_id:currentUser.id,
+      action:"ban",
+      reason:"Banned during join request"
+    },
+
+    {
+      club_id:clubId,
+      target_user_id:userId,
+      moderator_id:currentUser.id,
+      action:"ban"
+    },
+
+    {
+      club_id:clubId,
+      user_id:userId,
+      action:"ban"
+    }
+
+  ];
+
+  for(
+    const payload
+    of payloads
+  ){
+
+    try{
+
+      const {
+        error:logError
+      } =
+        await supabaseClient
+          .from("moderation_logs")
+          .insert(payload);
+
+      if(!logError){
+        break;
+      }
+
+      const message =
+        normalize(
+          logError.message
+        );
+
+      const schemaProblem =
+        message.includes("column") ||
+        message.includes("schema cache") ||
+        message.includes("could not find") ||
+        String(logError.code || "") === "42703" ||
+        String(logError.code || "") === "PGRST204";
+
+      if(!schemaProblem){
+
+        console.warn(
+          "Pending ban log:",
+          logError.message
+        );
+
+        break;
+
+      }
+
+    }
+
+    catch(error){
+
+      console.warn(
+        "Pending ban log:",
+        error.message
+      );
+
+      break;
+
+    }
+
+  }
+
+  showStatus(
+    "The reader was banned and their join request was removed.",
+    "success"
+  );
+
+  await refreshMembers();
+
+}
+
+
+/* =========================================================
+   MEMBER ACTION WIRING
+========================================================= */
+
+function wireMemberActions(){
+
+  document
+    .querySelectorAll(
+      "[data-role-user]"
+    )
+    .forEach(
+      select => {
+
+        select.addEventListener(
+          "change",
+          async event => {
+
+            const userId =
+              event.currentTarget
+                .dataset
+                .roleUser;
+
+            const newRole =
+              event.currentTarget
+                .value;
+
+            const previous =
+              memberRows.find(
+                row =>
+                  String(
+                    rowUserId(row)
+                  ) ===
+                  String(userId)
+              );
+
+            const previousRole =
+              normalizedRole(
+                previous
+              ) === "admin"
+                ? "Admin"
+                : "Member";
+
+            event.currentTarget.disabled =
+              true;
+
+            try{
+
+              await updateMemberRole(
+                userId,
+                newRole
+              );
+
+            }
+
+            catch(error){
+
+              console.error(
+                "Role change:",
+                error
+              );
+
+              showStatus(
+                error?.message ||
+                "DogEar couldn't change that member's role.",
+                "error"
+              );
+
+              event.currentTarget.value =
+                previousRole;
+
+            }
+
+            finally{
+
+              event.currentTarget.disabled =
+                false;
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+  document
+    .querySelectorAll(
+      "[data-remove-user]"
+    )
+    .forEach(
+      button => {
 
         button.addEventListener(
           "click",
-          explainPresidentElection
-        );
+          () => {
 
-        leadershipActions.appendChild(
-          button
-        );
-      }
+            const userId =
+              button.dataset
+                .removeUser;
 
-      if (isPresident()) {
-
-        const settings =
-          document.createElement(
-            "a"
-          );
-
-        settings.className =
-          "large-button";
-
-        settings.href =
-          "club-settings.html?id=" +
-          encodeURIComponent(
-            clubId
-          );
-
-        settings.textContent =
-          "Club Settings";
-
-        leadershipActions.appendChild(
-          settings
-        );
-
-        const transfer =
-          document.createElement(
-            "button"
-          );
-
-        transfer.className =
-          "large-button";
-
-        transfer.type =
-          "button";
-
-        transfer.textContent =
-          "Transfer Presidency";
-
-        transfer.addEventListener(
-          "click",
-          showTransferInstructions
-        );
-
-        leadershipActions.appendChild(
-          transfer
-        );
-      }
-    }
-
-    /* =========================================
-       LOAD MEMBERS
-       ========================================= */
-
-    async function loadMembers() {
-
-      try {
-
-        let query =
-          supabaseClient
-            .from("club_members")
-            .select(
-              "user_id, role, status"
-            )
-            .eq(
-              "club_id",
-              clubId
-            );
-
-        /*
-          Ordinary members only need active
-          membership records.
-
-          Leadership gets the moderation states.
-        */
-
-        if (!isAdmin()) {
-
-          query =
-            query.eq(
-              "status",
-              "active"
-            );
-        }
-
-        const {
-          data,
-          error
-        } =
-          await query;
-
-        if (error) {
-          throw error;
-        }
-
-        members =
-          data || [];
-
-        await attachProfiles();
-
-        updateCounts();
-        renderMembers();
-      }
-
-      catch (error) {
-
-        console.error(
-          "Member load error:",
-          error
-        );
-
-        memberList.innerHTML =
-          `
-            <div class="empty">
-              <strong>
-                Members couldn't be loaded.
-              </strong>
-
-              DogEar wasn't able to retrieve
-              this club's membership list.
-            </div>
-          `;
-      }
-    }
-
-    /* =========================================
-       PUBLIC PROFILES
-       ========================================= */
-
-    async function attachProfiles() {
-
-      for (
-        const member of members
-      ) {
-
-        try {
-
-          const {
-            data,
-            error
-          } =
-            await supabaseClient
-              .rpc(
-                "get_public_profile",
-                {
-                  check_user_id:
-                    member.user_id
-                }
+            const profile =
+              memberProfiles.get(
+                String(userId)
               );
 
-          if (error) {
-            throw error;
+            const name =
+              profileName(
+                profile,
+                userId
+              );
+
+            openConfirmation({
+              title:
+                "Remove member?",
+              text:
+                `${name} will be removed from this club. They may be able to request to join again later.`,
+              confirmText:
+                "Remove",
+              callback:
+                () =>
+                  removeMember(
+                    userId
+                  )
+            });
+
           }
+        );
 
-          const profile =
-            Array.isArray(data)
-              ? data[0]
-              : data;
-
-          member.profile =
-            profile || null;
-        }
-
-        catch (error) {
-
-          console.error(
-            "Could not load profile:",
-            member.user_id,
-            error
-          );
-
-          member.profile =
-            null;
-        }
       }
-    }
-
-    /* =========================================
-       COUNTS
-       ========================================= */
-
-    function updateCounts() {
-
-      activeCount.textContent =
-        members.filter(
-          member =>
-            member.status ===
-            "active"
-        ).length;
-
-      adminCount.textContent =
-        members.filter(
-          member =>
-            member.status ===
-              "active" &&
-            (
-              member.role ===
-                "administrator" ||
-
-              member.role ===
-                "admin" ||
-
-              member.role ===
-                "president" ||
-
-              member.role ===
-                "owner"
-            )
-        ).length;
-
-      if (isAdmin()) {
-
-        pendingCount.textContent =
-          members.filter(
-            member =>
-              member.status ===
-              "pending"
-          ).length;
-
-        pausedCount.textContent =
-          members.filter(
-            member =>
-              member.status ===
-              "paused"
-          ).length;
-      }
-
-      else {
-
-        pendingCount.textContent =
-          "—";
-
-        pausedCount.textContent =
-          "—";
-      }
-    }
-
-    /* =========================================
-       FILTERS
-       ========================================= */
-
-    document
-      .querySelectorAll(".tab")
-      .forEach(
-        button => {
-
-          button.addEventListener(
-            "click",
-            function () {
-
-              document
-                .querySelectorAll(".tab")
-                .forEach(
-                  tab =>
-                    tab.classList.remove(
-                      "active"
-                    )
-                );
-
-              button
-                .classList
-                .add("active");
-
-              currentFilter =
-                button.dataset.filter;
-
-              updateListTitle();
-              renderMembers();
-            }
-          );
-        }
-      );
-
-    function updateListTitle() {
-
-      const titles = {
-        active:
-          "Members",
-
-        administrators:
-          "Club Leadership",
-
-        pending:
-          "Pending Requests",
-
-        paused:
-          "Paused Members",
-
-        banned:
-          "Banned Members"
-      };
-
-      listTitle.textContent =
-        titles[currentFilter] ||
-        "Members";
-    }
-
-    memberSearch.addEventListener(
-      "input",
-      renderMembers
     );
 
-    /* =========================================
-       RENDER MEMBERS
-       ========================================= */
+  document
+    .querySelectorAll(
+      "[data-ban-user]"
+    )
+    .forEach(
+      button => {
 
-    function renderMembers() {
+        button.addEventListener(
+          "click",
+          () => {
 
-      const search =
-        memberSearch
-          .value
-          .trim()
-          .toLowerCase();
+            const userId =
+              button.dataset
+                .banUser;
 
-      let filtered =
-        members.filter(
-          member => {
-
-            if (
-              currentFilter ===
-              "administrators"
-            ) {
-
-              return (
-                member.status ===
-                  "active" &&
-                (
-                  member.role ===
-                    "administrator" ||
-
-                  member.role ===
-                    "admin" ||
-
-                  member.role ===
-                    "president" ||
-
-                  member.role ===
-                    "owner"
-                )
+            const profile =
+              memberProfiles.get(
+                String(userId)
               );
-            }
 
-            return (
-              member.status ===
-              currentFilter
-            );
+            const name =
+              profileName(
+                profile,
+                userId
+              );
+
+            openConfirmation({
+              title:
+                "Ban reader?",
+              text:
+                `${name} will be removed from this club and the moderation action will be recorded.`,
+              confirmText:
+                "Ban Reader",
+              callback:
+                () =>
+                  banMember(
+                    userId
+                  )
+            });
+
           }
         );
 
-      if (search) {
+      }
+    );
 
-        filtered =
-          filtered.filter(
-            member => {
+}
 
-              const profile =
-                member.profile ||
-                {};
 
-              const name =
-                (
-                  profile.display_name ||
-                  ""
-                ).toLowerCase();
+/* =========================================================
+   PENDING ACTION WIRING
+========================================================= */
 
-              const username =
-                (
-                  profile.username ||
-                  ""
-                ).toLowerCase();
+function wirePendingActions(){
 
-              return (
-                name.includes(search) ||
-                username.includes(search)
+  document
+    .querySelectorAll(
+      "[data-approve-user]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          async () => {
+
+            const userId =
+              button.dataset
+                .approveUser;
+
+            button.disabled =
+              true;
+
+            try{
+
+              await approveRequest(
+                userId
               );
+
             }
-          );
+
+            catch(error){
+
+              console.error(
+                "Approve request:",
+                error
+              );
+
+              showStatus(
+                error?.message ||
+                "DogEar couldn't approve that request.",
+                "error"
+              );
+
+              button.disabled =
+                false;
+
+            }
+
+          }
+        );
+
       }
+    );
 
-      memberList.innerHTML = "";
+  document
+    .querySelectorAll(
+      "[data-deny-user]"
+    )
+    .forEach(
+      button => {
 
-      if (
-        filtered.length === 0
-      ) {
+        button.addEventListener(
+          "click",
+          () => {
 
-        memberList.innerHTML =
-          `
-            <div class="empty">
-              <strong>
-                Nobody here.
-              </strong>
+            const userId =
+              button.dataset
+                .denyUser;
 
-              No members match this view.
-            </div>
-          `;
+            const profile =
+              pendingProfiles.get(
+                String(userId)
+              );
 
-        return;
+            const name =
+              profileName(
+                profile,
+                userId
+              );
+
+            openConfirmation({
+              title:
+                "Deny request?",
+              text:
+                `${name}'s request to join this club will be removed.`,
+              confirmText:
+                "Deny Request",
+              callback:
+                () =>
+                  denyRequest(
+                    userId
+                  )
+            });
+
+          }
+        );
+
       }
+    );
 
-      filtered.forEach(
-        member => {
+  document
+    .querySelectorAll(
+      "[data-ban-request-user]"
+    )
+    .forEach(
+      button => {
 
-          memberList.appendChild(
-            buildMemberRow(
-              member
-            )
-          );
-        }
+        button.addEventListener(
+          "click",
+          () => {
+
+            const userId =
+              button.dataset
+                .banRequestUser;
+
+            const profile =
+              pendingProfiles.get(
+                String(userId)
+              );
+
+            const name =
+              profileName(
+                profile,
+                userId
+              );
+
+            openConfirmation({
+              title:
+                "Ban reader?",
+              text:
+                `${name}'s request will be removed and the moderation action will be recorded.`,
+              confirmText:
+                "Ban Reader",
+              callback:
+                () =>
+                  banPendingRequest(
+                    userId
+                  )
+            });
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   MEMBER SEARCH
+========================================================= */
+
+memberSearch.addEventListener(
+  "input",
+  () => {
+
+    renderMembers();
+
+  }
+);
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+function setTab(
+  tab,
+  updateUrl = true
+){
+
+  if(
+    tab !== "members" &&
+    tab !== "pending"
+  ){
+
+    tab =
+      "members";
+
+  }
+
+  /*
+    Ordinary members cannot navigate into the moderation
+    queue.
+  */
+
+  if(
+    tab === "pending" &&
+    !canManageMembers()
+  ){
+
+    tab =
+      "members";
+
+  }
+
+  currentTab =
+    tab;
+
+  membersSection.classList.toggle(
+    "hidden",
+    currentTab !== "members"
+  );
+
+  pendingSection.classList.toggle(
+    "hidden",
+    currentTab !== "pending"
+  );
+
+  document
+    .querySelectorAll(
+      ".tab[data-tab]"
+    )
+    .forEach(
+      button => {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.tab ===
+            currentTab
+        );
+
+      }
+    );
+
+  if(updateUrl){
+
+    const url =
+      new URL(
+        location.href
       );
+
+    if(
+      currentTab === "members"
+    ){
+
+      url.searchParams.delete(
+        "tab"
+      );
+
     }
 
-    /* =========================================
-       MEMBER ROW
-       ========================================= */
+    else{
 
-    function buildMemberRow(
-      member
-    ) {
-
-      const profile =
-        member.profile ||
-        {};
-
-      const displayName =
-        profile.display_name ||
-        profile.username ||
-        "DogEar Reader";
-
-      const username =
-        profile.username
-          ? "@" +
-            profile.username
-          : "";
-
-      const row =
-        document.createElement(
-          "div"
-        );
-
-      row.className =
-        "member-row";
-
-      const avatar =
-        document.createElement(
-          "div"
-        );
-
-      avatar.className =
-        "member-avatar";
-
-      setAvatar(
-        avatar,
-        profile.avatar_url,
-        displayName
+      url.searchParams.set(
+        "tab",
+        currentTab
       );
 
-      const main =
-        document.createElement(
-          "div"
-        );
-
-      const profileLink =
-        document.createElement(
-          "a"
-        );
-
-      profileLink.className =
-        "member-name";
-
-      /*
-        DogEar now uses the unified
-        profile.html page.
-
-        This replaces the old user.html route.
-      */
-
-      profileLink.href =
-        "profile.html?id=" +
-        encodeURIComponent(
-          member.user_id
-        );
-
-      profileLink.textContent =
-        displayName;
-
-      const meta =
-        document.createElement(
-          "div"
-        );
-
-      meta.className =
-        "member-meta";
-
-      if (username) {
-
-        const usernameSpan =
-          document.createElement(
-            "span"
-          );
-
-        usernameSpan.textContent =
-          username;
-
-        meta.appendChild(
-          usernameSpan
-        );
-      }
-
-      const roleBadge =
-        document.createElement(
-          "span"
-        );
-
-      roleBadge.className =
-        "badge";
-
-      if (
-        member.role ===
-          "president" ||
-        member.role ===
-          "owner"
-      ) {
-
-        roleBadge
-          .classList
-          .add("president");
-
-        roleBadge.textContent =
-          "Club President";
-      }
-
-      else if (
-        member.role ===
-          "administrator" ||
-        member.role ===
-          "admin"
-      ) {
-
-        roleBadge
-          .classList
-          .add("admin");
-
-        roleBadge.textContent =
-          "Administrator";
-      }
-
-      else {
-
-        roleBadge.textContent =
-          "Member";
-      }
-
-      meta.appendChild(
-        roleBadge
-      );
-
-      if (
-        member.status !==
-        "active"
-      ) {
-
-        const statusBadge =
-          document.createElement(
-            "span"
-          );
-
-        statusBadge.className =
-          "badge " +
-          member.status;
-
-        statusBadge.textContent =
-          capitalize(
-            member.status
-          );
-
-        meta.appendChild(
-          statusBadge
-        );
-      }
-
-      main.appendChild(
-        profileLink
-      );
-
-      main.appendChild(
-        meta
-      );
-
-      const actions =
-        buildActions(
-          member
-        );
-
-      row.appendChild(
-        avatar
-      );
-
-      row.appendChild(
-        main
-      );
-
-      row.appendChild(
-        actions
-      );
-
-      return row;
     }
 
-    /* =========================================
-       ACTIONS
-       ========================================= */
+    history.replaceState(
+      {},
+      "",
+      url
+    );
 
-    function buildActions(
-      member
-    ) {
+  }
 
-      const actions =
-        document.createElement(
-          "div"
-        );
+}
 
-      actions.className =
-        "actions";
 
-      /*
-        Users cannot moderate themselves
-        from this page.
-      */
-
-      if (
-        member.user_id ===
-        currentUser.id
-      ) {
-
-        return actions;
-      }
-
-      /*
-        ADMINISTRATOR POWERS
-
-        - approve pending member
-        - pause ordinary member
-        - resume paused member
-      */
-
-      if (isAdmin()) {
-
-        if (
-          member.status ===
-          "pending"
-        ) {
-
-          actions.appendChild(
-            makeButton(
-              "Approve",
-              "success",
-              () =>
-                approveMember(
-                  member
-                )
-            )
-          );
-        }
-
-        if (
-          member.status ===
-            "active" &&
-          member.role ===
-            "member"
-        ) {
-
-          actions.appendChild(
-            makeButton(
-              "Pause",
-              "",
-              () =>
-                pauseMember(
-                  member
-                )
-            )
-          );
-        }
-
-        if (
-          member.status ===
-          "paused"
-        ) {
-
-          actions.appendChild(
-            makeButton(
-              "Resume",
-              "success",
-              () =>
-                resumeMember(
-                  member
-                )
-            )
-          );
-        }
-      }
-
-      /*
-        PRESIDENT POWERS
-
-        - promote member
-        - demote administrator
-        - transfer Presidency
-        - ban
-        - unban
-      */
-
-      if (isPresident()) {
-
-        if (
-          member.status ===
-            "active" &&
-          member.role ===
-            "member"
-        ) {
-
-          actions.appendChild(
-            makeButton(
-              "Make Admin",
-              "",
-              () =>
-                promoteMember(
-                  member
-                )
-            )
-          );
-        }
-
-        if (
-          member.status ===
-            "active" &&
-          (
-            member.role ===
-              "administrator" ||
-            member.role ===
-              "admin"
-          )
-        ) {
-
-          actions.appendChild(
-            makeButton(
-              "Remove Admin",
-              "",
-              () =>
-                demoteAdmin(
-                  member
-                )
-            )
-          );
-
-          actions.appendChild(
-            makeButton(
-              "Make President",
-              "",
-              () =>
-                transferPresident(
-                  member
-                )
-            )
-          );
-        }
-
-        if (
-          member.status !==
-            "banned" &&
-          member.role !==
-            "president" &&
-          member.role !==
-            "owner"
-        ) {
-
-          actions.appendChild(
-            makeButton(
-              "Ban",
-              "danger",
-              () =>
-                banMember(
-                  member
-                )
-            )
-          );
-        }
-
-        if (
-          member.status ===
-          "banned"
-        ) {
-
-          actions.appendChild(
-            makeButton(
-              "Unban",
-              "success",
-              () =>
-                unbanMember(
-                  member
-                )
-            )
-          );
-        }
-      }
-
-      return actions;
-    }
-
-    function makeButton(
-      text,
-      className,
-      handler
-    ) {
-
-      const button =
-        document.createElement(
-          "button"
-        );
-
-      button.type =
-        "button";
-
-      button.className =
-        "action-button";
-
-      if (className) {
-
-        button.classList.add(
-          className
-        );
-      }
-
-      button.textContent =
-        text;
+document
+  .querySelectorAll(
+    ".tab[data-tab]"
+  )
+  .forEach(
+    button => {
 
       button.addEventListener(
         "click",
-        handler
-      );
+        () => {
 
-      return button;
-    }
+          setTab(
+            button.dataset.tab ||
+            "members"
+          );
 
-    /* =========================================
-       MEMBER MANAGEMENT
-       ========================================= */
-
-    async function approveMember(
-      member
-    ) {
-
-      await runMemberAction(
-        "approve_club_member",
-        member,
-        "Approving member...",
-        "Member approved."
-      );
-    }
-
-    async function pauseMember(
-      member
-    ) {
-
-      if (
-        !confirm(
-          "Pause this member's club membership?"
-        )
-      ) {
-        return;
-      }
-
-      await runMemberAction(
-        "pause_club_member",
-        member,
-        "Pausing membership...",
-        "Membership paused."
-      );
-    }
-
-    async function resumeMember(
-      member
-    ) {
-
-      await runMemberAction(
-        "resume_club_member",
-        member,
-        "Restoring membership...",
-        "Membership restored."
-      );
-    }
-
-    async function promoteMember(
-      member
-    ) {
-
-      if (
-        !confirm(
-          "Promote this member to Administrator?"
-        )
-      ) {
-        return;
-      }
-
-      await runMemberAction(
-        "promote_club_member",
-        member,
-        "Promoting member...",
-        "Member promoted to Administrator."
-      );
-    }
-
-    async function demoteAdmin(
-      member
-    ) {
-
-      if (
-        !confirm(
-          "Remove this person's Administrator role?"
-        )
-      ) {
-        return;
-      }
-
-      await runMemberAction(
-        "demote_club_admin",
-        member,
-        "Removing Administrator role...",
-        "Administrator returned to Member."
-      );
-    }
-
-    async function banMember(
-      member
-    ) {
-
-      const reason =
-        prompt(
-          "Reason for banning this member:"
-        );
-
-      if (
-        reason === null
-      ) {
-        return;
-      }
-
-      if (
-        !reason.trim()
-      ) {
-
-        showMessage(
-          "Please provide a moderation reason.",
-          "warning"
-        );
-
-        return;
-      }
-
-      /*
-        The exact secure ban RPC signature has
-        not been established yet.
-
-        Do not directly update club_members here.
-      */
-
-      showMessage(
-        "Ban selected for " +
-        getMemberName(member) +
-        ". The moderation control is ready for DogEar's protected ban RPC once its exact parameters are established.",
-        "warning"
-      );
-    }
-
-    async function unbanMember(
-      member
-    ) {
-
-      showMessage(
-        "Unban selected for " +
-        getMemberName(member) +
-        ". The control is ready for DogEar's protected unban RPC.",
-        "warning"
-      );
-    }
-
-    /* =========================================
-       PROTECTED RPC PLACEHOLDER
-       ========================================= */
-
-    async function runMemberAction(
-      rpcName,
-      member,
-      workingMessage,
-      successMessage
-    ) {
-
-      showMessage(
-        workingMessage,
-        "warning"
-      );
-
-      /*
-        We intentionally do NOT guess the RPC
-        argument names and do NOT directly update
-        club_members from the browser.
-
-        The backend SQL buildout will connect these
-        controls securely.
-      */
-
-      console.log(
-        "Protected member action ready:",
-        rpcName,
-        {
-          clubId:
-            clubId,
-
-          userId:
-            member.user_id
         }
       );
 
-      showMessage(
-        successMessage +
-        " The button is ready, but the exact protected RPC parameters still need to be connected.",
-        "success"
+    }
+  );
+
+
+/* =========================================================
+   RESTORE TAB
+========================================================= */
+
+function restoreTab(){
+
+  const requested =
+    normalize(
+      params.get("tab")
+    );
+
+  setTab(
+    requested === "pending"
+      ? "pending"
+      : "members",
+    false
+  );
+
+}
+
+
+/* =========================================================
+   PENDING TAB VISIBILITY
+========================================================= */
+
+function updateManagementVisibility(){
+
+  const pendingTab =
+    document.getElementById(
+      "pendingTab"
+    );
+
+  if(
+    canManageMembers()
+  ){
+
+    pendingTab.classList.remove(
+      "hidden"
+    );
+
+  }
+
+  else{
+
+    pendingTab.classList.add(
+      "hidden"
+    );
+
+    if(
+      currentTab === "pending"
+    ){
+
+      setTab(
+        "members"
       );
+
     }
 
-    /* =========================================
-       PRESIDENCY TRANSFER
-       ========================================= */
+  }
 
-    async function transferPresident(
-      member
-    ) {
+}
 
-      if (
-        !(
-          member.role ===
-            "administrator" ||
-          member.role ===
-            "admin"
-        ) ||
-        member.status !==
-          "active"
-      ) {
 
-        showMessage(
-          "The next Club President must already be an active Administrator.",
-          "warning"
-        );
+/* =========================================================
+   CURRENT USER NAV PROFILE
+========================================================= */
 
-        return;
-      }
+async function loadCurrentUserProfile(){
 
-      const name =
-        getMemberName(
-          member
-        );
+  if(!currentUser){
+    return;
+  }
 
-      if (
-        !confirm(
-          "Transfer the Club Presidency to " +
-          name +
-          "? You will become an Administrator."
+  const navAvatar =
+    document.getElementById(
+      "navAvatar"
+    );
+
+  const profile =
+    await loadPublicProfile(
+      currentUser.id
+    );
+
+  const name =
+    profileName(
+      profile,
+      currentUser.id
+    );
+
+  const avatar =
+    profileAvatar(
+      profile
+    );
+
+  navAvatar.innerHTML =
+    "";
+
+  if(avatar){
+
+    const image =
+      document.createElement(
+        "img"
+      );
+
+    image.src =
+      avatar;
+
+    image.alt =
+      name;
+
+    image.onerror =
+      () => {
+
+        navAvatar.innerHTML =
+          "";
+
+        navAvatar.textContent =
+          initials(name);
+
+      };
+
+    navAvatar.appendChild(
+      image
+    );
+
+  }
+
+  else{
+
+    navAvatar.textContent =
+      initials(name);
+
+  }
+
+}
+
+
+/* =========================================================
+   SITE ADMIN STATUS
+========================================================= */
+
+async function loadAdminStatus(){
+
+  if(!currentUser){
+    return;
+  }
+
+  const adminLink =
+    document.getElementById(
+      "adminLink"
+    );
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("admin_users")
+        .select("*")
+        .eq(
+          "user_id",
+          currentUser.id
         )
-      ) {
+        .maybeSingle();
+
+    if(error){
+      throw error;
+    }
+
+    if(data){
+
+      adminLink.style.display =
+        "inline-flex";
+
+    }
+
+  }
+
+  catch(error){
+
+    console.warn(
+      "Admin status:",
+      error.message
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   REQUIRE SESSION
+========================================================= */
+
+async function requireSession(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+  if(error){
+    throw error;
+  }
+
+  const session =
+    data?.session ||
+    null;
+
+  if(
+    !session?.user
+  ){
+
+    const currentPage =
+      location.pathname
+        .split("/")
+        .pop() +
+      location.search;
+
+    location.href =
+      "index.html?next=" +
+      encodeURIComponent(
+        currentPage
+      );
+
+    return false;
+
+  }
+
+  currentUser =
+    session.user;
+
+  return true;
+
+}
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    (
+      event,
+      session
+    ) => {
+
+      if(
+        event === "SIGNED_OUT"
+      ){
+
+        location.href =
+          "index.html";
 
         return;
+
       }
 
-      /*
-        The hardened backend should perform this
-        atomically through transfer_club_presidency.
-      */
+      if(
+        session?.user
+      ){
 
-      showMessage(
-        "Presidency transfer to " +
-        name +
-        " is ready for DogEar's protected transfer_club_presidency function.",
-        "success"
-      );
-    }
+        currentUser =
+          session.user;
 
-    /* =========================================
-       PRESIDENT ELECTION
-       ========================================= */
-
-    function explainPresidentElection() {
-
-      const administrators =
-        members.filter(
-          member =>
-            member.status ===
-              "active" &&
-            (
-              member.role ===
-                "administrator" ||
-              member.role ===
-                "admin"
-            )
-        );
-
-      if (
-        administrators.length < 1
-      ) {
-
-        showMessage(
-          "There are no active Administrators available to nominate for Club President.",
-          "warning"
-        );
-
-        return;
       }
 
-      /*
-        DogEar succession rules:
+    }
+  );
 
-        - Candidate must be an active Administrator.
-        - Active Administrators vote.
-        - Candidate cannot vote for themselves.
-        - More than 50% of eligible Administrators
-          must vote yes.
-        - At least two eligible Administrators other
-          than the candidate are required for an
-          automatic transfer.
-        - Otherwise site administration resolves it.
-        - Election lasts seven days.
-      */
 
-      showMessage(
-        "A President election can nominate an active Administrator. The candidate cannot vote for themselves, and at least two other eligible Administrators are required for automatic transfer.",
-        "warning"
-      );
+/* =========================================================
+   LOADING PLACEHOLDERS
+========================================================= */
+
+function renderLoadingStates(){
+
+  memberList.innerHTML = `
+    <div class="empty-state">
+
+      <div class="empty-symbol">
+        ◉
+      </div>
+
+      <h3>
+        Gathering the readers...
+      </h3>
+
+      <p>
+        Loading everyone who belongs to this club.
+      </p>
+
+    </div>
+  `;
+
+  pendingList.innerHTML = `
+    <div class="empty-state">
+
+      <div class="empty-symbol">
+        …
+      </div>
+
+      <h3>
+        Checking requests...
+      </h3>
+
+      <p>
+        Looking for readers waiting to join.
+      </p>
+
+    </div>
+  `;
+
+}
+
+
+/* =========================================================
+   START PAGE
+========================================================= */
+
+async function startMembersPage(){
+
+  try{
+
+    clearStatus();
+
+    renderLoadingStates();
+
+    if(!clubId){
+
+      location.href =
+        "clubs.html";
+
+      return;
+
     }
 
-    function showTransferInstructions() {
+    wireClubLinks();
 
-      showMessage(
-        "To transfer the Presidency voluntarily, choose an active Administrator below and click “Make President.”",
-        "success"
-      );
+    const authenticated =
+      await requireSession();
 
-      currentFilter =
-        "administrators";
-
-      document
-        .querySelectorAll(".tab")
-        .forEach(
-          tab =>
-            tab.classList.remove(
-              "active"
-            )
-        );
-
-      const leadershipTab =
-        document.querySelector(
-          '[data-filter="administrators"]'
-        );
-
-      if (leadershipTab) {
-
-        leadershipTab
-          .classList
-          .add("active");
-      }
-
-      updateListTitle();
-      renderMembers();
+    if(!authenticated){
+      return;
     }
 
-    /* =========================================
-       HELPERS
-       ========================================= */
+    /*
+      Load the club and its memberships first because
+      membership determines what controls this user is
+      allowed to see.
+    */
 
-    function getMemberName(
-      member
-    ) {
+    await Promise.all([
+      loadClub(),
+      loadMembers()
+    ]);
 
-      return (
-        member.profile?.display_name ||
-        member.profile?.username ||
-        "this member"
-      );
-    }
+    updateManagementVisibility();
 
-    function capitalize(
-      text
-    ) {
+    restoreTab();
 
-      if (!text) {
-        return "";
-      }
+    /*
+      Profile information and the pending queue can now
+      load.
+    */
 
-      return (
-        text
-          .charAt(0)
-          .toUpperCase() +
-        text.slice(1)
-      );
-    }
+    await Promise.all([
+      loadMemberProfiles(),
+      loadPendingRequests(),
+      loadCurrentUserProfile(),
+      loadAdminStatus()
+    ]);
 
-    function setAvatar(
-      container,
-      avatarUrl,
-      displayName
-    ) {
+    await loadPendingProfiles();
 
-      container.innerHTML =
-        "";
+    updateCounts();
 
-      if (avatarUrl) {
+    renderMembers();
 
-        const image =
-          document.createElement(
-            "img"
-          );
+    renderPending();
 
-        image.src =
-          avatarUrl;
+    updateManagementVisibility();
 
-        image.alt =
-          displayName ||
-          "Profile";
+  }
 
-        image.onerror =
-          function () {
+  catch(error){
 
-            container.innerHTML =
-              "";
+    console.error(
+      "Club members page:",
+      error
+    );
 
-            container.textContent =
-              displayName
-                ? displayName
-                    .charAt(0)
-                    .toUpperCase()
-                : "?";
-          };
+    showStatus(
+      error?.message ||
+      "DogEar couldn't load this club's members.",
+      "error"
+    );
 
-        container.appendChild(
-          image
-        );
-      }
+    memberList.innerHTML = `
+      <div class="empty-state">
 
-      else {
+        <div class="empty-symbol">
+          !
+        </div>
 
-        container.textContent =
-          displayName
-            ? displayName
-                .charAt(0)
-                .toUpperCase()
-            : "?";
-      }
-    }
+        <h3>
+          We couldn't load the club members.
+        </h3>
 
-    function showMessage(
-      text,
-      type
-    ) {
+        <p>
+          Refresh the page and try again. If the problem
+          continues, the club's database permissions may
+          need attention.
+        </p>
 
-      messageBox.textContent =
-        text;
+      </div>
+    `;
 
-      messageBox.className =
-        "message show";
+  }
 
-      if (type) {
+  finally{
 
-        messageBox
-          .classList
-          .add(type);
-      }
+    hideLoading();
 
-      messageBox.scrollIntoView({
-        behavior:"smooth",
-        block:"nearest"
-      });
-    }
+  }
 
-    startPage();
-  </script>
+}
+
+
+/* =========================================================
+   START DOGEAR CLUB MEMBERS
+========================================================= */
+
+startMembersPage();
+
+</script>
 
 </body>
 </html>
