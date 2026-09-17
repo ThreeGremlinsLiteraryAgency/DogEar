@@ -3153,3 +3153,576 @@ function personMatchesSearch(
   );
 
 }
+/* =========================================================
+   APPLY SEARCH + FILTERS
+========================================================= */
+
+function applyDiscoveryFilters(){
+
+  const query =
+    normalize(
+      currentSearch
+    );
+
+  const filteredBooks =
+    allBooks.filter(
+      book =>
+        bookMatchesSearch(
+          book,
+          query
+        )
+    );
+
+  const filteredClubs =
+    allClubs.filter(
+      club =>
+        clubMatchesSearch(
+          club,
+          query
+        )
+    );
+
+  const filteredPeople =
+    allPeople.filter(
+      person =>
+        personMatchesSearch(
+          person,
+          query
+        )
+    );
+
+  renderBooks(
+    filteredBooks
+  );
+
+  renderClubs(
+    filteredClubs
+  );
+
+  renderPeople(
+    filteredPeople
+  );
+
+  updateVisibleSections();
+
+}
+
+
+/* =========================================================
+   SECTION VISIBILITY
+========================================================= */
+
+function updateVisibleSections(){
+
+  booksSection.classList.toggle(
+    "hidden",
+    !(
+      currentTab === "all" ||
+      currentTab === "books"
+    )
+  );
+
+  clubsSection.classList.toggle(
+    "hidden",
+    !(
+      currentTab === "all" ||
+      currentTab === "clubs"
+    )
+  );
+
+  peopleSection.classList.toggle(
+    "hidden",
+    !(
+      currentTab === "all" ||
+      currentTab === "people"
+    )
+  );
+
+}
+
+
+/* =========================================================
+   SEARCH FORM
+========================================================= */
+
+discoverSearchForm.addEventListener(
+  "submit",
+  event => {
+
+    event.preventDefault();
+
+    currentSearch =
+      discoverSearch.value
+        .trim();
+
+    applyDiscoveryFilters();
+
+    /*
+      Keep the search in the URL so a user can refresh
+      the page without immediately losing it.
+    */
+
+    const url =
+      new URL(
+        location.href
+      );
+
+    if(currentSearch){
+
+      url.searchParams.set(
+        "q",
+        currentSearch
+      );
+
+    }
+
+    else{
+
+      url.searchParams.delete(
+        "q"
+      );
+
+    }
+
+    history.replaceState(
+      {},
+      "",
+      url
+    );
+
+  }
+);
+
+
+/*
+  Search while typing after a short delay.
+*/
+
+let searchTimer =
+  null;
+
+discoverSearch.addEventListener(
+  "input",
+  () => {
+
+    clearTimeout(
+      searchTimer
+    );
+
+    searchTimer =
+      setTimeout(
+        () => {
+
+          currentSearch =
+            discoverSearch.value
+              .trim();
+
+          applyDiscoveryFilters();
+
+        },
+        180
+      );
+
+  }
+);
+
+
+/* =========================================================
+   DISCOVERY TABS
+========================================================= */
+
+document
+  .querySelectorAll(
+    ".tab-button[data-tab]"
+  )
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const tab =
+            button.dataset.tab ||
+            "all";
+
+          currentTab =
+            tab;
+
+          document
+            .querySelectorAll(
+              ".tab-button[data-tab]"
+            )
+            .forEach(
+              item => {
+
+                item.classList.toggle(
+                  "active",
+                  item === button
+                );
+
+              }
+            );
+
+          updateVisibleSections();
+
+          /*
+            Store the selected tab in the URL without
+            causing a page reload.
+          */
+
+          const url =
+            new URL(
+              location.href
+            );
+
+          if(
+            currentTab === "all"
+          ){
+
+            url.searchParams.delete(
+              "tab"
+            );
+
+          }
+
+          else{
+
+            url.searchParams.set(
+              "tab",
+              currentTab
+            );
+
+          }
+
+          history.replaceState(
+            {},
+            "",
+            url
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+/* =========================================================
+   RESTORE URL STATE
+========================================================= */
+
+function restoreUrlState(){
+
+  const params =
+    new URLSearchParams(
+      location.search
+    );
+
+  const query =
+    params.get("q") ||
+    "";
+
+  const requestedTab =
+    params.get("tab") ||
+    "all";
+
+  currentSearch =
+    query;
+
+  discoverSearch.value =
+    query;
+
+  const validTabs =
+    [
+      "all",
+      "books",
+      "clubs",
+      "people"
+    ];
+
+  currentTab =
+    validTabs.includes(
+      requestedTab
+    )
+      ? requestedTab
+      : "all";
+
+  document
+    .querySelectorAll(
+      ".tab-button[data-tab]"
+    )
+    .forEach(
+      button => {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.tab ===
+            currentTab
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   SESSION
+========================================================= */
+
+async function requireSession(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+  if(error){
+    throw error;
+  }
+
+  const session =
+    data?.session ||
+    null;
+
+  if(
+    !session?.user
+  ){
+
+    const currentPage =
+      location.pathname
+        .split("/")
+        .pop() +
+      location.search;
+
+    location.href =
+      "index.html?next=" +
+      encodeURIComponent(
+        currentPage
+      );
+
+    return false;
+
+  }
+
+  currentUser =
+    session.user;
+
+  return true;
+
+}
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    (
+      event,
+      session
+    ) => {
+
+      if(
+        event ===
+        "SIGNED_OUT"
+      ){
+
+        location.href =
+          "index.html";
+
+        return;
+
+      }
+
+      if(
+        session?.user
+      ){
+
+        currentUser =
+          session.user;
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   INITIAL PLACEHOLDERS
+========================================================= */
+
+function showLoadingPlaceholders(){
+
+  bookGrid.innerHTML = `
+    <div class="empty-state">
+
+      <div class="empty-symbol">
+        ▱
+      </div>
+
+      <h3>
+        Opening the shelves...
+      </h3>
+
+      <p>
+        Looking for books around DogEar.
+      </p>
+
+    </div>
+  `;
+
+  clubGrid.innerHTML = `
+    <div class="empty-state">
+
+      <div class="empty-symbol">
+        ◉
+      </div>
+
+      <h3>
+        Looking for clubs...
+      </h3>
+
+      <p>
+        Finding communities you can wander into.
+      </p>
+
+    </div>
+  `;
+
+  peopleGrid.innerHTML = `
+    <div class="empty-state">
+
+      <div class="empty-symbol">
+        ☺
+      </div>
+
+      <h3>
+        Finding readers...
+      </h3>
+
+      <p>
+        Looking around the DogEar community.
+      </p>
+
+    </div>
+  `;
+
+}
+
+
+/* =========================================================
+   START PAGE
+========================================================= */
+
+async function startDiscover(){
+
+  try{
+
+    showLoadingPlaceholders();
+
+    restoreUrlState();
+
+    const authenticated =
+      await requireSession();
+
+    if(!authenticated){
+      return;
+    }
+
+    /*
+      Profile and admin status do not need to block
+      the actual discovery catalog.
+    */
+
+    const navPromise =
+      Promise.allSettled([
+        loadCurrentUserProfile(),
+        loadAdminStatus()
+      ]);
+
+    /*
+      Books and clubs can load simultaneously.
+
+      Readers are loaded after the session exists because
+      the current user's profile may also be included.
+    */
+
+    await Promise.all([
+      loadBooks(),
+      loadClubs(),
+      loadPeople()
+    ]);
+
+    applyDiscoveryFilters();
+
+    await navPromise;
+
+  }
+
+  catch(error){
+
+    console.error(
+      "Discover startup:",
+      error
+    );
+
+    bookGrid.innerHTML = `
+      <div class="empty-state">
+
+        <div class="empty-symbol">
+          !
+        </div>
+
+        <h3>
+          DogEar couldn't load Discover.
+        </h3>
+
+        <p>
+          Something went wrong while opening the shelves.
+          Refresh the page and try again.
+        </p>
+
+      </div>
+    `;
+
+    clubGrid.innerHTML = "";
+
+    peopleGrid.innerHTML = "";
+
+    bookResultCount.textContent =
+      "Unavailable";
+
+    clubResultCount.textContent =
+      "";
+
+    peopleResultCount.textContent =
+      "";
+
+  }
+
+  finally{
+
+    hideLoading();
+
+  }
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+startDiscover();
+
+</script>
+
+</body>
+</html>
