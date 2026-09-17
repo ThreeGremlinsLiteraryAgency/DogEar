@@ -1,1653 +1,3152 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>DogEar — Club Bookshelf</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-:root{
-  --ink:#090b0a;
-  --panel:#101410;
-  --panel2:#0d110e;
-  --cream:#f1e7cf;
-  --gold:#c79b59;
-  --gold2:#dfbd7e;
-  --green:#26362b;
-  --muted:#aaa18f;
-  --line:rgba(199,155,89,.22);
-  --line-soft:rgba(199,155,89,.11);
-  --danger:#e6a09a;
-}
-
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  min-height:100vh;
-  color:var(--cream);
-  background:
-    radial-gradient(circle at 10% 0%,rgba(53,73,59,.24),transparent 28%),
-    radial-gradient(circle at 92% 8%,rgba(199,155,89,.08),transparent 24%),
-    var(--ink);
-  font-family:Georgia,"Times New Roman",serif;
-}
-
-a{color:inherit}
-
-.topbar{
-  min-height:76px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:24px;
-  padding:0 clamp(18px,4vw,60px);
-  border-bottom:1px solid var(--line);
-  background:rgba(9,11,10,.94);
-  backdrop-filter:blur(14px);
-  position:sticky;
-  top:0;
-  z-index:100;
-}
-
-.brand{
-  display:flex;
-  gap:11px;
-  align-items:center;
-  text-decoration:none;
-  color:var(--gold2);
-  font:800 13px Arial;
-  letter-spacing:.17em;
-  text-transform:uppercase;
-}
-
-.brand-mark{
-  width:34px;
-  height:34px;
-  border:1px solid var(--gold);
-  border-radius:50% 50% 50% 12%;
-  transform:rotate(-8deg);
-  position:relative;
-}
-
-.brand-mark::after{
-  content:"";
-  position:absolute;
-  width:11px;
-  height:11px;
-  right:2px;
-  top:2px;
-  border-left:1px solid var(--gold);
-  border-bottom:1px solid var(--gold);
-  background:var(--ink);
-}
-
-.nav{
-  display:flex;
-  gap:24px;
-  font:700 11px Arial;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-}
-
-.nav a{
-  color:var(--muted);
-  text-decoration:none;
-}
-
-.nav a:hover,
-.nav .active{
-  color:var(--gold2);
-}
-
-.avatar{
-  width:38px;
-  height:38px;
-  border:1px solid var(--line);
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:var(--green);
-  color:var(--gold2);
-  text-decoration:none;
-  font:800 13px Arial;
-  overflow:hidden;
-}
-
-.avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.page{
-  width:min(1180px,calc(100% - 32px));
-  margin:auto;
-  padding:36px 0 100px;
-}
-
-.back{
-  color:var(--gold2);
-  text-decoration:none;
-  font:800 10px Arial;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-}
-
-.club-head{
-  margin:24px 0 22px;
-  padding-bottom:24px;
-  border-bottom:1px solid var(--line);
-}
-
-.eyebrow{
-  color:var(--gold);
-  font:800 10px Arial;
-  letter-spacing:.18em;
-  text-transform:uppercase;
-  margin-bottom:9px;
-}
-
-h1{
-  font-size:clamp(42px,6vw,68px);
-  font-weight:400;
-  line-height:.96;
-  letter-spacing:-.035em;
-  margin:0;
-}
-
-.club-sub{
-  color:var(--muted);
-  font:13px/1.6 Arial;
-  margin-top:12px;
-}
-
-.club-nav{
-  display:flex;
-  gap:9px;
-  flex-wrap:wrap;
-  margin-bottom:26px;
-}
-
-.club-nav a{
-  padding:9px 12px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  color:var(--muted);
-  text-decoration:none;
-  font:800 9px Arial;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-
-.club-nav a:hover,
-.club-nav a.active{
-  color:var(--gold2);
-  border-color:var(--gold);
-}
-
-.toolbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:14px;
-  margin-bottom:18px;
-}
-
-.search{
-  width:min(420px,100%);
-  height:44px;
-  border:1px solid rgba(199,155,89,.2);
-  border-radius:12px;
-  background:var(--panel2);
-  color:var(--cream);
-  outline:none;
-  padding:0 14px;
-  font:13px Arial;
-}
-
-.search:focus{
-  border-color:var(--gold);
-}
-
-.shelf-summary{
-  color:var(--muted);
-  font:10px Arial;
-  letter-spacing:.04em;
-}
-
-.shelf{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:18px;
-}
-
-.book-card{
-  border:1px solid var(--line);
-  border-radius:18px;
-  overflow:hidden;
-  background:rgba(16,20,16,.88);
-  box-shadow:0 18px 50px rgba(0,0,0,.22);
-  transition:
-    transform .18s ease,
-    border-color .18s ease,
-    box-shadow .18s ease;
-}
-
-.book-card.current{
-  border-color:rgba(199,155,89,.6);
-  box-shadow:
-    0 18px 50px rgba(0,0,0,.22),
-    0 0 0 1px rgba(199,155,89,.08);
-}
-
-.book-card.clickable{
-  cursor:pointer;
-}
-
-.book-card.clickable:hover{
-  transform:translateY(-4px);
-  border-color:rgba(199,155,89,.55);
-  box-shadow:0 24px 60px rgba(0,0,0,.34);
-}
-
-.book-card.clickable:focus{
-  outline:2px solid var(--gold);
-  outline-offset:3px;
-}
-
-.cover{
-  aspect-ratio:2/3;
-  background:#171c18;
-  display:grid;
-  place-items:center;
-  color:var(--muted);
-  font:700 10px Arial;
-  text-align:center;
-  overflow:hidden;
-  position:relative;
-}
-
-.cover img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.current-ribbon{
-  position:absolute;
-  top:13px;
-  right:-35px;
-  width:130px;
-  padding:6px 0;
-  transform:rotate(45deg);
-  background:var(--gold);
-  color:#17130e;
-  text-align:center;
-  font:900 8px Arial;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-
-.book-body{
-  padding:16px;
-}
-
-.book-body h3{
-  margin:0 0 6px;
-  font-size:20px;
-  font-weight:400;
-  line-height:1.15;
-}
-
-.author{
-  color:var(--gold2);
-  font:700 11px Arial;
-  margin-bottom:10px;
-}
-
-.meta{
-  color:var(--muted);
-  font:10px/1.55 Arial;
-  margin-top:4px;
-}
-
-.edition-meta{
-  margin-top:10px;
-  padding-top:10px;
-  border-top:1px solid var(--line-soft);
-}
-
-.badges{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-  margin-top:12px;
-}
-
-.badge{
-  display:inline-block;
-  padding:6px 9px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  color:var(--gold2);
-  font:800 8px Arial;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-
-.badge.current{
-  border-color:var(--gold);
-  background:rgba(199,155,89,.1);
-  color:var(--gold2);
-}
-
-.badge.past{
-  color:var(--muted);
-}
-
-.badge.upcoming{
-  color:#c8d8c7;
-  border-color:rgba(185,214,178,.3);
-}
-
-.view-hint{
-  margin-top:12px;
-  color:#756e63;
-  font:800 8px Arial;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-
-.empty{
-  grid-column:1/-1;
-  padding:56px 24px;
-  border:1px solid var(--line);
-  border-radius:18px;
-  text-align:center;
-  color:var(--muted);
-  font:13px/1.7 Arial;
-  background:rgba(16,20,16,.72);
-}
-
-.empty strong{
-  display:block;
-  color:var(--cream);
-  font-size:24px;
-  font-weight:400;
-  margin-bottom:8px;
-}
-
-.loading{
-  position:fixed;
-  inset:0;
-  display:grid;
-  place-items:center;
-  background:var(--ink);
-  z-index:1000;
-}
-
-.loading.hidden{
-  display:none;
-}
-
-.loading span{
-  color:var(--gold2);
-  font:800 10px Arial;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-}
-
-.mobile-nav{
-  display:none;
-}
-
-@media(max-width:950px){
-  .shelf{
-    grid-template-columns:repeat(3,minmax(0,1fr));
-  }
-}
-
-@media(max-width:700px){
-  .nav{
-    display:none;
-  }
-
-  .shelf{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-
-  .toolbar{
-    align-items:stretch;
-    flex-direction:column;
-  }
-
-  .search{
-    width:100%;
-  }
-
-  .mobile-nav{
-    position:fixed;
-    left:12px;
-    right:12px;
-    bottom:12px;
-    z-index:200;
-    min-height:64px;
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    border:1px solid var(--line);
-    border-radius:18px;
-    background:rgba(9,11,10,.95);
-    backdrop-filter:blur(14px);
-  }
-
-  .mobile-nav a{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:4px;
-    color:var(--muted);
-    text-decoration:none;
-    font:9px Arial;
-    text-transform:uppercase;
-  }
-
-  .mobile-nav a span:first-child{
-    color:var(--gold2);
-    font-size:17px;
-  }
-
-  .page{
-    padding-bottom:120px;
-  }
-}
-
-@media(max-width:460px){
-  .shelf{
-    grid-template-columns:1fr;
-  }
-}
-</style>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>DogEar — Club Bookshelf</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+
+    :root {
+
+      --ink:#090b0a;
+      --panel:#101410;
+      --panel2:#151a15;
+
+      --cream:#f1e7cf;
+      --cream2:#d9cfb8;
+
+      --gold:#c79b59;
+      --gold2:#dfbd7e;
+
+      --green:#26362b;
+      --green2:#34483a;
+
+      --muted:#aaa18f;
+
+      --line:rgba(199,155,89,.22);
+      --line-soft:rgba(199,155,89,.11);
+
+      --success:#b9d6b2;
+      --current:#dfbd7e;
+
+    }
+
+
+    * {
+
+      box-sizing:border-box;
+
+    }
+
+
+    html {
+
+      scroll-behavior:smooth;
+
+    }
+
+
+    body {
+
+      margin:0;
+
+      min-height:100vh;
+
+      color:var(--cream);
+
+      background:
+        radial-gradient(
+          circle at 8% 0%,
+          rgba(53,73,59,.28),
+          transparent 26%
+        ),
+        radial-gradient(
+          circle at 90% 15%,
+          rgba(199,155,89,.07),
+          transparent 24%
+        ),
+        var(--ink);
+
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    }
+
+
+    button,
+    input {
+
+      font:inherit;
+
+    }
+
+
+    a {
+
+      color:inherit;
+
+    }
+
+
+    /* =====================================================
+       LOADING
+       ===================================================== */
+
+
+    .loading {
+
+      position:fixed;
+
+      inset:0;
+
+      z-index:1000;
+
+      display:grid;
+
+      place-items:center;
+
+      background:var(--ink);
+
+      transition:
+        opacity .2s ease,
+        visibility .2s ease;
+
+    }
+
+
+    .loading.hidden {
+
+      opacity:0;
+
+      visibility:hidden;
+
+      pointer-events:none;
+
+    }
+
+
+    .loading-inner {
+
+      text-align:center;
+
+    }
+
+
+    .loading-mark {
+
+      width:48px;
+
+      height:48px;
+
+      margin:
+        0 auto 18px;
+
+      border:
+        1px solid
+        var(--gold);
+
+      border-radius:
+        50% 50% 50% 12%;
+
+      animation:
+        loadingFloat
+        1.5s
+        ease-in-out
+        infinite;
+
+    }
+
+
+    .loading span {
+
+      color:var(--gold2);
+
+      font:
+        800 10px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.16em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    @keyframes loadingFloat {
+
+      0%,
+      100% {
+
+        transform:
+          translateY(0)
+          rotate(-8deg);
+
+      }
+
+      50% {
+
+        transform:
+          translateY(-6px)
+          rotate(-8deg);
+
+      }
+
+    }
+
+
+    /* =====================================================
+       TOP BAR
+       ===================================================== */
+
+
+    .topbar {
+
+      min-height:76px;
+
+      padding:
+        0
+        clamp(
+          18px,
+          4vw,
+          60px
+        );
+
+      display:flex;
+
+      align-items:center;
+
+      justify-content:space-between;
+
+      gap:24px;
+
+      position:sticky;
+
+      top:0;
+
+      z-index:100;
+
+      border-bottom:
+        1px solid
+        var(--line);
+
+      background:
+        rgba(9,11,10,.95);
+
+      backdrop-filter:
+        blur(14px);
+
+    }
+
+
+    .brand {
+
+      display:flex;
+
+      align-items:center;
+
+      gap:11px;
+
+      color:var(--gold2);
+
+      text-decoration:none;
+
+      font:
+        800 13px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.17em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    .brand-mark {
+
+      width:34px;
+
+      height:34px;
+
+      position:relative;
+
+      border:
+        1px solid
+        var(--gold);
+
+      border-radius:
+        50% 50% 50% 12%;
+
+      transform:
+        rotate(-8deg);
+
+    }
+
+
+    .brand-mark::after {
+
+      content:"";
+
+      position:absolute;
+
+      width:8px;
+
+      height:8px;
+
+      right:7px;
+
+      top:7px;
+
+      border-radius:50%;
+
+      background:var(--gold);
+
+    }
+
+
+    .nav {
+
+      display:flex;
+
+      align-items:center;
+
+      gap:24px;
+
+      font:
+        700 11px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.1em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    .nav a {
+
+      color:var(--muted);
+
+      text-decoration:none;
+
+    }
+
+
+    .nav a:hover,
+    .nav a.active {
+
+      color:var(--gold2);
+
+    }
+
+
+    .avatar {
+
+      width:38px;
+
+      height:38px;
+
+      display:grid;
+
+      place-items:center;
+
+      overflow:hidden;
+
+      border:
+        1px solid
+        var(--line);
+
+      border-radius:50%;
+
+      background:var(--green);
+
+      text-decoration:none;
+
+      font:
+        800 12px
+        Arial,
+        sans-serif;
+
+    }
+
+
+    .avatar img {
+
+      width:100%;
+
+      height:100%;
+
+      object-fit:cover;
+
+    }
+
+
+    /* =====================================================
+       PAGE
+       ===================================================== */
+
+
+    .page {
+
+      width:
+        min(
+          1240px,
+          calc(100% - 32px)
+        );
+
+      margin:auto;
+
+      padding:
+        36px 0 110px;
+
+    }
+
+
+    .back {
+
+      display:inline-block;
+
+      margin-bottom:20px;
+
+      color:var(--muted);
+
+      text-decoration:none;
+
+      font:
+        800 9px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.09em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    .back:hover {
+
+      color:var(--gold2);
+
+    }
+
+
+    /* =====================================================
+       CLUB HEADER
+       ===================================================== */
+
+
+    .club-head {
+
+      padding:
+        clamp(
+          24px,
+          4vw,
+          38px
+        );
+
+      border:
+        1px solid
+        var(--line);
+
+      border-radius:22px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(38,54,43,.72),
+          rgba(16,20,16,.9)
+        );
+
+    }
+
+
+    .eyebrow {
+
+      margin-bottom:8px;
+
+      color:var(--gold);
+
+      font:
+        800 9px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.16em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    .club-head h1 {
+
+      margin:0;
+
+      font-size:
+        clamp(
+          38px,
+          5vw,
+          58px
+        );
+
+      line-height:.96;
+
+      font-weight:400;
+
+      letter-spacing:-.035em;
+
+    }
+
+
+    .club-sub {
+
+      max-width:720px;
+
+      margin-top:13px;
+
+      color:var(--cream2);
+
+      font:
+        11px/1.7
+        Arial,
+        sans-serif;
+
+    }
+
+
+    /* =====================================================
+       CLUB NAV
+       ===================================================== */
+
+
+    .club-nav {
+
+      margin-top:18px;
+
+      display:flex;
+
+      gap:7px;
+
+      overflow-x:auto;
+
+      scrollbar-width:none;
+
+    }
+
+
+    .club-nav::-webkit-scrollbar {
+
+      display:none;
+
+    }
+
+
+    .club-nav a {
+
+      flex:0 0 auto;
+
+      min-height:37px;
+
+      padding:
+        0 14px;
+
+      display:flex;
+
+      align-items:center;
+
+      border:
+        1px solid
+        var(--line);
+
+      border-radius:999px;
+
+      color:var(--muted);
+
+      text-decoration:none;
+
+      font:
+        800 8px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.07em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    .club-nav a:hover,
+    .club-nav a.active {
+
+      border-color:var(--gold);
+
+      color:var(--gold2);
+
+    }
+
+
+    /* =====================================================
+       TOOLBAR
+       ===================================================== */
+
+
+    .toolbar {
+
+      margin-top:24px;
+
+      display:flex;
+
+      align-items:center;
+
+      justify-content:space-between;
+
+      gap:14px;
+
+    }
+
+
+    .search {
+
+      width:
+        min(
+          460px,
+          100%
+        );
+
+      min-height:44px;
+
+      padding:
+        0 16px;
+
+      border:
+        1px solid
+        var(--line);
+
+      border-radius:999px;
+
+      outline:none;
+
+      background:
+        rgba(16,20,16,.88);
+
+      color:var(--cream);
+
+      font:
+        11px
+        Arial,
+        sans-serif;
+
+    }
+
+
+    .search::placeholder {
+
+      color:var(--muted);
+
+    }
+
+
+    .search:focus {
+
+      border-color:var(--gold);
+
+    }
+
+
+    .shelf-count {
+
+      color:var(--muted);
+
+      font:
+        800 9px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.07em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    /* =====================================================
+       SHELF
+       ===================================================== */
+
+
+    .shelf {
+
+      margin-top:20px;
+
+      display:grid;
+
+      grid-template-columns:
+        repeat(
+          4,
+          minmax(0,1fr)
+        );
+
+      gap:18px;
+
+    }
+
+
+    .book-card {
+
+      min-width:0;
+
+      overflow:hidden;
+
+      position:relative;
+
+      border:
+        1px solid
+        var(--line);
+
+      border-radius:17px;
+
+      background:
+        rgba(16,20,16,.84);
+
+      cursor:pointer;
+
+      transition:
+        transform .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
+
+    }
+
+
+    .book-card:hover {
+
+      transform:
+        translateY(-3px);
+
+      border-color:
+        rgba(199,155,89,.5);
+
+      box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.25);
+
+    }
+
+
+    .book-card:focus {
+
+      outline:
+        1px solid
+        var(--gold);
+
+      outline-offset:3px;
+
+    }
+
+
+    .cover {
+
+      width:100%;
+
+      aspect-ratio:
+        2 / 3;
+
+      display:flex;
+
+      align-items:center;
+
+      justify-content:center;
+
+      overflow:hidden;
+
+      position:relative;
+
+      border-bottom:
+        1px solid
+        var(--line-soft);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(199,155,89,.08),
+          rgba(38,54,43,.72)
+        );
+
+      color:var(--muted);
+
+      text-align:center;
+
+      font:
+        10px/1.5
+        Arial,
+        sans-serif;
+
+    }
+
+
+    .cover img {
+
+      width:100%;
+
+      height:100%;
+
+      display:block;
+
+      object-fit:cover;
+
+    }
+
+
+    .book-body {
+
+      padding:16px;
+
+    }
+
+
+    .book-body h3 {
+
+      margin:
+        0 0 6px;
+
+      font-size:20px;
+
+      line-height:1.08;
+
+      font-weight:400;
+
+    }
+
+
+    .author {
+
+      margin-bottom:10px;
+
+      color:var(--gold2);
+
+      font:
+        700 11px
+        Arial,
+        sans-serif;
+
+    }
+
+
+    .meta {
+
+      color:var(--muted);
+
+      font:
+        10px/1.5
+        Arial,
+        sans-serif;
+
+    }
+
+
+    .edition-meta {
+
+      margin-top:6px;
+
+    }
+
+
+    .badges {
+
+      display:flex;
+
+      flex-wrap:wrap;
+
+      gap:6px;
+
+    }
+
+
+    .badge {
+
+      display:inline-block;
+
+      margin-top:10px;
+
+      padding:
+        6px 9px;
+
+      border:
+        1px solid
+        var(--line);
+
+      border-radius:999px;
+
+      color:var(--gold2);
+
+      font:
+        800 8px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.08em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    .badge.current {
+
+      border-color:
+        rgba(223,189,126,.45);
+
+      background:
+        rgba(223,189,126,.08);
+
+      color:var(--current);
+
+    }
+
+
+    .badge.read {
+
+      border-color:
+        rgba(185,214,178,.35);
+
+      background:
+        rgba(185,214,178,.05);
+
+      color:var(--success);
+
+    }
+
+
+    .view-hint {
+
+      margin-top:13px;
+
+      color:var(--gold2);
+
+      font:
+        800 8px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.06em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    /* =====================================================
+       EMPTY
+       ===================================================== */
+
+
+    .empty {
+
+      grid-column:
+        1 / -1;
+
+      padding:
+        56px 24px;
+
+      border:
+        1px solid
+        var(--line);
+
+      border-radius:18px;
+
+      background:
+        rgba(16,20,16,.72);
+
+      color:var(--muted);
+
+      text-align:center;
+
+      font:
+        13px/1.7
+        Arial,
+        sans-serif;
+
+    }
+
+
+    .empty strong {
+
+      display:block;
+
+      margin-bottom:8px;
+
+      color:var(--cream);
+
+      font-size:24px;
+
+      font-weight:400;
+
+    }
+
+
+    /* =====================================================
+       MOBILE NAV
+       ===================================================== */
+
+
+    .mobile-nav {
+
+      display:none;
+
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+
+    @media(
+      max-width:950px
+    ) {
+
+      .shelf {
+
+        grid-template-columns:
+          repeat(
+            3,
+            minmax(0,1fr)
+          );
+
+      }
+
+    }
+
+
+    @media(
+      max-width:700px
+    ) {
+
+      .nav {
+
+        display:none;
+
+      }
+
+
+      .shelf {
+
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(0,1fr)
+          );
+
+      }
+
+
+      .toolbar {
+
+        align-items:stretch;
+
+        flex-direction:column;
+
+      }
+
+
+      .search {
+
+        width:100%;
+
+      }
+
+
+      .mobile-nav {
+
+        position:fixed;
+
+        left:12px;
+
+        right:12px;
+
+        bottom:12px;
+
+        z-index:200;
+
+        min-height:64px;
+
+        display:grid;
+
+        grid-template-columns:
+          repeat(4,1fr);
+
+        border:
+          1px solid
+          var(--line);
+
+        border-radius:18px;
+
+        background:
+          rgba(9,11,10,.95);
+
+        backdrop-filter:
+          blur(14px);
+
+      }
+
+
+      .mobile-nav a {
+
+        display:flex;
+
+        flex-direction:column;
+
+        align-items:center;
+
+        justify-content:center;
+
+        gap:4px;
+
+        color:var(--muted);
+
+        text-decoration:none;
+
+        font:
+          9px
+          Arial,
+          sans-serif;
+
+        text-transform:uppercase;
+
+      }
+
+
+      .mobile-nav a span:first-child {
+
+        color:var(--gold2);
+
+        font-size:17px;
+
+      }
+
+
+      .page {
+
+        padding-bottom:120px;
+
+      }
+
+    }
+
+
+    @media(
+      max-width:460px
+    ) {
+
+      .page {
+
+        width:
+          calc(
+            100% - 22px
+          );
+
+      }
+
+
+      .shelf {
+
+        grid-template-columns:1fr;
+
+      }
+
+    }
+
+  </style>
+
 </head>
+
 
 <body>
 
-<div class="loading" id="loading">
-  <span>Opening the bookshelf...</span>
-</div>
 
-<header class="topbar">
+  <!-- =====================================================
+       LOADING
+       ===================================================== -->
 
-  <a class="brand" href="dashboard.html">
-    <span class="brand-mark"></span>
-    DogEar
-  </a>
 
-  <nav class="nav">
-    <a href="dashboard.html">Home</a>
-    <a href="discover.html">Discover</a>
-    <a class="active" href="clubs.html">Clubs</a>
-    <a href="marketplace.html">Books</a>
-  </nav>
-
-  <a
-    class="avatar"
-    id="navAvatar"
-    href="profile.html"
+  <div
+    class="loading"
+    id="loading"
   >
-    ?
-  </a>
 
-</header>
+    <div class="loading-inner">
 
-<main class="page">
+      <div class="loading-mark"></div>
 
-  <a
-    class="back"
-    id="backLink"
-    href="club.html"
-  >
-    ← Back to Club
-  </a>
+      <span>
+        Opening the bookshelf...
+      </span>
 
-  <section class="club-head">
-
-    <div class="eyebrow">
-      Club Bookshelf
     </div>
-
-    <h1 id="clubName">
-      Book Club
-    </h1>
-
-    <div class="club-sub">
-      The books this club has read, chosen, and survived together.
-    </div>
-
-  </section>
-
-  <nav
-    class="club-nav"
-    aria-label="Club navigation"
-  >
-
-    <a id="overviewLink" href="club.html">
-      Overview
-    </a>
-
-    <a id="membersLink" href="club-members.html">
-      Members
-    </a>
-
-    <a id="discussionsLink" href="club-discussions.html">
-      Discussions
-    </a>
-
-    <a id="voteLink" href="club-vote.html">
-      Monthly Vote
-    </a>
-
-    <a
-      class="active"
-      id="booksLink"
-      href="club-books.html"
-    >
-      Bookshelf
-    </a>
-
-    <a id="settingsLink" href="club-settings.html">
-      Settings
-    </a>
-
-  </nav>
-
-  <div class="toolbar">
-
-    <input
-      class="search"
-      id="bookSearch"
-      type="search"
-      placeholder="Search the club bookshelf…"
-      aria-label="Search club bookshelf"
-    >
-
-    <div
-      class="shelf-summary"
-      id="shelfSummary"
-    ></div>
 
   </div>
 
-  <section
-    class="shelf"
-    id="shelf"
-  ></section>
 
-</main>
+  <!-- =====================================================
+       TOP NAVIGATION
+       ===================================================== -->
 
-<nav class="mobile-nav">
 
-  <a href="dashboard.html">
-    <span>⌂</span>
-    Home
-  </a>
+  <header class="topbar">
 
-  <a href="discover.html">
-    <span>⌕</span>
-    Discover
-  </a>
+    <a
+      class="brand"
+      href="dashboard.html"
+    >
 
-  <a href="clubs.html">
-    <span>◉</span>
-    Clubs
-  </a>
+      <span class="brand-mark"></span>
 
-  <a href="profile.html">
-    <span>☺</span>
-    Profile
-  </a>
+      DogEar
 
-</nav>
+    </a>
 
-<script>
-const SUPABASE_URL =
-  "https://nrtutxjznkfvvbmaagum.supabase.co";
 
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+    <nav class="nav">
 
-const supabaseClient =
-  supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
+      <a href="dashboard.html">
+        Home
+      </a>
 
-const $ =
-  id =>
-    document.getElementById(id);
+      <a href="discover.html">
+        Discover
+      </a>
 
-const params =
-  new URLSearchParams(
-    location.search
-  );
+      <a
+        class="active"
+        href="clubs.html"
+      >
+        Clubs
+      </a>
 
-const clubId =
-  params.get("id");
+      <a href="marketplace.html">
+        Books
+      </a>
 
-let currentUser = null;
-let books = [];
-let clubData = null;
+    </nav>
 
-/* =========================================
-   LINKS
-   ========================================= */
 
-function withClub(filename){
+    <a
+      class="avatar"
+      id="navAvatar"
+      href="profile.html"
+    >
+      ?
+    </a>
 
-  return clubId
-    ? filename +
-      "?id=" +
-      encodeURIComponent(clubId)
-    : filename;
+  </header>
 
-}
 
-function wireLinks(){
+  <!-- =====================================================
+       PAGE
+       ===================================================== -->
 
-  $("backLink").href =
-    withClub("club.html");
 
-  $("overviewLink").href =
-    withClub("club.html");
+  <main class="page">
 
-  $("membersLink").href =
-    withClub("club-members.html");
 
-  $("discussionsLink").href =
-    withClub("club-discussions.html");
+    <a
+      class="back"
+      id="backLink"
+      href="club.html"
+    >
+      ← Back to Club
+    </a>
 
-  $("voteLink").href =
-    withClub("club-vote.html");
 
-  $("booksLink").href =
-    withClub("club-books.html");
+    <!-- =================================================
+         CLUB HEADER
+         ================================================= -->
 
-  $("settingsLink").href =
-    withClub("club-settings.html");
 
-}
+    <section class="club-head">
 
-/* =========================================
-   HELPERS
-   ========================================= */
+      <div class="eyebrow">
+        Club Bookshelf
+      </div>
 
-function escapeHtml(value=""){
+      <h1 id="clubName">
+        Book Club
+      </h1>
 
-  return String(value)
-    .replace(
-      /[&<>"']/g,
-      character => ({
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#039;"
-      }[character])
-    );
+      <div class="club-sub">
+        The books this club has read, chosen, and survived together.
+      </div>
 
-}
+    </section>
 
-function initials(name="Reader"){
 
-  const parts =
-    String(name)
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean);
+    <!-- =================================================
+         CLUB NAVIGATION
+         ================================================= -->
 
-  if(!parts.length)
-    return "?";
 
-  if(parts.length === 1)
-    return parts[0]
-      .charAt(0)
-      .toUpperCase();
+    <nav
+      class="club-nav"
+      aria-label="Club navigation"
+    >
 
-  return (
-    parts[0].charAt(0) +
-    parts[parts.length - 1].charAt(0)
-  ).toUpperCase();
+      <a
+        id="overviewLink"
+        href="club.html"
+      >
+        Overview
+      </a>
 
-}
+      <a
+        id="membersLink"
+        href="club-members.html"
+      >
+        Members
+      </a>
 
-function normalizeStatus(value=""){
+      <a
+        id="discussionsLink"
+        href="club-discussions.html"
+      >
+        Discussions
+      </a>
 
-  return String(value)
-    .trim()
-    .toLowerCase();
+      <a
+        id="voteLink"
+        href="club-vote.html"
+      >
+        Monthly Vote
+      </a>
 
-}
+      <a
+        class="active"
+        id="booksLink"
+        href="club-books.html"
+      >
+        Bookshelf
+      </a>
 
-function authorText(value){
+      <a
+        id="settingsLink"
+        href="club-settings.html"
+      >
+        Settings
+      </a>
 
-  if(Array.isArray(value))
-    return value.join(", ");
+    </nav>
 
-  return value || "";
 
-}
+    <!-- =================================================
+         SEARCH
+         ================================================= -->
 
-function formatMonth(value){
 
-  if(!value)
-    return "";
+    <div class="toolbar">
 
-  const raw =
-    String(value);
+      <input
+        class="search"
+        id="bookSearch"
+        type="search"
+        placeholder="Search the club bookshelf…"
+        aria-label="Search club bookshelf"
+        autocomplete="off"
+      >
 
-  const match =
-    raw.match(
-      /^(\d{4})-(\d{2})(?:-(\d{2}))?$/
-    );
+      <div
+        class="shelf-count"
+        id="shelfCount"
+      >
+        Loading books...
+      </div>
 
-  if(match){
+    </div>
 
-    const year =
-      Number(match[1]);
 
-    const month =
-      Number(match[2]);
+    <!-- =================================================
+         BOOKSHELF
+         ================================================= -->
 
-    if(
-      month >= 1 &&
-      month <= 12
-    ){
 
-      return new Date(
-        year,
-        month - 1,
-        1
-      ).toLocaleDateString(
-        undefined,
-        {
-          month:"long",
-          year:"numeric"
-        }
+    <section
+      class="shelf"
+      id="shelf"
+    ></section>
+
+
+  </main>
+
+
+  <!-- =====================================================
+       MOBILE NAVIGATION
+       ===================================================== -->
+
+
+  <nav class="mobile-nav">
+
+    <a href="dashboard.html">
+
+      <span>⌂</span>
+
+      Home
+
+    </a>
+
+
+    <a href="discover.html">
+
+      <span>⌕</span>
+
+      Discover
+
+    </a>
+
+
+    <a href="clubs.html">
+
+      <span>◉</span>
+
+      Clubs
+
+    </a>
+
+
+    <a href="profile.html">
+
+      <span>☺</span>
+
+      Profile
+
+    </a>
+
+  </nav>
+
+
+  <!-- =====================================================
+       JAVASCRIPT
+       ===================================================== -->
+
+
+  <script>
+
+
+    /* =====================================================
+       SUPABASE
+       ===================================================== */
+
+
+    const SUPABASE_URL =
+      "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
       );
 
-    }
 
-  }
+    /* =====================================================
+       STATE
+       ===================================================== */
 
-  return raw;
 
-}
+    const $ =
+      id =>
+        document.getElementById(
+          id
+        );
 
-/* =========================================
-   NORMALIZE CLUB BOOK
-   ========================================= */
 
-function normalizeClubBook(row){
+    const params =
+      new URLSearchParams(
+        location.search
+      );
 
-  const central =
-    row.books || {};
 
-  const title =
-    central.title ||
-    row.title ||
-    row.book_title ||
-    "Untitled Book";
+    const clubId =
+      params.get(
+        "id"
+      );
 
-  const author =
-    authorText(
-      central.authors ||
-      row.authors ||
-      row.author ||
-      row.book_author
-    ) ||
-    "Unknown author";
 
-  const cover =
-    central.cover_url ||
-    row.cover_url ||
-    row.image_url ||
-    "";
+    let currentUser =
+      null;
 
-  const isbn13 =
-    central.isbn_13 ||
-    row.isbn_13 ||
-    row.isbn13 ||
-    row.isbn ||
-    "";
 
-  const isbn10 =
-    central.isbn_10 ||
-    row.isbn_10 ||
-    "";
-
-  const publisher =
-    central.publisher ||
-    row.publisher ||
-    "";
-
-  const publishedDate =
-    central.published_date ||
-    row.published_date ||
-    row.publication_date ||
-    "";
-
-  const googleBooksId =
-    central.google_books_id ||
-    row.google_books_id ||
-    "";
-
-  const bookId =
-    row.book_id ||
-    row.central_book_id ||
-    central.id ||
-    null;
-
-  const status =
-    normalizeStatus(
-      row.status ||
-      row.read_status ||
-      row.selection_status
-    );
-
-  const readMonth =
-    row.read_month ||
-    row.selected_month ||
-    row.month_label ||
-    "";
-
-  const isCurrent =
-    row.is_current === true ||
-    [
-      "current",
-      "reading",
-      "active"
-    ].includes(status);
-
-  let statusLabel =
-    "Club Read";
-
-  let statusClass =
-    "past";
-
-  if(isCurrent){
-
-    statusLabel =
-      "Current Selection";
-
-    statusClass =
-      "current";
-
-  }
-  else if(
-    [
-      "selected",
-      "upcoming",
-      "scheduled"
-    ].includes(status)
-  ){
-
-    statusLabel =
-      "Upcoming Selection";
-
-    statusClass =
-      "upcoming";
-
-  }
-
-  return {
-    ...row,
-    title,
-    author,
-    cover,
-    isbn13,
-    isbn10,
-    publisher,
-    publishedDate,
-    googleBooksId,
-    bookId,
-    readMonth,
-    isCurrent,
-    status,
-    statusLabel,
-    statusClass
-  };
-
-}
-
-/* =========================================
-   BOOK DETAIL URL
-   ========================================= */
-
-function getBookDetailUrl(book){
-
-  if(!book.bookId)
-    return null;
-
-  return (
-    "book.html?id=" +
-    encodeURIComponent(
-      book.bookId
-    )
-  );
-
-}
-
-/* =========================================
-   SORT BOOKS
-   ========================================= */
-
-function sortBooks(list){
-
-  return [...list].sort(
-    (a,b) => {
-
-      if(
-        a.isCurrent &&
-        !b.isCurrent
-      )
-        return -1;
-
-      if(
-        !a.isCurrent &&
-        b.isCurrent
-      )
-        return 1;
-
-      const monthA =
-        a.readMonth
-          ? new Date(a.readMonth).getTime()
-          : 0;
-
-      const monthB =
-        b.readMonth
-          ? new Date(b.readMonth).getTime()
-          : 0;
-
-      if(monthA !== monthB)
-        return monthB - monthA;
-
-      const createdA =
-        a.created_at
-          ? new Date(a.created_at).getTime()
-          : 0;
-
-      const createdB =
-        b.created_at
-          ? new Date(b.created_at).getTime()
-          : 0;
-
-      return createdB - createdA;
-
-    }
-  );
-
-}
-
-/* =========================================
-   RENDER BOOKS
-   ========================================= */
-
-function renderBooks(list){
-
-  const shelf =
-    $("shelf");
-
-  shelf.innerHTML =
-    "";
-
-  $("shelfSummary").textContent =
-    list.length === 1
-      ? "1 book"
-      : list.length + " books";
-
-  if(!list.length){
-
-    shelf.innerHTML = `
-      <div class="empty">
-        <strong>
-          The shelf is still empty.
-        </strong>
-
-        Once the club selects its first monthly book,
-        it will appear here.
-      </div>
-    `;
-
-    return;
-
-  }
-
-  for(const book of list){
-
-    const detailUrl =
-      getBookDetailUrl(book);
-
-    const editionParts =
+    let books =
       [];
 
-    if(book.publisher)
-      editionParts.push(
-        book.publisher
-      );
 
-    if(book.publishedDate)
-      editionParts.push(
-        book.publishedDate
-      );
+    let club =
+      null;
 
-    if(book.isbn13)
-      editionParts.push(
-        "ISBN-13 " +
-        book.isbn13
-      );
-    else if(book.isbn10)
-      editionParts.push(
-        "ISBN-10 " +
-        book.isbn10
-      );
 
-    const card =
-      document.createElement(
-        "article"
-      );
+    /* =====================================================
+       CLUB LINKS
+       ===================================================== */
 
-    card.className =
-      "book-card" +
-      (
-        book.isCurrent
-          ? " current"
-          : ""
-      );
 
-    if(detailUrl){
+    function withClub(
+      filename
+    ) {
 
-      card.classList.add(
-        "clickable"
-      );
 
-      card.tabIndex =
-        0;
+      return clubId
+        ? (
+            filename +
+            "?id=" +
+            encodeURIComponent(
+              clubId
+            )
+          )
+        : filename;
 
-      card.setAttribute(
-        "role",
-        "link"
-      );
-
-      card.setAttribute(
-        "aria-label",
-        "View " +
-        book.title
-      );
 
     }
 
-    card.innerHTML = `
 
-      <div class="cover">
+    function wireLinks() {
 
-        ${
-          book.cover
-            ? `
-              <img
-                src="${escapeHtml(book.cover)}"
-                alt="${escapeHtml(book.title)} cover">
-            `
-            : "No cover"
-        }
 
-        ${
-          book.isCurrent
-            ? `
-              <div class="current-ribbon">
-                Reading Now
-              </div>
-            `
-            : ""
-        }
-
-      </div>
-
-      <div class="book-body">
-
-        <h3>
-          ${escapeHtml(book.title)}
-        </h3>
-
-        <div class="author">
-          ${escapeHtml(book.author)}
-        </div>
-
-        ${
-          book.readMonth
-            ? `
-              <div class="meta">
-                ${
-                  book.isCurrent
-                    ? "Reading "
-                    : (
-                        book.statusClass ===
-                        "upcoming"
-                          ? "Scheduled "
-                          : "Read "
-                      )
-                }
-                ${escapeHtml(
-                  formatMonth(
-                    book.readMonth
-                  )
-                )}
-              </div>
-            `
-            : ""
-        }
-
-        ${
-          editionParts.length
-            ? `
-              <div class="edition-meta">
-
-                <div class="meta">
-                  ${escapeHtml(
-                    editionParts.join(
-                      " · "
-                    )
-                  )}
-                </div>
-
-              </div>
-            `
-            : ""
-        }
-
-        <div class="badges">
-
-          <span
-            class="badge ${escapeHtml(
-              book.statusClass
-            )}"
-          >
-            ${escapeHtml(
-              book.statusLabel
-            )}
-          </span>
-
-        </div>
-
-        ${
-          detailUrl
-            ? `
-              <div class="view-hint">
-                View book details →
-              </div>
-            `
-            : ""
-        }
-
-      </div>
-    `;
-
-    if(detailUrl){
-
-      card.addEventListener(
-        "click",
-        () => {
-
-          location.href =
-            detailUrl;
-
-        }
-      );
-
-      card.addEventListener(
-        "keydown",
-        event => {
-
-          if(
-            event.key === "Enter" ||
-            event.key === " "
-          ){
-
-            event.preventDefault();
-
-            location.href =
-              detailUrl;
-
-          }
-
-        }
-      );
-
-    }
-
-    shelf.appendChild(
-      card
-    );
-
-  }
-
-}
-
-/* =========================================
-   PROFILE
-   ========================================= */
-
-async function loadProfile(){
-
-  let display =
-    currentUser
-      ?.user_metadata
-      ?.display_name ||
-    "Reader";
-
-  let avatar =
-    "";
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .rpc(
-          "get_public_profile",
-          {
-            check_user_id:
-              currentUser.id
-          }
+      $("backLink").href =
+        withClub(
+          "club.html"
         );
 
-    if(error)
-      throw error;
 
-    const profile =
-      Array.isArray(data)
-        ? data[0]
-        : data;
+      $("overviewLink").href =
+        withClub(
+          "club.html"
+        );
 
-    if(profile){
 
-      display =
-        profile.display_name ||
-        display;
+      $("membersLink").href =
+        withClub(
+          "club-members.html"
+        );
 
-      avatar =
-        profile.avatar_url ||
-        "";
+
+      $("discussionsLink").href =
+        withClub(
+          "club-discussions.html"
+        );
+
+
+      $("voteLink").href =
+        withClub(
+          "club-vote.html"
+        );
+
+
+      $("booksLink").href =
+        withClub(
+          "club-books.html"
+        );
+
+
+      $("settingsLink").href =
+        withClub(
+          "club-settings.html"
+        );
+
 
     }
 
-  }
-  catch(error){
 
-    console.warn(
-      "Profile lookup:",
-      error.message
-    );
+    /* =====================================================
+       BOOK DETAIL URL
+       ===================================================== */
 
-  }
 
-  const holder =
-    $("navAvatar");
+    function bookDetailsUrl(
+      book
+    ) {
 
-  holder.innerHTML =
-    "";
 
-  if(avatar){
+      const bookId =
+        book?.book_id ||
+        book?.id ||
+        null;
 
-    const image =
-      document.createElement(
-        "img"
-      );
 
-    image.src =
-      avatar;
+      if (!bookId) {
 
-    image.alt =
-      display;
+        return "";
 
-    image.onerror =
-      () => {
+      }
 
-        holder.innerHTML =
-          "";
 
-        holder.textContent =
-          initials(display);
-
-      };
-
-    holder.appendChild(
-      image
-    );
-
-  }
-  else{
-
-    holder.textContent =
-      initials(display);
-
-  }
-
-}
-
-/* =========================================
-   CLUB
-   ========================================= */
-
-async function loadClub(){
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("clubs")
-      .select("*")
-      .eq(
-        "id",
-        clubId
-      )
-      .maybeSingle();
-
-  if(error)
-    throw error;
-
-  if(!data){
-
-    location.href =
-      "clubs.html";
-
-    return;
-
-  }
-
-  clubData =
-    data;
-
-  $("clubName").textContent =
-    data.name ||
-    "Book Club";
-
-  document.title =
-    "DogEar — " +
-    (
-      data.name ||
-      "Club"
-    ) +
-    " Bookshelf";
-
-}
-
-/* =========================================
-   LOAD BOOKS
-   ========================================= */
-
-async function loadBooks(){
-
-  /*
-    Preferred query:
-    club_books.book_id -> books.id
-
-    If Supabase cannot resolve the relationship,
-    the fallback below still loads club_books
-    without breaking the page.
-  */
-
-  let rows =
-    null;
-
-  let preferredError =
-    null;
-
-  const preferred =
-    await supabaseClient
-      .from("club_books")
-      .select(`
-        *,
-        books:book_id (
-          id,
-          isbn_13,
-          isbn_10,
-          google_books_id,
-          title,
-          subtitle,
-          authors,
-          publisher,
-          published_date,
-          description,
-          cover_url,
-          affiliate_url
-        )
-      `)
-      .eq(
-        "club_id",
-        clubId
-      )
-      .order(
-        "read_month",
-        {
-          ascending:false,
-          nullsFirst:false
-        }
-      );
-
-  if(preferred.error){
-
-    preferredError =
-      preferred.error;
-
-  }
-  else{
-
-    rows =
-      preferred.data || [];
-
-  }
-
-  if(rows === null){
-
-    console.warn(
-      "Joined club_books query unavailable; using compatibility query:",
-      preferredError?.message
-    );
-
-    const fallback =
-      await supabaseClient
-        .from("club_books")
-        .select("*")
-        .eq(
-          "club_id",
-          clubId
-        )
-        .order(
-          "created_at",
-          {
-            ascending:false
-          }
+      const returnUrl =
+        withClub(
+          "club-books.html"
         );
 
-    if(fallback.error)
-      throw fallback.error;
 
-    rows =
-      fallback.data || [];
+      return (
+        "book-detail.html?" +
+        new URLSearchParams({
 
-  }
+          id:String(
+            bookId
+          ),
 
-  books =
-    sortBooks(
-      rows.map(
-        normalizeClubBook
+          return:returnUrl
+
+        }).toString()
+      );
+
+
+    }
+
+
+    /* =====================================================
+       HELPERS
+       ===================================================== */
+
+
+    function escapeHtml(
+      value = ""
+    ) {
+
+
+      return String(
+        value ?? ""
       )
-    );
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
 
-  renderBooks(
-    books
-  );
 
-}
+    }
 
-/* =========================================
-   SEARCH
-   ========================================= */
 
-$("bookSearch")
-  .addEventListener(
-    "input",
-    event => {
+    function initials(
+      name = "Reader"
+    ) {
 
-      const query =
-        event.target
-          .value
+
+      const parts =
+        String(
+          name
+        )
+          .trim()
+          .split(
+            /\s+/
+          )
+          .filter(
+            Boolean
+          );
+
+
+      if (!parts.length) {
+
+        return "?";
+
+      }
+
+
+      if (
+        parts.length === 1
+      ) {
+
+        return parts[0]
+          .charAt(0)
+          .toUpperCase();
+
+      }
+
+
+      return (
+        parts[0]
+          .charAt(0) +
+        parts[
+          parts.length - 1
+        ]
+          .charAt(0)
+      )
+        .toUpperCase();
+
+
+    }
+
+
+    function authorText(
+      book
+    ) {
+
+
+      if (
+        Array.isArray(
+          book?.authors
+        )
+      ) {
+
+        return book.authors
+          .filter(Boolean)
+          .join(", ");
+
+      }
+
+
+      return (
+        book?.author ||
+        book?.book_author ||
+        book?.authors ||
+        "Unknown author"
+      );
+
+
+    }
+
+
+    function coverUrl(
+      book
+    ) {
+
+
+      return (
+        book?.cover_url ||
+        book?.thumbnail_url ||
+        book?.image_url ||
+        ""
+      );
+
+
+    }
+
+
+    function statusInfo(
+      book
+    ) {
+
+
+      const raw =
+        String(
+          book?.status ||
+          book?.read_status ||
+          book?.selection_status ||
+          ""
+        )
           .trim()
           .toLowerCase();
 
-      if(!query){
+
+      if (
+        raw === "current" ||
+        raw === "current_read" ||
+        raw === "reading" ||
+        raw === "selected"
+      ) {
+
+
+        return {
+
+          label:"Current Read",
+
+          className:"current"
+
+        };
+
+
+      }
+
+
+      if (
+        raw === "read" ||
+        raw === "finished" ||
+        raw === "complete" ||
+        raw === "completed" ||
+        raw === "past"
+      ) {
+
+
+        return {
+
+          label:"Read",
+
+          className:"read"
+
+        };
+
+
+      }
+
+
+      return {
+
+        label:
+          raw
+            ? raw.replace(
+                /_/g,
+                " "
+              )
+            : "Club Book",
+
+        className:""
+
+      };
+
+
+    }
+
+
+    function readMonthText(
+      book
+    ) {
+
+
+      return (
+        book?.read_month ||
+        book?.selected_month ||
+        book?.month_label ||
+        ""
+      );
+
+
+    }
+
+
+    function editionText(
+      book
+    ) {
+
+
+      const parts =
+        [];
+
+
+      const format =
+        book?.format ||
+        book?.binding ||
+        "";
+
+
+      if (format) {
+
+        parts.push(
+          format
+        );
+
+      }
+
+
+      const pages =
+        book?.page_count ||
+        book?.pages ||
+        "";
+
+
+      if (pages) {
+
+        parts.push(
+          String(
+            pages
+          ) +
+          " pages"
+        );
+
+      }
+
+
+      const isbn =
+        book?.isbn_13 ||
+        book?.isbn13 ||
+        book?.isbn ||
+        "";
+
+
+      if (isbn) {
+
+        parts.push(
+          "ISBN " +
+          isbn
+        );
+
+      }
+
+
+      return parts;
+
+
+    }
+        /* =====================================================
+       RENDER BOOKS
+       ===================================================== */
+
+
+    function renderBooks(
+      list
+    ) {
+
+
+      const shelf =
+        $("shelf");
+
+
+      shelf.innerHTML =
+        "";
+
+
+      const safeList =
+        Array.isArray(
+          list
+        )
+          ? list
+          : [];
+
+
+      $("shelfCount").textContent =
+        safeList.length === 1
+          ? "1 book"
+          : (
+              safeList.length +
+              " books"
+            );
+
+
+      if (
+        !safeList.length
+      ) {
+
+
+        shelf.innerHTML = `
+          <div class="empty">
+
+            <strong>
+              The shelf is still empty.
+            </strong>
+
+            Once the club finishes or selects books,
+            they'll appear here.
+
+          </div>
+        `;
+
+
+        return;
+
+
+      }
+
+
+      for (
+        const book
+        of safeList
+      ) {
+
+
+        const title =
+          book.title ||
+          book.book_title ||
+          "Untitled Book";
+
+
+        const author =
+          authorText(
+            book
+          );
+
+
+        const cover =
+          coverUrl(
+            book
+          );
+
+
+        const readMonth =
+          readMonthText(
+            book
+          );
+
+
+        const status =
+          statusInfo(
+            book
+          );
+
+
+        const editionParts =
+          editionText(
+            book
+          );
+
+
+        const detailUrl =
+          bookDetailsUrl(
+            book
+          );
+
+
+        const card =
+          document.createElement(
+            "article"
+          );
+
+
+        card.className =
+          "book-card";
+
+
+        if (
+          detailUrl
+        ) {
+
+
+          card.tabIndex =
+            0;
+
+
+          card.setAttribute(
+            "role",
+            "link"
+          );
+
+
+          card.setAttribute(
+            "aria-label",
+            "View " +
+            title +
+            " book details"
+          );
+
+
+        }
+
+
+        const coverMarkup =
+          cover
+            ? `
+                <img
+                  src="${escapeHtml(
+                    cover
+                  )}"
+                  alt="${escapeHtml(
+                    title
+                  )} cover"
+                  loading="lazy"
+                >
+              `
+            : `
+                <span>
+                  ${escapeHtml(
+                    title
+                  )}
+                </span>
+              `;
+
+
+        card.innerHTML = `
+
+          <div class="cover">
+
+            ${coverMarkup}
+
+          </div>
+
+
+          <div class="book-body">
+
+            <h3>
+
+              ${escapeHtml(
+                title
+              )}
+
+            </h3>
+
+
+            <div class="author">
+
+              ${escapeHtml(
+                author
+              )}
+
+            </div>
+
+
+            ${
+              readMonth
+                ? `
+                    <div class="meta">
+
+                      ${
+                        status.className ===
+                        "current"
+                          ? "Selected "
+                          : "Read "
+                      }
+
+                      ${escapeHtml(
+                        readMonth
+                      )}
+
+                    </div>
+                  `
+                : ""
+            }
+
+
+            ${
+              editionParts.length
+                ? `
+                    <div class="edition-meta">
+
+                      <div class="meta">
+
+                        ${escapeHtml(
+                          editionParts.join(
+                            " · "
+                          )
+                        )}
+
+                      </div>
+
+                    </div>
+                  `
+                : ""
+            }
+
+
+            <div class="badges">
+
+              <span
+                class="badge ${escapeHtml(
+                  status.className
+                )}"
+              >
+
+                ${escapeHtml(
+                  status.label
+                )}
+
+              </span>
+
+            </div>
+
+
+            ${
+              detailUrl
+                ? `
+                    <div class="view-hint">
+                      View book details →
+                    </div>
+                  `
+                : ""
+            }
+
+          </div>
+
+        `;
+
+
+        if (
+          detailUrl
+        ) {
+
+
+          card.addEventListener(
+            "click",
+            () => {
+
+
+              location.href =
+                detailUrl;
+
+
+            }
+          );
+
+
+          card.addEventListener(
+            "keydown",
+            event => {
+
+
+              if (
+                event.key === "Enter" ||
+                event.key === " "
+              ) {
+
+
+                event.preventDefault();
+
+
+                location.href =
+                  detailUrl;
+
+
+              }
+
+
+            }
+          );
+
+
+        }
+
+
+        shelf.appendChild(
+          card
+        );
+
+
+      }
+
+
+    }
+
+
+    /* =====================================================
+       PROFILE
+       ===================================================== */
+
+
+    async function loadProfile() {
+
+
+      let display =
+        currentUser
+          ?.user_metadata
+          ?.display_name ||
+        "Reader";
+
+
+      let avatar =
+        "";
+
+
+      try {
+
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .rpc(
+              "get_public_profile",
+              {
+                check_user_id:
+                  currentUser.id
+              }
+            );
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+
+        const profile =
+          Array.isArray(
+            data
+          )
+            ? data[0]
+            : data;
+
+
+        if (profile) {
+
+
+          display =
+            profile.display_name ||
+            display;
+
+
+          avatar =
+            profile.avatar_url ||
+            "";
+
+
+        }
+
+
+      }
+
+      catch (error) {
+
+
+        console.warn(
+          "Profile lookup:",
+          error.message
+        );
+
+
+      }
+
+
+      const holder =
+        $("navAvatar");
+
+
+      holder.innerHTML =
+        "";
+
+
+      if (avatar) {
+
+
+        const image =
+          document.createElement(
+            "img"
+          );
+
+
+        image.src =
+          avatar;
+
+
+        image.alt =
+          display;
+
+
+        image.onerror =
+          () => {
+
+
+            holder.innerHTML =
+              "";
+
+
+            holder.textContent =
+              initials(
+                display
+              );
+
+
+          };
+
+
+        holder.appendChild(
+          image
+        );
+
+
+      }
+
+      else {
+
+
+        holder.textContent =
+          initials(
+            display
+          );
+
+
+      }
+
+
+    }
+
+
+    /* =====================================================
+       CLUB
+       ===================================================== */
+
+
+    async function loadClub() {
+
+
+      try {
+
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from(
+              "clubs"
+            )
+            .select(
+              "id,name"
+            )
+            .eq(
+              "id",
+              clubId
+            )
+            .maybeSingle();
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+
+        if (!data) {
+
+
+          location.href =
+            "clubs.html";
+
+
+          return false;
+
+
+        }
+
+
+        club =
+          data;
+
+
+        $("clubName").textContent =
+          data.name ||
+          "Book Club";
+
+
+        document.title =
+          "DogEar — " +
+          (
+            data.name ||
+            "Club"
+          ) +
+          " Bookshelf";
+
+
+        return true;
+
+
+      }
+
+      catch (error) {
+
+
+        console.error(
+          "Club lookup:",
+          error
+        );
+
+
+        $("clubName").textContent =
+          "Book Club";
+
+
+        return false;
+
+
+      }
+
+
+    }
+
+
+    /* =====================================================
+       LOAD CLUB BOOK ROWS
+       ===================================================== */
+
+
+    async function loadBooks() {
+
+
+      try {
+
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from(
+              "club_books"
+            )
+            .select(
+              "*"
+            )
+            .eq(
+              "club_id",
+              clubId
+            )
+            .order(
+              "created_at",
+              {
+                ascending:false
+              }
+            );
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+
+        const clubBookRows =
+          Array.isArray(
+            data
+          )
+            ? data
+            : [];
+
+
+        /*
+          IMPORTANT:
+
+          club_books.id is the bookshelf-row ID.
+
+          book-detail.html expects books.id.
+
+          So before rendering, hydrate every bookshelf
+          row against the canonical books table using
+          club_books.book_id.
+        */
+
+
+        books =
+          await hydrateBookRows(
+            clubBookRows
+          );
+
 
         renderBooks(
           books
         );
 
-        return;
 
       }
 
-      const filtered =
-        books.filter(
-          book => {
+      catch (error) {
 
-            const haystack =
-              [
-                book.title,
-                book.author,
-                book.readMonth,
-                formatMonth(
-                  book.readMonth
-                ),
-                book.publisher,
-                book.publishedDate,
-                book.isbn13,
-                book.isbn10,
-                book.googleBooksId,
-                book.status,
-                book.statusLabel
-              ]
-                .filter(Boolean)
-                .join(" ")
-                .toLowerCase();
 
-            return haystack.includes(
-              query
-            );
-
-          }
+        console.error(
+          "Club books lookup:",
+          error
         );
 
-      renderBooks(
-        filtered
-      );
+
+        books =
+          [];
+
+
+        renderBooks(
+          []
+        );
+
+
+      }
+
 
     }
-  );
 
-/* =========================================
-   START
-   ========================================= */
 
-async function start(){
+    /* =====================================================
+       HYDRATE AGAINST BOOKS TABLE
+       ===================================================== */
 
-  if(!clubId){
 
-    location.href =
-      "clubs.html";
+    async function hydrateBookRows(
+      clubBookRows
+    ) {
 
-    return;
 
-  }
+      if (
+        !clubBookRows.length
+      ) {
 
-  wireLinks();
+        return [];
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
+      }
+
+
+      const canonicalIds =
+        [
+          ...new Set(
+
+            clubBookRows
+              .map(
+                row =>
+                  row.book_id
+              )
+              .filter(
+                value =>
+                  value !== null &&
+                  value !== undefined &&
+                  value !== ""
+              )
+              .map(
+                value =>
+                  String(
+                    value
+                  )
+              )
+
+          )
+        ];
+
+
+      /*
+        If an older bookshelf row doesn't have book_id,
+        keep the row usable instead of breaking the shelf.
+      */
+
+
+      if (
+        !canonicalIds.length
+      ) {
+
+
+        return clubBookRows.map(
+          row => ({
+
+            ...row,
+
+            shelf_row_id:
+              row.id,
+
+            canonical_book_id:
+              null
+
+          })
+        );
+
+
+      }
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from(
+            "books"
+          )
+          .select(
+            "*"
+          )
+          .in(
+            "id",
+            canonicalIds
+          );
+
+
+      if (error) {
+
+
+        console.warn(
+          "Canonical book hydration:",
+          error.message
+        );
+
+
+        return clubBookRows.map(
+          row => ({
+
+            ...row,
+
+            shelf_row_id:
+              row.id,
+
+            canonical_book_id:
+              row.book_id ||
+              null,
+
+            id:
+              row.book_id ||
+              row.id
+
+          })
+        );
+
+
+      }
+
+
+      const canonicalBooks =
+        Array.isArray(
+          data
+        )
+          ? data
+          : [];
+
+
+      const byId =
+        new Map();
+
+
+      for (
+        const book
+        of canonicalBooks
+      ) {
+
+
+        byId.set(
+          String(
+            book.id
+          ),
+          book
+        );
+
+
+      }
+
+
+      return clubBookRows.map(
+        shelfRow => {
+
+
+          const canonical =
+            shelfRow.book_id
+              ? byId.get(
+                  String(
+                    shelfRow.book_id
+                  )
+                )
+              : null;
+
+
+          /*
+            Shelf-specific values stay available,
+            but canonical book metadata takes priority
+            for title, cover, author, ISBN, etc.
+
+            The final id is explicitly the books.id.
+          */
+
+
+          if (canonical) {
+
+
+            return {
+
+              ...shelfRow,
+
+              ...canonical,
+
+              shelf_row_id:
+                shelfRow.id,
+
+              canonical_book_id:
+                canonical.id,
+
+              id:
+                canonical.id,
+
+              book_id:
+                canonical.id,
+
+              read_month:
+                shelfRow.read_month ??
+                shelfRow.selected_month ??
+                shelfRow.month_label ??
+                canonical.read_month ??
+                "",
+
+              selected_month:
+                shelfRow.selected_month ??
+                "",
+
+              month_label:
+                shelfRow.month_label ??
+                "",
+
+              status:
+                shelfRow.status ??
+                shelfRow.read_status ??
+                shelfRow.selection_status ??
+                canonical.status ??
+                "",
+
+              read_status:
+                shelfRow.read_status ??
+                "",
+
+              selection_status:
+                shelfRow.selection_status ??
+                ""
+
+            };
+
+
+          }
+
+
+          /*
+            If the referenced book has disappeared from
+            books, keep the historical shelf card visible,
+            but still use book_id as the detail target.
+          */
+
+
+          return {
+
+            ...shelfRow,
+
+            shelf_row_id:
+              shelfRow.id,
+
+            canonical_book_id:
+              shelfRow.book_id ||
+              null,
+
+            id:
+              shelfRow.book_id ||
+              shelfRow.id
+
+          };
+
+
+        }
+      );
+
+
+    }
+
+
+    /* =====================================================
+       SEARCH
+       ===================================================== */
+
+
+    $("bookSearch")
+      .addEventListener(
+        "input",
+        event => {
+
+
+          const query =
+            event.target
+              .value
+              .trim()
+              .toLowerCase();
+
+
+          if (!query) {
+
+
+            renderBooks(
+              books
+            );
+
+
+            return;
+
+
+          }
+
+
+          const filtered =
+            books.filter(
+              book => {
+
+
+                const haystack =
+                  [
+
+                    book.title,
+
+                    book.book_title,
+
+                    authorText(
+                      book
+                    ),
+
+                    book.read_month,
+
+                    book.selected_month,
+
+                    book.month_label,
+
+                    book.publisher,
+
+                    book.published_date,
+
+                    book.publication_date,
+
+                    book.isbn,
+
+                    book.isbn10,
+
+                    book.isbn_10,
+
+                    book.isbn13,
+
+                    book.isbn_13,
+
+                    book.format,
+
+                    book.binding,
+
+                    book.status,
+
+                    book.read_status,
+
+                    book.selection_status
+
+                  ]
+                    .filter(
+                      Boolean
+                    )
+                    .join(
+                      " "
+                    )
+                    .toLowerCase();
+
+
+                return haystack.includes(
+                  query
+                );
+
+
+              }
+            );
+
+
+          renderBooks(
+            filtered
+          );
+
+
+        }
+      );
+
+
+    /* =====================================================
+       AUTH
+       ===================================================== */
+
+
+    async function requireSession() {
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .auth
+          .getSession();
+
+
+      if (error) {
+
+        throw error;
+
+      }
+
+
+      const session =
+        data?.session ||
+        null;
+
+
+      if (
+        !session?.user
+      ) {
+
+
+        const next =
+          location.pathname
+            .split("/")
+            .pop() +
+          location.search;
+
+
+        location.href =
+          "index.html?next=" +
+          encodeURIComponent(
+            next
+          );
+
+
+        return false;
+
+
+      }
+
+
+      currentUser =
+        session.user;
+
+
+      return true;
+
+
+    }
+
+
+    /* =====================================================
+       AUTH CHANGES
+       ===================================================== */
+
+
+    supabaseClient
       .auth
-      .getUser();
+      .onAuthStateChange(
+        (
+          event,
+          session
+        ) => {
 
-  if(
-    error ||
-    !data.user
-  ){
 
-    location.href =
-      "auth.html#login";
+          if (
+            event ===
+            "SIGNED_OUT"
+          ) {
 
-    return;
 
-  }
+            location.href =
+              "index.html";
 
-  currentUser =
-    data.user;
 
-  try{
+            return;
 
-    await Promise.all([
-      loadProfile(),
-      loadClub()
-    ]);
 
-    await loadBooks();
+          }
 
-  }
-  catch(error){
 
-    console.error(
-      "Club bookshelf:",
-      error
-    );
+          if (
+            session?.user
+          ) {
 
-    books =
-      [];
 
-    $("shelf").innerHTML = `
-      <div class="empty">
+            currentUser =
+              session.user;
 
-        <strong>
-          DogEar couldn't open this bookshelf.
-        </strong>
 
-        ${escapeHtml(
-          error.message ||
-          "Unknown error"
-        )}
+          }
 
-      </div>
-    `;
 
-    $("shelfSummary").textContent =
-      "";
+        }
+      );
 
-  }
 
-  $("loading")
-    .classList
-    .add("hidden");
+    /* =====================================================
+       START
+       ===================================================== */
 
-}
 
-start();
-</script>
+    async function startPage() {
+
+
+      try {
+
+
+        if (!clubId) {
+
+
+          location.href =
+            "clubs.html";
+
+
+          return;
+
+
+        }
+
+
+        wireLinks();
+
+
+        const authenticated =
+          await requireSession();
+
+
+        if (!authenticated) {
+
+          return;
+
+        }
+
+
+        await Promise.all([
+
+          loadProfile(),
+
+          loadClub()
+
+        ]);
+
+
+        await loadBooks();
+
+
+      }
+
+      catch (error) {
+
+
+        console.error(
+          "Bookshelf startup:",
+          error
+        );
+
+
+        books =
+          [];
+
+
+        renderBooks(
+          []
+        );
+
+
+      }
+
+      finally {
+
+
+        $("loading")
+          .classList
+          .add(
+            "hidden"
+          );
+
+
+      }
+
+
+    }
+
+
+    startPage();
+
+
+  </script>
+
 
 </body>
+
 </html>
