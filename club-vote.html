@@ -17,53 +17,35 @@
   <style>
 
     :root {
-
       --ink:#090b0a;
       --ink2:#0d100e;
       --panel:#101410;
       --panel2:#151a15;
-
       --cream:#f1e7cf;
       --cream2:#d9cfb8;
-
       --gold:#c79b59;
       --gold2:#dfbd7e;
-
       --green:#26362b;
       --green2:#34483a;
-
       --muted:#aaa18f;
-
       --line:rgba(199,155,89,.22);
       --line-soft:rgba(199,155,89,.11);
-
       --success:#b9d6b2;
       --danger:#e6a09a;
       --warning:#e3c68d;
-
     }
-
 
     * {
-
       box-sizing:border-box;
-
     }
-
 
     html {
-
       scroll-behavior:smooth;
-
     }
 
-
     body {
-
       margin:0;
-
       min-height:100vh;
-
       color:var(--cream);
 
       background:
@@ -83,29 +65,19 @@
         Georgia,
         "Times New Roman",
         serif;
-
     }
-
 
     button,
     input {
-
       font:inherit;
-
     }
-
 
     button {
-
       color:inherit;
-
     }
 
-
     a {
-
       color:inherit;
-
     }
 
 
@@ -113,54 +85,33 @@
        LOADING
        ===================================================== */
 
-
     .loading {
-
       position:fixed;
-
       inset:0;
-
       z-index:500;
-
       display:grid;
-
       place-items:center;
-
       background:var(--ink);
 
       transition:
         opacity .2s ease,
         visibility .2s ease;
-
     }
-
 
     .loading.hidden {
-
       opacity:0;
-
       visibility:hidden;
-
       pointer-events:none;
-
     }
-
 
     .loading-inner {
-
       text-align:center;
-
     }
 
-
     .loading-mark {
-
       width:48px;
-
       height:48px;
-
-      margin:
-        0 auto 18px;
+      margin:0 auto 18px;
 
       border:
         1px solid
@@ -174,12 +125,9 @@
         1.5s
         ease-in-out
         infinite;
-
     }
 
-
     .loading span {
-
       color:var(--gold2);
 
       font:
@@ -188,29 +136,22 @@
         sans-serif;
 
       letter-spacing:.16em;
-
       text-transform:uppercase;
-
     }
-
 
     @keyframes float {
 
       0%,
       100% {
-
         transform:
           translateY(0)
           rotate(-8deg);
-
       }
 
       50% {
-
         transform:
           translateY(-6px)
           rotate(-8deg);
-
       }
 
     }
@@ -220,9 +161,7 @@
        TOP BAR
        ===================================================== */
 
-
     .topbar {
-
       min-height:76px;
 
       padding:
@@ -234,17 +173,12 @@
         );
 
       display:flex;
-
       align-items:center;
-
       justify-content:space-between;
-
       gap:24px;
 
       position:sticky;
-
       top:0;
-
       z-index:100;
 
       border-bottom:
@@ -261,20 +195,14 @@
 
       backdrop-filter:
         blur(14px);
-
     }
 
-
     .brand {
-
       display:flex;
-
       align-items:center;
-
       gap:11px;
 
       color:var(--gold2);
-
       text-decoration:none;
 
       font:
@@ -283,18 +211,12 @@
         sans-serif;
 
       letter-spacing:.17em;
-
       text-transform:uppercase;
-
     }
 
-
     .brand-mark {
-
       width:34px;
-
       height:34px;
-
       position:relative;
 
       border:
@@ -306,37 +228,25 @@
 
       transform:
         rotate(-8deg);
-
     }
 
-
     .brand-mark::after {
-
       content:"";
-
       position:absolute;
 
       width:8px;
-
       height:8px;
 
       right:7px;
-
       top:7px;
 
       border-radius:50%;
-
       background:var(--gold);
-
     }
 
-
     .nav {
-
       display:flex;
-
       align-items:center;
-
       gap:24px;
 
       font:
@@ -345,37 +255,24 @@
         sans-serif;
 
       letter-spacing:.1em;
-
       text-transform:uppercase;
-
     }
-
 
     .nav a {
-
       color:var(--muted);
-
       text-decoration:none;
-
     }
-
 
     .nav a:hover,
     .nav a.active {
-
       color:var(--gold2);
-
     }
 
-
     .avatar {
-
       width:38px;
-
       height:38px;
 
       display:grid;
-
       place-items:center;
 
       overflow:hidden;
@@ -387,25 +284,18 @@
       border-radius:50%;
 
       background:var(--green);
-
       text-decoration:none;
 
       font:
         800 12px
         Arial,
         sans-serif;
-
     }
 
-
     .avatar img {
-
       width:100%;
-
       height:100%;
-
       object-fit:cover;
-
     }
 
 
@@ -413,9 +303,7 @@
        PAGE
        ===================================================== */
 
-
     .page {
-
       width:
         min(
           1240px,
@@ -428,18 +316,13 @@
 
       padding:
         36px 0 110px;
-
     }
 
-
     .back {
-
       display:inline-block;
-
       margin-bottom:20px;
 
       color:var(--muted);
-
       text-decoration:none;
 
       font:
@@ -448,16 +331,11 @@
         sans-serif;
 
       letter-spacing:.09em;
-
       text-transform:uppercase;
-
     }
 
-
     .back:hover {
-
       color:var(--gold2);
-
     }
 
 
@@ -465,9 +343,7 @@
        CLUB HEADER
        ===================================================== */
 
-
     .club-head {
-
       padding:
         clamp(
           24px,
@@ -487,12 +363,9 @@
           rgba(38,54,43,.72),
           rgba(16,20,16,.9)
         );
-
     }
 
-
     .eyebrow {
-
       margin-bottom:8px;
 
       color:var(--gold);
@@ -503,14 +376,10 @@
         sans-serif;
 
       letter-spacing:.16em;
-
       text-transform:uppercase;
-
     }
 
-
     .club-head h1 {
-
       margin:0;
 
       font-size:
@@ -521,18 +390,12 @@
         );
 
       line-height:.96;
-
       font-weight:400;
-
       letter-spacing:-.035em;
-
     }
 
-
     .club-sub {
-
       max-width:720px;
-
       margin-top:13px;
 
       color:var(--cream2);
@@ -541,7 +404,6 @@
         11px/1.7
         Arial,
         sans-serif;
-
     }
 
 
@@ -549,40 +411,28 @@
        CLUB NAV
        ===================================================== */
 
-
     .club-nav {
-
       margin-top:18px;
 
       display:flex;
-
       gap:7px;
 
       overflow-x:auto;
-
       scrollbar-width:none;
-
     }
-
 
     .club-nav::-webkit-scrollbar {
-
       display:none;
-
     }
 
-
     .club-nav a {
-
       flex:0 0 auto;
-
       min-height:37px;
 
       padding:
         0 14px;
 
       display:flex;
-
       align-items:center;
 
       border:
@@ -592,7 +442,6 @@
       border-radius:999px;
 
       color:var(--muted);
-
       text-decoration:none;
 
       font:
@@ -601,19 +450,13 @@
         sans-serif;
 
       letter-spacing:.07em;
-
       text-transform:uppercase;
-
     }
-
 
     .club-nav a:hover,
     .club-nav a.active {
-
       border-color:var(--gold);
-
       color:var(--gold2);
-
     }
 
 
@@ -621,9 +464,7 @@
        VOTE LAYOUT
        ===================================================== */
 
-
     .vote-layout {
-
       margin-top:24px;
 
       display:grid;
@@ -633,14 +474,10 @@
         310px;
 
       gap:20px;
-
       align-items:start;
-
     }
 
-
     .card {
-
       min-width:0;
 
       border:
@@ -653,35 +490,24 @@
         rgba(16,20,16,.88);
 
       overflow:hidden;
-
     }
 
-
     .card-head {
-
       padding:
         23px 25px 19px;
 
       border-bottom:
         1px solid
         var(--line-soft);
-
     }
-
 
     .card-head h2 {
-
       margin:0;
-
       font-size:27px;
-
       font-weight:400;
-
     }
 
-
     .card-head p {
-
       margin:
         7px 0 0;
 
@@ -691,7 +517,6 @@
         10px/1.6
         Arial,
         sans-serif;
-
     }
 
 
@@ -699,9 +524,7 @@
        BALLOT
        ===================================================== */
 
-
     .ballot {
-
       padding:22px;
 
       display:grid;
@@ -713,16 +536,12 @@
         );
 
       gap:16px;
-
     }
 
-
     .book-option {
-
       min-width:0;
 
       display:flex;
-
       flex-direction:column;
 
       padding:14px;
@@ -739,49 +558,48 @@
       transition:
         border-color .16s ease,
         transform .16s ease;
-
     }
-
 
     .book-option:hover {
-
       border-color:
         rgba(199,155,89,.42);
-
     }
 
-
     .book-option.selected {
-
       border-color:var(--gold);
 
       box-shadow:
         inset 0 0 0 1px
         rgba(199,155,89,.18);
-
     }
 
+    .choice-number {
+      margin-bottom:10px;
+
+      color:var(--gold);
+
+      font:
+        800 8px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.09em;
+      text-transform:uppercase;
+    }
 
     .book-link {
-
       color:inherit;
-
       text-decoration:none;
-
     }
 
-
     .cover {
-
       width:100%;
 
       aspect-ratio:
         2 / 3;
 
       display:flex;
-
       align-items:center;
-
       justify-content:center;
 
       overflow:hidden;
@@ -800,7 +618,6 @@
         );
 
       color:var(--muted);
-
       text-align:center;
 
       font:
@@ -811,66 +628,41 @@
       transition:
         transform .18s ease,
         border-color .18s ease;
-
     }
 
-
-    .book-link:hover
-    .cover {
-
+    .book-link:hover .cover {
       transform:
         translateY(-2px);
 
       border-color:var(--gold);
-
     }
-
 
     .cover img {
-
       width:100%;
-
       height:100%;
-
       display:block;
-
       object-fit:cover;
-
     }
 
-
     .book-option h3 {
-
       margin:
         14px 0 6px;
 
       font-size:19px;
-
       line-height:1.08;
-
       font-weight:400;
-
     }
-
 
     .book-option h3 a {
-
       color:var(--cream);
-
       text-decoration:none;
-
     }
-
 
     .book-option h3 a:hover {
-
       color:var(--gold2);
-
     }
 
-
     .author {
-
       min-height:31px;
 
       color:var(--muted);
@@ -879,14 +671,10 @@
         9px/1.5
         Arial,
         sans-serif;
-
     }
 
-
     .edition {
-
-      min-height:34px;
-
+      min-height:48px;
       margin-top:8px;
 
       color:var(--cream2);
@@ -895,12 +683,9 @@
         8px/1.5
         Arial,
         sans-serif;
-
     }
 
-
     .vote-total {
-
       margin-top:12px;
 
       color:var(--gold2);
@@ -911,54 +696,37 @@
         sans-serif;
 
       letter-spacing:.04em;
-
       text-transform:uppercase;
-
     }
 
-
     .vote-bar {
-
       width:100%;
-
       height:5px;
-
       margin-top:8px;
 
       overflow:hidden;
-
       border-radius:999px;
 
       background:
         rgba(255,255,255,.06);
-
     }
 
-
     .vote-bar-fill {
-
       height:100%;
-
       width:0;
 
       border-radius:999px;
-
       background:var(--gold);
 
       transition:
         width .25s ease;
-
     }
 
-
     .vote-button {
-
       width:100%;
-
       min-height:39px;
 
-      margin-top:14px;
-
+      margin-top:auto;
       padding:
         0 12px;
 
@@ -969,7 +737,6 @@
       border-radius:999px;
 
       background:transparent;
-
       color:var(--gold2);
 
       cursor:pointer;
@@ -980,27 +747,17 @@
         sans-serif;
 
       letter-spacing:.07em;
-
       text-transform:uppercase;
-
     }
-
 
     .vote-button:hover:not(:disabled) {
-
       background:var(--gold);
-
       color:#11130f;
-
     }
 
-
     .vote-button:disabled {
-
       opacity:.46;
-
       cursor:not-allowed;
-
     }
 
 
@@ -1008,9 +765,7 @@
        EMPTY / MESSAGE
        ===================================================== */
 
-
     .empty {
-
       margin:
         0 22px 22px;
 
@@ -1023,32 +778,23 @@
       border-radius:13px;
 
       color:var(--muted);
-
       text-align:center;
 
       font:
         10px/1.6
         Arial,
         sans-serif;
-
     }
 
-
     .empty strong {
-
       display:block;
-
       margin-bottom:5px;
 
       color:var(--cream2);
-
       font-size:12px;
-
     }
 
-
     .message {
-
       display:none;
 
       margin:
@@ -1069,34 +815,24 @@
         10px/1.5
         Arial,
         sans-serif;
-
     }
-
 
     .message.show {
-
       display:block;
-
     }
 
-
     .message.success {
-
       border-color:
         rgba(185,214,178,.35);
 
       color:var(--success);
-
     }
 
-
     .message.error {
-
       border-color:
         rgba(230,160,154,.35);
 
       color:var(--danger);
-
     }
 
 
@@ -1104,40 +840,27 @@
        SIDE
        ===================================================== */
 
-
     .side-body {
-
       padding:22px;
 
       display:grid;
-
       gap:20px;
-
     }
 
-
     .side-section {
-
       padding-bottom:19px;
 
       border-bottom:
         1px solid
         var(--line-soft);
-
     }
-
 
     .side-section:last-child {
-
       padding-bottom:0;
-
       border-bottom:0;
-
     }
 
-
     .side-section h3 {
-
       margin:
         0 0 7px;
 
@@ -1149,14 +872,10 @@
         sans-serif;
 
       letter-spacing:.08em;
-
       text-transform:uppercase;
-
     }
 
-
     .side-section p {
-
       margin:0;
 
       color:var(--muted);
@@ -1165,12 +884,9 @@
         10px/1.65
         Arial,
         sans-serif;
-
     }
 
-
     .status {
-
       display:inline-flex;
 
       margin-top:12px;
@@ -1196,27 +912,25 @@
         sans-serif;
 
       letter-spacing:.07em;
-
       text-transform:uppercase;
-
     }
 
+    .status.open {
+      border-color:
+        rgba(185,214,178,.35);
+
+      color:var(--success);
+    }
 
     .status.closed {
-
       color:var(--muted);
-
     }
 
-
     .side-link {
-
       display:inline-flex;
-
       margin-top:12px;
 
       color:var(--gold2);
-
       text-decoration:none;
 
       font:
@@ -1225,16 +939,11 @@
         sans-serif;
 
       letter-spacing:.06em;
-
       text-transform:uppercase;
-
     }
 
-
     .side-link:hover {
-
       text-decoration:underline;
-
     }
 
 
@@ -1242,62 +951,41 @@
        RESPONSIVE
        ===================================================== */
 
-
-    @media(
-      max-width:1000px
-    ) {
+    @media(max-width:1000px) {
 
       .vote-layout {
-
         grid-template-columns:1fr;
-
       }
 
     }
 
-
-    @media(
-      max-width:760px
-    ) {
+    @media(max-width:760px) {
 
       .nav {
-
         display:none;
-
       }
 
-
       .ballot {
-
         grid-template-columns:
           repeat(
             2,
             minmax(0,1fr)
           );
-
       }
 
     }
 
-
-    @media(
-      max-width:520px
-    ) {
+    @media(max-width:520px) {
 
       .page {
-
         width:
           calc(
             100% - 22px
           );
-
       }
 
-
       .ballot {
-
         grid-template-columns:1fr;
-
       }
 
     }
@@ -1306,14 +994,12 @@
 
 </head>
 
-
 <body>
 
 
   <!-- =====================================================
        LOADING
        ===================================================== -->
-
 
   <div
     class="loading"
@@ -1336,7 +1022,6 @@
   <!-- =====================================================
        TOP NAVIGATION
        ===================================================== -->
-
 
   <header class="topbar">
 
@@ -1391,7 +1076,6 @@
        PAGE
        ===================================================== -->
 
-
   <main class="page">
 
 
@@ -1407,7 +1091,6 @@
     <!-- =================================================
          CLUB HEADER
          ================================================= -->
-
 
     <section class="club-head">
 
@@ -1432,7 +1115,6 @@
     <!-- =================================================
          CLUB NAVIGATION
          ================================================= -->
-
 
     <nav
       class="club-nav"
@@ -1489,12 +1171,10 @@
          VOTING AREA
          ================================================= -->
 
-
     <div class="vote-layout">
 
 
       <section class="card">
-
 
         <div class="card-head">
 
@@ -1502,7 +1182,7 @@
             This Month's Choices
           </h2>
 
-          <p>
+          <p id="ballotDescription">
             Each ballot contains three exact editions.
             One vote per member. Click any book cover or
             title to open its full DogEar book page.
@@ -1523,12 +1203,14 @@
           hidden
         >
 
-          <strong>
+          <strong id="emptyTitle">
             No ballot is open yet.
           </strong>
 
-          The club president or administrator can add
-          this month's three choices.
+          <span id="emptyText">
+            The club president or administrator can prepare
+            this month's three choices.
+          </span>
 
         </div>
 
@@ -1538,7 +1220,6 @@
           id="message"
         ></div>
 
-
       </section>
 
 
@@ -1546,9 +1227,7 @@
            VOTING SIDEBAR
            =============================================== -->
 
-
       <aside class="card">
-
 
         <div class="card-head">
 
@@ -1592,11 +1271,9 @@
               How it works
             </h3>
 
-            <p>
+            <p id="voteRulesText">
               Members can cast one vote while the ballot
-              is open. If this club allows vote changes,
-              choosing another title replaces the
-              previous vote.
+              is open.
             </p>
 
           </div>
@@ -1622,10 +1299,9 @@
             </h3>
 
             <p>
-              Every ballot title links directly to its
-              full DogEar book page, including ratings,
-              reviews, edition details, and purchase
-              options when available.
+              Every ballot title links to its full DogEar
+              book page when the edition exists in the
+              DogEar catalog.
             </p>
 
             <a
@@ -1640,12 +1316,10 @@
 
         </div>
 
-
       </aside>
 
 
     </div>
-
 
   </main>
 
@@ -1656,7 +1330,6 @@
     /* =====================================================
        CONFIG
        ===================================================== */
-
 
     const SUPABASE_URL =
       "https://nrtutxjznkfvvbmaagum.supabase.co";
@@ -1676,7 +1349,6 @@
     /* =====================================================
        STATE
        ===================================================== */
-
 
     const params =
       new URLSearchParams(
@@ -1706,11 +1378,15 @@
       null;
 
 
-    let activeRound =
+    let ballot =
       null;
 
 
-    let voteOptions =
+    let ballotOptions =
+      [];
+
+
+    let ballotVotes =
       [];
 
 
@@ -1722,10 +1398,13 @@
       0;
 
 
+    let voteBusy =
+      false;
+
+
     /* =====================================================
        DOM
        ===================================================== */
-
 
     const $ =
       id =>
@@ -1738,11 +1417,9 @@
        LINKS
        ===================================================== */
 
-
     function withClub(
       filename
     ) {
-
 
       return clubId
         ? (
@@ -1754,12 +1431,10 @@
           )
         : filename;
 
-
     }
 
 
     function wireLinks() {
-
 
       $("backLink").href =
         withClub(
@@ -1802,13 +1477,16 @@
           "club-settings.html"
         );
 
-
     }
 
 
     function bookDetailsUrl(
-      bookId
+      option
     ) {
+
+      const bookId =
+        option?.book_id ||
+        null;
 
 
       if (!bookId) {
@@ -1837,19 +1515,16 @@
         }).toString()
       );
 
-
     }
 
 
     /* =====================================================
-       HELPERS
+       GENERAL HELPERS
        ===================================================== */
-
 
     function escapeHtml(
       value = ""
     ) {
-
 
       return String(
         value ?? ""
@@ -1875,14 +1550,12 @@
           "&#039;"
         );
 
-
     }
 
 
     function initials(
       name = "Reader"
     ) {
-
 
       const parts =
         String(
@@ -1925,131 +1598,19 @@
       )
         .toUpperCase();
 
-
     }
 
 
-    function authorText(
-      book
+    function normalizeStatus(
+      value
     ) {
 
-
-      if (!book) {
-
-        return "";
-
-      }
-
-
-      if (
-        Array.isArray(
-          book.authors
-        )
-      ) {
-
-        return book.authors
-          .filter(
-            Boolean
-          )
-          .join(
-            ", "
-          );
-
-      }
-
-
-      if (
-        typeof book.authors ===
-        "string"
-      ) {
-
-        return book.authors;
-
-      }
-
-
-      return (
-        book.author ||
+      return String(
+        value ||
         ""
-      );
-
-
-    }
-
-
-    function coverUrl(
-      book
-    ) {
-
-
-      return (
-        book?.cover_url ||
-        book?.thumbnail_url ||
-        book?.image_url ||
-        ""
-      );
-
-
-    }
-
-
-    function editionText(
-      book
-    ) {
-
-
-      const parts =
-        [];
-
-
-      if (
-        book?.format ||
-        book?.binding
-      ) {
-
-        parts.push(
-          book.format ||
-          book.binding
-        );
-
-      }
-
-
-      if (
-        book?.page_count ||
-        book?.pages
-      ) {
-
-        parts.push(
-          String(
-            book.page_count ||
-            book.pages
-          ) +
-          " pages"
-        );
-
-      }
-
-
-      if (
-        book?.published_date ||
-        book?.publication_date
-      ) {
-
-        parts.push(
-          String(
-            book.published_date ||
-            book.publication_date
-          )
-        );
-
-      }
-
-
-      return parts.join(
-        " · "
-      );
-
+      )
+        .trim()
+        .toLowerCase();
 
     }
 
@@ -2058,10 +1619,10 @@
       role
     ) {
 
-
       const value =
         String(
-          role || ""
+          role ||
+          ""
         )
           .trim()
           .toLowerCase();
@@ -2079,11 +1640,11 @@
 
 
       if (
-        value === "admin" ||
-        value === "administrator"
+        value === "administrator" ||
+        value === "admin"
       ) {
 
-        return "admin";
+        return "administrator";
 
       }
 
@@ -2099,108 +1660,176 @@
 
       return value;
 
+    }
+
+
+    function membershipRole() {
+
+      return normalizeRole(
+        membership?.club_role ??
+        membership?.role ??
+        ""
+      );
+
+    }
+
+
+    function membershipStatus() {
+
+      return normalizeStatus(
+        membership?.membership_status ??
+        membership?.status ??
+        ""
+      );
 
     }
 
 
     function isVotingMember() {
 
+      if (
+        membershipStatus() !== "active"
+      ) {
+
+        return false;
+
+      }
+
 
       const role =
-        normalizeRole(
-          membership?.role
-        );
+        membershipRole();
 
 
       return (
         role === "president" ||
-        role === "admin" ||
+        role === "administrator" ||
         role === "member"
       );
-
 
     }
 
 
-    function roundIsOpen() {
-
-
-      if (!activeRound) {
-
-        return false;
-
-      }
-
-
-      const status =
-        String(
-          activeRound.status ||
-          ""
-        )
-          .trim()
-          .toLowerCase();
-
-
-      if (
-        status === "closed" ||
-        status === "complete" ||
-        status === "completed" ||
-        status === "finalized"
-      ) {
-
-        return false;
-
-      }
-
-
-      if (
-        activeRound.closes_at
-      ) {
-
-
-        const closes =
-          new Date(
-            activeRound.closes_at
-          )
-            .getTime();
-
-
-        if (
-          Number.isFinite(
-            closes
-          ) &&
-          closes <= Date.now()
-        ) {
-
-          return false;
-
-        }
-
-
-      }
-
+    function ballotIsOpen() {
 
       return (
-        status === "open" ||
-        status === "active" ||
-        status === "voting" ||
-        status === ""
+        ballot &&
+        normalizeStatus(
+          ballot.status
+        ) === "open"
       );
 
+    }
+
+
+    function ballotIsFinalized() {
+
+      return (
+        ballot &&
+        normalizeStatus(
+          ballot.status
+        ) === "finalized"
+      );
 
     }
 
 
     function voteChangesAllowed() {
 
-
       return (
-        activeRound
-          ?.allow_vote_changes === true ||
-        activeRound
-          ?.allow_changes === true
+        club?.allow_vote_changes !== false
       );
 
+    }
+
+
+    function authorText(
+      option
+    ) {
+
+      if (
+        Array.isArray(
+          option?.authors
+        )
+      ) {
+
+        return option.authors
+          .filter(
+            Boolean
+          )
+          .join(
+            ", "
+          );
+
+      }
+
+
+      if (
+        typeof option?.authors ===
+        "string"
+      ) {
+
+        return option.authors;
+
+      }
+
+
+      return (
+        option?.author ||
+        "Author unavailable"
+      );
+
+    }
+
+
+    function editionText(
+      option
+    ) {
+
+      const parts =
+        [];
+
+
+      const isbn =
+        option?.isbn_13 ||
+        option?.isbn_10 ||
+        "";
+
+
+      if (isbn) {
+
+        parts.push(
+          "ISBN " +
+          isbn
+        );
+
+      }
+
+
+      if (
+        option?.publisher
+      ) {
+
+        parts.push(
+          option.publisher
+        );
+
+      }
+
+
+      if (
+        option?.published_date
+      ) {
+
+        parts.push(
+          option.published_date
+        );
+
+      }
+
+
+      return parts.join(
+        " · "
+      );
 
     }
 
@@ -2209,12 +1838,10 @@
        MESSAGE
        ===================================================== */
 
-
     function showMessage(
       text,
       type = ""
     ) {
-
 
       const message =
         $("message");
@@ -2232,12 +1859,10 @@
             : ""
         );
 
-
     }
 
 
     function clearMessage() {
-
 
       $("message").textContent =
         "";
@@ -2246,7 +1871,6 @@
       $("message").className =
         "message";
 
-
     }
 
 
@@ -2254,19 +1878,14 @@
        START
        ===================================================== */
 
-
     async function startPage() {
 
-
       if (!clubId) {
-
 
         window.location.href =
           "clubs.html";
 
-
         return;
-
 
       }
 
@@ -2275,7 +1894,6 @@
 
 
       try {
-
 
         const {
           data,
@@ -2291,13 +1909,10 @@
           !data?.user
         ) {
 
-
           window.location.href =
             "auth.html#login";
 
-
           return;
-
 
         }
 
@@ -2306,24 +1921,18 @@
           data.user;
 
 
-        await Promise.allSettled([
-
+        await Promise.all([
           loadProfile(),
-
           loadClub(),
-
           loadMembership()
-
         ]);
 
 
         await loadBallot();
 
-
       }
 
       catch (error) {
-
 
         console.error(
           "Monthly vote startup:",
@@ -2336,11 +1945,9 @@
           "error"
         );
 
-
       }
 
       finally {
-
 
         $("loading")
           .classList
@@ -2348,9 +1955,7 @@
             "hidden"
           );
 
-
       }
-
 
     }
 
@@ -2359,29 +1964,22 @@
        PROFILE
        ===================================================== */
 
-
     async function loadProfile() {
 
-
       try {
-
 
         const {
           data,
           error
         } =
           await supabaseClient
-            .from(
-              "profiles"
-            )
-            .select(
-              "id,display_name,username,avatar_url"
-            )
-            .eq(
-              "id",
-              currentUser.id
-            )
-            .maybeSingle();
+            .rpc(
+              "get_public_profile",
+              {
+                check_user_id:
+                  currentUser.id
+              }
+            );
 
 
         if (error) {
@@ -2392,13 +1990,21 @@
 
 
         currentProfile =
-          data || null;
-
+          Array.isArray(
+            data
+          )
+            ? (
+                data[0] ||
+                null
+              )
+            : (
+                data ||
+                null
+              );
 
       }
 
       catch (error) {
-
 
         console.warn(
           "Profile:",
@@ -2406,30 +2012,63 @@
         );
 
 
+        /*
+          Fall back to the user's own profile row if the
+          public-profile helper is unavailable.
+        */
+
+        try {
+
+          const {
+            data
+          } =
+            await supabaseClient
+              .from(
+                "profiles"
+              )
+              .select(
+                "id,display_name,username,avatar_url"
+              )
+              .eq(
+                "id",
+                currentUser.id
+              )
+              .maybeSingle();
+
+
+          currentProfile =
+            data ||
+            null;
+
+        }
+
+        catch (
+          ignoredError
+        ) {
+
+          currentProfile =
+            null;
+
+        }
+
       }
 
 
       renderAvatar();
-
 
     }
 
 
     function renderAvatar() {
 
-
       const avatar =
         $("navAvatar");
 
 
       const name =
-
         currentProfile?.display_name ||
-
         currentProfile?.username ||
-
         currentUser?.email ||
-
         "Reader";
 
 
@@ -2440,7 +2079,6 @@
       if (
         currentProfile?.avatar_url
       ) {
-
 
         const image =
           document.createElement(
@@ -2459,7 +2097,6 @@
         image.onerror =
           function () {
 
-
             avatar.innerHTML =
               "";
 
@@ -2469,7 +2106,6 @@
                 name
               );
 
-
           };
 
 
@@ -2477,20 +2113,16 @@
           image
         );
 
-
       }
 
       else {
-
 
         avatar.textContent =
           initials(
             name
           );
 
-
       }
-
 
     }
 
@@ -2499,9 +2131,7 @@
        CLUB
        ===================================================== */
 
-
     async function loadClub() {
-
 
       const {
         data,
@@ -2538,9 +2168,7 @@
 
 
       $("clubMeta").textContent =
-
         club.description ||
-
         "Choose the book you want the club to read next.";
 
 
@@ -2552,6 +2180,17 @@
         );
 
 
+      $("voteRulesText").textContent =
+        club.allow_vote_changes === false
+          ? (
+              "Members can cast one vote while the ballot is open. " +
+              "Once submitted, that vote cannot be changed."
+            )
+          : (
+              "Members can cast one vote while the ballot is open. " +
+              "Choosing another title replaces the previous vote."
+            );
+
     }
 
 
@@ -2559,12 +2198,9 @@
        MEMBERSHIP
        ===================================================== */
 
-
     async function loadMembership() {
 
-
       try {
-
 
         const {
           data,
@@ -2596,13 +2232,12 @@
 
 
         membership =
-          data || null;
-
+          data ||
+          null;
 
       }
 
       catch (error) {
-
 
         console.warn(
           "Membership:",
@@ -2613,27 +2248,29 @@
         membership =
           null;
 
-
       }
 
-
     }
-        /* =====================================================
-       BALLOT
+
+
+    /* =====================================================
+       LOAD CANONICAL BALLOT
        ===================================================== */
 
-
     async function loadBallot() {
-
 
       clearMessage();
 
 
-      activeRound =
+      ballot =
         null;
 
 
-      voteOptions =
+      ballotOptions =
+        [];
+
+
+      ballotVotes =
         [];
 
 
@@ -2647,38 +2284,29 @@
 
       try {
 
+        await loadCurrentBallot();
 
-        await loadActiveRound();
 
-
-        if (!activeRound) {
-
+        if (!ballot) {
 
           renderNoBallot();
 
-
           return;
-
 
         }
 
 
         await Promise.all([
-
-          loadVoteOptions(),
-
-          loadMyVote()
-
+          loadBallotOptions(),
+          loadBallotVotes()
         ]);
 
 
         renderBallot();
 
-
       }
 
       catch (error) {
-
 
         console.error(
           "Ballot:",
@@ -2694,27 +2322,16 @@
           "error"
         );
 
-
       }
-
 
     }
 
 
     /* =====================================================
-       ACTIVE ROUND
+       CURRENT BALLOT
        ===================================================== */
 
-
-    async function loadActiveRound() {
-
-
-      /*
-        DogEar has gone through a few schema revisions,
-        so this deliberately loads the club's recent
-        rounds and chooses the current/open one here.
-      */
-
+    async function loadCurrentBallot() {
 
       const {
         data,
@@ -2722,7 +2339,7 @@
       } =
         await supabaseClient
           .from(
-            "vote_rounds"
+            "club_ballots"
           )
           .select(
             "*"
@@ -2732,7 +2349,7 @@
             clubId
           )
           .order(
-            "created_at",
+            "ballot_month",
             {
               ascending:false
             }
@@ -2749,7 +2366,7 @@
       }
 
 
-      const rounds =
+      const ballots =
         Array.isArray(
           data
         )
@@ -2757,99 +2374,59 @@
           : [];
 
 
-      if (!rounds.length) {
+      if (
+        !ballots.length
+      ) {
 
-
-        activeRound =
+        ballot =
           null;
 
-
         return;
-
 
       }
 
 
-      const openRound =
-        rounds.find(
-          round => {
+      /*
+        Prefer the currently open ballot.
 
+        If there is no open ballot, show the newest ballot so
+        members can still see the choices/results after voting
+        closes or the ballot is finalized.
+      */
 
-            const status =
-              String(
-                round.status ||
-                ""
-              )
-                .trim()
-                .toLowerCase();
-
-
-            if (
-              status === "closed" ||
-              status === "complete" ||
-              status === "completed" ||
-              status === "finalized"
-            ) {
-
-              return false;
-
-            }
-
-
-            if (
-              round.closes_at
-            ) {
-
-
-              const closes =
-                new Date(
-                  round.closes_at
-                )
-                  .getTime();
-
-
-              if (
-                Number.isFinite(
-                  closes
-                ) &&
-                closes <= Date.now()
-              ) {
-
-                return false;
-
-              }
-
-
-            }
-
-
-            return (
-              status === "open" ||
-              status === "active" ||
-              status === "voting" ||
-              status === ""
-            );
-
-
-          }
+      const openBallot =
+        ballots.find(
+          item =>
+            normalizeStatus(
+              item.status
+            ) === "open"
         );
 
 
-      activeRound =
-        openRound ||
-        rounds[0] ||
+      ballot =
+        openBallot ||
+        ballots[0] ||
         null;
-
 
     }
 
 
     /* =====================================================
-       OPTIONS
+       BALLOT OPTIONS
        ===================================================== */
 
+    async function loadBallotOptions() {
 
-    async function loadVoteOptions() {
+      if (
+        !ballot?.id
+      ) {
+
+        ballotOptions =
+          [];
+
+        return;
+
+      }
 
 
       const {
@@ -2858,17 +2435,21 @@
       } =
         await supabaseClient
           .from(
-            "vote_options"
+            "club_ballot_options"
           )
           .select(
             "*"
           )
           .eq(
-            "round_id",
-            activeRound.id
+            "ballot_id",
+            ballot.id
+          )
+          .eq(
+            "is_active",
+            true
           )
           .order(
-            "created_at",
+            "position",
             {
               ascending:true
             }
@@ -2882,153 +2463,48 @@
       }
 
 
-      const rawOptions =
+      ballotOptions =
         Array.isArray(
           data
         )
           ? data
           : [];
 
-
-      if (!rawOptions.length) {
-
-
-        voteOptions =
-          [];
-
-
-        return;
-
-
-      }
-
-
-      const bookIds =
-        [
-          ...new Set(
-
-            rawOptions
-              .map(
-                option =>
-                  option.book_id
-              )
-              .filter(
-                value =>
-                  value !== null &&
-                  value !== undefined &&
-                  value !== ""
-              )
-
-          )
-        ];
-
-
-      let booksById =
-        new Map();
-
-
-      if (bookIds.length) {
-
-
-        const {
-          data:bookRows,
-          error:booksError
-        } =
-          await supabaseClient
-            .from(
-              "books"
-            )
-            .select(
-              "*"
-            )
-            .in(
-              "id",
-              bookIds
-            );
-
-
-        if (booksError) {
-
-          console.warn(
-            "Ballot books:",
-            booksError.message
-          );
-
-        }
-
-
-        for (
-          const book
-          of (
-            bookRows ||
-            []
-          )
-        ) {
-
-
-          booksById.set(
-            String(
-              book.id
-            ),
-            book
-          );
-
-
-        }
-
-
-      }
-
-
-      voteOptions =
-        rawOptions.map(
-          option => {
-
-
-            const book =
-              booksById.get(
-                String(
-                  option.book_id
-                )
-              ) ||
-              null;
-
-
-            return {
-
-              ...option,
-
-              book,
-
-              vote_count:0
-
-            };
-
-
-          }
-        );
-
-
-      await loadVoteCounts();
-
-
     }
 
 
     /* =====================================================
-       VOTE COUNTS
+       BALLOT VOTES
        ===================================================== */
 
+    async function loadBallotVotes() {
 
-    async function loadVoteCounts() {
+      if (
+        !ballot?.id
+      ) {
 
+        ballotVotes =
+          [];
 
-      if (!activeRound) {
+        myVote =
+          null;
+
+        totalVotes =
+          0;
 
         return;
 
       }
 
+
+      /*
+        club_votes is the canonical vote table.
+
+        RLS determines which vote rows this member is allowed
+        to read. Voting itself never depends on browser-side
+        INSERT/UPDATE permissions; cast_club_vote() performs
+        the protected write.
+      */
 
       const {
         data,
@@ -3036,24 +2512,31 @@
       } =
         await supabaseClient
           .from(
-            "votes"
+            "club_votes"
           )
           .select(
             "*"
           )
           .eq(
-            "round_id",
-            activeRound.id
+            "ballot_id",
+            ballot.id
           );
 
 
       if (error) {
 
-
         console.warn(
-          "Vote counts:",
+          "Ballot votes:",
           error.message
         );
+
+
+        ballotVotes =
+          [];
+
+
+        myVote =
+          null;
 
 
         totalVotes =
@@ -3062,11 +2545,10 @@
 
         return;
 
-
       }
 
 
-      const votes =
+      ballotVotes =
         Array.isArray(
           data
         )
@@ -3075,7 +2557,20 @@
 
 
       totalVotes =
-        votes.length;
+        ballotVotes.length;
+
+
+      myVote =
+        ballotVotes.find(
+          vote =>
+            String(
+              vote.user_id
+            ) ===
+            String(
+              currentUser.id
+            )
+        ) ||
+        null;
 
 
       const counts =
@@ -3084,288 +2579,79 @@
 
       for (
         const vote
-        of votes
+        of ballotVotes
       ) {
 
-
-        const optionId =
-
-          vote.option_id ??
-
-          vote.vote_option_id ??
-
-          vote.option ??
-
-          null;
-
-
-        const bookId =
-
-          vote.book_id ??
-
-          null;
-
-
-        if (
-          optionId !== null &&
-          optionId !== undefined
-        ) {
-
-
-          const key =
-            "option:" +
-            String(
-              optionId
-            );
-
-
-          counts.set(
-            key,
-            (
-              counts.get(
-                key
-              ) ||
-              0
-            ) + 1
+        const key =
+          String(
+            vote.option_id
           );
 
 
-        }
-
-
-        if (
-          bookId !== null &&
-          bookId !== undefined
-        ) {
-
-
-          const key =
-            "book:" +
-            String(
-              bookId
-            );
-
-
-          counts.set(
-            key,
-            (
-              counts.get(
-                key
-              ) ||
-              0
-            ) + 1
-          );
-
-
-        }
-
+        counts.set(
+          key,
+          (
+            counts.get(
+              key
+            ) ||
+            0
+          ) + 1
+        );
 
       }
 
 
-      voteOptions =
-        voteOptions.map(
-          option => {
+      ballotOptions =
+        ballotOptions.map(
+          option => ({
+            ...option,
 
-
-            const optionCount =
+            vote_count:
               counts.get(
-                "option:" +
                 String(
                   option.id
                 )
-              );
-
-
-            const bookCount =
-              counts.get(
-                "book:" +
-                String(
-                  option.book_id
-                )
-              );
-
-
-            return {
-
-              ...option,
-
-              vote_count:
-                Number(
-                  optionCount ??
-                  bookCount ??
-                  option.vote_count ??
-                  0
-                ) ||
-                0
-
-            };
-
-
-          }
+              ) ||
+              0
+          })
         );
-
 
     }
 
 
     /* =====================================================
-       CURRENT USER VOTE
+       CURRENT VOTE HELPERS
        ===================================================== */
-
-
-    async function loadMyVote() {
-
-
-      if (
-        !activeRound ||
-        !currentUser
-      ) {
-
-        myVote =
-          null;
-
-
-        return;
-
-      }
-
-
-      try {
-
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient
-            .from(
-              "votes"
-            )
-            .select(
-              "*"
-            )
-            .eq(
-              "round_id",
-              activeRound.id
-            )
-            .eq(
-              "user_id",
-              currentUser.id
-            )
-            .maybeSingle();
-
-
-        if (error) {
-
-          throw error;
-
-        }
-
-
-        myVote =
-          data ||
-          null;
-
-
-      }
-
-      catch (error) {
-
-
-        console.warn(
-          "Current vote:",
-          error.message
-        );
-
-
-        myVote =
-          null;
-
-
-      }
-
-
-    }
-
-
-    /* =====================================================
-       MATCH CURRENT VOTE
-       ===================================================== */
-
 
     function optionIsMyVote(
       option
     ) {
 
-
-      if (!myVote) {
+      if (
+        !myVote
+      ) {
 
         return false;
 
       }
 
 
-      const votedOptionId =
-
-        myVote.option_id ??
-
-        myVote.vote_option_id ??
-
-        myVote.option ??
-
-        null;
-
-
-      if (
-        votedOptionId !== null &&
-        votedOptionId !== undefined
-      ) {
-
-
-        return (
-          String(
-            votedOptionId
-          ) ===
-          String(
-            option.id
-          )
-        );
-
-
-      }
-
-
-      if (
-        myVote.book_id !== null &&
-        myVote.book_id !== undefined
-      ) {
-
-
-        return (
-          String(
-            myVote.book_id
-          ) ===
-          String(
-            option.book_id
-          )
-        );
-
-
-      }
-
-
-      return false;
-
+      return (
+        String(
+          myVote.option_id
+        ) ===
+        String(
+          option.id
+        )
+      );
 
     }
 
 
     function selectedOption() {
 
-
       return (
-        voteOptions.find(
+        ballotOptions.find(
           option =>
             optionIsMyVote(
               option
@@ -3374,17 +2660,14 @@
         null
       );
 
-
     }
 
 
     /* =====================================================
-       RENDER NO BALLOT
+       NO BALLOT
        ===================================================== */
 
-
     function renderNoBallot() {
-
 
       $("ballot").innerHTML =
         "";
@@ -3394,24 +2677,28 @@
         false;
 
 
+      $("emptyTitle").textContent =
+        "No ballot has been prepared yet.";
+
+
+      $("emptyText").textContent =
+        "The club president or administrator can prepare this month's three choices.";
+
+
       $("yourVoteText").textContent =
-        "There isn't an active ballot right now.";
+        "There isn't a ballot to vote on right now.";
 
 
       $("voteStatus").textContent =
-        "No Open Vote";
+        "No Ballot";
 
 
-      $("voteStatus")
-        .classList
-        .add(
-          "closed"
-        );
+      $("voteStatus").className =
+        "status closed";
 
 
       $("resultsText").textContent =
-        "Results will appear when the next monthly ballot opens.";
-
+        "Results will appear when the club opens its next monthly ballot.";
 
     }
 
@@ -3420,28 +2707,51 @@
        RENDER BALLOT
        ===================================================== */
 
-
     function renderBallot() {
 
-
-      const ballot =
+      const ballotContainer =
         $("ballot");
 
 
-      ballot.innerHTML =
+      ballotContainer.innerHTML =
         "";
 
 
       if (
-        !voteOptions.length
+        !ballotOptions.length
       ) {
 
+        $("emptyState").hidden =
+          false;
 
-        renderNoBallot();
+
+        $("emptyTitle").textContent =
+          ballotIsOpen()
+            ? "The ballot is open, but no choices are available."
+            : "This ballot doesn't have any choices yet.";
+
+
+        $("emptyText").textContent =
+          "Club leadership can manage the monthly ballot from the ballot desk.";
+
+
+        $("yourVoteText").textContent =
+          "There are no book choices available.";
+
+
+        $("voteStatus").textContent =
+          ballotIsOpen()
+            ? "Vote Open"
+            : "Vote Closed";
+
+
+        $("voteStatus").className =
+          ballotIsOpen()
+            ? "status open"
+            : "status closed";
 
 
         return;
-
 
       }
 
@@ -3451,7 +2761,7 @@
 
 
       const isOpen =
-        roundIsOpen();
+        ballotIsOpen();
 
 
       const canVote =
@@ -3459,17 +2769,12 @@
         isVotingMember();
 
 
-      const selected =
-        selectedOption();
-
-
       for (
         const option
-        of voteOptions
+        of ballotOptions
       ) {
 
-
-        ballot.insertAdjacentHTML(
+        ballotContainer.insertAdjacentHTML(
           "beforeend",
           ballotCardMarkup(
             option,
@@ -3480,29 +2785,28 @@
           )
         );
 
-
       }
 
 
       bindVoteButtons();
 
 
-      if (selected) {
+      const selected =
+        selectedOption();
 
 
-        const selectedBook =
-          selected.book;
-
+      if (
+        selected
+      ) {
 
         $("yourVoteText").textContent =
-          selectedBook?.title
+          selected.title
             ? (
                 "You voted for “" +
-                selectedBook.title +
+                selected.title +
                 ".”"
               )
             : "Your vote has been recorded.";
-
 
       }
 
@@ -3510,28 +2814,39 @@
         !isVotingMember()
       ) {
 
+        if (
+          membershipStatus() === "pending"
+        ) {
 
-        $("yourVoteText").textContent =
-          "Only accepted club members can vote.";
+          $("yourVoteText").textContent =
+            "Your club membership is still pending. Active members can vote.";
 
+        }
+
+        else {
+
+          $("yourVoteText").textContent =
+            "Only active club members can vote.";
+
+        }
 
       }
 
-      else if (!isOpen) {
-
+      else if (
+        !isOpen
+      ) {
 
         $("yourVoteText").textContent =
-          "Voting is closed for this round.";
-
+          ballotIsFinalized()
+            ? "This ballot has been finalized."
+            : "Voting is currently closed.";
 
       }
 
       else {
 
-
         $("yourVoteText").textContent =
           "You haven't voted yet.";
-
 
       }
 
@@ -3539,40 +2854,37 @@
       $("voteStatus").textContent =
         isOpen
           ? "Vote Open"
-          : "Vote Closed";
+          : (
+              ballotIsFinalized()
+                ? "Finalized"
+                : "Vote Closed"
+            );
 
 
-      $("voteStatus")
-        .classList
-        .toggle(
-          "closed",
-          !isOpen
-        );
+      $("voteStatus").className =
+        isOpen
+          ? "status open"
+          : "status closed";
 
 
       if (
         totalVotes === 1
       ) {
 
-
         $("resultsText").textContent =
-          "1 vote has been cast so far.";
-
+          "1 vote has been cast.";
 
       }
 
       else {
 
-
         $("resultsText").textContent =
           String(
             totalVotes
           ) +
-          " votes have been cast so far.";
-
+          " votes have been cast.";
 
       }
-
 
     }
 
@@ -3581,67 +2893,37 @@
        BALLOT CARD
        ===================================================== */
 
-
     function ballotCardMarkup(
       option,
       state
     ) {
 
-
-      const book =
-        option.book ||
-        {};
-
-
       const title =
-
-        book.title ||
-
         option.title ||
-
-        option.book_title ||
-
         "Untitled Book";
 
 
       const author =
-
         authorText(
-          book
-        ) ||
-
-        option.author ||
-
-        option.book_author ||
-
-        "Author unavailable";
+          option
+        );
 
 
       const cover =
-        coverUrl(
-          book
+        option.cover_url ||
+        "";
+
+
+      const edition =
+        editionText(
+          option
         );
 
 
       const detailsUrl =
-        book?.id
-          ? bookDetailsUrl(
-              book.id
-            )
-          : "marketplace.html";
-
-
-      const edition =
-
-        editionText(
-          book
-        ) ||
-
-        option.edition ||
-
-        option.edition_label ||
-
-        "";
+        bookDetailsUrl(
+          option
+        );
 
 
       const votes =
@@ -3677,16 +2959,29 @@
         false;
 
 
-      if (!state.isOpen) {
-
+      if (
+        voteBusy
+      ) {
 
         buttonText =
-          "Voting Closed";
-
+          "Please Wait";
 
         disabled =
           true;
 
+      }
+
+      else if (
+        !state.isOpen
+      ) {
+
+        buttonText =
+          ballotIsFinalized()
+            ? "Ballot Finalized"
+            : "Voting Closed";
+
+        disabled =
+          true;
 
       }
 
@@ -3694,27 +2989,23 @@
         !state.canVote
       ) {
 
-
         buttonText =
           "Members Only";
-
 
         disabled =
           true;
 
-
       }
 
-      else if (selected) {
-
+      else if (
+        selected
+      ) {
 
         buttonText =
           "Your Vote";
 
-
         disabled =
           true;
-
 
       }
 
@@ -3723,23 +3014,20 @@
         !voteChangesAllowed()
       ) {
 
-
         buttonText =
           "Vote Already Cast";
-
 
         disabled =
           true;
 
-
       }
 
-      else if (myVote) {
-
+      else if (
+        myVote
+      ) {
 
         buttonText =
           "Change Vote";
-
 
       }
 
@@ -3778,6 +3066,13 @@
           )}"
         >
 
+          <div class="choice-number">
+            Choice ${escapeHtml(
+              option.position ||
+              ""
+            )}
+          </div>
+
           <a
             class="book-link"
             href="${escapeHtml(
@@ -3789,13 +3084,10 @@
           >
 
             <div class="cover">
-
               ${coverMarkup}
-
             </div>
 
           </a>
-
 
           <h3>
 
@@ -3811,15 +3103,11 @@
 
           </h3>
 
-
           <div class="author">
-
             ${escapeHtml(
               author
             )}
-
           </div>
-
 
           <div class="edition">
 
@@ -3828,11 +3116,10 @@
                 ? escapeHtml(
                     edition
                   )
-                : "&nbsp;"
+                : "Exact edition selected by club leadership."
             }
 
           </div>
-
 
           <div class="vote-total">
 
@@ -3847,7 +3134,6 @@
 
           </div>
 
-
           <div
             class="vote-bar"
             aria-hidden="true"
@@ -3859,7 +3145,6 @@
             ></div>
 
           </div>
-
 
           <button
             class="vote-button"
@@ -3873,27 +3158,22 @@
                 : ""
             }
           >
-
             ${escapeHtml(
               buttonText
             )}
-
           </button>
 
         </article>
       `;
 
-
     }
 
 
     /* =====================================================
-       BUTTON EVENTS
+       VOTE BUTTON EVENTS
        ===================================================== */
 
-
     function bindVoteButtons() {
-
 
       document
         .querySelectorAll(
@@ -3902,11 +3182,9 @@
         .forEach(
           button => {
 
-
             button.addEventListener(
               "click",
               async () => {
-
 
                 const optionId =
                   button.dataset
@@ -3914,7 +3192,7 @@
 
 
                 const option =
-                  voteOptions.find(
+                  ballotOptions.find(
                     item =>
                       String(
                         item.id
@@ -3925,7 +3203,9 @@
                   );
 
 
-                if (!option) {
+                if (
+                  !option
+                ) {
 
                   return;
 
@@ -3933,67 +3213,63 @@
 
 
                 await castVote(
-                  option,
-                  button
+                  option
                 );
-
 
               }
             );
 
-
           }
         );
-
 
     }
 
 
     /* =====================================================
-       CAST VOTE
+       CAST CANONICAL VOTE
        ===================================================== */
 
-
     async function castVote(
-      option,
-      button
+      option
     ) {
-
 
       clearMessage();
 
 
       if (
-        !currentUser ||
-        !activeRound
+        voteBusy
       ) {
 
+        return;
+
+      }
+
+
+      if (
+        !currentUser ||
+        !ballot
+      ) {
 
         showMessage(
           "The ballot isn't ready yet.",
           "error"
         );
 
-
         return;
-
 
       }
 
 
       if (
-        !roundIsOpen()
+        !ballotIsOpen()
       ) {
 
-
         showMessage(
-          "Voting for this round is closed.",
+          "Voting is closed.",
           "error"
         );
 
-
         return;
-
 
       }
 
@@ -4002,15 +3278,12 @@
         !isVotingMember()
       ) {
 
-
         showMessage(
-          "You need to be an accepted member of this club before you can vote.",
+          "You need to be an active member of this club before you can vote.",
           "error"
         );
 
-
         return;
-
 
       }
 
@@ -4020,87 +3293,99 @@
         !voteChangesAllowed()
       ) {
 
-
         showMessage(
-          "You've already voted in this round.",
+          "You've already voted on this ballot and this club does not allow vote changes.",
           "error"
         );
 
-
         return;
-
 
       }
 
 
-      const originalText =
-        button.textContent;
-
-
-      button.disabled =
+      voteBusy =
         true;
 
 
-      button.textContent =
-        myVote
-          ? "Changing..."
-          : "Voting...";
+      renderBallot();
 
 
       try {
 
+        /*
+          IMPORTANT:
 
-        if (myVote) {
+          This is the only vote-writing path on this page.
+
+          The browser does NOT insert or update club_votes
+          directly.
+
+          cast_club_vote() validates:
+
+          - authentication
+          - ballot status
+          - active club membership
+          - option belongs to ballot
+          - option is active
+          - club vote-change setting
+          - one vote per member/ballot
+
+          The RPC handles insert vs. replacement server-side.
+        */
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .rpc(
+              "cast_club_vote",
+              {
+                p_ballot_id:
+                  ballot.id,
+
+                p_option_id:
+                  option.id
+              }
+            );
 
 
-          await changeVote(
-            option
-          );
+        if (
+          error
+        ) {
 
+          throw error;
 
         }
 
-        else {
+
+        /*
+          Reload authoritative database state rather than
+          pretending the browser knows what the server wrote.
+        */
+
+        await loadBallotVotes();
 
 
-          await createVote(
-            option
-          );
-
-
-        }
-
-
-        await Promise.all([
-
-          loadMyVote(),
-
-          loadVoteCounts()
-
-        ]);
+        voteBusy =
+          false;
 
 
         renderBallot();
 
 
-        const title =
-          option.book?.title ||
-          option.title ||
-          "this book";
-
-
         showMessage(
           "Your vote for “" +
-          title +
+          (
+            option.title ||
+            "this book"
+          ) +
           "” has been recorded.",
           "success"
         );
 
-
       }
 
       catch (error) {
-
 
         console.error(
           "Vote:",
@@ -4108,12 +3393,11 @@
         );
 
 
-        button.disabled =
+        voteBusy =
           false;
 
 
-        button.textContent =
-          originalText;
+        renderBallot();
 
 
         showMessage(
@@ -4123,284 +3407,18 @@
           "error"
         );
 
-
       }
-
 
     }
 
 
     /* =====================================================
-       CREATE VOTE
+       FRIENDLY RPC ERRORS
        ===================================================== */
-
-
-    async function createVote(
-      option
-    ) {
-
-
-      /*
-        Current DogEar schema expects one vote per
-        user/round. option_id identifies the exact
-        ballot choice while book_id makes analytics
-        and historical reporting easier.
-      */
-
-
-      const payload = {
-
-        round_id:
-          activeRound.id,
-
-        club_id:
-          clubId,
-
-        user_id:
-          currentUser.id,
-
-        option_id:
-          option.id,
-
-        book_id:
-          option.book_id
-
-      };
-
-
-      let result =
-        await supabaseClient
-          .from(
-            "votes"
-          )
-          .insert(
-            payload
-          );
-
-
-      /*
-        Some earlier DogEar SQL versions did not
-        include club_id on votes. If that is the
-        only incompatible column, retry using the
-        minimal round/user/option/book payload.
-      */
-
-
-      if (
-        result.error &&
-        columnMissing(
-          result.error,
-          "club_id"
-        )
-      ) {
-
-
-        result =
-          await supabaseClient
-            .from(
-              "votes"
-            )
-            .insert({
-
-              round_id:
-                activeRound.id,
-
-              user_id:
-                currentUser.id,
-
-              option_id:
-                option.id,
-
-              book_id:
-                option.book_id
-
-            });
-
-
-      }
-
-
-      /*
-        Another early schema used vote_option_id
-        instead of option_id.
-      */
-
-
-      if (
-        result.error &&
-        columnMissing(
-          result.error,
-          "option_id"
-        )
-      ) {
-
-
-        result =
-          await supabaseClient
-            .from(
-              "votes"
-            )
-            .insert({
-
-              round_id:
-                activeRound.id,
-
-              user_id:
-                currentUser.id,
-
-              vote_option_id:
-                option.id,
-
-              book_id:
-                option.book_id
-
-            });
-
-
-      }
-
-
-      if (
-        result.error
-      ) {
-
-        throw result.error;
-
-      }
-
-
-    }
-
-
-    /* =====================================================
-       CHANGE VOTE
-       ===================================================== */
-
-
-    async function changeVote(
-      option
-    ) {
-
-
-      let result =
-        await supabaseClient
-          .from(
-            "votes"
-          )
-          .update({
-
-            option_id:
-              option.id,
-
-            book_id:
-              option.book_id
-
-          })
-          .eq(
-            "round_id",
-            activeRound.id
-          )
-          .eq(
-            "user_id",
-            currentUser.id
-          );
-
-
-      if (
-        result.error &&
-        columnMissing(
-          result.error,
-          "option_id"
-        )
-      ) {
-
-
-        result =
-          await supabaseClient
-            .from(
-              "votes"
-            )
-            .update({
-
-              vote_option_id:
-                option.id,
-
-              book_id:
-                option.book_id
-
-            })
-            .eq(
-              "round_id",
-              activeRound.id
-            )
-            .eq(
-              "user_id",
-              currentUser.id
-            );
-
-
-      }
-
-
-      if (
-        result.error
-      ) {
-
-        throw result.error;
-
-      }
-
-
-    }
-
-
-    /* =====================================================
-       ERROR HELPERS
-       ===================================================== */
-
-
-    function columnMissing(
-      error,
-      column
-    ) {
-
-
-      const message =
-        String(
-          error?.message ||
-          ""
-        )
-          .toLowerCase();
-
-
-      return (
-        message.includes(
-          String(
-            column
-          )
-            .toLowerCase()
-        ) &&
-        (
-          message.includes(
-            "column"
-          ) ||
-          message.includes(
-            "schema cache"
-          ) ||
-          message.includes(
-            "does not exist"
-          )
-        )
-      );
-
-
-    }
-
 
     function friendlyVoteError(
       error
     ) {
-
 
       const message =
         String(
@@ -4410,7 +3428,80 @@
 
 
       const lower =
-        message.toLowerCase();
+        message
+          .toLowerCase();
+
+
+      if (
+        lower.includes(
+          "authentication required"
+        )
+      ) {
+
+        return "Please sign in before voting.";
+
+      }
+
+
+      if (
+        lower.includes(
+          "active club membership required"
+        )
+      ) {
+
+        return "You need to be an active member of this club before you can vote.";
+
+      }
+
+
+      if (
+        lower.includes(
+          "voting is closed"
+        ) ||
+        lower.includes(
+          "voting closed"
+        )
+      ) {
+
+        return "Voting is closed for this ballot.";
+
+      }
+
+
+      if (
+        lower.includes(
+          "invalid ballot option"
+        )
+      ) {
+
+        return "That book is no longer an active choice on this ballot. Refresh the page.";
+
+      }
+
+
+      if (
+        lower.includes(
+          "ballot not found"
+        )
+      ) {
+
+        return "DogEar couldn't find this ballot. Refresh the page.";
+
+      }
+
+
+      if (
+        lower.includes(
+          "change"
+        ) &&
+        lower.includes(
+          "vote"
+        )
+      ) {
+
+        return "This club does not allow a vote to be changed after it is submitted.";
+
+      }
 
 
       if (
@@ -4422,41 +3513,24 @@
         )
       ) {
 
-
-        return "You've already voted in this round.";
-
+        return "You've already voted on this ballot.";
 
       }
 
 
       if (
-        lower.includes(
-          "row-level security"
-        ) ||
         lower.includes(
           "permission"
         ) ||
         lower.includes(
           "policy"
-        )
-      ) {
-
-
-        return "DogEar couldn't record that vote. Your club membership or voting permissions may need to be refreshed.";
-
-
-      }
-
-
-      if (
+        ) ||
         lower.includes(
-          "closed"
+          "row-level security"
         )
       ) {
 
-
-        return "Voting for this round is closed.";
-
+        return "DogEar couldn't access the voting record. Your membership or voting permissions may need to be refreshed.";
 
       }
 
@@ -4466,14 +3540,12 @@
         "DogEar couldn't record your vote. Please try again."
       );
 
-
     }
 
 
     /* =====================================================
-       AUTH CHANGES
+       AUTH STATE
        ===================================================== */
-
 
     supabaseClient
       .auth
@@ -4483,19 +3555,15 @@
           session
         ) => {
 
-
           if (
             event ===
             "SIGNED_OUT"
           ) {
 
-
             window.location.href =
               "auth.html#login";
 
-
             return;
-
 
           }
 
@@ -4504,13 +3572,10 @@
             session?.user
           ) {
 
-
             currentUser =
               session.user;
 
-
           }
-
 
         }
       );
@@ -4520,12 +3585,10 @@
        START
        ===================================================== */
 
-
     startPage();
 
 
   </script>
-
 
 </body>
 
