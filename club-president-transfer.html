@@ -1,19 +1,15 @@
+<!-- club-president-transfer.html — PART 1 OF 2 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Transfer Presidency | DogEar</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
 :root{
   --bg:#f4efe6;
   --paper:#fffaf2;
@@ -34,55 +30,29 @@
   --radius:22px;
 }
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
-html{
-  scroll-behavior:smooth;
-}
+html{scroll-behavior:smooth}
 
 body{
   margin:0;
   background:
-    radial-gradient(
-      circle at top left,
-      rgba(255,255,255,.72),
-      transparent 34%
-    ),
+    radial-gradient(circle at top left,rgba(255,255,255,.72),transparent 34%),
     var(--bg);
   color:var(--ink);
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
+  font-family:Georgia,"Times New Roman",serif;
 }
 
-body.loading-lock{
-  overflow:hidden;
-}
+body.loading-lock{overflow:hidden}
 
 a{
   color:inherit;
   text-decoration:none;
 }
 
-button,
-input{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-.hidden{
-  display:none !important;
-}
-
-/* =========================================================
-   LOADING
-========================================================= */
+button,input{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
 
 .loading-screen{
   position:fixed;
@@ -92,9 +62,7 @@ button{
   align-items:center;
   justify-content:center;
   background:var(--bg);
-  transition:
-    opacity .25s ease,
-    visibility .25s ease;
+  transition:opacity .25s ease,visibility .25s ease;
 }
 
 .loading-screen.hidden{
@@ -103,9 +71,7 @@ button{
   pointer-events:none;
 }
 
-.loading-inner{
-  text-align:center;
-}
+.loading-inner{text-align:center}
 
 .loading-mark{
   width:48px;
@@ -136,20 +102,9 @@ button{
 }
 
 @keyframes floatMark{
-
-  0%,100%{
-    transform:translateY(0);
-  }
-
-  50%{
-    transform:translateY(-5px);
-  }
-
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-5px)}
 }
-
-/* =========================================================
-   TOP BAR
-========================================================= */
 
 .topbar{
   height:72px;
@@ -228,7 +183,6 @@ button{
   padding:9px 13px;
   border-radius:999px;
   background:rgba(255,255,255,.68);
-  color:var(--ink);
   font-size:13px;
 }
 
@@ -260,10 +214,6 @@ button{
   object-fit:cover;
 }
 
-/* =========================================================
-   PAGE
-========================================================= */
-
 .page{
   width:min(900px,calc(100% - 48px));
   margin:0 auto;
@@ -272,23 +222,9 @@ button{
 
 .back-link{
   display:inline-flex;
-  align-items:center;
-  gap:7px;
   margin-bottom:24px;
   color:var(--muted);
   font-size:11px;
-}
-
-.back-link:hover{
-  color:var(--ink);
-}
-
-.eyebrow{
-  color:var(--accent);
-  text-transform:uppercase;
-  letter-spacing:.14em;
-  font-size:9px;
-  font-weight:700;
 }
 
 .hero h1{
@@ -299,6 +235,14 @@ button{
   letter-spacing:-.04em;
 }
 
+.eyebrow{
+  color:var(--accent);
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-size:9px;
+  font-weight:700;
+}
+
 .hero p{
   max-width:670px;
   margin:13px 0 0;
@@ -306,10 +250,6 @@ button{
   font-size:12px;
   line-height:1.7;
 }
-
-/* =========================================================
-   WARNING
-========================================================= */
 
 .warning{
   margin:26px 0 20px;
@@ -319,7 +259,6 @@ button{
   background:var(--gold-soft);
   display:flex;
   gap:12px;
-  align-items:flex-start;
 }
 
 .warning-symbol{
@@ -347,10 +286,6 @@ button{
   line-height:1.6;
 }
 
-/* =========================================================
-   STATUS
-========================================================= */
-
 .status-message{
   display:none;
   margin-bottom:18px;
@@ -363,9 +298,7 @@ button{
   line-height:1.55;
 }
 
-.status-message.show{
-  display:block;
-}
+.status-message.show{display:block}
 
 .status-message.error{
   border-color:#d8b9b1;
@@ -378,10 +311,6 @@ button{
   background:var(--green-soft);
   color:var(--green);
 }
-
-/* =========================================================
-   CURRENT PRESIDENT
-========================================================= */
 
 .card{
   margin-bottom:18px;
@@ -410,9 +339,7 @@ button{
   line-height:1.6;
 }
 
-.card-body{
-  padding:21px;
-}
+.card-body{padding:21px}
 
 .current-president{
   display:flex;
@@ -454,13 +381,7 @@ button{
   letter-spacing:.08em;
 }
 
-/* =========================================================
-   MEMBER SEARCH
-========================================================= */
-
-.search-wrap{
-  margin-bottom:15px;
-}
+.search-wrap{margin-bottom:15px}
 
 .member-search{
   width:100%;
@@ -479,10 +400,6 @@ button{
   box-shadow:0 0 0 3px rgba(143,102,82,.09);
 }
 
-/* =========================================================
-   MEMBER CHOICES
-========================================================= */
-
 .member-list{
   display:grid;
   gap:9px;
@@ -500,10 +417,6 @@ button{
   grid-template-columns:auto minmax(0,1fr) auto;
   gap:13px;
   align-items:center;
-  transition:
-    border-color .15s ease,
-    background .15s ease,
-    transform .15s ease;
 }
 
 .member-choice:hover{
@@ -524,13 +437,7 @@ button{
   color:var(--accent-dark);
 }
 
-.member-choice.selected .person-avatar{
-  background:rgba(255,255,255,.6);
-}
-
-.member-details{
-  min-width:0;
-}
+.member-details{min-width:0}
 
 .member-name{
   overflow:hidden;
@@ -554,7 +461,6 @@ button{
   font-size:8px;
   font-weight:700;
   text-transform:uppercase;
-  letter-spacing:.06em;
 }
 
 .role-badge.admin{
@@ -572,7 +478,6 @@ button{
   align-items:center;
   justify-content:center;
   color:transparent;
-  font-size:11px;
 }
 
 .member-choice.selected .choice-indicator{
@@ -580,10 +485,6 @@ button{
   background:var(--accent-dark);
   color:#fff;
 }
-
-/* =========================================================
-   EMPTY
-========================================================= */
 
 .empty-state{
   padding:35px 20px;
@@ -605,10 +506,6 @@ button{
   line-height:1.6;
 }
 
-/* =========================================================
-   SELECTED SUMMARY
-========================================================= */
-
 .selected-summary{
   margin-top:18px;
   padding:16px;
@@ -622,7 +519,6 @@ button{
   font-size:8px;
   font-weight:700;
   text-transform:uppercase;
-  letter-spacing:.1em;
 }
 
 .selected-summary-name{
@@ -637,10 +533,6 @@ button{
   font-size:9px;
   line-height:1.55;
 }
-
-/* =========================================================
-   ACTIONS
-========================================================= */
 
 .actions{
   margin-top:20px;
@@ -659,19 +551,10 @@ button{
   font-size:10px;
 }
 
-.button:hover{
-  color:var(--ink);
-  border-color:#c8b8a8;
-}
-
 .button.primary{
   border-color:var(--accent-dark);
   background:var(--accent-dark);
   color:#fff;
-}
-
-.button.primary:hover{
-  background:#583b2e;
 }
 
 .button.danger{
@@ -685,10 +568,6 @@ button{
   cursor:not-allowed;
 }
 
-/* =========================================================
-   CONFIRM MODAL
-========================================================= */
-
 .modal-backdrop{
   position:fixed;
   inset:0;
@@ -701,9 +580,7 @@ button{
   backdrop-filter:blur(5px);
 }
 
-.modal-backdrop.show{
-  display:flex;
-}
+.modal-backdrop.show{display:flex}
 
 .modal{
   width:min(470px,100%);
@@ -750,10 +627,6 @@ button{
   font-size:11px;
 }
 
-.confirm-input:focus{
-  border-color:var(--accent);
-}
-
 .modal-actions{
   margin-top:20px;
   display:flex;
@@ -761,38 +634,23 @@ button{
   gap:8px;
 }
 
-/* =========================================================
-   MOBILE
-========================================================= */
-
-.mobile-nav{
-  display:none;
-}
+.mobile-nav{display:none}
 
 @media(max-width:760px){
-
-  body{
-    padding-bottom:70px;
-  }
+  body{padding-bottom:70px}
 
   .topbar{
     height:64px;
     padding:0 18px;
   }
 
-  .nav,
-  .search-link,
-  .admin-link{
-    display:none !important;
+  .nav,.search-link,.admin-link{
+    display:none!important;
   }
 
   .page{
     width:min(100% - 24px,900px);
     padding-top:26px;
-  }
-
-  .member-choice{
-    grid-template-columns:auto minmax(0,1fr) auto;
   }
 
   .actions{
@@ -832,84 +690,37 @@ button{
     color:var(--accent-dark);
   }
 
-  .mobile-icon{
-    font-size:17px;
-  }
-
+  .mobile-icon{font-size:17px}
 }
-
 </style>
 </head>
 
 <body class="loading-lock">
 
-<!-- =======================================================
-     LOADING
-======================================================== -->
-
-<div
-  class="loading-screen"
-  id="loadingScreen"
->
-
+<div class="loading-screen" id="loadingScreen">
   <div class="loading-inner">
-
     <div class="loading-mark"></div>
-
-    <div class="loading-text">
-      Checking club leadership...
-    </div>
-
+    <div class="loading-text">Checking club leadership...</div>
   </div>
-
 </div>
-
-<!-- =======================================================
-     TOP BAR
-======================================================== -->
 
 <header class="topbar">
 
-  <a
-    class="brand"
-    href="dashboard.html"
-  >
-
+  <a class="brand" href="dashboard.html">
     <span class="brand-mark"></span>
-
     DogEar
-
   </a>
 
   <nav class="nav">
-
-    <a href="dashboard.html">
-      Home
-    </a>
-
-    <a href="discover.html">
-      Discover
-    </a>
-
-    <a
-      class="active"
-      href="clubs.html"
-    >
-      Clubs
-    </a>
-
-    <a href="marketplace.html">
-      Books
-    </a>
-
+    <a href="dashboard.html">Home</a>
+    <a href="discover.html">Discover</a>
+    <a class="active" href="clubs.html">Clubs</a>
+    <a href="marketplace.html">Books</a>
   </nav>
 
   <div class="nav-right">
 
-    <a
-      class="search-link"
-      href="search.html"
-    >
+    <a class="search-link" href="search.html">
       ⌕ Search
     </a>
 
@@ -934,16 +745,12 @@ button{
 
 </header>
 
-<!-- =======================================================
-     PAGE
-======================================================== -->
-
 <main class="page">
 
   <a
     class="back-link"
     id="backLink"
-    href="clubs.html"
+    href="club-settings.html"
   >
     ← Back to Club Settings
   </a>
@@ -959,32 +766,23 @@ button{
     </h1>
 
     <p id="heroText">
-      Choose another member to become President of this
-      club. This changes who has final control over club
-      settings and leadership.
+      Choose another active member to become President of this club.
     </p>
 
   </section>
 
   <section class="warning">
 
-    <div class="warning-symbol">
-      !
-    </div>
+    <div class="warning-symbol">!</div>
 
     <div>
-
-      <h2>
-        This is a major club action.
-      </h2>
+      <h2>This is a major club action.</h2>
 
       <p>
-        The selected member will become President. Your
-        account will become a club Admin so you can remain
-        part of the leadership team unless you later leave
-        or your role is changed.
+        The selected member will become President immediately.
+        The current President will become a club Administrator.
+        The entire transfer is performed atomically by DogEar.
       </p>
-
     </div>
 
   </section>
@@ -994,23 +792,14 @@ button{
     id="statusMessage"
   ></div>
 
-  <!-- =====================================================
-       CURRENT PRESIDENT
-  ====================================================== -->
-
   <section class="card">
 
     <div class="card-head">
-
-      <h2>
-        Current President
-      </h2>
-
+      <h2>Current President</h2>
       <p>
-        Only the current President can complete this
-        transfer.
+        The current President may voluntarily transfer leadership
+        to another active club member.
       </p>
-
     </div>
 
     <div class="card-body">
@@ -1025,7 +814,6 @@ button{
         </div>
 
         <div>
-
           <div
             class="person-name"
             id="currentPresidentName"
@@ -1036,7 +824,6 @@ button{
           <div class="person-role">
             President
           </div>
-
         </div>
 
       </div>
@@ -1045,29 +832,19 @@ button{
 
   </section>
 
-  <!-- =====================================================
-       CHOOSE NEW PRESIDENT
-  ====================================================== -->
-
   <section class="card">
 
     <div class="card-head">
-
-      <h2>
-        Choose the New President
-      </h2>
+      <h2>Choose the New President</h2>
 
       <p>
-        Any active member other than the current President
-        can be selected.
+        Any other active member of this club can be selected.
       </p>
-
     </div>
 
     <div class="card-body">
 
       <div class="search-wrap">
-
         <input
           class="member-search"
           id="memberSearch"
@@ -1075,7 +852,6 @@ button{
           placeholder="Search members..."
           autocomplete="off"
         >
-
       </div>
 
       <div
@@ -1087,7 +863,6 @@ button{
         class="selected-summary hidden"
         id="selectedSummary"
       >
-
         <div class="selected-summary-label">
           Selected New President
         </div>
@@ -1100,10 +875,9 @@ button{
         </div>
 
         <div class="selected-summary-text">
-          This member will receive the President role.
-          Your role will change to Admin.
+          This member will become President. The current President
+          will become an Administrator.
         </div>
-
       </div>
 
       <div class="actions">
@@ -1111,7 +885,7 @@ button{
         <a
           class="button"
           id="cancelButton"
-          href="clubs.html"
+          href="club-settings.html"
         >
           Cancel
         </a>
@@ -1132,10 +906,6 @@ button{
   </section>
 
 </main>
-
-<!-- =======================================================
-     CONFIRMATION MODAL
-======================================================== -->
 
 <div
   class="modal-backdrop"
@@ -1165,8 +935,7 @@ button{
     </div>
 
     <p>
-      To make this deliberate, type
-      <strong>TRANSFER</strong> below.
+      Type <strong>TRANSFER</strong> below to confirm.
     </p>
 
     <input
@@ -1202,12 +971,7 @@ button{
 
 </div>
 
-<!-- =======================================================
-     MOBILE NAV
-======================================================== -->
-
 <nav class="mobile-nav">
-
   <a href="dashboard.html">
     <span class="mobile-icon">⌂</span>
     Home
@@ -1218,10 +982,7 @@ button{
     Discover
   </a>
 
-  <a
-    class="active"
-    href="clubs.html"
-  >
+  <a class="active" href="clubs.html">
     <span class="mobile-icon">◉</span>
     Clubs
   </a>
@@ -1235,14 +996,9 @@ button{
     <span class="mobile-icon">☺</span>
     Profile
   </a>
-
 </nav>
 
 <script>
-
-/* =========================================================
-   SUPABASE
-========================================================= */
 
 const SUPABASE_URL =
   "https://nrtutxjznkfvvbmaagum.supabase.co";
@@ -1256,118 +1012,61 @@ const supabaseClient =
     SUPABASE_PUBLISHABLE_KEY
   );
 
-/* =========================================================
-   STATE
-========================================================= */
-
-let currentUser =
-  null;
-
-let clubData =
-  null;
-
-let memberRows =
-  [];
-
-let currentPresidentMembership =
-  null;
-
-let currentPresidentProfile =
-  null;
-
-let memberProfiles =
-  new Map();
-
-let selectedUserId =
-  null;
-
-let transferInProgress =
-  false;
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
+let currentUser = null;
+let clubData = null;
+let memberRows = [];
+let currentPresidentMembership = null;
+let memberProfiles = new Map();
+let selectedUserId = null;
+let transferInProgress = false;
+let siteAdmin = false;
 
 const loadingScreen =
-  document.getElementById(
-    "loadingScreen"
-  );
+  document.getElementById("loadingScreen");
 
 const statusMessage =
-  document.getElementById(
-    "statusMessage"
-  );
+  document.getElementById("statusMessage");
 
 const memberList =
-  document.getElementById(
-    "memberList"
-  );
+  document.getElementById("memberList");
 
 const memberSearch =
-  document.getElementById(
-    "memberSearch"
-  );
+  document.getElementById("memberSearch");
 
 const selectedSummary =
-  document.getElementById(
-    "selectedSummary"
-  );
+  document.getElementById("selectedSummary");
 
 const selectedName =
-  document.getElementById(
-    "selectedName"
-  );
+  document.getElementById("selectedName");
 
 const continueButton =
-  document.getElementById(
-    "continueButton"
-  );
+  document.getElementById("continueButton");
 
 const confirmModal =
-  document.getElementById(
-    "confirmModal"
-  );
+  document.getElementById("confirmModal");
 
 const confirmText =
-  document.getElementById(
-    "confirmText"
-  );
+  document.getElementById("confirmText");
 
 const confirmName =
-  document.getElementById(
-    "confirmName"
-  );
+  document.getElementById("confirmName");
 
 const confirmInput =
-  document.getElementById(
-    "confirmInput"
-  );
+  document.getElementById("confirmInput");
 
 const confirmTransferButton =
-  document.getElementById(
-    "confirmTransferButton"
-  );
+  document.getElementById("confirmTransferButton");
 
 const cancelConfirmButton =
-  document.getElementById(
-    "cancelConfirmButton"
-  );
-
-/* =========================================================
-   CLUB ID
-========================================================= */
+  document.getElementById("cancelConfirmButton");
 
 const params =
-  new URLSearchParams(
-    location.search
-  );
+  new URLSearchParams(location.search);
 
 const clubId =
   params.get("id");
 
-function withClub(
-  filename
-){
+function withClub(filename){
 
   if(!clubId){
     return filename;
@@ -1376,74 +1075,39 @@ function withClub(
   return (
     filename +
     "?id=" +
-    encodeURIComponent(
-      clubId
-    )
+    encodeURIComponent(clubId)
   );
 
 }
 
-/* =========================================================
-   HELPERS
-========================================================= */
+function normalize(value){
 
-function normalize(
-  value
-){
-
-  return String(
-    value ?? ""
-  )
+  return String(value ?? "")
     .trim()
     .toLowerCase();
 
 }
 
-function escapeHtml(
-  value
-){
+function escapeHtml(value){
 
-  return String(
-    value ?? ""
-  )
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 
 }
 
-function initials(
-  name
-){
+function initials(name){
 
   const parts =
-    String(
-      name || ""
-    )
+    String(name || "")
       .trim()
       .split(/\s+/)
       .filter(Boolean);
 
-  if(
-    !parts.length
-  ){
+  if(!parts.length){
     return "?";
   }
 
@@ -1451,9 +1115,7 @@ function initials(
     .slice(0,2)
     .map(
       part =>
-        part
-          .charAt(0)
-          .toUpperCase()
+        part.charAt(0).toUpperCase()
     )
     .join("");
 
@@ -1483,28 +1145,20 @@ function showStatus(
     "status-message show";
 
   if(type){
-
-    statusMessage.classList.add(
-      type
-    );
-
+    statusMessage.classList.add(type);
   }
 
 }
 
 function clearStatus(){
 
-  statusMessage.textContent =
-    "";
-
+  statusMessage.textContent = "";
   statusMessage.className =
     "status-message";
 
 }
 
-function rowUserId(
-  row
-){
+function rowUserId(row){
 
   return (
     row?.user_id ||
@@ -1514,30 +1168,32 @@ function rowUserId(
 
 }
 
-function rowRole(
-  row
-){
+function rowRole(row){
 
   return (
+    row?.club_role ||
     row?.role ||
     row?.member_role ||
-    "Member"
+    "member"
   );
 
 }
 
-function isPresident(
-  row
-){
-
-  const role =
-    normalize(
-      rowRole(row)
-    );
+function rowStatus(row){
 
   return (
-    role === "president" ||
-    role === "owner"
+    row?.membership_status ||
+    row?.status ||
+    ""
+  );
+
+}
+
+function isPresident(row){
+
+  return (
+    normalize(rowRole(row)) ===
+    "president"
   );
 
 }
@@ -1562,13 +1218,10 @@ function profileName(
 
 }
 
-function profileUsername(
-  profile
-){
+function profileUsername(profile){
 
   const username =
-    profile?.username ||
-    "";
+    profile?.username || "";
 
   if(!username){
     return "";
@@ -1580,9 +1233,7 @@ function profileUsername(
 
 }
 
-function profileAvatar(
-  profile
-){
+function profileAvatar(profile){
 
   return (
     profile?.avatar_url ||
@@ -1591,107 +1242,6 @@ function profileAvatar(
   );
 
 }
-
-function isSchemaError(
-  error
-){
-
-  if(!error){
-    return false;
-  }
-
-  const message =
-    normalize(
-      error.message
-    );
-
-  return (
-    message.includes("column") ||
-    message.includes("schema cache") ||
-    message.includes("could not find") ||
-    String(error.code || "") === "42703" ||
-    String(error.code || "") === "PGRST204"
-  );
-
-}
-  /* =========================================================
-   PUBLIC PROFILE
-========================================================= */
-
-async function loadPublicProfile(
-  userId
-){
-
-  if(!userId){
-    return null;
-  }
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .rpc(
-          "get_public_profile",
-          {
-            check_user_id:userId
-          }
-        );
-
-    if(error){
-      throw error;
-    }
-
-    const profile =
-      Array.isArray(data)
-        ? (
-            data[0] ||
-            null
-          )
-        : (
-            data ||
-            null
-          );
-
-    if(!profile){
-      return null;
-    }
-
-    return {
-      ...profile,
-
-      id:
-        profile.id ||
-        profile.user_id ||
-        userId,
-
-      user_id:
-        profile.user_id ||
-        profile.id ||
-        userId
-    };
-
-  }
-
-  catch(error){
-
-    console.warn(
-      "Public profile:",
-      error.message
-    );
-
-    return null;
-
-  }
-
-}
-
-
-/* =========================================================
-   PAGE LINKS
-========================================================= */
 
 function wireLinks(){
 
@@ -1711,10 +1261,65 @@ function wireLinks(){
 
 }
 
+async function loadPublicProfile(
+  userId
+){
 
-/* =========================================================
-   LOAD CLUB
-========================================================= */
+  if(!userId){
+    return null;
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "get_public_profile",
+        {
+          check_user_id:userId
+        }
+      );
+
+    if(error){
+      throw error;
+    }
+
+    const profile =
+      Array.isArray(data)
+        ? data[0] || null
+        : data || null;
+
+    if(!profile){
+      return null;
+    }
+
+    return {
+      ...profile,
+      id:
+        profile.id ||
+        profile.user_id ||
+        userId,
+      user_id:
+        profile.user_id ||
+        profile.id ||
+        userId
+    };
+
+  }
+  catch(error){
+
+    console.warn(
+      "Public profile:",
+      error.message
+    );
+
+    return null;
+
+  }
+
+}
 
 async function loadClub(){
 
@@ -1725,18 +1330,14 @@ async function loadClub(){
     await supabaseClient
       .from("clubs")
       .select("*")
-      .eq(
-        "id",
-        clubId
-      )
+      .eq("id",clubId)
       .single();
 
   if(error){
     throw error;
   }
 
-  clubData =
-    data;
+  clubData = data;
 
   const name =
     clubData?.name ||
@@ -1749,14 +1350,9 @@ async function loadClub(){
   document.getElementById(
     "heroText"
   ).textContent =
-    `Choose another member to become President of ${name}. This changes who has final control over club settings and leadership.`;
+    `Choose another active member to become President of ${name}.`;
 
 }
-
-
-/* =========================================================
-   LOAD MEMBERS
-========================================================= */
 
 async function loadMembers(){
 
@@ -1767,37 +1363,35 @@ async function loadMembers(){
     await supabaseClient
       .from("club_members")
       .select("*")
-      .eq(
-        "club_id",
-        clubId
-      );
+      .eq("club_id",clubId);
 
   if(error){
     throw error;
   }
 
   memberRows =
-    (data || [])
-      .filter(
-        row => {
+    (data || []).filter(
+      row =>
+        normalize(
+          rowStatus(row)
+        ) === "active"
+    );
 
-          const status =
-            normalize(
-              row.status
-            );
-
-          return !(
-            status === "pending" ||
-            status === "rejected" ||
-            status === "denied" ||
-            status === "removed" ||
-            status === "banned"
-          );
-
-        }
-      );
+  const presidentId =
+    clubData?.president_id ||
+    null;
 
   currentPresidentMembership =
+    memberRows.find(
+      row =>
+        presidentId &&
+        String(
+          rowUserId(row)
+        ) ===
+        String(
+          presidentId
+        )
+    ) ||
     memberRows.find(
       row =>
         isPresident(row)
@@ -1806,62 +1400,53 @@ async function loadMembers(){
 
 }
 
+async function loadAdminStatus(){
 
-/* =========================================================
-   PRESIDENT FALLBACK
-========================================================= */
+  siteAdmin = false;
 
-function findPresidentFallback(){
+  try{
 
-  if(
-    currentPresidentMembership
-  ){
-    return;
-  }
-
-  const possiblePresidentId =
-    clubData?.president_id ||
-    clubData?.owner_id ||
-    clubData?.created_by ||
-    clubData?.founder_id ||
-    null;
-
-  if(
-    !possiblePresidentId
-  ){
-    return;
-  }
-
-  const membership =
-    memberRows.find(
-      row =>
-        String(
-          rowUserId(row)
-        ) ===
-        String(
-          possiblePresidentId
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("admin_users")
+        .select("user_id")
+        .eq(
+          "user_id",
+          currentUser.id
         )
+        .maybeSingle();
+
+    if(error){
+      throw error;
+    }
+
+    if(data){
+
+      siteAdmin = true;
+
+      document.getElementById(
+        "adminLink"
+      ).style.display =
+        "inline-flex";
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Admin status:",
+      error.message
     );
-
-  if(
-    membership
-  ){
-
-    currentPresidentMembership = {
-      ...membership,
-      role:"President"
-    };
 
   }
 
 }
 
-
-/* =========================================================
-   VERIFY CURRENT PRESIDENT
-========================================================= */
-
-function verifyPresidentAccess(){
+function verifyTransferAccess(){
 
   if(
     !currentPresidentMembership
@@ -1880,7 +1465,8 @@ function verifyPresidentAccess(){
 
   if(
     String(presidentId) !==
-    String(currentUser.id)
+      String(currentUser.id) &&
+    !siteAdmin
   ){
 
     throw new Error(
@@ -1891,11 +1477,6 @@ function verifyPresidentAccess(){
 
 }
 
-
-/* =========================================================
-   LOAD MEMBER PROFILES
-========================================================= */
-
 async function loadMemberProfiles(){
 
   memberProfiles =
@@ -1905,10 +1486,7 @@ async function loadMemberProfiles(){
     [
       ...new Set(
         memberRows
-          .map(
-            row =>
-              rowUserId(row)
-          )
+          .map(rowUserId)
           .filter(Boolean)
           .map(String)
       )
@@ -1934,39 +1512,27 @@ async function loadMemberProfiles(){
 
 }
 
-
-/* =========================================================
-   CURRENT PRESIDENT DISPLAY
-========================================================= */
-
 function renderCurrentPresident(){
-
-  if(
-    !currentPresidentMembership
-  ){
-    return;
-  }
 
   const userId =
     rowUserId(
       currentPresidentMembership
     );
 
-  currentPresidentProfile =
+  const profile =
     memberProfiles.get(
       String(userId)
-    ) ||
-    null;
+    );
 
   const name =
     profileName(
-      currentPresidentProfile,
+      profile,
       userId
     );
 
   const avatar =
     profileAvatar(
-      currentPresidentProfile
+      profile
     );
 
   document.getElementById(
@@ -1974,57 +1540,41 @@ function renderCurrentPresident(){
   ).textContent =
     name;
 
-  const avatarElement =
+  const holder =
     document.getElementById(
       "currentPresidentAvatar"
     );
 
-  avatarElement.innerHTML =
-    "";
+  holder.innerHTML = "";
 
   if(avatar){
 
     const image =
-      document.createElement(
-        "img"
-      );
+      document.createElement("img");
 
-    image.src =
-      avatar;
-
-    image.alt =
-      name;
+    image.src = avatar;
+    image.alt = name;
 
     image.onerror =
       () => {
 
-        avatarElement.innerHTML =
-          "";
-
-        avatarElement.textContent =
+        holder.innerHTML = "";
+        holder.textContent =
           initials(name);
 
       };
 
-    avatarElement.appendChild(
-      image
-    );
+    holder.appendChild(image);
 
   }
-
   else{
 
-    avatarElement.textContent =
+    holder.textContent =
       initials(name);
 
   }
 
 }
-
-
-/* =========================================================
-   ELIGIBLE MEMBERS
-========================================================= */
 
 function eligibleMembers(){
 
@@ -2039,9 +1589,7 @@ function eligibleMembers(){
       const userId =
         rowUserId(row);
 
-      if(
-        !userId
-      ){
+      if(!userId){
         return false;
       }
 
@@ -2052,32 +1600,28 @@ function eligibleMembers(){
         return false;
       }
 
-      const status =
-        normalize(
-          row.status
-        );
-
       if(
-        status === "banned" ||
-        status === "removed" ||
-        status === "pending" ||
-        status === "rejected" ||
-        status === "denied"
+        normalize(
+          rowStatus(row)
+        ) !== "active"
       ){
         return false;
       }
 
-      return true;
+      const role =
+        normalize(
+          rowRole(row)
+        );
+
+      return (
+        role === "member" ||
+        role === "administrator"
+      );
 
     }
   );
 
 }
-
-
-/* =========================================================
-   MEMBER AVATAR MARKUP
-========================================================= */
 
 function memberAvatarMarkup(
   profile,
@@ -2091,9 +1635,7 @@ function memberAvatarMarkup(
     );
 
   const avatar =
-    profileAvatar(
-      profile
-    );
+    profileAvatar(profile);
 
   if(avatar){
 
@@ -2120,27 +1662,18 @@ function memberAvatarMarkup(
 
 }
 
-
-/* =========================================================
-   ROLE BADGE
-========================================================= */
-
-function roleBadgeMarkup(
-  row
-){
+function roleBadgeMarkup(row){
 
   const role =
     normalize(
       rowRole(row)
     );
 
-  if(
-    role === "admin"
-  ){
+  if(role === "administrator"){
 
     return `
       <span class="role-badge admin">
-        Admin
+        Administrator
       </span>
     `;
 
@@ -2154,14 +1687,7 @@ function roleBadgeMarkup(
 
 }
 
-
-/* =========================================================
-   MEMBER CHOICE MARKUP
-========================================================= */
-
-function memberChoiceMarkup(
-  row
-){
+function memberChoiceMarkup(row){
 
   const userId =
     rowUserId(row);
@@ -2169,8 +1695,7 @@ function memberChoiceMarkup(
   const profile =
     memberProfiles.get(
       String(userId)
-    ) ||
-    null;
+    );
 
   const name =
     profileName(
@@ -2179,9 +1704,7 @@ function memberChoiceMarkup(
     );
 
   const username =
-    profileUsername(
-      profile
-    );
+    profileUsername(profile);
 
   const selected =
     String(selectedUserId) ===
@@ -2234,11 +1757,6 @@ function memberChoiceMarkup(
 
 }
 
-
-/* =========================================================
-   RENDER MEMBERS
-========================================================= */
-
 function renderMembers(){
 
   const search =
@@ -2284,75 +1802,59 @@ function renderMembers(){
         }
       )
       .sort(
-        (
-          first,
-          second
-        ) => {
+        (a,b) => {
 
-          /*
-            Admins first, then regular members.
-          */
-
-          const firstRole =
+          const aRole =
             normalize(
-              rowRole(first)
+              rowRole(a)
             );
 
-          const secondRole =
+          const bRole =
             normalize(
-              rowRole(second)
+              rowRole(b)
             );
 
           if(
-            firstRole === "admin" &&
-            secondRole !== "admin"
+            aRole === "administrator" &&
+            bRole !== "administrator"
           ){
             return -1;
           }
 
           if(
-            firstRole !== "admin" &&
-            secondRole === "admin"
+            bRole === "administrator" &&
+            aRole !== "administrator"
           ){
             return 1;
           }
 
-          const firstId =
-            rowUserId(first);
+          const aId =
+            rowUserId(a);
 
-          const secondId =
-            rowUserId(second);
-
-          const firstProfile =
-            memberProfiles.get(
-              String(firstId)
-            );
-
-          const secondProfile =
-            memberProfiles.get(
-              String(secondId)
-            );
+          const bId =
+            rowUserId(b);
 
           return profileName(
-            firstProfile,
-            firstId
+            memberProfiles.get(
+              String(aId)
+            ),
+            aId
           ).localeCompare(
             profileName(
-              secondProfile,
-              secondId
+              memberProfiles.get(
+                String(bId)
+              ),
+              bId
             )
           );
 
         }
       );
 
-  if(
-    !rows.length
-  ){
+  if(!rows.length){
 
     memberList.innerHTML = `
       <div class="empty-state">
-
         <h3>
           ${
             search
@@ -2368,7 +1870,6 @@ function renderMembers(){
               : "Another active club member is required before the presidency can be transferred."
           }
         </p>
-
       </div>
     `;
 
@@ -2378,88 +1879,8 @@ function renderMembers(){
 
   memberList.innerHTML =
     rows
-      .map(
-        memberChoiceMarkup
-      )
+      .map(memberChoiceMarkup)
       .join("");
-
-  wireMemberChoices();
-
-}
-
-
-/* =========================================================
-   SELECT MEMBER
-========================================================= */
-
-function selectMember(
-  userId
-){
-
-  const eligible =
-    eligibleMembers()
-      .find(
-        row =>
-          String(
-            rowUserId(row)
-          ) ===
-          String(userId)
-      );
-
-  if(
-    !eligible
-  ){
-
-    selectedUserId =
-      null;
-
-    selectedSummary.classList.add(
-      "hidden"
-    );
-
-    continueButton.disabled =
-      true;
-
-    renderMembers();
-
-    return;
-
-  }
-
-  selectedUserId =
-    String(userId);
-
-  const profile =
-    memberProfiles.get(
-      String(userId)
-    );
-
-  const name =
-    profileName(
-      profile,
-      userId
-    );
-
-  selectedName.textContent =
-    name;
-
-  selectedSummary.classList.remove(
-    "hidden"
-  );
-
-  continueButton.disabled =
-    false;
-
-  renderMembers();
-
-}
-
-
-/* =========================================================
-   WIRE MEMBER CHOICES
-========================================================= */
-
-function wireMemberChoices(){
 
   document
     .querySelectorAll(
@@ -2484,51 +1905,87 @@ function wireMemberChoices(){
 
 }
 
+function selectMember(userId){
 
-/* =========================================================
-   MEMBER SEARCH
-========================================================= */
+  const eligible =
+    eligibleMembers().find(
+      row =>
+        String(
+          rowUserId(row)
+        ) ===
+        String(userId)
+    );
+
+  if(!eligible){
+
+    selectedUserId = null;
+
+    selectedSummary.classList.add(
+      "hidden"
+    );
+
+    continueButton.disabled =
+      true;
+
+    renderMembers();
+
+    return;
+
+  }
+
+  selectedUserId =
+    String(userId);
+
+  const profile =
+    memberProfiles.get(
+      String(userId)
+    );
+
+  selectedName.textContent =
+    profileName(
+      profile,
+      userId
+    );
+
+  selectedSummary.classList.remove(
+    "hidden"
+  );
+
+  continueButton.disabled =
+    false;
+
+  renderMembers();
+
+}
 
 memberSearch.addEventListener(
   "input",
   renderMembers
 );
 
-
-/* =========================================================
-   OPEN CONFIRMATION
-========================================================= */
-
 function openConfirmation(){
 
-  if(
-    !selectedUserId
-  ){
+  if(!selectedUserId){
     return;
   }
 
   const selectedMembership =
-    eligibleMembers()
-      .find(
-        row =>
-          String(
-            rowUserId(row)
-          ) ===
-          String(selectedUserId)
-      );
+    eligibleMembers().find(
+      row =>
+        String(
+          rowUserId(row)
+        ) ===
+        String(selectedUserId)
+    );
 
-  if(
-    !selectedMembership
-  ){
+  if(!selectedMembership){
 
     showStatus(
       "That member is no longer eligible to become President.",
       "error"
     );
 
-    selectedUserId =
-      null;
-
+    selectedUserId = null;
     renderMembers();
 
     return;
@@ -2552,13 +2009,12 @@ function openConfirmation(){
     "this club";
 
   confirmText.textContent =
-    `${name} will become President of ${clubName}. Your role will change from President to Admin.`;
+    `${name} will become President of ${clubName}. The current President will become an Administrator.`;
 
   confirmName.textContent =
     name;
 
-  confirmInput.value =
-    "";
+  confirmInput.value = "";
 
   confirmTransferButton.disabled =
     true;
@@ -2568,26 +2024,15 @@ function openConfirmation(){
   );
 
   setTimeout(
-    () => {
-
-      confirmInput.focus();
-
-    },
+    () => confirmInput.focus(),
     50
   );
 
 }
 
-
-/* =========================================================
-   CLOSE CONFIRMATION
-========================================================= */
-
 function closeConfirmation(){
 
-  if(
-    transferInProgress
-  ){
+  if(transferInProgress){
     return;
   }
 
@@ -2595,30 +2040,22 @@ function closeConfirmation(){
     "show"
   );
 
-  confirmInput.value =
-    "";
+  confirmInput.value = "";
 
   confirmTransferButton.disabled =
     true;
 
 }
 
-
-/* =========================================================
-   CONFIRMATION EVENTS
-========================================================= */
-
 continueButton.addEventListener(
   "click",
   openConfirmation
 );
 
-
 cancelConfirmButton.addEventListener(
   "click",
   closeConfirmation
 );
-
 
 confirmModal.addEventListener(
   "click",
@@ -2628,14 +2065,11 @@ confirmModal.addEventListener(
       event.target ===
       confirmModal
     ){
-
       closeConfirmation();
-
     }
 
   }
 );
-
 
 document.addEventListener(
   "keydown",
@@ -2647,14 +2081,11 @@ document.addEventListener(
         "show"
       )
     ){
-
       closeConfirmation();
-
     }
 
   }
 );
-
 
 confirmInput.addEventListener(
   "input",
@@ -2669,243 +2100,10 @@ confirmInput.addEventListener(
   }
 );
 
-
-/* =========================================================
-   UPDATE MEMBER ROLE
-========================================================= */
-
-async function updateMemberRole(
-  userId,
-  newRole
-){
-
-  const rolePayloads = [
-
-    {
-      role:newRole
-    },
-
-    {
-      member_role:newRole
-    }
-
-  ];
-
-  let lastError =
-    null;
-
-  for(
-    const payload
-    of rolePayloads
-  ){
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("club_members")
-        .update(payload)
-        .eq(
-          "club_id",
-          clubId
-        )
-        .eq(
-          "user_id",
-          userId
-        );
-
-    if(!error){
-      return;
-    }
-
-    lastError =
-      error;
-
-    if(
-      !isSchemaError(
-        error
-      )
-    ){
-
-      throw error;
-
-    }
-
-  }
-
-  throw (
-    lastError ||
-    new Error(
-      "DogEar couldn't change that club role."
-    )
-  );
-
-}
-
-
-/* =========================================================
-   UPDATE CLUB PRESIDENT REFERENCE
-========================================================= */
-
-async function updateClubPresidentReference(
-  newPresidentId
-){
-
-  /*
-    Some DogEar club schemas may keep a direct reference
-    to the President/founder on the clubs table.
-
-    If one exists, update it. If none of these columns
-    exist, the club_members President role remains the
-    leadership source of truth.
-  */
-
-  const possibleColumns = [
-    "president_id",
-    "owner_id"
-  ];
-
-  let foundSupportedColumn =
-    false;
-
-  for(
-    const column
-    of possibleColumns
-  ){
-
-    /*
-      Only try to change a direct-reference column if it
-      actually appeared on the loaded club object.
-    */
-
-    if(
-      !Object.prototype.hasOwnProperty.call(
-        clubData || {},
-        column
-      )
-    ){
-      continue;
-    }
-
-    foundSupportedColumn =
-      true;
-
-    const payload = {
-      [column]:newPresidentId
-    };
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("clubs")
-        .update(payload)
-        .eq(
-          "id",
-          clubId
-        );
-
-    if(error){
-
-      if(
-        isSchemaError(
-          error
-        )
-      ){
-        continue;
-      }
-
-      throw error;
-
-    }
-
-    return;
-
-  }
-
-  if(
-    !foundSupportedColumn
-  ){
-
-    return;
-
-  }
-
-}
-
-
-/* =========================================================
-   MODERATION / AUDIT LOG
-========================================================= */
-
-async function recordTransferLog(
-  oldPresidentId,
-  newPresidentId
-){
-
-  const payloads = [
-
-    {
-      club_id:clubId,
-      moderator_id:oldPresidentId,
-      user_id:newPresidentId,
-      target_user_id:newPresidentId,
-      action:"presidency_transfer",
-      reason:"Club presidency transferred."
-    },
-
-    {
-      club_id:clubId,
-      moderator_id:oldPresidentId,
-      target_user_id:newPresidentId,
-      action:"presidency_transfer"
-    },
-
-    {
-      club_id:clubId,
-      user_id:newPresidentId,
-      action:"presidency_transfer"
-    }
-
-  ];
-
-  for(
-    const payload
-    of payloads
-  ){
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("moderation_logs")
-        .insert(payload);
-
-    if(!error){
-      return;
-    }
-
-    if(
-      !isSchemaError(
-        error
-      )
-    ){
-
-      console.warn(
-        "Presidency transfer log:",
-        error.message
-      );
-
-      return;
-
-    }
-
-  }
-
-}
+/* CONTINUE WITH PART 2 */
   /* =========================================================
-   TRANSFER PRESIDENCY
-========================================================= */
+   ATOMIC PRESIDENCY TRANSFER
+   ========================================================= */
 
 async function transferPresidency(){
 
@@ -2918,11 +2116,9 @@ async function transferPresidency(){
   if(
     !selectedUserId
   ){
-
     throw new Error(
       "Choose a member to become President."
     );
-
   }
 
   const oldPresidentId =
@@ -2931,118 +2127,42 @@ async function transferPresidency(){
     );
 
   if(
+    !siteAdmin &&
     String(oldPresidentId) !==
     String(currentUser.id)
   ){
-
     throw new Error(
       "Your account is no longer the current club President."
     );
-
   }
 
   if(
     String(selectedUserId) ===
     String(oldPresidentId)
   ){
-
     throw new Error(
-      "You cannot transfer the presidency to yourself."
+      "That user is already the club President."
     );
-
-  }
-
-  /*
-    Re-check that the selected reader is still an active
-    member immediately before changing any roles.
-  */
-
-  const {
-    data:freshMembers,
-    error:freshMembersError
-  } =
-    await supabaseClient
-      .from("club_members")
-      .select("*")
-      .eq(
-        "club_id",
-        clubId
-      );
-
-  if(
-    freshMembersError
-  ){
-    throw freshMembersError;
-  }
-
-  const activeFreshMembers =
-    (freshMembers || [])
-      .filter(
-        row => {
-
-          const status =
-            normalize(
-              row.status
-            );
-
-          return !(
-            status === "pending" ||
-            status === "rejected" ||
-            status === "denied" ||
-            status === "removed" ||
-            status === "banned"
-          );
-
-        }
-      );
-
-  const freshPresident =
-    activeFreshMembers.find(
-      row =>
-        isPresident(row)
-    );
-
-  if(
-    !freshPresident ||
-    String(
-      rowUserId(
-        freshPresident
-      )
-    ) !==
-    String(
-      currentUser.id
-    )
-  ){
-
-    throw new Error(
-      "Club leadership changed while this page was open. Reload the page before trying again."
-    );
-
   }
 
   const selectedMembership =
-    activeFreshMembers.find(
+    eligibleMembers().find(
       row =>
         String(
           rowUserId(row)
         ) ===
-        String(
-          selectedUserId
-        )
+        String(selectedUserId)
     );
 
   if(
     !selectedMembership
   ){
-
     throw new Error(
-      "The selected reader is no longer an active club member."
+      "The selected member is no longer eligible to become President."
     );
-
   }
 
-  transferInProgress =
-    true;
+  transferInProgress = true;
 
   confirmTransferButton.disabled =
     true;
@@ -3050,108 +2170,56 @@ async function transferPresidency(){
   confirmTransferButton.textContent =
     "Transferring...";
 
-  /*
-    IMPORTANT:
-
-    The ideal long-term implementation is a Supabase RPC
-    that performs the entire leadership transfer inside
-    one PostgreSQL transaction.
-
-    Until that database function exists, this page uses
-    careful sequential updates plus rollback attempts.
-  */
-
-  let newPresidentPromoted =
-    false;
-
-  let oldPresidentDemoted =
-    false;
-
   try{
 
     /*
-      STEP 1
+      ONE database operation.
 
-      Promote the selected member first.
+      Migration #4 handles:
+      - locking the club
+      - authorization
+      - validating the new President
+      - demoting the old President
+      - promoting the new President
+      - updating clubs.president_id
+      - integrity checks
+      - audit logging
 
-      This briefly allows two President rows rather than
-      risking a moment where the club has no President.
+      PostgreSQL rolls the entire operation back if any
+      part of the transfer fails.
     */
 
-    await updateMemberRole(
-      selectedUserId,
-      "President"
-    );
+    const {
+      error
+    } =
+      await supabaseClient.rpc(
+        "transfer_club_presidency",
+        {
+          check_club_id:
+            Number(clubId),
 
-    newPresidentPromoted =
-      true;
-
-    /*
-      STEP 2
-
-      Demote the old President to Admin.
-    */
-
-    await updateMemberRole(
-      oldPresidentId,
-      "Admin"
-    );
-
-    oldPresidentDemoted =
-      true;
-
-    /*
-      STEP 3
-
-      Update a direct President reference on clubs if this
-      version of the schema contains one.
-    */
-
-    await updateClubPresidentReference(
-      selectedUserId
-    );
-
-    /*
-      STEP 4
-
-      Record an audit entry if moderation_logs supports it.
-      Failure to write the optional log does not undo a
-      successful leadership transfer.
-    */
-
-    try{
-
-      await recordTransferLog(
-        oldPresidentId,
-        selectedUserId
+          new_president_id:
+            selectedUserId
+        }
       );
 
-    }
-
-    catch(logError){
-
-      console.warn(
-        "Transfer audit log:",
-        logError.message
-      );
-
+    if(error){
+      throw error;
     }
 
     const selectedProfile =
       memberProfiles.get(
-        String(
-          selectedUserId
-        )
+        String(selectedUserId)
       );
 
-    const selectedName =
+    const newPresidentName =
       profileName(
         selectedProfile,
         selectedUserId
       );
 
     showStatus(
-      `${selectedName} is now the club President. Your role is now Admin.`,
+      `${newPresidentName} is now the club President.`,
       "success"
     );
 
@@ -3160,8 +2228,9 @@ async function transferPresidency(){
     );
 
     /*
-      Redirect to the club overview after a short success
-      message.
+      The current user's permissions changed during the RPC.
+      Go back to the club rather than leaving stale President
+      controls on screen.
     */
 
     setTimeout(
@@ -3177,7 +2246,6 @@ async function transferPresidency(){
     );
 
   }
-
   catch(error){
 
     console.error(
@@ -3185,120 +2253,7 @@ async function transferPresidency(){
       error
     );
 
-    /*
-      ROLLBACK
-
-      If the selected member was promoted but the old
-      President could not be demoted, return the selected
-      member to their previous role.
-    */
-
-    if(
-      newPresidentPromoted &&
-      !oldPresidentDemoted
-    ){
-
-      try{
-
-        const originalRole =
-          normalize(
-            rowRole(
-              selectedMembership
-            )
-          ) === "admin"
-            ? "Admin"
-            : "Member";
-
-        await updateMemberRole(
-          selectedUserId,
-          originalRole
-        );
-
-      }
-
-      catch(rollbackError){
-
-        console.error(
-          "New President rollback failed:",
-          rollbackError
-        );
-
-      }
-
-    }
-
-    /*
-      If both role changes happened but updating another
-      leadership reference failed, attempt to restore both
-      roles to their original state.
-    */
-
-    else if(
-      newPresidentPromoted &&
-      oldPresidentDemoted
-    ){
-
-      const originalSelectedRole =
-        normalize(
-          rowRole(
-            selectedMembership
-          )
-        ) === "admin"
-          ? "Admin"
-          : "Member";
-
-      let oldPresidentRestored =
-        false;
-
-      try{
-
-        await updateMemberRole(
-          oldPresidentId,
-          "President"
-        );
-
-        oldPresidentRestored =
-          true;
-
-      }
-
-      catch(rollbackError){
-
-        console.error(
-          "Old President rollback failed:",
-          rollbackError
-        );
-
-      }
-
-      if(
-        oldPresidentRestored
-      ){
-
-        try{
-
-          await updateMemberRole(
-            selectedUserId,
-            originalSelectedRole
-          );
-
-        }
-
-        catch(rollbackError){
-
-          console.error(
-            "Selected member rollback failed:",
-            rollbackError
-          );
-
-        }
-
-      }
-
-    }
-
-    transferInProgress =
-      false;
+    transferInProgress = false;
 
     confirmTransferButton.textContent =
       "Transfer Presidency";
@@ -3317,7 +2272,7 @@ async function transferPresidency(){
 
 /* =========================================================
    CONFIRM TRANSFER
-========================================================= */
+   ========================================================= */
 
 confirmTransferButton.addEventListener(
   "click",
@@ -3338,7 +2293,6 @@ confirmTransferButton.addEventListener(
       await transferPresidency();
 
     }
-
     catch(error){
 
       showStatus(
@@ -3355,20 +2309,13 @@ confirmTransferButton.addEventListener(
 
 /* =========================================================
    CURRENT USER NAV PROFILE
-========================================================= */
+   ========================================================= */
 
 async function loadCurrentUserProfile(){
 
-  if(
-    !currentUser
-  ){
+  if(!currentUser){
     return;
   }
-
-  const navAvatar =
-    document.getElementById(
-      "navAvatar"
-    );
 
   const profile =
     await loadPublicProfile(
@@ -3386,12 +2333,14 @@ async function loadCurrentUserProfile(){
       profile
     );
 
-  navAvatar.innerHTML =
-    "";
+  const navAvatar =
+    document.getElementById(
+      "navAvatar"
+    );
 
-  if(
-    avatar
-  ){
+  navAvatar.innerHTML = "";
+
+  if(avatar){
 
     const image =
       document.createElement(
@@ -3420,7 +2369,6 @@ async function loadCurrentUserProfile(){
     );
 
   }
-
   else{
 
     navAvatar.textContent =
@@ -3432,66 +2380,8 @@ async function loadCurrentUserProfile(){
 
 
 /* =========================================================
-   SITE ADMIN NAV
-========================================================= */
-
-async function loadAdminStatus(){
-
-  if(
-    !currentUser
-  ){
-    return;
-  }
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("admin_users")
-        .select("user_id")
-        .eq(
-          "user_id",
-          currentUser.id
-        )
-        .maybeSingle();
-
-    if(
-      error
-    ){
-      throw error;
-    }
-
-    if(
-      data
-    ){
-
-      document.getElementById(
-        "adminLink"
-      ).style.display =
-        "inline-flex";
-
-    }
-
-  }
-
-  catch(error){
-
-    console.warn(
-      "Admin status:",
-      error.message
-    );
-
-  }
-
-}
-
-
-/* =========================================================
    SESSION
-========================================================= */
+   ========================================================= */
 
 async function requireSession(){
 
@@ -3503,9 +2393,7 @@ async function requireSession(){
       .auth
       .getSession();
 
-  if(
-    error
-  ){
+  if(error){
     throw error;
   }
 
@@ -3543,7 +2431,7 @@ async function requireSession(){
 
 /* =========================================================
    AUTH STATE
-========================================================= */
+   ========================================================= */
 
 supabaseClient
   .auth
@@ -3579,7 +2467,7 @@ supabaseClient
 
 /* =========================================================
    DISABLE TRANSFER PAGE
-========================================================= */
+   ========================================================= */
 
 function disableTransferPage(){
 
@@ -3607,7 +2495,7 @@ function disableTransferPage(){
 
 /* =========================================================
    INITIAL MEMBER PLACEHOLDER
-========================================================= */
+   ========================================================= */
 
 function renderLoadingMembers(){
 
@@ -3631,7 +2519,7 @@ function renderLoadingMembers(){
 
 /* =========================================================
    START PAGE
-========================================================= */
+   ========================================================= */
 
 async function startTransferPage(){
 
@@ -3664,21 +2552,35 @@ async function startTransferPage(){
     }
 
     /*
-      Load the club and membership roster before checking
-      President access.
+      Load the club first because clubs.president_id is the
+      canonical President reference used by Migration #4.
     */
 
-    await Promise.all([
-      loadClub(),
-      loadMembers()
-    ]);
-
-    findPresidentFallback();
-
-    verifyPresidentAccess();
+    await loadClub();
 
     /*
-      Load member profiles after access is confirmed.
+      Site-admin status is loaded before the access check so
+      DogEar administrators retain recovery authority.
+    */
+
+    await loadAdminStatus();
+
+    /*
+      Load active club membership records.
+    */
+
+    await loadMembers();
+
+    /*
+      Confirm that the visitor is either the current
+      President or a DogEar site administrator.
+    */
+
+    verifyTransferAccess();
+
+    /*
+      Load display information for the President and all
+      eligible replacement members.
     */
 
     await loadMemberProfiles();
@@ -3688,16 +2590,16 @@ async function startTransferPage(){
     renderMembers();
 
     /*
-      Navigation/profile data is non-critical.
+      Navigation profile is non-critical to the transfer.
     */
 
-    await Promise.allSettled([
-      loadCurrentUserProfile(),
-      loadAdminStatus()
-    ]);
+    await Promise.allSettled(
+      [
+        loadCurrentUserProfile()
+      ]
+    );
 
   }
-
   catch(error){
 
     console.error(
@@ -3720,8 +2622,7 @@ async function startTransferPage(){
 
         <p>
           Return to the club settings page or refresh after
-          confirming that your account is the current club
-          President.
+          confirming the club's current leadership.
         </p>
 
       </div>
@@ -3730,7 +2631,6 @@ async function startTransferPage(){
     disableTransferPage();
 
   }
-
   finally{
 
     hideLoading();
@@ -3742,7 +2642,7 @@ async function startTransferPage(){
 
 /* =========================================================
    START DOGEAR PRESIDENT TRANSFER
-========================================================= */
+   ========================================================= */
 
 startTransferPage();
 
