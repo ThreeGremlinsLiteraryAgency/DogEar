@@ -1,0 +1,3915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>Search | DogEar</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+:root{
+  --bg:#f4efe6;
+  --paper:#fffaf2;
+  --paper-2:#f9f2e7;
+  --ink:#2f2924;
+  --muted:#766d64;
+  --line:#ded3c4;
+  --accent:#8f6652;
+  --accent-dark:#684838;
+  --accent-soft:#ead9ca;
+  --shadow:0 16px 40px rgba(59,43,32,.08);
+  --radius:22px;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(255,255,255,.75),
+      transparent 32%
+    ),
+    var(--bg);
+  color:var(--ink);
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+}
+
+body.loading-lock{
+  overflow:hidden;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+button,
+input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading-screen{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--bg);
+  transition:
+    opacity .25s ease,
+    visibility .25s ease;
+}
+
+.loading-screen.hidden{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+
+.loading-inner{
+  text-align:center;
+}
+
+.loading-mark{
+  width:48px;
+  height:48px;
+  margin:0 auto 16px;
+  border-radius:50% 50% 45% 55%;
+  border:2px solid var(--accent);
+  position:relative;
+  animation:floatMark 1.4s ease-in-out infinite;
+}
+
+.loading-mark::after{
+  content:"";
+  position:absolute;
+  width:13px;
+  height:17px;
+  right:-3px;
+  top:-4px;
+  background:var(--bg);
+  border-left:2px solid var(--accent);
+  transform:rotate(35deg);
+}
+
+.loading-text{
+  color:var(--muted);
+  font-size:14px;
+  letter-spacing:.06em;
+}
+
+@keyframes floatMark{
+  0%,100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-5px);
+  }
+}
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar{
+  height:72px;
+  padding:0 32px;
+  border-bottom:1px solid rgba(111,91,76,.13);
+  background:rgba(244,239,230,.92);
+  backdrop-filter:blur(16px);
+  position:sticky;
+  top:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.brand-mark{
+  width:28px;
+  height:28px;
+  border:1.8px solid var(--accent);
+  border-radius:50% 50% 45% 55%;
+  position:relative;
+  display:inline-block;
+}
+
+.brand-mark::after{
+  content:"";
+  position:absolute;
+  width:8px;
+  height:10px;
+  top:-3px;
+  right:-2px;
+  background:var(--bg);
+  border-left:1.8px solid var(--accent);
+  transform:rotate(35deg);
+}
+
+.nav{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.nav a{
+  padding:10px 15px;
+  border-radius:999px;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.nav a:hover{
+  color:var(--ink);
+  background:rgba(255,255,255,.68);
+}
+
+.nav-right{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.search-nav-button{
+  padding:9px 13px;
+  border-radius:999px;
+  background:rgba(255,255,255,.68);
+  color:var(--ink);
+  font-size:13px;
+}
+
+.admin-link{
+  display:none;
+  padding:9px 12px;
+  border-radius:999px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.avatar{
+  width:39px;
+  height:39px;
+  border-radius:50%;
+  overflow:hidden;
+  background:var(--accent-dark);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  font-weight:700;
+  box-shadow:0 5px 15px rgba(68,47,37,.16);
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.page{
+  width:min(1180px, calc(100% - 48px));
+  margin:0 auto;
+  padding:48px 0 100px;
+}
+
+/* =========================================================
+   SEARCH HERO
+========================================================= */
+
+.search-hero{
+  text-align:center;
+  max-width:820px;
+  margin:0 auto 38px;
+}
+
+.eyebrow{
+  color:var(--accent);
+  text-transform:uppercase;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.15em;
+  margin-bottom:12px;
+}
+
+.search-hero h1{
+  margin:0;
+  font-size:clamp(42px,6vw,68px);
+  line-height:1;
+  font-weight:500;
+  letter-spacing:-.045em;
+}
+
+.search-hero p{
+  max-width:650px;
+  margin:18px auto 0;
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.7;
+}
+
+/* =========================================================
+   MAIN SEARCH
+========================================================= */
+
+.search-shell{
+  margin:0 auto;
+  padding:9px;
+  max-width:900px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:9px;
+  border:1px solid var(--line);
+  border-radius:21px;
+  background:var(--paper);
+  box-shadow:var(--shadow);
+}
+
+.search-input-wrap{
+  position:relative;
+}
+
+.search-symbol{
+  position:absolute;
+  left:18px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--muted);
+  font-size:20px;
+  pointer-events:none;
+}
+
+.search-input{
+  width:100%;
+  height:58px;
+  padding:0 18px 0 51px;
+  border:0;
+  border-radius:14px;
+  outline:none;
+  background:transparent;
+  color:var(--ink);
+  font-size:16px;
+}
+
+.search-input::placeholder{
+  color:#9a9086;
+}
+
+.search-submit{
+  min-width:126px;
+  height:58px;
+  padding:0 23px;
+  border:0;
+  border-radius:14px;
+  background:var(--accent-dark);
+  color:white;
+  font-weight:700;
+}
+
+.search-submit:hover{
+  filter:brightness(.96);
+}
+
+.search-summary{
+  max-width:900px;
+  min-height:23px;
+  margin:13px auto 0;
+  color:var(--muted);
+  font-size:13px;
+  text-align:center;
+}
+
+/* =========================================================
+   FILTER TABS
+========================================================= */
+
+.tabs{
+  margin:35px 0 25px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.tab{
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:rgba(255,250,242,.7);
+  color:var(--muted);
+  padding:10px 17px;
+  font-size:13px;
+}
+
+.tab:hover{
+  background:var(--paper);
+  color:var(--ink);
+}
+
+.tab.active{
+  border-color:var(--accent-dark);
+  background:var(--accent-dark);
+  color:#fff;
+}
+
+.tab-count{
+  margin-left:5px;
+  opacity:.7;
+}
+
+/* =========================================================
+   RESULTS
+========================================================= */
+
+.results{
+  margin-top:10px;
+}
+
+.result-section{
+  margin-top:38px;
+}
+
+.result-section.hidden{
+  display:none;
+}
+
+.section-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:18px;
+  margin-bottom:17px;
+}
+
+.section-kicker{
+  margin-bottom:6px;
+  color:var(--accent);
+  font-size:10px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.13em;
+}
+
+.section-head h2{
+  margin:0;
+  font-size:28px;
+  font-weight:500;
+  letter-spacing:-.025em;
+}
+
+.section-count{
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* =========================================================
+   BOOK RESULTS
+========================================================= */
+
+.book-results{
+  display:grid;
+  gap:12px;
+}
+
+.book-result{
+  display:grid;
+  grid-template-columns:82px minmax(0,1fr) auto;
+  gap:18px;
+  align-items:center;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:var(--paper);
+  box-shadow:0 7px 22px rgba(59,43,32,.045);
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease;
+}
+
+.book-result:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 27px rgba(59,43,32,.08);
+}
+
+.book-result-cover{
+  width:82px;
+  height:120px;
+  border-radius:10px;
+  overflow:hidden;
+  background:
+    linear-gradient(
+      135deg,
+      #d9cabb,
+      #b7a18e
+    );
+}
+
+.book-result-cover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.cover-placeholder{
+  width:100%;
+  height:100%;
+  padding:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:#fff;
+  font-size:11px;
+  line-height:1.3;
+}
+
+.result-title{
+  margin:0;
+  font-size:21px;
+  font-weight:600;
+  line-height:1.25;
+}
+
+.result-subtitle{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.result-description{
+  max-width:720px;
+  margin-top:10px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.55;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+.result-action{
+  align-self:center;
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:9px 13px;
+  color:var(--accent-dark);
+  background:#fffdf9;
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+/* =========================================================
+   CLUB RESULTS
+========================================================= */
+
+.club-results{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+
+.club-result{
+  padding:20px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:var(--paper);
+  box-shadow:0 7px 22px rgba(59,43,32,.045);
+}
+
+.club-result-top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.club-symbol{
+  width:42px;
+  height:42px;
+  flex:0 0 42px;
+  border-radius:13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--accent-soft);
+  color:var(--accent-dark);
+}
+
+.club-result h3{
+  margin:0;
+  font-size:19px;
+  font-weight:600;
+}
+
+.club-meta{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.club-description{
+  min-height:40px;
+  margin:13px 0 0;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}
+
+.club-result-bottom{
+  margin-top:15px;
+  padding-top:13px;
+  border-top:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.club-member-count{
+  color:var(--muted);
+  font-size:11px;
+}
+
+.club-link{
+  color:var(--accent-dark);
+  font-size:11px;
+  font-weight:700;
+}
+
+/* =========================================================
+   READER RESULTS
+========================================================= */
+
+.people-results{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+
+.person-result{
+  padding:19px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:var(--paper);
+  text-align:center;
+}
+
+.person-avatar{
+  width:64px;
+  height:64px;
+  margin:0 auto;
+  border-radius:50%;
+  overflow:hidden;
+  background:var(--accent-dark);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+}
+
+.person-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.person-result h3{
+  margin:12px 0 0;
+  font-size:17px;
+}
+
+.person-handle{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.person-bio{
+  min-height:38px;
+  margin:10px 0 0;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.55;
+}
+
+.person-link{
+  display:inline-block;
+  margin-top:12px;
+  color:var(--accent-dark);
+  font-size:11px;
+  font-weight:700;
+}
+
+/* =========================================================
+   EMPTY / INITIAL
+========================================================= */
+
+.search-empty{
+  padding:62px 25px;
+  border:1px dashed #cdbfac;
+  border-radius:22px;
+  background:rgba(255,250,242,.5);
+  text-align:center;
+}
+
+.empty-symbol{
+  width:55px;
+  height:55px;
+  margin:0 auto 15px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--accent-soft);
+  color:var(--accent-dark);
+  font-size:22px;
+}
+
+.search-empty h2{
+  margin:0;
+  font-size:24px;
+  font-weight:500;
+}
+
+.search-empty p{
+  max-width:520px;
+  margin:10px auto 0;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+}
+
+/* =========================================================
+   LOAD MORE
+========================================================= */
+
+.load-more-wrap{
+  margin-top:18px;
+  text-align:center;
+}
+
+.load-more{
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:11px 18px;
+  background:var(--paper);
+  color:var(--accent-dark);
+  font-size:12px;
+  font-weight:700;
+}
+
+.load-more:hover{
+  background:#fff;
+}
+
+.load-more[hidden]{
+  display:none;
+}
+
+/* =========================================================
+   MOBILE NAV
+========================================================= */
+
+.mobile-nav{
+  display:none;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:850px){
+
+  .people-results{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+}
+
+@media(max-width:720px){
+
+  body{
+    padding-bottom:72px;
+  }
+
+  .topbar{
+    height:64px;
+    padding:0 18px;
+  }
+
+  .nav{
+    display:none;
+  }
+
+  .search-nav-button,
+  .admin-link{
+    display:none !important;
+  }
+
+  .page{
+    width:min(100% - 24px,1180px);
+    padding-top:30px;
+  }
+
+  .search-hero{
+    margin-bottom:28px;
+  }
+
+  .search-hero h1{
+    font-size:45px;
+  }
+
+  .search-shell{
+    grid-template-columns:1fr;
+  }
+
+  .search-submit{
+    width:100%;
+  }
+
+  .book-result{
+    grid-template-columns:68px minmax(0,1fr);
+    gap:13px;
+  }
+
+  .book-result-cover{
+    width:68px;
+    height:101px;
+  }
+
+  .book-result .result-action{
+    display:none;
+  }
+
+  .club-results{
+    grid-template-columns:1fr;
+  }
+
+  .people-results{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .section-head{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:6px;
+  }
+
+  .mobile-nav{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:200;
+    height:66px;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    border-top:1px solid var(--line);
+    background:rgba(255,250,242,.96);
+    backdrop-filter:blur(16px);
+  }
+
+  .mobile-nav a{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+    color:var(--muted);
+    font-size:9px;
+    text-transform:uppercase;
+  }
+
+  .mobile-icon{
+    font-size:17px;
+  }
+
+}
+
+@media(max-width:460px){
+
+  .brand{
+    font-size:11px;
+  }
+
+  .people-results{
+    grid-template-columns:1fr;
+  }
+
+}
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+.book-result:focus,
+.club-result:focus,
+.person-result:focus{
+  outline:3px solid rgba(143,102,82,.18);
+  outline-offset:3px;
+}
+
+</style>
+</head>
+
+<body class="loading-lock">
+
+<!-- =======================================================
+     LOADING
+======================================================== -->
+
+<div
+  class="loading-screen"
+  id="loadingScreen"
+>
+
+  <div class="loading-inner">
+
+    <div class="loading-mark"></div>
+
+    <div class="loading-text">
+      Opening DogEar search...
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =======================================================
+     TOPBAR
+======================================================== -->
+
+<header class="topbar">
+
+  <a
+    class="brand"
+    href="dashboard.html"
+  >
+
+    <span class="brand-mark"></span>
+
+    DogEar
+
+  </a>
+
+  <nav class="nav">
+
+    <a href="dashboard.html">
+      Home
+    </a>
+
+    <a href="discover.html">
+      Discover
+    </a>
+
+    <a href="clubs.html">
+      Clubs
+    </a>
+
+    <a href="marketplace.html">
+      Books
+    </a>
+
+  </nav>
+
+  <div class="nav-right">
+
+    <a
+      class="search-nav-button"
+      href="search.html"
+    >
+      ⌕ Search
+    </a>
+
+    <a
+      class="admin-link"
+      id="adminLink"
+      href="admin-dashboard.html"
+    >
+      Admin
+    </a>
+
+    <a
+      class="avatar"
+      id="navAvatar"
+      href="profile.html"
+      aria-label="Your profile"
+    >
+      ?
+    </a>
+
+  </div>
+
+</header>
+
+<!-- =======================================================
+     PAGE
+======================================================== -->
+
+<main class="page">
+
+  <!-- =====================================================
+       SEARCH HERO
+  ====================================================== -->
+
+  <section class="search-hero">
+
+    <div class="eyebrow">
+      Search DogEar
+    </div>
+
+    <h1>
+      What are you
+      looking for?
+    </h1>
+
+    <p>
+      Search DogEar for books, authors, book clubs,
+      and readers.
+    </p>
+
+  </section>
+
+  <!-- =====================================================
+       SEARCH FORM
+  ====================================================== -->
+
+  <form
+    class="search-shell"
+    id="searchForm"
+  >
+
+    <div class="search-input-wrap">
+
+      <span class="search-symbol">
+        ⌕
+      </span>
+
+      <input
+        class="search-input"
+        id="searchInput"
+        type="search"
+        autocomplete="off"
+        placeholder="Title, author, ISBN, club, or reader..."
+        aria-label="Search DogEar"
+      >
+
+    </div>
+
+    <button
+      class="search-submit"
+      type="submit"
+    >
+      Search
+    </button>
+
+  </form>
+
+  <div
+    class="search-summary"
+    id="searchSummary"
+  ></div>
+
+  <!-- =====================================================
+       TABS
+  ====================================================== -->
+
+  <div
+    class="tabs"
+    id="searchTabs"
+  >
+
+    <button
+      class="tab active"
+      type="button"
+      data-tab="all"
+    >
+      All
+      <span
+        class="tab-count"
+        id="allCount"
+      ></span>
+    </button>
+
+    <button
+      class="tab"
+      type="button"
+      data-tab="books"
+    >
+      Books
+      <span
+        class="tab-count"
+        id="booksCount"
+      ></span>
+    </button>
+
+    <button
+      class="tab"
+      type="button"
+      data-tab="clubs"
+    >
+      Clubs
+      <span
+        class="tab-count"
+        id="clubsCount"
+      ></span>
+    </button>
+
+    <button
+      class="tab"
+      type="button"
+      data-tab="people"
+    >
+      Readers
+      <span
+        class="tab-count"
+        id="peopleCount"
+      ></span>
+    </button>
+
+  </div>
+
+  <!-- =====================================================
+       INITIAL / EMPTY
+  ====================================================== -->
+
+  <section
+    class="search-empty"
+    id="initialState"
+  >
+
+    <div class="empty-symbol">
+      ⌕
+    </div>
+
+    <h2>
+      Search the shelves.
+    </h2>
+
+    <p>
+      Enter a title, author, ISBN, club name,
+      reader name, or username to start searching.
+    </p>
+
+  </section>
+
+  <!-- =====================================================
+       RESULTS
+  ====================================================== -->
+
+  <div
+    class="results"
+    id="results"
+    hidden
+  >
+
+    <!-- ===================================================
+         BOOK RESULTS
+    ==================================================== -->
+
+    <section
+      class="result-section"
+      id="bookSection"
+    >
+
+      <div class="section-head">
+
+        <div>
+
+          <div class="section-kicker">
+            Books
+          </div>
+
+          <h2>
+            Book Results
+          </h2>
+
+        </div>
+
+        <div
+          class="section-count"
+          id="bookSectionCount"
+        ></div>
+
+      </div>
+
+      <div
+        class="book-results"
+        id="bookResults"
+      ></div>
+
+      <div class="load-more-wrap">
+
+        <button
+          class="load-more"
+          id="loadMoreBooks"
+          type="button"
+          hidden
+        >
+          Load More Books
+        </button>
+
+      </div>
+
+    </section>
+
+    <!-- ===================================================
+         CLUB RESULTS
+    ==================================================== -->
+
+    <section
+      class="result-section"
+      id="clubSection"
+    >
+
+      <div class="section-head">
+
+        <div>
+
+          <div class="section-kicker">
+            Clubs
+          </div>
+
+          <h2>
+            Club Results
+          </h2>
+
+        </div>
+
+        <div
+          class="section-count"
+          id="clubSectionCount"
+        ></div>
+
+      </div>
+
+      <div
+        class="club-results"
+        id="clubResults"
+      ></div>
+
+      <div class="load-more-wrap">
+
+        <button
+          class="load-more"
+          id="loadMoreClubs"
+          type="button"
+          hidden
+        >
+          Load More Clubs
+        </button>
+
+      </div>
+
+    </section>
+
+    <!-- ===================================================
+         READER RESULTS
+    ==================================================== -->
+
+    <section
+      class="result-section"
+      id="peopleSection"
+    >
+
+      <div class="section-head">
+
+        <div>
+
+          <div class="section-kicker">
+            Readers
+          </div>
+
+          <h2>
+            Reader Results
+          </h2>
+
+        </div>
+
+        <div
+          class="section-count"
+          id="peopleSectionCount"
+        ></div>
+
+      </div>
+
+      <div
+        class="people-results"
+        id="peopleResults"
+      ></div>
+
+      <div class="load-more-wrap">
+
+        <button
+          class="load-more"
+          id="loadMorePeople"
+          type="button"
+          hidden
+        >
+          Load More Readers
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+<!-- =======================================================
+     MOBILE NAV
+======================================================== -->
+
+<nav class="mobile-nav">
+
+  <a href="dashboard.html">
+    <span class="mobile-icon">⌂</span>
+    Home
+  </a>
+
+  <a href="discover.html">
+    <span class="mobile-icon">⌕</span>
+    Discover
+  </a>
+
+  <a href="clubs.html">
+    <span class="mobile-icon">◉</span>
+    Clubs
+  </a>
+
+  <a href="marketplace.html">
+    <span class="mobile-icon">▱</span>
+    Books
+  </a>
+
+  <a href="profile.html">
+    <span class="mobile-icon">☺</span>
+    Profile
+  </a>
+
+</nav>
+
+<script>
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+/* =========================================================
+   SEARCH STATE
+========================================================= */
+
+const PAGE_SIZE = 20;
+
+let currentUser = null;
+
+let currentQuery = "";
+
+let currentTab = "all";
+
+let bookResultsData = [];
+let clubResultsData = [];
+let peopleResultsData = [];
+
+let bookVisibleCount =
+  PAGE_SIZE;
+
+let clubVisibleCount =
+  PAGE_SIZE;
+
+let peopleVisibleCount =
+  PAGE_SIZE;
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const loadingScreen =
+  document.getElementById(
+    "loadingScreen"
+  );
+
+const searchForm =
+  document.getElementById(
+    "searchForm"
+  );
+
+const searchInput =
+  document.getElementById(
+    "searchInput"
+  );
+
+const searchSummary =
+  document.getElementById(
+    "searchSummary"
+  );
+
+const initialState =
+  document.getElementById(
+    "initialState"
+  );
+
+const results =
+  document.getElementById(
+    "results"
+  );
+
+const bookSection =
+  document.getElementById(
+    "bookSection"
+  );
+
+const clubSection =
+  document.getElementById(
+    "clubSection"
+  );
+
+const peopleSection =
+  document.getElementById(
+    "peopleSection"
+  );
+
+const bookResults =
+  document.getElementById(
+    "bookResults"
+  );
+
+const clubResults =
+  document.getElementById(
+    "clubResults"
+  );
+
+const peopleResults =
+  document.getElementById(
+    "peopleResults"
+  );
+
+const loadMoreBooks =
+  document.getElementById(
+    "loadMoreBooks"
+  );
+
+const loadMoreClubs =
+  document.getElementById(
+    "loadMoreClubs"
+  );
+
+const loadMorePeople =
+  document.getElementById(
+    "loadMorePeople"
+  );
+
+/* =========================================================
+   BASIC HELPERS
+========================================================= */
+
+function escapeHtml(value){
+
+  return String(
+    value ?? ""
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+}
+
+function normalize(value){
+
+  return String(
+    value ?? ""
+  )
+    .trim()
+    .toLowerCase();
+
+}
+
+function firstValue(
+  object,
+  fields
+){
+
+  for(
+    const field
+    of fields
+  ){
+
+    const value =
+      object?.[field];
+
+    if(
+      value !== undefined &&
+      value !== null &&
+      String(value).trim() !== ""
+    ){
+      return value;
+    }
+
+  }
+
+  return "";
+
+}
+
+function initials(name){
+
+  const pieces =
+    String(
+      name || ""
+    )
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+  if(!pieces.length){
+    return "?";
+  }
+
+  return pieces
+    .slice(0,2)
+    .map(
+      piece =>
+        piece
+          .charAt(0)
+          .toUpperCase()
+    )
+    .join("");
+
+}
+
+function hideLoading(){
+
+  document.body.classList.remove(
+    "loading-lock"
+  );
+
+  loadingScreen.classList.add(
+    "hidden"
+  );
+
+}
+
+/* =========================================================
+   CANONICAL URL HELPERS
+========================================================= */
+
+function bookDetailsUrl(book){
+
+  const id =
+    book?.id;
+
+  if(
+    id === undefined ||
+    id === null ||
+    String(id).trim() === ""
+  ){
+    return "";
+  }
+
+  const returnUrl =
+    "search.html?" +
+    new URLSearchParams({
+      q:currentQuery,
+      tab:currentTab
+    }).toString();
+
+  return (
+    "book-detail.html?" +
+    new URLSearchParams({
+      id:String(id),
+      return:returnUrl
+    }).toString()
+  );
+
+}
+
+function clubDetailsUrl(club){
+
+  if(
+    club?.id === undefined ||
+    club?.id === null
+  ){
+    return "clubs.html";
+  }
+
+  return (
+    "club.html?id=" +
+    encodeURIComponent(
+      club.id
+    )
+  );
+
+}
+
+function personDetailsUrl(person){
+
+  const id =
+    person?.id ||
+    person?.user_id;
+
+  if(!id){
+    return "profile.html";
+  }
+
+  return (
+    "profile.html?id=" +
+    encodeURIComponent(
+      id
+    )
+  );
+/* =========================================================
+   BOOK FIELD HELPERS
+========================================================= */
+
+function bookTitle(book){
+
+  return firstValue(
+    book,
+    [
+      "title",
+      "book_title",
+      "name"
+    ]
+  ) || "Untitled Book";
+
+}
+
+function bookAuthor(book){
+
+  let author =
+    firstValue(
+      book,
+      [
+        "author",
+        "authors",
+        "book_author"
+      ]
+    );
+
+  if(
+    Array.isArray(author)
+  ){
+    author =
+      author.join(", ");
+  }
+
+  return author ||
+    "Unknown author";
+
+}
+
+function bookCover(book){
+
+  return firstValue(
+    book,
+    [
+      "cover_url",
+      "cover",
+      "thumbnail_url",
+      "thumbnail",
+      "image_url",
+      "image",
+      "small_thumbnail"
+    ]
+  );
+
+}
+
+function bookDescription(book){
+
+  return firstValue(
+    book,
+    [
+      "description",
+      "summary",
+      "subtitle"
+    ]
+  );
+
+}
+
+/* =========================================================
+   CLUB FIELD HELPERS
+========================================================= */
+
+function clubName(club){
+
+  return firstValue(
+    club,
+    [
+      "name",
+      "club_name",
+      "title"
+    ]
+  ) || "Book Club";
+
+}
+
+function clubDescription(club){
+
+  return firstValue(
+    club,
+    [
+      "description",
+      "bio",
+      "summary"
+    ]
+  ) ||
+    "A community of readers on DogEar.";
+
+}
+
+function clubMemberCount(club){
+
+  const count =
+    Number(
+      firstValue(
+        club,
+        [
+          "member_count",
+          "members_count"
+        ]
+      )
+    );
+
+  return Number.isFinite(count)
+    ? count
+    : 0;
+
+}
+
+/* =========================================================
+   PERSON FIELD HELPERS
+========================================================= */
+
+function personName(person){
+
+  return firstValue(
+    person,
+    [
+      "display_name",
+      "name",
+      "username"
+    ]
+  ) || "DogEar Reader";
+
+}
+
+function personUsername(person){
+
+  const username =
+    firstValue(
+      person,
+      [
+        "username",
+        "handle"
+      ]
+    );
+
+  if(!username){
+    return "";
+  }
+
+  return String(username)
+    .startsWith("@")
+      ? String(username)
+      : `@${username}`;
+
+}
+
+function personBio(person){
+
+  return firstValue(
+    person,
+    [
+      "bio",
+      "about",
+      "description"
+    ]
+  ) ||
+    "A reader on DogEar.";
+
+}
+
+function personAvatar(person){
+
+  return firstValue(
+    person,
+    [
+      "avatar_url",
+      "profile_image",
+      "image_url"
+    ]
+  );
+
+}
+
+/* =========================================================
+   BOOK SEARCH
+========================================================= */
+
+async function searchBooks(query){
+
+  /*
+    We deliberately pull from the canonical books table.
+
+    book-detail.html expects books.id, so every book result
+    produced here already has the correct canonical ID.
+
+    Search is performed client-side after retrieval because
+    DogEar's books table has evolved and some rows may use
+    slightly different metadata fields.
+  */
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("books")
+        .select("*")
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        )
+        .limit(500);
+
+    if(error){
+      throw error;
+    }
+
+    const normalizedQuery =
+      normalize(query);
+
+    const rows =
+      Array.isArray(data)
+        ? data
+        : [];
+
+    bookResultsData =
+      rows
+        .filter(
+          book => {
+
+            const searchable =
+              [
+                bookTitle(book),
+                bookAuthor(book),
+                book.subtitle,
+                book.description,
+                book.publisher,
+                book.genre,
+                book.genres,
+                book.categories,
+                book.isbn,
+                book.isbn10,
+                book.isbn_10,
+                book.isbn13,
+                book.isbn_13,
+                book.google_books_id
+              ]
+                .flatMap(
+                  value =>
+                    Array.isArray(value)
+                      ? value
+                      : [value]
+                )
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
+
+            return searchable.includes(
+              normalizedQuery
+            );
+
+          }
+        )
+        .sort(
+          (
+            first,
+            second
+          ) =>
+            bookSearchScore(
+              second,
+              normalizedQuery
+            ) -
+            bookSearchScore(
+              first,
+              normalizedQuery
+            )
+        );
+
+  }
+
+  catch(error){
+
+    console.error(
+      "Book search:",
+      error
+    );
+
+    bookResultsData = [];
+
+  }
+
+}
+
+/* =========================================================
+   BOOK SEARCH RELEVANCE
+========================================================= */
+
+function bookSearchScore(
+  book,
+  query
+){
+
+  let score = 0;
+
+  const title =
+    normalize(
+      bookTitle(book)
+    );
+
+  const author =
+    normalize(
+      bookAuthor(book)
+    );
+
+  const isbnValues =
+    [
+      book.isbn,
+      book.isbn10,
+      book.isbn_10,
+      book.isbn13,
+      book.isbn_13
+    ]
+      .filter(Boolean)
+      .map(
+        value =>
+          normalize(value)
+      );
+
+  if(
+    title === query
+  ){
+    score += 100;
+  }
+
+  else if(
+    title.startsWith(query)
+  ){
+    score += 75;
+  }
+
+  else if(
+    title.includes(query)
+  ){
+    score += 55;
+  }
+
+  if(
+    author === query
+  ){
+    score += 60;
+  }
+
+  else if(
+    author.startsWith(query)
+  ){
+    score += 45;
+  }
+
+  else if(
+    author.includes(query)
+  ){
+    score += 35;
+  }
+
+  if(
+    isbnValues.some(
+      isbn =>
+        isbn === query
+    )
+  ){
+    score += 150;
+  }
+
+  return score;
+
+}
+
+/* =========================================================
+   CLUB SEARCH
+========================================================= */
+
+async function searchClubs(query){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("clubs")
+        .select("*")
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        )
+        .limit(300);
+
+    if(error){
+      throw error;
+    }
+
+    const normalizedQuery =
+      normalize(query);
+
+    const rows =
+      Array.isArray(data)
+        ? data
+        : [];
+
+    clubResultsData =
+      rows
+        .filter(
+          club => {
+
+            /*
+              Never expose a club marked private.
+            */
+
+            if(
+              club.is_public === false
+            ){
+              return false;
+            }
+
+            const visibility =
+              normalize(
+                club.visibility ||
+                club.privacy
+              );
+
+            if(
+              visibility === "private"
+            ){
+              return false;
+            }
+
+            const status =
+              normalize(
+                club.status
+              );
+
+            if(
+              status === "deleted" ||
+              status === "suspended" ||
+              status === "disabled"
+            ){
+              return false;
+            }
+
+            const searchable =
+              [
+                clubName(club),
+                clubDescription(club),
+                club.genre,
+                club.genres,
+                club.category,
+                club.tags
+              ]
+                .flatMap(
+                  value =>
+                    Array.isArray(value)
+                      ? value
+                      : [value]
+                )
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
+
+            return searchable.includes(
+              normalizedQuery
+            );
+
+          }
+        )
+        .sort(
+          (
+            first,
+            second
+          ) =>
+            clubSearchScore(
+              second,
+              normalizedQuery
+            ) -
+            clubSearchScore(
+              first,
+              normalizedQuery
+            )
+        );
+
+    await hydrateSearchClubCounts();
+
+  }
+
+  catch(error){
+
+    console.error(
+      "Club search:",
+      error
+    );
+
+    clubResultsData = [];
+
+  }
+
+}
+
+/* =========================================================
+   CLUB RELEVANCE
+========================================================= */
+
+function clubSearchScore(
+  club,
+  query
+){
+
+  const name =
+    normalize(
+      clubName(club)
+    );
+
+  let score = 0;
+
+  if(
+    name === query
+  ){
+    score += 100;
+  }
+
+  else if(
+    name.startsWith(query)
+  ){
+    score += 70;
+  }
+
+  else if(
+    name.includes(query)
+  ){
+    score += 50;
+  }
+
+  return score;
+
+}
+
+/* =========================================================
+   CLUB MEMBER COUNTS
+========================================================= */
+
+async function hydrateSearchClubCounts(){
+
+  const ids =
+    clubResultsData
+      .map(
+        club =>
+          club.id
+      )
+      .filter(
+        value =>
+          value !== undefined &&
+          value !== null
+      );
+
+  if(!ids.length){
+    return;
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("club_members")
+        .select(
+          "club_id,user_id"
+        )
+        .in(
+          "club_id",
+          ids
+        );
+
+    if(error){
+      throw error;
+    }
+
+    const counts =
+      new Map();
+
+    for(
+      const row
+      of (
+        data || []
+      )
+    ){
+
+      const key =
+        String(
+          row.club_id
+        );
+
+      counts.set(
+        key,
+        (
+          counts.get(key) ||
+          0
+        ) + 1
+      );
+
+    }
+
+    clubResultsData =
+      clubResultsData.map(
+        club => ({
+
+          ...club,
+
+          member_count:
+            counts.get(
+              String(
+                club.id
+              )
+            ) ??
+            club.member_count ??
+            0
+
+        })
+      );
+
+  }
+
+  catch(error){
+
+    console.warn(
+      "Search club counts:",
+      error.message
+    );
+
+  }
+
+}
+
+/* =========================================================
+   READER SEARCH
+========================================================= */
+
+async function searchPeople(query){
+
+  /*
+    Reader profiles are fetched through DogEar's
+    get_public_profile RPC rather than directly exposing
+    the entire profiles table.
+
+    We collect user IDs from visible club membership,
+    fetch their public profiles, and then search those.
+  */
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("club_members")
+        .select(
+          "user_id,created_at"
+        )
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        )
+        .limit(500);
+
+    if(error){
+      throw error;
+    }
+
+    const userIds =
+      [
+        ...new Set(
+          (data || [])
+            .map(
+              row =>
+                row.user_id
+            )
+            .filter(Boolean)
+            .map(String)
+        )
+      ];
+
+    if(
+      currentUser?.id &&
+      !userIds.includes(
+        String(
+          currentUser.id
+        )
+      )
+    ){
+
+      userIds.unshift(
+        String(
+          currentUser.id
+        )
+      );
+
+    }
+
+    const profiles =
+      await Promise.all(
+        userIds.map(
+          userId =>
+            loadPublicProfile(
+              userId
+            )
+        )
+      );
+
+    const normalizedQuery =
+      normalize(query);
+
+    peopleResultsData =
+      profiles
+        .filter(Boolean)
+        .filter(
+          person => {
+
+            const searchable =
+              [
+                personName(person),
+                personUsername(person),
+                personBio(person)
+              ]
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
+
+            return searchable.includes(
+              normalizedQuery
+            );
+
+          }
+        )
+        .sort(
+          (
+            first,
+            second
+          ) =>
+            personSearchScore(
+              second,
+              normalizedQuery
+            ) -
+            personSearchScore(
+              first,
+              normalizedQuery
+            )
+        );
+
+  }
+
+  catch(error){
+
+    console.error(
+      "Reader search:",
+      error
+    );
+
+    peopleResultsData = [];
+
+  }
+
+}
+
+/* =========================================================
+   READER RELEVANCE
+========================================================= */
+
+function personSearchScore(
+  person,
+  query
+){
+
+  const name =
+    normalize(
+      personName(person)
+    );
+
+  const username =
+    normalize(
+      personUsername(person)
+        .replace(
+          /^@/,
+          ""
+        )
+    );
+
+  const cleanQuery =
+    normalize(query)
+      .replace(
+        /^@/,
+        ""
+      );
+
+  let score = 0;
+
+  if(
+    name === query
+  ){
+    score += 100;
+  }
+
+  else if(
+    name.startsWith(query)
+  ){
+    score += 70;
+  }
+
+  else if(
+    name.includes(query)
+  ){
+    score += 50;
+  }
+
+  if(
+    username === cleanQuery
+  ){
+    score += 120;
+  }
+
+  else if(
+    username.startsWith(
+      cleanQuery
+    )
+  ){
+    score += 80;
+  }
+
+  else if(
+    username.includes(
+      cleanQuery
+    )
+  ){
+    score += 55;
+  }
+
+  return score;
+
+}
+
+/* =========================================================
+   PUBLIC PROFILE
+========================================================= */
+
+async function loadPublicProfile(
+  userId
+){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "get_public_profile",
+          {
+            check_user_id:
+              userId
+          }
+        );
+
+    if(error){
+      throw error;
+    }
+
+    const profile =
+      Array.isArray(data)
+        ? (
+            data[0] ||
+            null
+          )
+        : (
+            data ||
+            null
+          );
+
+    if(!profile){
+      return null;
+    }
+
+    return {
+
+      ...profile,
+
+      id:
+        profile.id ||
+        profile.user_id ||
+        userId,
+
+      user_id:
+        profile.user_id ||
+        profile.id ||
+        userId
+
+    };
+
+  }
+
+  catch(error){
+
+    console.warn(
+      `Public profile ${userId}:`,
+      error.message
+    );
+
+    return null;
+
+  }
+
+}
+
+/* =========================================================
+   BOOK RESULT MARKUP
+========================================================= */
+
+function bookResultMarkup(book){
+
+  const title =
+    bookTitle(book);
+
+  const author =
+    bookAuthor(book);
+
+  const cover =
+    bookCover(book);
+
+  const description =
+    bookDescription(book);
+
+  const url =
+    bookDetailsUrl(book);
+
+  const coverMarkup =
+    cover
+      ? `
+          <img
+            src="${escapeHtml(
+              cover
+            )}"
+            alt="${escapeHtml(
+              title
+            )} cover"
+            loading="lazy"
+          >
+        `
+      : `
+          <div class="cover-placeholder">
+            ${escapeHtml(
+              title
+            )}
+          </div>
+        `;
+
+  return `
+    <a
+      class="book-result"
+      href="${escapeHtml(
+        url
+      )}"
+    >
+
+      <div class="book-result-cover">
+
+        ${coverMarkup}
+
+      </div>
+
+      <div>
+
+        <h3 class="result-title">
+
+          ${escapeHtml(
+            title
+          )}
+
+        </h3>
+
+        <div class="result-subtitle">
+
+          ${escapeHtml(
+            author
+          )}
+
+        </div>
+
+        ${
+          description
+            ? `
+                <div class="result-description">
+
+                  ${escapeHtml(
+                    description
+                  )}
+
+                </div>
+              `
+            : ""
+        }
+
+      </div>
+
+      <div class="result-action">
+        View Book →
+      </div>
+
+    </a>
+  `;
+
+}
+
+/* =========================================================
+   CLUB RESULT MARKUP
+========================================================= */
+
+function clubResultMarkup(club){
+
+  const name =
+    clubName(club);
+
+  const description =
+    clubDescription(club);
+
+  const memberCount =
+    clubMemberCount(club);
+
+  const url =
+    clubDetailsUrl(club);
+
+  return `
+    <a
+      class="club-result"
+      href="${escapeHtml(
+        url
+      )}"
+    >
+
+      <div class="club-result-top">
+
+        <div class="club-symbol">
+          ◉
+        </div>
+
+        <div>
+
+          <h3>
+
+            ${escapeHtml(
+              name
+            )}
+
+          </h3>
+
+          <div class="club-meta">
+
+            Public Book Club
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <p class="club-description">
+
+        ${escapeHtml(
+          description
+        )}
+
+      </p>
+
+      <div class="club-result-bottom">
+
+        <div class="club-member-count">
+
+          ${memberCount}
+
+          ${
+            memberCount === 1
+              ? "member"
+              : "members"
+          }
+
+        </div>
+
+        <div class="club-link">
+          Visit Club →
+        </div>
+
+      </div>
+
+    </a>
+  `;
+
+}
+
+/* =========================================================
+   PERSON RESULT MARKUP
+========================================================= */
+
+function personResultMarkup(person){
+
+  const name =
+    personName(person);
+
+  const username =
+    personUsername(person);
+
+  const bio =
+    personBio(person);
+
+  const avatar =
+    personAvatar(person);
+
+  const url =
+    personDetailsUrl(person);
+
+  const avatarMarkup =
+    avatar
+      ? `
+          <img
+            src="${escapeHtml(
+              avatar
+            )}"
+            alt="${escapeHtml(
+              name
+            )}"
+            loading="lazy"
+          >
+        `
+      : escapeHtml(
+          initials(name)
+        );
+
+  return `
+    <a
+      class="person-result"
+      href="${escapeHtml(
+        url
+      )}"
+    >
+
+      <div class="person-avatar">
+
+        ${avatarMarkup}
+
+      </div>
+
+      <h3>
+
+        ${escapeHtml(
+          name
+        )}
+
+      </h3>
+
+      ${
+        username
+          ? `
+              <div class="person-handle">
+
+                ${escapeHtml(
+                  username
+                )}
+
+              </div>
+            `
+          : ""
+      }
+
+      <p class="person-bio">
+
+        ${escapeHtml(
+          bio
+        )}
+
+      </p>
+
+      <div class="person-link">
+        View Profile →
+      </div>
+
+    </a>
+  `;
+
+}
+
+/* =========================================================
+   RENDER BOOK RESULTS
+========================================================= */
+
+function renderBookResults(){
+
+  const visible =
+    bookResultsData.slice(
+      0,
+      bookVisibleCount
+    );
+
+  document.getElementById(
+    "booksCount"
+  ).textContent =
+    bookResultsData.length
+      ? `(${bookResultsData.length})`
+      : "(0)";
+
+  document.getElementById(
+    "bookSectionCount"
+  ).textContent =
+    bookResultsData.length === 1
+      ? "1 result"
+      : `${bookResultsData.length} results`;
+
+  if(
+    !bookResultsData.length
+  ){
+
+    bookResults.innerHTML = `
+      <div class="search-empty">
+
+        <div class="empty-symbol">
+          ▱
+        </div>
+
+        <h2>
+          No books found.
+        </h2>
+
+        <p>
+          No books in DogEar's catalog matched this search.
+        </p>
+
+      </div>
+    `;
+
+    loadMoreBooks.hidden =
+      true;
+
+    return;
+
+  }
+
+  bookResults.innerHTML =
+    visible
+      .map(
+        book =>
+          bookResultMarkup(book)
+      )
+      .join("");
+
+  loadMoreBooks.hidden =
+    visible.length >=
+    bookResultsData.length;
+
+}
+
+/* =========================================================
+   RENDER CLUB RESULTS
+========================================================= */
+
+function renderClubResults(){
+
+  const visible =
+    clubResultsData.slice(
+      0,
+      clubVisibleCount
+    );
+
+  document.getElementById(
+    "clubsCount"
+  ).textContent =
+    clubResultsData.length
+      ? `(${clubResultsData.length})`
+      : "(0)";
+
+  document.getElementById(
+    "clubSectionCount"
+  ).textContent =
+    clubResultsData.length === 1
+      ? "1 result"
+      : `${clubResultsData.length} results`;
+
+  if(
+    !clubResultsData.length
+  ){
+
+    clubResults.innerHTML = `
+      <div class="search-empty">
+
+        <div class="empty-symbol">
+          ◉
+        </div>
+
+        <h2>
+          No clubs found.
+        </h2>
+
+        <p>
+          No public DogEar clubs matched this search.
+        </p>
+
+      </div>
+    `;
+
+    loadMoreClubs.hidden =
+      true;
+
+    return;
+
+  }
+
+  clubResults.innerHTML =
+    visible
+      .map(
+        club =>
+          clubResultMarkup(club)
+      )
+      .join("");
+
+  loadMoreClubs.hidden =
+    visible.length >=
+    clubResultsData.length;
+
+}
+
+/* =========================================================
+   RENDER PEOPLE RESULTS
+========================================================= */
+
+function renderPeopleResults(){
+
+  const visible =
+    peopleResultsData.slice(
+      0,
+      peopleVisibleCount
+    );
+
+  document.getElementById(
+    "peopleCount"
+  ).textContent =
+    peopleResultsData.length
+      ? `(${peopleResultsData.length})`
+      : "(0)";
+
+  document.getElementById(
+    "peopleSectionCount"
+  ).textContent =
+    peopleResultsData.length === 1
+      ? "1 result"
+      : `${peopleResultsData.length} results`;
+
+  if(
+    !peopleResultsData.length
+  ){
+
+    peopleResults.innerHTML = `
+      <div class="search-empty">
+
+        <div class="empty-symbol">
+          ☺
+        </div>
+
+        <h2>
+          No readers found.
+        </h2>
+
+        <p>
+          No public DogEar reader profiles matched
+          this search.
+        </p>
+
+      </div>
+    `;
+
+    loadMorePeople.hidden =
+      true;
+
+    return;
+
+  }
+
+  peopleResults.innerHTML =
+    visible
+      .map(
+        person =>
+          personResultMarkup(
+            person
+          )
+      )
+      .join("");
+
+  loadMorePeople.hidden =
+    visible.length >=
+    peopleResultsData.length;
+
+}
+
+/* =========================================================
+   RESULT COUNTS
+========================================================= */
+
+function updateTotalCount(){
+
+  const total =
+    bookResultsData.length +
+    clubResultsData.length +
+    peopleResultsData.length;
+
+  document.getElementById(
+    "allCount"
+  ).textContent =
+    `(${total})`;
+
+  if(
+    total === 0
+  ){
+
+    searchSummary.textContent =
+      `No results for “${currentQuery}”.`;
+
+    return;
+
+  }
+
+  searchSummary.textContent =
+    `${total} ${
+      total === 1
+        ? "result"
+        : "results"
+    } for “${currentQuery}”.`;
+
+}
+
+/* =========================================================
+   RENDER EVERYTHING
+========================================================= */
+
+function renderSearchResults(){
+
+  renderBookResults();
+
+  renderClubResults();
+
+  renderPeopleResults();
+
+  updateTotalCount();
+
+  updateTabVisibility();
+
+}
+
+/* =========================================================
+   TAB VISIBILITY
+========================================================= */
+
+function updateTabVisibility(){
+
+  bookSection.classList.toggle(
+    "hidden",
+    !(
+      currentTab === "all" ||
+      currentTab === "books"
+    )
+  );
+
+  clubSection.classList.toggle(
+    "hidden",
+    !(
+      currentTab === "all" ||
+      currentTab === "clubs"
+    )
+  );
+
+  peopleSection.classList.toggle(
+    "hidden",
+    !(
+      currentTab === "all" ||
+      currentTab === "people"
+    )
+  );
+
+}
+  /* =========================================================
+   EXECUTE SEARCH
+========================================================= */
+
+async function executeSearch(
+  query,
+  options = {}
+){
+
+  const cleanQuery =
+    String(
+      query || ""
+    ).trim();
+
+  if(!cleanQuery){
+
+    currentQuery = "";
+
+    bookResultsData = [];
+    clubResultsData = [];
+    peopleResultsData = [];
+
+    searchSummary.textContent = "";
+
+    results.hidden =
+      true;
+
+    initialState.hidden =
+      false;
+
+    updateUrl();
+
+    return;
+
+  }
+
+  currentQuery =
+    cleanQuery;
+
+  searchInput.value =
+    cleanQuery;
+
+  bookVisibleCount =
+    PAGE_SIZE;
+
+  clubVisibleCount =
+    PAGE_SIZE;
+
+  peopleVisibleCount =
+    PAGE_SIZE;
+
+  initialState.hidden =
+    true;
+
+  results.hidden =
+    false;
+
+  searchSummary.textContent =
+    `Searching DogEar for “${cleanQuery}”...`;
+
+  bookResults.innerHTML = `
+    <div class="search-empty">
+
+      <div class="empty-symbol">
+        ▱
+      </div>
+
+      <h2>
+        Searching books...
+      </h2>
+
+    </div>
+  `;
+
+  clubResults.innerHTML = `
+    <div class="search-empty">
+
+      <div class="empty-symbol">
+        ◉
+      </div>
+
+      <h2>
+        Searching clubs...
+      </h2>
+
+    </div>
+  `;
+
+  peopleResults.innerHTML = `
+    <div class="search-empty">
+
+      <div class="empty-symbol">
+        ☺
+      </div>
+
+      <h2>
+        Searching readers...
+      </h2>
+
+    </div>
+  `;
+
+  try{
+
+    /*
+      These searches are independent, so run them
+      simultaneously.
+    */
+
+    await Promise.all([
+      searchBooks(
+        cleanQuery
+      ),
+      searchClubs(
+        cleanQuery
+      ),
+      searchPeople(
+        cleanQuery
+      )
+    ]);
+
+    renderSearchResults();
+
+    if(
+      options.updateUrl !== false
+    ){
+      updateUrl();
+    }
+
+  }
+
+  catch(error){
+
+    console.error(
+      "DogEar search:",
+      error
+    );
+
+    searchSummary.textContent =
+      "Something went wrong while searching DogEar.";
+
+  }
+
+}
+
+
+/* =========================================================
+   URL STATE
+========================================================= */
+
+function updateUrl(){
+
+  const url =
+    new URL(
+      location.href
+    );
+
+  if(currentQuery){
+
+    url.searchParams.set(
+      "q",
+      currentQuery
+    );
+
+  }
+
+  else{
+
+    url.searchParams.delete(
+      "q"
+    );
+
+  }
+
+  if(
+    currentTab &&
+    currentTab !== "all"
+  ){
+
+    url.searchParams.set(
+      "tab",
+      currentTab
+    );
+
+  }
+
+  else{
+
+    url.searchParams.delete(
+      "tab"
+    );
+
+  }
+
+  history.replaceState(
+    {},
+    "",
+    url
+  );
+
+}
+
+
+/* =========================================================
+   RESTORE URL
+========================================================= */
+
+function restoreUrlState(){
+
+  const params =
+    new URLSearchParams(
+      location.search
+    );
+
+  const query =
+    params.get("q") ||
+    "";
+
+  const requestedTab =
+    normalize(
+      params.get("tab") ||
+      "all"
+    );
+
+  const allowedTabs =
+    [
+      "all",
+      "books",
+      "clubs",
+      "people"
+    ];
+
+  currentTab =
+    allowedTabs.includes(
+      requestedTab
+    )
+      ? requestedTab
+      : "all";
+
+  currentQuery =
+    query.trim();
+
+  searchInput.value =
+    currentQuery;
+
+  document
+    .querySelectorAll(
+      ".tab[data-tab]"
+    )
+    .forEach(
+      button => {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.tab ===
+            currentTab
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   SEARCH FORM
+========================================================= */
+
+searchForm.addEventListener(
+  "submit",
+  async event => {
+
+    event.preventDefault();
+
+    await executeSearch(
+      searchInput.value
+    );
+
+  }
+);
+
+
+/* =========================================================
+   SEARCH TABS
+========================================================= */
+
+document
+  .querySelectorAll(
+    ".tab[data-tab]"
+  )
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          currentTab =
+            button.dataset.tab ||
+            "all";
+
+          document
+            .querySelectorAll(
+              ".tab[data-tab]"
+            )
+            .forEach(
+              tab => {
+
+                tab.classList.toggle(
+                  "active",
+                  tab === button
+                );
+
+              }
+            );
+
+          updateTabVisibility();
+
+          updateUrl();
+
+        }
+      );
+
+    }
+  );
+
+
+/* =========================================================
+   LOAD MORE BOOKS
+========================================================= */
+
+loadMoreBooks.addEventListener(
+  "click",
+  () => {
+
+    bookVisibleCount +=
+      PAGE_SIZE;
+
+    renderBookResults();
+
+  }
+);
+
+
+/* =========================================================
+   LOAD MORE CLUBS
+========================================================= */
+
+loadMoreClubs.addEventListener(
+  "click",
+  () => {
+
+    clubVisibleCount +=
+      PAGE_SIZE;
+
+    renderClubResults();
+
+  }
+);
+
+
+/* =========================================================
+   LOAD MORE READERS
+========================================================= */
+
+loadMorePeople.addEventListener(
+  "click",
+  () => {
+
+    peopleVisibleCount +=
+      PAGE_SIZE;
+
+    renderPeopleResults();
+
+  }
+);
+
+
+/* =========================================================
+   CURRENT USER NAV PROFILE
+========================================================= */
+
+async function loadCurrentUserProfile(){
+
+  if(!currentUser){
+    return;
+  }
+
+  const navAvatar =
+    document.getElementById(
+      "navAvatar"
+    );
+
+  if(!navAvatar){
+    return;
+  }
+
+  let profile =
+    null;
+
+  try{
+
+    profile =
+      await loadPublicProfile(
+        currentUser.id
+      );
+
+  }
+
+  catch(error){
+
+    console.warn(
+      "Search nav profile:",
+      error
+    );
+
+  }
+
+  const name =
+    profile?.display_name ||
+    profile?.username ||
+    currentUser
+      ?.user_metadata
+      ?.display_name ||
+    currentUser
+      ?.email ||
+    "Reader";
+
+  const avatar =
+    profile?.avatar_url ||
+    currentUser
+      ?.user_metadata
+      ?.avatar_url ||
+    "";
+
+  navAvatar.innerHTML = "";
+
+  if(avatar){
+
+    const image =
+      document.createElement(
+        "img"
+      );
+
+    image.src =
+      avatar;
+
+    image.alt =
+      name;
+
+    image.onerror =
+      () => {
+
+        navAvatar.innerHTML = "";
+
+        navAvatar.textContent =
+          initials(name);
+
+      };
+
+    navAvatar.appendChild(
+      image
+    );
+
+  }
+
+  else{
+
+    navAvatar.textContent =
+      initials(name);
+
+  }
+
+}
+
+
+/* =========================================================
+   ADMIN STATUS
+========================================================= */
+
+async function loadAdminStatus(){
+
+  if(!currentUser){
+    return;
+  }
+
+  const adminLink =
+    document.getElementById(
+      "adminLink"
+    );
+
+  if(!adminLink){
+    return;
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("admin_users")
+        .select("*")
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .maybeSingle();
+
+    if(error){
+      throw error;
+    }
+
+    if(data){
+
+      adminLink.style.display =
+        "inline-flex";
+
+    }
+
+  }
+
+  catch(error){
+
+    console.warn(
+      "Search admin status:",
+      error.message
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   REQUIRE SESSION
+========================================================= */
+
+async function requireSession(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+  if(error){
+    throw error;
+  }
+
+  const session =
+    data?.session ||
+    null;
+
+  if(
+    !session?.user
+  ){
+
+    const currentPage =
+      location.pathname
+        .split("/")
+        .pop() +
+      location.search;
+
+    location.href =
+      "index.html?next=" +
+      encodeURIComponent(
+        currentPage
+      );
+
+    return false;
+
+  }
+
+  currentUser =
+    session.user;
+
+  return true;
+
+}
+
+
+/* =========================================================
+   AUTH STATE CHANGES
+========================================================= */
+
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    (
+      event,
+      session
+    ) => {
+
+      if(
+        event === "SIGNED_OUT"
+      ){
+
+        location.href =
+          "index.html";
+
+        return;
+
+      }
+
+      if(
+        session?.user
+      ){
+
+        currentUser =
+          session.user;
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   KEYBOARD SHORTCUT
+========================================================= */
+
+/*
+  Press "/" anywhere on the page to jump directly
+  into DogEar search.
+*/
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key !== "/"
+    ){
+      return;
+    }
+
+    const active =
+      document.activeElement;
+
+    if(
+      active &&
+      (
+        active.tagName === "INPUT" ||
+        active.tagName === "TEXTAREA"
+      )
+    ){
+      return;
+    }
+
+    event.preventDefault();
+
+    searchInput.focus();
+
+  }
+);
+
+
+/* =========================================================
+   START PAGE
+========================================================= */
+
+async function startSearchPage(){
+
+  try{
+
+    restoreUrlState();
+
+    const authenticated =
+      await requireSession();
+
+    if(!authenticated){
+      return;
+    }
+
+    /*
+      Avatar/admin checks can happen independently.
+    */
+
+    const accountTasks =
+      Promise.allSettled([
+        loadCurrentUserProfile(),
+        loadAdminStatus()
+      ]);
+
+    /*
+      If search.html was opened with:
+
+      search.html?q=fourth+wing
+
+      run that search immediately.
+    */
+
+    if(currentQuery){
+
+      await executeSearch(
+        currentQuery,
+        {
+          updateUrl:false
+        }
+      );
+
+    }
+
+    else{
+
+      initialState.hidden =
+        false;
+
+      results.hidden =
+        true;
+
+      searchSummary.textContent =
+        "";
+
+    }
+
+    updateTabVisibility();
+
+    await accountTasks;
+
+  }
+
+  catch(error){
+
+    console.error(
+      "Search page startup:",
+      error
+    );
+
+    initialState.hidden =
+      false;
+
+    results.hidden =
+      true;
+
+    initialState.innerHTML = `
+      <div class="empty-symbol">
+        !
+      </div>
+
+      <h2>
+        DogEar search couldn't open.
+      </h2>
+
+      <p>
+        Something went wrong while opening the search page.
+        Refresh the page and try again.
+      </p>
+    `;
+
+  }
+
+  finally{
+
+    hideLoading();
+
+  }
+
+}
+
+
+/* =========================================================
+   START DOGEAR SEARCH
+========================================================= */
+
+startSearchPage();
+
+</script>
+
+</body>
+</html>
+
+}
