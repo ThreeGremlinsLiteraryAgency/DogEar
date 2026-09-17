@@ -679,7 +679,8 @@ h1{
   text-transform:uppercase;
   letter-spacing:.06em;
 }
-  .reward-shell{
+
+.reward-shell{
   border:1px solid var(--line);
   border-radius:24px;
   padding:clamp(22px,4vw,36px);
@@ -825,7 +826,6 @@ h1{
   0%,100%{
     transform:translateY(0) rotate(-8deg);
   }
-
   50%{
     transform:translateY(-6px) rotate(-8deg);
   }
@@ -972,6 +972,9 @@ h1{
 </head>
 
 <body class="loading-lock">
+  <!-- =========================================================
+     LOADING SCREEN
+     ========================================================= -->
 
 <div
   class="loading-screen"
@@ -988,14 +991,24 @@ h1{
   </div>
 </div>
 
+
+<!-- =========================================================
+     TOP NAVIGATION
+     ========================================================= -->
+
 <header class="topbar">
 
   <a
     class="brand"
     href="dashboard.html"
   >
+
     <span class="brand-mark"></span>
-    DogEar
+
+    <span>
+      DogEar
+    </span>
+
   </a>
 
   <nav class="nav">
@@ -1016,7 +1029,7 @@ h1{
       class="active"
       href="marketplace.html"
     >
-      Books
+      Marketplace
     </a>
 
   </nav>
@@ -1026,15 +1039,16 @@ h1{
     <a
       class="admin-link"
       id="adminLink"
-      href="admin-dashboard.html"
+      href="admin-marketplace.html"
     >
-      Admin
+      Manage
     </a>
 
     <a
       class="avatar"
       id="navAvatar"
       href="profile.html"
+      aria-label="Your profile"
     >
       ?
     </a>
@@ -1043,41 +1057,52 @@ h1{
 
 </header>
 
+
+<!-- =========================================================
+     PAGE
+     ========================================================= -->
+
 <main class="page">
+
+
+  <!-- =======================================================
+       HERO
+       ======================================================= -->
 
   <section class="hero">
 
     <div class="hero-copy">
 
       <div class="eyebrow">
-        The DogEar Book Marketplace
+        The DogEar Marketplace
       </div>
 
       <h1>
-        Find your next favorite book.
+        Find your next
+        dog-eared favorite.
       </h1>
 
       <p class="hero-description">
-        Browse books being read, discussed, and loved across DogEar.
-        Discover staff picks, featured titles, and new additions —
-        then support independent bookstores when you buy through
-        Bookshop.org.
+        Browse books discovered by the DogEar community,
+        explore staff picks and featured reads, and support
+        independent bookstores when you purchase through
+        DogEar's Bookshop.org links.
       </p>
 
       <div class="hero-actions">
 
         <a
           class="primary-button"
-          href="#featured"
+          href="#allBooks"
         >
-          Browse Books
+          Browse the shelves
         </a>
 
         <a
           class="secondary-button"
-          href="clubs.html"
+          href="discover.html"
         >
-          Explore Book Clubs
+          Discover clubs
         </a>
 
       </div>
@@ -1096,13 +1121,13 @@ h1{
         </div>
 
         <div class="hero-book-title">
-          Read.<br>
-          Talk.<br>
-          Discover.
+          Your next
+          favorite
+          book.
         </div>
 
         <div class="hero-book-foot">
-          Books are better together.
+          Read · Discuss · Repeat
         </div>
 
       </div>
@@ -1110,6 +1135,11 @@ h1{
     </div>
 
   </section>
+
+
+  <!-- =======================================================
+       SEARCH
+       ======================================================= -->
 
   <section class="search-shell">
 
@@ -1123,8 +1153,9 @@ h1{
         class="search-input"
         id="bookSearch"
         type="search"
-        placeholder="Search books, authors, publishers, or ISBN..."
         autocomplete="off"
+        placeholder="Search by title, author, publisher, or ISBN..."
+        aria-label="Search books"
       >
 
     </div>
@@ -1133,14 +1164,15 @@ h1{
       class="search-meta"
       id="searchMeta"
     >
-      Loading books...
+      Loading the shelves...
     </div>
 
   </section>
 
-  <!-- =====================================================
+
+  <!-- =======================================================
        SEARCH RESULTS
-       ===================================================== -->
+       ======================================================= -->
 
   <section
     class="section hidden"
@@ -1171,7 +1203,9 @@ h1{
       <div
         class="section-count"
         id="searchCount"
-      ></div>
+      >
+        0 books
+      </div>
 
     </div>
 
@@ -1182,9 +1216,10 @@ h1{
 
   </section>
 
-  <!-- =====================================================
-       FEATURED BOOKS
-       ===================================================== -->
+
+  <!-- =======================================================
+       FEATURED
+       ======================================================= -->
 
   <section
     class="section"
@@ -1204,7 +1239,8 @@ h1{
         </h2>
 
         <div class="section-description">
-          Books currently being highlighted by the DogEar team.
+          Books currently highlighted across the DogEar
+          Marketplace.
         </div>
 
       </div>
@@ -1212,7 +1248,9 @@ h1{
       <div
         class="section-count"
         id="featuredCount"
-      ></div>
+      >
+        0 books
+      </div>
 
     </div>
 
@@ -1223,9 +1261,10 @@ h1{
 
   </section>
 
-  <!-- =====================================================
+
+  <!-- =======================================================
        STAFF PICKS
-       ===================================================== -->
+       ======================================================= -->
 
   <section
     class="section"
@@ -1237,7 +1276,7 @@ h1{
       <div>
 
         <div class="section-kicker">
-          Handpicked
+          From the Gremlins
         </div>
 
         <h2 class="section-title">
@@ -1245,7 +1284,9 @@ h1{
         </h2>
 
         <div class="section-description">
-          Books the DogEar team thinks deserve a place on your shelf.
+          Books the DogEar team thinks deserve another
+          dog-ear, another chapter, or an irresponsibly
+          late night.
         </div>
 
       </div>
@@ -1253,7 +1294,9 @@ h1{
       <div
         class="section-count"
         id="staffCount"
-      ></div>
+      >
+        0 books
+      </div>
 
     </div>
 
@@ -1264,9 +1307,10 @@ h1{
 
   </section>
 
-  <!-- =====================================================
+
+  <!-- =======================================================
        NEW & NOTEWORTHY
-       ===================================================== -->
+       ======================================================= -->
 
   <section
     class="section"
@@ -1278,7 +1322,7 @@ h1{
       <div>
 
         <div class="section-kicker">
-          Fresh Finds
+          Fresh on the shelves
         </div>
 
         <h2 class="section-title">
@@ -1286,7 +1330,8 @@ h1{
         </h2>
 
         <div class="section-description">
-          Recently highlighted titles and books worth discovering.
+          Books DogEar is currently highlighting as new,
+          interesting, or worth keeping an eye on.
         </div>
 
       </div>
@@ -1294,7 +1339,9 @@ h1{
       <div
         class="section-count"
         id="newCount"
-      ></div>
+      >
+        0 books
+      </div>
 
     </div>
 
@@ -1305,9 +1352,60 @@ h1{
 
   </section>
 
-  <!-- =====================================================
+
+  <!-- =======================================================
+       COIN MARKETPLACE
+       ======================================================= -->
+
+  <section
+    class="section hidden"
+    id="coinMarketplaceSection"
+  >
+
+    <div class="reward-shell">
+
+      <div class="section-head">
+
+        <div>
+
+          <div class="section-kicker">
+            DogEar Coins
+          </div>
+
+          <h2 class="section-title">
+            Reader Rewards
+          </h2>
+
+          <div class="section-description">
+            When DogEar Coins are enabled, eligible readers
+            can use their balance for rewards available in
+            the DogEar Marketplace.
+          </div>
+
+        </div>
+
+        <div
+          class="section-count"
+          id="coinBalanceDisplay"
+        >
+          —
+        </div>
+
+      </div>
+
+      <div
+        class="reward-grid"
+        id="rewardGrid"
+      ></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
        ALL BOOKS
-       ===================================================== -->
+       ======================================================= -->
 
   <section
     class="section"
@@ -1319,20 +1417,28 @@ h1{
       <div>
 
         <div class="section-kicker">
-          The Shelves
+          The library
         </div>
 
         <h2 class="section-title">
-          Browse All Books
+          All Books
         </h2>
 
         <div class="section-description">
-          Explore books currently available in the DogEar catalog.
+          Browse every book currently available on
+          DogEar's shelves.
         </div>
 
       </div>
 
       <div class="catalog-toolbar">
+
+        <div
+          class="section-count"
+          id="allBooksCount"
+        >
+          0 books
+        </div>
 
         <select
           class="sort-select"
@@ -1348,12 +1454,12 @@ h1{
             Title Z–A
           </option>
 
-          <option value="newest">
-            Recently Added
-          </option>
-
           <option value="author">
             Author
+          </option>
+
+          <option value="newest">
+            Recently Added
           </option>
 
         </select>
@@ -1369,75 +1475,48 @@ h1{
 
   </section>
 
-  <!--
-    IMPORTANT:
-    This entire section remains hidden unless BOTH
-    coins_enabled and coin_marketplace_enabled are true.
-  -->
 
-  <section
-    class="section hidden"
-    id="coinMarketplaceSection"
-  >
-
-    <div class="reward-shell">
-
-      <div class="section-head">
-
-        <div>
-
-          <div class="section-kicker">
-            DogEar Rewards
-          </div>
-
-          <h2 class="section-title">
-            Spend Coins
-          </h2>
-
-          <div class="section-description">
-            Use DogEar coins on rewards offered directly by DogEar.
-          </div>
-
-        </div>
-
-      </div>
-
-      <div
-        class="reward-grid"
-        id="rewardGrid"
-      ></div>
-
-    </div>
-
-  </section>
+  <!-- =======================================================
+       FOOTER
+       ======================================================= -->
 
   <footer class="marketplace-foot">
 
     <div>
-      <strong>Buying a book?</strong><br>
-      Eligible purchase links on this page use DogEar's
-      Bookshop.org affiliate relationship.
+      <strong>
+        DogEar
+      </strong>
+      <br>
+      Books are better when somebody else is
+      waiting to talk about them.
     </div>
 
     <div>
-      Purchases are completed on Bookshop.org.
-      DogEar does not set Bookshop.org prices,
-      inventory, shipping, or fulfillment.
+      DogEar may earn a commission from qualifying
+      purchases made through Bookshop.org affiliate links.
     </div>
 
   </footer>
 
 </main>
 
+
+<!-- =========================================================
+     TOAST
+     ========================================================= -->
+
 <div
   class="toast"
   id="toast"
+  role="status"
+  aria-live="polite"
 ></div>
+
 
 <script>
 
 /* =========================================================
-   DOGEAR MARKETPLACE
+   DOGEAR CONFIGURATION
    ========================================================= */
 
 const SUPABASE_URL =
@@ -1455,91 +1534,342 @@ const supabaseClient =
     SUPABASE_PUBLISHABLE_KEY
   );
 
-const $ =
-  id => document.getElementById(id);
 
-let currentUser = null;
+/* =========================================================
+   STATE
+   ========================================================= */
 
-let allBooks = [];
+let currentUser =
+  null;
 
-let curatedRows = [];
+let currentProfile =
+  null;
+
+let isSiteAdmin =
+  false;
+
+let allBooks =
+  [];
+
+let curatedRows =
+  [];
 
 let curatedByBookId =
   new Map();
+
+let rewards =
+  [];
 
 let coinSettings = {
   coins_enabled:false,
   coin_marketplace_enabled:false
 };
 
-let rewards = [];
+let searchTimer =
+  null;
 
-let searchTimer = null;
+let toastTimer =
+  null;
 
 
 /* =========================================================
-   STARTUP
+   DOM HELPER
    ========================================================= */
 
-async function start(){
+function $(id){
 
-  try{
-
-    await loadSession();
-
-    if(currentUser){
-
-      await Promise.all([
-        loadProfile(),
-        loadAdminAccess()
-      ]);
-
-    }
-
-    await Promise.all([
-      loadMarketplaceSettings(),
-      loadBooks(),
-      loadCuratedBooks()
-    ]);
-
-    buildCuratedMap();
-
-    renderMarketplace();
-
-    await loadCoinMarketplace();
-
-  }
-  catch(error){
-
-    console.error(
-      "Marketplace startup:",
-      error
-    );
-
-    showToast(
-      error.message ||
-      "DogEar could not load the marketplace.",
-      true
-    );
-
-  }
-  finally{
-
-    document.body.classList.remove(
-      "loading-lock"
-    );
-
-    $("loadingScreen")
-      .classList
-      .add("hidden");
-
-  }
+  return document.getElementById(
+    id
+  );
 
 }
 
 
 /* =========================================================
-   AUTH
+   TEXT HELPERS
+   ========================================================= */
+
+function escapeHtml(value){
+
+  return String(
+    value ?? ""
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+}
+
+
+function escapeAttribute(value){
+
+  return escapeHtml(
+    value
+  );
+
+}
+
+
+function compareText(a,b){
+
+  return String(
+    a || ""
+  )
+    .localeCompare(
+      String(
+        b || ""
+      ),
+      undefined,
+      {
+        sensitivity:"base"
+      }
+    );
+
+}
+
+
+function dateValue(value){
+
+  if(!value)
+    return 0;
+
+  const time =
+    new Date(
+      value
+    ).getTime();
+
+  return Number.isFinite(time)
+    ? time
+    : 0;
+
+}
+
+
+function authorText(authors){
+
+  if(
+    Array.isArray(
+      authors
+    )
+  ){
+
+    return authors
+      .filter(Boolean)
+      .join(", ");
+
+  }
+
+  if(
+    typeof authors === "string"
+  ){
+
+    return authors.trim();
+
+  }
+
+  return "";
+
+}
+
+
+function categoryText(categories){
+
+  if(
+    Array.isArray(
+      categories
+    )
+  ){
+
+    return categories
+      .filter(Boolean)
+      .join(", ");
+
+  }
+
+  if(
+    typeof categories === "string"
+  ){
+
+    return categories.trim();
+
+  }
+
+  return "";
+
+}
+
+
+function formatBookCount(count){
+
+  const number =
+    Number(
+      count || 0
+    );
+
+  return (
+    number.toLocaleString() +
+    " book" +
+    (
+      number === 1
+        ? ""
+        : "s"
+    )
+  );
+
+}
+
+
+function formatRewardType(value){
+
+  const raw =
+    String(
+      value || "reward"
+    )
+      .replaceAll(
+        "_",
+        " "
+      )
+      .trim();
+
+  return raw
+    .replace(
+      /\b\w/g,
+      character =>
+        character.toUpperCase()
+    );
+
+}
+
+
+function initials(name){
+
+  const parts =
+    String(
+      name || "?"
+    )
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+  if(!parts.length)
+    return "?";
+
+  return parts
+    .slice(
+      0,
+      2
+    )
+    .map(
+      part =>
+        part.charAt(0)
+    )
+    .join("")
+    .toUpperCase();
+
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+function showToast(
+  message,
+  type = ""
+){
+
+  const toast =
+    $("toast");
+
+  clearTimeout(
+    toastTimer
+  );
+
+  toast.textContent =
+    message || "";
+
+  toast.className =
+    "toast" +
+    (
+      type
+        ? " " + type
+        : ""
+    );
+
+  requestAnimationFrame(
+    () => {
+
+      toast.classList.add(
+        "show"
+      );
+
+    }
+  );
+
+  toastTimer =
+    setTimeout(
+      () => {
+
+        toast.classList.remove(
+          "show"
+        );
+
+      },
+      4000
+    );
+
+}
+
+
+/* =========================================================
+   LOADING SCREEN
+   ========================================================= */
+
+function hideLoading(){
+
+  document.body.classList.remove(
+    "loading-lock"
+  );
+
+  const loading =
+    $("loadingScreen");
+
+  loading.classList.add(
+    "hidden"
+  );
+
+  setTimeout(
+    () => {
+
+      loading.style.display =
+        "none";
+
+    },
+    250
+  );
+
+}
+
+
+/* =========================================================
+   SESSION
    ========================================================= */
 
 async function loadSession(){
@@ -1550,25 +1880,37 @@ async function loadSession(){
   } =
     await supabaseClient
       .auth
-      .getUser();
+      .getSession();
 
-  if(error){
+  if(error)
+    throw error;
 
-    console.warn(
-      "Auth lookup:",
-      error.message
-    );
+  currentUser =
+    data?.session?.user ||
+    null;
 
-    return;
+  if(!currentUser){
+
+    const next =
+      encodeURIComponent(
+        window.location.pathname +
+        window.location.search
+      );
+
+    window.location.href =
+      "index.html?next=" +
+      next;
+
+    return false;
 
   }
 
-  currentUser =
-    data?.user ||
-    null;
+  return true;
 
 }
-  /* =========================================================
+
+
+/* =========================================================
    PROFILE
    ========================================================= */
 
@@ -1577,48 +1919,28 @@ async function loadProfile(){
   if(!currentUser)
     return;
 
-  let display =
-    currentUser.user_metadata?.display_name ||
-    currentUser.email ||
-    "Reader";
-
-  let avatar =
-    "";
-
   try{
 
     const {
       data,
       error
     } =
-      await supabaseClient.rpc(
-        "get_public_profile",
-        {
-          check_user_id:
-            currentUser.id
-        }
-      );
+      await supabaseClient
+        .from("profiles")
+        .select(
+          "id,display_name,username,avatar_url"
+        )
+        .eq(
+          "id",
+          currentUser.id
+        )
+        .maybeSingle();
 
     if(error)
       throw error;
 
-    const profile =
-      Array.isArray(data)
-        ? data[0]
-        : data;
-
-    if(profile){
-
-      display =
-        profile.display_name ||
-        profile.username ||
-        display;
-
-      avatar =
-        profile.avatar_url ||
-        "";
-
-    }
+    currentProfile =
+      data || null;
 
   }
   catch(error){
@@ -1628,47 +1950,48 @@ async function loadProfile(){
       error.message
     );
 
+    currentProfile =
+      null;
+
   }
 
-  const holder =
+  renderAvatar();
+
+}
+
+
+function renderAvatar(){
+
+  const avatar =
     $("navAvatar");
 
-  holder.innerHTML =
-    "";
+  const name =
+    currentProfile?.display_name ||
+    currentProfile?.username ||
+    currentUser?.email ||
+    "?";
 
-  if(avatar){
+  if(
+    currentProfile?.avatar_url
+  ){
 
-    const image =
-      document.createElement(
-        "img"
-      );
-
-    image.src =
-      avatar;
-
-    image.alt =
-      display;
-
-    image.onerror =
-      () => {
-
-        holder.innerHTML =
-          "";
-
-        holder.textContent =
-          firstLetter(display);
-
-      };
-
-    holder.appendChild(
-      image
-    );
+    avatar.innerHTML =
+      `
+        <img
+          src="${escapeAttribute(
+            currentProfile.avatar_url
+          )}"
+          alt=""
+        >
+      `;
 
   }
   else{
 
-    holder.textContent =
-      firstLetter(display);
+    avatar.textContent =
+      initials(
+        name
+      );
 
   }
 
@@ -1676,10 +1999,10 @@ async function loadProfile(){
 
 
 /* =========================================================
-   ADMIN ACCESS
+   ADMIN CHECK
    ========================================================= */
 
-async function loadAdminAccess(){
+async function loadAdminStatus(){
 
   if(!currentUser)
     return;
@@ -1692,9 +2015,7 @@ async function loadAdminAccess(){
     } =
       await supabaseClient
         .from("admin_users")
-        .select(
-          "user_id,active"
-        )
+        .select("user_id")
         .eq(
           "user_id",
           currentUser.id
@@ -1704,35 +2025,51 @@ async function loadAdminAccess(){
     if(error)
       throw error;
 
-    if(
-      data &&
-      data.active === true
-    ){
-
-      $("adminLink")
-        .classList
-        .add("show");
-
-    }
+    isSiteAdmin =
+      Boolean(data);
 
   }
   catch(error){
 
     console.warn(
-      "Admin access:",
+      "Admin check:",
       error.message
     );
 
+    isSiteAdmin =
+      false;
+
   }
+
+  $("adminLink")
+    .classList
+    .toggle(
+      "show",
+      isSiteAdmin
+    );
 
 }
 
 
 /* =========================================================
-   MARKETPLACE SETTINGS
+   COIN SETTINGS
    ========================================================= */
 
-async function loadMarketplaceSettings(){
+async function loadCoinSettings(){
+
+  /*
+    Coins fail CLOSED.
+
+    If settings cannot be confirmed, DogEar treats
+    both coin switches as disabled. This keeps the
+    reader marketplace hidden until Milo explicitly
+    enables it.
+  */
+
+  coinSettings = {
+    coins_enabled:false,
+    coin_marketplace_enabled:false
+  };
 
   try{
 
@@ -1741,16 +2078,11 @@ async function loadMarketplaceSettings(){
       error
     } =
       await supabaseClient
-        .from(
-          "marketplace_settings"
-        )
+        .from("site_settings")
         .select(
           "coins_enabled,coin_marketplace_enabled"
         )
-        .eq(
-          "id",
-          1
-        )
+        .limit(1)
         .maybeSingle();
 
     if(error)
@@ -1759,11 +2091,13 @@ async function loadMarketplaceSettings(){
     if(data){
 
       coinSettings = {
+
         coins_enabled:
           data.coins_enabled === true,
 
         coin_marketplace_enabled:
           data.coin_marketplace_enabled === true
+
       };
 
     }
@@ -1771,20 +2105,8 @@ async function loadMarketplaceSettings(){
   }
   catch(error){
 
-    /*
-      Failing closed is intentional.
-
-      If DogEar cannot confirm that coins are enabled,
-      no coin UI appears.
-    */
-
-    coinSettings = {
-      coins_enabled:false,
-      coin_marketplace_enabled:false
-    };
-
     console.warn(
-      "Marketplace settings:",
+      "Coin settings:",
       error.message
     );
 
@@ -1794,7 +2116,7 @@ async function loadMarketplaceSettings(){
 
 
 /* =========================================================
-   LOAD DOGEAR BOOKS
+   LOAD BOOKS
    ========================================================= */
 
 async function loadBooks(){
@@ -1806,41 +2128,25 @@ async function loadBooks(){
     await supabaseClient
       .from("books")
       .select(
-        "id,isbn_13,isbn_10,google_books_id,title,subtitle,authors,publisher,published_date,description,cover_url,page_count,format,categories,created_at"
-      );
-
-  if(error)
-    throw error;
-
-  allBooks =
-    data || [];
-
-}
-
-
-/* =========================================================
-   LOAD CURATED MARKETPLACE LISTINGS
-   ========================================================= */
-
-async function loadCuratedBooks(){
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from(
-        "marketplace_curated_books"
-      )
-      .select(
-        "id,book_id,active,featured,staff_pick,new_and_noteworthy,sort_order,admin_note,starts_at,ends_at,created_at,updated_at"
-      )
-      .eq(
-        "active",
-        true
+        `
+          id,
+          title,
+          subtitle,
+          authors,
+          publisher,
+          published_date,
+          description,
+          page_count,
+          categories,
+          cover_url,
+          isbn_13,
+          isbn_10,
+          google_books_id,
+          created_at
+        `
       )
       .order(
-        "sort_order",
+        "title",
         {
           ascending:true
         }
@@ -1849,57 +2155,101 @@ async function loadCuratedBooks(){
   if(error)
     throw error;
 
-  curatedRows =
-    (data || [])
-      .filter(
-        row =>
-          listingIsCurrentlyVisible(
+  allBooks =
+    data || [];
+
+  $("allBooksCount").textContent =
+    formatBookCount(
+      allBooks.length
+    );
+
+}
+
+
+/* =========================================================
+   CURATED MARKETPLACE BOOKS
+   ========================================================= */
+
+async function loadCuratedBooks(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "marketplace_curated_books"
+        )
+        .select(
+          `
+            id,
+            book_id,
+            featured,
+            staff_pick,
+            new_and_noteworthy,
+            active,
+            sort_order,
+            starts_at,
+            ends_at
+          `
+        )
+        .eq(
+          "active",
+          true
+        )
+        .order(
+          "sort_order",
+          {
+            ascending:true
+          }
+        );
+
+    if(error)
+      throw error;
+
+    curatedRows =
+      (data || [])
+        .filter(
+          row =>
+            isCurrentListing(
+              row
+            )
+        );
+
+    curatedByBookId =
+      new Map(
+        curatedRows.map(
+          row => [
+            String(
+              row.book_id
+            ),
             row
-          )
+          ]
+        )
       );
-
-}
-
-
-/* =========================================================
-   CURATED BOOK MAP
-   ========================================================= */
-
-function buildCuratedMap(){
-
-  curatedByBookId =
-    new Map();
-
-  curatedRows.forEach(
-    row => {
-
-      curatedByBookId.set(
-        String(row.book_id),
-        row
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   TIME WINDOW CHECK
-   ========================================================= */
-
-function listingIsCurrentlyVisible(
-  row
-){
-
-  if(
-    !row ||
-    row.active !== true
-  ){
-
-    return false;
 
   }
+  catch(error){
+
+    console.warn(
+      "Curated marketplace:",
+      error.message
+    );
+
+    curatedRows =
+      [];
+
+    curatedByBookId =
+      new Map();
+
+  }
+
+}
+
+
+function isCurrentListing(row){
 
   const now =
     Date.now();
@@ -1946,118 +2296,180 @@ function listingIsCurrentlyVisible(
 
 
 /* =========================================================
-   MARKETPLACE BOOK COLLECTION
+   FIND BOOK
    ========================================================= */
 
-function marketplaceBooks(){
+function findBook(id){
 
-  /*
-    Only books with an active/current
-    marketplace_curated_books record belong
-    in the public Marketplace.
-
-    A book existing in the canonical `books`
-    table by itself does NOT automatically
-    place it on the Marketplace.
-  */
-
-  return allBooks
-    .filter(
-      book =>
-        curatedByBookId.has(
-          String(book.id)
-        )
-    )
-    .map(
-      book => ({
-        ...book,
-        marketplace:
-          curatedByBookId.get(
-            String(book.id)
-          )
-      })
-    );
+  return allBooks.find(
+    book =>
+      String(
+        book.id
+      ) ===
+      String(
+        id
+      )
+  ) || null;
 
 }
 
 
 /* =========================================================
-   MAIN RENDER
+   EMPTY STATE
+   ========================================================= */
+
+function emptyMarkup(
+  title,
+  text
+){
+
+  return `
+    <div class="empty-state">
+
+      <strong>
+        ${escapeHtml(title)}
+      </strong>
+
+      <span>
+        ${escapeHtml(text)}
+      </span>
+
+    </div>
+  `;
+
+}
+
+
+/* =========================================================
+   RENDER MARKETPLACE
    ========================================================= */
 
 function renderMarketplace(){
 
-  const books =
-    marketplaceBooks();
-
   const featured =
-    books.filter(
-      book =>
-        book.marketplace?.featured === true
-    );
+    curatedRows
+      .filter(
+        row =>
+          row.featured === true
+      )
+      .map(
+        row =>
+          findBook(
+            row.book_id
+          )
+      )
+      .filter(Boolean);
 
   const staff =
-    books.filter(
-      book =>
-        book.marketplace?.staff_pick === true
-    );
+    curatedRows
+      .filter(
+        row =>
+          row.staff_pick === true
+      )
+      .map(
+        row =>
+          findBook(
+            row.book_id
+          )
+      )
+      .filter(Boolean);
 
-  const newBooks =
-    books.filter(
-      book =>
-        book.marketplace?.new_and_noteworthy === true
-    );
+  const noteworthy =
+    curatedRows
+      .filter(
+        row =>
+          row.new_and_noteworthy === true
+      )
+      .map(
+        row =>
+          findBook(
+            row.book_id
+          )
+      )
+      .filter(Boolean);
 
-  renderBookGrid(
+  renderBookSection(
+    "featured",
     "featuredGrid",
+    "featuredCount",
     featured,
     "No featured books yet.",
-    "DogEar hasn't selected any featured books yet."
+    "Books selected as Featured in the Marketplace Manager will appear here."
   );
 
-  renderBookGrid(
+  renderBookSection(
+    "staffPicks",
     "staffGrid",
+    "staffCount",
     staff,
     "No staff picks yet.",
-    "DogEar hasn't selected any staff picks yet."
+    "DogEar staff picks will appear here once Milo adds them in the Marketplace Manager."
   );
 
-  renderBookGrid(
+  renderBookSection(
+    "newBooks",
     "newGrid",
-    newBooks,
-    "Nothing new here yet.",
-    "New & Noteworthy books will appear here as they're selected."
+    "newCount",
+    noteworthy,
+    "Nothing new has been highlighted yet.",
+    "Books marked New & Noteworthy will appear here."
   );
 
   renderAllBooks();
 
-  $("featuredCount")
-    .textContent =
-      bookCountLabel(
-        featured.length
-      );
+  updateSearchMeta();
 
-  $("staffCount")
-    .textContent =
-      bookCountLabel(
-        staff.length
-      );
+}
 
-  $("newCount")
-    .textContent =
-      bookCountLabel(
-        newBooks.length
-      );
 
-  $("searchMeta")
-    .textContent =
+function renderBookSection(
+  sectionId,
+  gridId,
+  countId,
+  books,
+  emptyTitle,
+  emptyText
+){
+
+  const section =
+    $(sectionId);
+
+  const grid =
+    $(gridId);
+
+  const count =
+    $(countId);
+
+  section.classList.remove(
+    "hidden"
+  );
+
+  count.textContent =
+    formatBookCount(
       books.length
-        ? `${books.length} ${
-            books.length === 1
-              ? "book"
-              : "books"
-          } on the shelves`
-        : "The shelves are waiting for books";
+    );
+
+  if(!books.length){
+
+    grid.innerHTML =
+      emptyMarkup(
+        emptyTitle,
+        emptyText
+      );
+
+    return;
+
+  }
+
+  grid.innerHTML =
+    books
+      .map(
+        book =>
+          bookCardMarkup(
+            book
+          )
+      )
+      .join("");
 
 }
 
@@ -2069,51 +2481,34 @@ function renderMarketplace(){
 function renderAllBooks(){
 
   let books =
-    marketplaceBooks();
+    [...allBooks];
 
   const sort =
     $("sortBooks").value;
 
-  books =
-    [...books];
-
   if(
+    sort === "title"
+  ){
+
+    books.sort(
+      (a,b) =>
+        compareText(
+          a.title,
+          b.title
+        )
+    );
+
+  }
+  else if(
     sort === "title-desc"
   ){
 
     books.sort(
       (a,b) =>
-        safeText(b.title)
-          .localeCompare(
-            safeText(a.title)
-          )
-    );
-
-  }
-  else if(
-    sort === "newest"
-  ){
-
-    books.sort(
-      (a,b) => {
-
-        const aDate =
-          new Date(
-            a.marketplace?.created_at ||
-            a.created_at ||
-            0
-          ).getTime();
-
-        const bDate =
-          new Date(
-            b.marketplace?.created_at ||
-            b.created_at ||
-            0
-          ).getTime();
-
-        return bDate - aDate;
-
-      }
+        compareText(
+          b.title,
+          a.title
+        )
     );
 
   }
@@ -2123,79 +2518,43 @@ function renderAllBooks(){
 
     books.sort(
       (a,b) =>
-        authorText(
-          a.authors
-        )
-          .localeCompare(
-            authorText(
-              b.authors
-            )
+        compareText(
+          authorText(
+            a.authors
+          ),
+          authorText(
+            b.authors
           )
+        )
     );
 
   }
-  else{
+  else if(
+    sort === "newest"
+  ){
 
     books.sort(
       (a,b) =>
-        safeText(a.title)
-          .localeCompare(
-            safeText(b.title)
-          )
+        dateValue(
+          b.created_at
+        ) -
+        dateValue(
+          a.created_at
+        )
     );
 
   }
 
-  renderBookGrid(
-    "allBooksGrid",
-    books,
-    "No books are available yet.",
-    "Books added through the DogEar Marketplace Manager will appear here."
-  );
-
-}
-
-
-$("sortBooks")
-  .addEventListener(
-    "change",
-    renderAllBooks
-  );
-
-
-/* =========================================================
-   BOOK GRID
-   ========================================================= */
-
-function renderBookGrid(
-  gridId,
-  books,
-  emptyTitle,
-  emptyMessage
-){
-
   const grid =
-    $(gridId);
-
-  if(!grid)
-    return;
+    $("allBooksGrid");
 
   if(!books.length){
 
     grid.innerHTML =
-      `
-        <div class="empty-state">
-
-          <strong>
-            ${escapeHtml(emptyTitle)}
-          </strong>
-
-          <span>
-            ${escapeHtml(emptyMessage)}
-          </span>
-
-        </div>
-      `;
+      emptyMarkup(
+        "The shelves are waiting.",
+        "Books will appear here as they are added to DogEar."
+      );
 
     return;
 
@@ -2205,7 +2564,9 @@ function renderBookGrid(
     books
       .map(
         book =>
-          bookCard(book)
+          bookCardMarkup(
+            book
+          )
       )
       .join("");
 
@@ -2213,34 +2574,71 @@ function renderBookGrid(
 
 
 /* =========================================================
-   BOOK CARD
+   BOOK CARDS
+
+   IMPORTANT:
+   Every internal book link on this page now goes to
+   book-detail.html?id=BOOK_ID.
+
+   This includes:
+   - the cover
+   - the title
+   - the View Book button
    ========================================================= */
 
-function bookCard(book){
+function bookCardMarkup(book){
+
+  const id =
+    String(
+      book.id ?? ""
+    );
 
   const title =
     book.title ||
     "Untitled";
 
-  const authors =
+  const author =
     authorText(
       book.authors
-    ) ||
-    "Unknown author";
+    );
+
+  const publisher =
+    book.publisher ||
+    "";
+
+  const published =
+    book.published_date ||
+    "";
+
+  /*
+    NEW DETAIL PAGE ROUTE
+  */
 
   const detailsUrl =
-    `book.html?id=${encodeURIComponent(book.id)}`;
+    "book-detail.html?id=" +
+    encodeURIComponent(
+      id
+    );
 
-  const purchase =
-    bookshopPurchaseUrl(
+  const cover =
+    book.cover_url ||
+    "";
+
+  const buyUrl =
+    bookshopAffiliateUrl(
       book
+    );
+
+  const curated =
+    curatedByBookId.get(
+      id
     );
 
   const badges =
     [];
 
   if(
-    book.marketplace?.featured
+    curated?.featured
   ){
 
     badges.push(
@@ -2250,7 +2648,7 @@ function bookCard(book){
   }
 
   if(
-    book.marketplace?.staff_pick
+    curated?.staff_pick
   ){
 
     badges.push(
@@ -2260,84 +2658,155 @@ function bookCard(book){
   }
 
   if(
-    book.marketplace?.new_and_noteworthy
+    curated?.new_and_noteworthy
   ){
 
     badges.push(
-      "New & Noteworthy"
+      "New"
+    );
+
+  }
+
+  const badgeMarkup =
+    badges.length
+      ? `
+          <div class="book-badges">
+
+            ${
+              badges
+                .map(
+                  badge =>
+                    `
+                      <span class="book-badge">
+                        ${escapeHtml(
+                          badge
+                        )}
+                      </span>
+                    `
+                )
+                .join("")
+            }
+
+          </div>
+        `
+      : "";
+
+  const coverMarkup =
+    cover
+      ? `
+          <img
+            src="${escapeAttribute(
+              cover
+            )}"
+            alt="${escapeAttribute(
+              title
+            )} cover"
+            loading="lazy"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          >
+
+          <div
+            class="cover-placeholder"
+            style="display:none;"
+          >
+
+            <div class="placeholder-brand">
+              DogEar
+            </div>
+
+            <div class="placeholder-title">
+              ${escapeHtml(
+                title
+              )}
+            </div>
+
+          </div>
+        `
+      : `
+          <div class="cover-placeholder">
+
+            <div class="placeholder-brand">
+              DogEar
+            </div>
+
+            <div class="placeholder-title">
+              ${escapeHtml(
+                title
+              )}
+            </div>
+
+          </div>
+        `;
+
+  const metaParts =
+    [];
+
+  if(
+    publisher
+  ){
+
+    metaParts.push(
+      publisher
+    );
+
+  }
+
+  if(
+    published
+  ){
+
+    metaParts.push(
+      published
     );
 
   }
 
   const meta =
-    [
-      book.publisher,
-      book.published_date,
-      cleanIsbn(
-        book.isbn_13
-      ) ||
-      cleanIsbn(
-        book.isbn_10
-      )
-    ]
-      .filter(Boolean)
-      .join(" · ");
+    metaParts.join(
+      " · "
+    );
+
+  const buyMarkup =
+    buyUrl
+      ? `
+          <a
+            class="book-action buy"
+            href="${escapeAttribute(
+              buyUrl
+            )}"
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+          >
+            Buy on Bookshop.org
+          </a>
+        `
+      : `
+          <div
+            class="book-action unavailable"
+            title="DogEar does not have a usable ISBN for this book yet."
+          >
+            Purchase Link Unavailable
+          </div>
+        `;
 
   return `
     <article class="book-card">
 
       <a
         class="book-cover-link"
-        href="${escapeAttribute(detailsUrl)}"
-        aria-label="View ${escapeAttribute(title)}"
+        href="${escapeAttribute(
+          detailsUrl
+        )}"
+        aria-label="View ${escapeAttribute(
+          title
+        )}"
       >
 
         <div class="book-cover">
 
-          ${
-            badges.length
-              ? `
-                  <div class="book-badges">
-                    ${
-                      badges
-                        .map(
-                          badge =>
-                            `
-                              <span class="book-badge">
-                                ${escapeHtml(badge)}
-                              </span>
-                            `
-                        )
-                        .join("")
-                    }
-                  </div>
-                `
-              : ""
-          }
+          ${badgeMarkup}
 
-          ${
-            book.cover_url
-              ? `
-                  <img
-                    src="${escapeAttribute(book.cover_url)}"
-                    alt="${escapeAttribute(title)}"
-                    loading="lazy"
-                  >
-                `
-              : `
-                  <div class="cover-placeholder">
-
-                    <div class="placeholder-brand">
-                      DogEar
-                    </div>
-
-                    <div class="placeholder-title">
-                      ${escapeHtml(title)}
-                    </div>
-
-                  </div>
-                `
-          }
+          ${coverMarkup}
 
         </div>
 
@@ -2347,24 +2816,39 @@ function bookCard(book){
 
         <a
           class="book-title-link"
-          href="${escapeAttribute(detailsUrl)}"
+          href="${escapeAttribute(
+            detailsUrl
+          )}"
         >
 
           <h3 class="book-title">
-            ${escapeHtml(title)}
+            ${escapeHtml(
+              title
+            )}
           </h3>
 
         </a>
 
         <div class="book-author">
-          ${escapeHtml(authors)}
+
+          ${
+            author
+              ? "by " +
+                escapeHtml(
+                  author
+                )
+              : "Author unavailable"
+          }
+
         </div>
 
         ${
           meta
             ? `
                 <div class="book-meta">
-                  ${escapeHtml(meta)}
+                  ${escapeHtml(
+                    meta
+                  )}
                 </div>
               `
             : ""
@@ -2374,29 +2858,14 @@ function bookCard(book){
 
           <a
             class="book-action details"
-            href="${escapeAttribute(detailsUrl)}"
+            href="${escapeAttribute(
+              detailsUrl
+            )}"
           >
             View Book
           </a>
 
-          ${
-            purchase
-              ? `
-                  <a
-                    class="book-action buy"
-                    href="${escapeAttribute(purchase)}"
-                    target="_blank"
-                    rel="noopener sponsored"
-                  >
-                    Buy on Bookshop.org
-                  </a>
-                `
-              : `
-                  <span class="book-action unavailable">
-                    Bookshop Link Unavailable
-                  </span>
-                `
-          }
+          ${buyMarkup}
 
         </div>
 
@@ -2406,111 +2875,46 @@ function bookCard(book){
   `;
 
 }
-
-
-/* =========================================================
-   BOOKSHOP.ORG AFFILIATE LINKS
+  /* =========================================================
+   BOOKSHOP AFFILIATE LINKS
    ========================================================= */
 
-function cleanIsbn(value){
+function bookshopAffiliateUrl(book){
 
-  return String(
-    value ||
-    ""
-  )
-    .replace(
-      /[^0-9Xx]/g,
-      ""
-    )
-    .toUpperCase();
-
-}
-
-
-/*
-  Convert a valid-shaped ISBN-10 to ISBN-13.
-
-  This allows older editions with only an ISBN-10
-  in DogEar to use Bookshop.org's direct ISBN route.
-*/
-
-function isbn10To13(value){
-
-  const isbn10 =
-    cleanIsbn(
-      value
+  const isbn13 =
+    resolvedIsbn13(
+      book
     );
 
-  if(
-    !/^\d{9}[\dX]$/.test(
-      isbn10
-    )
-  ){
-
+  if(!isbn13)
     return "";
 
-  }
-
-  const firstNine =
-    "978" +
-    isbn10.slice(
-      0,
-      9
-    );
-
-  let total =
-    0;
-
-  for(
-    let i = 0;
-    i < 12;
-    i++
-  ){
-
-    const digit =
-      Number(
-        firstNine[i]
-      );
-
-    total +=
-      digit *
-      (
-        i % 2 === 0
-          ? 1
-          : 3
-      );
-
-  }
-
-  const checkDigit =
-    (
-      10 -
-      (
-        total % 10
-      )
-    ) % 10;
-
   return (
-    firstNine +
-    String(checkDigit)
+    "https://bookshop.org/a/" +
+    encodeURIComponent(
+      BOOKSHOP_AFFILIATE_ID
+    ) +
+    "/" +
+    encodeURIComponent(
+      isbn13
+    )
   );
 
 }
 
 
-/* =========================================================
-   RESOLVE ISBN-13
-   ========================================================= */
-
 function resolvedIsbn13(book){
 
   const isbn13 =
     cleanIsbn(
-      book?.isbn_13
+      book.isbn_13
     );
 
   if(
     /^\d{13}$/.test(
+      isbn13
+    ) &&
+    isValidIsbn13(
       isbn13
     )
   ){
@@ -2521,11 +2925,14 @@ function resolvedIsbn13(book){
 
   const isbn10 =
     cleanIsbn(
-      book?.isbn_10
+      book.isbn_10
     );
 
   if(
-    /^\d{9}[\dX]$/.test(
+    /^[0-9]{9}[0-9X]$/.test(
+      isbn10
+    ) &&
+    isValidIsbn10(
       isbn10
     )
   ){
@@ -2541,45 +2948,183 @@ function resolvedIsbn13(book){
 }
 
 
-/* =========================================================
-   BUILD BOOKSHOP AFFILIATE URL
-   ========================================================= */
+function cleanIsbn(value){
 
-function bookshopPurchaseUrl(book){
-
-  const isbn13 =
-    resolvedIsbn13(
-      book
+  return String(
+    value || ""
+  )
+    .toUpperCase()
+    .replace(
+      /[^0-9X]/g,
+      ""
     );
 
-  if(!isbn13){
+}
 
-    /*
-      We intentionally do not invent a Bookshop.org
-      title-search URL here.
 
-      If DogEar has no usable ISBN, the purchase button
-      stays unavailable until we have a verified Bookshop
-      search-link format.
-    */
+function isValidIsbn10(isbn){
+
+  if(
+    !/^[0-9]{9}[0-9X]$/.test(
+      isbn
+    )
+  ){
+
+    return false;
+
+  }
+
+  let sum =
+    0;
+
+  for(
+    let index = 0;
+    index < 10;
+    index++
+  ){
+
+    const character =
+      isbn[index];
+
+    const value =
+      character === "X"
+        ? 10
+        : Number(
+            character
+          );
+
+    sum +=
+      value *
+      (
+        10 -
+        index
+      );
+
+  }
+
+  return (
+    sum % 11 === 0
+  );
+
+}
+
+
+function isValidIsbn13(isbn){
+
+  if(
+    !/^\d{13}$/.test(
+      isbn
+    )
+  ){
+
+    return false;
+
+  }
+
+  let sum =
+    0;
+
+  for(
+    let index = 0;
+    index < 12;
+    index++
+  ){
+
+    const digit =
+      Number(
+        isbn[index]
+      );
+
+    sum +=
+      digit *
+      (
+        index % 2 === 0
+          ? 1
+          : 3
+      );
+
+  }
+
+  const check =
+    (
+      10 -
+      (
+        sum % 10
+      )
+    ) % 10;
+
+  return (
+    check ===
+    Number(
+      isbn[12]
+    )
+  );
+
+}
+
+
+function isbn10To13(isbn10){
+
+  if(
+    !isValidIsbn10(
+      isbn10
+    )
+  ){
 
     return "";
 
   }
 
+  const firstNine =
+    isbn10.slice(
+      0,
+      9
+    );
+
+  const base =
+    "978" +
+    firstNine;
+
+  let sum =
+    0;
+
+  for(
+    let index = 0;
+    index < 12;
+    index++
+  ){
+
+    sum +=
+      Number(
+        base[index]
+      ) *
+      (
+        index % 2 === 0
+          ? 1
+          : 3
+      );
+
+  }
+
+  const check =
+    (
+      10 -
+      (
+        sum % 10
+      )
+    ) % 10;
+
   return (
-    "https://bookshop.org/a/" +
-    encodeURIComponent(
-      BOOKSHOP_AFFILIATE_ID
-    ) +
-    "/" +
-    encodeURIComponent(
-      isbn13
+    base +
+    String(
+      check
     )
   );
 
 }
-  /* =========================================================
+
+
+/* =========================================================
    SEARCH
    ========================================================= */
 
@@ -2615,30 +3160,15 @@ function runSearch(){
 
   if(!query){
 
-    section
-      .classList
-      .add("hidden");
-
-    $("searchResultsGrid")
-      .innerHTML =
-        "";
-
-    $("searchCount")
-      .textContent =
-        "";
-
-    $("searchDescription")
-      .textContent =
-        "Books matching your search.";
+    section.classList.add(
+      "hidden"
+    );
 
     updateSearchMeta();
 
     return;
 
   }
-
-  const books =
-    marketplaceBooks();
 
   const compactQuery =
     query.replace(
@@ -2647,7 +3177,7 @@ function runSearch(){
     );
 
   const results =
-    books.filter(
+    allBooks.filter(
       book => {
 
         const searchable =
@@ -2664,9 +3194,9 @@ function runSearch(){
               book.categories
             )
           ]
-            .filter(Boolean)
-            .join(" ")
-            .toLowerCase();
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
 
         if(
           searchable.includes(
@@ -2687,8 +3217,8 @@ function runSearch(){
               .toLowerCase()
               .includes(
                 compactQuery
-              ) ||
-
+              )
+            ||
             cleanIsbn(
               book.isbn_10
             )
@@ -2708,58 +3238,80 @@ function runSearch(){
       }
     );
 
-  section
-    .classList
-    .remove("hidden");
-
-  $("searchDescription")
-    .textContent =
-      `Books matching “${$("bookSearch").value.trim()}”.`;
-
-  $("searchCount")
-    .textContent =
-      bookCountLabel(
-        results.length
-      );
-
-  renderBookGrid(
-    "searchResultsGrid",
-    results,
-    "No matching books.",
-    "Try another title, author, publisher, or ISBN."
+  section.classList.remove(
+    "hidden"
   );
 
-  $("searchMeta")
-    .textContent =
-      `${results.length} ${
-        results.length === 1
-          ? "result"
-          : "results"
-      }`;
+  $("searchDescription").textContent =
+    'Books matching "' +
+    $("bookSearch")
+      .value
+      .trim() +
+    '".';
+
+  $("searchCount").textContent =
+    formatBookCount(
+      results.length
+    );
+
+  $("searchMeta").textContent =
+    formatBookCount(
+      results.length
+    ) +
+    " found";
+
+  const grid =
+    $("searchResultsGrid");
+
+  if(!results.length){
+
+    grid.innerHTML =
+      emptyMarkup(
+        "No books found.",
+        "Try another title, author, publisher, or ISBN."
+      );
+
+    return;
+
+  }
+
+  grid.innerHTML =
+    results
+      .slice(
+        0,
+        40
+      )
+      .map(
+        book =>
+          bookCardMarkup(
+            book
+          )
+      )
+      .join("");
+
+}
+
+
+function updateSearchMeta(){
+
+  $("searchMeta").textContent =
+    formatBookCount(
+      allBooks.length
+    ) +
+    " on the shelves";
 
 }
 
 
 /* =========================================================
-   SEARCH META
+   SORT
    ========================================================= */
 
-function updateSearchMeta(){
-
-  const books =
-    marketplaceBooks();
-
-  $("searchMeta")
-    .textContent =
-      books.length
-        ? `${books.length} ${
-            books.length === 1
-              ? "book"
-              : "books"
-          } on the shelves`
-        : "The shelves are waiting for books";
-
-}
+$("sortBooks")
+  .addEventListener(
+    "change",
+    renderAllBooks
+  );
 
 
 /* =========================================================
@@ -2768,17 +3320,14 @@ function updateSearchMeta(){
 
 async function loadCoinMarketplace(){
 
-  const section =
-    $("coinMarketplaceSection");
-
   /*
-    MASTER KILL SWITCH:
+    MASTER SAFETY RULE:
 
-    If either setting is false, the entire coin
-    marketplace stays absent from the page.
+    If coins are disabled, there is NO coin UI.
+    If the marketplace is disabled, there is NO coin UI.
 
-    There is intentionally no "0 coins",
-    "coming soon", or disabled coin interface.
+    We don't even query rewards unless BOTH switches
+    are enabled.
   */
 
   if(
@@ -2786,16 +3335,11 @@ async function loadCoinMarketplace(){
     coinSettings.coin_marketplace_enabled !== true
   ){
 
-    rewards =
-      [];
-
-    section
+    $("coinMarketplaceSection")
       .classList
-      .add("hidden");
-
-    $("rewardGrid")
-      .innerHTML =
-        "";
+      .add(
+        "hidden"
+      );
 
     return;
 
@@ -2808,9 +3352,26 @@ async function loadCoinMarketplace(){
       error
     } =
       await supabaseClient
-        .from("coin_rewards")
+        .from(
+          "coin_rewards"
+        )
         .select(
-          "id,title,description,reward_type,image_url,coin_price,quantity_available,per_user_limit,shipping_required,active,featured,sort_order,starts_at,ends_at"
+          `
+            id,
+            title,
+            description,
+            reward_type,
+            image_url,
+            coin_price,
+            quantity_available,
+            per_user_limit,
+            shipping_required,
+            active,
+            featured,
+            sort_order,
+            starts_at,
+            ends_at
+          `
         )
         .eq(
           "active",
@@ -2836,172 +3397,76 @@ async function loadCoinMarketplace(){
       (data || [])
         .filter(
           reward =>
-            rewardIsCurrentlyVisible(
+            isCurrentListing(
               reward
             )
         );
 
+    if(
+      !rewards.length
+    ){
+
+      /*
+        If coins are on but there are no rewards,
+        hide the entire coin marketplace instead
+        of showing an empty reward area.
+      */
+
+      $("coinMarketplaceSection")
+        .classList
+        .add(
+          "hidden"
+        );
+
+      return;
+
+    }
+
     renderRewards();
+
+    $("coinMarketplaceSection")
+      .classList
+      .remove(
+        "hidden"
+      );
+
+    await loadCoinBalance();
 
   }
   catch(error){
-
-    /*
-      Fail closed.
-
-      If rewards cannot be securely loaded,
-      DogEar does not show the coin marketplace.
-    */
 
     console.warn(
       "Coin marketplace:",
       error.message
     );
 
-    rewards =
-      [];
+    /*
+      Fail closed:
+      a reward query error never causes fake or stale
+      coin inventory to appear.
+    */
 
-    section
+    $("coinMarketplaceSection")
       .classList
-      .add("hidden");
-
-    $("rewardGrid")
-      .innerHTML =
-        "";
+      .add(
+        "hidden"
+      );
 
   }
 
 }
 
-
-/* =========================================================
-   REWARD VISIBILITY
-   ========================================================= */
-
-function rewardIsCurrentlyVisible(
-  reward
-){
-
-  if(
-    !reward ||
-    reward.active !== true
-  ){
-
-    return false;
-
-  }
-
-  const now =
-    Date.now();
-
-  if(reward.starts_at){
-
-    const starts =
-      new Date(
-        reward.starts_at
-      ).getTime();
-
-    if(
-      Number.isFinite(starts) &&
-      starts > now
-    ){
-
-      return false;
-
-    }
-
-  }
-
-  if(reward.ends_at){
-
-    const ends =
-      new Date(
-        reward.ends_at
-      ).getTime();
-
-    if(
-      Number.isFinite(ends) &&
-      ends < now
-    ){
-
-      return false;
-
-    }
-
-  }
-
-  if(
-    reward.quantity_available !== null &&
-    reward.quantity_available !== undefined &&
-    Number(
-      reward.quantity_available
-    ) <= 0
-  ){
-
-    return false;
-
-  }
-
-  return true;
-
-}
-
-
-/* =========================================================
-   RENDER COIN REWARDS
-   ========================================================= */
 
 function renderRewards(){
 
-  const section =
-    $("coinMarketplaceSection");
-
   const grid =
     $("rewardGrid");
-
-  if(
-    coinSettings.coins_enabled !== true ||
-    coinSettings.coin_marketplace_enabled !== true
-  ){
-
-    section
-      .classList
-      .add("hidden");
-
-    grid.innerHTML =
-      "";
-
-    return;
-
-  }
-
-  if(!rewards.length){
-
-    /*
-      Even when coins are globally enabled,
-      do not show an empty reward storefront.
-    */
-
-    section
-      .classList
-      .add("hidden");
-
-    grid.innerHTML =
-      "";
-
-    return;
-
-  }
-
-  section
-    .classList
-    .remove("hidden");
 
   grid.innerHTML =
     rewards
       .map(
         reward =>
-          rewardCard(
+          rewardCardMarkup(
             reward
           )
       )
@@ -3010,105 +3475,108 @@ function renderRewards(){
 }
 
 
-/* =========================================================
-   REWARD CARD
-   ========================================================= */
-
-function rewardCard(
-  reward
-){
+function rewardCardMarkup(reward){
 
   const title =
     reward.title ||
     "DogEar Reward";
 
+  const type =
+    formatRewardType(
+      reward.reward_type
+    );
+
   const description =
     reward.description ||
     "";
 
-  const type =
-    rewardTypeLabel(
-      reward.reward_type
-    );
+  const image =
+    reward.image_url ||
+    "";
 
   const price =
     Number(
-      reward.coin_price ||
-      0
+      reward.coin_price || 0
     );
 
-  const quantity =
-    reward.quantity_available;
-
-  let quantityText =
+  let availability =
     "Available";
 
   if(
-    quantity !== null &&
-    quantity !== undefined
+    reward.quantity_available !== null &&
+    reward.quantity_available !== undefined
   ){
 
-    quantityText =
-      `${Number(quantity).toLocaleString()} available`;
+    const quantity =
+      Number(
+        reward.quantity_available
+      );
+
+    if(
+      quantity <= 0
+    ){
+
+      availability =
+        "Sold out";
+
+    }
+    else{
+
+      availability =
+        quantity.toLocaleString() +
+        " available";
+
+    }
 
   }
 
-  const shipping =
-    reward.shipping_required === true
-      ? " · Shipping required"
-      : "";
-
-  const featured =
-    reward.featured === true
+  const imageMarkup =
+    image
       ? `
-          <div class="book-badges">
-            <span class="book-badge">
-              Featured Reward
-            </span>
-          </div>
+          <img
+            src="${escapeAttribute(
+              image
+            )}"
+            alt="${escapeAttribute(
+              title
+            )}"
+            loading="lazy"
+          >
         `
-      : "";
+      : `
+          <div class="reward-placeholder">
+            ◇
+          </div>
+        `;
 
   return `
     <article class="reward-card">
 
       <div class="reward-image">
-
-        ${featured}
-
-        ${
-          reward.image_url
-            ? `
-                <img
-                  src="${escapeAttribute(reward.image_url)}"
-                  alt="${escapeAttribute(title)}"
-                  loading="lazy"
-                >
-              `
-            : `
-                <div class="reward-placeholder">
-                  ◇
-                </div>
-              `
-        }
-
+        ${imageMarkup}
       </div>
 
       <div class="reward-body">
 
         <div class="reward-type">
-          ${escapeHtml(type)}
+          ${escapeHtml(
+            type
+          )}
         </div>
 
         <div class="reward-title">
-          ${escapeHtml(title)}
+          ${escapeHtml(
+            title
+          )}
         </div>
 
         ${
           description
             ? `
                 <div class="reward-description">
-                  ${escapeHtml(description)}
+                  ${escapeHtml(
+                    description
+                  )}
                 </div>
               `
             : ""
@@ -3116,12 +3584,19 @@ function rewardCard(
 
         <div class="reward-footer">
 
-          <div class="coin-price">
-            ${price.toLocaleString()} coins
-          </div>
+          <div>
 
-          <div class="reward-status">
-            ${escapeHtml(quantityText + shipping)}
+            <div class="coin-price">
+              ${price.toLocaleString()}
+              coins
+            </div>
+
+            <div class="reward-status">
+              ${escapeHtml(
+                availability
+              )}
+            </div>
+
           </div>
 
         </div>
@@ -3135,288 +3610,177 @@ function rewardCard(
 
 
 /* =========================================================
-   REWARD TYPE LABEL
+   COIN BALANCE
    ========================================================= */
 
-function rewardTypeLabel(
-  value
-){
+async function loadCoinBalance(){
 
-  const labels = {
-    book:"Book",
-    signed_book:"Signed Book",
-    special_edition:"Special Edition",
-    merch:"Merchandise",
-    digital:"Digital Reward",
-    gift:"Gift",
-    other:"Reward"
-  };
+  if(
+    !currentUser ||
+    coinSettings.coins_enabled !== true
+  ){
 
-  return (
-    labels[value] ||
-    "Reward"
-  );
+    return;
+
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "coins_wallets"
+        )
+        .select(
+          "balance"
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .maybeSingle();
+
+    if(error)
+      throw error;
+
+    const balance =
+      Number(
+        data?.balance || 0
+      );
+
+    $("coinBalanceDisplay").textContent =
+      balance.toLocaleString() +
+      " coins";
+
+  }
+  catch(error){
+
+    console.warn(
+      "Coin balance:",
+      error.message
+    );
+
+    $("coinBalanceDisplay").textContent =
+      "Coins enabled";
+
+  }
 
 }
 
 
 /* =========================================================
-   TEXT HELPERS
+   STARTUP
    ========================================================= */
 
-function authorText(
-  authors
-){
+async function initializeMarketplace(){
 
-  if(
-    Array.isArray(authors)
-  ){
+  try{
 
-    return authors
-      .filter(Boolean)
-      .join(", ");
+    const hasSession =
+      await loadSession();
+
+    if(
+      !hasSession
+    ){
+
+      return;
+
+    }
+
+    /*
+      These are independent enough to load together
+      after authentication has been confirmed.
+    */
+
+    await Promise.all([
+      loadProfile(),
+      loadAdminStatus(),
+      loadCoinSettings()
+    ]);
+
+    /*
+      Books must exist before curated book IDs can
+      be rendered into complete book cards.
+    */
+
+    await Promise.all([
+      loadBooks(),
+      loadCuratedBooks()
+    ]);
+
+    renderMarketplace();
+
+    await loadCoinMarketplace();
+
+  }
+  catch(error){
+
+    console.error(
+      "Marketplace initialization:",
+      error
+    );
+
+    showToast(
+      "DogEar couldn't open the marketplace. Please refresh and try again.",
+      "error"
+    );
+
+  }
+  finally{
+
+    hideLoading();
 
   }
 
-  if(
-    typeof authors === "string"
-  ){
+}
 
-    /*
-      This also tolerates older data where authors
-      may have been stored as a serialized array.
-    */
 
-    const trimmed =
-      authors.trim();
+/* =========================================================
+   AUTH CHANGES
+   ========================================================= */
 
-    if(!trimmed)
-      return "";
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    (
+      event,
+      session
+    ) => {
 
-    if(
-      trimmed.startsWith("[") &&
-      trimmed.endsWith("]")
-    ){
+      if(
+        event === "SIGNED_OUT"
+      ){
 
-      try{
+        window.location.href =
+          "index.html";
 
-        const parsed =
-          JSON.parse(
-            trimmed
-          );
-
-        if(
-          Array.isArray(parsed)
-        ){
-
-          return parsed
-            .filter(Boolean)
-            .join(", ");
-
-        }
+        return;
 
       }
-      catch(error){
 
-        /*
-          Fall through and use the raw string.
-        */
+      if(
+        event === "SIGNED_IN" &&
+        session?.user &&
+        !currentUser
+      ){
+
+        currentUser =
+          session.user;
 
       }
 
     }
-
-    return trimmed;
-
-  }
-
-  return "";
-
-}
-
-
-function categoryText(
-  categories
-){
-
-  if(
-    Array.isArray(categories)
-  ){
-
-    return categories
-      .filter(Boolean)
-      .join(" ");
-
-  }
-
-  if(
-    typeof categories === "string"
-  ){
-
-    return categories;
-
-  }
-
-  return "";
-
-}
-
-
-function safeText(
-  value
-){
-
-  return String(
-    value ||
-    ""
   );
-
-}
-
-
-function firstLetter(
-  value
-){
-
-  const text =
-    safeText(
-      value
-    )
-      .trim();
-
-  if(!text)
-    return "?";
-
-  return text
-    .charAt(0)
-    .toUpperCase();
-
-}
-
-
-function bookCountLabel(
-  count
-){
-
-  const number =
-    Number(
-      count ||
-      0
-    );
-
-  return (
-    `${number.toLocaleString()} ${
-      number === 1
-        ? "book"
-        : "books"
-    }`
-  );
-
-}
 
 
 /* =========================================================
-   HTML SAFETY
+   RUN
    ========================================================= */
 
-function escapeHtml(
-  value
-){
-
-  return safeText(
-    value
-  )
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
-}
-
-
-function escapeAttribute(
-  value
-){
-
-  return escapeHtml(
-    value
-  );
-
-}
-
-
-/* =========================================================
-   TOAST
-   ========================================================= */
-
-let toastTimer =
-  null;
-
-function showToast(
-  message,
-  isError = false
-){
-
-  const toast =
-    $("toast");
-
-  if(!toast)
-    return;
-
-  clearTimeout(
-    toastTimer
-  );
-
-  toast.textContent =
-    message;
-
-  toast
-    .classList
-    .toggle(
-      "error",
-      isError
-    );
-
-  toast
-    .classList
-    .add("show");
-
-  toastTimer =
-    setTimeout(
-      () => {
-
-        toast
-          .classList
-          .remove("show");
-
-      },
-      3500
-    );
-
-}
-
-
-/* =========================================================
-   START DOGEAR MARKETPLACE
-   ========================================================= */
-
-start();
+initializeMarketplace();
 
 </script>
 
