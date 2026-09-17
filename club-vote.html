@@ -1,2347 +1,4532 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>DogEar — Monthly Vote</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-:root{
-  --ink:#090b0a;
-  --panel:#101410;
-  --panel2:#0d110e;
-  --cream:#f1e7cf;
-  --gold:#c79b59;
-  --gold2:#dfbd7e;
-  --green:#26362b;
-  --muted:#aaa18f;
-  --line:rgba(199,155,89,.22);
-  --line-soft:rgba(199,155,89,.11);
-  --danger:#e6a09a;
-  --ok:#b9d6b2;
-  --warning:#e3c58c;
-}
-
-*{
-  box-sizing:border-box;
-}
-
-body{
-  margin:0;
-  min-height:100vh;
-  color:var(--cream);
-  background:
-    radial-gradient(
-      circle at 10% 0%,
-      rgba(53,73,59,.24),
-      transparent 28%
-    ),
-    var(--ink);
-  font-family:Georgia,"Times New Roman",serif;
-}
-
-button{
-  font:inherit;
-}
-
-a{
-  color:inherit;
-}
-
-/* =========================================================
-   TOP NAV
-   ========================================================= */
-
-.topbar{
-  min-height:76px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:24px;
-  padding:0 clamp(18px,4vw,60px);
-  border-bottom:1px solid var(--line);
-  background:rgba(9,11,10,.94);
-  position:sticky;
-  top:0;
-  z-index:30;
-  backdrop-filter:blur(14px);
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  color:var(--gold2);
-  text-decoration:none;
-  font:800 13px Arial;
-  letter-spacing:.17em;
-  text-transform:uppercase;
-}
-
-.brand-mark{
-  width:34px;
-  height:34px;
-  position:relative;
-  border:1px solid var(--gold);
-  border-radius:50% 50% 50% 12%;
-  transform:rotate(-8deg);
-}
-
-.brand-mark::after{
-  content:"";
-  position:absolute;
-  width:11px;
-  height:11px;
-  right:2px;
-  top:2px;
-  border-left:1px solid var(--gold);
-  border-bottom:1px solid var(--gold);
-  background:var(--ink);
-}
-
-.nav{
-  display:flex;
-  gap:24px;
-  font:700 11px Arial;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-}
-
-.nav a{
-  color:var(--muted);
-  text-decoration:none;
-}
-
-.nav a:hover,
-.nav .active{
-  color:var(--gold2);
-}
-
-.avatar{
-  width:38px;
-  height:38px;
-  border:1px solid var(--line);
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-  background:var(--green);
-  color:var(--gold2);
-  text-decoration:none;
-  font:800 13px Arial;
-}
-
-.avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-/* =========================================================
-   PAGE
-   ========================================================= */
-
-.page{
-  width:min(1180px,calc(100% - 32px));
-  margin:auto;
-  padding:36px 0 110px;
-}
-
-.back{
-  color:var(--gold2);
-  text-decoration:none;
-  font:800 10px Arial;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-}
-
-.hero{
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  gap:24px;
-  margin:24px 0;
-  padding-bottom:26px;
-  border-bottom:1px solid var(--line);
-}
-
-.eyebrow{
-  margin-bottom:10px;
-  color:var(--gold);
-  font:800 10px Arial;
-  letter-spacing:.18em;
-  text-transform:uppercase;
-}
-
-h1{
-  margin:0;
-  font-size:clamp(40px,6vw,68px);
-  line-height:.96;
-  letter-spacing:-.035em;
-  font-weight:400;
-}
-
-.subtitle{
-  max-width:720px;
-  margin-top:13px;
-  color:var(--muted);
-  font:13px/1.65 Arial;
-}
-
-.status-pill{
-  flex:0 0 auto;
-  padding:9px 13px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  color:var(--gold2);
-  font:800 9px Arial;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-}
-
-.status-pill.open{
-  color:var(--ok);
-  border-color:rgba(185,214,178,.45);
-}
-
-.status-pill.closed{
-  color:var(--warning);
-}
-
-/* =========================================================
-   CLUB NAV
-   ========================================================= */
-
-.club-nav{
-  display:flex;
-  gap:9px;
-  flex-wrap:wrap;
-  margin-bottom:26px;
-}
-
-.club-nav a{
-  padding:9px 12px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  color:var(--muted);
-  text-decoration:none;
-  font:800 9px Arial;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-
-.club-nav a:hover,
-.club-nav a.active{
-  color:var(--gold2);
-  border-color:var(--gold);
-}
-
-/* =========================================================
-   LAYOUT
-   ========================================================= */
-
-.layout{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) 310px;
-  gap:24px;
-  align-items:start;
-}
-
-.card{
-  border:1px solid var(--line);
-  border-radius:20px;
-  overflow:hidden;
-  background:rgba(16,20,16,.88);
-  box-shadow:0 20px 60px rgba(0,0,0,.24);
-}
-
-.card-head{
-  padding:20px 22px;
-  border-bottom:1px solid var(--line);
-}
-
-.card-head h2{
-  margin:0;
-  font-size:27px;
-  font-weight:400;
-}
-
-.card-head p{
-  margin:6px 0 0;
-  color:var(--muted);
-  font:12px/1.55 Arial;
-}
-
-/* =========================================================
-   BALLOT
-   ========================================================= */
-
-.ballot-list{
-  padding:20px;
-  display:grid;
-  gap:16px;
-}
-
-.book-option{
-  display:grid;
-  grid-template-columns:105px minmax(0,1fr);
-  gap:18px;
-  position:relative;
-  padding:16px;
-  border:1px solid var(--line);
-  border-radius:17px;
-  background:rgba(13,17,14,.62);
-}
-
-.book-option.selected{
-  border-color:var(--gold);
-  background:rgba(38,54,43,.42);
-}
-
-.choice-number{
-  position:absolute;
-  top:13px;
-  right:13px;
-  padding:5px 8px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  color:var(--gold);
-  font:800 8px Arial;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-
-.cover{
-  width:105px;
-  aspect-ratio:2/3;
-  border:1px solid var(--line-soft);
-  border-radius:9px;
-  overflow:hidden;
-  background:#171c18;
-  display:grid;
-  place-items:center;
-  color:var(--muted);
-  text-align:center;
-  font:700 9px Arial;
-}
-
-.cover img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.book-info{
-  min-width:0;
-}
-
-.book-info h3{
-  margin:2px 60px 5px 0;
-  font-size:24px;
-  font-weight:400;
-}
-
-.book-author{
-  margin-bottom:9px;
-  color:var(--gold2);
-  font:700 11px Arial;
-}
-
-.edition-data{
-  display:grid;
-  gap:4px;
-  color:var(--muted);
-  font:10px/1.5 Arial;
-}
-
-.description{
-  margin-top:11px;
-  color:#d5cbb5;
-  font-size:13px;
-  line-height:1.65;
-}
-
-.vote-row{
-  margin-top:15px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.vote-count{
-  color:var(--muted);
-  font:10px Arial;
-}
-
-.vote-count strong{
-  color:var(--cream);
-}
-
-/* =========================================================
-   BUTTONS
-   ========================================================= */
-
-.btn{
-  min-height:42px;
-  padding:0 16px;
-  border-radius:999px;
-  cursor:pointer;
-  text-decoration:none;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  font:800 9px Arial;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-
-.primary{
-  border:1px solid var(--gold);
-  background:var(--gold);
-  color:#17130e;
-}
-
-.secondary{
-  border:1px solid var(--line);
-  background:transparent;
-  color:var(--gold2);
-}
-
-.btn:disabled{
-  opacity:.5;
-  cursor:not-allowed;
-}
-
-.vote-btn.yours{
-  border-color:var(--gold);
-  background:var(--green);
-  color:var(--cream);
-}
-
-/* =========================================================
-   SIDEBAR
-   ========================================================= */
-
-.side-body{
-  padding:18px;
-}
-
-.side-section{
-  padding-bottom:18px;
-  margin-bottom:18px;
-  border-bottom:1px solid var(--line-soft);
-}
-
-.side-section:last-child{
-  border-bottom:0;
-  margin-bottom:0;
-  padding-bottom:0;
-}
-
-.side-section h3{
-  margin:0 0 8px;
-  font-size:17px;
-  font-weight:400;
-}
-
-.side-section p{
-  margin:0;
-  color:var(--muted);
-  font:11px/1.65 Arial;
-}
-
-.side-actions{
-  display:grid;
-  gap:9px;
-  margin-top:13px;
-}
-
-.side-actions .btn{
-  width:100%;
-}
-
-.progress{
-  margin-top:13px;
-  display:grid;
-  gap:7px;
-}
-
-.progress-row{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  color:var(--muted);
-  font:10px Arial;
-}
-
-.progress-row strong{
-  color:var(--cream);
-}
-
-.message{
-  display:none;
-  margin-top:12px;
-  padding:11px 12px;
-  border:1px solid var(--line);
-  border-radius:10px;
-  font:11px/1.5 Arial;
-}
-
-.message.show{
-  display:block;
-}
-
-.message.success{
-  color:var(--ok);
-}
-
-.message.error{
-  color:var(--danger);
-}
-
-.message.warning{
-  color:var(--warning);
-}
-
-.empty{
-  padding:56px 24px;
-  text-align:center;
-  color:var(--muted);
-  font:13px/1.7 Arial;
-}
-
-.empty strong{
-  display:block;
-  margin-bottom:8px;
-  color:var(--cream);
-  font:400 24px Georgia;
-}
-
-/* =========================================================
-   LOADING
-   ========================================================= */
-
-.loading{
-  position:fixed;
-  inset:0;
-  z-index:100;
-  display:grid;
-  place-items:center;
-  background:var(--ink);
-}
-
-.loading.hidden{
-  display:none;
-}
-
-.loading span{
-  color:var(--gold2);
-  font:800 10px Arial;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-}
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-.mobile-nav{
-  display:none;
-}
-
-@media(max-width:900px){
-
-  .layout{
-    grid-template-columns:1fr;
-  }
-
-  .hero{
-    flex-direction:column;
-    align-items:flex-start;
-  }
-
-}
-
-@media(max-width:700px){
-
-  .nav{
-    display:none;
-  }
-
-  .book-option{
-    grid-template-columns:80px minmax(0,1fr);
-  }
-
-  .cover{
-    width:80px;
-  }
-
-  .mobile-nav{
-    position:fixed;
-    left:12px;
-    right:12px;
-    bottom:12px;
-    z-index:200;
-    min-height:64px;
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    border:1px solid var(--line);
-    border-radius:18px;
-    background:rgba(9,11,10,.95);
-    backdrop-filter:blur(14px);
-  }
-
-  .mobile-nav a{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:4px;
-    color:var(--muted);
-    text-decoration:none;
-    font:9px Arial;
-    text-transform:uppercase;
-  }
-
-  .mobile-nav a span:first-child{
-    color:var(--gold2);
-    font-size:17px;
-  }
-
-  .page{
-    padding-bottom:120px;
-  }
-
-}
-
-@media(max-width:500px){
-
-  .book-option{
-    grid-template-columns:1fr;
-  }
-
-  .cover{
-    width:min(150px,55vw);
-  }
-
-}
-</style>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>DogEar — Monthly Vote</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+
+    :root {
+
+      --ink:#090b0a;
+      --ink2:#0d100e;
+      --panel:#101410;
+      --panel2:#151a15;
+
+      --cream:#f1e7cf;
+      --cream2:#d9cfb8;
+
+      --gold:#c79b59;
+      --gold2:#dfbd7e;
+
+      --green:#26362b;
+      --green2:#34483a;
+
+      --muted:#aaa18f;
+
+      --line:rgba(199,155,89,.22);
+      --line-soft:rgba(199,155,89,.11);
+
+      --success:#b9d6b2;
+      --danger:#e6a09a;
+      --warning:#e3c68d;
+
+    }
+
+
+    * {
+
+      box-sizing:border-box;
+
+    }
+
+
+    html {
+
+      scroll-behavior:smooth;
+
+    }
+
+
+    body {
+
+      margin:0;
+
+      min-height:100vh;
+
+      color:var(--cream);
+
+      background:
+        radial-gradient(
+          circle at 8% 0%,
+          rgba(53,73,59,.28),
+          transparent 26%
+        ),
+        radial-gradient(
+          circle at 90% 15%,
+          rgba(199,155,89,.07),
+          transparent 24%
+        ),
+        var(--ink);
+
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    }
+
+
+    button,
+    input {
+
+      font:inherit;
+
+    }
+
+
+    button {
+
+      color:inherit;
+
+    }
+
+
+    a {
+
+      color:inherit;
+
+    }
+
+
+    /* =====================================================
+       LOADING
+       ===================================================== */
+
+
+    .loading {
+
+      position:fixed;
+
+      inset:0;
+
+      z-index:500;
+
+      display:grid;
+
+      place-items:center;
+
+      background:var(--ink);
+
+      transition:
+        opacity .2s ease,
+        visibility .2s ease;
+
+    }
+
+
+    .loading.hidden {
+
+      opacity:0;
+
+      visibility:hidden;
+
+      pointer-events:none;
+
+    }
+
+
+    .loading-inner {
+
+      text-align:center;
+
+    }
+
+
+    .loading-mark {
+
+      width:48px;
+
+      height:48px;
+
+      margin:
+        0 auto 18px;
+
+      border:
+        1px solid
+        var(--gold);
+
+      border-radius:
+        50% 50% 50% 12%;
+
+      animation:
+        float
+        1.5s
+        ease-in-out
+        infinite;
+
+    }
+
+
+    .loading span {
+
+      color:var(--gold2);
+
+      font:
+        800 10px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.16em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    @keyframes float {
+
+      0%,
+      100% {
+
+        transform:
+          translateY(0)
+          rotate(-8deg);
+
+      }
+
+      50% {
+
+        transform:
+          translateY(-6px)
+          rotate(-8deg);
+
+      }
+
+    }
+
+
+    /* =====================================================
+       TOP BAR
+       ===================================================== */
+
+
+    .topbar {
+
+      min-height:76px;
+
+      padding:
+        0
+        clamp(
+          18px,
+          4vw,
+          60px
+        );
+
+      display:flex;
+
+      align-items:center;
+
+      justify-content:space-between;
+
+      gap:24px;
+
+      position:sticky;
+
+      top:0;
+
+      z-index:100;
+
+      border-bottom:
+        1px solid
+        var(--line);
+
+      background:
+        rgba(
+          9,
+          11,
+          10,
+          .95
+        );
+
+      backdrop-filter:
+        blur(14px);
+
+    }
+
+
+    .brand {
+
+      display:flex;
+
+      align-items:center;
+
+      gap:11px;
+
+      color:var(--gold2);
+
+      text-decoration:none;
+
+      font:
+        800 13px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.17em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    .brand-mark {
+
+      width:34px;
+
+      height:34px;
+
+      position:relative;
+
+      border:
+        1px solid
+        var(--gold);
+
+      border-radius:
+        50% 50% 50% 12%;
+
+      transform:
+        rotate(-8deg);
+
+    }
+
+
+    .brand-mark::after {
+
+      content:"";
+
+      position:absolute;
+
+      width:8px;
+
+      height:8px;
+
+      right:7px;
+
+      top:7px;
+
+      border-radius:50%;
+
+      background:var(--gold);
+
+    }
+
+
+    .nav {
+
+      display:flex;
+
+      align-items:center;
+
+      gap:24px;
+
+      font:
+        700 11px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.1em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    .nav a {
+
+      color:var(--muted);
+
+      text-decoration:none;
+
+    }
+
+
+    .nav a:hover,
+    .nav a.active {
+
+      color:var(--gold2);
+
+    }
+
+
+    .avatar {
+
+      width:38px;
+
+      height:38px;
+
+      display:grid;
+
+      place-items:center;
+
+      overflow:hidden;
+
+      border:
+        1px solid
+        var(--line);
+
+      border-radius:50%;
+
+      background:var(--green);
+
+      text-decoration:none;
+
+      font:
+        800 12px
+        Arial,
+        sans-serif;
+
+    }
+
+
+    .avatar img {
+
+      width:100%;
+
+      height:100%;
+
+      object-fit:cover;
+
+    }
+
+
+    /* =====================================================
+       PAGE
+       ===================================================== */
+
+
+    .page {
+
+      width:
+        min(
+          1240px,
+          calc(
+            100% - 32px
+          )
+        );
+
+      margin:auto;
+
+      padding:
+        36px 0 110px;
+
+    }
+
+
+    .back {
+
+      display:inline-block;
+
+      margin-bottom:20px;
+
+      color:var(--muted);
+
+      text-decoration:none;
+
+      font:
+        800 9px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.09em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    .back:hover {
+
+      color:var(--gold2);
+
+    }
+
+
+    /* =====================================================
+       CLUB HEADER
+       ===================================================== */
+
+
+    .club-head {
+
+      padding:
+        clamp(
+          24px,
+          4vw,
+          38px
+        );
+
+      border:
+        1px solid
+        var(--line);
+
+      border-radius:22px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(38,54,43,.72),
+          rgba(16,20,16,.9)
+        );
+
+    }
+
+
+    .eyebrow {
+
+      margin-bottom:8px;
+
+      color:var(--gold);
+
+      font:
+        800 9px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.16em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    .club-head h1 {
+
+      margin:0;
+
+      font-size:
+        clamp(
+          38px,
+          5vw,
+          58px
+        );
+
+      line-height:.96;
+
+      font-weight:400;
+
+      letter-spacing:-.035em;
+
+    }
+
+
+    .club-sub {
+
+      max-width:720px;
+
+      margin-top:13px;
+
+      color:var(--cream2);
+
+      font:
+        11px/1.7
+        Arial,
+        sans-serif;
+
+    }
+
+
+    /* =====================================================
+       CLUB NAV
+       ===================================================== */
+
+
+    .club-nav {
+
+      margin-top:18px;
+
+      display:flex;
+
+      gap:7px;
+
+      overflow-x:auto;
+
+      scrollbar-width:none;
+
+    }
+
+
+    .club-nav::-webkit-scrollbar {
+
+      display:none;
+
+    }
+
+
+    .club-nav a {
+
+      flex:0 0 auto;
+
+      min-height:37px;
+
+      padding:
+        0 14px;
+
+      display:flex;
+
+      align-items:center;
+
+      border:
+        1px solid
+        var(--line);
+
+      border-radius:999px;
+
+      color:var(--muted);
+
+      text-decoration:none;
+
+      font:
+        800 8px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.07em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    .club-nav a:hover,
+    .club-nav a.active {
+
+      border-color:var(--gold);
+
+      color:var(--gold2);
+
+    }
+
+
+    /* =====================================================
+       VOTE LAYOUT
+       ===================================================== */
+
+
+    .vote-layout {
+
+      margin-top:24px;
+
+      display:grid;
+
+      grid-template-columns:
+        minmax(0,1fr)
+        310px;
+
+      gap:20px;
+
+      align-items:start;
+
+    }
+
+
+    .card {
+
+      min-width:0;
+
+      border:
+        1px solid
+        var(--line);
+
+      border-radius:20px;
+
+      background:
+        rgba(16,20,16,.88);
+
+      overflow:hidden;
+
+    }
+
+
+    .card-head {
+
+      padding:
+        23px 25px 19px;
+
+      border-bottom:
+        1px solid
+        var(--line-soft);
+
+    }
+
+
+    .card-head h2 {
+
+      margin:0;
+
+      font-size:27px;
+
+      font-weight:400;
+
+    }
+
+
+    .card-head p {
+
+      margin:
+        7px 0 0;
+
+      color:var(--muted);
+
+      font:
+        10px/1.6
+        Arial,
+        sans-serif;
+
+    }
+
+
+    /* =====================================================
+       BALLOT
+       ===================================================== */
+
+
+    .ballot {
+
+      padding:22px;
+
+      display:grid;
+
+      grid-template-columns:
+        repeat(
+          3,
+          minmax(0,1fr)
+        );
+
+      gap:16px;
+
+    }
+
+
+    .book-option {
+
+      min-width:0;
+
+      display:flex;
+
+      flex-direction:column;
+
+      padding:14px;
+
+      border:
+        1px solid
+        var(--line);
+
+      border-radius:15px;
+
+      background:
+        rgba(9,11,10,.34);
+
+      transition:
+        border-color .16s ease,
+        transform .16s ease;
+
+    }
+
+
+    .book-option:hover {
+
+      border-color:
+        rgba(199,155,89,.42);
+
+    }
+
+
+    .book-option.selected {
+
+      border-color:var(--gold);
+
+      box-shadow:
+        inset 0 0 0 1px
+        rgba(199,155,89,.18);
+
+    }
+
+
+    .book-link {
+
+      color:inherit;
+
+      text-decoration:none;
+
+    }
+
+
+    .cover {
+
+      width:100%;
+
+      aspect-ratio:
+        2 / 3;
+
+      display:flex;
+
+      align-items:center;
+
+      justify-content:center;
+
+      overflow:hidden;
+
+      border:
+        1px solid
+        var(--line-soft);
+
+      border-radius:8px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(199,155,89,.08),
+          rgba(38,54,43,.72)
+        );
+
+      color:var(--muted);
+
+      text-align:center;
+
+      font:
+        9px/1.5
+        Arial,
+        sans-serif;
+
+      transition:
+        transform .18s ease,
+        border-color .18s ease;
+
+    }
+
+
+    .book-link:hover
+    .cover {
+
+      transform:
+        translateY(-2px);
+
+      border-color:var(--gold);
+
+    }
+
+
+    .cover img {
+
+      width:100%;
+
+      height:100%;
+
+      display:block;
+
+      object-fit:cover;
+
+    }
+
+
+    .book-option h3 {
+
+      margin:
+        14px 0 6px;
+
+      font-size:19px;
+
+      line-height:1.08;
+
+      font-weight:400;
+
+    }
+
+
+    .book-option h3 a {
+
+      color:var(--cream);
+
+      text-decoration:none;
+
+    }
+
+
+    .book-option h3 a:hover {
+
+      color:var(--gold2);
+
+    }
+
+
+    .author {
+
+      min-height:31px;
+
+      color:var(--muted);
+
+      font:
+        9px/1.5
+        Arial,
+        sans-serif;
+
+    }
+
+
+    .edition {
+
+      min-height:34px;
+
+      margin-top:8px;
+
+      color:var(--cream2);
+
+      font:
+        8px/1.5
+        Arial,
+        sans-serif;
+
+    }
+
+
+    .vote-total {
+
+      margin-top:12px;
+
+      color:var(--gold2);
+
+      font:
+        800 9px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.04em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    .vote-bar {
+
+      width:100%;
+
+      height:5px;
+
+      margin-top:8px;
+
+      overflow:hidden;
+
+      border-radius:999px;
+
+      background:
+        rgba(255,255,255,.06);
+
+    }
+
+
+    .vote-bar-fill {
+
+      height:100%;
+
+      width:0;
+
+      border-radius:999px;
+
+      background:var(--gold);
+
+      transition:
+        width .25s ease;
+
+    }
+
+
+    .vote-button {
+
+      width:100%;
+
+      min-height:39px;
+
+      margin-top:14px;
+
+      padding:
+        0 12px;
+
+      border:
+        1px solid
+        var(--gold);
+
+      border-radius:999px;
+
+      background:transparent;
+
+      color:var(--gold2);
+
+      cursor:pointer;
+
+      font:
+        800 8px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.07em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    .vote-button:hover:not(:disabled) {
+
+      background:var(--gold);
+
+      color:#11130f;
+
+    }
+
+
+    .vote-button:disabled {
+
+      opacity:.46;
+
+      cursor:not-allowed;
+
+    }
+
+
+    /* =====================================================
+       EMPTY / MESSAGE
+       ===================================================== */
+
+
+    .empty {
+
+      margin:
+        0 22px 22px;
+
+      padding:25px;
+
+      border:
+        1px dashed
+        var(--line);
+
+      border-radius:13px;
+
+      color:var(--muted);
+
+      text-align:center;
+
+      font:
+        10px/1.6
+        Arial,
+        sans-serif;
+
+    }
+
+
+    .empty strong {
+
+      display:block;
+
+      margin-bottom:5px;
+
+      color:var(--cream2);
+
+      font-size:12px;
+
+    }
+
+
+    .message {
+
+      display:none;
+
+      margin:
+        0 22px 22px;
+
+      padding:
+        13px 15px;
+
+      border:
+        1px solid
+        var(--line);
+
+      border-radius:12px;
+
+      color:var(--cream2);
+
+      font:
+        10px/1.5
+        Arial,
+        sans-serif;
+
+    }
+
+
+    .message.show {
+
+      display:block;
+
+    }
+
+
+    .message.success {
+
+      border-color:
+        rgba(185,214,178,.35);
+
+      color:var(--success);
+
+    }
+
+
+    .message.error {
+
+      border-color:
+        rgba(230,160,154,.35);
+
+      color:var(--danger);
+
+    }
+
+
+    /* =====================================================
+       SIDE
+       ===================================================== */
+
+
+    .side-body {
+
+      padding:22px;
+
+      display:grid;
+
+      gap:20px;
+
+    }
+
+
+    .side-section {
+
+      padding-bottom:19px;
+
+      border-bottom:
+        1px solid
+        var(--line-soft);
+
+    }
+
+
+    .side-section:last-child {
+
+      padding-bottom:0;
+
+      border-bottom:0;
+
+    }
+
+
+    .side-section h3 {
+
+      margin:
+        0 0 7px;
+
+      color:var(--gold2);
+
+      font:
+        800 9px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.08em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    .side-section p {
+
+      margin:0;
+
+      color:var(--muted);
+
+      font:
+        10px/1.65
+        Arial,
+        sans-serif;
+
+    }
+
+
+    .status {
+
+      display:inline-flex;
+
+      margin-top:12px;
+
+      min-height:31px;
+
+      padding:
+        0 11px;
+
+      align-items:center;
+
+      border:
+        1px solid
+        var(--line);
+
+      border-radius:999px;
+
+      color:var(--gold2);
+
+      font:
+        800 8px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.07em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    .status.closed {
+
+      color:var(--muted);
+
+    }
+
+
+    .side-link {
+
+      display:inline-flex;
+
+      margin-top:12px;
+
+      color:var(--gold2);
+
+      text-decoration:none;
+
+      font:
+        800 8px
+        Arial,
+        sans-serif;
+
+      letter-spacing:.06em;
+
+      text-transform:uppercase;
+
+    }
+
+
+    .side-link:hover {
+
+      text-decoration:underline;
+
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+
+    @media(
+      max-width:1000px
+    ) {
+
+      .vote-layout {
+
+        grid-template-columns:1fr;
+
+      }
+
+    }
+
+
+    @media(
+      max-width:760px
+    ) {
+
+      .nav {
+
+        display:none;
+
+      }
+
+
+      .ballot {
+
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(0,1fr)
+          );
+
+      }
+
+    }
+
+
+    @media(
+      max-width:520px
+    ) {
+
+      .page {
+
+        width:
+          calc(
+            100% - 22px
+          );
+
+      }
+
+
+      .ballot {
+
+        grid-template-columns:1fr;
+
+      }
+
+    }
+
+  </style>
+
 </head>
+
 
 <body>
 
-<div class="loading" id="loading">
-  <span>Opening the ballot...</span>
-</div>
 
-<header class="topbar">
+  <!-- =====================================================
+       LOADING
+       ===================================================== -->
 
-  <a class="brand" href="dashboard.html">
-    <span class="brand-mark"></span>
-    DogEar
-  </a>
 
-  <nav class="nav">
-    <a href="dashboard.html">Home</a>
-    <a href="discover.html">Discover</a>
-    <a class="active" href="clubs.html">Clubs</a>
-    <a href="marketplace.html">Books</a>
-  </nav>
-
-  <a
-    class="avatar"
-    id="navAvatar"
-    href="profile.html"
+  <div
+    class="loading"
+    id="loading"
   >
-    ?
-  </a>
 
-</header>
+    <div class="loading-inner">
 
-<main class="page">
+      <div class="loading-mark"></div>
 
-  <a
-    class="back"
-    id="backLink"
-    href="clubs.html"
-  >
-    ← Back to Club
-  </a>
+      <span>
+        Opening the ballot...
+      </span>
 
-  <section class="hero">
+    </div>
 
-    <div>
+  </div>
+
+
+  <!-- =====================================================
+       TOP NAVIGATION
+       ===================================================== -->
+
+
+  <header class="topbar">
+
+    <a
+      class="brand"
+      href="dashboard.html"
+    >
+
+      <span class="brand-mark"></span>
+
+      DogEar
+
+    </a>
+
+
+    <nav class="nav">
+
+      <a href="dashboard.html">
+        Home
+      </a>
+
+      <a href="discover.html">
+        Discover
+      </a>
+
+      <a
+        class="active"
+        href="clubs.html"
+      >
+        Clubs
+      </a>
+
+      <a href="marketplace.html">
+        Books
+      </a>
+
+    </nav>
+
+
+    <a
+      class="avatar"
+      id="navAvatar"
+      href="profile.html"
+    >
+      ?
+    </a>
+
+  </header>
+
+
+  <!-- =====================================================
+       PAGE
+       ===================================================== -->
+
+
+  <main class="page">
+
+
+    <a
+      class="back"
+      id="backLink"
+      href="club.html"
+    >
+      ← Back to Club
+    </a>
+
+
+    <!-- =================================================
+         CLUB HEADER
+         ================================================= -->
+
+
+    <section class="club-head">
 
       <div class="eyebrow">
-        Monthly Vote
+        Monthly Ballot
       </div>
 
-      <h1>
-        Choose the Next Book
+      <h1 id="clubName">
+        Book Club
       </h1>
 
       <div
-        class="subtitle"
-        id="clubSubtitle"
+        class="club-sub"
+        id="clubMeta"
       >
-        Vote for the exact edition your club should read next.
-      </div>
-
-    </div>
-
-    <div
-      class="status-pill"
-      id="ballotStatus"
-    >
-      Loading
-    </div>
-
-  </section>
-
-  <nav
-    class="club-nav"
-    aria-label="Club navigation"
-  >
-
-    <a id="overviewLink" href="club.html">
-      Overview
-    </a>
-
-    <a id="membersLink" href="club-members.html">
-      Members
-    </a>
-
-    <a id="discussionsLink" href="club-discussions.html">
-      Discussions
-    </a>
-
-    <a
-      class="active"
-      id="voteLink"
-      href="club-vote.html"
-    >
-      Monthly Vote
-    </a>
-
-    <a id="booksLink" href="club-books.html">
-      Bookshelf
-    </a>
-
-    <a id="settingsLink" href="club-settings.html">
-      Settings
-    </a>
-
-  </nav>
-
-  <div class="layout">
-
-    <section class="card">
-
-      <div class="card-head">
-
-        <h2 id="ballotHeading">
-          Monthly Ballot
-        </h2>
-
-        <p id="ballotDescription">
-          Three exact editions are selected by club leadership.
-        </p>
-
-      </div>
-
-      <div id="ballotContent">
-
-        <div
-          class="ballot-list"
-          id="ballotList"
-        ></div>
-
+        Choose the book you want the club to read next.
       </div>
 
     </section>
 
-    <aside class="card">
 
-      <div class="card-head">
+    <!-- =================================================
+         CLUB NAVIGATION
+         ================================================= -->
 
-        <h2>
-          Your Vote
-        </h2>
 
-        <p>
-          One vote per member per monthly ballot.
-        </p>
+    <nav
+      class="club-nav"
+      aria-label="Club navigation"
+    >
 
-      </div>
+      <a
+        id="overviewLink"
+        href="club.html"
+      >
+        Overview
+      </a>
 
-      <div class="side-body">
+      <a
+        id="membersLink"
+        href="club-members.html"
+      >
+        Members
+      </a>
 
-        <div class="side-section">
+      <a
+        id="discussionsLink"
+        href="club-discussions.html"
+      >
+        Discussions
+      </a>
 
-          <h3>
-            Voting Status
-          </h3>
+      <a
+        class="active"
+        id="voteLink"
+        href="club-vote.html"
+      >
+        Monthly Vote
+      </a>
 
-          <p id="statusText">
-            Loading…
+      <a
+        id="booksLink"
+        href="club-books.html"
+      >
+        Bookshelf
+      </a>
+
+      <a
+        id="settingsLink"
+        href="club-settings.html"
+      >
+        Settings
+      </a>
+
+    </nav>
+
+
+    <!-- =================================================
+         VOTING AREA
+         ================================================= -->
+
+
+    <div class="vote-layout">
+
+
+      <section class="card">
+
+
+        <div class="card-head">
+
+          <h2>
+            This Month's Choices
+          </h2>
+
+          <p>
+            Each ballot contains three exact editions.
+            One vote per member. Click any book cover or
+            title to open its full DogEar book page.
           </p>
 
-          <div class="progress">
+        </div>
 
-            <div class="progress-row">
-              <span>Voting Month</span>
-              <strong id="monthStatus">—</strong>
-            </div>
 
-            <div class="progress-row">
-              <span>Your Membership</span>
-              <strong id="membershipStatus">Checking</strong>
-            </div>
+        <div
+          class="ballot"
+          id="ballot"
+        ></div>
 
-            <div class="progress-row">
-              <span>Your Vote</span>
-              <strong id="voteStatus">None</strong>
+
+        <div
+          class="empty"
+          id="emptyState"
+          hidden
+        >
+
+          <strong>
+            No ballot is open yet.
+          </strong>
+
+          The club president or administrator can add
+          this month's three choices.
+
+        </div>
+
+
+        <div
+          class="message"
+          id="message"
+        ></div>
+
+
+      </section>
+
+
+      <!-- ===============================================
+           VOTING SIDEBAR
+           =============================================== -->
+
+
+      <aside class="card">
+
+
+        <div class="card-head">
+
+          <h2>
+            Voting Room
+          </h2>
+
+          <p>
+            One club, three books, one tiny democracy.
+          </p>
+
+        </div>
+
+
+        <div class="side-body">
+
+
+          <div class="side-section">
+
+            <h3>
+              Your Vote
+            </h3>
+
+            <p id="yourVoteText">
+              You haven't voted yet.
+            </p>
+
+            <div
+              class="status"
+              id="voteStatus"
+            >
+              Loading
             </div>
 
           </div>
 
-          <div
-            class="message"
-            id="message"
-          ></div>
 
-        </div>
+          <div class="side-section">
 
-        <div
-          class="side-section"
-          id="leadershipSection"
-          hidden
-        >
+            <h3>
+              How it works
+            </h3>
 
-          <h3>
-            Club Leadership
-          </h3>
+            <p>
+              Members can cast one vote while the ballot
+              is open. If this club allows vote changes,
+              choosing another title replaces the
+              previous vote.
+            </p>
 
-          <p>
-            Build the three-choice ballot or control voting from the leadership desk.
-          </p>
+          </div>
 
-          <div class="side-actions">
+
+          <div class="side-section">
+
+            <h3>
+              Results
+            </h3>
+
+            <p id="resultsText">
+              Current totals appear on each book.
+            </p>
+
+          </div>
+
+
+          <div class="side-section">
+
+            <h3>
+              Need the details?
+            </h3>
+
+            <p>
+              Every ballot title links directly to its
+              full DogEar book page, including ratings,
+              reviews, edition details, and purchase
+              options when available.
+            </p>
 
             <a
-              class="btn secondary"
-              id="manageBallotLink"
-              href="club-ballot-admin.html"
+              class="side-link"
+              href="marketplace.html"
             >
-              Manage Ballot
+              Browse Marketplace
             </a>
 
           </div>
 
-        </div>
-
-        <div class="side-section">
-
-          <h3>
-            Exact editions
-          </h3>
-
-          <p>
-            ISBN, publisher, publication date, and Google Books data help distinguish different editions of the same title.
-          </p>
 
         </div>
 
-      </div>
 
-    </aside>
+      </aside>
 
-  </div>
 
-</main>
+    </div>
 
-<nav class="mobile-nav">
 
-  <a href="dashboard.html">
-    <span>⌂</span>
-    Home
-  </a>
+  </main>
 
-  <a href="discover.html">
-    <span>⌕</span>
-    Discover
-  </a>
 
-  <a href="clubs.html">
-    <span>◉</span>
-    Clubs
-  </a>
+  <script>
 
-  <a href="profile.html">
-    <span>☺</span>
-    Profile
-  </a>
 
-</nav>
+    /* =====================================================
+       CONFIG
+       ===================================================== */
 
-<script>
 
-/* =========================================================
-   CONFIG
-   ========================================================= */
+    const SUPABASE_URL =
+      "https://nrtutxjznkfvvbmaagum.supabase.co";
 
-const SUPABASE_URL =
-  "https://nrtutxjznkfvvbmaagum.supabase.co";
 
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
 
-const supabaseClient =
-  supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
 
-/* =========================================================
-   STATE
-   ========================================================= */
-
-const $ =
-  id =>
-    document.getElementById(id);
-
-const params =
-  new URLSearchParams(
-    location.search
-  );
-
-const clubId =
-  params.get("id");
-
-let currentUser = null;
-let clubData = null;
-let membership = null;
-
-let ballot = null;
-let ballotOptions = [];
-let currentVote = null;
-
-let voteCounts = {};
-
-/* =========================================================
-   URL HELPERS
-   ========================================================= */
-
-function withClub(filename){
-
-  return clubId
-    ? filename +
-      "?id=" +
-      encodeURIComponent(clubId)
-    : filename;
-
-}
-
-function wireLinks(){
-
-  $("backLink").href =
-    withClub(
-      "club.html"
-    );
-
-  $("overviewLink").href =
-    withClub(
-      "club.html"
-    );
-
-  $("membersLink").href =
-    withClub(
-      "club-members.html"
-    );
-
-  $("discussionsLink").href =
-    withClub(
-      "club-discussions.html"
-    );
-
-  $("voteLink").href =
-    withClub(
-      "club-vote.html"
-    );
-
-  $("booksLink").href =
-    withClub(
-      "club-books.html"
-    );
-
-  $("settingsLink").href =
-    withClub(
-      "club-settings.html"
-    );
-
-  $("manageBallotLink").href =
-    withClub(
-      "club-ballot-admin.html"
-    );
-
-}
-
-/* =========================================================
-   HELPERS
-   ========================================================= */
-
-function escapeHtml(value=""){
-
-  return String(value)
-    .replace(
-      /[&<>"']/g,
-      character => ({
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#039;"
-      }[character])
-    );
-
-}
-
-function normalizeStatus(value=""){
-
-  return String(value)
-    .trim()
-    .toLowerCase();
-
-}
-
-function normalizeRole(value=""){
-
-  return String(value)
-    .trim()
-    .toLowerCase();
-
-}
-
-function initials(name="Reader"){
-
-  const pieces =
-    String(name)
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean);
-
-  if(!pieces.length)
-    return "?";
-
-  if(pieces.length === 1)
-    return pieces[0][0]
-      .toUpperCase();
-
-  return (
-    pieces[0][0] +
-    pieces[pieces.length - 1][0]
-  ).toUpperCase();
-
-}
-
-function showMessage(
-  text,
-  type=""
-){
-
-  $("message").textContent =
-    text;
-
-  $("message").className =
-    "message show " +
-    type;
-
-}
-
-function clearMessage(){
-
-  $("message").textContent =
-    "";
-
-  $("message").className =
-    "message";
-
-}
-
-/* =========================================================
-   MONTH
-   ========================================================= */
-
-function nextBallotMonth(){
-
-  const now =
-    new Date();
-
-  return new Date(
-    now.getFullYear(),
-    now.getMonth() + 1,
-    1
-  );
-
-}
-
-function ballotMonthISO(){
-
-  const date =
-    nextBallotMonth();
-
-  const year =
-    date.getFullYear();
-
-  const month =
-    String(
-      date.getMonth() + 1
-    ).padStart(2,"0");
-
-  return (
-    year +
-    "-" +
-    month +
-    "-01"
-  );
-
-}
-
-function ballotMonthLabel(){
-
-  return nextBallotMonth()
-    .toLocaleDateString(
-      undefined,
-      {
-        month:"long",
-        year:"numeric"
-      }
-    );
-
-}
-
-/* =========================================================
-   PERMISSIONS
-   ========================================================= */
-
-function isActiveMember(){
-
-  return Boolean(
-    membership &&
-    normalizeStatus(
-      membership.membership_status
-    ) === "active"
-  );
-
-}
-
-function isLeadership(){
-
-  if(!isActiveMember())
-    return false;
-
-  return [
-    "president",
-    "owner",
-    "administrator",
-    "admin"
-  ]
-    .includes(
-      normalizeRole(
-        membership.club_role
-      )
-    );
-
-}
-
-/* =========================================================
-   PROFILE
-   ========================================================= */
-
-async function loadProfile(){
-
-  let display =
-    currentUser
-      ?.user_metadata
-      ?.display_name ||
-    "Reader";
-
-  let avatar = "";
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient.rpc(
-        "get_public_profile",
-        {
-          check_user_id:
-            currentUser.id
-        }
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
       );
 
-    if(error)
-      throw error;
 
-    const profile =
-      Array.isArray(data)
-        ? data[0]
-        : data;
+    /* =====================================================
+       STATE
+       ===================================================== */
 
-    if(profile){
 
-      display =
-        profile.display_name ||
-        display;
-
-      avatar =
-        profile.avatar_url ||
-        "";
-
-    }
-
-  }
-  catch(error){
-
-    console.warn(
-      "Profile lookup:",
-      error.message
-    );
-
-  }
-
-  const holder =
-    $("navAvatar");
-
-  holder.innerHTML =
-    "";
-
-  if(avatar){
-
-    const image =
-      document.createElement(
-        "img"
+    const params =
+      new URLSearchParams(
+        window.location.search
       );
 
-    image.src =
-      avatar;
 
-    image.alt =
-      display;
+    const clubId =
+      params.get(
+        "id"
+      );
 
-    image.onerror =
-      () => {
 
-        holder.innerHTML =
-          "";
+    let currentUser =
+      null;
 
-        holder.textContent =
-          initials(display);
 
-      };
+    let currentProfile =
+      null;
 
-    holder.appendChild(
-      image
-    );
 
-  }
-  else{
+    let club =
+      null;
 
-    holder.textContent =
-      initials(display);
 
-  }
+    let membership =
+      null;
 
-}
 
-/* =========================================================
-   CLUB
-   ========================================================= */
+    let activeRound =
+      null;
 
-async function loadClub(){
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("clubs")
-      .select("*")
-      .eq(
-        "id",
-        clubId
-      )
-      .maybeSingle();
-
-  if(error)
-    throw error;
-
-  if(!data){
-
-    location.href =
-      "clubs.html";
-
-    return;
-
-  }
-
-  clubData =
-    data;
-
-  $("clubSubtitle").textContent =
-    (
-      data.name ||
-      "This club"
-    ) +
-    " is choosing its " +
-    ballotMonthLabel() +
-    " book.";
-
-  document.title =
-    "DogEar — " +
-    (
-      data.name ||
-      "Club"
-    ) +
-    " Vote";
-
-}
-
-/* =========================================================
-   MEMBERSHIP
-   ========================================================= */
-
-async function loadMembership(){
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("club_members")
-      .select(
-        "club_id,user_id,club_role,membership_status"
-      )
-      .eq(
-        "club_id",
-        clubId
-      )
-      .eq(
-        "user_id",
-        currentUser.id
-      )
-      .maybeSingle();
-
-  if(error)
-    throw error;
-
-  membership =
-    data || null;
-
-}
-
-/* =========================================================
-   BALLOT
-   ========================================================= */
-
-async function loadBallot(){
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("club_ballots")
-      .select("*")
-      .eq(
-        "club_id",
-        clubId
-      )
-      .eq(
-        "ballot_month",
-        ballotMonthISO()
-      )
-      .maybeSingle();
-
-  if(error)
-    throw error;
-
-  ballot =
-    data || null;
-
-}
-
-/* =========================================================
-   OPTIONS
-   ========================================================= */
-
-async function loadOptions(){
-
-  if(!ballot){
-
-    ballotOptions =
+    let voteOptions =
       [];
 
-    return;
 
-  }
+    let myVote =
+      null;
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("club_ballot_options")
-      .select("*")
-      .eq(
-        "ballot_id",
-        ballot.id
-      )
-      .eq(
-        "is_active",
-        true
-      )
-      .order(
-        "position",
-        {
-          ascending:true
-        }
-      );
 
-  if(error)
-    throw error;
+    let totalVotes =
+      0;
 
-  ballotOptions =
-    data || [];
 
-}
+    /* =====================================================
+       DOM
+       ===================================================== */
 
-/* =========================================================
-   CURRENT VOTE
-   ========================================================= */
 
-async function loadCurrentVote(){
-
-  currentVote =
-    null;
-
-  if(
-    !ballot ||
-    !isActiveMember()
-  ){
-
-    return;
-
-  }
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("club_votes")
-      .select(
-        "id,option_id,ballot_id,user_id"
-      )
-      .eq(
-        "ballot_id",
-        ballot.id
-      )
-      .eq(
-        "user_id",
-        currentUser.id
-      )
-      .maybeSingle();
-
-  if(error)
-    throw error;
-
-  currentVote =
-    data || null;
-
-}
-
-/* =========================================================
-   VOTE TOTALS
-   ========================================================= */
-
-async function loadVoteCounts(){
-
-  voteCounts =
-    {};
-
-  if(
-    !ballot ||
-    !ballotOptions.length
-  ){
-
-    return;
-
-  }
-
-  const shouldShow =
-    clubData?.show_vote_totals !== false;
-
-  if(
-    !shouldShow &&
-    !isLeadership()
-  ){
-
-    return;
-
-  }
-
-  for(const option of ballotOptions){
-
-    const {
-      count,
-      error
-    } =
-      await supabaseClient
-        .from("club_votes")
-        .select(
-          "id",
-          {
-            count:"exact",
-            head:true
-          }
-        )
-        .eq(
-          "ballot_id",
-          ballot.id
-        )
-        .eq(
-          "option_id",
-          option.id
+    const $ =
+      id =>
+        document.getElementById(
+          id
         );
 
-    if(error){
 
-      console.warn(
-        "Vote count lookup:",
-        error.message
-      );
+    /* =====================================================
+       LINKS
+       ===================================================== */
 
-      voteCounts[
-        option.id
-      ] = null;
 
-      continue;
+    function withClub(
+      filename
+    ) {
 
-    }
 
-    voteCounts[
-      option.id
-    ] =
-      count || 0;
-
-  }
-
-}
-
-/* =========================================================
-   BALLOT VALIDITY
-   ========================================================= */
-
-function ballotHasThreeChoices(){
-
-  if(
-    ballotOptions.length !== 3
-  ){
-
-    return false;
-
-  }
-
-  const positions =
-    ballotOptions
-      .map(
-        option =>
-          Number(
-            option.position
-          )
-      )
-      .sort(
-        (a,b) =>
-          a - b
-      );
-
-  return (
-    positions[0] === 1 &&
-    positions[1] === 2 &&
-    positions[2] === 3
-  );
-
-}
-
-function votingIsOpen(){
-
-  return Boolean(
-    ballot &&
-    normalizeStatus(
-      ballot.status
-    ) === "open" &&
-    ballotHasThreeChoices()
-  );
-
-}
-
-/* =========================================================
-   STATUS
-   ========================================================= */
-
-function updateStatus(){
-
-  const status =
-    $("ballotStatus");
-
-  status.classList
-    .remove(
-      "open",
-      "closed"
-    );
-
-  $("monthStatus").textContent =
-    ballotMonthLabel();
-
-  if(!membership){
-
-    $("membershipStatus").textContent =
-      "Not a Member";
-
-  }
-  else{
-
-    $("membershipStatus").textContent =
-      membership.membership_status ||
-      "Unknown";
-
-  }
-
-  if(currentVote){
-
-    const option =
-      ballotOptions.find(
-        item =>
-          Number(item.id) ===
-          Number(
-            currentVote.option_id
-          )
-      );
-
-    $("voteStatus").textContent =
-      option
+      return clubId
         ? (
-            "Choice " +
-            option.position
+            filename +
+            "?id=" +
+            encodeURIComponent(
+              clubId
+            )
           )
-        : "Submitted";
+        : filename;
 
-  }
-  else{
-
-    $("voteStatus").textContent =
-      "None";
-
-  }
-
-  $("leadershipSection").hidden =
-    !isLeadership();
-
-  if(!ballot){
-
-    status.textContent =
-      "Not Ready";
-
-    status.classList
-      .add("closed");
-
-    $("statusText").textContent =
-      "Club leadership has not created the " +
-      ballotMonthLabel() +
-      " ballot yet.";
-
-    return;
-
-  }
-
-  const state =
-    normalizeStatus(
-      ballot.status
-    );
-
-  if(state === "open"){
-
-    status.textContent =
-      "Voting Open";
-
-    status.classList
-      .add("open");
-
-    if(isActiveMember()){
-
-      if(
-        currentVote &&
-        clubData?.allow_vote_changes === false
-      ){
-
-        $("statusText").textContent =
-          "Your vote is locked for this ballot.";
-
-      }
-      else if(currentVote){
-
-        $("statusText").textContent =
-          "Your vote is recorded. You may change it while voting remains open.";
-
-      }
-      else{
-
-        $("statusText").textContent =
-          "Voting is open. Choose one of the three editions below.";
-
-      }
-
-    }
-    else{
-
-      $("statusText").textContent =
-        "Voting is open, but only active club members may vote.";
 
     }
 
-    return;
 
-  }
+    function wireLinks() {
 
-  if(state === "finalized"){
 
-    status.textContent =
-      "Finalized";
+      $("backLink").href =
+        withClub(
+          "club.html"
+        );
 
-    status.classList
-      .add("closed");
 
-    $("statusText").textContent =
-      "This ballot has been finalized.";
+      $("overviewLink").href =
+        withClub(
+          "club.html"
+        );
 
-    return;
 
-  }
+      $("membersLink").href =
+        withClub(
+          "club-members.html"
+        );
 
-  if(state === "closed"){
 
-    status.textContent =
-      "Voting Closed";
+      $("discussionsLink").href =
+        withClub(
+          "club-discussions.html"
+        );
 
-    status.classList
-      .add("closed");
 
-    $("statusText").textContent =
-      "Voting has closed for this ballot.";
+      $("voteLink").href =
+        withClub(
+          "club-vote.html"
+        );
 
-    return;
 
-  }
+      $("booksLink").href =
+        withClub(
+          "club-books.html"
+        );
 
-  status.textContent =
-    "Ballot Draft";
 
-  status.classList
-    .add("closed");
+      $("settingsLink").href =
+        withClub(
+          "club-settings.html"
+        );
 
-  $("statusText").textContent =
-    "Club leadership is still preparing this ballot.";
 
-}
+    }
 
-/* =========================================================
-   RENDER BALLOT
-   ========================================================= */
 
-function renderBallot(){
+    function bookDetailsUrl(
+      bookId
+    ) {
 
-  const container =
-    $("ballotList");
 
-  container.innerHTML =
-    "";
+      if (!bookId) {
 
-  $("ballotHeading").textContent =
-    ballotMonthLabel() +
-    " Ballot";
+        return "marketplace.html";
 
-  if(!ballot){
+      }
 
-    $("ballotContent").innerHTML = `
 
-      <div class="empty">
+      const returnUrl =
+        withClub(
+          "club-vote.html"
+        );
 
-        <strong>
-          The ballot isn't ready yet.
-        </strong>
 
-        Club leadership has not created the
-        ${escapeHtml(
-          ballotMonthLabel()
-        )}
-        ballot.
+      return (
+        "book-detail.html?" +
+        new URLSearchParams({
 
-      </div>
-    `;
+          id:String(
+            bookId
+          ),
 
-    return;
+          return:returnUrl
 
-  }
+        }).toString()
+      );
 
-  if(!ballotHasThreeChoices()){
 
-    $("ballotContent").innerHTML = `
+    }
 
-      <div class="empty">
 
-        <strong>
-          The ballot is still being built.
-        </strong>
+    /* =====================================================
+       HELPERS
+       ===================================================== */
 
-        All three exact editions must be selected before voting begins.
 
-      </div>
-    `;
+    function escapeHtml(
+      value = ""
+    ) {
 
-    return;
 
-  }
-
-  for(const option of ballotOptions){
-
-    const title =
-      option.title ||
-      "Untitled Book";
-
-    const authors =
-      Array.isArray(
-        option.authors
+      return String(
+        value ?? ""
       )
-        ? option.authors.join(", ")
-        : (
-            option.authors ||
-            "Unknown author"
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+
+    }
+
+
+    function initials(
+      name = "Reader"
+    ) {
+
+
+      const parts =
+        String(
+          name
+        )
+          .trim()
+          .split(
+            /\s+/
+          )
+          .filter(
+            Boolean
           );
 
-    const cover =
-      option.cover_url ||
-      "";
 
-    const isbn =
-      option.isbn_13 ||
-      option.isbn_10 ||
-      "";
+      if (!parts.length) {
 
-    const publisher =
-      option.publisher ||
-      "";
+        return "?";
 
-    const published =
-      option.published_date ||
-      "";
+      }
 
-    const description =
-      option.description ||
-      "";
 
-    const selected =
-      currentVote &&
-      Number(
-        currentVote.option_id
-      ) ===
-      Number(
-        option.id
-      );
+      if (
+        parts.length === 1
+      ) {
 
-    let buttonLabel =
-      "Vote";
+        return parts[0]
+          .charAt(0)
+          .toUpperCase();
 
-    let buttonDisabled =
-      false;
+      }
 
-    if(selected){
 
-      buttonLabel =
-        "Your Vote";
+      return (
+        parts[0]
+          .charAt(0) +
+        parts[
+          parts.length - 1
+        ]
+          .charAt(0)
+      )
+        .toUpperCase();
 
-      buttonDisabled =
-        true;
-
-    }
-    else if(!isActiveMember()){
-
-      buttonLabel =
-        "Members Only";
-
-      buttonDisabled =
-        true;
-
-    }
-    else if(!votingIsOpen()){
-
-      buttonLabel =
-        "Voting Closed";
-
-      buttonDisabled =
-        true;
-
-    }
-    else if(
-      currentVote &&
-      clubData?.allow_vote_changes === false
-    ){
-
-      buttonLabel =
-        "Vote Locked";
-
-      buttonDisabled =
-        true;
 
     }
 
-    const count =
-      voteCounts[
-        option.id
-      ];
 
-    const showCount =
-      count !== undefined &&
-      count !== null &&
-      (
-        clubData?.show_vote_totals !== false ||
-        isLeadership()
+    function authorText(
+      book
+    ) {
+
+
+      if (!book) {
+
+        return "";
+
+      }
+
+
+      if (
+        Array.isArray(
+          book.authors
+        )
+      ) {
+
+        return book.authors
+          .filter(
+            Boolean
+          )
+          .join(
+            ", "
+          );
+
+      }
+
+
+      if (
+        typeof book.authors ===
+        "string"
+      ) {
+
+        return book.authors;
+
+      }
+
+
+      return (
+        book.author ||
+        ""
       );
 
-    const article =
-      document.createElement(
-        "article"
+
+    }
+
+
+    function coverUrl(
+      book
+    ) {
+
+
+      return (
+        book?.cover_url ||
+        book?.thumbnail_url ||
+        book?.image_url ||
+        ""
       );
 
-    article.className =
-      "book-option" +
-      (
-        selected
-          ? " selected"
-          : ""
+
+    }
+
+
+    function editionText(
+      book
+    ) {
+
+
+      const parts =
+        [];
+
+
+      if (
+        book?.format ||
+        book?.binding
+      ) {
+
+        parts.push(
+          book.format ||
+          book.binding
+        );
+
+      }
+
+
+      if (
+        book?.page_count ||
+        book?.pages
+      ) {
+
+        parts.push(
+          String(
+            book.page_count ||
+            book.pages
+          ) +
+          " pages"
+        );
+
+      }
+
+
+      if (
+        book?.published_date ||
+        book?.publication_date
+      ) {
+
+        parts.push(
+          String(
+            book.published_date ||
+            book.publication_date
+          )
+        );
+
+      }
+
+
+      return parts.join(
+        " · "
       );
 
-    article.innerHTML = `
 
-      <div class="choice-number">
-        Choice ${escapeHtml(option.position)}
-      </div>
+    }
 
-      <div class="cover">
 
-        ${
-          cover
-            ? `
-              <img
-                src="${escapeHtml(cover)}"
-                alt="${escapeHtml(title)} cover">
-            `
-            : "No cover"
+    function normalizeRole(
+      role
+    ) {
+
+
+      const value =
+        String(
+          role || ""
+        )
+          .trim()
+          .toLowerCase();
+
+
+      if (
+        value === "president" ||
+        value === "owner" ||
+        value === "founder"
+      ) {
+
+        return "president";
+
+      }
+
+
+      if (
+        value === "admin" ||
+        value === "administrator"
+      ) {
+
+        return "admin";
+
+      }
+
+
+      if (
+        value === "member"
+      ) {
+
+        return "member";
+
+      }
+
+
+      return value;
+
+
+    }
+
+
+    function isVotingMember() {
+
+
+      const role =
+        normalizeRole(
+          membership?.role
+        );
+
+
+      return (
+        role === "president" ||
+        role === "admin" ||
+        role === "member"
+      );
+
+
+    }
+
+
+    function roundIsOpen() {
+
+
+      if (!activeRound) {
+
+        return false;
+
+      }
+
+
+      const status =
+        String(
+          activeRound.status ||
+          ""
+        )
+          .trim()
+          .toLowerCase();
+
+
+      if (
+        status === "closed" ||
+        status === "complete" ||
+        status === "completed" ||
+        status === "finalized"
+      ) {
+
+        return false;
+
+      }
+
+
+      if (
+        activeRound.closes_at
+      ) {
+
+
+        const closes =
+          new Date(
+            activeRound.closes_at
+          )
+            .getTime();
+
+
+        if (
+          Number.isFinite(
+            closes
+          ) &&
+          closes <= Date.now()
+        ) {
+
+          return false;
+
         }
 
-      </div>
 
-      <div class="book-info">
+      }
 
-        <h3>
-          ${escapeHtml(title)}
-        </h3>
 
-        <div class="book-author">
-          ${escapeHtml(authors)}
-        </div>
+      return (
+        status === "open" ||
+        status === "active" ||
+        status === "voting" ||
+        status === ""
+      );
 
-        <div class="edition-data">
 
-          ${
-            isbn
-              ? `
-                <span>
-                  ISBN:
-                  ${escapeHtml(isbn)}
-                </span>
-              `
-              : ""
-          }
+    }
 
-          ${
-            publisher
-              ? `
-                <span>
-                  Publisher:
-                  ${escapeHtml(publisher)}
-                </span>
-              `
-              : ""
-          }
 
-          ${
-            published
-              ? `
-                <span>
-                  Published:
-                  ${escapeHtml(published)}
-                </span>
-              `
-              : ""
-          }
+    function voteChangesAllowed() {
 
-          ${
-            option.google_books_id
-              ? `
-                <span>
-                  Google Books ID:
-                  ${escapeHtml(
-                    option.google_books_id
-                  )}
-                </span>
-              `
-              : ""
-          }
 
-        </div>
+      return (
+        activeRound
+          ?.allow_vote_changes === true ||
+        activeRound
+          ?.allow_changes === true
+      );
 
-        ${
-          description
-            ? `
-              <div class="description">
-                ${escapeHtml(description)}
-              </div>
-            `
+
+    }
+
+
+    /* =====================================================
+       MESSAGE
+       ===================================================== */
+
+
+    function showMessage(
+      text,
+      type = ""
+    ) {
+
+
+      const message =
+        $("message");
+
+
+      message.textContent =
+        text;
+
+
+      message.className =
+        "message show" +
+        (
+          type
+            ? " " + type
             : ""
+        );
+
+
+    }
+
+
+    function clearMessage() {
+
+
+      $("message").textContent =
+        "";
+
+
+      $("message").className =
+        "message";
+
+
+    }
+
+
+    /* =====================================================
+       START
+       ===================================================== */
+
+
+    async function startPage() {
+
+
+      if (!clubId) {
+
+
+        window.location.href =
+          "clubs.html";
+
+
+        return;
+
+
+      }
+
+
+      wireLinks();
+
+
+      try {
+
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .auth
+            .getUser();
+
+
+        if (
+          error ||
+          !data?.user
+        ) {
+
+
+          window.location.href =
+            "auth.html#login";
+
+
+          return;
+
+
         }
 
-        <div class="vote-row">
+
+        currentUser =
+          data.user;
+
+
+        await Promise.allSettled([
+
+          loadProfile(),
+
+          loadClub(),
+
+          loadMembership()
+
+        ]);
+
+
+        await loadBallot();
+
+
+      }
+
+      catch (error) {
+
+
+        console.error(
+          "Monthly vote startup:",
+          error
+        );
+
+
+        showMessage(
+          "DogEar couldn't open this ballot. Refresh the page and try again.",
+          "error"
+        );
+
+
+      }
+
+      finally {
+
+
+        $("loading")
+          .classList
+          .add(
+            "hidden"
+          );
+
+
+      }
+
+
+    }
+
+
+    /* =====================================================
+       PROFILE
+       ===================================================== */
+
+
+    async function loadProfile() {
+
+
+      try {
+
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from(
+              "profiles"
+            )
+            .select(
+              "id,display_name,username,avatar_url"
+            )
+            .eq(
+              "id",
+              currentUser.id
+            )
+            .maybeSingle();
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+
+        currentProfile =
+          data || null;
+
+
+      }
+
+      catch (error) {
+
+
+        console.warn(
+          "Profile:",
+          error.message
+        );
+
+
+      }
+
+
+      renderAvatar();
+
+
+    }
+
+
+    function renderAvatar() {
+
+
+      const avatar =
+        $("navAvatar");
+
+
+      const name =
+
+        currentProfile?.display_name ||
+
+        currentProfile?.username ||
+
+        currentUser?.email ||
+
+        "Reader";
+
+
+      avatar.innerHTML =
+        "";
+
+
+      if (
+        currentProfile?.avatar_url
+      ) {
+
+
+        const image =
+          document.createElement(
+            "img"
+          );
+
+
+        image.src =
+          currentProfile.avatar_url;
+
+
+        image.alt =
+          "";
+
+
+        image.onerror =
+          function () {
+
+
+            avatar.innerHTML =
+              "";
+
+
+            avatar.textContent =
+              initials(
+                name
+              );
+
+
+          };
+
+
+        avatar.appendChild(
+          image
+        );
+
+
+      }
+
+      else {
+
+
+        avatar.textContent =
+          initials(
+            name
+          );
+
+
+      }
+
+
+    }
+
+
+    /* =====================================================
+       CLUB
+       ===================================================== */
+
+
+    async function loadClub() {
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from(
+            "clubs"
+          )
+          .select(
+            "*"
+          )
+          .eq(
+            "id",
+            clubId
+          )
+          .single();
+
+
+      if (error) {
+
+        throw error;
+
+      }
+
+
+      club =
+        data;
+
+
+      $("clubName").textContent =
+        club.name ||
+        "Book Club";
+
+
+      $("clubMeta").textContent =
+
+        club.description ||
+
+        "Choose the book you want the club to read next.";
+
+
+      document.title =
+        "DogEar — " +
+        (
+          club.name ||
+          "Monthly Vote"
+        );
+
+
+    }
+
+
+    /* =====================================================
+       MEMBERSHIP
+       ===================================================== */
+
+
+    async function loadMembership() {
+
+
+      try {
+
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from(
+              "club_members"
+            )
+            .select(
+              "*"
+            )
+            .eq(
+              "club_id",
+              clubId
+            )
+            .eq(
+              "user_id",
+              currentUser.id
+            )
+            .maybeSingle();
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+
+        membership =
+          data || null;
+
+
+      }
+
+      catch (error) {
+
+
+        console.warn(
+          "Membership:",
+          error.message
+        );
+
+
+        membership =
+          null;
+
+
+      }
+
+
+    }
+        /* =====================================================
+       BALLOT
+       ===================================================== */
+
+
+    async function loadBallot() {
+
+
+      clearMessage();
+
+
+      activeRound =
+        null;
+
+
+      voteOptions =
+        [];
+
+
+      myVote =
+        null;
+
+
+      totalVotes =
+        0;
+
+
+      try {
+
+
+        await loadActiveRound();
+
+
+        if (!activeRound) {
+
+
+          renderNoBallot();
+
+
+          return;
+
+
+        }
+
+
+        await Promise.all([
+
+          loadVoteOptions(),
+
+          loadMyVote()
+
+        ]);
+
+
+        renderBallot();
+
+
+      }
+
+      catch (error) {
+
+
+        console.error(
+          "Ballot:",
+          error
+        );
+
+
+        renderNoBallot();
+
+
+        showMessage(
+          "DogEar couldn't load this month's ballot.",
+          "error"
+        );
+
+
+      }
+
+
+    }
+
+
+    /* =====================================================
+       ACTIVE ROUND
+       ===================================================== */
+
+
+    async function loadActiveRound() {
+
+
+      /*
+        DogEar has gone through a few schema revisions,
+        so this deliberately loads the club's recent
+        rounds and chooses the current/open one here.
+      */
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from(
+            "vote_rounds"
+          )
+          .select(
+            "*"
+          )
+          .eq(
+            "club_id",
+            clubId
+          )
+          .order(
+            "created_at",
+            {
+              ascending:false
+            }
+          )
+          .limit(
+            12
+          );
+
+
+      if (error) {
+
+        throw error;
+
+      }
+
+
+      const rounds =
+        Array.isArray(
+          data
+        )
+          ? data
+          : [];
+
+
+      if (!rounds.length) {
+
+
+        activeRound =
+          null;
+
+
+        return;
+
+
+      }
+
+
+      const openRound =
+        rounds.find(
+          round => {
+
+
+            const status =
+              String(
+                round.status ||
+                ""
+              )
+                .trim()
+                .toLowerCase();
+
+
+            if (
+              status === "closed" ||
+              status === "complete" ||
+              status === "completed" ||
+              status === "finalized"
+            ) {
+
+              return false;
+
+            }
+
+
+            if (
+              round.closes_at
+            ) {
+
+
+              const closes =
+                new Date(
+                  round.closes_at
+                )
+                  .getTime();
+
+
+              if (
+                Number.isFinite(
+                  closes
+                ) &&
+                closes <= Date.now()
+              ) {
+
+                return false;
+
+              }
+
+
+            }
+
+
+            return (
+              status === "open" ||
+              status === "active" ||
+              status === "voting" ||
+              status === ""
+            );
+
+
+          }
+        );
+
+
+      activeRound =
+        openRound ||
+        rounds[0] ||
+        null;
+
+
+    }
+
+
+    /* =====================================================
+       OPTIONS
+       ===================================================== */
+
+
+    async function loadVoteOptions() {
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from(
+            "vote_options"
+          )
+          .select(
+            "*"
+          )
+          .eq(
+            "round_id",
+            activeRound.id
+          )
+          .order(
+            "created_at",
+            {
+              ascending:true
+            }
+          );
+
+
+      if (error) {
+
+        throw error;
+
+      }
+
+
+      const rawOptions =
+        Array.isArray(
+          data
+        )
+          ? data
+          : [];
+
+
+      if (!rawOptions.length) {
+
+
+        voteOptions =
+          [];
+
+
+        return;
+
+
+      }
+
+
+      const bookIds =
+        [
+          ...new Set(
+
+            rawOptions
+              .map(
+                option =>
+                  option.book_id
+              )
+              .filter(
+                value =>
+                  value !== null &&
+                  value !== undefined &&
+                  value !== ""
+              )
+
+          )
+        ];
+
+
+      let booksById =
+        new Map();
+
+
+      if (bookIds.length) {
+
+
+        const {
+          data:bookRows,
+          error:booksError
+        } =
+          await supabaseClient
+            .from(
+              "books"
+            )
+            .select(
+              "*"
+            )
+            .in(
+              "id",
+              bookIds
+            );
+
+
+        if (booksError) {
+
+          console.warn(
+            "Ballot books:",
+            booksError.message
+          );
+
+        }
+
+
+        for (
+          const book
+          of (
+            bookRows ||
+            []
+          )
+        ) {
+
+
+          booksById.set(
+            String(
+              book.id
+            ),
+            book
+          );
+
+
+        }
+
+
+      }
+
+
+      voteOptions =
+        rawOptions.map(
+          option => {
+
+
+            const book =
+              booksById.get(
+                String(
+                  option.book_id
+                )
+              ) ||
+              null;
+
+
+            return {
+
+              ...option,
+
+              book,
+
+              vote_count:0
+
+            };
+
+
+          }
+        );
+
+
+      await loadVoteCounts();
+
+
+    }
+
+
+    /* =====================================================
+       VOTE COUNTS
+       ===================================================== */
+
+
+    async function loadVoteCounts() {
+
+
+      if (!activeRound) {
+
+        return;
+
+      }
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from(
+            "votes"
+          )
+          .select(
+            "*"
+          )
+          .eq(
+            "round_id",
+            activeRound.id
+          );
+
+
+      if (error) {
+
+
+        console.warn(
+          "Vote counts:",
+          error.message
+        );
+
+
+        totalVotes =
+          0;
+
+
+        return;
+
+
+      }
+
+
+      const votes =
+        Array.isArray(
+          data
+        )
+          ? data
+          : [];
+
+
+      totalVotes =
+        votes.length;
+
+
+      const counts =
+        new Map();
+
+
+      for (
+        const vote
+        of votes
+      ) {
+
+
+        const optionId =
+
+          vote.option_id ??
+
+          vote.vote_option_id ??
+
+          vote.option ??
+
+          null;
+
+
+        const bookId =
+
+          vote.book_id ??
+
+          null;
+
+
+        if (
+          optionId !== null &&
+          optionId !== undefined
+        ) {
+
+
+          const key =
+            "option:" +
+            String(
+              optionId
+            );
+
+
+          counts.set(
+            key,
+            (
+              counts.get(
+                key
+              ) ||
+              0
+            ) + 1
+          );
+
+
+        }
+
+
+        if (
+          bookId !== null &&
+          bookId !== undefined
+        ) {
+
+
+          const key =
+            "book:" +
+            String(
+              bookId
+            );
+
+
+          counts.set(
+            key,
+            (
+              counts.get(
+                key
+              ) ||
+              0
+            ) + 1
+          );
+
+
+        }
+
+
+      }
+
+
+      voteOptions =
+        voteOptions.map(
+          option => {
+
+
+            const optionCount =
+              counts.get(
+                "option:" +
+                String(
+                  option.id
+                )
+              );
+
+
+            const bookCount =
+              counts.get(
+                "book:" +
+                String(
+                  option.book_id
+                )
+              );
+
+
+            return {
+
+              ...option,
+
+              vote_count:
+                Number(
+                  optionCount ??
+                  bookCount ??
+                  option.vote_count ??
+                  0
+                ) ||
+                0
+
+            };
+
+
+          }
+        );
+
+
+    }
+
+
+    /* =====================================================
+       CURRENT USER VOTE
+       ===================================================== */
+
+
+    async function loadMyVote() {
+
+
+      if (
+        !activeRound ||
+        !currentUser
+      ) {
+
+        myVote =
+          null;
+
+
+        return;
+
+      }
+
+
+      try {
+
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from(
+              "votes"
+            )
+            .select(
+              "*"
+            )
+            .eq(
+              "round_id",
+              activeRound.id
+            )
+            .eq(
+              "user_id",
+              currentUser.id
+            )
+            .maybeSingle();
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+
+        myVote =
+          data ||
+          null;
+
+
+      }
+
+      catch (error) {
+
+
+        console.warn(
+          "Current vote:",
+          error.message
+        );
+
+
+        myVote =
+          null;
+
+
+      }
+
+
+    }
+
+
+    /* =====================================================
+       MATCH CURRENT VOTE
+       ===================================================== */
+
+
+    function optionIsMyVote(
+      option
+    ) {
+
+
+      if (!myVote) {
+
+        return false;
+
+      }
+
+
+      const votedOptionId =
+
+        myVote.option_id ??
+
+        myVote.vote_option_id ??
+
+        myVote.option ??
+
+        null;
+
+
+      if (
+        votedOptionId !== null &&
+        votedOptionId !== undefined
+      ) {
+
+
+        return (
+          String(
+            votedOptionId
+          ) ===
+          String(
+            option.id
+          )
+        );
+
+
+      }
+
+
+      if (
+        myVote.book_id !== null &&
+        myVote.book_id !== undefined
+      ) {
+
+
+        return (
+          String(
+            myVote.book_id
+          ) ===
+          String(
+            option.book_id
+          )
+        );
+
+
+      }
+
+
+      return false;
+
+
+    }
+
+
+    function selectedOption() {
+
+
+      return (
+        voteOptions.find(
+          option =>
+            optionIsMyVote(
+              option
+            )
+        ) ||
+        null
+      );
+
+
+    }
+
+
+    /* =====================================================
+       RENDER NO BALLOT
+       ===================================================== */
+
+
+    function renderNoBallot() {
+
+
+      $("ballot").innerHTML =
+        "";
+
+
+      $("emptyState").hidden =
+        false;
+
+
+      $("yourVoteText").textContent =
+        "There isn't an active ballot right now.";
+
+
+      $("voteStatus").textContent =
+        "No Open Vote";
+
+
+      $("voteStatus")
+        .classList
+        .add(
+          "closed"
+        );
+
+
+      $("resultsText").textContent =
+        "Results will appear when the next monthly ballot opens.";
+
+
+    }
+
+
+    /* =====================================================
+       RENDER BALLOT
+       ===================================================== */
+
+
+    function renderBallot() {
+
+
+      const ballot =
+        $("ballot");
+
+
+      ballot.innerHTML =
+        "";
+
+
+      if (
+        !voteOptions.length
+      ) {
+
+
+        renderNoBallot();
+
+
+        return;
+
+
+      }
+
+
+      $("emptyState").hidden =
+        true;
+
+
+      const isOpen =
+        roundIsOpen();
+
+
+      const canVote =
+        isOpen &&
+        isVotingMember();
+
+
+      const selected =
+        selectedOption();
+
+
+      for (
+        const option
+        of voteOptions
+      ) {
+
+
+        ballot.insertAdjacentHTML(
+          "beforeend",
+          ballotCardMarkup(
+            option,
+            {
+              isOpen,
+              canVote
+            }
+          )
+        );
+
+
+      }
+
+
+      bindVoteButtons();
+
+
+      if (selected) {
+
+
+        const selectedBook =
+          selected.book;
+
+
+        $("yourVoteText").textContent =
+          selectedBook?.title
+            ? (
+                "You voted for “" +
+                selectedBook.title +
+                ".”"
+              )
+            : "Your vote has been recorded.";
+
+
+      }
+
+      else if (
+        !isVotingMember()
+      ) {
+
+
+        $("yourVoteText").textContent =
+          "Only accepted club members can vote.";
+
+
+      }
+
+      else if (!isOpen) {
+
+
+        $("yourVoteText").textContent =
+          "Voting is closed for this round.";
+
+
+      }
+
+      else {
+
+
+        $("yourVoteText").textContent =
+          "You haven't voted yet.";
+
+
+      }
+
+
+      $("voteStatus").textContent =
+        isOpen
+          ? "Vote Open"
+          : "Vote Closed";
+
+
+      $("voteStatus")
+        .classList
+        .toggle(
+          "closed",
+          !isOpen
+        );
+
+
+      if (
+        totalVotes === 1
+      ) {
+
+
+        $("resultsText").textContent =
+          "1 vote has been cast so far.";
+
+
+      }
+
+      else {
+
+
+        $("resultsText").textContent =
+          String(
+            totalVotes
+          ) +
+          " votes have been cast so far.";
+
+
+      }
+
+
+    }
+
+
+    /* =====================================================
+       BALLOT CARD
+       ===================================================== */
+
+
+    function ballotCardMarkup(
+      option,
+      state
+    ) {
+
+
+      const book =
+        option.book ||
+        {};
+
+
+      const title =
+
+        book.title ||
+
+        option.title ||
+
+        option.book_title ||
+
+        "Untitled Book";
+
+
+      const author =
+
+        authorText(
+          book
+        ) ||
+
+        option.author ||
+
+        option.book_author ||
+
+        "Author unavailable";
+
+
+      const cover =
+        coverUrl(
+          book
+        );
+
+
+      const detailsUrl =
+        book?.id
+          ? bookDetailsUrl(
+              book.id
+            )
+          : "marketplace.html";
+
+
+      const edition =
+
+        editionText(
+          book
+        ) ||
+
+        option.edition ||
+
+        option.edition_label ||
+
+        "";
+
+
+      const votes =
+        Number(
+          option.vote_count ||
+          0
+        );
+
+
+      const percentage =
+        totalVotes > 0
+          ? Math.round(
+              (
+                votes /
+                totalVotes
+              ) *
+              100
+            )
+          : 0;
+
+
+      const selected =
+        optionIsMyVote(
+          option
+        );
+
+
+      let buttonText =
+        "Vote for this book";
+
+
+      let disabled =
+        false;
+
+
+      if (!state.isOpen) {
+
+
+        buttonText =
+          "Voting Closed";
+
+
+        disabled =
+          true;
+
+
+      }
+
+      else if (
+        !state.canVote
+      ) {
+
+
+        buttonText =
+          "Members Only";
+
+
+        disabled =
+          true;
+
+
+      }
+
+      else if (selected) {
+
+
+        buttonText =
+          "Your Vote";
+
+
+        disabled =
+          true;
+
+
+      }
+
+      else if (
+        myVote &&
+        !voteChangesAllowed()
+      ) {
+
+
+        buttonText =
+          "Vote Already Cast";
+
+
+        disabled =
+          true;
+
+
+      }
+
+      else if (myVote) {
+
+
+        buttonText =
+          "Change Vote";
+
+
+      }
+
+
+      const coverMarkup =
+        cover
+          ? `
+              <img
+                src="${escapeHtml(
+                  cover
+                )}"
+                alt="${escapeHtml(
+                  title
+                )} cover"
+                loading="lazy"
+              >
+            `
+          : `
+              <span>
+                ${escapeHtml(
+                  title
+                )}
+              </span>
+            `;
+
+
+      return `
+        <article
+          class="book-option${
+            selected
+              ? " selected"
+              : ""
+          }"
+          data-option-id="${escapeHtml(
+            option.id
+          )}"
+        >
+
+          <a
+            class="book-link"
+            href="${escapeHtml(
+              detailsUrl
+            )}"
+            aria-label="View ${escapeHtml(
+              title
+            )}"
+          >
+
+            <div class="cover">
+
+              ${coverMarkup}
+
+            </div>
+
+          </a>
+
+
+          <h3>
+
+            <a
+              href="${escapeHtml(
+                detailsUrl
+              )}"
+            >
+              ${escapeHtml(
+                title
+              )}
+            </a>
+
+          </h3>
+
+
+          <div class="author">
+
+            ${escapeHtml(
+              author
+            )}
+
+          </div>
+
+
+          <div class="edition">
+
+            ${
+              edition
+                ? escapeHtml(
+                    edition
+                  )
+                : "&nbsp;"
+            }
+
+          </div>
+
+
+          <div class="vote-total">
+
+            ${votes}
+            ${
+              votes === 1
+                ? "vote"
+                : "votes"
+            }
+            ·
+            ${percentage}%
+
+          </div>
+
+
+          <div
+            class="vote-bar"
+            aria-hidden="true"
+          >
+
+            <div
+              class="vote-bar-fill"
+              style="width:${percentage}%"
+            ></div>
+
+          </div>
+
 
           <button
-            class="btn ${
-              selected
-                ? "secondary vote-btn yours"
-                : "primary vote-btn"
-            }"
+            class="vote-button"
             type="button"
-            data-option-id="${escapeHtml(option.id)}"
+            data-vote-option="${escapeHtml(
+              option.id
+            )}"
             ${
-              buttonDisabled
+              disabled
                 ? "disabled"
                 : ""
             }
           >
-            ${escapeHtml(buttonLabel)}
+
+            ${escapeHtml(
+              buttonText
+            )}
+
           </button>
 
-          ${
-            showCount
-              ? `
-                <div class="vote-count">
-                  <strong>
-                    ${escapeHtml(count)}
-                  </strong>
-                  ${
-                    Number(count) === 1
-                      ? "vote"
-                      : "votes"
-                  }
-                </div>
-              `
-              : ""
+        </article>
+      `;
+
+
+    }
+
+
+    /* =====================================================
+       BUTTON EVENTS
+       ===================================================== */
+
+
+    function bindVoteButtons() {
+
+
+      document
+        .querySelectorAll(
+          "[data-vote-option]"
+        )
+        .forEach(
+          button => {
+
+
+            button.addEventListener(
+              "click",
+              async () => {
+
+
+                const optionId =
+                  button.dataset
+                    .voteOption;
+
+
+                const option =
+                  voteOptions.find(
+                    item =>
+                      String(
+                        item.id
+                      ) ===
+                      String(
+                        optionId
+                      )
+                  );
+
+
+                if (!option) {
+
+                  return;
+
+                }
+
+
+                await castVote(
+                  option,
+                  button
+                );
+
+
+              }
+            );
+
+
           }
-
-        </div>
-
-      </div>
-    `;
-
-    container.appendChild(
-      article
-    );
-
-  }
-
-  container
-    .querySelectorAll(
-      ".vote-btn"
-    )
-    .forEach(
-      button => {
-
-        if(button.disabled)
-          return;
-
-        button.addEventListener(
-          "click",
-          () =>
-            castVote(
-              button.dataset.optionId
-            )
         );
 
+
+    }
+
+
+    /* =====================================================
+       CAST VOTE
+       ===================================================== */
+
+
+    async function castVote(
+      option,
+      button
+    ) {
+
+
+      clearMessage();
+
+
+      if (
+        !currentUser ||
+        !activeRound
+      ) {
+
+
+        showMessage(
+          "The ballot isn't ready yet.",
+          "error"
+        );
+
+
+        return;
+
+
       }
-    );
 
-}
 
-/* =========================================================
-   CAST VOTE
-   ========================================================= */
+      if (
+        !roundIsOpen()
+      ) {
 
-async function castVote(optionId){
 
-  clearMessage();
+        showMessage(
+          "Voting for this round is closed.",
+          "error"
+        );
 
-  if(!ballot){
 
-    showMessage(
-      "This ballot isn't available.",
-      "error"
-    );
+        return;
 
-    return;
 
-  }
+      }
 
-  if(!isActiveMember()){
 
-    showMessage(
-      "Only active club members can vote.",
-      "error"
-    );
+      if (
+        !isVotingMember()
+      ) {
 
-    return;
 
-  }
+        showMessage(
+          "You need to be an accepted member of this club before you can vote.",
+          "error"
+        );
 
-  if(!votingIsOpen()){
 
-    showMessage(
-      "Voting is not currently open.",
-      "error"
-    );
+        return;
 
-    return;
 
-  }
+      }
 
-  const option =
-    ballotOptions.find(
-      item =>
-        Number(item.id) ===
-        Number(optionId)
-    );
 
-  if(!option){
+      if (
+        myVote &&
+        !voteChangesAllowed()
+      ) {
 
-    showMessage(
-      "That ballot option could not be found.",
-      "error"
-    );
 
-    return;
+        showMessage(
+          "You've already voted in this round.",
+          "error"
+        );
 
-  }
 
-  if(
-    currentVote &&
-    Number(
-      currentVote.option_id
-    ) ===
-    Number(option.id)
-  ){
+        return;
 
-    return;
 
-  }
+      }
 
-  if(
-    currentVote &&
-    clubData?.allow_vote_changes === false
-  ){
 
-    showMessage(
-      "Vote changes are disabled for this club.",
-      "error"
-    );
+      const originalText =
+        button.textContent;
 
-    return;
 
-  }
+      button.disabled =
+        true;
 
-  try{
 
-    const {
+      button.textContent =
+        myVote
+          ? "Changing..."
+          : "Voting...";
+
+
+      try {
+
+
+        if (myVote) {
+
+
+          await changeVote(
+            option
+          );
+
+
+        }
+
+        else {
+
+
+          await createVote(
+            option
+          );
+
+
+        }
+
+
+        await Promise.all([
+
+          loadMyVote(),
+
+          loadVoteCounts()
+
+        ]);
+
+
+        renderBallot();
+
+
+        const title =
+          option.book?.title ||
+          option.title ||
+          "this book";
+
+
+        showMessage(
+          "Your vote for “" +
+          title +
+          "” has been recorded.",
+          "success"
+        );
+
+
+      }
+
+      catch (error) {
+
+
+        console.error(
+          "Vote:",
+          error
+        );
+
+
+        button.disabled =
+          false;
+
+
+        button.textContent =
+          originalText;
+
+
+        showMessage(
+          friendlyVoteError(
+            error
+          ),
+          "error"
+        );
+
+
+      }
+
+
+    }
+
+
+    /* =====================================================
+       CREATE VOTE
+       ===================================================== */
+
+
+    async function createVote(
+      option
+    ) {
+
+
+      /*
+        Current DogEar schema expects one vote per
+        user/round. option_id identifies the exact
+        ballot choice while book_id makes analytics
+        and historical reporting easier.
+      */
+
+
+      const payload = {
+
+        round_id:
+          activeRound.id,
+
+        club_id:
+          clubId,
+
+        user_id:
+          currentUser.id,
+
+        option_id:
+          option.id,
+
+        book_id:
+          option.book_id
+
+      };
+
+
+      let result =
+        await supabaseClient
+          .from(
+            "votes"
+          )
+          .insert(
+            payload
+          );
+
+
+      /*
+        Some earlier DogEar SQL versions did not
+        include club_id on votes. If that is the
+        only incompatible column, retry using the
+        minimal round/user/option/book payload.
+      */
+
+
+      if (
+        result.error &&
+        columnMissing(
+          result.error,
+          "club_id"
+        )
+      ) {
+
+
+        result =
+          await supabaseClient
+            .from(
+              "votes"
+            )
+            .insert({
+
+              round_id:
+                activeRound.id,
+
+              user_id:
+                currentUser.id,
+
+              option_id:
+                option.id,
+
+              book_id:
+                option.book_id
+
+            });
+
+
+      }
+
+
+      /*
+        Another early schema used vote_option_id
+        instead of option_id.
+      */
+
+
+      if (
+        result.error &&
+        columnMissing(
+          result.error,
+          "option_id"
+        )
+      ) {
+
+
+        result =
+          await supabaseClient
+            .from(
+              "votes"
+            )
+            .insert({
+
+              round_id:
+                activeRound.id,
+
+              user_id:
+                currentUser.id,
+
+              vote_option_id:
+                option.id,
+
+              book_id:
+                option.book_id
+
+            });
+
+
+      }
+
+
+      if (
+        result.error
+      ) {
+
+        throw result.error;
+
+      }
+
+
+    }
+
+
+    /* =====================================================
+       CHANGE VOTE
+       ===================================================== */
+
+
+    async function changeVote(
+      option
+    ) {
+
+
+      let result =
+        await supabaseClient
+          .from(
+            "votes"
+          )
+          .update({
+
+            option_id:
+              option.id,
+
+            book_id:
+              option.book_id
+
+          })
+          .eq(
+            "round_id",
+            activeRound.id
+          )
+          .eq(
+            "user_id",
+            currentUser.id
+          );
+
+
+      if (
+        result.error &&
+        columnMissing(
+          result.error,
+          "option_id"
+        )
+      ) {
+
+
+        result =
+          await supabaseClient
+            .from(
+              "votes"
+            )
+            .update({
+
+              vote_option_id:
+                option.id,
+
+              book_id:
+                option.book_id
+
+            })
+            .eq(
+              "round_id",
+              activeRound.id
+            )
+            .eq(
+              "user_id",
+              currentUser.id
+            );
+
+
+      }
+
+
+      if (
+        result.error
+      ) {
+
+        throw result.error;
+
+      }
+
+
+    }
+
+
+    /* =====================================================
+       ERROR HELPERS
+       ===================================================== */
+
+
+    function columnMissing(
+      error,
+      column
+    ) {
+
+
+      const message =
+        String(
+          error?.message ||
+          ""
+        )
+          .toLowerCase();
+
+
+      return (
+        message.includes(
+          String(
+            column
+          )
+            .toLowerCase()
+        ) &&
+        (
+          message.includes(
+            "column"
+          ) ||
+          message.includes(
+            "schema cache"
+          ) ||
+          message.includes(
+            "does not exist"
+          )
+        )
+      );
+
+
+    }
+
+
+    function friendlyVoteError(
       error
-    } =
-      await supabaseClient.rpc(
-        "cast_club_vote",
-        {
-          p_ballot_id:
-            Number(ballot.id),
+    ) {
 
-          p_option_id:
-            Number(option.id)
+
+      const message =
+        String(
+          error?.message ||
+          ""
+        );
+
+
+      const lower =
+        message.toLowerCase();
+
+
+      if (
+        lower.includes(
+          "duplicate"
+        ) ||
+        lower.includes(
+          "unique"
+        )
+      ) {
+
+
+        return "You've already voted in this round.";
+
+
+      }
+
+
+      if (
+        lower.includes(
+          "row-level security"
+        ) ||
+        lower.includes(
+          "permission"
+        ) ||
+        lower.includes(
+          "policy"
+        )
+      ) {
+
+
+        return "DogEar couldn't record that vote. Your club membership or voting permissions may need to be refreshed.";
+
+
+      }
+
+
+      if (
+        lower.includes(
+          "closed"
+        )
+      ) {
+
+
+        return "Voting for this round is closed.";
+
+
+      }
+
+
+      return (
+        message ||
+        "DogEar couldn't record your vote. Please try again."
+      );
+
+
+    }
+
+
+    /* =====================================================
+       AUTH CHANGES
+       ===================================================== */
+
+
+    supabaseClient
+      .auth
+      .onAuthStateChange(
+        (
+          event,
+          session
+        ) => {
+
+
+          if (
+            event ===
+            "SIGNED_OUT"
+          ) {
+
+
+            window.location.href =
+              "auth.html#login";
+
+
+            return;
+
+
+          }
+
+
+          if (
+            session?.user
+          ) {
+
+
+            currentUser =
+              session.user;
+
+
+          }
+
+
         }
       );
 
-    if(error)
-      throw error;
 
-    await Promise.all([
-      loadCurrentVote(),
-      loadVoteCounts()
-    ]);
+    /* =====================================================
+       START
+       ===================================================== */
 
-    renderBallot();
-    updateStatus();
 
-    showMessage(
-      "Your vote for “" +
-      option.title +
-      "” has been recorded.",
-      "success"
-    );
+    startPage();
 
-  }
-  catch(error){
 
-    console.error(
-      "Vote submission:",
-      error
-    );
+  </script>
 
-    showMessage(
-      "DogEar couldn't record your vote: " +
-      (
-        error.message ||
-        "Unknown error"
-      ),
-      "error"
-    );
-
-  }
-
-}
-
-/* =========================================================
-   START
-   ========================================================= */
-
-async function start(){
-
-  if(!clubId){
-
-    location.href =
-      "clubs.html";
-
-    return;
-
-  }
-
-  wireLinks();
-
-  $("monthStatus").textContent =
-    ballotMonthLabel();
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .auth
-      .getUser();
-
-  if(
-    error ||
-    !data.user
-  ){
-
-    location.href =
-      "auth.html#login";
-
-    return;
-
-  }
-
-  currentUser =
-    data.user;
-
-  try{
-
-    await Promise.all([
-      loadProfile(),
-      loadClub(),
-      loadMembership()
-    ]);
-
-    await loadBallot();
-
-    await loadOptions();
-
-    await loadCurrentVote();
-
-    await loadVoteCounts();
-
-    updateStatus();
-
-    renderBallot();
-
-  }
-  catch(error){
-
-    console.error(
-      "Vote page load:",
-      error
-    );
-
-    $("ballotContent").innerHTML = `
-
-      <div class="empty">
-
-        <strong>
-          DogEar couldn't open this ballot.
-        </strong>
-
-        ${
-          escapeHtml(
-            error.message ||
-            "Unknown error"
-          )
-        }
-
-      </div>
-    `;
-
-    showMessage(
-      "DogEar couldn't load the monthly vote.",
-      "error"
-    );
-
-  }
-
-  $("loading")
-    .classList
-    .add("hidden");
-
-}
-
-start();
-
-</script>
 
 </body>
+
 </html>
