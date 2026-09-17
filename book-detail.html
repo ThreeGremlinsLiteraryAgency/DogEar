@@ -1,0 +1,4361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DogEar — Book Details</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --ink:#090b0a;
+  --panel:#101410;
+  --panel2:#0d110e;
+  --cream:#f1e7cf;
+  --gold:#c79b59;
+  --gold2:#dfbd7e;
+  --green:#26362b;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.22);
+  --line-soft:rgba(199,155,89,.11);
+  --danger:#e6a09a;
+  --ok:#b9d6b2;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--cream);
+  background:
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(53,73,59,.24),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 90% 4%,
+      rgba(199,155,89,.07),
+      transparent 22%
+    ),
+    var(--ink);
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+}
+
+a{
+  color:inherit;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+button{
+  color:inherit;
+}
+
+[hidden]{
+  display:none !important;
+}
+
+/* =========================================================
+   TOP NAVIGATION
+   ========================================================= */
+
+.topbar{
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:
+    0
+    clamp(18px,4vw,60px);
+  border-bottom:
+    1px solid var(--line);
+  background:
+    rgba(9,11,10,.94);
+  position:sticky;
+  top:0;
+  z-index:30;
+  backdrop-filter:
+    blur(14px);
+}
+
+.brand{
+  display:flex;
+  gap:11px;
+  align-items:center;
+  text-decoration:none;
+  color:var(--gold2);
+  font:
+    800
+    13px
+    Arial,
+    sans-serif;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  position:relative;
+  border:
+    1px solid var(--gold);
+  border-radius:
+    50% 50% 50% 12%;
+  transform:
+    rotate(-8deg);
+}
+
+.brand-mark::after{
+  content:"";
+  position:absolute;
+  width:11px;
+  height:11px;
+  right:2px;
+  top:2px;
+  border-left:
+    1px solid var(--gold);
+  border-bottom:
+    1px solid var(--gold);
+  background:var(--ink);
+}
+
+.nav{
+  display:flex;
+  gap:24px;
+  font:
+    700
+    11px
+    Arial,
+    sans-serif;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.nav a:hover,
+.nav .active{
+  color:var(--gold2);
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+  border:
+    1px solid var(--line);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:var(--green);
+  color:var(--gold2);
+  text-decoration:none;
+  font:
+    800
+    13px
+    Arial,
+    sans-serif;
+  overflow:hidden;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.page{
+  width:
+    min(
+      1160px,
+      calc(100% - 32px)
+    );
+  margin:auto;
+  padding:
+    36px
+    0
+    110px;
+}
+
+.back{
+  color:var(--gold2);
+  text-decoration:none;
+  font:
+    800
+    10px
+    Arial,
+    sans-serif;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+/* =========================================================
+   BOOK HERO
+   ========================================================= */
+
+.hero{
+  display:grid;
+  grid-template-columns:
+    260px
+    minmax(0,1fr);
+  gap:38px;
+  margin-top:28px;
+  padding-bottom:34px;
+  border-bottom:
+    1px solid var(--line);
+}
+
+.cover{
+  width:100%;
+  aspect-ratio:2/3;
+  border-radius:15px;
+  overflow:hidden;
+  border:
+    1px solid var(--line);
+  background:#171c18;
+  display:grid;
+  place-items:center;
+  color:var(--muted);
+  font:
+    700
+    10px
+    Arial,
+    sans-serif;
+  box-shadow:
+    0 24px 60px
+    rgba(0,0,0,.34);
+}
+
+.cover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.eyebrow{
+  margin-bottom:10px;
+  color:var(--gold);
+  font:
+    800
+    10px
+    Arial,
+    sans-serif;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+}
+
+h1{
+  margin:0;
+  font-size:
+    clamp(
+      42px,
+      6vw,
+      72px
+    );
+  font-weight:400;
+  line-height:.95;
+  letter-spacing:-.04em;
+}
+
+.author{
+  margin-top:13px;
+  color:var(--gold2);
+  font-size:21px;
+}
+
+.edition{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+.pill{
+  padding:
+    7px
+    10px;
+  border:
+    1px solid var(--line);
+  border-radius:999px;
+  color:var(--muted);
+  font:
+    700
+    9px
+    Arial,
+    sans-serif;
+  letter-spacing:.06em;
+}
+
+.hero-rating{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+.hero-rating-stars{
+  color:var(--gold2);
+  font-size:20px;
+  letter-spacing:2px;
+}
+
+.hero-rating-number{
+  color:var(--cream);
+  font:
+    800
+    14px
+    Arial,
+    sans-serif;
+}
+
+.hero-rating-count{
+  color:var(--muted);
+  font:
+    11px
+    Arial,
+    sans-serif;
+}
+
+.description{
+  margin-top:24px;
+  max-width:760px;
+  color:#ddd3bd;
+  font-size:16px;
+  line-height:1.75;
+  white-space:pre-line;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:24px;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.btn{
+  min-height:44px;
+  padding:
+    0
+    18px;
+  border-radius:999px;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font:
+    800
+    10px
+    Arial,
+    sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.primary{
+  border:
+    1px solid var(--gold);
+  background:var(--gold);
+  color:#17130e;
+}
+
+.secondary{
+  border:
+    1px solid var(--line);
+  background:transparent;
+  color:var(--gold2);
+}
+
+.danger-btn{
+  border:
+    1px solid
+    rgba(230,160,154,.4);
+  background:transparent;
+  color:var(--danger);
+}
+
+.btn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+/* =========================================================
+   MAIN GRID
+   ========================================================= */
+
+.grid{
+  display:grid;
+  grid-template-columns:
+    minmax(0,1fr)
+    330px;
+  gap:24px;
+  margin-top:26px;
+}
+
+.stack{
+  display:grid;
+  gap:24px;
+  align-content:start;
+}
+
+.card{
+  border:
+    1px solid var(--line);
+  border-radius:20px;
+  background:
+    rgba(16,20,16,.88);
+  overflow:hidden;
+}
+
+.card-head{
+  padding:
+    20px
+    22px;
+  border-bottom:
+    1px solid var(--line);
+}
+
+.card-head h2{
+  margin:0;
+  font-size:26px;
+  font-weight:400;
+}
+
+.card-head p{
+  margin:
+    6px
+    0
+    0;
+  color:var(--muted);
+  font:
+    11px/1.55
+    Arial,
+    sans-serif;
+}
+
+.card-body{
+  padding:
+    20px
+    22px;
+}
+
+/* =========================================================
+   BOOK DETAILS
+   ========================================================= */
+
+.detail-grid{
+  display:grid;
+  grid-template-columns:
+    150px
+    minmax(0,1fr);
+  gap:
+    11px
+    18px;
+}
+
+.detail-label{
+  color:var(--gold);
+  font:
+    800
+    9px
+    Arial,
+    sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.detail-value{
+  color:var(--muted);
+  font:
+    12px/1.55
+    Arial,
+    sans-serif;
+  overflow-wrap:anywhere;
+}
+
+/* =========================================================
+   PURCHASE
+   ========================================================= */
+
+.purchase-card{
+  padding:18px;
+  border:
+    1px solid
+    rgba(199,155,89,.32);
+  border-radius:15px;
+  background:
+    rgba(38,54,43,.24);
+}
+
+.purchase-card h3{
+  margin:
+    0
+    0
+    7px;
+  font-size:20px;
+  font-weight:400;
+}
+
+.purchase-card p{
+  margin:
+    0
+    0
+    14px;
+  color:var(--muted);
+  font:
+    11px/1.6
+    Arial,
+    sans-serif;
+}
+
+.purchase-card .btn{
+  width:100%;
+  margin-top:7px;
+}
+
+.disclosure{
+  margin-top:10px;
+  color:#766e61;
+  font:
+    9px/1.45
+    Arial,
+    sans-serif;
+}
+
+/* =========================================================
+   RATINGS
+   ========================================================= */
+
+.rating-summary{
+  display:grid;
+  grid-template-columns:
+    170px
+    minmax(0,1fr);
+  gap:28px;
+  align-items:center;
+}
+
+.rating-big{
+  text-align:center;
+  padding:18px;
+  border:
+    1px solid var(--line-soft);
+  border-radius:16px;
+  background:
+    rgba(13,17,14,.6);
+}
+
+.rating-big-number{
+  display:block;
+  color:var(--cream);
+  font-size:48px;
+  line-height:1;
+}
+
+.rating-big-stars{
+  margin-top:8px;
+  color:var(--gold2);
+  font-size:18px;
+  letter-spacing:2px;
+}
+
+.rating-big-count{
+  margin-top:7px;
+  color:var(--muted);
+  font:
+    10px
+    Arial,
+    sans-serif;
+}
+
+.rating-breakdown{
+  display:grid;
+  gap:8px;
+}
+
+.rating-row{
+  display:grid;
+  grid-template-columns:
+    45px
+    minmax(0,1fr)
+    34px;
+  gap:9px;
+  align-items:center;
+  color:var(--muted);
+  font:
+    10px
+    Arial,
+    sans-serif;
+}
+
+.rating-bar{
+  height:8px;
+  overflow:hidden;
+  border-radius:999px;
+  background:
+    rgba(255,255,255,.06);
+}
+
+.rating-bar-fill{
+  width:0;
+  height:100%;
+  border-radius:999px;
+  background:var(--gold);
+  transition:
+    width .25s ease;
+}
+
+/* =========================================================
+   REVIEW EDITOR
+   ========================================================= */
+
+.review-editor{
+  margin-top:22px;
+  padding-top:22px;
+  border-top:
+    1px solid var(--line);
+}
+
+.review-editor-title{
+  margin-bottom:6px;
+  font-size:20px;
+}
+
+.review-editor-copy{
+  margin-bottom:14px;
+  color:var(--muted);
+  font:
+    11px/1.6
+    Arial,
+    sans-serif;
+}
+
+.star-picker{
+  display:flex;
+  gap:5px;
+  margin:
+    8px
+    0
+    15px;
+}
+
+.star-button{
+  padding:0;
+  border:0;
+  background:none;
+  color:#4e4b42;
+  cursor:pointer;
+  font-size:34px;
+  line-height:1;
+  transition:
+    color .12s ease,
+    transform .12s ease;
+}
+
+.star-button:hover{
+  transform:
+    scale(1.08);
+}
+
+.star-button.selected,
+.star-button.preview{
+  color:var(--gold2);
+}
+
+.review-rating-label{
+  min-height:17px;
+  margin-bottom:10px;
+  color:var(--gold2);
+  font:
+    800
+    10px
+    Arial,
+    sans-serif;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+
+.review-textarea{
+  display:block;
+  width:100%;
+  min-height:150px;
+  resize:vertical;
+  padding:14px;
+  border:
+    1px solid var(--line);
+  border-radius:13px;
+  outline:none;
+  background:var(--panel2);
+  color:var(--cream);
+  font:
+    13px/1.65
+    Arial,
+    sans-serif;
+}
+
+.review-textarea:focus{
+  border-color:var(--gold);
+}
+
+.review-textarea::placeholder{
+  color:#70695d;
+}
+
+.review-editor-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+
+.review-character-count{
+  color:var(--muted);
+  font:
+    9px
+    Arial,
+    sans-serif;
+}
+
+.review-editor-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+/* =========================================================
+   COMMUNITY REVIEWS
+   ========================================================= */
+
+.review-list{
+  display:grid;
+}
+
+.review-item{
+  padding:
+    22px
+    0;
+  border-bottom:
+    1px solid var(--line-soft);
+}
+
+.review-item:first-child{
+  padding-top:0;
+}
+
+.review-item:last-child{
+  padding-bottom:0;
+  border-bottom:0;
+}
+
+.review-head{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  align-items:flex-start;
+  margin-bottom:12px;
+}
+
+.reviewer{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  text-decoration:none;
+}
+
+.reviewer-avatar{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  overflow:hidden;
+  border:
+    1px solid var(--line);
+  background:var(--green);
+  display:grid;
+  place-items:center;
+  color:var(--gold2);
+  font:
+    800
+    11px
+    Arial,
+    sans-serif;
+}
+
+.reviewer-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.reviewer-name{
+  font-size:15px;
+}
+
+.review-date{
+  margin-top:3px;
+  color:var(--muted);
+  font:
+    9px
+    Arial,
+    sans-serif;
+}
+
+.review-stars{
+  color:var(--gold2);
+  font-size:15px;
+  letter-spacing:1px;
+}
+
+.review-text{
+  color:#d8ceb8;
+  font:
+    13px/1.7
+    Arial,
+    sans-serif;
+  white-space:pre-line;
+}
+
+/* =========================================================
+   MESSAGES
+   ========================================================= */
+
+.empty{
+  padding:22px;
+  border:
+    1px dashed var(--line);
+  border-radius:14px;
+  color:var(--muted);
+  text-align:center;
+  font:
+    11px/1.6
+    Arial,
+    sans-serif;
+}
+
+.message{
+  margin-top:12px;
+  min-height:18px;
+  color:var(--muted);
+  font:
+    10px/1.5
+    Arial,
+    sans-serif;
+}
+
+.message.success{
+  color:var(--ok);
+}
+
+.message.error{
+  color:var(--danger);
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:grid;
+  place-items:center;
+  background:var(--ink);
+  color:var(--gold2);
+  font:
+    800
+    10px
+    Arial,
+    sans-serif;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.error-page{
+  min-height:55vh;
+  display:grid;
+  place-items:center;
+  text-align:center;
+}
+
+.error-page h1{
+  font-size:44px;
+}
+
+.error-page p{
+  color:var(--muted);
+  font:
+    13px/1.7
+    Arial,
+    sans-serif;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+.mobile-nav{
+  display:none;
+}
+
+@media(max-width:850px){
+
+  .nav{
+    display:none;
+  }
+
+  .hero{
+    grid-template-columns:
+      180px
+      minmax(0,1fr);
+    gap:24px;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .rating-summary{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:620px){
+
+  .topbar{
+    min-height:64px;
+  }
+
+  .hero{
+    grid-template-columns:1fr;
+  }
+
+  .cover{
+    width:
+      min(
+        220px,
+        70vw
+      );
+    margin:auto;
+  }
+
+  h1{
+    font-size:44px;
+  }
+
+  .detail-grid{
+    grid-template-columns:1fr;
+    gap:5px;
+  }
+
+  .detail-value{
+    margin-bottom:8px;
+  }
+
+  .page{
+    padding-bottom:120px;
+  }
+
+  .mobile-nav{
+    position:fixed;
+    left:12px;
+    right:12px;
+    bottom:12px;
+    z-index:50;
+    height:64px;
+    display:grid;
+    grid-template-columns:
+      repeat(4,1fr);
+    border:
+      1px solid var(--line);
+    border-radius:18px;
+    background:
+      rgba(9,11,10,.95);
+    backdrop-filter:
+      blur(14px);
+  }
+
+  .mobile-nav a{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    color:var(--muted);
+    text-decoration:none;
+    font:
+      9px
+      Arial,
+      sans-serif;
+    text-transform:uppercase;
+  }
+
+  .mobile-nav a span:first-child{
+    color:var(--gold2);
+    font-size:17px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div
+  class="loading"
+  id="loading"
+>
+  Opening the book...
+</div>
+
+<header class="topbar">
+
+  <a
+    class="brand"
+    href="dashboard.html"
+  >
+
+    <span class="brand-mark"></span>
+
+    DogEar
+
+  </a>
+
+  <nav class="nav">
+
+    <a href="dashboard.html">
+      Home
+    </a>
+
+    <a href="discover.html">
+      Discover
+    </a>
+
+    <a href="clubs.html">
+      Clubs
+    </a>
+
+    <a
+      class="active"
+      href="marketplace.html"
+    >
+      Books
+    </a>
+
+  </nav>
+
+  <a
+    class="avatar"
+    id="navAvatar"
+    href="profile.html"
+  >
+    ?
+  </a>
+
+</header>
+
+<main
+  class="page"
+  id="page"
+>
+
+  <a
+    class="back"
+    id="backLink"
+    href="marketplace.html"
+  >
+    ← Back to Books
+  </a>
+
+  <!-- =====================================================
+       BOOK HERO
+       ===================================================== -->
+
+  <section
+    class="hero"
+    id="bookHero"
+  >
+
+    <div
+      class="cover"
+      id="cover"
+    >
+      No cover
+    </div>
+
+    <div>
+
+      <div
+        class="eyebrow"
+        id="bookEyebrow"
+      >
+        DogEar Book
+      </div>
+
+      <h1 id="title">
+        Loading...
+      </h1>
+
+      <div
+        class="author"
+        id="author"
+      ></div>
+
+      <div
+        class="edition"
+        id="edition"
+      ></div>
+
+      <div class="hero-rating">
+
+        <span
+          class="hero-rating-stars"
+          id="heroStars"
+        >
+          ☆☆☆☆☆
+        </span>
+
+        <span
+          class="hero-rating-number"
+          id="heroRating"
+        >
+          —
+        </span>
+
+        <span
+          class="hero-rating-count"
+          id="heroRatingCount"
+        >
+          No ratings yet
+        </span>
+
+      </div>
+
+      <div
+        class="description"
+        id="description"
+      ></div>
+
+      <div class="actions">
+
+        <a
+          class="btn primary"
+          id="purchaseHero"
+          href="#"
+          target="_blank"
+          rel="noopener sponsored"
+          hidden
+        >
+          Buy on Bookshop.org
+        </a>
+
+        <a
+          class="btn secondary"
+          href="#ratings"
+        >
+          Rate this book
+        </a>
+
+        <a
+          class="btn secondary"
+          href="clubs.html"
+        >
+          Find a book club
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- =====================================================
+       MAIN LAYOUT
+       ===================================================== -->
+
+  <div class="grid">
+
+    <div class="stack">
+
+      <!-- =================================================
+           EDITION DETAILS
+           ================================================= -->
+
+      <section class="card">
+
+        <div class="card-head">
+
+          <h2>
+            About this edition
+          </h2>
+
+          <p>
+            Publication and edition information
+            stored in DogEar.
+          </p>
+
+        </div>
+
+        <div class="card-body">
+
+          <div class="detail-grid">
+
+            <div class="detail-label">
+              Title
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailTitle"
+            >
+              —
+            </div>
+
+            <div class="detail-label">
+              Author
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailAuthor"
+            >
+              —
+            </div>
+
+            <div class="detail-label">
+              Publisher
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailPublisher"
+            >
+              —
+            </div>
+
+            <div class="detail-label">
+              Published
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailPublished"
+            >
+              —
+            </div>
+
+            <div class="detail-label">
+              Pages
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailPages"
+            >
+              —
+            </div>
+
+            <div class="detail-label">
+              Format
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailFormat"
+            >
+              —
+            </div>
+
+            <div class="detail-label">
+              ISBN-13
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailIsbn13"
+            >
+              —
+            </div>
+
+            <div class="detail-label">
+              ISBN-10
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailIsbn10"
+            >
+              —
+            </div>
+
+            <div class="detail-label">
+              Categories
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailCategories"
+            >
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- =================================================
+           RATINGS
+           ================================================= -->
+
+      <section
+        class="card"
+        id="ratings"
+      >
+
+        <div class="card-head">
+
+          <h2>
+            Reader ratings
+          </h2>
+
+          <p id="ratingSubtitle">
+            See what DogEar readers think,
+            or add your own rating.
+          </p>
+
+        </div>
+
+        <div class="card-body">
+
+          <div class="rating-summary">
+
+            <div class="rating-big">
+
+              <span
+                class="rating-big-number"
+                id="averageRating"
+              >
+                —
+              </span>
+
+              <div
+                class="rating-big-stars"
+                id="averageStars"
+              >
+                ☆☆☆☆☆
+              </div>
+
+              <div
+                class="rating-big-count"
+                id="ratingCount"
+              >
+                No ratings yet
+              </div>
+
+            </div>
+
+            <div class="rating-breakdown">
+
+              <div class="rating-row">
+
+                <span>
+                  5 star
+                </span>
+
+                <div class="rating-bar">
+
+                  <div
+                    class="rating-bar-fill"
+                    id="bar5"
+                  ></div>
+
+                </div>
+
+                <span id="count5">
+                  0
+                </span>
+
+              </div>
+
+              <div class="rating-row">
+
+                <span>
+                  4 star
+                </span>
+
+                <div class="rating-bar">
+
+                  <div
+                    class="rating-bar-fill"
+                    id="bar4"
+                  ></div>
+
+                </div>
+
+                <span id="count4">
+                  0
+                </span>
+
+              </div>
+
+              <div class="rating-row">
+
+                <span>
+                  3 star
+                </span>
+
+                <div class="rating-bar">
+
+                  <div
+                    class="rating-bar-fill"
+                    id="bar3"
+                  ></div>
+
+                </div>
+
+                <span id="count3">
+                  0
+                </span>
+
+              </div>
+
+              <div class="rating-row">
+
+                <span>
+                  2 star
+                </span>
+
+                <div class="rating-bar">
+
+                  <div
+                    class="rating-bar-fill"
+                    id="bar2"
+                  ></div>
+
+                </div>
+
+                <span id="count2">
+                  0
+                </span>
+
+              </div>
+
+              <div class="rating-row">
+
+                <span>
+                  1 star
+                </span>
+
+                <div class="rating-bar">
+
+                  <div
+                    class="rating-bar-fill"
+                    id="bar1"
+                  ></div>
+
+                </div>
+
+                <span id="count1">
+                  0
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- =============================================
+               YOUR REVIEW
+               ============================================= -->
+
+          <div
+            class="review-editor"
+            id="reviewEditor"
+          >
+
+            <div class="review-editor-title">
+              Your rating &amp; review
+            </div>
+
+            <div class="review-editor-copy">
+              A star rating is required.
+              A written review is optional.
+            </div>
+
+            <div
+              class="star-picker"
+              id="starPicker"
+              aria-label="Choose a rating"
+            >
+
+              <button
+                class="star-button"
+                type="button"
+                data-rating="1"
+                aria-label="1 star"
+              >
+                ★
+              </button>
+
+              <button
+                class="star-button"
+                type="button"
+                data-rating="2"
+                aria-label="2 stars"
+              >
+                ★
+              </button>
+
+              <button
+                class="star-button"
+                type="button"
+                data-rating="3"
+                aria-label="3 stars"
+              >
+                ★
+              </button>
+
+              <button
+                class="star-button"
+                type="button"
+                data-rating="4"
+                aria-label="4 stars"
+              >
+                ★
+              </button>
+
+              <button
+                class="star-button"
+                type="button"
+                data-rating="5"
+                aria-label="5 stars"
+              >
+                ★
+              </button>
+
+            </div>
+
+            <div
+              class="review-rating-label"
+              id="ratingLabel"
+            >
+              Choose 1–5 stars
+            </div>
+
+            <textarea
+              class="review-textarea"
+              id="reviewText"
+              maxlength="10000"
+              placeholder="What did you think? Written review optional."
+            ></textarea>
+
+            <div class="review-editor-footer">
+
+              <span
+                class="review-character-count"
+                id="characterCount"
+              >
+                0 / 10,000
+              </span>
+
+              <div class="review-editor-actions">
+
+                <button
+                  class="btn danger-btn"
+                  id="deleteReview"
+                  type="button"
+                  hidden
+                >
+                  Delete
+                </button>
+
+                <button
+                  class="btn primary"
+                  id="saveReview"
+                  type="button"
+                >
+                  Save rating
+                </button>
+
+              </div>
+
+            </div>
+
+            <div
+              class="message"
+              id="reviewMessage"
+            ></div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- =================================================
+           COMMUNITY REVIEWS
+           ================================================= -->
+
+      <section class="card">
+
+        <div class="card-head">
+
+          <h2>
+            Community reviews
+          </h2>
+
+          <p id="communitySubtitle">
+            Reviews from DogEar readers.
+          </p>
+
+        </div>
+
+        <div class="card-body">
+
+          <div
+            class="review-list"
+            id="reviewList"
+          >
+
+            <div class="empty">
+              No written reviews yet.
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+    <!-- ===================================================
+         RIGHT COLUMN
+         =================================================== -->
+
+    <aside class="stack">
+
+      <!-- =================================================
+           PURCHASE
+           ================================================= -->
+
+      <section class="card">
+
+        <div class="card-head">
+
+          <h2>
+            Get the book
+          </h2>
+
+          <p>
+            Support DogEar when an eligible
+            Bookshop.org link is available.
+          </p>
+
+        </div>
+
+        <div class="card-body">
+
+          <div class="purchase-card">
+
+            <h3 id="sellerName">
+              DogEar Book
+            </h3>
+
+            <p id="purchaseText">
+              Checking marketplace availability...
+            </p>
+
+            <a
+              class="btn primary"
+              id="purchaseLink"
+              href="#"
+              target="_blank"
+              rel="noopener sponsored"
+              hidden
+            >
+              Buy on Bookshop.org
+            </a>
+
+            <a
+              class="btn secondary"
+              id="bookshopSearchFallback"
+              href="#"
+              target="_blank"
+              rel="noopener sponsored"
+              hidden
+            >
+              Search Bookshop.org
+            </a>
+
+            <div
+              class="message"
+              id="noPurchase"
+            ></div>
+
+            <div
+              class="disclosure"
+              id="affiliateDisclosure"
+              hidden
+            >
+              DogEar may earn a commission from
+              qualifying purchases made through
+              this Bookshop.org affiliate link.
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- =================================================
+           INTERNAL BOOK INFO
+           ================================================= -->
+
+      <section class="card">
+
+        <div class="card-head">
+
+          <h2>
+            Book details
+          </h2>
+
+          <p>
+            Quick edition information.
+          </p>
+
+        </div>
+
+        <div class="card-body">
+
+          <div
+            class="detail-grid"
+            style="
+              grid-template-columns:
+              95px
+              minmax(0,1fr);
+            "
+          >
+
+            <div class="detail-label">
+              DogEar ID
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailId"
+            >
+              —
+            </div>
+
+            <div class="detail-label">
+              Google ID
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailGoogleId"
+            >
+              —
+            </div>
+
+            <div class="detail-label">
+              Added
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailAdded"
+            >
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </aside>
+
+  </div>
+
+</main>
+
+<!-- =======================================================
+     MOBILE NAVIGATION
+     ======================================================= -->
+
+<nav class="mobile-nav">
+
+  <a href="dashboard.html">
+
+    <span>
+      ⌂
+    </span>
+
+    <span>
+      Home
+    </span>
+
+  </a>
+
+  <a href="discover.html">
+
+    <span>
+      ⌕
+    </span>
+
+    <span>
+      Discover
+    </span>
+
+  </a>
+
+  <a href="clubs.html">
+
+    <span>
+      ♧
+    </span>
+
+    <span>
+      Clubs
+    </span>
+
+  </a>
+
+  <a href="marketplace.html">
+
+    <span>
+      ▤
+    </span>
+
+    <span>
+      Books
+    </span>
+
+  </a>
+
+</nav>
+
+<script>
+
+/* =========================================================
+   DOGEAR CONFIG
+   ========================================================= */
+
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const BOOKSHOP_AFFILIATE_ID =
+  "128186";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+const $ =
+  id =>
+    document.getElementById(
+      id
+    );
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
+
+const bookId =
+  params.get(
+    "id"
+  );
+
+const returnUrl =
+  params.get(
+    "return"
+  );
+
+let currentUser =
+  null;
+
+let currentProfile =
+  null;
+
+let book =
+  null;
+
+let ratingSummary =
+  null;
+
+let reviews =
+  [];
+
+let myReview =
+  null;
+
+let selectedRating =
+  0;
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function escapeHtml(
+  value
+){
+
+  return String(
+    value ?? ""
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+}
+
+function cleanText(
+  value
+){
+
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /<[^>]*>/g,
+      ""
+    )
+    .trim();
+
+}
+
+function arrayText(
+  value
+){
+
+  if(
+    Array.isArray(
+      value
+    )
+  ){
+
+    return value
+      .filter(
+        Boolean
+      )
+      .join(
+        ", "
+      );
+
+  }
+
+  if(
+    value === null ||
+    value === undefined
+  ){
+
+    return "";
+
+  }
+
+  return String(
+    value
+  );
+
+}
+
+function formatDate(
+  value
+){
+
+  if(
+    !value
+  ){
+
+    return "—";
+
+  }
+
+  const date =
+    new Date(
+      value
+    );
+
+  if(
+    Number.isNaN(
+      date.getTime()
+    )
+  ){
+
+    return String(
+      value
+    );
+
+  }
+
+  return date
+    .toLocaleDateString(
+      undefined,
+      {
+        year:
+          "numeric",
+
+        month:
+          "long",
+
+        day:
+          "numeric"
+      }
+    );
+
+}
+
+function starString(
+  value
+){
+
+  const rating =
+    Math.max(
+      0,
+      Math.min(
+        5,
+        Math.round(
+          Number(
+            value
+          ) ||
+          0
+        )
+      )
+    );
+
+  return (
+    "★".repeat(
+      rating
+    ) +
+    "☆".repeat(
+      5 -
+      rating
+    )
+  );
+
+}
+
+function initials(
+  name
+){
+
+  const parts =
+    String(
+      name ||
+      "?"
+    )
+      .trim()
+      .split(
+        /\s+/
+      )
+      .filter(
+        Boolean
+      );
+
+  if(
+    !parts.length
+  ){
+
+    return "?";
+
+  }
+
+  return parts
+    .slice(
+      0,
+      2
+    )
+    .map(
+      part =>
+        part[0]
+    )
+    .join(
+      ""
+    )
+    .toUpperCase();
+
+}
+
+function normalizeIsbn(
+  value
+){
+
+  return String(
+    value ||
+    ""
+  )
+    .replace(
+      /[^0-9Xx]/g,
+      ""
+    )
+    .toUpperCase();
+
+}
+
+function validIsbn13(
+  value
+){
+
+  const isbn =
+    normalizeIsbn(
+      value
+    );
+
+  if(
+    !/^\d{13}$/.test(
+      isbn
+    )
+  ){
+
+    return false;
+
+  }
+
+  const sum =
+    isbn
+      .split(
+        ""
+      )
+      .map(
+        Number
+      )
+      .reduce(
+        (
+          total,
+          digit,
+          index
+        ) =>
+          total +
+          digit *
+          (
+            index % 2 === 0
+              ? 1
+              : 3
+          ),
+        0
+      );
+
+  return (
+    sum % 10 === 0
+  );
+
+}
+
+function validIsbn10(
+  value
+){
+
+  const isbn =
+    normalizeIsbn(
+      value
+    );
+
+  if(
+    !/^\d{9}[\dX]$/.test(
+      isbn
+    )
+  ){
+
+    return false;
+
+  }
+
+  let sum =
+    0;
+
+  for(
+    let i = 0;
+    i < 10;
+    i++
+  ){
+
+    const digit =
+      isbn[i] === "X"
+        ? 10
+        : Number(
+            isbn[i]
+          );
+
+    sum +=
+      digit *
+      (
+        10 -
+        i
+      );
+
+  }
+
+  return (
+    sum % 11 === 0
+  );
+
+}
+
+function isbn10To13(
+  value
+){
+
+  const isbn10 =
+    normalizeIsbn(
+      value
+    );
+
+  if(
+    !validIsbn10(
+      isbn10
+    )
+  ){
+
+    return null;
+
+  }
+
+  const base =
+    "978" +
+    isbn10.slice(
+      0,
+      9
+    );
+
+  let sum =
+    0;
+
+  for(
+    let i = 0;
+    i < 12;
+    i++
+  ){
+
+    sum +=
+      Number(
+        base[i]
+      ) *
+      (
+        i % 2 === 0
+          ? 1
+          : 3
+      );
+
+  }
+
+  const check =
+    (
+      10 -
+      (
+        sum %
+        10
+      )
+    ) %
+    10;
+
+  return (
+    base +
+    check
+  );
+
+}
+
+function bestIsbn13(){
+
+  const direct =
+    normalizeIsbn(
+      book?.isbn_13
+    );
+
+  if(
+    validIsbn13(
+      direct
+    )
+  ){
+
+    return direct;
+
+  }
+
+  const isbn10 =
+    normalizeIsbn(
+      book?.isbn_10
+    );
+
+  if(
+    validIsbn10(
+      isbn10
+    )
+  ){
+
+    return isbn10To13(
+      isbn10
+    );
+
+  }
+
+  return null;
+
+}
+
+function bookshopAffiliateUrl(){
+
+  const isbn =
+    bestIsbn13();
+
+  if(
+    !isbn
+  ){
+
+    return null;
+
+  }
+
+  return (
+    "https://bookshop.org/a/" +
+    BOOKSHOP_AFFILIATE_ID +
+    "/" +
+    isbn
+  );
+
+}
+
+function bookshopSearchUrl(){
+
+  const query =
+    [
+      book?.title,
+      arrayText(
+        book?.authors
+      )
+    ]
+      .filter(
+        Boolean
+      )
+      .join(
+        " "
+      );
+
+  return (
+    "https://bookshop.org/search?keywords=" +
+    encodeURIComponent(
+      query
+    )
+  );
+
+}
+
+function setMessage(
+  id,
+  text,
+  type = ""
+){
+
+  const element =
+    $(
+      id
+    );
+
+  if(
+    !element
+  ){
+
+    return;
+
+  }
+
+  element.textContent =
+    text ||
+    "";
+
+  element.className =
+    "message" +
+    (
+      type
+        ? " " + type
+        : ""
+    );
+
+}
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+
+async function loadSession(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+  if(
+    error
+  ){
+
+    throw error;
+
+  }
+
+  currentUser =
+    data?.session?.user ||
+    null;
+
+  if(
+    !currentUser
+  ){
+
+    const next =
+      encodeURIComponent(
+        window.location.pathname +
+        window.location.search
+      );
+
+    window.location.href =
+      "login.html?next=" +
+      next;
+
+    return false;
+
+  }
+
+  return true;
+
+}
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+
+async function loadProfile(){
+
+  if(
+    !currentUser
+  ){
+
+    return;
+
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "profiles"
+        )
+        .select(
+          `
+            id,
+            display_name,
+            username,
+            avatar_url
+          `
+        )
+        .eq(
+          "id",
+          currentUser.id
+        )
+        .maybeSingle();
+
+    if(
+      error
+    ){
+
+      throw error;
+
+    }
+
+    currentProfile =
+      data ||
+      null;
+
+    renderNavAvatar();
+
+  }
+  catch(
+    error
+  ){
+
+    console.warn(
+      "Profile lookup:",
+      error.message
+    );
+
+    renderNavAvatar();
+
+  }
+
+}
+
+function renderNavAvatar(){
+
+  const holder =
+    $(
+      "navAvatar"
+    );
+
+  const name =
+    currentProfile?.display_name ||
+    currentProfile?.username ||
+    currentUser?.email ||
+    "?";
+
+  if(
+    currentProfile?.avatar_url
+  ){
+
+    holder.innerHTML =
+      `
+        <img
+          src="${escapeHtml(
+            currentProfile.avatar_url
+          )}"
+          alt=""
+        >
+      `;
+
+  }
+  else{
+
+    holder.textContent =
+      initials(
+        name
+      );
+
+  }
+
+}
+
+/* =========================================================
+   LOAD BOOK
+   ========================================================= */
+
+async function loadBook(){
+
+  if(
+    !bookId ||
+    !/^\d+$/.test(
+      bookId
+    )
+  ){
+
+    throw new Error(
+      "This book link is missing a valid DogEar book ID."
+    );
+
+  }
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "books"
+      )
+      .select(
+        "*"
+      )
+      .eq(
+        "id",
+        Number(
+          bookId
+        )
+      )
+      .maybeSingle();
+
+  if(
+    error
+  ){
+
+    throw error;
+
+  }
+
+  if(
+    !data
+  ){
+
+    throw new Error(
+      "DogEar could not find this book."
+    );
+
+  }
+
+  book =
+    data;
+
+  renderBook();
+
+}
+
+/* =========================================================
+   RENDER BOOK
+   ========================================================= */
+
+function renderBook(){
+
+  const title =
+    book.title ||
+    "Untitled Book";
+
+  const subtitle =
+    book.subtitle ||
+    "";
+
+  const author =
+    arrayText(
+      book.authors
+    ) ||
+    book.author ||
+    "Unknown author";
+
+  const coverUrl =
+    book.cover_url ||
+    book.thumbnail_url ||
+    book.image_url ||
+    "";
+
+  document.title =
+    title +
+    " — DogEar";
+
+  $(
+    "title"
+  ).textContent =
+    title;
+
+  $(
+    "author"
+  ).textContent =
+    author;
+
+  $(
+    "description"
+  ).textContent =
+    cleanText(
+      book.description
+    ) ||
+    "No description is available for this edition yet.";
+
+  $(
+    "bookEyebrow"
+  ).textContent =
+    subtitle
+      ? subtitle
+      : "DogEar Book";
+
+  $(
+    "detailTitle"
+  ).textContent =
+    subtitle
+      ? (
+          title +
+          ": " +
+          subtitle
+        )
+      : title;
+
+  $(
+    "detailAuthor"
+  ).textContent =
+    author;
+
+  $(
+    "detailPublisher"
+  ).textContent =
+    book.publisher ||
+    "—";
+
+  $(
+    "detailPublished"
+  ).textContent =
+    book.published_date ||
+    book.publication_date ||
+    book.publish_date ||
+    "—";
+
+  $(
+    "detailPages"
+  ).textContent =
+    book.page_count ||
+    book.pages ||
+    "—";
+
+  $(
+    "detailFormat"
+  ).textContent =
+    book.format ||
+    book.binding ||
+    "—";
+
+  $(
+    "detailIsbn13"
+  ).textContent =
+    book.isbn_13 ||
+    "—";
+
+  $(
+    "detailIsbn10"
+  ).textContent =
+    book.isbn_10 ||
+    "—";
+
+  $(
+    "detailCategories"
+  ).textContent =
+    arrayText(
+      book.categories
+    ) ||
+    "—";
+
+  $(
+    "detailId"
+  ).textContent =
+    book.id ??
+    "—";
+
+  $(
+    "detailGoogleId"
+  ).textContent =
+    book.google_books_id ||
+    "—";
+
+  $(
+    "detailAdded"
+  ).textContent =
+    formatDate(
+      book.created_at
+    );
+
+  if(
+    coverUrl
+  ){
+
+    $(
+      "cover"
+    ).innerHTML =
+      `
+        <img
+          src="${escapeHtml(
+            coverUrl
+          )}"
+          alt="${escapeHtml(
+            title
+          )} cover"
+        >
+      `;
+
+  }
+  else{
+
+    $(
+      "cover"
+    ).textContent =
+      "No cover available";
+
+  }
+
+  const pills =
+    [];
+
+  if(
+    book.format
+  ){
+
+    pills.push(
+      book.format
+    );
+
+  }
+
+  if(
+    book.page_count ||
+    book.pages
+  ){
+
+    pills.push(
+      (
+        book.page_count ||
+        book.pages
+      ) +
+      " pages"
+    );
+
+  }
+
+  if(
+    book.publisher
+  ){
+
+    pills.push(
+      book.publisher
+    );
+
+  }
+
+  if(
+    book.published_date
+  ){
+
+    pills.push(
+      book.published_date
+    );
+
+  }
+
+  if(
+    book.isbn_13
+  ){
+
+    pills.push(
+      "ISBN " +
+      book.isbn_13
+    );
+
+  }
+
+  $(
+    "edition"
+  ).innerHTML =
+    pills
+      .slice(
+        0,
+        5
+      )
+      .map(
+        value =>
+          `
+            <span class="pill">
+              ${escapeHtml(
+                value
+              )}
+            </span>
+          `
+      )
+      .join(
+        ""
+      );
+
+  if(
+    returnUrl
+  ){
+
+    try{
+
+      const decoded =
+        decodeURIComponent(
+          returnUrl
+        );
+
+      if(
+        decoded &&
+        !decoded.startsWith(
+          "http://"
+        ) &&
+        !decoded.startsWith(
+          "https://"
+        ) &&
+        !decoded.startsWith(
+          "//"
+        )
+      ){
+
+        $(
+          "backLink"
+        ).href =
+          decoded;
+
+      }
+
+    }
+    catch(
+      error
+    ){
+
+      console.warn(
+        "Return URL:",
+        error
+      );
+
+    }
+
+  }
+
+}
+
+/* =========================================================
+   MARKETPLACE LISTING
+   ========================================================= */
+
+async function loadMarketplaceListing(){
+
+  if(
+    !book ||
+    !book.id
+  ){
+
+    return false;
+
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "marketplace_curated_books"
+        )
+        .select(
+          `
+            id,
+            book_id,
+            active,
+            starts_at,
+            ends_at
+          `
+        )
+        .eq(
+          "book_id",
+          book.id
+        )
+        .eq(
+          "active",
+          true
+        )
+        .maybeSingle();
+
+    if(
+      error
+    ){
+
+      throw error;
+
+    }
+
+    if(
+      !data
+    ){
+
+      return false;
+
+    }
+
+    const now =
+      Date.now();
+
+    if(
+      data.starts_at
+    ){
+
+      const starts =
+        new Date(
+          data.starts_at
+        ).getTime();
+
+      if(
+        Number.isFinite(
+          starts
+        ) &&
+        starts >
+        now
+      ){
+
+        return false;
+
+      }
+
+    }
+
+    if(
+      data.ends_at
+    ){
+
+      const ends =
+        new Date(
+          data.ends_at
+        ).getTime();
+
+      if(
+        Number.isFinite(
+          ends
+        ) &&
+        ends <
+        now
+      ){
+
+        return false;
+
+      }
+
+    }
+
+    return true;
+
+  }
+  catch(
+    error
+  ){
+
+    console.warn(
+      "Marketplace listing lookup:",
+      error.message
+    );
+
+    return false;
+
+  }
+
+}
+
+/* =========================================================
+   PURCHASE LINK
+   ========================================================= */
+
+async function renderPurchaseLink(){
+
+  const purchaseLink =
+    $(
+      "purchaseLink"
+    );
+
+  const purchaseHero =
+    $(
+      "purchaseHero"
+    );
+
+  const noPurchase =
+    $(
+      "noPurchase"
+    );
+
+  const disclosure =
+    $(
+      "affiliateDisclosure"
+    );
+
+  const searchFallback =
+    $(
+      "bookshopSearchFallback"
+    );
+
+  purchaseLink.hidden =
+    true;
+
+  purchaseHero.hidden =
+    true;
+
+  searchFallback.hidden =
+    true;
+
+  disclosure.hidden =
+    true;
+
+  noPurchase.textContent =
+    "";
+
+  const isListed =
+    await loadMarketplaceListing();
+
+  if(
+    !isListed
+  ){
+
+    $(
+      "sellerName"
+    ).textContent =
+      "DogEar Book";
+
+    $(
+      "purchaseText"
+    ).textContent =
+      "This book is in DogEar's library, but it is not currently listed in the DogEar Marketplace.";
+
+    noPurchase.textContent =
+      "This book is not currently available through the DogEar Marketplace.";
+
+    return;
+
+  }
+
+  $(
+    "sellerName"
+  ).textContent =
+    "Buy on Bookshop.org";
+
+  const affiliate =
+    bookshopAffiliateUrl();
+
+  if(
+    affiliate
+  ){
+
+    purchaseLink.href =
+      affiliate;
+
+    purchaseHero.href =
+      affiliate;
+
+    purchaseLink.hidden =
+      false;
+
+    purchaseHero.hidden =
+      false;
+
+    $(
+      "purchaseText"
+    ).textContent =
+      "Purchase this edition on Bookshop.org.";
+
+    disclosure.hidden =
+      false;
+
+    return;
+
+  }
+
+  $(
+    "purchaseText"
+  ).textContent =
+    "DogEar could not build a direct Bookshop link for this edition because it does not have a valid ISBN.";
+
+  noPurchase.textContent =
+    "Use the Bookshop search below to find an available edition.";
+
+  searchFallback.href =
+    bookshopSearchUrl();
+
+  searchFallback.hidden =
+    false;
+
+  disclosure.hidden =
+    false;
+
+}
+
+/* =========================================================
+   LOAD RATING SUMMARY
+   ========================================================= */
+
+async function loadRatingSummary(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "get_book_rating_summary",
+        {
+          p_book_id:
+            Number(
+              bookId
+            )
+        }
+      );
+
+    if(
+      error
+    ){
+
+      throw error;
+
+    }
+
+    ratingSummary =
+      Array.isArray(
+        data
+      )
+        ? data[0]
+        : data;
+
+    renderRatingSummary();
+
+  }
+  catch(
+    error
+  ){
+
+    console.warn(
+      "Rating summary:",
+      error.message
+    );
+
+    ratingSummary =
+      null;
+
+    renderRatingSummary();
+
+  }
+
+}
+
+/* =========================================================
+   RENDER RATING SUMMARY
+   ========================================================= */
+
+function renderRatingSummary(){
+
+  const summary =
+    ratingSummary ||
+    {};
+
+  const average =
+    Number(
+      summary.average_rating ||
+      0
+    );
+
+  const total =
+    Number(
+      summary.rating_count ||
+      0
+    );
+
+  const reviewCount =
+    Number(
+      summary.review_count ||
+      0
+    );
+
+  const counts = {
+
+    5:
+      Number(
+        summary.five_star_count ||
+        0
+      ),
+
+    4:
+      Number(
+        summary.four_star_count ||
+        0
+      ),
+
+    3:
+      Number(
+        summary.three_star_count ||
+        0
+      ),
+
+    2:
+      Number(
+        summary.two_star_count ||
+        0
+      ),
+
+    1:
+      Number(
+        summary.one_star_count ||
+        0
+      )
+
+  };
+
+  $(
+    "averageRating"
+  ).textContent =
+    total
+      ? average.toFixed(
+          1
+        )
+      : "—";
+
+  $(
+    "averageStars"
+  ).textContent =
+    total
+      ? starString(
+          average
+        )
+      : "☆☆☆☆☆";
+
+  $(
+    "ratingCount"
+  ).textContent =
+    total
+      ? (
+          total +
+          " rating" +
+          (
+            total === 1
+              ? ""
+              : "s"
+          )
+        )
+      : "No ratings yet";
+
+  $(
+    "heroStars"
+  ).textContent =
+    total
+      ? starString(
+          average
+        )
+      : "☆☆☆☆☆";
+
+  $(
+    "heroRating"
+  ).textContent =
+    total
+      ? average.toFixed(
+          1
+        )
+      : "—";
+
+  $(
+    "heroRatingCount"
+  ).textContent =
+    total
+      ? (
+          total +
+          " rating" +
+          (
+            total === 1
+              ? ""
+              : "s"
+          )
+        )
+      : "No ratings yet";
+
+  $(
+    "communitySubtitle"
+  ).textContent =
+    reviewCount
+      ? (
+          reviewCount +
+          " written review" +
+          (
+            reviewCount === 1
+              ? ""
+              : "s"
+          ) +
+          " from DogEar readers."
+        )
+      : "No written reviews yet. Be the first.";
+
+  for(
+    const rating
+    of
+    [5,4,3,2,1]
+  ){
+
+    const count =
+      counts[
+        rating
+      ];
+
+    const percent =
+      total
+        ? Math.round(
+            count /
+            total *
+            100
+          )
+        : 0;
+
+    $(
+      "count" +
+      rating
+    ).textContent =
+      count;
+
+    $(
+      "bar" +
+      rating
+    ).style.width =
+      percent +
+      "%";
+
+  }
+
+}
+
+/* =========================================================
+   LOAD REVIEWS
+   ========================================================= */
+
+async function loadReviews(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "get_book_reviews",
+        {
+          p_book_id:
+            Number(
+              bookId
+            )
+        }
+      );
+
+    if(
+      error
+    ){
+
+      throw error;
+
+    }
+
+    reviews =
+      Array.isArray(
+        data
+      )
+        ? data
+        : [];
+
+    myReview =
+      reviews.find(
+        row =>
+          String(
+            row.user_id
+          ) ===
+          String(
+            currentUser.id
+          )
+      ) ||
+      null;
+
+    renderMyReview();
+
+    renderReviews();
+
+  }
+  catch(
+    error
+  ){
+
+    console.warn(
+      "Reviews:",
+      error.message
+    );
+
+    reviews =
+      [];
+
+    myReview =
+      null;
+
+    renderMyReview();
+
+    renderReviews();
+
+    setMessage(
+      "reviewMessage",
+      "DogEar couldn't load reviews yet: " +
+      error.message,
+      "error"
+    );
+
+  }
+
+}
+
+/* =========================================================
+   CURRENT USER REVIEW
+   ========================================================= */
+
+function renderMyReview(){
+
+  selectedRating =
+    Number(
+      myReview?.rating ||
+      0
+    );
+
+  $(
+    "reviewText"
+  ).value =
+    myReview?.review_text ||
+    "";
+
+  $(
+    "deleteReview"
+  ).hidden =
+    !myReview;
+
+  $(
+    "saveReview"
+  ).textContent =
+    myReview
+      ? "Update rating"
+      : "Save rating";
+
+  updateStarPicker();
+
+  updateCharacterCount();
+
+}
+
+/* =========================================================
+   STAR PICKER
+   ========================================================= */
+
+function updateStarPicker(
+  previewRating = 0
+){
+
+  document
+    .querySelectorAll(
+      ".star-button"
+    )
+    .forEach(
+      button => {
+
+        const rating =
+          Number(
+            button.dataset.rating
+          );
+
+        button.classList.toggle(
+          "selected",
+          !previewRating &&
+          rating <=
+          selectedRating
+        );
+
+        button.classList.toggle(
+          "preview",
+          Boolean(
+            previewRating
+          ) &&
+          rating <=
+          previewRating
+        );
+
+      }
+    );
+
+  const labelRating =
+    previewRating ||
+    selectedRating;
+
+  const labels = {
+
+    1:
+      "1 star — Not for me",
+
+    2:
+      "2 stars — It was okay",
+
+    3:
+      "3 stars — I liked it",
+
+    4:
+      "4 stars — I really liked it",
+
+    5:
+      "5 stars — I loved it"
+
+  };
+
+  $(
+    "ratingLabel"
+  ).textContent =
+    labels[
+      labelRating
+    ] ||
+    "Choose 1–5 stars";
+
+}
+
+function updateCharacterCount(){
+
+  const length =
+    $(
+      "reviewText"
+    )
+      .value
+      .length;
+
+  $(
+    "characterCount"
+  ).textContent =
+    length.toLocaleString() +
+    " / 10,000";
+
+}
+
+/* =========================================================
+   RENDER COMMUNITY REVIEWS
+   ========================================================= */
+
+function renderReviews(){
+
+  const holder =
+    $(
+      "reviewList"
+    );
+
+  const written =
+    reviews.filter(
+      row =>
+        String(
+          row.review_text ||
+          ""
+        ).trim()
+    );
+
+  if(
+    !written.length
+  ){
+
+    holder.innerHTML =
+      `
+        <div class="empty">
+          No written reviews yet.
+          Be the first DogEar reader
+          to leave one.
+        </div>
+      `;
+
+    return;
+
+  }
+
+  holder.innerHTML =
+    "";
+
+  written.forEach(
+    row => {
+
+      const displayName =
+        row.display_name ||
+        row.username ||
+        "DogEar Reader";
+
+      const profileUrl =
+        "profile.html?id=" +
+        encodeURIComponent(
+          row.user_id
+        );
+
+      const item =
+        document.createElement(
+          "article"
+        );
+
+      item.className =
+        "review-item";
+
+      const head =
+        document.createElement(
+          "div"
+        );
+
+      head.className =
+        "review-head";
+
+      const reviewer =
+        document.createElement(
+          "a"
+        );
+
+      reviewer.className =
+        "reviewer";
+
+      reviewer.href =
+        profileUrl;
+
+      const avatar =
+        document.createElement(
+          "div"
+        );
+
+      avatar.className =
+        "reviewer-avatar";
+
+      if(
+        row.avatar_url
+      ){
+
+        const image =
+          document.createElement(
+            "img"
+          );
+
+        image.src =
+          row.avatar_url;
+
+        image.alt =
+          "";
+
+        avatar.appendChild(
+          image
+        );
+
+      }
+      else{
+
+        avatar.textContent =
+          initials(
+            displayName
+          );
+
+      }
+
+      const nameBlock =
+        document.createElement(
+          "div"
+        );
+
+      const name =
+        document.createElement(
+          "div"
+        );
+
+      name.className =
+        "reviewer-name";
+
+      name.textContent =
+        displayName +
+        (
+          String(
+            row.user_id
+          ) ===
+          String(
+            currentUser.id
+          )
+            ? " · You"
+            : ""
+        );
+
+      const date =
+        document.createElement(
+          "div"
+        );
+
+      date.className =
+        "review-date";
+
+      date.textContent =
+        formatDate(
+          row.updated_at ||
+          row.created_at
+        );
+
+      nameBlock.append(
+        name,
+        date
+      );
+
+      reviewer.append(
+        avatar,
+        nameBlock
+      );
+
+      const stars =
+        document.createElement(
+          "div"
+        );
+
+      stars.className =
+        "review-stars";
+
+      stars.textContent =
+        starString(
+          row.rating
+        );
+
+      head.append(
+        reviewer,
+        stars
+      );
+
+      const text =
+        document.createElement(
+          "div"
+        );
+
+      text.className =
+        "review-text";
+
+      /*
+       * IMPORTANT:
+       * textContent is used here intentionally
+       * so user-written reviews cannot inject HTML.
+       */
+
+      text.textContent =
+        row.review_text;
+
+      item.append(
+        head,
+        text
+      );
+
+      holder.appendChild(
+        item
+      );
+
+    }
+  );
+
+}
+
+/* =========================================================
+   SAVE REVIEW
+   ========================================================= */
+
+async function saveReview(){
+
+  setMessage(
+    "reviewMessage",
+    ""
+  );
+
+  if(
+    selectedRating < 1 ||
+    selectedRating > 5
+  ){
+
+    setMessage(
+      "reviewMessage",
+      "Choose a star rating before saving.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  const reviewText =
+    $(
+      "reviewText"
+    )
+      .value
+      .trim();
+
+  if(
+    reviewText.length >
+    10000
+  ){
+
+    setMessage(
+      "reviewMessage",
+      "Reviews can be up to 10,000 characters.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  $(
+    "saveReview"
+  ).disabled =
+    true;
+
+  try{
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from(
+          "book_reviews"
+        )
+        .upsert(
+          {
+
+            user_id:
+              currentUser.id,
+
+            book_id:
+              Number(
+                bookId
+              ),
+
+            rating:
+              selectedRating,
+
+            review_text:
+              reviewText ||
+              null
+
+          },
+          {
+            onConflict:
+              "user_id,book_id"
+          }
+        );
+
+    if(
+      error
+    ){
+
+      throw error;
+
+    }
+
+    setMessage(
+      "reviewMessage",
+      myReview
+        ? "Your rating has been updated."
+        : "Your rating has been saved.",
+      "success"
+    );
+
+    await Promise.all(
+      [
+        loadRatingSummary(),
+        loadReviews()
+      ]
+    );
+
+  }
+  catch(
+    error
+  ){
+
+    console.error(
+      error
+    );
+
+    setMessage(
+      "reviewMessage",
+      "DogEar couldn't save your rating: " +
+      (
+        error.message ||
+        "Unknown error"
+      ),
+      "error"
+    );
+
+  }
+  finally{
+
+    $(
+      "saveReview"
+    ).disabled =
+      false;
+
+  }
+
+}
+
+/* =========================================================
+   DELETE REVIEW
+   ========================================================= */
+
+async function deleteReview(){
+
+  if(
+    !myReview
+  ){
+
+    return;
+
+  }
+
+  const confirmed =
+    window.confirm(
+      "Delete your rating and review for this book?"
+    );
+
+  if(
+    !confirmed
+  ){
+
+    return;
+
+  }
+
+  $(
+    "deleteReview"
+  ).disabled =
+    true;
+
+  try{
+
+    let query =
+      supabaseClient
+        .from(
+          "book_reviews"
+        )
+        .delete()
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .eq(
+          "book_id",
+          Number(
+            bookId
+          )
+        );
+
+    if(
+      myReview.review_id
+    ){
+
+      query =
+        query.eq(
+          "id",
+          myReview.review_id
+        );
+
+    }
+
+    const {
+      error
+    } =
+      await query;
+
+    if(
+      error
+    ){
+
+      throw error;
+
+    }
+
+    selectedRating =
+      0;
+
+    myReview =
+      null;
+
+    setMessage(
+      "reviewMessage",
+      "Your rating has been deleted.",
+      "success"
+    );
+
+    await Promise.all(
+      [
+        loadRatingSummary(),
+        loadReviews()
+      ]
+    );
+
+  }
+  catch(
+    error
+  ){
+
+    console.error(
+      error
+    );
+
+    setMessage(
+      "reviewMessage",
+      "DogEar couldn't delete your rating: " +
+      (
+        error.message ||
+        "Unknown error"
+      ),
+      "error"
+    );
+
+  }
+  finally{
+
+    $(
+      "deleteReview"
+    ).disabled =
+      false;
+
+  }
+
+}
+
+/* =========================================================
+   REVIEW EVENTS
+   ========================================================= */
+
+function wireStarPicker(){
+
+  document
+    .querySelectorAll(
+      ".star-button"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "mouseenter",
+          () => {
+
+            updateStarPicker(
+              Number(
+                button.dataset.rating
+              )
+            );
+
+          }
+        );
+
+        button.addEventListener(
+          "focus",
+          () => {
+
+            updateStarPicker(
+              Number(
+                button.dataset.rating
+              )
+            );
+
+          }
+        );
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            selectedRating =
+              Number(
+                button.dataset.rating
+              );
+
+            updateStarPicker();
+
+          }
+        );
+
+      }
+    );
+
+  $(
+    "starPicker"
+  )
+    .addEventListener(
+      "mouseleave",
+      () => {
+
+        updateStarPicker();
+
+      }
+    );
+
+  $(
+    "starPicker"
+  )
+    .addEventListener(
+      "focusout",
+      event => {
+
+        if(
+          !$(
+            "starPicker"
+          )
+            .contains(
+              event.relatedTarget
+            )
+        ){
+
+          updateStarPicker();
+
+        }
+
+      }
+    );
+
+}
+
+$(
+  "reviewText"
+)
+  .addEventListener(
+    "input",
+    updateCharacterCount
+  );
+
+$(
+  "saveReview"
+)
+  .addEventListener(
+    "click",
+    saveReview
+  );
+
+$(
+  "deleteReview"
+)
+  .addEventListener(
+    "click",
+    deleteReview
+  );
+
+wireStarPicker();
+
+/* =========================================================
+   FATAL ERROR
+   ========================================================= */
+
+function showFatalError(
+  message
+){
+
+  $(
+    "loading"
+  ).hidden =
+    true;
+
+  $(
+    "page"
+  ).innerHTML =
+    `
+      <div class="error-page">
+
+        <div>
+
+          <div class="eyebrow">
+            DogEar
+          </div>
+
+          <h1>
+            We lost the page.
+          </h1>
+
+          <p>
+            ${escapeHtml(
+              message
+            )}
+          </p>
+
+          <a
+            class="btn primary"
+            href="marketplace.html"
+          >
+            Back to Books
+          </a>
+
+        </div>
+
+      </div>
+    `;
+
+}
+
+/* =========================================================
+   START DOGEAR BOOK DETAIL PAGE
+   ========================================================= */
+
+async function start(){
+
+  try{
+
+    const signedIn =
+      await loadSession();
+
+    if(
+      !signedIn
+    ){
+
+      return;
+
+    }
+
+    await loadProfile();
+
+    await loadBook();
+
+    await Promise.all(
+      [
+        renderPurchaseLink(),
+        loadRatingSummary(),
+        loadReviews()
+      ]
+    );
+
+    $(
+      "loading"
+    ).hidden =
+      true;
+
+  }
+  catch(
+    error
+  ){
+
+    console.error(
+      error
+    );
+
+    showFatalError(
+      error.message ||
+      "DogEar couldn't open this book."
+    );
+
+  }
+
+}
+
+start();
+
+</script>
+
+</body>
+</html>
