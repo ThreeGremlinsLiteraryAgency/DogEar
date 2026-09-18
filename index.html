@@ -626,10 +626,7 @@
       color:
         var(--gold-light);
     }
-
-
-
-    /* =====================================================
+        /* =====================================================
        BOOK OF THE MONTH
     ===================================================== */
 
@@ -1184,7 +1181,10 @@
       </a>
 
 
-      <a href="auth.html#login">
+      <a
+        href="auth.html#login"
+        id="navLogin"
+      >
         Log In
       </a>
 
@@ -1192,6 +1192,7 @@
       <a
         href="auth.html#signup"
         class="nav-signup"
+        id="navSignup"
       >
         Join DogEar
       </a>
@@ -1219,7 +1220,7 @@
   >
 
     <img
-      src="logo.png"
+      src="Logo.png"
       alt="DogEar — Where Books Find Their People"
       class="main-logo"
     >
@@ -1304,6 +1305,7 @@
       <a
         href="auth.html#signup"
         class="button button-primary"
+        id="heroPrimaryAction"
       >
         Join DogEar
       </a>
@@ -1585,9 +1587,6 @@
   </div>
 
 </section>
-
-
-
 <div class="divider"></div>
 
 
@@ -1657,17 +1656,20 @@
 
     <div class="join-box">
 
-      <div class="eyebrow">
+      <div
+        class="eyebrow"
+        id="joinEyebrow"
+      >
         Your shelf is waiting
       </div>
 
 
-      <h2>
+      <h2 id="joinHeading">
         Find your people.
       </h2>
 
 
-      <p>
+      <p id="joinText">
 
         Join readers, writers,
         book clubs and publishing
@@ -1683,6 +1685,7 @@
         <a
           href="auth.html#signup"
           class="button button-primary"
+          id="joinPrimaryAction"
         >
           Create Your Account
         </a>
@@ -1691,6 +1694,7 @@
         <a
           href="auth.html#login"
           class="button button-secondary"
+          id="joinSecondaryAction"
         >
           Log In
         </a>
@@ -1739,12 +1743,18 @@
       </a>
 
 
-      <a href="auth.html#login">
+      <a
+        href="auth.html#login"
+        id="footerLogin"
+      >
         Log In
       </a>
 
 
-      <a href="auth.html#signup">
+      <a
+        href="auth.html#signup"
+        id="footerSignup"
+      >
         Join
       </a>
 
@@ -1762,10 +1772,294 @@
 
 
 <!-- =====================================================
-     GOOGLE BOOKS LOOKUP
+     SUPABASE
 ===================================================== -->
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+
 <script>
+
+  /* =====================================================
+     DOGEAR SUPABASE CONNECTION
+  ===================================================== */
+
+  const SUPABASE_URL =
+    "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+
+  const supabaseClient =
+    supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+
+  /* =====================================================
+     AUTH-AWARE HOMEPAGE
+  ===================================================== */
+
+  async function initializeHomepageAuth() {
+
+    try {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .auth
+          .getSession();
+
+
+      if (error) {
+
+        console.error(
+          "DogEar could not check the current session:",
+          error
+        );
+
+        return;
+
+      }
+
+
+      const session =
+        data?.session;
+
+
+      if (
+        !session ||
+        !session.user
+      ) {
+
+        return;
+
+      }
+
+
+      renderLoggedInHomepage();
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "DogEar homepage authentication check failed:",
+        error
+      );
+
+    }
+
+  }
+
+
+
+  function renderLoggedInHomepage() {
+
+    /* -----------------------------------------------------
+       TOP NAV
+    ----------------------------------------------------- */
+
+    const navLogin =
+      document.getElementById(
+        "navLogin"
+      );
+
+
+    const navSignup =
+      document.getElementById(
+        "navSignup"
+      );
+
+
+    if (navLogin) {
+
+      navLogin.href =
+        "dashboard.html";
+
+
+      navLogin.textContent =
+        "Home";
+
+    }
+
+
+    if (navSignup) {
+
+      navSignup.href =
+        "profile.html";
+
+
+      navSignup.textContent =
+        "Profile";
+
+    }
+
+
+
+    /* -----------------------------------------------------
+       HERO
+    ----------------------------------------------------- */
+
+    const heroPrimaryAction =
+      document.getElementById(
+        "heroPrimaryAction"
+      );
+
+
+    if (heroPrimaryAction) {
+
+      heroPrimaryAction.href =
+        "dashboard.html";
+
+
+      heroPrimaryAction.textContent =
+        "Go to My Home";
+
+    }
+
+
+
+    /* -----------------------------------------------------
+       BOTTOM CTA
+    ----------------------------------------------------- */
+
+    const joinEyebrow =
+      document.getElementById(
+        "joinEyebrow"
+      );
+
+
+    const joinHeading =
+      document.getElementById(
+        "joinHeading"
+      );
+
+
+    const joinText =
+      document.getElementById(
+        "joinText"
+      );
+
+
+    const joinPrimaryAction =
+      document.getElementById(
+        "joinPrimaryAction"
+      );
+
+
+    const joinSecondaryAction =
+      document.getElementById(
+        "joinSecondaryAction"
+      );
+
+
+    if (joinEyebrow) {
+
+      joinEyebrow.textContent =
+        "Welcome back to DogEar";
+
+    }
+
+
+    if (joinHeading) {
+
+      joinHeading.textContent =
+        "Your shelf is waiting.";
+
+    }
+
+
+    if (joinText) {
+
+      joinText.textContent =
+        "Head back to your DogEar home, continue exploring the community, manage your clubs, and pick up where you left off.";
+
+    }
+
+
+    if (joinPrimaryAction) {
+
+      joinPrimaryAction.href =
+        "dashboard.html";
+
+
+      joinPrimaryAction.textContent =
+        "Go to My Home";
+
+    }
+
+
+    if (joinSecondaryAction) {
+
+      joinSecondaryAction.href =
+        "profile.html";
+
+
+      joinSecondaryAction.textContent =
+        "View My Profile";
+
+    }
+
+
+
+    /* -----------------------------------------------------
+       FOOTER
+    ----------------------------------------------------- */
+
+    const footerLogin =
+      document.getElementById(
+        "footerLogin"
+      );
+
+
+    const footerSignup =
+      document.getElementById(
+        "footerSignup"
+      );
+
+
+    if (footerLogin) {
+
+      footerLogin.href =
+        "dashboard.html";
+
+
+      footerLogin.textContent =
+        "Home";
+
+    }
+
+
+    if (footerSignup) {
+
+      footerSignup.href =
+        "profile.html";
+
+
+      footerSignup.textContent =
+        "Profile";
+
+    }
+
+  }
+
+
+
+  initializeHomepageAuth();
+
+
+
+  /* =====================================================
+     GOOGLE BOOKS LOOKUP
+  ===================================================== */
 
   const searchButton =
     document.getElementById(
@@ -1966,6 +2260,7 @@
           `;
 
       }
+
       else {
 
         coverArea.innerHTML =
@@ -1978,6 +2273,7 @@
       }
 
     }
+
     catch (error) {
 
       console.error(
@@ -2004,6 +2300,7 @@
         "DogEar could not reach Google Books. Please try again.";
 
     }
+
     finally {
 
       searchButton.disabled =
