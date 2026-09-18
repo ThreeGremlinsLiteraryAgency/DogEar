@@ -1,0 +1,2379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DogEar — Beta Reading</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --ink:#090b0a;
+  --ink2:#0d100e;
+  --panel:#101410;
+  --panel2:#151a15;
+  --cream:#f1e7cf;
+  --cream2:#d9cfb8;
+  --gold:#c79b59;
+  --gold2:#dfbd7e;
+  --green:#26362b;
+  --green2:#34483a;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.22);
+  --line-soft:rgba(199,155,89,.11);
+  --danger:#e6a09a;
+  --ok:#b9d6b2;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--cream);
+  background:
+    radial-gradient(circle at 8% 0%,rgba(53,73,59,.28),transparent 26%),
+    radial-gradient(circle at 90% 15%,rgba(199,155,89,.07),transparent 24%),
+    var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+button{
+  color:inherit;
+}
+
+a{
+  color:inherit;
+}
+
+.topbar{
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:0 clamp(18px,4vw,60px);
+  border-bottom:1px solid var(--line);
+  background:rgba(9,11,10,.95);
+  backdrop-filter:blur(14px);
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 13px Arial,sans-serif;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  transform:rotate(-8deg);
+  position:relative;
+}
+
+.brand-mark::after{
+  content:"";
+  position:absolute;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--gold);
+  right:7px;
+  top:7px;
+}
+
+.nav{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:24px;
+  font:700 11px Arial,sans-serif;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.nav a:hover,
+.nav a.active{
+  color:var(--gold2);
+}
+
+.nav-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:var(--green);
+  text-decoration:none;
+  font:800 13px Arial,sans-serif;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.page{
+  width:min(1320px,calc(100% - 32px));
+  margin:auto;
+  padding:46px 0 110px;
+}
+
+.hero{
+  border:1px solid var(--line);
+  border-radius:28px;
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(38,54,43,.76),
+      rgba(16,20,16,.9) 58%,
+      rgba(199,155,89,.06)
+    );
+}
+
+.hero-copy{
+  padding:clamp(38px,6vw,76px);
+}
+
+.eyebrow{
+  color:var(--gold);
+  font:800 10px Arial,sans-serif;
+  letter-spacing:.19em;
+  text-transform:uppercase;
+  margin-bottom:14px;
+}
+
+h1{
+  margin:0;
+  max-width:780px;
+  font-size:clamp(48px,7vw,88px);
+  line-height:.91;
+  font-weight:400;
+  letter-spacing:-.055em;
+}
+
+.hero-description{
+  max-width:680px;
+  margin:24px 0 0;
+  color:var(--cream2);
+  font:14px/1.75 Arial,sans-serif;
+}
+
+.hero-actions{
+  margin-top:28px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.primary-button,
+.secondary-button{
+  min-height:45px;
+  padding:0 18px;
+  border-radius:999px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  text-decoration:none;
+  font:800 9px Arial,sans-serif;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.primary-button{
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:#11130f;
+}
+
+.secondary-button{
+  border:1px solid var(--line);
+  background:rgba(9,11,10,.35);
+  color:var(--gold2);
+}
+
+.hero-side{
+  border-left:1px solid var(--line);
+  padding:38px;
+  display:flex;
+  align-items:center;
+}
+
+.hero-note{
+  width:100%;
+  border:1px solid var(--line);
+  padding:26px;
+  background:rgba(9,11,10,.35);
+  transform:rotate(1deg);
+}
+
+.note-number{
+  color:var(--gold);
+  font-size:52px;
+}
+
+.note-title{
+  margin-top:15px;
+  font-size:27px;
+}
+
+.note-copy{
+  margin-top:12px;
+  color:var(--muted);
+  font:11px/1.7 Arial,sans-serif;
+}
+
+.toolbar{
+  margin-top:26px;
+  padding:16px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 190px 190px;
+  gap:10px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(16,20,16,.88);
+}
+
+.input,
+.select,
+.textarea{
+  width:100%;
+  border:1px solid var(--line);
+  background:#0b0e0c;
+  color:var(--cream);
+  outline:none;
+  border-radius:11px;
+  font:12px Arial,sans-serif;
+}
+
+.input,
+.select{
+  min-height:46px;
+  padding:0 14px;
+}
+
+.textarea{
+  min-height:110px;
+  padding:13px;
+  resize:vertical;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus{
+  border-color:var(--gold);
+}
+
+.section{
+  margin-top:54px;
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  align-items:end;
+  margin-bottom:18px;
+}
+
+.section-kicker{
+  color:var(--gold);
+  font:800 9px Arial,sans-serif;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  margin-bottom:7px;
+}
+
+.section-title{
+  margin:0;
+  font-size:clamp(28px,4vw,42px);
+  font-weight:400;
+}
+
+.section-description{
+  margin-top:7px;
+  color:var(--muted);
+  font:11px/1.6 Arial,sans-serif;
+  max-width:650px;
+}
+
+.project-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:17px;
+}
+
+.project-card{
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(16,20,16,.9);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+.project-top{
+  padding:20px 20px 17px;
+  border-bottom:1px solid var(--line-soft);
+  background:linear-gradient(145deg,rgba(38,54,43,.6),rgba(16,20,16,.3));
+}
+
+.project-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-bottom:16px;
+}
+
+.tag{
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:6px 8px;
+  color:var(--gold2);
+  font:800 7px Arial,sans-serif;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.project-title{
+  margin:0;
+  font-size:27px;
+  line-height:1;
+  font-weight:400;
+}
+
+.project-author{
+  margin-top:8px;
+  color:var(--muted);
+  font:10px Arial,sans-serif;
+}
+
+.project-body{
+  padding:19px;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.project-blurb{
+  color:var(--cream2);
+  font:11px/1.7 Arial,sans-serif;
+}
+
+.project-info{
+  margin-top:17px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.info-box{
+  padding:10px;
+  border:1px solid var(--line-soft);
+  border-radius:10px;
+}
+
+.info-label{
+  color:var(--muted);
+  font:800 7px Arial,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.info-value{
+  margin-top:5px;
+  font:11px Arial,sans-serif;
+}
+
+.feedback{
+  margin-top:15px;
+  padding-top:15px;
+  border-top:1px solid var(--line-soft);
+}
+
+.feedback strong{
+  display:block;
+  color:var(--gold);
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.feedback span{
+  display:block;
+  margin-top:6px;
+  color:var(--muted);
+  font:10px/1.55 Arial,sans-serif;
+}
+
+.project-actions{
+  margin-top:auto;
+  padding-top:18px;
+  display:flex;
+  gap:8px;
+}
+
+.card-button{
+  flex:1;
+  min-height:39px;
+  border-radius:999px;
+  cursor:pointer;
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.card-button.primary{
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:#11130f;
+}
+
+.card-button.secondary{
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--gold2);
+}
+
+.empty{
+  grid-column:1/-1;
+  padding:55px 24px;
+  text-align:center;
+  border:1px dashed var(--line);
+  border-radius:18px;
+  color:var(--muted);
+  font:11px/1.7 Arial,sans-serif;
+}
+
+.empty strong{
+  display:block;
+  margin-bottom:8px;
+  color:var(--cream);
+  font:24px Georgia,serif;
+}
+
+.my-projects{
+  display:none;
+}
+
+.my-projects.show{
+  display:block;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:none;
+  place-items:center;
+  padding:20px;
+  background:rgba(0,0,0,.78);
+}
+
+.modal.show{
+  display:grid;
+}
+
+.modal-card{
+  width:min(720px,100%);
+  max-height:90vh;
+  overflow:auto;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:var(--panel);
+  padding:28px;
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.modal-title{
+  margin:0;
+  font-size:32px;
+  font-weight:400;
+}
+
+.close-button{
+  width:36px;
+  height:36px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  background:transparent;
+  cursor:pointer;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-top:24px;
+}
+
+.field{
+  display:grid;
+  gap:7px;
+}
+
+.field.full{
+  grid-column:1/-1;
+}
+
+.label{
+  color:var(--gold);
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.privacy-note{
+  margin-top:18px;
+  padding:14px;
+  border:1px solid var(--line-soft);
+  border-radius:12px;
+  color:var(--muted);
+  font:10px/1.65 Arial,sans-serif;
+}
+
+.modal-actions{
+  margin-top:20px;
+  display:flex;
+  justify-content:flex-end;
+  gap:9px;
+}
+
+.toast{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:200;
+  max-width:370px;
+  padding:14px 16px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#111512;
+  color:var(--cream2);
+  font:11px/1.5 Arial,sans-serif;
+  opacity:0;
+  transform:translateY(10px);
+  pointer-events:none;
+  transition:.18s;
+}
+
+.toast.show{
+  opacity:1;
+  transform:none;
+}
+
+.toast.error{
+  color:var(--danger);
+}
+
+@media(max-width:1000px){
+  .project-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .hero{
+    grid-template-columns:1fr;
+  }
+
+  .hero-side{
+    display:none;
+  }
+}
+
+@media(max-width:720px){
+  .nav{
+    display:none;
+  }
+
+  .toolbar{
+    grid-template-columns:1fr;
+  }
+
+  .project-grid{
+    grid-template-columns:1fr;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .field.full{
+    grid-column:auto;
+  }
+
+  .section-head{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+
+  <a class="brand" href="index.html">
+    <span class="brand-mark"></span>
+    <span>DogEar</span>
+  </a>
+
+  <nav class="nav">
+    <a href="dashboard.html">Home</a>
+    <a href="discover.html">Discover</a>
+    <a href="clubs.html">Clubs</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a class="active" href="beta-reading.html">Beta Reading</a>
+  </nav>
+
+  <div class="nav-right">
+    <a
+      class="avatar"
+      id="navAvatar"
+      href="profile.html"
+      aria-label="Profile"
+    >?</a>
+  </div>
+
+</header>
+
+<main class="page">
+
+<section class="hero">
+
+  <div class="hero-copy">
+
+    <div class="eyebrow">
+      Writers meet readers
+    </div>
+
+    <h1>
+      Stories need readers.
+    </h1>
+
+    <p class="hero-description">
+      Find beta readers who love the kind of stories you write,
+      or discover manuscripts that need thoughtful readers before
+      they meet the rest of the world.
+    </p>
+
+    <div class="hero-actions">
+
+      <button
+        class="primary-button"
+        id="listProjectButton"
+        type="button"
+      >
+        Find Beta Readers
+      </button>
+
+      <a
+        class="secondary-button"
+        href="#projects"
+      >
+        Become a Beta Reader
+      </a>
+
+    </div>
+
+  </div>
+
+  <div class="hero-side">
+
+    <div class="hero-note">
+
+      <div class="note-number">
+        03
+      </div>
+
+      <div class="note-title">
+        Create.
+      </div>
+
+      <div class="note-copy">
+        Beta reading is about collaboration, not publishing
+        unfinished manuscripts to the internet. DogEar displays
+        project information publicly while keeping manuscript
+        sharing between writers and the readers they choose.
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="toolbar">
+
+  <input
+    class="input"
+    id="searchInput"
+    type="search"
+    placeholder="Search title, author, genre..."
+  >
+
+  <select
+    class="select"
+    id="genreFilter"
+  >
+    <option value="">All genres</option>
+  </select>
+
+  <select
+    class="select"
+    id="statusFilter"
+  >
+    <option value="open">Seeking readers</option>
+    <option value="">All projects</option>
+    <option value="closed">Closed</option>
+  </select>
+
+</section>
+
+
+<section
+  class="section my-projects"
+  id="myProjectsSection"
+>
+
+  <div class="section-head">
+
+    <div>
+
+      <div class="section-kicker">
+        Your writing
+      </div>
+
+      <h2 class="section-title">
+        My Beta Projects
+      </h2>
+
+      <div class="section-description">
+        Manage projects you've listed and review readers
+        interested in helping.
+      </div>
+
+    </div>
+
+  </div>
+
+  <div
+    class="project-grid"
+    id="myProjectsGrid"
+  ></div>
+
+</section>
+
+
+<section
+  class="section"
+  id="projects"
+>
+
+  <div class="section-head">
+
+    <div>
+
+      <div class="section-kicker">
+        Open manuscripts
+      </div>
+
+      <h2 class="section-title">
+        Find Something to Read
+      </h2>
+
+      <div class="section-description">
+        Browse writers currently looking for beta readers.
+        Expressing interest does not automatically give access
+        to a manuscript—the writer chooses who receives it.
+      </div>
+
+    </div>
+
+    <div
+      class="section-description"
+      id="projectCount"
+    >
+      Loading...
+    </div>
+
+  </div>
+
+  <div
+    class="project-grid"
+    id="projectGrid"
+  ></div>
+
+</section>
+
+</main>
+
+
+<!-- CREATE PROJECT -->
+
+<div
+  class="modal"
+  id="projectModal"
+>
+
+  <div class="modal-card">
+
+    <div class="modal-head">
+
+      <div>
+
+        <div class="section-kicker">
+          Writers
+        </div>
+
+        <h2 class="modal-title">
+          Find Beta Readers
+        </h2>
+
+      </div>
+
+      <button
+        class="close-button"
+        id="closeProjectModal"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <form id="projectForm">
+
+      <div class="form-grid">
+
+        <label class="field full">
+          <span class="label">Project title</span>
+          <input
+            class="input"
+            id="projectTitle"
+            required
+            maxlength="180"
+          >
+        </label>
+
+        <label class="field">
+          <span class="label">Genre</span>
+          <input
+            class="input"
+            id="projectGenre"
+            required
+            maxlength="80"
+            placeholder="Fantasy"
+          >
+        </label>
+
+        <label class="field">
+          <span class="label">Word count</span>
+          <input
+            class="input"
+            id="projectWordCount"
+            type="number"
+            min="0"
+            step="100"
+            placeholder="85000"
+          >
+        </label>
+
+        <label class="field">
+          <span class="label">Beta deadline</span>
+          <input
+            class="input"
+            id="projectDeadline"
+            type="date"
+          >
+        </label>
+
+        <label class="field">
+          <span class="label">Readers wanted</span>
+          <input
+            class="input"
+            id="readersWanted"
+            type="number"
+            min="1"
+            max="100"
+            value="3"
+          >
+        </label>
+
+        <label class="field full">
+          <span class="label">Blurb</span>
+          <textarea
+            class="textarea"
+            id="projectBlurb"
+            required
+            maxlength="2500"
+            placeholder="Tell readers what your story is about..."
+          ></textarea>
+        </label>
+
+        <label class="field full">
+          <span class="label">Feedback wanted</span>
+          <textarea
+            class="textarea"
+            id="feedbackWanted"
+            maxlength="1500"
+            placeholder="Plot holes, pacing, characters, romance, worldbuilding..."
+          ></textarea>
+        </label>
+
+        <label class="field full">
+          <span class="label">Content notes</span>
+          <textarea
+            class="textarea"
+            id="contentNotes"
+            maxlength="1000"
+            placeholder="Optional content warnings or information readers should know."
+          ></textarea>
+        </label>
+
+      </div>
+
+      <div class="privacy-note">
+        <strong>Manuscript privacy:</strong>
+        this listing does not upload or publicly expose your manuscript.
+        It only publishes the project information above. You decide how
+        and when an accepted beta reader receives the manuscript.
+      </div>
+
+      <div class="modal-actions">
+
+        <button
+          class="secondary-button"
+          id="cancelProjectButton"
+          type="button"
+        >
+          Cancel
+        </button>
+
+        <button
+          class="primary-button"
+          type="submit"
+        >
+          List Project
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- INTEREST MODAL -->
+
+<div
+  class="modal"
+  id="interestModal"
+>
+
+  <div class="modal-card">
+
+    <div class="modal-head">
+
+      <div>
+
+        <div class="section-kicker">
+          Beta reader
+        </div>
+
+        <h2
+          class="modal-title"
+          id="interestTitle"
+        >
+          I'm Interested
+        </h2>
+
+      </div>
+
+      <button
+        class="close-button"
+        id="closeInterestModal"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <form id="interestForm">
+
+      <input
+        id="interestProjectId"
+        type="hidden"
+      >
+
+      <div class="form-grid">
+
+        <label class="field full">
+          <span class="label">
+            Tell the writer why you're interested
+          </span>
+
+          <textarea
+            class="textarea"
+            id="interestMessage"
+            required
+            maxlength="1500"
+            placeholder="What drew you to this project? What kind of beta-reading experience do you have?"
+          ></textarea>
+        </label>
+
+      </div>
+
+      <div class="privacy-note">
+        The writer will see your DogEar profile and this message.
+        Expressing interest does not automatically provide manuscript access.
+      </div>
+
+      <div class="modal-actions">
+
+        <button
+          class="secondary-button"
+          id="cancelInterestButton"
+          type="button"
+        >
+          Cancel
+        </button>
+
+        <button
+          class="primary-button"
+          type="submit"
+        >
+          Send Interest
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<div
+  class="toast"
+  id="toast"
+></div>
+
+
+<script>
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+/*
+  Use the same browser-safe Supabase publishable key
+  already used throughout the rest of DogEar.
+*/
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+let currentUser = null;
+let currentProfile = null;
+let projects = [];
+let interests = [];
+let toastTimer = null;
+
+const $ =
+  id =>
+    document.getElementById(id);
+
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+function showToast(
+  message,
+  type = ""
+){
+
+  const toast = $("toast");
+
+  clearTimeout(toastTimer);
+
+  toast.textContent = message;
+  toast.className = "toast";
+
+  if(type){
+    toast.classList.add(type);
+  }
+
+  requestAnimationFrame(
+    () => toast.classList.add("show")
+  );
+
+  toastTimer =
+    setTimeout(
+      () => toast.classList.remove("show"),
+      3500
+    );
+
+}
+
+
+function formatWords(value){
+
+  const words = Number(value || 0);
+
+  if(!words){
+    return "Not listed";
+  }
+
+  return words.toLocaleString() + " words";
+
+}
+
+
+function formatDeadline(value){
+
+  if(!value){
+    return "No deadline";
+  }
+
+  const date =
+    new Date(
+      value + "T12:00:00"
+    );
+
+  return date.toLocaleDateString(
+    undefined,
+    {
+      month:"short",
+      day:"numeric",
+      year:"numeric"
+    }
+  );
+
+}
+
+
+function profileName(project){
+
+  return (
+    project.profiles?.display_name ||
+    project.profiles?.username ||
+    "DogEar Writer"
+  );
+
+}
+
+
+async function loadSession(){
+
+  const {
+    data
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+  currentUser =
+    data?.session?.user ||
+    null;
+
+  if(currentUser){
+
+    const {
+      data:profile
+    } =
+      await supabaseClient
+        .from("profiles")
+        .select(
+          "id,display_name,username,avatar_url"
+        )
+        .eq(
+          "id",
+          currentUser.id
+        )
+        .maybeSingle();
+
+    currentProfile =
+      profile ||
+      null;
+
+  }
+
+  renderNavigation();
+
+}
+
+
+function renderNavigation(){
+
+  const avatar =
+    $("navAvatar");
+
+  if(!currentUser){
+
+    avatar.textContent = "↪";
+    avatar.href = "auth.html#login";
+
+    return;
+
+  }
+
+  avatar.href =
+    "profile.html";
+
+  const name =
+    currentProfile?.display_name ||
+    currentProfile?.username ||
+    currentUser.email ||
+    "D";
+
+  if(currentProfile?.avatar_url){
+
+    avatar.innerHTML =
+      `<img src="${escapeHtml(
+        currentProfile.avatar_url
+      )}" alt="">`;
+
+  }
+  else{
+
+    avatar.textContent =
+      name
+        .trim()
+        .charAt(0)
+        .toUpperCase();
+
+  }
+
+}
+
+
+async function loadProjects(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("beta_projects")
+      .select(`
+        *,
+        profiles:owner_id(
+          display_name,
+          username,
+          avatar_url
+        )
+      `)
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
+
+  if(error){
+
+    console.error(error);
+
+    projects = [];
+
+    renderProjects();
+
+    showToast(
+      "Beta reading needs its database tables installed before projects can load.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  projects =
+    data ||
+    [];
+
+  buildGenreFilter();
+  renderProjects();
+
+}
+
+
+async function loadMyInterests(){
+
+  interests = [];
+
+  if(!currentUser){
+    return;
+  }
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("beta_interests")
+      .select("*")
+      .eq(
+        "reader_id",
+        currentUser.id
+      );
+
+  if(!error){
+    interests = data || [];
+  }
+
+}
+
+
+function buildGenreFilter(){
+
+  const select =
+    $("genreFilter");
+
+  const current =
+    select.value;
+
+  const genres =
+    [...new Set(
+      projects
+        .map(project => project.genre)
+        .filter(Boolean)
+    )]
+      .sort(
+        (a,b) =>
+          a.localeCompare(b)
+      );
+
+  select.innerHTML =
+    `<option value="">All genres</option>`;
+
+  genres.forEach(
+    genre => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value =
+        genre;
+
+      option.textContent =
+        genre;
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+  select.value =
+    current;
+
+}
+
+
+function renderProjects(){
+
+  const query =
+    $("searchInput")
+      .value
+      .trim()
+      .toLowerCase();
+
+  const genre =
+    $("genreFilter").value;
+
+  const status =
+    $("statusFilter").value;
+
+  const visible =
+    projects.filter(
+      project => {
+
+        const searchText =
+          [
+            project.title,
+            project.genre,
+            project.blurb,
+            profileName(project)
+          ]
+            .join(" ")
+            .toLowerCase();
+
+        if(
+          query &&
+          !searchText.includes(query)
+        ){
+          return false;
+        }
+
+        if(
+          genre &&
+          project.genre !== genre
+        ){
+          return false;
+        }
+
+        if(
+          status &&
+          project.status !== status
+        ){
+          return false;
+        }
+
+        return true;
+
+      }
+    );
+
+  $("projectCount").textContent =
+    `${visible.length} ${
+      visible.length === 1
+        ? "project"
+        : "projects"
+    }`;
+
+  renderProjectGrid(
+    $("projectGrid"),
+    visible,
+    false
+  );
+
+  renderMyProjects();
+
+}
+
+
+function renderMyProjects(){
+
+  const section =
+    $("myProjectsSection");
+
+  if(!currentUser){
+
+    section.classList.remove(
+      "show"
+    );
+
+    return;
+
+  }
+
+  const mine =
+    projects.filter(
+      project =>
+        project.owner_id ===
+        currentUser.id
+    );
+
+  if(!mine.length){
+
+    section.classList.remove(
+      "show"
+    );
+
+    return;
+
+  }
+
+  section.classList.add(
+    "show"
+  );
+
+  renderProjectGrid(
+    $("myProjectsGrid"),
+    mine,
+    true
+  );
+
+}
+
+
+function renderProjectGrid(
+  holder,
+  rows,
+  ownerView
+){
+
+  holder.innerHTML = "";
+
+  if(!rows.length){
+
+    holder.innerHTML =
+      `
+        <div class="empty">
+          <strong>
+            Nothing here yet.
+          </strong>
+          ${
+            ownerView
+              ? "List a manuscript when you're ready to find beta readers."
+              : "No beta projects match these filters right now."
+          }
+        </div>
+      `;
+
+    return;
+
+  }
+
+  rows.forEach(
+    project => {
+
+      holder.appendChild(
+        createProjectCard(
+          project,
+          ownerView
+        )
+      );
+
+    }
+  );
+
+}
+
+
+function createProjectCard(
+  project,
+  ownerView
+){
+
+  const card =
+    document.createElement(
+      "article"
+    );
+
+  card.className =
+    "project-card";
+
+  const alreadyInterested =
+    interests.some(
+      interest =>
+        interest.project_id ===
+        project.id
+    );
+
+  const isOwner =
+    currentUser &&
+    project.owner_id ===
+    currentUser.id;
+
+  const readersWanted =
+    Number(
+      project.readers_wanted ||
+      0
+    );
+
+  const interestCount =
+    Number(
+      project.interest_count ||
+      0
+    );
+
+  card.innerHTML =
+    `
+      <div class="project-top">
+
+        <div class="project-tags">
+
+          ${
+            project.genre
+              ? `
+                <span class="tag">
+                  ${escapeHtml(project.genre)}
+                </span>
+              `
+              : ""
+          }
+
+          <span class="tag">
+            ${
+              project.status === "open"
+                ? "Seeking Readers"
+                : "Closed"
+            }
+          </span>
+
+        </div>
+
+        <h3 class="project-title">
+          ${escapeHtml(project.title)}
+        </h3>
+
+        <div class="project-author">
+          by ${escapeHtml(
+            profileName(project)
+          )}
+        </div>
+
+      </div>
+
+      <div class="project-body">
+
+        <div class="project-blurb">
+          ${escapeHtml(
+            project.blurb ||
+            "No blurb provided."
+          )}
+        </div>
+
+        <div class="project-info">
+
+          <div class="info-box">
+
+            <div class="info-label">
+              Length
+            </div>
+
+            <div class="info-value">
+              ${escapeHtml(
+                formatWords(
+                  project.word_count
+                )
+              )}
+            </div>
+
+          </div>
+
+          <div class="info-box">
+
+            <div class="info-label">
+              Deadline
+            </div>
+
+            <div class="info-value">
+              ${escapeHtml(
+                formatDeadline(
+                  project.deadline
+                )
+              )}
+            </div>
+
+          </div>
+
+          <div class="info-box">
+
+            <div class="info-label">
+              Readers wanted
+            </div>
+
+            <div class="info-value">
+              ${
+                readersWanted ||
+                "Open"
+              }
+            </div>
+
+          </div>
+
+          <div class="info-box">
+
+            <div class="info-label">
+              Interested
+            </div>
+
+            <div class="info-value">
+              ${interestCount}
+            </div>
+
+          </div>
+
+        </div>
+
+        ${
+          project.feedback_wanted
+            ? `
+              <div class="feedback">
+
+                <strong>
+                  Feedback wanted
+                </strong>
+
+                <span>
+                  ${escapeHtml(
+                    project.feedback_wanted
+                  )}
+                </span>
+
+              </div>
+            `
+            : ""
+        }
+
+        ${
+          project.content_notes
+            ? `
+              <div class="feedback">
+
+                <strong>
+                  Content notes
+                </strong>
+
+                <span>
+                  ${escapeHtml(
+                    project.content_notes
+                  )}
+                </span>
+
+              </div>
+            `
+            : ""
+        }
+
+        <div class="project-actions">
+
+          ${
+            ownerView || isOwner
+              ? `
+                <button
+                  class="card-button secondary"
+                  type="button"
+                  data-manage-project="${escapeHtml(project.id)}"
+                >
+                  Manage Readers
+                </button>
+
+                <button
+                  class="card-button secondary"
+                  type="button"
+                  data-toggle-project="${escapeHtml(project.id)}"
+                >
+                  ${
+                    project.status === "open"
+                      ? "Close Project"
+                      : "Reopen"
+                  }
+                </button>
+              `
+              : project.status !== "open"
+                ? `
+                  <button
+                    class="card-button secondary"
+                    type="button"
+                    disabled
+                  >
+                    Closed
+                  </button>
+                `
+                : alreadyInterested
+                  ? `
+                    <button
+                      class="card-button secondary"
+                      type="button"
+                      disabled
+                    >
+                      Interest Sent
+                    </button>
+                  `
+                  : `
+                    <button
+                      class="card-button primary"
+                      type="button"
+                      data-interest="${escapeHtml(project.id)}"
+                    >
+                      I'm Interested
+                    </button>
+                  `
+          }
+
+        </div>
+
+      </div>
+    `;
+
+  card
+    .querySelectorAll(
+      "[data-interest]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            openInterestModal(
+              project
+            )
+        );
+
+      }
+    );
+
+  card
+    .querySelectorAll(
+      "[data-toggle-project]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            toggleProjectStatus(
+              project
+            )
+        );
+
+      }
+    );
+
+  card
+    .querySelectorAll(
+      "[data-manage-project]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            manageReaders(
+              project
+            )
+        );
+
+      }
+    );
+
+  return card;
+
+}
+
+
+function requireLogin(){
+
+  if(currentUser){
+    return true;
+  }
+
+  window.location.href =
+    "auth.html#login";
+
+  return false;
+
+}
+
+
+function openProjectModal(){
+
+  if(!requireLogin()){
+    return;
+  }
+
+  $("projectForm").reset();
+  $("readersWanted").value = "3";
+
+  $("projectModal")
+    .classList
+    .add("show");
+
+}
+
+
+function closeProjectModal(){
+
+  $("projectModal")
+    .classList
+    .remove("show");
+
+}
+
+
+function openInterestModal(project){
+
+  if(!requireLogin()){
+    return;
+  }
+
+  if(
+    project.owner_id ===
+    currentUser.id
+  ){
+
+    showToast(
+      "That's your project. You don't need to volunteer for your own manuscript."
+    );
+
+    return;
+
+  }
+
+  $("interestProjectId").value =
+    project.id;
+
+  $("interestTitle").textContent =
+    `Read ${project.title}`;
+
+  $("interestMessage").value =
+    "";
+
+  $("interestModal")
+    .classList
+    .add("show");
+
+}
+
+
+function closeInterestModal(){
+
+  $("interestModal")
+    .classList
+    .remove("show");
+
+}
+
+
+$("projectForm")
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+      if(!requireLogin()){
+        return;
+      }
+
+      const payload = {
+
+        owner_id:
+          currentUser.id,
+
+        title:
+          $("projectTitle")
+            .value
+            .trim(),
+
+        genre:
+          $("projectGenre")
+            .value
+            .trim(),
+
+        word_count:
+          Number(
+            $("projectWordCount")
+              .value ||
+            0
+          ) || null,
+
+        deadline:
+          $("projectDeadline")
+            .value ||
+          null,
+
+        readers_wanted:
+          Number(
+            $("readersWanted")
+              .value ||
+            3
+          ),
+
+        blurb:
+          $("projectBlurb")
+            .value
+            .trim(),
+
+        feedback_wanted:
+          $("feedbackWanted")
+            .value
+            .trim() ||
+          null,
+
+        content_notes:
+          $("contentNotes")
+            .value
+            .trim() ||
+          null,
+
+        status:"open"
+
+      };
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from("beta_projects")
+          .insert(payload);
+
+      if(error){
+
+        console.error(error);
+
+        showToast(
+          "DogEar couldn't list the project.",
+          "error"
+        );
+
+        return;
+
+      }
+
+      closeProjectModal();
+
+      showToast(
+        "Your beta-reading project is live."
+      );
+
+      await loadProjects();
+
+    }
+  );
+
+
+$("interestForm")
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+      if(!requireLogin()){
+        return;
+      }
+
+      const projectId =
+        $("interestProjectId")
+          .value;
+
+      const message =
+        $("interestMessage")
+          .value
+          .trim();
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from("beta_interests")
+          .insert({
+
+            project_id:
+              projectId,
+
+            reader_id:
+              currentUser.id,
+
+            message,
+
+            status:"pending"
+
+          });
+
+      if(error){
+
+        if(
+          String(
+            error.message ||
+            ""
+          )
+            .toLowerCase()
+            .includes("duplicate")
+        ){
+
+          showToast(
+            "You've already expressed interest in this project."
+          );
+
+        }
+        else{
+
+          console.error(error);
+
+          showToast(
+            "DogEar couldn't send your interest.",
+            "error"
+          );
+
+        }
+
+        return;
+
+      }
+
+      closeInterestModal();
+
+      showToast(
+        "Interest sent to the writer."
+      );
+
+      await loadMyInterests();
+
+      renderProjects();
+
+    }
+  );
+
+
+async function toggleProjectStatus(project){
+
+  if(
+    !currentUser ||
+    project.owner_id !==
+      currentUser.id
+  ){
+    return;
+  }
+
+  const nextStatus =
+    project.status === "open"
+      ? "closed"
+      : "open";
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("beta_projects")
+      .update({
+        status:nextStatus
+      })
+      .eq(
+        "id",
+        project.id
+      )
+      .eq(
+        "owner_id",
+        currentUser.id
+      );
+
+  if(error){
+
+    console.error(error);
+
+    showToast(
+      "DogEar couldn't update the project.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  showToast(
+    nextStatus === "open"
+      ? "Project reopened."
+      : "Project closed."
+  );
+
+  await loadProjects();
+
+}
+
+
+/*
+  The reader-management page is intentionally its own destination.
+  This keeps this page focused on discovery/listing while establishing
+  the navigation architecture for the writer's acceptance workflow.
+*/
+function manageReaders(project){
+
+  window.location.href =
+    "beta-project.html?id=" +
+    encodeURIComponent(
+      project.id
+    );
+
+}
+
+
+$("listProjectButton")
+  .addEventListener(
+    "click",
+    openProjectModal
+  );
+
+$("closeProjectModal")
+  .addEventListener(
+    "click",
+    closeProjectModal
+  );
+
+$("cancelProjectButton")
+  .addEventListener(
+    "click",
+    closeProjectModal
+  );
+
+$("closeInterestModal")
+  .addEventListener(
+    "click",
+    closeInterestModal
+  );
+
+$("cancelInterestButton")
+  .addEventListener(
+    "click",
+    closeInterestModal
+  );
+
+$("searchInput")
+  .addEventListener(
+    "input",
+    renderProjects
+  );
+
+$("genreFilter")
+  .addEventListener(
+    "change",
+    renderProjects
+  );
+
+$("statusFilter")
+  .addEventListener(
+    "change",
+    renderProjects
+  );
+
+
+$("projectModal")
+  .addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target ===
+        $("projectModal")
+      ){
+        closeProjectModal();
+      }
+
+    }
+  );
+
+
+$("interestModal")
+  .addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target ===
+        $("interestModal")
+      ){
+        closeInterestModal();
+      }
+
+    }
+  );
+
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key === "Escape"
+    ){
+
+      closeProjectModal();
+      closeInterestModal();
+
+    }
+
+  }
+);
+
+
+async function initialize(){
+
+  try{
+
+    await loadSession();
+
+    await loadMyInterests();
+
+    await loadProjects();
+
+  }
+  catch(error){
+
+    console.error(
+      "Beta reading initialization:",
+      error
+    );
+
+    showToast(
+      "DogEar couldn't finish loading beta reading.",
+      "error"
+    );
+
+  }
+
+}
+
+
+initialize();
+
+</script>
+
+</body>
+</html>
