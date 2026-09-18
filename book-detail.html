@@ -898,63 +898,35 @@ h1{
     Arial,
     sans-serif;
   letter-spacing:.12em;
-  text-transform:uppercase;
+    text-transform:uppercase;
 }
 
-.error-page{
-  min-height:55vh;
-  display:grid;
-  place-items:center;
-  text-align:center;
-}
-
-.error-page h1{
-  font-size:44px;
-}
-
-.error-page p{
-  color:var(--muted);
-  font:
-    13px/1.7
-    Arial,
-    sans-serif;
-}
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-.mobile-nav{
+.loading.hidden{
   display:none;
 }
 
-@media(max-width:850px){
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
 
-  .nav{
-    display:none;
-  }
+@media(max-width:900px){
 
   .hero{
     grid-template-columns:
-      180px
+      190px
       minmax(0,1fr);
-    gap:24px;
   }
 
   .grid{
     grid-template-columns:1fr;
   }
 
-  .rating-summary{
-    grid-template-columns:1fr;
-  }
-
 }
 
-@media(max-width:620px){
+@media(max-width:680px){
 
-  .topbar{
-    min-height:64px;
+  .nav{
+    display:none;
   }
 
   .hero{
@@ -967,66 +939,23 @@ h1{
         220px,
         70vw
       );
-    margin:auto;
   }
 
-  h1{
-    font-size:44px;
+  .rating-summary{
+    grid-template-columns:1fr;
   }
 
   .detail-grid{
     grid-template-columns:1fr;
-    gap:5px;
+    gap:4px;
   }
 
   .detail-value{
-    margin-bottom:8px;
-  }
-
-  .page{
-    padding-bottom:120px;
-  }
-
-  .mobile-nav{
-    position:fixed;
-    left:12px;
-    right:12px;
-    bottom:12px;
-    z-index:50;
-    height:64px;
-    display:grid;
-    grid-template-columns:
-      repeat(4,1fr);
-    border:
-      1px solid var(--line);
-    border-radius:18px;
-    background:
-      rgba(9,11,10,.95);
-    backdrop-filter:
-      blur(14px);
-  }
-
-  .mobile-nav a{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:4px;
-    color:var(--muted);
-    text-decoration:none;
-    font:
-      9px
-      Arial,
-      sans-serif;
-    text-transform:uppercase;
-  }
-
-  .mobile-nav a span:first-child{
-    color:var(--gold2);
-    font-size:17px;
+    margin-bottom:10px;
   }
 
 }
+
 </style>
 </head>
 
@@ -1036,29 +965,28 @@ h1{
   class="loading"
   id="loading"
 >
-  Opening the book...
+  Loading book...
 </div>
 
 <header class="topbar">
 
   <a
     class="brand"
-    href="dashboard.html"
+    href="index.html"
   >
-
     <span class="brand-mark"></span>
-
     DogEar
-
   </a>
 
   <nav class="nav">
-
     <a href="dashboard.html">
-      Home
+      Dashboard
     </a>
 
-    <a href="discover.html">
+    <a
+      href="discover.html"
+      class="active"
+    >
       Discover
     </a>
 
@@ -1066,50 +994,40 @@ h1{
       Clubs
     </a>
 
-    <a
-      class="active"
-      href="marketplace.html"
-    >
-      Books
+    <a href="marketplace.html">
+      Marketplace
     </a>
-
   </nav>
 
   <a
     class="avatar"
-    id="navAvatar"
+    id="profileAvatar"
     href="profile.html"
+    aria-label="Profile"
   >
-    ?
+    D
   </a>
 
 </header>
 
-<main
-  class="page"
-  id="page"
->
+<main class="page">
 
   <a
     class="back"
-    id="backLink"
-    href="marketplace.html"
+    href="javascript:history.back()"
   >
-    ← Back to Books
+    ← Back
   </a>
 
   <!-- =====================================================
-       BOOK HERO
+       HERO
        ===================================================== -->
 
-  <section
-    class="hero"
-    id="bookHero"
-  >
+  <section class="hero">
 
     <div
       class="cover"
-      id="cover"
+      id="bookCover"
     >
       No cover
     </div>
@@ -1120,35 +1038,40 @@ h1{
         class="eyebrow"
         id="bookEyebrow"
       >
-        DogEar Book
+        Book
       </div>
 
-      <h1 id="title">
+      <h1 id="bookTitle">
         Loading...
       </h1>
 
       <div
         class="author"
-        id="author"
-      ></div>
+        id="bookAuthor"
+      >
+        —
+      </div>
 
       <div
         class="edition"
-        id="edition"
+        id="editionPills"
       ></div>
 
-      <div class="hero-rating">
+      <div
+        class="hero-rating"
+        id="heroRating"
+      >
 
         <span
           class="hero-rating-stars"
-          id="heroStars"
+          id="heroRatingStars"
         >
           ☆☆☆☆☆
         </span>
 
         <span
           class="hero-rating-number"
-          id="heroRating"
+          id="heroRatingNumber"
         >
           —
         </span>
@@ -1164,52 +1087,53 @@ h1{
 
       <div
         class="description"
-        id="description"
-      ></div>
+        id="bookDescription"
+      >
+        Loading book details...
+      </div>
 
       <div class="actions">
 
+        <button
+          class="btn secondary"
+          id="saveBookBtn"
+          type="button"
+        >
+          Save Book
+        </button>
+
         <a
-          class="btn primary"
-          id="purchaseHero"
+          class="btn secondary"
+          id="googleBooksBtn"
           href="#"
           target="_blank"
-          rel="noopener sponsored"
+          rel="noopener noreferrer"
           hidden
         >
-          Buy on Bookshop.org
-        </a>
-
-        <a
-          class="btn secondary"
-          href="#ratings"
-        >
-          Rate this book
-        </a>
-
-        <a
-          class="btn secondary"
-          href="clubs.html"
-        >
-          Find a book club
+          Google Books
         </a>
 
       </div>
+
+      <div
+        class="message"
+        id="heroMessage"
+      ></div>
 
     </div>
 
   </section>
 
   <!-- =====================================================
-       MAIN LAYOUT
+       CONTENT GRID
        ===================================================== -->
 
-  <div class="grid">
+  <section class="grid">
 
     <div class="stack">
 
       <!-- =================================================
-           EDITION DETAILS
+           RATINGS / REVIEWS
            ================================================= -->
 
       <section class="card">
@@ -1217,143 +1141,11 @@ h1{
         <div class="card-head">
 
           <h2>
-            About this edition
+            Reader Ratings
           </h2>
 
           <p>
-            Publication and edition information
-            stored in DogEar.
-          </p>
-
-        </div>
-
-        <div class="card-body">
-
-          <div class="detail-grid">
-
-            <div class="detail-label">
-              Title
-            </div>
-
-            <div
-              class="detail-value"
-              id="detailTitle"
-            >
-              —
-            </div>
-
-            <div class="detail-label">
-              Author
-            </div>
-
-            <div
-              class="detail-value"
-              id="detailAuthor"
-            >
-              —
-            </div>
-
-            <div class="detail-label">
-              Publisher
-            </div>
-
-            <div
-              class="detail-value"
-              id="detailPublisher"
-            >
-              —
-            </div>
-
-            <div class="detail-label">
-              Published
-            </div>
-
-            <div
-              class="detail-value"
-              id="detailPublished"
-            >
-              —
-            </div>
-
-            <div class="detail-label">
-              Pages
-            </div>
-
-            <div
-              class="detail-value"
-              id="detailPages"
-            >
-              —
-            </div>
-
-            <div class="detail-label">
-              Format
-            </div>
-
-            <div
-              class="detail-value"
-              id="detailFormat"
-            >
-              —
-            </div>
-
-            <div class="detail-label">
-              ISBN-13
-            </div>
-
-            <div
-              class="detail-value"
-              id="detailIsbn13"
-            >
-              —
-            </div>
-
-            <div class="detail-label">
-              ISBN-10
-            </div>
-
-            <div
-              class="detail-value"
-              id="detailIsbn10"
-            >
-              —
-            </div>
-
-            <div class="detail-label">
-              Categories
-            </div>
-
-            <div
-              class="detail-value"
-              id="detailCategories"
-            >
-              —
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      <!-- =================================================
-           RATINGS
-           ================================================= -->
-
-      <section
-        class="card"
-        id="ratings"
-      >
-
-        <div class="card-head">
-
-          <h2>
-            Reader ratings
-          </h2>
-
-          <p id="ratingSubtitle">
-            See what DogEar readers think,
-            or add your own rating.
+            Ratings and reviews from the DogEar community.
           </p>
 
         </div>
@@ -1373,7 +1165,7 @@ h1{
 
               <div
                 class="rating-big-stars"
-                id="averageStars"
+                id="averageRatingStars"
               >
                 ☆☆☆☆☆
               </div>
@@ -1387,111 +1179,74 @@ h1{
 
             </div>
 
-            <div class="rating-breakdown">
+            <div
+              class="rating-breakdown"
+              id="ratingBreakdown"
+            >
 
               <div class="rating-row">
-
-                <span>
-                  5 star
-                </span>
-
+                <span>5 ★</span>
                 <div class="rating-bar">
-
                   <div
                     class="rating-bar-fill"
-                    id="bar5"
+                    id="ratingBar5"
                   ></div>
-
                 </div>
-
-                <span id="count5">
+                <span id="ratingCount5">
                   0
                 </span>
-
               </div>
 
               <div class="rating-row">
-
-                <span>
-                  4 star
-                </span>
-
+                <span>4 ★</span>
                 <div class="rating-bar">
-
                   <div
                     class="rating-bar-fill"
-                    id="bar4"
+                    id="ratingBar4"
                   ></div>
-
                 </div>
-
-                <span id="count4">
+                <span id="ratingCount4">
                   0
                 </span>
-
               </div>
 
               <div class="rating-row">
-
-                <span>
-                  3 star
-                </span>
-
+                <span>3 ★</span>
                 <div class="rating-bar">
-
                   <div
                     class="rating-bar-fill"
-                    id="bar3"
+                    id="ratingBar3"
                   ></div>
-
                 </div>
-
-                <span id="count3">
+                <span id="ratingCount3">
                   0
                 </span>
-
               </div>
 
               <div class="rating-row">
-
-                <span>
-                  2 star
-                </span>
-
+                <span>2 ★</span>
                 <div class="rating-bar">
-
                   <div
                     class="rating-bar-fill"
-                    id="bar2"
+                    id="ratingBar2"
                   ></div>
-
                 </div>
-
-                <span id="count2">
+                <span id="ratingCount2">
                   0
                 </span>
-
               </div>
 
               <div class="rating-row">
-
-                <span>
-                  1 star
-                </span>
-
+                <span>1 ★</span>
                 <div class="rating-bar">
-
                   <div
                     class="rating-bar-fill"
-                    id="bar1"
+                    id="ratingBar1"
                   ></div>
-
                 </div>
-
-                <span id="count1">
+                <span id="ratingCount1">
                   0
                 </span>
-
               </div>
 
             </div>
@@ -1499,7 +1254,7 @@ h1{
           </div>
 
           <!-- =============================================
-               YOUR REVIEW
+               REVIEW EDITOR
                ============================================= -->
 
           <div
@@ -1508,12 +1263,14 @@ h1{
           >
 
             <div class="review-editor-title">
-              Your rating &amp; review
+              Your Review
             </div>
 
-            <div class="review-editor-copy">
-              A star rating is required.
-              A written review is optional.
+            <div
+              class="review-editor-copy"
+              id="reviewEditorCopy"
+            >
+              Rate this book and optionally leave a review.
             </div>
 
             <div
@@ -1571,32 +1328,30 @@ h1{
 
             <div
               class="review-rating-label"
-              id="ratingLabel"
-            >
-              Choose 1–5 stars
-            </div>
+              id="reviewRatingLabel"
+            ></div>
 
             <textarea
               class="review-textarea"
               id="reviewText"
-              maxlength="10000"
-              placeholder="What did you think? Written review optional."
+              maxlength="4000"
+              placeholder="What did you think of this book?"
             ></textarea>
 
             <div class="review-editor-footer">
 
               <span
                 class="review-character-count"
-                id="characterCount"
+                id="reviewCharacterCount"
               >
-                0 / 10,000
+                0 / 4000
               </span>
 
               <div class="review-editor-actions">
 
                 <button
                   class="btn danger-btn"
-                  id="deleteReview"
+                  id="deleteReviewBtn"
                   type="button"
                   hidden
                 >
@@ -1605,10 +1360,10 @@ h1{
 
                 <button
                   class="btn primary"
-                  id="saveReview"
+                  id="saveReviewBtn"
                   type="button"
                 >
-                  Save rating
+                  Save Review
                 </button>
 
               </div>
@@ -1622,36 +1377,30 @@ h1{
 
           </div>
 
-        </div>
-
-      </section>
-
-      <!-- =================================================
-           COMMUNITY REVIEWS
-           ================================================= -->
-
-      <section class="card">
-
-        <div class="card-head">
-
-          <h2>
-            Community reviews
-          </h2>
-
-          <p id="communitySubtitle">
-            Reviews from DogEar readers.
-          </p>
-
-        </div>
-
-        <div class="card-body">
+          <!-- =============================================
+               COMMUNITY REVIEWS
+               ============================================= -->
 
           <div
-            class="review-list"
-            id="reviewList"
+            class="review-editor"
+            style="margin-top:28px;"
           >
 
-            <div class="empty">
+            <div class="review-editor-title">
+              Community Reviews
+            </div>
+
+            <div
+              class="review-list"
+              id="reviewList"
+              style="margin-top:18px;"
+            ></div>
+
+            <div
+              class="empty"
+              id="reviewEmpty"
+              hidden
+            >
               No written reviews yet.
             </div>
 
@@ -1664,7 +1413,7 @@ h1{
     </div>
 
     <!-- ===================================================
-         RIGHT COLUMN
+         SIDEBAR
          =================================================== -->
 
     <aside class="stack">
@@ -1678,12 +1427,11 @@ h1{
         <div class="card-head">
 
           <h2>
-            Get the book
+            Get the Book
           </h2>
 
           <p>
-            Support DogEar when an eligible
-            Bookshop.org link is available.
+            Support independent bookstores through Bookshop.org.
           </p>
 
         </div>
@@ -1692,49 +1440,27 @@ h1{
 
           <div class="purchase-card">
 
-            <h3 id="sellerName">
-              DogEar Book
+            <h3>
+              Bookshop.org
             </h3>
 
-            <p id="purchaseText">
-              Checking marketplace availability...
+            <p>
+              Find this title from independent booksellers.
             </p>
 
             <a
               class="btn primary"
-              id="purchaseLink"
+              id="bookshopBtn"
               href="#"
               target="_blank"
               rel="noopener sponsored"
-              hidden
             >
-              Buy on Bookshop.org
+              Shop This Book
             </a>
 
-            <a
-              class="btn secondary"
-              id="bookshopSearchFallback"
-              href="#"
-              target="_blank"
-              rel="noopener sponsored"
-              hidden
-            >
-              Search Bookshop.org
-            </a>
-
-            <div
-              class="message"
-              id="noPurchase"
-            ></div>
-
-            <div
-              class="disclosure"
-              id="affiliateDisclosure"
-              hidden
-            >
-              DogEar may earn a commission from
-              qualifying purchases made through
-              this Bookshop.org affiliate link.
+            <div class="disclosure">
+              DogEar may earn an affiliate commission from
+              qualifying Bookshop.org purchases.
             </div>
 
           </div>
@@ -1744,7 +1470,7 @@ h1{
       </section>
 
       <!-- =================================================
-           INTERNAL BOOK INFO
+           DETAILS
            ================================================= -->
 
       <section class="card">
@@ -1752,55 +1478,88 @@ h1{
         <div class="card-head">
 
           <h2>
-            Book details
+            Book Details
           </h2>
-
-          <p>
-            Quick edition information.
-          </p>
 
         </div>
 
         <div class="card-body">
 
-          <div
-            class="detail-grid"
-            style="
-              grid-template-columns:
-              95px
-              minmax(0,1fr);
-            "
-          >
+          <div class="detail-grid">
 
             <div class="detail-label">
-              DogEar ID
+              Publisher
             </div>
 
             <div
               class="detail-value"
-              id="detailId"
+              id="detailPublisher"
             >
               —
             </div>
 
             <div class="detail-label">
-              Google ID
+              Published
             </div>
 
             <div
               class="detail-value"
-              id="detailGoogleId"
+              id="detailPublished"
             >
               —
             </div>
 
             <div class="detail-label">
-              Added
+              Pages
             </div>
 
             <div
               class="detail-value"
-              id="detailAdded"
+              id="detailPages"
+            >
+              —
+            </div>
+
+            <div class="detail-label">
+              ISBN-13
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailIsbn13"
+            >
+              —
+            </div>
+
+            <div class="detail-label">
+              ISBN-10
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailIsbn10"
+            >
+              —
+            </div>
+
+            <div class="detail-label">
+              Categories
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailCategories"
+            >
+              —
+            </div>
+
+            <div class="detail-label">
+              Language
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailLanguage"
             >
               —
             </div>
@@ -1813,70 +1572,14 @@ h1{
 
     </aside>
 
-  </div>
+  </section>
 
 </main>
-
-<!-- =======================================================
-     MOBILE NAVIGATION
-     ======================================================= -->
-
-<nav class="mobile-nav">
-
-  <a href="dashboard.html">
-
-    <span>
-      ⌂
-    </span>
-
-    <span>
-      Home
-    </span>
-
-  </a>
-
-  <a href="discover.html">
-
-    <span>
-      ⌕
-    </span>
-
-    <span>
-      Discover
-    </span>
-
-  </a>
-
-  <a href="clubs.html">
-
-    <span>
-      ♧
-    </span>
-
-    <span>
-      Clubs
-    </span>
-
-  </a>
-
-  <a href="marketplace.html">
-
-    <span>
-      ▤
-    </span>
-
-    <span>
-      Books
-    </span>
-
-  </a>
-
-</nav>
 
 <script>
 
 /* =========================================================
-   DOGEAR CONFIG
+   CONFIGURATION
    ========================================================= */
 
 const SUPABASE_URL =
@@ -1894,26 +1597,21 @@ const supabaseClient =
     SUPABASE_PUBLISHABLE_KEY
   );
 
-const $ =
-  id =>
-    document.getElementById(
-      id
-    );
+/* =========================================================
+   STATE
+   ========================================================= */
 
 const params =
   new URLSearchParams(
     window.location.search
   );
 
-const bookId =
-  params.get(
-    "id"
-  );
+const requestedBookId =
+  params.get("id");
 
-const returnUrl =
-  params.get(
-    "return"
-  );
+const requestedGoogleId =
+  params.get("google_id") ||
+  params.get("googleId");
 
 let currentUser =
   null;
@@ -1921,24 +1619,57 @@ let currentUser =
 let currentProfile =
   null;
 
-let book =
+let currentBook =
   null;
 
-let ratingSummary =
+let currentBookId =
   null;
 
-let reviews =
-  [];
-
-let myReview =
-  null;
-
-let selectedRating =
+let currentRating =
   0;
+
+let hoveredRating =
+  0;
+
+let currentUserReview =
+  null;
+
+let communityReviews =
+  [];
 
 /* =========================================================
    HELPERS
    ========================================================= */
+
+const $ =
+  id =>
+    document.getElementById(id);
+
+function setMessage(
+  elementId,
+  message = "",
+  type = ""
+){
+
+  const element =
+    $(elementId);
+
+  if(!element){
+    return;
+  }
+
+  element.textContent =
+    message;
+
+  element.className =
+    "message" +
+    (
+      type
+        ? ` ${type}`
+        : ""
+    );
+
+}
 
 function escapeHtml(
   value
@@ -1970,53 +1701,30 @@ function escapeHtml(
 
 }
 
-function cleanText(
+function initials(
   value
 ){
 
-  return String(
-    value ?? ""
-  )
-    .replace(
-      /<[^>]*>/g,
-      ""
+  const words =
+    String(
+      value || "DogEar"
     )
-    .trim();
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
 
-}
-
-function arrayText(
-  value
-){
-
-  if(
-    Array.isArray(
-      value
-    )
-  ){
-
-    return value
-      .filter(
-        Boolean
-      )
-      .join(
-        ", "
-      );
-
+  if(!words.length){
+    return "D";
   }
 
-  if(
-    value === null ||
-    value === undefined
-  ){
-
-    return "";
-
-  }
-
-  return String(
-    value
-  );
+  return words
+    .slice(0,2)
+    .map(
+      word =>
+        word.charAt(0)
+    )
+    .join("")
+    .toUpperCase();
 
 }
 
@@ -2024,418 +1732,263 @@ function formatDate(
   value
 ){
 
-  if(
-    !value
-  ){
-
+  if(!value){
     return "—";
-
   }
 
   const date =
-    new Date(
-      value
-    );
+    new Date(value);
 
   if(
     Number.isNaN(
       date.getTime()
     )
   ){
+    return String(value);
+  }
 
-    return String(
-      value
-    );
+  return new Intl
+    .DateTimeFormat(
+      "en-US",
+      {
+        month:"short",
+        day:"numeric",
+        year:"numeric"
+      }
+    )
+    .format(date);
+
+}
+
+function normalizeAuthors(
+  value
+){
+
+  if(
+    Array.isArray(value)
+  ){
+
+    return value
+      .filter(Boolean)
+      .map(String);
 
   }
 
-  return date
-    .toLocaleDateString(
-      undefined,
-      {
-        year:
-          "numeric",
+  if(
+    typeof value === "string" &&
+    value.trim()
+  ){
 
-        month:
-          "long",
+    try{
 
-        day:
-          "numeric"
+      const parsed =
+        JSON.parse(value);
+
+      if(
+        Array.isArray(parsed)
+      ){
+
+        return parsed
+          .filter(Boolean)
+          .map(String);
+
       }
+
+    }
+    catch(error){
+      /* normal string */
+    }
+
+    return value
+      .split(",")
+      .map(
+        item =>
+          item.trim()
+      )
+      .filter(Boolean);
+
+  }
+
+  return [];
+
+}
+
+function normalizeCategories(
+  value
+){
+
+  if(
+    Array.isArray(value)
+  ){
+
+    return value
+      .filter(Boolean)
+      .map(String);
+
+  }
+
+  if(
+    typeof value === "string" &&
+    value.trim()
+  ){
+
+    try{
+
+      const parsed =
+        JSON.parse(value);
+
+      if(
+        Array.isArray(parsed)
+      ){
+
+        return parsed
+          .filter(Boolean)
+          .map(String);
+
+      }
+
+    }
+    catch(error){
+      /* normal string */
+    }
+
+    return value
+      .split(",")
+      .map(
+        item =>
+          item.trim()
+      )
+      .filter(Boolean);
+
+  }
+
+  return [];
+
+}
+  function normalizeIdentifiers(
+  value
+){
+
+  if(
+    Array.isArray(value)
+  ){
+    return value;
+  }
+
+  if(
+    typeof value === "string" &&
+    value.trim()
+  ){
+
+    try{
+
+      const parsed =
+        JSON.parse(value);
+
+      if(
+        Array.isArray(parsed)
+      ){
+        return parsed;
+      }
+
+    }
+    catch(error){
+      return [];
+    }
+
+  }
+
+  return [];
+
+}
+
+function findIdentifier(
+  identifiers,
+  type
+){
+
+  const normalized =
+    normalizeIdentifiers(
+      identifiers
     );
+
+  const match =
+    normalized.find(
+      item =>
+        String(
+          item?.type || ""
+        ).toUpperCase() ===
+        type.toUpperCase()
+    );
+
+  return (
+    match?.identifier ||
+    ""
+  );
 
 }
 
 function starString(
-  value
+  rating
 ){
 
-  const rating =
-    Math.max(
-      0,
-      Math.min(
-        5,
-        Math.round(
-          Number(
-            value
-          ) ||
-          0
-        )
-      )
+  const rounded =
+    Math.round(
+      Number(rating) || 0
     );
 
   return (
     "★".repeat(
-      rating
+      Math.max(
+        0,
+        Math.min(
+          5,
+          rounded
+        )
+      )
     ) +
     "☆".repeat(
-      5 -
-      rating
+      Math.max(
+        0,
+        5 - rounded
+      )
     )
   );
 
 }
 
-function initials(
-  name
-){
-
-  const parts =
-    String(
-      name ||
-      "?"
-    )
-      .trim()
-      .split(
-        /\s+/
-      )
-      .filter(
-        Boolean
-      );
-
-  if(
-    !parts.length
-  ){
-
-    return "?";
-
-  }
-
-  return parts
-    .slice(
-      0,
-      2
-    )
-    .map(
-      part =>
-        part[0]
-    )
-    .join(
-      ""
-    )
-    .toUpperCase();
-
-}
-
-function normalizeIsbn(
-  value
-){
-
-  return String(
-    value ||
-    ""
-  )
-    .replace(
-      /[^0-9Xx]/g,
-      ""
-    )
-    .toUpperCase();
-
-}
-
-function validIsbn13(
-  value
+function bookshopSearchUrl(
+  book
 ){
 
   const isbn =
-    normalizeIsbn(
-      value
-    );
-
-  if(
-    !/^\d{13}$/.test(
-      isbn
-    )
-  ){
-
-    return false;
-
-  }
-
-  const sum =
-    isbn
-      .split(
-        ""
-      )
-      .map(
-        Number
-      )
-      .reduce(
-        (
-          total,
-          digit,
-          index
-        ) =>
-          total +
-          digit *
-          (
-            index % 2 === 0
-              ? 1
-              : 3
-          ),
-        0
-      );
-
-  return (
-    sum % 10 === 0
-  );
-
-}
-
-function validIsbn10(
-  value
-){
-
-  const isbn =
-    normalizeIsbn(
-      value
-    );
-
-  if(
-    !/^\d{9}[\dX]$/.test(
-      isbn
-    )
-  ){
-
-    return false;
-
-  }
-
-  let sum =
-    0;
-
-  for(
-    let i = 0;
-    i < 10;
-    i++
-  ){
-
-    const digit =
-      isbn[i] === "X"
-        ? 10
-        : Number(
-            isbn[i]
-          );
-
-    sum +=
-      digit *
-      (
-        10 -
-        i
-      );
-
-  }
-
-  return (
-    sum % 11 === 0
-  );
-
-}
-
-function isbn10To13(
-  value
-){
-
-  const isbn10 =
-    normalizeIsbn(
-      value
-    );
-
-  if(
-    !validIsbn10(
-      isbn10
-    )
-  ){
-
-    return null;
-
-  }
-
-  const base =
-    "978" +
-    isbn10.slice(
-      0,
-      9
-    );
-
-  let sum =
-    0;
-
-  for(
-    let i = 0;
-    i < 12;
-    i++
-  ){
-
-    sum +=
-      Number(
-        base[i]
-      ) *
-      (
-        i % 2 === 0
-          ? 1
-          : 3
-      );
-
-  }
-
-  const check =
-    (
-      10 -
-      (
-        sum %
-        10
-      )
-    ) %
-    10;
-
-  return (
-    base +
-    check
-  );
-
-}
-
-function bestIsbn13(){
-
-  const direct =
-    normalizeIsbn(
-      book?.isbn_13
-    );
-
-  if(
-    validIsbn13(
-      direct
-    )
-  ){
-
-    return direct;
-
-  }
-
-  const isbn10 =
-    normalizeIsbn(
-      book?.isbn_10
-    );
-
-  if(
-    validIsbn10(
-      isbn10
-    )
-  ){
-
-    return isbn10To13(
-      isbn10
-    );
-
-  }
-
-  return null;
-
-}
-
-function bookshopAffiliateUrl(){
-
-  const isbn =
-    bestIsbn13();
-
-  if(
-    !isbn
-  ){
-
-    return null;
-
-  }
-
-  return (
-    "https://bookshop.org/a/" +
-    BOOKSHOP_AFFILIATE_ID +
-    "/" +
-    isbn
-  );
-
-}
-
-function bookshopSearchUrl(){
-
-  const query =
-    [
-      book?.title,
-      arrayText(
-        book?.authors
-      )
-    ]
-      .filter(
-        Boolean
-      )
-      .join(
-        " "
-      );
-
-  return (
-    "https://bookshop.org/search?keywords=" +
-    encodeURIComponent(
-      query
-    )
-  );
-
-}
-
-function setMessage(
-  id,
-  text,
-  type = ""
-){
-
-  const element =
-    $(
-      id
-    );
-
-  if(
-    !element
-  ){
-
-    return;
-
-  }
-
-  element.textContent =
-    text ||
+    book?.isbn13 ||
+    book?.isbn10 ||
     "";
 
-  element.className =
-    "message" +
-    (
-      type
-        ? " " + type
-        : ""
-    );
+  const query =
+    isbn ||
+    [
+      book?.title,
+      book?.authors?.[0]
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+  return (
+    "https://bookshop.org/search" +
+    "?keywords=" +
+    encodeURIComponent(query) +
+    "&a=" +
+    encodeURIComponent(
+      BOOKSHOP_AFFILIATE_ID
+    )
+  );
 
 }
 
 /* =========================================================
-   AUTH
+   SESSION
    ========================================================= */
 
 async function loadSession(){
@@ -2448,12 +2001,8 @@ async function loadSession(){
       .auth
       .getSession();
 
-  if(
-    error
-  ){
-
+  if(error){
     throw error;
-
   }
 
   currentUser =
@@ -2461,39 +2010,26 @@ async function loadSession(){
     null;
 
   if(
-    !currentUser
+    currentUser
   ){
 
-    const next =
-      encodeURIComponent(
-        window.location.pathname +
-        window.location.search
-      );
+    await loadCurrentProfile();
 
-    window.location.href =
-      "login.html?next=" +
-      next;
+  }
+  else{
 
-    return false;
+    renderLoggedOutProfile();
 
   }
 
-  return true;
-
 }
 
-/* =========================================================
-   PROFILE
-   ========================================================= */
-
-async function loadProfile(){
+async function loadCurrentProfile(){
 
   if(
     !currentUser
   ){
-
     return;
-
   }
 
   try{
@@ -2503,16 +2039,9 @@ async function loadProfile(){
       error
     } =
       await supabaseClient
-        .from(
-          "profiles"
-        )
+        .from("profiles")
         .select(
-          `
-            id,
-            display_name,
-            username,
-            avatar_url
-          `
+          "id,display_name,username,avatar_url"
         )
         .eq(
           "id",
@@ -2520,69 +2049,87 @@ async function loadProfile(){
         )
         .maybeSingle();
 
-    if(
-      error
-    ){
-
+    if(error){
       throw error;
-
     }
 
     currentProfile =
       data ||
       null;
 
-    renderNavAvatar();
-
   }
-  catch(
-    error
-  ){
+  catch(error){
 
     console.warn(
-      "Profile lookup:",
-      error.message
+      "Profile load:",
+      error
     );
 
-    renderNavAvatar();
+    currentProfile =
+      null;
 
   }
+
+  renderProfileAvatar();
 
 }
 
-function renderNavAvatar(){
+function renderLoggedOutProfile(){
 
-  const holder =
-    $(
-      "navAvatar"
-    );
+  const avatar =
+    $("profileAvatar");
 
-  const name =
-    currentProfile?.display_name ||
-    currentProfile?.username ||
-    currentUser?.email ||
-    "?";
+  avatar.textContent =
+    "↪";
+
+  avatar.href =
+    "auth.html#login";
+
+}
+
+function renderProfileAvatar(){
+
+  const avatar =
+    $("profileAvatar");
 
   if(
-    currentProfile?.avatar_url
+    !currentUser
   ){
 
-    holder.innerHTML =
-      `
-        <img
-          src="${escapeHtml(
-            currentProfile.avatar_url
-          )}"
-          alt=""
-        >
-      `;
+    renderLoggedOutProfile();
+    return;
+
+  }
+
+  const displayName =
+    currentProfile?.display_name ||
+    currentProfile?.username ||
+    currentUser.email ||
+    "DogEar";
+
+  const avatarUrl =
+    currentProfile?.avatar_url ||
+    "";
+
+  avatar.href =
+    "profile.html";
+
+  if(
+    avatarUrl
+  ){
+
+    avatar.innerHTML =
+      `<img
+        src="${escapeHtml(avatarUrl)}"
+        alt=""
+      >`;
 
   }
   else{
 
-    holder.textContent =
+    avatar.textContent =
       initials(
-        name
+        displayName
       );
 
   }
@@ -2590,65 +2137,281 @@ function renderNavAvatar(){
 }
 
 /* =========================================================
-   LOAD BOOK
+   BOOK LOOKUP
    ========================================================= */
 
 async function loadBook(){
 
   if(
-    !bookId ||
-    !/^\d+$/.test(
-      bookId
-    )
+    requestedBookId
   ){
 
-    throw new Error(
-      "This book link is missing a valid DogEar book ID."
-    );
+    const found =
+      await loadBookByDatabaseId(
+        requestedBookId
+      );
+
+    if(
+      found
+    ){
+      return;
+    }
 
   }
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from(
-        "books"
-      )
-      .select(
-        "*"
-      )
-      .eq(
-        "id",
-        Number(
-          bookId
+  if(
+    requestedGoogleId
+  ){
+
+    const found =
+      await loadBookByGoogleId(
+        requestedGoogleId
+      );
+
+    if(
+      found
+    ){
+      return;
+    }
+
+  }
+
+  throw new Error(
+    "This book could not be found."
+  );
+
+}
+
+async function loadBookByDatabaseId(
+  id
+){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("books")
+        .select("*")
+        .eq(
+          "id",
+          id
         )
-      )
-      .maybeSingle();
+        .maybeSingle();
 
-  if(
-    error
-  ){
+    if(error){
+      throw error;
+    }
 
-    throw error;
+    if(
+      !data
+    ){
+      return false;
+    }
+
+    currentBook =
+      normalizeDatabaseBook(
+        data
+      );
+
+    currentBookId =
+      data.id;
+
+    return true;
+
+  }
+  catch(error){
+
+    console.warn(
+      "Database book lookup:",
+      error
+    );
+
+    return false;
 
   }
 
-  if(
-    !data
-  ){
+}
 
-    throw new Error(
-      "DogEar could not find this book."
+async function loadBookByGoogleId(
+  googleId
+){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("books")
+        .select("*")
+        .eq(
+          "google_books_id",
+          googleId
+        )
+        .maybeSingle();
+
+    if(
+      !error &&
+      data
+    ){
+
+      currentBook =
+        normalizeDatabaseBook(
+          data
+        );
+
+      currentBookId =
+        data.id;
+
+      return true;
+
+    }
+
+  }
+  catch(error){
+
+    console.warn(
+      "Existing Google book lookup:",
+      error
     );
 
   }
 
-  book =
-    data;
+  return false;
 
-  renderBook();
+}
+
+/* =========================================================
+   NORMALIZE BOOK
+   ========================================================= */
+
+function normalizeDatabaseBook(
+  row
+){
+
+  const authors =
+    normalizeAuthors(
+      row.authors ||
+      row.author
+    );
+
+  const categories =
+    normalizeCategories(
+      row.categories
+    );
+
+  const identifiers =
+    normalizeIdentifiers(
+      row.industry_identifiers
+    );
+
+  const isbn13 =
+    row.isbn13 ||
+    row.isbn_13 ||
+    findIdentifier(
+      identifiers,
+      "ISBN_13"
+    );
+
+  const isbn10 =
+    row.isbn10 ||
+    row.isbn_10 ||
+    findIdentifier(
+      identifiers,
+      "ISBN_10"
+    );
+
+  return {
+
+    id:
+      row.id,
+
+    googleId:
+      row.google_books_id ||
+      row.google_id ||
+      "",
+
+    title:
+      row.title ||
+      "Untitled",
+
+    subtitle:
+      row.subtitle ||
+      "",
+
+    authors,
+
+    publisher:
+      row.publisher ||
+      "",
+
+    publishedDate:
+      row.published_date ||
+      row.publishedDate ||
+      "",
+
+    description:
+      row.description ||
+      "",
+
+    pageCount:
+      row.page_count ||
+      row.pageCount ||
+      null,
+
+    categories,
+
+    language:
+      row.language ||
+      "",
+
+    thumbnail:
+      row.thumbnail ||
+      row.cover_url ||
+      row.image_url ||
+      "",
+
+    smallThumbnail:
+      row.small_thumbnail ||
+      "",
+
+    isbn13,
+
+    isbn10,
+
+    infoLink:
+      row.info_link ||
+      row.infoLink ||
+      "",
+
+    previewLink:
+      row.preview_link ||
+      row.previewLink ||
+      "",
+
+    canonicalVolumeLink:
+      row.canonical_volume_link ||
+      "",
+
+    averageRating:
+      Number(
+        row.average_rating ||
+        row.averageRating ||
+        0
+      ),
+
+    ratingsCount:
+      Number(
+        row.ratings_count ||
+        row.ratingsCount ||
+        0
+      )
+
+  };
 
 }
 
@@ -2658,1347 +2421,472 @@ async function loadBook(){
 
 function renderBook(){
 
-  const title =
-    book.title ||
-    "Untitled Book";
+  if(
+    !currentBook
+  ){
+    return;
+  }
 
-  const subtitle =
-    book.subtitle ||
-    "";
-
-  const author =
-    arrayText(
-      book.authors
-    ) ||
-    book.author ||
-    "Unknown author";
-
-  const coverUrl =
-    book.cover_url ||
-    book.thumbnail_url ||
-    book.image_url ||
-    "";
+  const book =
+    currentBook;
 
   document.title =
-    title +
-    " — DogEar";
+    `${book.title} | DogEar`;
 
-  $(
-    "title"
-  ).textContent =
-    title;
+  $("bookTitle")
+    .textContent =
+      book.title;
 
-  $(
-    "author"
-  ).textContent =
-    author;
+  $("bookAuthor")
+    .textContent =
+      book.authors.length
+        ? book.authors.join(", ")
+        : "Unknown author";
 
-  $(
-    "description"
-  ).textContent =
-    cleanText(
-      book.description
-    ) ||
-    "No description is available for this edition yet.";
+  $("bookEyebrow")
+    .textContent =
+      book.categories[0] ||
+      "Book";
 
-  $(
-    "bookEyebrow"
-  ).textContent =
-    subtitle
-      ? subtitle
-      : "DogEar Book";
+  $("bookDescription")
+    .textContent =
+      book.description ||
+      "No description is currently available for this book.";
 
-  $(
-    "detailTitle"
-  ).textContent =
-    subtitle
-      ? (
-          title +
-          ": " +
-          subtitle
-        )
-      : title;
+  renderCover();
 
-  $(
-    "detailAuthor"
-  ).textContent =
-    author;
+  renderEditionPills();
 
-  $(
-    "detailPublisher"
-  ).textContent =
-    book.publisher ||
-    "—";
+  renderDetails();
 
-  $(
-    "detailPublished"
-  ).textContent =
-    book.published_date ||
-    book.publication_date ||
-    book.publish_date ||
-    "—";
+  renderExternalLinks();
 
-  $(
-    "detailPages"
-  ).textContent =
-    book.page_count ||
-    book.pages ||
-    "—";
+  renderBookshopLink();
 
-  $(
-    "detailFormat"
-  ).textContent =
-    book.format ||
-    book.binding ||
-    "—";
+}
 
-  $(
-    "detailIsbn13"
-  ).textContent =
-    book.isbn_13 ||
-    "—";
+function renderCover(){
 
-  $(
-    "detailIsbn10"
-  ).textContent =
-    book.isbn_10 ||
-    "—";
+  const holder =
+    $("bookCover");
 
-  $(
-    "detailCategories"
-  ).textContent =
-    arrayText(
-      book.categories
-    ) ||
-    "—";
+  const coverUrl =
+    currentBook?.thumbnail ||
+    currentBook?.smallThumbnail ||
+    "";
 
-  $(
-    "detailId"
-  ).textContent =
-    book.id ??
-    "—";
-
-  $(
-    "detailGoogleId"
-  ).textContent =
-    book.google_books_id ||
-    "—";
-
-  $(
-    "detailAdded"
-  ).textContent =
-    formatDate(
-      book.created_at
-    );
+  holder.innerHTML =
+    "";
 
   if(
     coverUrl
   ){
 
-    $(
-      "cover"
-    ).innerHTML =
-      `
-        <img
-          src="${escapeHtml(
-            coverUrl
-          )}"
-          alt="${escapeHtml(
-            title
-          )} cover"
-        >
-      `;
+    const image =
+      document.createElement(
+        "img"
+      );
+
+    image.src =
+      coverUrl.replace(
+        /^http:/,
+        "https:"
+      );
+
+    image.alt =
+      `${currentBook.title} cover`;
+
+    image.addEventListener(
+      "error",
+      () => {
+
+        holder.innerHTML =
+          "";
+
+        holder.textContent =
+          "No cover";
+
+      },
+      {
+        once:true
+      }
+    );
+
+    holder.appendChild(
+      image
+    );
 
   }
   else{
 
-    $(
-      "cover"
-    ).textContent =
-      "No cover available";
-
-  }
-
-  const pills =
-    [];
-
-  if(
-    book.format
-  ){
-
-    pills.push(
-      book.format
-    );
-
-  }
-
-  if(
-    book.page_count ||
-    book.pages
-  ){
-
-    pills.push(
-      (
-        book.page_count ||
-        book.pages
-      ) +
-      " pages"
-    );
-
-  }
-
-  if(
-    book.publisher
-  ){
-
-    pills.push(
-      book.publisher
-    );
-
-  }
-
-  if(
-    book.published_date
-  ){
-
-    pills.push(
-      book.published_date
-    );
-
-  }
-
-  if(
-    book.isbn_13
-  ){
-
-    pills.push(
-      "ISBN " +
-      book.isbn_13
-    );
-
-  }
-
-  $(
-    "edition"
-  ).innerHTML =
-    pills
-      .slice(
-        0,
-        5
-      )
-      .map(
-        value =>
-          `
-            <span class="pill">
-              ${escapeHtml(
-                value
-              )}
-            </span>
-          `
-      )
-      .join(
-        ""
-      );
-
-  if(
-    returnUrl
-  ){
-
-    try{
-
-      const decoded =
-        decodeURIComponent(
-          returnUrl
-        );
-
-      if(
-        decoded &&
-        !decoded.startsWith(
-          "http://"
-        ) &&
-        !decoded.startsWith(
-          "https://"
-        ) &&
-        !decoded.startsWith(
-          "//"
-        )
-      ){
-
-        $(
-          "backLink"
-        ).href =
-          decoded;
-
-      }
-
-    }
-    catch(
-      error
-    ){
-
-      console.warn(
-        "Return URL:",
-        error
-      );
-
-    }
+    holder.textContent =
+      "No cover";
 
   }
 
 }
 
-/* =========================================================
-   MARKETPLACE LISTING
-   ========================================================= */
-
-async function loadMarketplaceListing(){
-
-  if(
-    !book ||
-    !book.id
-  ){
-
-    return false;
-
-  }
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from(
-          "marketplace_curated_books"
-        )
-        .select(
-          `
-            id,
-            book_id,
-            active,
-            starts_at,
-            ends_at
-          `
-        )
-        .eq(
-          "book_id",
-          book.id
-        )
-        .eq(
-          "active",
-          true
-        )
-        .maybeSingle();
-
-    if(
-      error
-    ){
-
-      throw error;
-
-    }
-
-    if(
-      !data
-    ){
-
-      return false;
-
-    }
-
-    const now =
-      Date.now();
-
-    if(
-      data.starts_at
-    ){
-
-      const starts =
-        new Date(
-          data.starts_at
-        ).getTime();
-
-      if(
-        Number.isFinite(
-          starts
-        ) &&
-        starts >
-        now
-      ){
-
-        return false;
-
-      }
-
-    }
-
-    if(
-      data.ends_at
-    ){
-
-      const ends =
-        new Date(
-          data.ends_at
-        ).getTime();
-
-      if(
-        Number.isFinite(
-          ends
-        ) &&
-        ends <
-        now
-      ){
-
-        return false;
-
-      }
-
-    }
-
-    return true;
-
-  }
-  catch(
-    error
-  ){
-
-    console.warn(
-      "Marketplace listing lookup:",
-      error.message
-    );
-
-    return false;
-
-  }
-
-}
-
-/* =========================================================
-   PURCHASE LINK
-   ========================================================= */
-
-async function renderPurchaseLink(){
-
-  const purchaseLink =
-    $(
-      "purchaseLink"
-    );
-
-  const purchaseHero =
-    $(
-      "purchaseHero"
-    );
-
-  const noPurchase =
-    $(
-      "noPurchase"
-    );
-
-  const disclosure =
-    $(
-      "affiliateDisclosure"
-    );
-
-  const searchFallback =
-    $(
-      "bookshopSearchFallback"
-    );
-
-  purchaseLink.hidden =
-    true;
-
-  purchaseHero.hidden =
-    true;
-
-  searchFallback.hidden =
-    true;
-
-  disclosure.hidden =
-    true;
-
-  noPurchase.textContent =
-    "";
-
-  const isListed =
-    await loadMarketplaceListing();
-
-  if(
-    !isListed
-  ){
-
-    $(
-      "sellerName"
-    ).textContent =
-      "DogEar Book";
-
-    $(
-      "purchaseText"
-    ).textContent =
-      "This book is in DogEar's library, but it is not currently listed in the DogEar Marketplace.";
-
-    noPurchase.textContent =
-      "This book is not currently available through the DogEar Marketplace.";
-
-    return;
-
-  }
-
-  $(
-    "sellerName"
-  ).textContent =
-    "Buy on Bookshop.org";
-
-  const affiliate =
-    bookshopAffiliateUrl();
-
-  if(
-    affiliate
-  ){
-
-    purchaseLink.href =
-      affiliate;
-
-    purchaseHero.href =
-      affiliate;
-
-    purchaseLink.hidden =
-      false;
-
-    purchaseHero.hidden =
-      false;
-
-    $(
-      "purchaseText"
-    ).textContent =
-      "Purchase this edition on Bookshop.org.";
-
-    disclosure.hidden =
-      false;
-
-    return;
-
-  }
-
-  $(
-    "purchaseText"
-  ).textContent =
-    "DogEar could not build a direct Bookshop link for this edition because it does not have a valid ISBN.";
-
-  noPurchase.textContent =
-    "Use the Bookshop search below to find an available edition.";
-
-  searchFallback.href =
-    bookshopSearchUrl();
-
-  searchFallback.hidden =
-    false;
-
-  disclosure.hidden =
-    false;
-
-}
-
-/* =========================================================
-   LOAD RATING SUMMARY
-   ========================================================= */
-
-async function loadRatingSummary(){
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient.rpc(
-        "get_book_rating_summary",
-        {
-          p_book_id:
-            Number(
-              bookId
-            )
-        }
-      );
-
-    if(
-      error
-    ){
-
-      throw error;
-
-    }
-
-    ratingSummary =
-      Array.isArray(
-        data
-      )
-        ? data[0]
-        : data;
-
-    renderRatingSummary();
-
-  }
-  catch(
-    error
-  ){
-
-    console.warn(
-      "Rating summary:",
-      error.message
-    );
-
-    ratingSummary =
-      null;
-
-    renderRatingSummary();
-
-  }
-
-}
-
-/* =========================================================
-   RENDER RATING SUMMARY
-   ========================================================= */
-
-function renderRatingSummary(){
-
-  const summary =
-    ratingSummary ||
-    {};
-
-  const average =
-    Number(
-      summary.average_rating ||
-      0
-    );
-
-  const total =
-    Number(
-      summary.rating_count ||
-      0
-    );
-
-  const reviewCount =
-    Number(
-      summary.review_count ||
-      0
-    );
-
-  const counts = {
-
-    5:
-      Number(
-        summary.five_star_count ||
-        0
-      ),
-
-    4:
-      Number(
-        summary.four_star_count ||
-        0
-      ),
-
-    3:
-      Number(
-        summary.three_star_count ||
-        0
-      ),
-
-    2:
-      Number(
-        summary.two_star_count ||
-        0
-      ),
-
-    1:
-      Number(
-        summary.one_star_count ||
-        0
-      )
-
-  };
-
-  $(
-    "averageRating"
-  ).textContent =
-    total
-      ? average.toFixed(
-          1
-        )
-      : "—";
-
-  $(
-    "averageStars"
-  ).textContent =
-    total
-      ? starString(
-          average
-        )
-      : "☆☆☆☆☆";
-
-  $(
-    "ratingCount"
-  ).textContent =
-    total
-      ? (
-          total +
-          " rating" +
-          (
-            total === 1
-              ? ""
-              : "s"
-          )
-        )
-      : "No ratings yet";
-
-  $(
-    "heroStars"
-  ).textContent =
-    total
-      ? starString(
-          average
-        )
-      : "☆☆☆☆☆";
-
-  $(
-    "heroRating"
-  ).textContent =
-    total
-      ? average.toFixed(
-          1
-        )
-      : "—";
-
-  $(
-    "heroRatingCount"
-  ).textContent =
-    total
-      ? (
-          total +
-          " rating" +
-          (
-            total === 1
-              ? ""
-              : "s"
-          )
-        )
-      : "No ratings yet";
-
-  $(
-    "communitySubtitle"
-  ).textContent =
-    reviewCount
-      ? (
-          reviewCount +
-          " written review" +
-          (
-            reviewCount === 1
-              ? ""
-              : "s"
-          ) +
-          " from DogEar readers."
-        )
-      : "No written reviews yet. Be the first.";
-
-  for(
-    const rating
-    of
-    [5,4,3,2,1]
-  ){
-
-    const count =
-      counts[
-        rating
-      ];
-
-    const percent =
-      total
-        ? Math.round(
-            count /
-            total *
-            100
-          )
-        : 0;
-
-    $(
-      "count" +
-      rating
-    ).textContent =
-      count;
-
-    $(
-      "bar" +
-      rating
-    ).style.width =
-      percent +
-      "%";
-
-  }
-
-}
-
-/* =========================================================
-   LOAD REVIEWS
-   ========================================================= */
-
-async function loadReviews(){
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient.rpc(
-        "get_book_reviews",
-        {
-          p_book_id:
-            Number(
-              bookId
-            )
-        }
-      );
-
-    if(
-      error
-    ){
-
-      throw error;
-
-    }
-
-    reviews =
-      Array.isArray(
-        data
-      )
-        ? data
-        : [];
-
-    myReview =
-      reviews.find(
-        row =>
-          String(
-            row.user_id
-          ) ===
-          String(
-            currentUser.id
-          )
-      ) ||
-      null;
-
-    renderMyReview();
-
-    renderReviews();
-
-  }
-  catch(
-    error
-  ){
-
-    console.warn(
-      "Reviews:",
-      error.message
-    );
-
-    reviews =
-      [];
-
-    myReview =
-      null;
-
-    renderMyReview();
-
-    renderReviews();
-
-    setMessage(
-      "reviewMessage",
-      "DogEar couldn't load reviews yet: " +
-      error.message,
-      "error"
-    );
-
-  }
-
-}
-
-/* =========================================================
-   CURRENT USER REVIEW
-   ========================================================= */
-
-function renderMyReview(){
-
-  selectedRating =
-    Number(
-      myReview?.rating ||
-      0
-    );
-
-  $(
-    "reviewText"
-  ).value =
-    myReview?.review_text ||
-    "";
-
-  $(
-    "deleteReview"
-  ).hidden =
-    !myReview;
-
-  $(
-    "saveReview"
-  ).textContent =
-    myReview
-      ? "Update rating"
-      : "Save rating";
-
-  updateStarPicker();
-
-  updateCharacterCount();
-
-}
-
-/* =========================================================
-   STAR PICKER
-   ========================================================= */
-
-function updateStarPicker(
-  previewRating = 0
-){
-
-  document
-    .querySelectorAll(
-      ".star-button"
-    )
-    .forEach(
-      button => {
-
-        const rating =
-          Number(
-            button.dataset.rating
-          );
-
-        button.classList.toggle(
-          "selected",
-          !previewRating &&
-          rating <=
-          selectedRating
-        );
-
-        button.classList.toggle(
-          "preview",
-          Boolean(
-            previewRating
-          ) &&
-          rating <=
-          previewRating
-        );
-
-      }
-    );
-
-  const labelRating =
-    previewRating ||
-    selectedRating;
-
-  const labels = {
-
-    1:
-      "1 star — Not for me",
-
-    2:
-      "2 stars — It was okay",
-
-    3:
-      "3 stars — I liked it",
-
-    4:
-      "4 stars — I really liked it",
-
-    5:
-      "5 stars — I loved it"
-
-  };
-
-  $(
-    "ratingLabel"
-  ).textContent =
-    labels[
-      labelRating
-    ] ||
-    "Choose 1–5 stars";
-
-}
-
-function updateCharacterCount(){
-
-  const length =
-    $(
-      "reviewText"
-    )
-      .value
-      .length;
-
-  $(
-    "characterCount"
-  ).textContent =
-    length.toLocaleString() +
-    " / 10,000";
-
-}
-
-/* =========================================================
-   RENDER COMMUNITY REVIEWS
-   ========================================================= */
-
-function renderReviews(){
+function renderEditionPills(){
 
   const holder =
-    $(
-      "reviewList"
-    );
-
-  const written =
-    reviews.filter(
-      row =>
-        String(
-          row.review_text ||
-          ""
-        ).trim()
-    );
-
-  if(
-    !written.length
-  ){
-
-    holder.innerHTML =
-      `
-        <div class="empty">
-          No written reviews yet.
-          Be the first DogEar reader
-          to leave one.
-        </div>
-      `;
-
-    return;
-
-  }
+    $("editionPills");
 
   holder.innerHTML =
     "";
 
-  written.forEach(
-    row => {
+  const values =
+    [];
 
-      const displayName =
-        row.display_name ||
-        row.username ||
-        "DogEar Reader";
+  if(
+    currentBook.publishedDate
+  ){
 
-      const profileUrl =
-        "profile.html?id=" +
-        encodeURIComponent(
-          row.user_id
-        );
+    values.push(
+      currentBook.publishedDate
+    );
 
-      const item =
-        document.createElement(
-          "article"
-        );
+  }
 
-      item.className =
-        "review-item";
+  if(
+    currentBook.pageCount
+  ){
 
-      const head =
-        document.createElement(
-          "div"
-        );
+    values.push(
+      `${currentBook.pageCount} pages`
+    );
 
-      head.className =
-        "review-head";
+  }
 
-      const reviewer =
-        document.createElement(
-          "a"
-        );
+  if(
+    currentBook.language
+  ){
 
-      reviewer.className =
-        "reviewer";
+    values.push(
+      currentBook.language.toUpperCase()
+    );
 
-      reviewer.href =
-        profileUrl;
+  }
 
-      const avatar =
-        document.createElement(
-          "div"
-        );
+  if(
+    currentBook.isbn13
+  ){
 
-      avatar.className =
-        "reviewer-avatar";
+    values.push(
+      `ISBN ${currentBook.isbn13}`
+    );
 
-      if(
-        row.avatar_url
-      ){
+  }
 
-        const image =
-          document.createElement(
-            "img"
-          );
+  for(
+    const value
+    of values
+  ){
 
-        image.src =
-          row.avatar_url;
-
-        image.alt =
-          "";
-
-        avatar.appendChild(
-          image
-        );
-
-      }
-      else{
-
-        avatar.textContent =
-          initials(
-            displayName
-          );
-
-      }
-
-      const nameBlock =
-        document.createElement(
-          "div"
-        );
-
-      const name =
-        document.createElement(
-          "div"
-        );
-
-      name.className =
-        "reviewer-name";
-
-      name.textContent =
-        displayName +
-        (
-          String(
-            row.user_id
-          ) ===
-          String(
-            currentUser.id
-          )
-            ? " · You"
-            : ""
-        );
-
-      const date =
-        document.createElement(
-          "div"
-        );
-
-      date.className =
-        "review-date";
-
-      date.textContent =
-        formatDate(
-          row.updated_at ||
-          row.created_at
-        );
-
-      nameBlock.append(
-        name,
-        date
+    const pill =
+      document.createElement(
+        "span"
       );
 
-      reviewer.append(
-        avatar,
-        nameBlock
-      );
+    pill.className =
+      "pill";
 
-      const stars =
-        document.createElement(
-          "div"
-        );
+    pill.textContent =
+      value;
 
-      stars.className =
-        "review-stars";
+    holder.appendChild(
+      pill
+    );
 
-      stars.textContent =
-        starString(
-          row.rating
-        );
+  }
 
-      head.append(
-        reviewer,
-        stars
-      );
+}
 
-      const text =
-        document.createElement(
-          "div"
-        );
+function renderDetails(){
 
-      text.className =
-        "review-text";
+  $("detailPublisher")
+    .textContent =
+      currentBook.publisher ||
+      "—";
 
-      /*
-       * IMPORTANT:
-       * textContent is used here intentionally
-       * so user-written reviews cannot inject HTML.
-       */
+  $("detailPublished")
+    .textContent =
+      currentBook.publishedDate ||
+      "—";
 
-      text.textContent =
-        row.review_text;
+  $("detailPages")
+    .textContent =
+      currentBook.pageCount ||
+      "—";
 
-      item.append(
-        head,
-        text
-      );
+  $("detailIsbn13")
+    .textContent =
+      currentBook.isbn13 ||
+      "—";
 
-      holder.appendChild(
-        item
-      );
+  $("detailIsbn10")
+    .textContent =
+      currentBook.isbn10 ||
+      "—";
 
-    }
-  );
+  $("detailCategories")
+    .textContent =
+      currentBook.categories.length
+        ? currentBook.categories.join(", ")
+        : "—";
+
+  $("detailLanguage")
+    .textContent =
+      currentBook.language
+        ? currentBook.language.toUpperCase()
+        : "—";
+
+}
+
+function renderExternalLinks(){
+
+  const button =
+    $("googleBooksBtn");
+
+  const url =
+    currentBook.infoLink ||
+    currentBook.previewLink ||
+    currentBook.canonicalVolumeLink ||
+    "";
+
+  if(
+    url
+  ){
+
+    button.href =
+      url;
+
+    button.hidden =
+      false;
+
+  }
+  else{
+
+    button.hidden =
+      true;
+
+  }
+
+}
+
+function renderBookshopLink(){
+
+  const button =
+    $("bookshopBtn");
+
+  button.href =
+    bookshopSearchUrl(
+      currentBook
+    );
 
 }
 
 /* =========================================================
-   SAVE REVIEW
+   SAVED BOOK
    ========================================================= */
 
-async function saveReview(){
+async function loadSavedBookState(){
 
-  setMessage(
-    "reviewMessage",
-    ""
-  );
+  const button =
+    $("saveBookBtn");
 
   if(
-    selectedRating < 1 ||
-    selectedRating > 5
+    !currentUser
   ){
 
-    setMessage(
-      "reviewMessage",
-      "Choose a star rating before saving.",
-      "error"
-    );
+    button.textContent =
+      "Save Book";
 
     return;
 
   }
 
-  const reviewText =
-    $(
-      "reviewText"
-    )
-      .value
-      .trim();
-
   if(
-    reviewText.length >
-    10000
+    !currentBookId
   ){
-
-    setMessage(
-      "reviewMessage",
-      "Reviews can be up to 10,000 characters.",
-      "error"
-    );
-
     return;
-
   }
-
-  $(
-    "saveReview"
-  ).disabled =
-    true;
 
   try{
 
     const {
+      data,
       error
     } =
       await supabaseClient
-        .from(
-          "book_reviews"
+        .from("saved_books")
+        .select("id")
+        .eq(
+          "user_id",
+          currentUser.id
         )
-        .upsert(
-          {
+        .eq(
+          "book_id",
+          currentBookId
+        )
+        .maybeSingle();
 
+    if(error){
+      throw error;
+    }
+
+    button.dataset.saved =
+      data
+        ? "true"
+        : "false";
+
+    button.textContent =
+      data
+        ? "Saved"
+        : "Save Book";
+
+  }
+  catch(error){
+
+    console.warn(
+      "Saved book lookup:",
+      error
+    );
+
+  }
+
+}
+
+async function toggleSavedBook(){
+
+  if(
+    !currentUser
+  ){
+
+    window.location.href =
+      "auth.html#login";
+
+    return;
+
+  }
+
+  if(
+    !currentBookId
+  ){
+
+    setMessage(
+      "heroMessage",
+      "This book must be added to DogEar before it can be saved.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  const button =
+    $("saveBookBtn");
+
+  button.disabled =
+    true;
+
+  setMessage(
+    "heroMessage"
+  );
+
+  try{
+
+    const isSaved =
+      button.dataset.saved ===
+      "true";
+
+    if(
+      isSaved
+    ){
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from("saved_books")
+          .delete()
+          .eq(
+            "user_id",
+            currentUser.id
+          )
+          .eq(
+            "book_id",
+            currentBookId
+          );
+
+      if(error){
+        throw error;
+      }
+
+      button.dataset.saved =
+        "false";
+
+      button.textContent =
+        "Save Book";
+
+      setMessage(
+        "heroMessage",
+        "Removed from your saved books.",
+        "success"
+      );
+
+    }
+    else{
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from("saved_books")
+          .insert({
             user_id:
               currentUser.id,
 
             book_id:
-              Number(
-                bookId
-              ),
+              currentBookId
+          });
 
-            rating:
-              selectedRating,
+      if(error){
+        throw error;
+      }
 
-            review_text:
-              reviewText ||
-              null
+      button.dataset.saved =
+        "true";
 
-          },
-          {
-            onConflict:
-              "user_id,book_id"
-          }
-        );
+      button.textContent =
+        "Saved";
 
-    if(
-      error
-    ){
-
-      throw error;
+      setMessage(
+        "heroMessage",
+        "Book saved.",
+        "success"
+      );
 
     }
 
-    setMessage(
-      "reviewMessage",
-      myReview
-        ? "Your rating has been updated."
-        : "Your rating has been saved.",
-      "success"
-    );
-
-    await Promise.all(
-      [
-        loadRatingSummary(),
-        loadReviews()
-      ]
-    );
-
   }
-  catch(
-    error
-  ){
+  catch(error){
 
     console.error(
+      "Save book:",
       error
     );
 
     setMessage(
-      "reviewMessage",
-      "DogEar couldn't save your rating: " +
-      (
-        error.message ||
-        "Unknown error"
-      ),
+      "heroMessage",
+      error?.message ||
+      "DogEar couldn't update your saved books.",
       "error"
     );
 
   }
   finally{
 
-    $(
-      "saveReview"
-    ).disabled =
+    button.disabled =
       false;
 
   }
@@ -4006,17 +2894,529 @@ async function saveReview(){
 }
 
 /* =========================================================
-   DELETE REVIEW
+   REVIEWS
    ========================================================= */
+
+async function loadReviews(){
+
+  if(
+    !currentBookId
+  ){
+
+    renderRatings(
+      []
+    );
+
+    renderCommunityReviews(
+      []
+    );
+
+    return;
+
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("book_reviews")
+        .select(`
+          id,
+          user_id,
+          book_id,
+          rating,
+          review_text,
+          created_at,
+          updated_at
+        `)
+        .eq(
+          "book_id",
+          currentBookId
+        )
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        );
+
+    if(error){
+      throw error;
+    }
+
+    const reviews =
+      data ||
+      [];
+
+    currentUserReview =
+      currentUser
+        ? reviews.find(
+            review =>
+              review.user_id ===
+              currentUser.id
+          ) || null
+        : null;
+
+    communityReviews =
+      reviews.filter(
+        review =>
+          review.review_text &&
+          review.review_text.trim()
+      );
+
+    renderRatings(
+      reviews
+    );
+
+    await renderCommunityReviews(
+      communityReviews
+    );
+
+    renderCurrentUserReview();
+
+  }
+  catch(error){
+
+    console.error(
+      "Reviews load:",
+      error
+    );
+
+    setMessage(
+      "reviewMessage",
+      "DogEar couldn't load reader ratings.",
+      "error"
+    );
+
+  }
+
+}
+  function renderRatings(
+  reviews
+){
+
+  const ratings =
+    reviews
+      .map(
+        review =>
+          Number(
+            review.rating
+          )
+      )
+      .filter(
+        rating =>
+          Number.isFinite(rating) &&
+          rating >= 1 &&
+          rating <= 5
+      );
+
+  const count =
+    ratings.length;
+
+  const average =
+    count
+      ? ratings.reduce(
+          (
+            total,
+            rating
+          ) =>
+            total + rating,
+          0
+        ) / count
+      : 0;
+
+  $("averageRating")
+    .textContent =
+      count
+        ? average.toFixed(1)
+        : "—";
+
+  $("averageRatingStars")
+    .textContent =
+      count
+        ? starString(
+            average
+          )
+        : "☆☆☆☆☆";
+
+  $("ratingCount")
+    .textContent =
+      count
+        ? `${count} ${
+            count === 1
+              ? "rating"
+              : "ratings"
+          }`
+        : "No ratings yet";
+
+  $("heroRatingStars")
+    .textContent =
+      count
+        ? starString(
+            average
+          )
+        : "☆☆☆☆☆";
+
+  $("heroRatingNumber")
+    .textContent =
+      count
+        ? average.toFixed(1)
+        : "—";
+
+  $("heroRatingCount")
+    .textContent =
+      count
+        ? `${count} ${
+            count === 1
+              ? "rating"
+              : "ratings"
+          }`
+        : "No ratings yet";
+
+  for(
+    let rating = 5;
+    rating >= 1;
+    rating--
+  ){
+
+    const ratingCount =
+      ratings.filter(
+        value =>
+          value === rating
+      ).length;
+
+    const percentage =
+      count
+        ? (
+            ratingCount /
+            count
+          ) * 100
+        : 0;
+
+    $(
+      `ratingCount${rating}`
+    ).textContent =
+      String(
+        ratingCount
+      );
+
+    $(
+      `ratingBar${rating}`
+    ).style.width =
+      `${percentage}%`;
+
+  }
+
+}
+
+function renderCurrentUserReview(){
+
+  if(
+    !currentUser
+  ){
+
+    currentRating =
+      0;
+
+    $("reviewText")
+      .value =
+        "";
+
+    $("reviewEditorCopy")
+      .textContent =
+        "Sign in to rate or review this book.";
+
+    $("saveReviewBtn")
+      .textContent =
+        "Sign In to Review";
+
+    $("deleteReviewBtn")
+      .hidden =
+        true;
+
+    updateStarPicker();
+
+    updateReviewCharacterCount();
+
+    return;
+
+  }
+
+  $("reviewEditorCopy")
+    .textContent =
+      currentUserReview
+        ? "Update your rating or review."
+        : "Rate this book and optionally leave a review.";
+
+  $("saveReviewBtn")
+    .textContent =
+      currentUserReview
+        ? "Update Review"
+        : "Save Review";
+
+  $("deleteReviewBtn")
+    .hidden =
+      !currentUserReview;
+
+  currentRating =
+    Number(
+      currentUserReview?.rating ||
+      0
+    );
+
+  $("reviewText")
+    .value =
+      currentUserReview?.review_text ||
+      "";
+
+  updateStarPicker();
+
+  updateReviewCharacterCount();
+
+}
+
+function updateStarPicker(){
+
+  const buttons =
+    [
+      ...document.querySelectorAll(
+        ".star-button"
+      )
+    ];
+
+  const visibleRating =
+    hoveredRating ||
+    currentRating;
+
+  buttons.forEach(
+    button => {
+
+      const value =
+        Number(
+          button.dataset.rating
+        );
+
+      button.classList.toggle(
+        "selected",
+        !hoveredRating &&
+        value <= currentRating
+      );
+
+      button.classList.toggle(
+        "preview",
+        Boolean(
+          hoveredRating
+        ) &&
+        value <= hoveredRating
+      );
+
+    }
+  );
+
+  const label =
+    $("reviewRatingLabel");
+
+  if(
+    visibleRating
+  ){
+
+    label.textContent =
+      `${visibleRating} ${
+        visibleRating === 1
+          ? "star"
+          : "stars"
+      }`;
+
+  }
+  else{
+
+    label.textContent =
+      "Choose a rating";
+
+  }
+
+}
+
+function updateReviewCharacterCount(){
+
+  const textarea =
+    $("reviewText");
+
+  $("reviewCharacterCount")
+    .textContent =
+      `${textarea.value.length} / 4000`;
+
+}
+
+async function saveReview(){
+
+  if(
+    !currentUser
+  ){
+
+    window.location.href =
+      "auth.html#login";
+
+    return;
+
+  }
+
+  if(
+    !currentBookId
+  ){
+
+    setMessage(
+      "reviewMessage",
+      "This book must exist in DogEar before it can be reviewed.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  if(
+    !currentRating
+  ){
+
+    setMessage(
+      "reviewMessage",
+      "Choose a star rating first.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  const button =
+    $("saveReviewBtn");
+
+  const reviewText =
+    $("reviewText")
+      .value
+      .trim();
+
+  button.disabled =
+    true;
+
+  setMessage(
+    "reviewMessage"
+  );
+
+  try{
+
+    const payload = {
+
+      user_id:
+        currentUser.id,
+
+      book_id:
+        currentBookId,
+
+      rating:
+        currentRating,
+
+      review_text:
+        reviewText ||
+        null,
+
+      updated_at:
+        new Date()
+          .toISOString()
+
+    };
+
+    if(
+      currentUserReview
+    ){
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from("book_reviews")
+          .update(
+            payload
+          )
+          .eq(
+            "id",
+            currentUserReview.id
+          )
+          .eq(
+            "user_id",
+            currentUser.id
+          );
+
+      if(error){
+        throw error;
+      }
+
+    }
+    else{
+
+      payload.created_at =
+        new Date()
+          .toISOString();
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from("book_reviews")
+          .insert(
+            payload
+          );
+
+      if(error){
+        throw error;
+      }
+
+    }
+
+    setMessage(
+      "reviewMessage",
+      "Your review has been saved.",
+      "success"
+    );
+
+    await loadReviews();
+
+  }
+  catch(error){
+
+    console.error(
+      "Save review:",
+      error
+    );
+
+    setMessage(
+      "reviewMessage",
+      error?.message ||
+      "DogEar couldn't save your review.",
+      "error"
+    );
+
+  }
+  finally{
+
+    button.disabled =
+      false;
+
+  }
+
+}
 
 async function deleteReview(){
 
   if(
-    !myReview
+    !currentUser ||
+    !currentUserReview
   ){
-
     return;
-
   }
 
   const confirmed =
@@ -4027,104 +3427,77 @@ async function deleteReview(){
   if(
     !confirmed
   ){
-
     return;
-
   }
 
-  $(
-    "deleteReview"
-  ).disabled =
+  const button =
+    $("deleteReviewBtn");
+
+  button.disabled =
     true;
 
+  setMessage(
+    "reviewMessage"
+  );
+
   try{
-
-    let query =
-      supabaseClient
-        .from(
-          "book_reviews"
-        )
-        .delete()
-        .eq(
-          "user_id",
-          currentUser.id
-        )
-        .eq(
-          "book_id",
-          Number(
-            bookId
-          )
-        );
-
-    if(
-      myReview.review_id
-    ){
-
-      query =
-        query.eq(
-          "id",
-          myReview.review_id
-        );
-
-    }
 
     const {
       error
     } =
-      await query;
+      await supabaseClient
+        .from("book_reviews")
+        .delete()
+        .eq(
+          "id",
+          currentUserReview.id
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        );
 
-    if(
-      error
-    ){
-
+    if(error){
       throw error;
-
     }
 
-    selectedRating =
+    currentUserReview =
+      null;
+
+    currentRating =
       0;
 
-    myReview =
-      null;
+    $("reviewText")
+      .value =
+        "";
 
     setMessage(
       "reviewMessage",
-      "Your rating has been deleted.",
+      "Your review has been deleted.",
       "success"
     );
 
-    await Promise.all(
-      [
-        loadRatingSummary(),
-        loadReviews()
-      ]
-    );
+    await loadReviews();
 
   }
-  catch(
-    error
-  ){
+  catch(error){
 
     console.error(
+      "Delete review:",
       error
     );
 
     setMessage(
       "reviewMessage",
-      "DogEar couldn't delete your rating: " +
-      (
-        error.message ||
-        "Unknown error"
-      ),
+      error?.message ||
+      "DogEar couldn't delete your review.",
       "error"
     );
 
   }
   finally{
 
-    $(
-      "deleteReview"
-    ).disabled =
+    button.disabled =
       false;
 
   }
@@ -4132,228 +3505,557 @@ async function deleteReview(){
 }
 
 /* =========================================================
-   REVIEW EVENTS
+   COMMUNITY REVIEW PROFILES
    ========================================================= */
 
-function wireStarPicker(){
+async function loadReviewProfiles(
+  reviews
+){
 
-  document
-    .querySelectorAll(
-      ".star-button"
-    )
-    .forEach(
-      button => {
-
-        button.addEventListener(
-          "mouseenter",
-          () => {
-
-            updateStarPicker(
-              Number(
-                button.dataset.rating
-              )
-            );
-
-          }
-        );
-
-        button.addEventListener(
-          "focus",
-          () => {
-
-            updateStarPicker(
-              Number(
-                button.dataset.rating
-              )
-            );
-
-          }
-        );
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            selectedRating =
-              Number(
-                button.dataset.rating
-              );
-
-            updateStarPicker();
-
-          }
-        );
-
-      }
-    );
-
-  $(
-    "starPicker"
-  )
-    .addEventListener(
-      "mouseleave",
-      () => {
-
-        updateStarPicker();
-
-      }
-    );
-
-  $(
-    "starPicker"
-  )
-    .addEventListener(
-      "focusout",
-      event => {
-
-        if(
-          !$(
-            "starPicker"
+  const userIds =
+    [
+      ...new Set(
+        reviews
+          .map(
+            review =>
+              review.user_id
           )
-            .contains(
-              event.relatedTarget
-            )
-        ){
+          .filter(Boolean)
+      )
+    ];
+
+  if(
+    !userIds.length
+  ){
+    return new Map();
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("profiles")
+        .select(
+          "id,display_name,username,avatar_url"
+        )
+        .in(
+          "id",
+          userIds
+        );
+
+    if(error){
+      throw error;
+    }
+
+    return new Map(
+      (
+        data ||
+        []
+      ).map(
+        profile => [
+          profile.id,
+          profile
+        ]
+      )
+    );
+
+  }
+  catch(error){
+
+    console.warn(
+      "Review profile load:",
+      error
+    );
+
+    return new Map();
+
+  }
+
+}
+
+async function renderCommunityReviews(
+  reviews
+){
+
+  const holder =
+    $("reviewList");
+
+  const empty =
+    $("reviewEmpty");
+
+  holder.innerHTML =
+    "";
+
+  if(
+    !reviews.length
+  ){
+
+    empty.hidden =
+      false;
+
+    return;
+
+  }
+
+  empty.hidden =
+    true;
+
+  const profiles =
+    await loadReviewProfiles(
+      reviews
+    );
+
+  for(
+    const review
+    of reviews
+  ){
+
+    const profile =
+      profiles.get(
+        review.user_id
+      );
+
+    const displayName =
+      profile?.display_name ||
+      profile?.username ||
+      "DogEar Reader";
+
+    const avatarUrl =
+      profile?.avatar_url ||
+      "";
+
+    const item =
+      document.createElement(
+        "article"
+      );
+
+    item.className =
+      "review-item";
+
+    const head =
+      document.createElement(
+        "div"
+      );
+
+    head.className =
+      "review-head";
+
+    const reviewer =
+      document.createElement(
+        "a"
+      );
+
+    reviewer.className =
+      "reviewer";
+
+    reviewer.href =
+      `profile.html?id=${encodeURIComponent(
+        review.user_id
+      )}`;
+
+    const avatar =
+      document.createElement(
+        "span"
+      );
+
+    avatar.className =
+      "reviewer-avatar";
+
+    if(
+      avatarUrl
+    ){
+
+      const image =
+        document.createElement(
+          "img"
+        );
+
+      image.src =
+        avatarUrl;
+
+      image.alt =
+        "";
+
+      image.addEventListener(
+        "error",
+        () => {
+
+          avatar.innerHTML =
+            "";
+
+          avatar.textContent =
+            initials(
+              displayName
+            );
+
+        },
+        {
+          once:true
+        }
+      );
+
+      avatar.appendChild(
+        image
+      );
+
+    }
+    else{
+
+      avatar.textContent =
+        initials(
+          displayName
+        );
+
+    }
+
+    const identity =
+      document.createElement(
+        "span"
+      );
+
+    const name =
+      document.createElement(
+        "div"
+      );
+
+    name.className =
+      "reviewer-name";
+
+    name.textContent =
+      displayName;
+
+    const date =
+      document.createElement(
+        "div"
+      );
+
+    date.className =
+      "review-date";
+
+    date.textContent =
+      formatDate(
+        review.updated_at ||
+        review.created_at
+      );
+
+    identity.append(
+      name,
+      date
+    );
+
+    reviewer.append(
+      avatar,
+      identity
+    );
+
+    const stars =
+      document.createElement(
+        "span"
+      );
+
+    stars.className =
+      "review-stars";
+
+    stars.textContent =
+      starString(
+        review.rating
+      );
+
+    head.append(
+      reviewer,
+      stars
+    );
+
+    const text =
+      document.createElement(
+        "div"
+      );
+
+    text.className =
+      "review-text";
+
+    text.textContent =
+      review.review_text ||
+      "";
+
+    item.append(
+      head,
+      text
+    );
+
+    holder.appendChild(
+      item
+    );
+
+  }
+
+}
+
+/* =========================================================
+   STAR PICKER EVENTS
+   ========================================================= */
+
+function bindStarPicker(){
+
+  const buttons =
+    [
+      ...document.querySelectorAll(
+        ".star-button"
+      )
+    ];
+
+  buttons.forEach(
+    button => {
+
+      button.addEventListener(
+        "mouseenter",
+        () => {
+
+          hoveredRating =
+            Number(
+              button.dataset.rating
+            );
 
           updateStarPicker();
 
         }
+      );
 
-      }
-    );
+      button.addEventListener(
+        "mouseleave",
+        () => {
+
+          hoveredRating =
+            0;
+
+          updateStarPicker();
+
+        }
+      );
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          if(
+            !currentUser
+          ){
+
+            window.location.href =
+              "auth.html#login";
+
+            return;
+
+          }
+
+          currentRating =
+            Number(
+              button.dataset.rating
+            );
+
+          hoveredRating =
+            0;
+
+          updateStarPicker();
+
+          setMessage(
+            "reviewMessage"
+          );
+
+        }
+      );
+
+    }
+  );
 
 }
 
-$(
-  "reviewText"
-)
-  .addEventListener(
-    "input",
-    updateCharacterCount
-  );
-
-$(
-  "saveReview"
-)
-  .addEventListener(
-    "click",
-    saveReview
-  );
-
-$(
-  "deleteReview"
-)
-  .addEventListener(
-    "click",
-    deleteReview
-  );
-
-wireStarPicker();
-
 /* =========================================================
-   FATAL ERROR
+   GENERAL EVENTS
    ========================================================= */
 
-function showFatalError(
+function bindEvents(){
+
+  $("saveBookBtn")
+    .addEventListener(
+      "click",
+      toggleSavedBook
+    );
+
+  $("saveReviewBtn")
+    .addEventListener(
+      "click",
+      saveReview
+    );
+
+  $("deleteReviewBtn")
+    .addEventListener(
+      "click",
+      deleteReview
+    );
+
+  $("reviewText")
+    .addEventListener(
+      "input",
+      updateReviewCharacterCount
+    );
+
+  bindStarPicker();
+
+}
+
+/* =========================================================
+   ERROR STATE
+   ========================================================= */
+
+function renderFatalError(
   message
 ){
 
-  $(
-    "loading"
-  ).hidden =
-    true;
+  $("bookTitle")
+    .textContent =
+      "Book unavailable";
 
-  $(
-    "page"
-  ).innerHTML =
-    `
-      <div class="error-page">
+  $("bookAuthor")
+    .textContent =
+      "";
 
-        <div>
+  $("bookDescription")
+    .textContent =
+      message ||
+      "DogEar couldn't load this book.";
 
-          <div class="eyebrow">
-            DogEar
-          </div>
+  $("bookCover")
+    .textContent =
+      "No cover";
 
-          <h1>
-            We lost the page.
-          </h1>
+  $("editionPills")
+    .innerHTML =
+      "";
 
-          <p>
-            ${escapeHtml(
-              message
-            )}
-          </p>
+  $("saveBookBtn")
+    .disabled =
+      true;
 
-          <a
-            class="btn primary"
-            href="marketplace.html"
-          >
-            Back to Books
-          </a>
+  $("googleBooksBtn")
+    .hidden =
+      true;
 
-        </div>
+  $("bookshopBtn")
+    .href =
+      "https://bookshop.org/?a=" +
+      encodeURIComponent(
+        BOOKSHOP_AFFILIATE_ID
+      );
 
-      </div>
-    `;
+  setMessage(
+    "heroMessage",
+    "Try returning to Discover or Search.",
+    "error"
+  );
 
 }
 
 /* =========================================================
-   START DOGEAR BOOK DETAIL PAGE
+   INITIALIZE
    ========================================================= */
 
-async function start(){
+async function initialize(){
+
+  bindEvents();
 
   try{
 
-    const signedIn =
-      await loadSession();
-
-    if(
-      !signedIn
-    ){
-
-      return;
-
-    }
-
-    await loadProfile();
+    await loadSession();
 
     await loadBook();
 
-    await Promise.all(
-      [
-        renderPurchaseLink(),
-        loadRatingSummary(),
-        loadReviews()
-      ]
-    );
+    renderBook();
 
-    $(
-      "loading"
-    ).hidden =
-      true;
+    await Promise.all([
+      loadSavedBookState(),
+      loadReviews()
+    ]);
 
   }
-  catch(
-    error
-  ){
+  catch(error){
 
     console.error(
+      "Book detail initialization:",
       error
     );
 
-    showFatalError(
-      error.message ||
-      "DogEar couldn't open this book."
+    renderFatalError(
+      error?.message ||
+      "DogEar couldn't load this book."
     );
+
+  }
+  finally{
+
+    $("loading")
+      .classList
+      .add(
+        "hidden"
+      );
 
   }
 
 }
 
-start();
+/* =========================================================
+   AUTH STATE
+   ========================================================= */
+
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    async (
+      event,
+      session
+    ) => {
+
+      currentUser =
+        session?.user ||
+        null;
+
+      if(
+        currentUser
+      ){
+
+        await loadCurrentProfile();
+
+      }
+      else{
+
+        currentProfile =
+          null;
+
+        renderLoggedOutProfile();
+
+      }
+
+      if(
+        currentBookId
+      ){
+
+        await loadSavedBookState();
+
+        await loadReviews();
+
+      }
+
+    }
+  );
+
+/* =========================================================
+   START
+   ========================================================= */
+
+initialize();
 
 </script>
 
