@@ -411,6 +411,62 @@ h1{
   gap:7px;
 }
 
+/* =========================================================
+   AUTHOR-SHARED DOGEARS
+========================================================= */
+
+.dogear-list{
+  display:grid;
+  gap:12px;
+}
+
+.dogear-card{
+  padding:16px;
+  border:1px solid var(--line-soft);
+  border-radius:13px;
+  background:#0c0f0d;
+}
+
+.dogear-card-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:14px;
+}
+
+.dogear-reader{
+  font-size:18px;
+}
+
+.dogear-location{
+  margin-top:4px;
+  color:var(--muted);
+  font:9px/1.5 Arial,sans-serif;
+}
+
+.dogear-quote{
+  margin-top:13px;
+  padding:12px 14px;
+  border-left:2px solid var(--gold);
+  background:rgba(199,155,89,.06);
+  color:var(--cream2);
+  font:italic 13px/1.65 Georgia,"Times New Roman",serif;
+}
+
+.dogear-note{
+  margin-top:11px;
+  color:var(--cream);
+  font:12px/1.65 Arial,sans-serif;
+}
+
+.dogear-date{
+  margin-top:10px;
+  color:var(--muted);
+  font:8px/1.5 Arial,sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+
 .small-button{
   min-height:34px;
   padding:0 12px;
@@ -892,14 +948,14 @@ h1{
           </div>
 
           <div class="panel-body">
-
-            <div
+                        <div
               class="reader-list"
-              id="pendingReaderList"
+              id="pendingReaders"
             ></div>
 
           </div>
-                  </section>
+
+        </section>
 
 
         <!-- ACCEPTED READERS -->
@@ -910,7 +966,7 @@ h1{
             <div>
 
               <div class="panel-kicker">
-                Your Beta Team
+                Beta Team
               </div>
 
               <h2 class="panel-title">
@@ -925,20 +981,17 @@ h1{
 
             <div
               class="reader-list"
-              id="readerList"
+              id="acceptedReaders"
             ></div>
 
           </div>
 
         </section>
 
-      </div>
 
-
-      <!-- SIDEBAR -->
-      <aside class="stack">
-
-        <!-- COIN REWARD -->
+        <!-- =================================================
+             AUTHOR-SHARED DOGEARS
+        ================================================== -->
         <section class="panel">
 
           <div class="panel-head">
@@ -946,11 +999,56 @@ h1{
             <div>
 
               <div class="panel-kicker">
-                Reader Incentive
+                Reader Notes
               </div>
 
               <h2 class="panel-title">
-                Coin Reward
+                Reader DogEars & Feedback
+              </h2>
+
+            </div>
+
+            <span
+              class="status"
+              id="sharedDogEarCount"
+            >
+              0 Shared
+            </span>
+
+          </div>
+
+          <div class="panel-body">
+
+            <div class="side-note">
+              These are passages and notes that beta readers
+              explicitly chose to share with you. Private
+              DogEars are never shown here.
+            </div>
+
+            <div
+              class="dogear-list"
+              id="sharedDogEars"
+              style="margin-top:16px"
+            ></div>
+
+          </div>
+
+        </section>
+
+
+        <!-- REWARDS -->
+        <section class="panel">
+
+          <div class="panel-head">
+
+            <div>
+
+              <div class="panel-kicker">
+                Incentives
+              </div>
+
+              <h2 class="panel-title">
+                Reader Rewards
               </h2>
 
             </div>
@@ -959,104 +1057,26 @@ h1{
 
           <div class="panel-body">
 
-            <label class="field">
+            <div class="form-grid">
 
-              <span class="label">
-                Reward Enabled
-              </span>
+              <label class="field">
 
-              <select
-                class="select"
-                id="rewardEnabled"
-              >
+                <span class="label">
+                  Coins Offered
+                </span>
 
-                <option value="false">
-                  Off
-                </option>
+                <input
+                  class="input"
+                  id="rewardCoins"
+                  type="number"
+                  min="0"
+                  step="1"
+                  placeholder="0"
+                >
 
-                <option value="true">
-                  On
-                </option>
+              </label>
 
-              </select>
-
-            </label>
-
-
-            <label
-              class="field"
-              style="margin-top:13px"
-            >
-
-              <span class="label">
-                Coins Per Reader
-              </span>
-
-              <input
-                class="input"
-                id="rewardCoins"
-                type="number"
-                min="0"
-                step="1"
-                value="0"
-              >
-
-            </label>
-
-
-            <label
-              class="field"
-              style="margin-top:13px"
-            >
-
-              <span class="label">
-                Require Completion
-              </span>
-
-              <select
-                class="select"
-                id="requireCompletion"
-              >
-
-                <option value="true">
-                  Yes
-                </option>
-
-                <option value="false">
-                  No
-                </option>
-
-              </select>
-
-            </label>
-
-
-            <label
-              class="field"
-              style="margin-top:13px"
-            >
-
-              <span class="label">
-                Require Feedback
-              </span>
-
-              <select
-                class="select"
-                id="requireFeedback"
-              >
-
-                <option value="true">
-                  Yes
-                </option>
-
-                <option value="false">
-                  No
-                </option>
-
-              </select>
-
-            </label>
-
+            </div>
 
             <div class="row-actions">
 
@@ -1070,20 +1090,27 @@ h1{
 
             </div>
 
-
-            <p class="side-note">
-              This configures the Beta reward.
-              Actual coin transfers will use DogEar's
-              existing audited coin ledger rather than
-              creating a separate Beta wallet.
-            </p>
+            <div
+              class="side-note"
+              style="margin-top:14px"
+            >
+              DogEar coin rewards use the site's existing
+              audited coin system. A beta reward record does
+              not create a second wallet or separate currency.
+            </div>
 
           </div>
 
         </section>
 
+      </div>
 
-        <!-- PROJECT TOOLS -->
+
+      <!-- =================================================
+           SIDEBAR
+      ================================================== -->
+      <aside class="stack">
+
         <section class="panel">
 
           <div class="panel-head">
@@ -1091,11 +1118,41 @@ h1{
             <div>
 
               <div class="panel-kicker">
-                Project Tools
+                Project
               </div>
 
               <h2 class="panel-title">
-                Manage
+                Details
+              </h2>
+
+            </div>
+
+          </div>
+
+          <div class="panel-body">
+
+            <div
+              class="side-note"
+              id="projectDetails"
+            ></div>
+
+          </div>
+
+        </section>
+
+
+        <section class="panel">
+
+          <div class="panel-head">
+
+            <div>
+
+              <div class="panel-kicker">
+                Management
+              </div>
+
+              <h2 class="panel-title">
+                Project Tools
               </h2>
 
             </div>
@@ -1108,17 +1165,17 @@ h1{
 
               <a
                 class="button secondary"
-                id="analyticsSideLink"
+                id="sideAnalyticsLink"
                 href="#"
               >
-                Beta Analytics
+                View Analytics
               </a>
 
               <a
                 class="button secondary"
                 href="beta-reading.html"
               >
-                Browse Beta Reading
+                Beta Reading Home
               </a>
 
             </div>
@@ -1144,18 +1201,26 @@ h1{
 
 <script>
 
+/* =========================================================
+   SUPABASE
+========================================================= */
+
 const SUPABASE_URL =
   "https://nrtutxjznkfvvbmaagum.supabase.co";
 
-const SUPABASE_PUBLISHABLE_KEY =
+const SUPABASE_KEY =
   "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
 
 const supabaseClient =
-  supabase.createClient(
+  window.supabase.createClient(
     SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
+    SUPABASE_KEY
   );
 
+
+/* =========================================================
+   STATE
+========================================================= */
 
 const params =
   new URLSearchParams(
@@ -1165,23 +1230,26 @@ const params =
 const projectId =
   params.get("id");
 
-
 let currentUser = null;
+
 let currentProfile = null;
 
 let project = null;
 
-let rounds = [];
 let currentRound = null;
 
-let interests = [];
 let assignments = [];
+
 let manuscripts = [];
 
-let reward = null;
+let sharedDogEars = [];
 
-let toastTimer = null;
+let rewardRecord = null;
 
+
+/* =========================================================
+   HELPERS
+========================================================= */
 
 const $ =
   id =>
@@ -1193,26 +1261,11 @@ function escapeHtml(value){
   return String(
     value ?? ""
   )
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 
 }
 
@@ -1225,116 +1278,142 @@ function showToast(
   const toast =
     $("toast");
 
-  clearTimeout(
-    toastTimer
-  );
-
   toast.textContent =
     message;
 
   toast.className =
-    "toast";
+    `toast show ${type}`;
 
-  if(type){
-    toast.classList.add(
-      type
-    );
-  }
-
-  requestAnimationFrame(
-    () =>
-      toast.classList.add(
-        "show"
-      )
+  clearTimeout(
+    showToast.timer
   );
 
-  toastTimer =
+  showToast.timer =
     setTimeout(
-      () =>
-        toast.classList.remove(
-          "show"
-        ),
-      4200
+      () => {
+        toast.className =
+          "toast";
+      },
+      3500
     );
 
 }
 
 
-function fileSize(bytes){
+function formatDate(value){
 
-  const value =
-    Number(
-      bytes || 0
-    );
-
-  if(value < 1024){
-    return value + " B";
+  if(!value){
+    return "Not set";
   }
 
-  if(value < 1048576){
+  const date =
+    new Date(value);
 
-    return (
-      value / 1024
-    ).toFixed(1) + " KB";
-
+  if(
+    Number.isNaN(
+      date.getTime()
+    )
+  ){
+    return String(value);
   }
 
-  return (
-    value / 1048576
-  ).toFixed(1) + " MB";
+  return date.toLocaleDateString(
+    undefined,
+    {
+      year:"numeric",
+      month:"short",
+      day:"numeric"
+    }
+  );
 
 }
 
 
-function processingLabel(status){
+function formatDateTime(value){
 
-  switch(status){
-
-    case "pending":
-      return "Waiting to process";
-
-    case "processing":
-      return "Processing";
-
-    case "ready":
-      return "Ready";
-
-    case "failed":
-      return "Processing failed";
-
-    default:
-      return "Waiting to process";
-
+  if(!value){
+    return "";
   }
+
+  const date =
+    new Date(value);
+
+  if(
+    Number.isNaN(
+      date.getTime()
+    )
+  ){
+    return "";
+  }
+
+  return date.toLocaleString(
+    undefined,
+    {
+      year:"numeric",
+      month:"short",
+      day:"numeric",
+      hour:"numeric",
+      minute:"2-digit"
+    }
+  );
 
 }
 
 
-function manuscriptCanProcess(
-  manuscript
+function safePercent(value){
+
+  const number =
+    Number(value || 0);
+
+  return Math.max(
+    0,
+    Math.min(
+      100,
+      Math.round(number)
+    )
+  );
+
+}
+
+
+function readerDisplayName(
+  assignment
 ){
 
-  const filename =
-    String(
-      manuscript.original_filename ||
-      ""
-    ).toLowerCase();
-
-  const mime =
-    String(
-      manuscript.mime_type ||
-      ""
-    ).toLowerCase();
+  const profile =
+    assignment.profiles ||
+    assignment.profile ||
+    {};
 
   return (
-    filename.endsWith(".txt") ||
-    filename.endsWith(".md") ||
-    mime === "text/plain" ||
-    mime === "text/markdown"
+    profile.display_name ||
+    profile.username ||
+    "DogEar Reader"
   );
 
 }
 
+
+function readerUsername(
+  assignment
+){
+
+  const profile =
+    assignment.profiles ||
+    assignment.profile ||
+    {};
+
+  return (
+    profile.username ||
+    ""
+  );
+
+}
+
+
+/* =========================================================
+   AUTHENTICATION
+========================================================= */
 
 async function loadSession(){
 
@@ -1346,35 +1425,49 @@ async function loadSession(){
       .auth
       .getSession();
 
-
   if(error){
+
     throw error;
+
   }
 
-
   currentUser =
-    data?.session?.user ||
+    data.session?.user ||
     null;
-
 
   if(!currentUser){
 
+    const returnTo =
+      encodeURIComponent(
+        window.location.href
+      );
+
     window.location.href =
-      "auth.html#login";
+      `auth.html#login?returnTo=${returnTo}`;
 
     return false;
 
   }
 
+  return true;
+
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+async function loadProfile(){
 
   const {
-    data:profile,
-    error:profileError
+    data,
+    error
   } =
     await supabaseClient
       .from("profiles")
       .select(
-        "id,display_name,username,avatar_url"
+        "id,username,display_name,avatar_url"
       )
       .eq(
         "id",
@@ -1382,94 +1475,100 @@ async function loadSession(){
       )
       .maybeSingle();
 
+  if(error){
 
-  if(profileError){
-
-    console.warn(
-      "Could not load profile:",
-      profileError
+    console.error(
+      "Profile:",
+      error
     );
+
+    return;
 
   }
 
-
   currentProfile =
-    profile ||
+    data ||
     null;
 
-
-  renderNavigation();
-
-  return true;
+  renderAvatar();
 
 }
 
 
-function renderNavigation(){
+function renderAvatar(){
 
-  const avatar =
+  const holder =
     $("navAvatar");
 
+  if(!holder){
+    return;
+  }
+
+  const avatarUrl =
+    currentProfile?.avatar_url;
+
+  if(avatarUrl){
+
+    holder.innerHTML =
+      `<img
+        src="${escapeHtml(avatarUrl)}"
+        alt=""
+      >`;
+
+    return;
+
+  }
 
   const name =
     currentProfile?.display_name ||
     currentProfile?.username ||
     currentUser?.email ||
-    "D";
+    "?";
 
-
-  if(
-    currentProfile?.avatar_url
-  ){
-
-    avatar.innerHTML =
-      `<img src="${escapeHtml(
-        currentProfile.avatar_url
-      )}" alt="">`;
-
-  }
-  else{
-
-    avatar.textContent =
-      name
-        .trim()
-        .charAt(0)
-        .toUpperCase();
-
-  }
+  holder.textContent =
+    String(name)
+      .trim()
+      .charAt(0)
+      .toUpperCase() ||
+    "?";
 
 }
 
 
+/* =========================================================
+   LOAD PROJECT
+========================================================= */
+
 async function loadProject(){
+
+  if(!projectId){
+
+    throw new Error(
+      "This DogEar link does not contain a beta project."
+    );
+
+  }
 
   const {
     data,
     error
   } =
     await supabaseClient
-      .from("beta_projects")
+      .from(
+        "beta_projects"
+      )
       .select("*")
       .eq(
         "id",
         projectId
       )
-      .maybeSingle();
-
+      .single();
 
   if(error){
+
     throw error;
-  }
-
-
-  if(!data){
-
-    throw new Error(
-      "Beta project not found."
-    );
 
   }
-
 
   if(
     data.owner_id !==
@@ -1477,11 +1576,10 @@ async function loadProject(){
   ){
 
     throw new Error(
-      "Only the project owner can manage this beta project."
+      "Only the owner of this beta project can manage it."
     );
 
   }
-
 
   project =
     data;
@@ -1489,14 +1587,20 @@ async function loadProject(){
 }
 
 
-async function loadRounds(){
+/* =========================================================
+   LOAD CURRENT ROUND
+========================================================= */
+
+async function loadCurrentRound(){
 
   const {
     data,
     error
   } =
     await supabaseClient
-      .from("beta_rounds")
+      .from(
+        "beta_rounds"
+      )
       .select("*")
       .eq(
         "project_id",
@@ -1507,44 +1611,42 @@ async function loadRounds(){
         {
           ascending:false
         }
-      );
-
+      )
+      .limit(1);
 
   if(error){
+
     throw error;
+
   }
 
-
-  rounds =
-    data ||
-    [];
-
-
   currentRound =
-    rounds.find(
-      row =>
-        row.status === "open"
-    ) ||
-    rounds[0] ||
+    data?.[0] ||
     null;
 
 }
 
 
-async function loadInterests(){
+/* =========================================================
+   LOAD ASSIGNMENTS
+========================================================= */
+
+async function loadAssignments(){
 
   const {
     data,
     error
   } =
     await supabaseClient
-      .from("beta_interests")
+      .from(
+        "beta_assignments"
+      )
       .select(`
         *,
-        profiles:reader_id (
+        profiles:reader_id(
           id,
-          display_name,
           username,
+          display_name,
           avatar_url
         )
       `)
@@ -1559,52 +1661,11 @@ async function loadInterests(){
         }
       );
 
-
   if(error){
+
     throw error;
+
   }
-
-
-  interests =
-    data ||
-    [];
-
-}
-
-
-async function loadAssignments(){
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("beta_assignments")
-      .select(`
-        *,
-        profiles:reader_id (
-          id,
-          display_name,
-          username,
-          avatar_url
-        )
-      `)
-      .eq(
-        "project_id",
-        projectId
-      )
-      .order(
-        "accepted_at",
-        {
-          ascending:false
-        }
-      );
-
-
-  if(error){
-    throw error;
-  }
-
 
   assignments =
     data ||
@@ -1613,6 +1674,10 @@ async function loadAssignments(){
 }
 
 
+/* =========================================================
+   LOAD MANUSCRIPTS
+========================================================= */
+
 async function loadManuscripts(){
 
   const {
@@ -1620,7 +1685,9 @@ async function loadManuscripts(){
     error
   } =
     await supabaseClient
-      .from("beta_manuscripts")
+      .from(
+        "beta_manuscripts"
+      )
       .select("*")
       .eq(
         "project_id",
@@ -1633,11 +1700,11 @@ async function loadManuscripts(){
         }
       );
 
-
   if(error){
-    throw error;
-  }
 
+    throw error;
+
+  }
 
   manuscripts =
     data ||
@@ -1646,16 +1713,59 @@ async function loadManuscripts(){
 }
 
 
-async function loadReward(){
+/* =========================================================
+   LOAD AUTHOR-SHARED DOGEARS
+========================================================= */
 
-  reward =
-    null;
+async function loadSharedDogEars(){
 
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .rpc(
+        "get_beta_project_shared_dogears",
+        {
+          p_project_id:
+            projectId
+        }
+      );
 
-  if(!currentRound){
+  if(error){
+
+    console.error(
+      "Shared DogEars:",
+      error
+    );
+
+    sharedDogEars = [];
+
     return;
+
   }
 
+  sharedDogEars =
+    data ||
+    [];
+
+}
+
+
+/* =========================================================
+   LOAD REWARD
+========================================================= */
+
+async function loadReward(){
+
+  if(!currentRound){
+
+    rewardRecord =
+      null;
+
+    return;
+
+  }
 
   const {
     data,
@@ -1672,474 +1782,275 @@ async function loadReward(){
       )
       .maybeSingle();
 
-
   if(error){
-    throw error;
+
+    console.error(
+      "Reward:",
+      error
+    );
+
+    rewardRecord =
+      null;
+
+    return;
+
   }
 
-
-  reward =
+  rewardRecord =
     data ||
     null;
 
 }
 
 
-function render(){
+/* =========================================================
+   LOAD ALL PROJECT DATA
+========================================================= */
 
-  $("loading")
-    .classList
-    .add(
-      "hidden"
-    );
+async function loadProjectData(){
 
-  $("projectContent")
-    .classList
-    .remove(
-      "hidden"
-    );
+  await loadProject();
 
+  await Promise.all([
+    loadCurrentRound(),
+    loadAssignments(),
+    loadManuscripts(),
+    loadSharedDogEars()
+  ]);
 
-  $("projectTitle").textContent =
-    project.title ||
-    "Untitled Beta Project";
-
-
-  $("projectBlurb").textContent =
-    project.blurb ||
-    "No project description has been added yet.";
-
-
-  $("projectStatus").textContent =
-    String(
-      project.status ||
-      "draft"
-    ).toUpperCase();
-
-
-  const analyticsUrl =
-    "beta-analytics.html?id=" +
-    encodeURIComponent(
-      projectId
-    );
-
-
-  $("analyticsLink").href =
-    analyticsUrl;
-
-  $("analyticsSideLink").href =
-    analyticsUrl;
-
-
-  renderStats();
-  renderRound();
-  renderPendingReaders();
-  renderReaders();
-  renderManuscripts();
-  renderReward();
+  await loadReward();
 
 }
 
 
-function renderStats(){
+/* =========================================================
+   RENDER PROJECT HEADER
+========================================================= */
+
+function renderProjectHeader(){
+
+  $("projectTitle")
+    .textContent =
+      project.title ||
+      "Untitled Beta Project";
+
+  $("projectBlurb")
+    .textContent =
+      project.description ||
+      project.blurb ||
+      "Private beta-reading project.";
+
+  $("projectStatus")
+    .textContent =
+      project.status ||
+      "active";
 
   const pending =
-    interests.filter(
-      row =>
-        row.status ===
-        "pending" &&
-                (
-          !currentRound ||
-          row.round_id ===
-            currentRound.id
+    assignments.filter(
+      assignment =>
+        assignment.status ===
+        "pending"
+    );
+
+  const accepted =
+    assignments.filter(
+      assignment =>
+        [
+          "accepted",
+          "reading"
+        ].includes(
+          assignment.status
         )
     );
 
-
-  const currentAssignments =
-    assignments.filter(
-      row =>
-        !currentRound ||
-        row.round_id ===
-          currentRound.id
-    );
-
-
-  const active =
-    currentAssignments.filter(
-      row =>
-        row.status ===
-          "accepted" ||
-        row.status ===
-          "reading"
-    );
-
-
   const completed =
-    currentAssignments.filter(
-      row =>
-        row.status ===
+    assignments.filter(
+      assignment =>
+        assignment.status ===
         "completed"
     );
 
+  $("pendingCount")
+    .textContent =
+      String(
+        pending.length
+      );
 
-  $("pendingCount").textContent =
-    pending.length;
+  $("readerCount")
+    .textContent =
+      String(
+        accepted.length
+      );
 
-  $("readerCount").textContent =
-    active.length;
+  $("completedCount")
+    .textContent =
+      String(
+        completed.length
+      );
 
-  $("completedCount").textContent =
-    completed.length;
+  $("roundNumber")
+    .textContent =
+      String(
+        currentRound
+          ?.round_number ||
+        1
+      );
 
-  $("roundNumber").textContent =
-    currentRound?.round_number ||
-    "—";
+  const analyticsUrl =
+    `beta-analytics.html?project=${encodeURIComponent(projectId)}`;
+
+  $("analyticsLink")
+    .href =
+      analyticsUrl;
+
+  $("sideAnalyticsLink")
+    .href =
+      analyticsUrl;
 
 }
 
+
+/* =========================================================
+   RENDER PROJECT DETAILS
+========================================================= */
+
+function renderProjectDetails(){
+
+  const genre =
+    project.genre ||
+    "Not specified";
+
+  const wordCount =
+    Number(
+      project.word_count ||
+      0
+    );
+
+  const readersWanted =
+    Number(
+      project.readers_wanted ||
+      0
+    );
+
+  const deadline =
+    project.deadline ||
+    currentRound?.deadline ||
+    null;
+
+  $("projectDetails")
+    .innerHTML =
+      `
+        <strong>Genre</strong><br>
+        ${escapeHtml(genre)}
+        <br><br>
+
+        <strong>Word count</strong><br>
+        ${
+          wordCount
+            ? escapeHtml(
+                wordCount
+                  .toLocaleString()
+              )
+            : "Not specified"
+        }
+        <br><br>
+
+        <strong>Readers wanted</strong><br>
+        ${
+          readersWanted
+            ? escapeHtml(
+                readersWanted
+              )
+            : "Not specified"
+        }
+        <br><br>
+
+        <strong>Deadline</strong><br>
+        ${escapeHtml(
+          formatDate(
+            deadline
+          )
+        )}
+      `;
+
+}
+
+
+/* =========================================================
+   RENDER CURRENT ROUND
+========================================================= */
 
 function renderRound(){
 
   if(!currentRound){
 
-    $("roundName").value =
-      "";
+    $("roundName")
+      .value =
+        "Round 1";
 
-    $("roundDescription").value =
-      "";
+    $("roundStatus")
+      .value =
+        "draft";
 
-    $("roundStatus").value =
+    $("roundDeadline")
+      .value =
+        "";
+
+    $("roundDescription")
+      .value =
+        "";
+
+    return;
+
+  }
+
+  $("roundName")
+    .value =
+      currentRound.name ||
+      `Round ${
+        currentRound.round_number ||
+        1
+      }`;
+
+  $("roundStatus")
+    .value =
+      currentRound.status ||
       "draft";
 
-    $("roundDeadline").value =
+  $("roundDeadline")
+    .value =
+      currentRound.deadline
+        ? String(
+            currentRound.deadline
+          ).slice(
+            0,
+            10
+          )
+        : "";
+
+  $("roundDescription")
+    .value =
+      currentRound.description ||
       "";
 
-    $("saveRoundButton").disabled =
-      true;
-
-    return;
-
-  }
-
-
-  $("saveRoundButton").disabled =
-    false;
-
-
-  $("roundName").value =
-    currentRound.name ||
-    `Round ${currentRound.round_number}`;
-
-
-  $("roundDescription").value =
-    currentRound.description ||
-    "";
-
-
-  $("roundStatus").value =
-    currentRound.status ||
-    "draft";
-
-
-  $("roundDeadline").value =
-    currentRound.deadline
-      ? String(
-          currentRound.deadline
-        ).slice(
-          0,
-          10
-        )
-      : "";
-
 }
 
 
-function readerName(profile){
-
-  return (
-    profile?.display_name ||
-    profile?.username ||
-    "Beta Reader"
-  );
-
-}
-
-
-function renderPendingReaders(){
-
-  const holder =
-    $("pendingReaderList");
-
-
-  const pending =
-    interests.filter(
-      row =>
-        row.status ===
-        "pending" &&
-        (
-          !currentRound ||
-          row.round_id ===
-            currentRound.id
-        )
-    );
-
-
-  if(!pending.length){
-
-    holder.innerHTML =
-      `
-        <div class="empty">
-          No pending beta-reader applications.
-        </div>
-      `;
-
-    return;
-
-  }
-
-
-  holder.innerHTML =
-    pending.map(
-      interest => {
-
-        const name =
-          readerName(
-            interest.profiles
-          );
-
-
-        return `
-          <div class="reader">
-
-            <div class="reader-top">
-
-              <div>
-
-                <div class="reader-name">
-                  ${escapeHtml(name)}
-                </div>
-
-                <div class="reader-meta">
-                  Beta-reader application
-                </div>
-
-              </div>
-
-              <span class="status">
-                Pending
-              </span>
-
-            </div>
-
-            ${
-              interest.message
-                ? `
-                  <div class="reader-message">
-                    ${escapeHtml(
-                      interest.message
-                    )}
-                  </div>
-                `
-                : ""
-            }
-
-            <div class="reader-actions">
-
-              <button
-                class="small-button accept"
-                type="button"
-                data-accept="${escapeHtml(
-                  interest.id
-                )}"
-              >
-                Accept Reader
-              </button>
-
-              <button
-                class="small-button danger"
-                type="button"
-                data-decline="${escapeHtml(
-                  interest.id
-                )}"
-              >
-                Decline
-              </button>
-
-            </div>
-
-          </div>
-        `;
-
-      }
-    ).join("");
-
-
-  holder
-    .querySelectorAll(
-      "[data-accept]"
-    )
-    .forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          () =>
-            acceptReader(
-              button.dataset.accept
-            )
-        );
-
-      }
-    );
-
-
-  holder
-    .querySelectorAll(
-      "[data-decline]"
-    )
-    .forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          () =>
-            declineReader(
-              button.dataset.decline
-            )
-        );
-
-      }
-    );
-
-}
-
-
-function renderReaders(){
-
-  const holder =
-    $("readerList");
-
-
-  const readers =
-    assignments.filter(
-      row =>
-        (
-          !currentRound ||
-          row.round_id ===
-            currentRound.id
-        ) &&
-        row.status !==
-          "removed" &&
-        row.status !==
-          "withdrawn"
-    );
-
-
-  if(!readers.length){
-
-    holder.innerHTML =
-      `
-        <div class="empty">
-          No accepted beta readers yet.
-        </div>
-      `;
-
-    return;
-
-  }
-
-
-  holder.innerHTML =
-    readers.map(
-      assignment => {
-
-        const name =
-          readerName(
-            assignment.profiles
-          );
-
-
-        const progress =
-          Math.max(
-            0,
-            Math.min(
-              100,
-              Number(
-                assignment.progress_percent ||
-                0
-              )
-            )
-          );
-
-
-        return `
-          <div class="reader">
-
-            <div class="reader-top">
-
-              <div>
-
-                <div class="reader-name">
-                  ${escapeHtml(name)}
-                </div>
-
-                <div class="reader-meta">
-                  ${escapeHtml(
-                    assignment.status ||
-                    "accepted"
-                  )}
-                </div>
-
-              </div>
-
-              <span class="status">
-                ${Math.round(progress)}%
-              </span>
-
-            </div>
-
-            <div class="progress">
-
-              <div
-                class="progress-bar"
-                style="width:${progress}%"
-              ></div>
-
-            </div>
-
-            <div class="reader-actions">
-
-              <a
-                class="small-button secondary"
-                href="beta-reader.html?assignment=${
-                  encodeURIComponent(
-                    assignment.id
-                  )
-                }"
-                style="text-decoration:none"
-              >
-                Reader View
-              </a>
-
-            </div>
-
-          </div>
-        `;
-
-      }
-    ).join("");
-
-}
-
+/* =========================================================
+   RENDER MANUSCRIPTS
+========================================================= */
 
 function renderManuscripts(){
 
   const holder =
     $("manuscriptList");
 
+  holder.innerHTML =
+    "";
 
-  if(!manuscripts.length){
+  if(
+    !manuscripts.length
+  ){
 
     holder.innerHTML =
       `
@@ -2155,293 +2066,748 @@ function renderManuscripts(){
 
   }
 
+  manuscripts.forEach(
+    manuscript => {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+      card.className =
+        "manuscript";
+
+      const status =
+        manuscript.processing_status ||
+        "pending";
+
+      const active =
+        manuscript.is_active
+          ? " · Active"
+          : "";
+
+      const size =
+        Number(
+          manuscript.file_size ||
+          0
+        );
+
+      card.innerHTML =
+        `
+          <div class="manuscript-name">
+            ${escapeHtml(
+              manuscript.original_filename ||
+              manuscript.file_name ||
+              "Manuscript"
+            )}
+          </div>
+
+          <div class="manuscript-meta">
+            Version
+            ${escapeHtml(
+              manuscript.version_number ||
+              1
+            )}
+            ${
+              size
+                ? ` · ${escapeHtml(
+                    size.toLocaleString()
+                  )} B`
+                : ""
+            }
+            ${escapeHtml(active)}
+          </div>
+
+          <div
+            class="manuscript-meta"
+            style="margin-top:7px"
+          >
+            Processing:
+            <strong>
+              ${escapeHtml(
+                status.toUpperCase()
+              )}
+            </strong>
+          </div>
+
+          ${
+            manuscript.processing_error
+              ? `
+                  <div
+                    class="reader-message"
+                    style="color:var(--danger)"
+                  >
+                    ${escapeHtml(
+                      manuscript.processing_error
+                    )}
+                  </div>
+                `
+              : ""
+          }
+        `;
+
+      holder.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   RENDER PENDING READERS
+========================================================= */
+
+function renderPendingReaders(){
+
+  const holder =
+    $("pendingReaders");
 
   holder.innerHTML =
-    manuscripts.map(
-      manuscript => {
+    "";
 
-        const status =
-          manuscript.processing_status ||
-          "pending";
+  const pending =
+    assignments.filter(
+      assignment =>
+        assignment.status ===
+        "pending"
+    );
 
+  if(!pending.length){
 
-        const canProcess =
-          manuscriptCanProcess(
-            manuscript
-          );
+    holder.innerHTML =
+      `
+        <div class="empty">
+          No pending reader applications.
+        </div>
+      `;
 
+    return;
 
-        const processButton =
-          canProcess &&
-          (
-            status === "pending" ||
-            status === "failed"
-          )
-            ? `
-              <button
-                class="small-button secondary"
-                type="button"
-                data-process="${escapeHtml(
-                  manuscript.id
-                )}"
-              >
-                ${
-                  status === "failed"
-                    ? "Retry Processing"
-                    : "Process Now"
-                }
-              </button>
-            `
-            : "";
+  }
 
+  pending.forEach(
+    assignment => {
 
-        const processingError =
-          manuscript.processing_error
-            ? `
-              <div
-                class="reader-message"
-                style="color:var(--danger)"
-              >
+      const card =
+        document.createElement(
+          "div"
+        );
+
+      card.className =
+        "reader";
+
+      const displayName =
+        readerDisplayName(
+          assignment
+        );
+
+      const username =
+        readerUsername(
+          assignment
+        );
+
+      const message =
+        assignment.application_message ||
+        assignment.message ||
+        assignment.reader_message ||
+        "";
+
+      card.innerHTML =
+        `
+          <div class="reader-top">
+
+            <div>
+
+              <div class="reader-name">
                 ${escapeHtml(
-                  manuscript.processing_error
+                  displayName
                 )}
               </div>
-            `
-            : "";
 
-
-        return `
-          <div class="manuscript">
-
-            <div class="reader-top">
-
-              <div>
-
-                <div class="manuscript-name">
-                  ${escapeHtml(
-                    manuscript.original_filename ||
-                    "Manuscript"
-                  )}
-                </div>
-
-                <div class="manuscript-meta">
-                  Version ${
-                    Number(
-                      manuscript.version_number ||
-                      1
-                    )
-                  }
-                  ·
-                  ${escapeHtml(
-                    fileSize(
-                      manuscript.file_size
-                    )
-                  )}
-                  ·
-                  ${
-                    manuscript.active
-                      ? "Active"
-                      : "Archived"
-                  }
-                </div>
-
-                ${processingError}
-
-              </div>
-
-              <span class="status">
+              <div class="reader-meta">
+                ${
+                  username
+                    ? `@${escapeHtml(
+                        username
+                      )} · `
+                    : ""
+                }
+                Applied
                 ${escapeHtml(
-                  processingLabel(
-                    status
+                  formatDate(
+                    assignment.created_at
                   )
                 )}
-              </span>
+              </div>
 
             </div>
 
-            ${
-              processButton
-                ? `
-                  <div class="reader-actions">
-                    ${processButton}
+            <span class="status">
+              Pending
+            </span>
+
+          </div>
+
+          ${
+            message
+              ? `
+                  <div class="reader-message">
+                    ${escapeHtml(
+                      message
+                    )}
                   </div>
                 `
-                : ""
-            }
+              : ""
+          }
+
+          <div class="reader-actions">
+
+            <button
+              class="small-button accept"
+              type="button"
+              data-accept-reader="${escapeHtml(
+                assignment.id
+              )}"
+            >
+              Accept Reader
+            </button>
+
+            <button
+              class="small-button danger"
+              type="button"
+              data-decline-reader="${escapeHtml(
+                assignment.id
+              )}"
+            >
+              Decline
+            </button>
 
           </div>
         `;
 
-      }
-    ).join("");
+      holder.appendChild(
+        card
+      );
 
+    }
+  );
 
   holder
     .querySelectorAll(
-      "[data-process]"
+      "[data-accept-reader]"
     )
     .forEach(
       button => {
 
         button.addEventListener(
           "click",
-          async () => {
+          () =>
+            acceptReader(
+              button.dataset
+                .acceptReader
+            )
+        );
 
-            button.disabled =
-              true;
+      }
+    );
 
+  holder
+    .querySelectorAll(
+      "[data-decline-reader]"
+    )
+    .forEach(
+      button => {
 
-            try{
-
-              await processManuscript(
-                button.dataset.process
-              );
-
-              await loadManuscripts();
-
-              renderManuscripts();
-
-            }
-            catch(error){
-
-              console.error(
-                "Manual manuscript processing:",
-                error
-              );
-
-            }
-            finally{
-
-              button.disabled =
-                false;
-
-            }
-
-          }
+        button.addEventListener(
+          "click",
+          () =>
+            declineReader(
+              button.dataset
+                .declineReader
+            )
         );
 
       }
     );
 
 }
+/* =========================================================
+   RENDER ACCEPTED READERS
+========================================================= */
 
+function renderAcceptedReaders(){
 
-function renderReward(){
+  const holder =
+    $("acceptedReaders");
 
-  $("rewardEnabled").value =
-    reward?.enabled
-      ? "true"
-      : "false";
+  holder.innerHTML =
+    "";
 
-
-  $("rewardCoins").value =
-    Number(
-      reward?.coin_amount ||
-      0
+  const accepted =
+    assignments.filter(
+      assignment =>
+        [
+          "accepted",
+          "reading",
+          "completed"
+        ].includes(
+          assignment.status
+        )
     );
 
+  if(!accepted.length){
 
-  $("requireCompletion").value =
-    reward?.require_completion ===
-      false
-      ? "false"
-      : "true";
-
-
-  $("requireFeedback").value =
-    reward?.require_feedback ===
-      false
-      ? "false"
-      : "true";
-
-
-  $("saveRewardButton").disabled =
-    !currentRound;
-
-}
-
-
-async function saveRound(){
-
-  if(!currentRound){
-
-    showToast(
-      "There is no current beta round to save.",
-      "error"
-    );
+    holder.innerHTML =
+      `
+        <div class="empty">
+          No accepted beta readers yet.
+        </div>
+      `;
 
     return;
 
   }
 
+  accepted.forEach(
+    assignment => {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+      card.className =
+        "reader";
+
+      const displayName =
+        readerDisplayName(
+          assignment
+        );
+
+      const username =
+        readerUsername(
+          assignment
+        );
+
+      const progress =
+        safePercent(
+          assignment.progress_percent ||
+          assignment.progress ||
+          (
+            assignment.status ===
+            "completed"
+              ? 100
+              : 0
+          )
+        );
+
+      const readerUrl =
+        `beta-reader.html?assignment=${encodeURIComponent(
+          assignment.id
+        )}`;
+
+      card.innerHTML =
+        `
+          <div class="reader-top">
+
+            <div>
+
+              <div class="reader-name">
+                ${escapeHtml(
+                  displayName
+                )}
+              </div>
+
+              <div class="reader-meta">
+                ${
+                  username
+                    ? `@${escapeHtml(
+                        username
+                      )} · `
+                    : ""
+                }
+
+                ${escapeHtml(
+                  assignment.status ||
+                  "accepted"
+                )}
+              </div>
+
+            </div>
+
+            <span class="status">
+              ${escapeHtml(
+                assignment.status ||
+                "accepted"
+              )}
+            </span>
+
+          </div>
+
+          <div class="progress">
+
+            <div
+              class="progress-bar"
+              style="width:${progress}%"
+            ></div>
+
+          </div>
+
+          <div class="reader-meta">
+            ${progress}% complete
+          </div>
+
+          <div class="reader-actions">
+
+            <a
+              class="small-button secondary"
+              href="${readerUrl}"
+            >
+              Reader View
+            </a>
+
+          </div>
+        `;
+
+      holder.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   RENDER AUTHOR-SHARED DOGEARS
+========================================================= */
+
+function renderSharedDogEars(){
+
+  const holder =
+    $("sharedDogEars");
+
+  const count =
+    $("sharedDogEarCount");
+
+  holder.innerHTML =
+    "";
+
+  count.textContent =
+    `${
+      sharedDogEars.length
+    } Shared`;
+
+  if(
+    !sharedDogEars.length
+  ){
+
+    holder.innerHTML =
+      `
+        <div class="empty">
+          No reader DogEars have been shared
+          with you yet.
+          <br><br>
+          Readers' private notes and highlights
+          are never shown here.
+        </div>
+      `;
+
+    return;
+
+  }
+
+  sharedDogEars.forEach(
+    dogear => {
+
+      const card =
+        document.createElement(
+          "article"
+        );
+
+      card.className =
+        "dogear-card";
+
+      const readerName =
+        dogear.reader_display_name ||
+        dogear.reader_username ||
+        "DogEar Reader";
+
+      const username =
+        dogear.reader_username
+          ? `@${dogear.reader_username}`
+          : "";
+
+      const sectionName =
+        dogear.section_title ||
+        (
+          dogear.section_number
+            ? `Section ${dogear.section_number}`
+            : "Manuscript"
+        );
+
+      const type =
+        dogear.annotation_type ||
+        "note";
+
+      const quote =
+        dogear.text_quote ||
+        "";
+
+      const note =
+        dogear.note_text ||
+        "";
+
+      card.innerHTML =
+        `
+          <div class="dogear-card-top">
+
+            <div>
+
+              <div class="dogear-reader">
+                ${escapeHtml(
+                  readerName
+                )}
+              </div>
+
+              <div class="dogear-location">
+
+                ${
+                  username
+                    ? `${escapeHtml(
+                        username
+                      )} · `
+                    : ""
+                }
+
+                ${escapeHtml(
+                  sectionName
+                )}
+
+                ·
+
+                ${escapeHtml(
+                  type
+                )}
+
+              </div>
+
+            </div>
+
+            <span class="status">
+              Shared
+            </span>
+
+          </div>
+
+          ${
+            quote
+              ? `
+                  <div class="dogear-quote">
+                    “${escapeHtml(
+                      quote
+                    )}”
+                  </div>
+                `
+              : ""
+          }
+
+          ${
+            note
+              ? `
+                  <div class="dogear-note">
+                    ${escapeHtml(
+                      note
+                    )}
+                  </div>
+                `
+              : ""
+          }
+
+          <div class="dogear-date">
+            Shared
+            ${escapeHtml(
+              formatDateTime(
+                dogear.created_at
+              )
+            )}
+          </div>
+        `;
+
+      holder.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   RENDER REWARD
+========================================================= */
+
+function renderReward(){
+
+  $("rewardCoins")
+    .value =
+      rewardRecord
+        ?.coins_offered ??
+      rewardRecord
+        ?.coin_amount ??
+      rewardRecord
+        ?.amount ??
+      0;
+
+}
+
+
+/* =========================================================
+   RENDER EVERYTHING
+========================================================= */
+
+function renderAll(){
+
+  renderProjectHeader();
+
+  renderProjectDetails();
+
+  renderRound();
+
+  renderManuscripts();
+
+  renderPendingReaders();
+
+  renderAcceptedReaders();
+
+  renderSharedDogEars();
+
+  renderReward();
+
+}
+
+
+/* =========================================================
+   SAVE ROUND
+========================================================= */
+
+async function saveRound(){
 
   const button =
     $("saveRoundButton");
 
-
   button.disabled =
     true;
 
-
   try{
 
-    const payload = {
+    const name =
+      $("roundName")
+        .value
+        .trim() ||
+      "Round 1";
 
-      name:
-        $("roundName")
-          .value
-          .trim() ||
-        `Round ${currentRound.round_number}`,
+    const status =
+      $("roundStatus")
+        .value;
 
-      description:
-        $("roundDescription")
-          .value
-          .trim() ||
-        null,
+    const deadline =
+      $("roundDeadline")
+        .value ||
+      null;
 
-      status:
-        $("roundStatus")
-          .value,
+    const description =
+      $("roundDescription")
+        .value
+        .trim() ||
+      null;
 
-      deadline:
-        $("roundDeadline")
-          .value ||
-        null
+    if(currentRound){
 
-    };
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from(
+            "beta_rounds"
+          )
+          .update({
+            name,
+            status,
+            deadline,
+            description
+          })
+          .eq(
+            "id",
+            currentRound.id
+          )
+          .eq(
+            "project_id",
+            projectId
+          )
+          .select("*")
+          .single();
 
+      if(error){
+        throw error;
+      }
 
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("beta_rounds")
-        .update(payload)
-        .eq(
-          "id",
-          currentRound.id
-        )
-        .eq(
-          "project_id",
-          projectId
-        );
+      currentRound =
+        data;
 
+    }
+    else{
 
-    if(error){
-      throw error;
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from(
+            "beta_rounds"
+          )
+          .insert({
+            project_id:
+              projectId,
+
+            round_number:
+              1,
+
+            name,
+
+            status,
+
+            deadline,
+
+            description
+          })
+          .select("*")
+          .single();
+
+      if(error){
+        throw error;
+      }
+
+      currentRound =
+        data;
+
     }
 
+    renderRound();
+
+    renderProjectHeader();
+
+    renderProjectDetails();
 
     showToast(
       "Beta round saved."
     );
-
-
-    await loadRounds();
-
-    await loadReward();
-
-    render();
 
   }
   catch(error){
@@ -2450,7 +2816,6 @@ async function saveRound(){
       "Save round:",
       error
     );
-
 
     showToast(
       error.message ||
@@ -2469,297 +2834,52 @@ async function saveRound(){
 }
 
 
+/* =========================================================
+   ACCEPT READER
+========================================================= */
+
 async function acceptReader(
-  interestId
+  assignmentId
 ){
+
+  if(!assignmentId){
+    return;
+  }
 
   try{
 
     const {
+      data,
       error
     } =
       await supabaseClient
         .rpc(
           "accept_beta_reader",
           {
-            p_interest_id:
-              interestId
+            p_assignment_id:
+              assignmentId
           }
         );
 
-
     if(error){
       throw error;
     }
 
+    await loadAssignments();
+
+    renderProjectHeader();
+
+    renderPendingReaders();
+
+    renderAcceptedReaders();
+
+    await loadSharedDogEars();
+
+    renderSharedDogEars();
 
     showToast(
-      "Beta reader accepted."
+      "Reader accepted."
     );
-
-
-    await Promise.all([
-      loadInterests(),
-      loadAssignments()
-    ]);
-
-
-    render();
-
-  }
-  catch(error){
-
-    console.error(
-      "Accept beta reader:",
-      error
-    );
-
-
-    showToast(
-      error.message ||
-      "DogEar couldn't accept this beta reader.",
-      "error"
-    );
-
-  }
-
-}
-
-
-async function declineReader(
-  interestId
-){
-
-  try{
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .rpc(
-          "decline_beta_reader",
-          {
-            p_interest_id:
-              interestId
-          }
-        );
-
-
-    if(error){
-      throw error;
-    }
-
-
-    showToast(
-      "Beta-reader application declined."
-    );
-
-
-    await loadInterests();
-
-    render();
-
-  }
-  catch(error){
-
-    console.error(
-      "Decline beta reader:",
-      error
-    );
-
-
-    showToast(
-      error.message ||
-      "DogEar couldn't decline this application.",
-      "error"
-    );
-
-  }
-
-}
-
-
-async function saveReward(){
-
-  if(!currentRound){
-
-    showToast(
-      "There is no current beta round.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  const button =
-    $("saveRewardButton");
-
-
-  button.disabled =
-    true;
-    try{
-
-    const payload = {
-
-      round_id:
-        currentRound.id,
-
-      enabled:
-        $("rewardEnabled")
-          .value ===
-        "true",
-
-      coin_amount:
-        Math.max(
-          0,
-          Math.floor(
-            Number(
-              $("rewardCoins")
-                .value ||
-              0
-            )
-          )
-        ),
-
-      require_completion:
-        $("requireCompletion")
-          .value ===
-        "true",
-
-      require_feedback:
-        $("requireFeedback")
-          .value ===
-        "true"
-
-    };
-
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from(
-          "beta_round_rewards"
-        )
-        .upsert(
-          payload,
-          {
-            onConflict:
-              "round_id"
-          }
-        )
-        .select("*")
-        .single();
-
-
-    if(error){
-      throw error;
-    }
-
-
-    reward =
-      data;
-
-
-    renderReward();
-
-
-    showToast(
-      "Beta reward settings saved."
-    );
-
-  }
-  catch(error){
-
-    console.error(
-      "Save reward:",
-      error
-    );
-
-
-    showToast(
-      error.message ||
-      "DogEar couldn't save the reward settings.",
-      "error"
-    );
-
-  }
-  finally{
-
-    button.disabled =
-      false;
-
-  }
-
-}
-
-
-/* =========================================================
-   MANUSCRIPT PROCESSING
-   IMPORTANT:
-   The deployed Supabase Edge Function is
-   "process-beta-manuscript".
-========================================================= */
-
-async function processManuscript(
-  manuscriptId
-){
-
-  showToast(
-    "Processing manuscript..."
-  );
-
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .functions
-        .invoke(
-          "process-beta-manuscript",
-          {
-            body:{
-              manuscript_id:
-                manuscriptId
-            }
-          }
-        );
-
-
-    if(error){
-
-      console.error(
-        "Edge Function invocation error:",
-        error
-      );
-
-      throw error;
-
-    }
-
-
-    if(
-      data?.success === false
-    ){
-
-      throw new Error(
-        data.error ||
-        "The manuscript processor reported an error."
-      );
-
-    }
-
-
-    showToast(
-      "Manuscript processing complete."
-    );
-
 
     return data;
 
@@ -2767,21 +2887,154 @@ async function processManuscript(
   catch(error){
 
     console.error(
-      "Process manuscript:",
+      "Accept reader:",
       error
     );
 
-
     showToast(
       error.message ||
-      "DogEar couldn't process this manuscript.",
+      "DogEar couldn't accept this reader.",
       "error"
     );
 
+  }
 
-    throw error;
+}
+
+
+/* =========================================================
+   DECLINE READER
+========================================================= */
+
+async function declineReader(
+  assignmentId
+){
+
+  if(!assignmentId){
+    return;
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "decline_beta_reader",
+          {
+            p_assignment_id:
+              assignmentId
+          }
+        );
+
+    if(error){
+      throw error;
+    }
+
+    await loadAssignments();
+
+    renderProjectHeader();
+
+    renderPendingReaders();
+
+    renderAcceptedReaders();
+
+    await loadSharedDogEars();
+
+    renderSharedDogEars();
+
+    showToast(
+      "Reader declined."
+    );
+
+    return data;
 
   }
+  catch(error){
+
+    console.error(
+      "Decline reader:",
+      error
+    );
+
+    showToast(
+      error.message ||
+      "DogEar couldn't decline this reader.",
+      "error"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   REQUEST MANUSCRIPT PROCESSING
+========================================================= */
+
+async function requestProcessing(
+  manuscriptId
+){
+
+  if(!manuscriptId){
+    return;
+  }
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .rpc(
+        "request_beta_manuscript_processing",
+        {
+          p_manuscript_id:
+            manuscriptId
+        }
+      );
+
+  if(error){
+
+    console.error(
+      "Request processing:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   CALL MANUSCRIPT PROCESSOR
+========================================================= */
+
+async function processManuscript(
+  manuscriptId
+){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .functions
+      .invoke(
+        "process-beta-manuscript",
+        {
+          body:{
+            manuscript_id:
+              manuscriptId
+          }
+        }
+      );
+
+  if(error){
+    throw error;
+  }
+
+  return data;
 
 }
 
@@ -2792,12 +3045,14 @@ async function processManuscript(
 
 async function uploadManuscript(){
 
+  const button =
+    $("uploadButton");
+
   const input =
     $("manuscriptFile");
 
   const file =
     input.files?.[0];
-
 
   if(!file){
 
@@ -2810,147 +3065,57 @@ async function uploadManuscript(){
 
   }
 
-
   if(!currentRound){
 
     showToast(
-      "This project needs a beta round before a manuscript can be uploaded.",
+      "Save the beta round before uploading a manuscript.",
       "error"
     );
 
     return;
 
   }
-
-
-  const filename =
-    String(
-      file.name || ""
-    );
-
-  const extension =
-    filename
-      .split(".")
-      .pop()
-      ?.toLowerCase() ||
-    "";
-
-
-  if(
-    extension !== "txt" &&
-    extension !== "md"
-  ){
-
-    showToast(
-      "The current DogEar processor supports TXT and Markdown manuscripts.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  const button =
-    $("uploadButton");
 
   button.disabled =
     true;
 
-
-  let uploadedPath =
-    null;
-
-  let databaseRecordCreated =
-    false;
-
-
   try{
 
-    showToast(
-      "Uploading private manuscript..."
-    );
-
+    const nextVersion =
+      manuscripts.length
+        ? Math.max(
+            ...manuscripts.map(
+              manuscript =>
+                Number(
+                  manuscript
+                    .version_number ||
+                  0
+                )
+            )
+          ) + 1
+        : 1;
 
     const manuscriptId =
       crypto.randomUUID();
 
-
-    const versionNumbers =
-      manuscripts
-        .map(
-          manuscript =>
-            Number(
-              manuscript.version_number ||
-              0
-            )
-        )
-        .filter(
-          number =>
-            Number.isFinite(
-              number
-            )
+    const cleanName =
+      file.name
+        .replace(
+          /[^a-zA-Z0-9._-]/g,
+          "_"
         );
 
-
-    const versionNumber =
-      versionNumbers.length
-        ? Math.max(
-            ...versionNumbers
-          ) + 1
-        : 1;
-
-
-    const safeFilename =
-      filename
-        .replace(
-          /[^a-zA-Z0-9._-]+/g,
-          "-"
-        )
-        .replace(
-          /-+/g,
-          "-"
-        )
-        .replace(
-          /^-+|-+$/g,
-          ""
-        ) ||
-      `manuscript-${versionNumber}.${extension}`;
-
-
     /*
-      Private Storage path:
+      Migration #9 uses this private storage layout:
 
-      owner-id /
-      project-id /
-      manuscript-id /
-      filename
+      owner / project / manuscript / filename
     */
 
-    uploadedPath =
-      `${
-        currentUser.id
-      }/${
-        projectId
-      }/${
-        manuscriptId
-      }/${
-        safeFilename
-      }`;
-
-
-    const mimeType =
-      file.type ||
-      (
-        extension === "md"
-          ? "text/markdown"
-          : "text/plain"
-      );
-
+    const storagePath =
+      `${currentUser.id}/${projectId}/${manuscriptId}/${cleanName}`;
 
     const {
-      error:
-        storageError
+      error:uploadError
     } =
       await supabaseClient
         .storage
@@ -2958,7 +3123,7 @@ async function uploadManuscript(){
           "beta-manuscripts"
         )
         .upload(
-          uploadedPath,
+          storagePath,
           file,
           {
             cacheControl:
@@ -2968,214 +3133,173 @@ async function uploadManuscript(){
               false,
 
             contentType:
-              mimeType
+              file.type ||
+              "application/octet-stream"
           }
         );
 
-
-    if(storageError){
-      throw storageError;
+    if(uploadError){
+      throw uploadError;
     }
 
+    const manuscriptRow = {
 
-    /*
-      Create the new manuscript metadata record BEFORE
-      archiving the previous active manuscript.
+      id:
+        manuscriptId,
 
-      That way a failed insert cannot leave the project
-      without an active manuscript.
-    */
+      project_id:
+        projectId,
+
+      round_id:
+        currentRound.id,
+
+      owner_id:
+        currentUser.id,
+
+      version_number:
+        nextVersion,
+
+      original_filename:
+        file.name,
+
+      storage_path:
+        storagePath,
+
+      file_size:
+        file.size,
+
+      mime_type:
+        file.type ||
+        "application/octet-stream",
+
+      is_active:
+        true,
+
+      processing_status:
+        "pending"
+    };
 
     const {
-      data:
-        newManuscript,
-      error:
-        manuscriptError
+      data:newManuscript,
+      error:insertError
     } =
       await supabaseClient
         .from(
           "beta_manuscripts"
         )
-        .insert({
-
-          id:
-            manuscriptId,
-
-          project_id:
-            projectId,
-
-          round_id:
-            currentRound.id,
-
-          uploaded_by:
-            currentUser.id,
-
-          version_number:
-            versionNumber,
-
-          original_filename:
-            filename,
-
-          storage_path:
-            uploadedPath,
-
-          mime_type:
-            mimeType,
-
-          file_size:
-            file.size,
-
-          active:
-            true,
-
-          processing_status:
-            "pending",
-
-          processing_error:
-            null
-
-        })
+        .insert(
+          manuscriptRow
+        )
         .select("*")
         .single();
 
+    if(insertError){
 
-    if(manuscriptError){
-      throw manuscriptError;
+      /*
+        If the database row fails after the file upload,
+        remove the orphaned private file.
+      */
+
+      await supabaseClient
+        .storage
+        .from(
+          "beta-manuscripts"
+        )
+        .remove([
+          storagePath
+        ]);
+
+      throw insertError;
+
     }
 
-
-    databaseRecordCreated =
-      true;
-
-
     /*
-      Archive any older active manuscript only after
-      the new manuscript row exists successfully.
+      Older manuscript versions remain in the project,
+      but only the newest uploaded version is active.
     */
 
-    const previousActiveIds =
+    const olderIds =
       manuscripts
         .filter(
           manuscript =>
-            manuscript.active &&
-            manuscript.id !==
-              manuscriptId
+            manuscript.is_active
         )
         .map(
           manuscript =>
             manuscript.id
         );
 
-
     if(
-      previousActiveIds.length
+      olderIds.length
     ){
 
       const {
-        error:
-          archiveError
+        error:deactivateError
       } =
         await supabaseClient
           .from(
             "beta_manuscripts"
           )
           .update({
-            active:false
+            is_active:false
           })
           .in(
             "id",
-            previousActiveIds
+            olderIds
+          )
+          .eq(
+            "project_id",
+            projectId
           );
 
+      if(deactivateError){
 
-      if(archiveError){
-
-        console.warn(
-          "Could not archive previous manuscript:",
-          archiveError
+        console.error(
+          "Deactivate previous manuscripts:",
+          deactivateError
         );
 
       }
 
     }
 
-
-    input.value =
-      "";
-
-
-    /*
-      Immediately put the manuscript on screen.
-    */
-
-    manuscripts =
-      [
-        newManuscript,
-
-        ...manuscripts.map(
-          manuscript => ({
-
-            ...manuscript,
-
-            active:
-              previousActiveIds.includes(
-                manuscript.id
-              )
-                ? false
-                : manuscript.active
-
-          })
-        )
-      ];
-
-
-    renderManuscripts();
-
-
-    showToast(
-      "Manuscript uploaded. Starting processing..."
+    await requestProcessing(
+      newManuscript.id
     );
 
+    showToast(
+      "Manuscript uploaded. DogEar is processing it."
+    );
 
     /*
-      Start the Edge Function.
-
-      processManuscript() invokes the deployed function:
-
-      process-beta-manuscript
+      Invoke the deployed processor immediately.
+      The processor itself performs ownership and
+      manuscript checks before extracting sections.
     */
 
     try{
 
       await processManuscript(
-        manuscriptId
+        newManuscript.id
       );
 
     }
-    catch(
-      processingError
-    ){
-
-      /*
-        Do not remove the private manuscript if
-        processing fails.
-
-        Keeping the file and database row allows
-        Process Now / Retry Processing to be used.
-      */
+    catch(processError){
 
       console.error(
-        "Automatic manuscript processing failed:",
-        processingError
+        "Process manuscript:",
+        processError
+      );
+
+      showToast(
+        "The manuscript uploaded, but processing did not finish. You can retry processing later.",
+        "error"
       );
 
     }
 
-
-    /*
-      Reload from Supabase so the processing status
-      written by the Edge Function appears on screen.
-    */
+    input.value =
+      "";
 
     await loadManuscripts();
 
@@ -3188,59 +3312,6 @@ async function uploadManuscript(){
       "Upload manuscript:",
       error
     );
-
-
-    /*
-      If the Storage object was uploaded but creation
-      of beta_manuscripts failed, remove the orphaned
-      private file.
-
-      Once the database record exists we deliberately
-      retain the file so processing can be retried.
-    */
-
-    if(
-      uploadedPath &&
-      !databaseRecordCreated
-    ){
-
-      try{
-
-        const {
-          error:
-            cleanupError
-        } =
-          await supabaseClient
-            .storage
-            .from(
-              "beta-manuscripts"
-            )
-            .remove([
-              uploadedPath
-            ]);
-
-
-        if(cleanupError){
-
-          console.warn(
-            "Storage cleanup failed:",
-            cleanupError
-          );
-
-        }
-
-      }
-      catch(cleanupException){
-
-        console.warn(
-          "Storage cleanup exception:",
-          cleanupException
-        );
-
-      }
-
-    }
-
 
     showToast(
       error.message ||
@@ -3257,34 +3328,374 @@ async function uploadManuscript(){
   }
 
 }
+  /* =========================================================
+   SAVE REWARD
+========================================================= */
+
+async function saveReward(){
+
+  const button =
+    $("saveRewardButton");
+
+  if(!currentRound){
+
+    showToast(
+      "Save the beta round first.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  const coins =
+    Math.max(
+      0,
+      Math.floor(
+        Number(
+          $("rewardCoins")
+            .value ||
+          0
+        )
+      )
+    );
+
+  button.disabled =
+    true;
+
+  try{
+
+    /*
+      beta_round_rewards stores the beta-round offer.
+      It does NOT directly move coins.
+
+      Actual coin movement must remain connected to
+      DogEar's existing audited coin ledger.
+    */
+
+    if(rewardRecord){
+
+      const updatePayload =
+        {};
+
+      if(
+        Object.prototype
+          .hasOwnProperty
+          .call(
+            rewardRecord,
+            "coins_offered"
+          )
+      ){
+
+        updatePayload
+          .coins_offered =
+            coins;
+
+      }
+      else if(
+        Object.prototype
+          .hasOwnProperty
+          .call(
+            rewardRecord,
+            "coin_amount"
+          )
+      ){
+
+        updatePayload
+          .coin_amount =
+            coins;
+
+      }
+      else{
+
+        updatePayload.amount =
+          coins;
+
+      }
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from(
+            "beta_round_rewards"
+          )
+          .update(
+            updatePayload
+          )
+          .eq(
+            "id",
+            rewardRecord.id
+          )
+          .select("*")
+          .single();
+
+      if(error){
+        throw error;
+      }
+
+      rewardRecord =
+        data;
+
+    }
+    else{
+
+      /*
+        Migration #8 created beta_round_rewards.
+        The normal DogEar field is coins_offered.
+      */
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from(
+            "beta_round_rewards"
+          )
+          .insert({
+            project_id:
+              projectId,
+
+            round_id:
+              currentRound.id,
+
+            coins_offered:
+              coins
+          })
+          .select("*")
+          .single();
+
+      if(error){
+        throw error;
+      }
+
+      rewardRecord =
+        data;
+
+    }
+
+    renderReward();
+
+    showToast(
+      "Reader reward saved."
+    );
+
+  }
+  catch(error){
+
+    console.error(
+      "Save reward:",
+      error
+    );
+
+    showToast(
+      error.message ||
+      "DogEar couldn't save the reader reward.",
+      "error"
+    );
+
+  }
+  finally{
+
+    button.disabled =
+      false;
+
+  }
+
+}
 
 
 /* =========================================================
-   REFRESH
+   REFRESH SHARED DOGEARS
 ========================================================= */
 
-async function refresh(){
+async function refreshSharedDogEars(){
 
-  await loadProject();
+  try{
 
-  await loadRounds();
+    await loadSharedDogEars();
+
+    renderSharedDogEars();
+
+  }
+  catch(error){
+
+    console.error(
+      "Refresh shared DogEars:",
+      error
+    );
+
+  }
+
+}
 
 
-  await Promise.all([
+/* =========================================================
+   EVENT LISTENERS
+========================================================= */
 
-    loadInterests(),
+function bindEvents(){
 
-    loadAssignments(),
-
-    loadManuscripts()
-
-  ]);
-
-
-  await loadReward();
+  $("saveRoundButton")
+    .addEventListener(
+      "click",
+      saveRound
+    );
 
 
-  render();
+  $("uploadButton")
+    .addEventListener(
+      "click",
+      uploadManuscript
+    );
+
+
+  $("saveRewardButton")
+    .addEventListener(
+      "click",
+      saveReward
+    );
+
+
+  /*
+    Refresh shared DogEars whenever this tab becomes active
+    again.
+
+    Example:
+    Tate shares a note while Milo already has this project
+    open in another tab. Returning to Milo's tab refreshes
+    the author-visible feed.
+  */
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if(
+        document.visibilityState ===
+        "visible"
+      ){
+
+        refreshSharedDogEars();
+
+      }
+
+    }
+  );
+
+
+  /*
+    Also refresh when the browser window regains focus.
+  */
+
+  window.addEventListener(
+    "focus",
+    () => {
+
+      refreshSharedDogEars();
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   SHOW PROJECT
+========================================================= */
+
+function showProject(){
+
+  $("loading")
+    .classList
+    .add(
+      "hidden"
+    );
+
+  $("projectContent")
+    .classList
+    .remove(
+      "hidden"
+    );
+
+}
+
+
+/* =========================================================
+   SHOW LOAD ERROR
+========================================================= */
+
+function showLoadError(
+  error
+){
+
+  console.error(
+    "Beta project:",
+    error
+  );
+
+  $("projectContent")
+    .classList
+    .add(
+      "hidden"
+    );
+
+  $("loading")
+    .classList
+    .remove(
+      "hidden"
+    );
+
+  $("loading")
+    .innerHTML =
+      `
+        <div
+          style="
+            max-width:620px;
+            margin:auto;
+          "
+        >
+
+          <div
+            style="
+              color:var(--danger);
+              font-size:20px;
+              margin-bottom:10px;
+            "
+          >
+            DogEar couldn't open this beta project.
+          </div>
+
+          <div
+            style="
+              line-height:1.7;
+            "
+          >
+            ${escapeHtml(
+              error?.message ||
+              "Unknown project error."
+            )}
+          </div>
+
+          <div
+            style="
+              margin-top:22px;
+            "
+          >
+
+            <a
+              class="button secondary"
+              href="beta-reading.html"
+            >
+              Back to Beta Reading
+            </a>
+
+          </div>
+
+        </div>
+      `;
 
 }
 
@@ -3300,10 +3711,15 @@ async function initialize(){
     if(!projectId){
 
       throw new Error(
-        "No beta project was selected."
+        "This DogEar link does not contain a project ID."
       );
 
     }
+
+
+    $("loading")
+      .textContent =
+        "Checking your DogEar account…";
 
 
     const loggedIn =
@@ -3315,146 +3731,40 @@ async function initialize(){
     }
 
 
-    await refresh();
+    $("loading")
+      .textContent =
+        "Loading your profile…";
+
+
+    await loadProfile();
+
+
+    $("loading")
+      .textContent =
+        "Opening your beta project…";
+
+
+    await loadProjectData();
+
+
+    renderAll();
+
+
+    bindEvents();
+
+
+    showProject();
 
   }
   catch(error){
 
-    console.error(
-      "Load beta project:",
+    showLoadError(
       error
     );
-
-
-    $("projectContent")
-      .classList
-      .add(
-        "hidden"
-      );
-
-
-    $("loading")
-      .classList
-      .remove(
-        "hidden"
-      );
-
-
-    $("loading")
-      .innerHTML =
-        `
-          <div
-            style="
-              max-width:620px;
-              margin:auto;
-              padding:30px;
-              border:1px solid var(--line);
-              border-radius:16px;
-              background:var(--panel);
-            "
-          >
-
-            <div
-              class="eyebrow"
-              style="margin-bottom:10px"
-            >
-              DogEar Beta
-            </div>
-
-            <div
-              style="
-                font-size:26px;
-                margin-bottom:12px;
-              "
-            >
-              We couldn't open this project.
-            </div>
-
-            <div
-              style="
-                color:var(--muted);
-                font:11px/1.7 Arial,sans-serif;
-              "
-            >
-              ${
-                escapeHtml(
-                  error.message ||
-                  "Unknown project error."
-                )
-              }
-            </div>
-
-            <div
-              style="margin-top:18px"
-            >
-
-              <a
-                class="button secondary"
-                href="beta-reading.html"
-              >
-                Back to Beta Reading
-              </a>
-
-            </div>
-
-          </div>
-        `;
 
   }
 
 }
-
-
-/* =========================================================
-   EVENT LISTENERS
-========================================================= */
-
-$("saveRoundButton")
-  .addEventListener(
-    "click",
-    saveRound
-  );
-
-
-$("saveRewardButton")
-  .addEventListener(
-    "click",
-    saveReward
-  );
-
-
-$("uploadButton")
-  .addEventListener(
-    "click",
-    uploadManuscript
-  );
-
-
-/* =========================================================
-   AUTH CHANGES
-========================================================= */
-
-supabaseClient
-  .auth
-  .onAuthStateChange(
-    (
-      event,
-      session
-    ) => {
-
-      if(
-        event ===
-          "SIGNED_OUT" ||
-        !session
-      ){
-
-        window.location.href =
-          "auth.html#login";
-
-      }
-
-    }
-  );
 
 
 /* =========================================================
