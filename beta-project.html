@@ -1,0 +1,2799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DogEar — Beta Project</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --ink:#090b0a;
+  --panel:#101410;
+  --panel2:#151a15;
+  --cream:#f1e7cf;
+  --cream2:#d9cfb8;
+  --gold:#c79b59;
+  --gold2:#dfbd7e;
+  --green:#26362b;
+  --green2:#34483a;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.22);
+  --line-soft:rgba(199,155,89,.11);
+  --danger:#e6a09a;
+  --ok:#b9d6b2;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--cream);
+  background:
+    radial-gradient(circle at 8% 0%,rgba(53,73,59,.28),transparent 26%),
+    radial-gradient(circle at 90% 15%,rgba(199,155,89,.07),transparent 24%),
+    var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+button,input,select,textarea{
+  font:inherit;
+}
+
+button{
+  color:inherit;
+}
+
+a{
+  color:inherit;
+}
+
+.topbar{
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:0 clamp(18px,4vw,60px);
+  border-bottom:1px solid var(--line);
+  background:rgba(9,11,10,.95);
+  backdrop-filter:blur(14px);
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 13px Arial,sans-serif;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  transform:rotate(-8deg);
+  position:relative;
+}
+
+.brand-mark::after{
+  content:"";
+  position:absolute;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--gold);
+  right:7px;
+  top:7px;
+}
+
+.nav{
+  display:flex;
+  align-items:center;
+  gap:22px;
+  font:700 11px Arial,sans-serif;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.nav a:hover,
+.nav a.active{
+  color:var(--gold2);
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:var(--green);
+  text-decoration:none;
+  font:800 13px Arial,sans-serif;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.page{
+  width:min(1320px,calc(100% - 32px));
+  margin:auto;
+  padding:42px 0 110px;
+}
+
+.back-link{
+  display:inline-flex;
+  margin-bottom:20px;
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 9px Arial,sans-serif;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.hero{
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:clamp(28px,5vw,55px);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(38,54,43,.76),
+      rgba(16,20,16,.92) 62%,
+      rgba(199,155,89,.05)
+    );
+}
+
+.eyebrow{
+  color:var(--gold);
+  font:800 9px Arial,sans-serif;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+h1{
+  margin:10px 0 0;
+  font-size:clamp(38px,6vw,68px);
+  line-height:.96;
+  font-weight:400;
+  letter-spacing:-.04em;
+}
+
+.hero-copy{
+  max-width:780px;
+  margin-top:18px;
+  color:var(--cream2);
+  font:12px/1.7 Arial,sans-serif;
+}
+
+.hero-actions{
+  margin-top:24px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+}
+
+.button{
+  min-height:42px;
+  padding:0 16px;
+  border-radius:999px;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.button.primary{
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:#11130f;
+}
+
+.button.secondary{
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--gold2);
+}
+
+.button.danger{
+  border:1px solid rgba(230,160,154,.4);
+  background:transparent;
+  color:var(--danger);
+}
+
+.button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.stats{
+  margin-top:20px;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+}
+
+.stat{
+  padding:16px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(9,11,10,.38);
+}
+
+.stat-label{
+  color:var(--muted);
+  font:800 7px Arial,sans-serif;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.stat-value{
+  margin-top:6px;
+  font-size:25px;
+}
+
+.layout{
+  margin-top:28px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 330px;
+  gap:20px;
+  align-items:start;
+}
+
+.stack{
+  display:grid;
+  gap:20px;
+}
+
+.panel{
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(16,20,16,.91);
+  overflow:hidden;
+}
+
+.panel-head{
+  padding:19px 20px;
+  border-bottom:1px solid var(--line-soft);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+}
+
+.panel-title{
+  margin:0;
+  font-size:25px;
+  font-weight:400;
+}
+
+.panel-kicker{
+  margin-bottom:5px;
+  color:var(--gold);
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.panel-body{
+  padding:20px;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:13px;
+}
+
+.field{
+  display:grid;
+  gap:7px;
+}
+
+.field.full{
+  grid-column:1/-1;
+}
+
+.label{
+  color:var(--gold);
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.input,
+.select,
+.textarea{
+  width:100%;
+  border:1px solid var(--line);
+  background:#0b0e0c;
+  color:var(--cream);
+  border-radius:10px;
+  outline:none;
+  font:12px Arial,sans-serif;
+}
+
+.input,
+.select{
+  min-height:43px;
+  padding:0 12px;
+}
+
+.textarea{
+  min-height:100px;
+  padding:12px;
+  resize:vertical;
+}
+
+.row-actions{
+  margin-top:15px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.reader-list{
+  display:grid;
+  gap:11px;
+}
+
+.reader{
+  padding:15px;
+  border:1px solid var(--line-soft);
+  border-radius:12px;
+  background:#0c0f0d;
+}
+
+.reader-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.reader-name{
+  font-size:18px;
+}
+
+.reader-meta{
+  margin-top:4px;
+  color:var(--muted);
+  font:9px/1.5 Arial,sans-serif;
+}
+
+.reader-message{
+  margin-top:11px;
+  color:var(--cream2);
+  font:11px/1.6 Arial,sans-serif;
+}
+
+.progress{
+  margin-top:11px;
+  height:7px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#050706;
+}
+
+.progress-bar{
+  height:100%;
+  background:var(--gold);
+}
+
+.reader-actions{
+  margin-top:12px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.small-button{
+  min-height:34px;
+  padding:0 12px;
+  border-radius:999px;
+  cursor:pointer;
+  font:800 7px Arial,sans-serif;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.small-button.accept{
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:#11130f;
+}
+
+.small-button.secondary{
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--gold2);
+}
+
+.small-button.danger{
+  border:1px solid rgba(230,160,154,.35);
+  background:transparent;
+  color:var(--danger);
+}
+
+.empty{
+  padding:32px 18px;
+  text-align:center;
+  border:1px dashed var(--line);
+  border-radius:12px;
+  color:var(--muted);
+  font:10px/1.65 Arial,sans-serif;
+}
+
+.upload-box{
+  border:1px dashed var(--line);
+  border-radius:14px;
+  padding:20px;
+}
+
+.upload-note{
+  color:var(--muted);
+  font:10px/1.65 Arial,sans-serif;
+}
+
+.file-input{
+  width:100%;
+  margin-top:14px;
+  color:var(--cream2);
+  font:11px Arial,sans-serif;
+}
+
+.manuscript{
+  margin-top:14px;
+  padding:14px;
+  border:1px solid var(--line-soft);
+  border-radius:11px;
+}
+
+.manuscript-name{
+  font-size:16px;
+}
+
+.manuscript-meta{
+  margin-top:5px;
+  color:var(--muted);
+  font:9px/1.5 Arial,sans-serif;
+}
+
+.side-note{
+  color:var(--muted);
+  font:10px/1.65 Arial,sans-serif;
+}
+
+.side-links{
+  margin-top:14px;
+  display:grid;
+  gap:8px;
+}
+
+.side-links .button{
+  width:100%;
+}
+
+.status{
+  display:inline-flex;
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:6px 8px;
+  color:var(--gold2);
+  font:800 7px Arial,sans-serif;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.toast{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:200;
+  max-width:390px;
+  padding:14px 16px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#111512;
+  color:var(--cream2);
+  font:11px/1.5 Arial,sans-serif;
+  opacity:0;
+  transform:translateY(10px);
+  pointer-events:none;
+  transition:.18s;
+}
+
+.toast.show{
+  opacity:1;
+  transform:none;
+}
+
+.toast.error{
+  color:var(--danger);
+}
+
+.loading{
+  padding:80px 20px;
+  text-align:center;
+  color:var(--muted);
+  font:11px Arial,sans-serif;
+}
+
+.hidden{
+  display:none !important;
+}
+
+@media(max-width:950px){
+  .layout{
+    grid-template-columns:1fr;
+  }
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:720px){
+  .nav{
+    display:none;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .field.full{
+    grid-column:auto;
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+
+  <a class="brand" href="index.html">
+    <span class="brand-mark"></span>
+    <span>DogEar</span>
+  </a>
+
+  <nav class="nav">
+    <a href="dashboard.html">Home</a>
+    <a href="discover.html">Discover</a>
+    <a href="clubs.html">Clubs</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a class="active" href="beta-reading.html">Beta Reading</a>
+  </nav>
+
+  <a
+    class="avatar"
+    id="navAvatar"
+    href="profile.html"
+  >?</a>
+
+</header>
+
+<main class="page">
+
+  <a
+    class="back-link"
+    href="beta-reading.html"
+  >
+    ← Beta Reading
+  </a>
+
+  <div
+    class="loading"
+    id="loading"
+  >
+    Loading beta project...
+  </div>
+
+  <div
+    id="projectContent"
+    class="hidden"
+  >
+
+    <section class="hero">
+
+      <div class="eyebrow">
+        Beta Project
+      </div>
+
+      <h1 id="projectTitle">
+        Project
+      </h1>
+
+      <div
+        class="hero-copy"
+        id="projectBlurb"
+      ></div>
+
+      <div class="hero-actions">
+
+        <span
+          class="status"
+          id="projectStatus"
+        ></span>
+
+        <a
+          class="button secondary"
+          id="analyticsLink"
+          href="#"
+        >
+          Analytics
+        </a>
+
+      </div>
+
+      <div class="stats">
+
+        <div class="stat">
+          <div class="stat-label">
+            Pending Applicants
+          </div>
+          <div
+            class="stat-value"
+            id="pendingCount"
+          >0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">
+            Active Readers
+          </div>
+          <div
+            class="stat-value"
+            id="readerCount"
+          >0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">
+            Completed
+          </div>
+          <div
+            class="stat-value"
+            id="completedCount"
+          >0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">
+            Current Round
+          </div>
+          <div
+            class="stat-value"
+            id="roundNumber"
+          >1</div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <div class="layout">
+
+      <div class="stack">
+
+        <!-- CURRENT ROUND -->
+
+        <section class="panel">
+
+          <div class="panel-head">
+            <div>
+              <div class="panel-kicker">
+                Beta round
+              </div>
+
+              <h2 class="panel-title">
+                Current Round
+              </h2>
+            </div>
+          </div>
+
+          <div class="panel-body">
+
+            <div class="form-grid">
+
+              <label class="field">
+                <span class="label">
+                  Round name
+                </span>
+
+                <input
+                  class="input"
+                  id="roundName"
+                >
+              </label>
+
+              <label class="field">
+                <span class="label">
+                  Deadline
+                </span>
+
+                <input
+                  class="input"
+                  id="roundDeadline"
+                  type="date"
+                >
+              </label>
+
+              <label class="field">
+                <span class="label">
+                  Status
+                </span>
+
+                <select
+                  class="select"
+                  id="roundStatus"
+                >
+                  <option value="draft">
+                    Draft
+                  </option>
+                  <option value="open">
+                    Open
+                  </option>
+                  <option value="closed">
+                    Closed
+                  </option>
+                  <option value="completed">
+                    Completed
+                  </option>
+                </select>
+              </label>
+
+              <label class="field full">
+                <span class="label">
+                  Description
+                </span>
+
+                <textarea
+                  class="textarea"
+                  id="roundDescription"
+                ></textarea>
+              </label>
+
+            </div>
+
+            <div class="row-actions">
+
+              <button
+                class="button primary"
+                id="saveRoundButton"
+                type="button"
+              >
+                Save Round
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- MANUSCRIPT -->
+
+        <section class="panel">
+
+          <div class="panel-head">
+            <div>
+              <div class="panel-kicker">
+                Private manuscript
+              </div>
+
+              <h2 class="panel-title">
+                Manuscript
+              </h2>
+            </div>
+          </div>
+
+          <div class="panel-body">
+
+            <div class="upload-box">
+
+              <div class="upload-note">
+                Original manuscript files are stored privately.
+                Beta readers do not receive access to the uploaded
+                DOCX, PDF or EPUB file itself. The DogEar reader
+                will use protected manuscript sections after the
+                manuscript is processed.
+              </div>
+
+              <input
+                class="file-input"
+                id="manuscriptFile"
+                type="file"
+                accept=".docx,.pdf,.epub,.txt,.md"
+              >
+
+              <div class="row-actions">
+
+                <button
+                  class="button primary"
+                  id="uploadButton"
+                  type="button"
+                >
+                  Upload Manuscript
+                </button>
+
+              </div>
+
+            </div>
+
+            <div
+              id="manuscriptList"
+            ></div>
+
+          </div>
+
+        </section>
+
+
+        <!-- APPLICANTS -->
+
+        <section class="panel">
+
+          <div class="panel-head">
+            <div>
+              <div class="panel-kicker">
+                Applications
+              </div>
+
+              <h2 class="panel-title">
+                Pending Readers
+              </h2>
+            </div>
+          </div>
+
+          <div class="panel-body">
+
+            <div
+              class="reader-list"
+              id="applicantList"
+            ></div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ACCEPTED READERS -->
+
+        <section class="panel">
+
+          <div class="panel-head">
+            <div>
+              <div class="panel-kicker">
+                Your beta team
+              </div>
+
+              <h2 class="panel-title">
+                Accepted Readers
+              </h2>
+            </div>
+          </div>
+
+          <div class="panel-body">
+
+            <div
+              class="reader-list"
+              id="readerList"
+            ></div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+
+      <!-- SIDEBAR -->
+
+      <aside class="stack">
+
+        <section class="panel">
+
+          <div class="panel-head">
+            <div>
+              <div class="panel-kicker">
+                Reader incentive
+              </div>
+
+              <h2 class="panel-title">
+                Coin Reward
+              </h2>
+            </div>
+          </div>
+
+          <div class="panel-body">
+
+            <label class="field">
+              <span class="label">
+                Reward enabled
+              </span>
+
+              <select
+                class="select"
+                id="rewardEnabled"
+              >
+                <option value="false">
+                  Off
+                </option>
+                <option value="true">
+                  On
+                </option>
+              </select>
+            </label>
+
+            <label
+              class="field"
+              style="margin-top:13px"
+            >
+              <span class="label">
+                Coins per reader
+              </span>
+
+              <input
+                class="input"
+                id="rewardCoins"
+                type="number"
+                min="0"
+                step="1"
+                value="0"
+              >
+            </label>
+
+            <label
+              class="field"
+              style="margin-top:13px"
+            >
+              <span class="label">
+                Require completion
+              </span>
+
+              <select
+                class="select"
+                id="requireCompletion"
+              >
+                <option value="true">
+                  Yes
+                </option>
+                <option value="false">
+                  No
+                </option>
+              </select>
+            </label>
+
+            <label
+              class="field"
+              style="margin-top:13px"
+            >
+              <span class="label">
+                Require feedback
+              </span>
+
+              <select
+                class="select"
+                id="requireFeedback"
+              >
+                <option value="true">
+                  Yes
+                </option>
+                <option value="false">
+                  No
+                </option>
+              </select>
+            </label>
+
+            <div class="row-actions">
+
+              <button
+                class="button primary"
+                id="saveRewardButton"
+                type="button"
+              >
+                Save Reward
+              </button>
+
+            </div>
+
+            <p class="side-note">
+              This configures the Beta reward. Actual coin
+              transfers will use DogEar's existing audited
+              coin ledger rather than creating a second wallet.
+            </p>
+
+          </div>
+
+        </section>
+
+
+        <section class="panel">
+
+          <div class="panel-head">
+            <div>
+              <div class="panel-kicker">
+                Project tools
+              </div>
+
+              <h2 class="panel-title">
+                Manage
+              </h2>
+            </div>
+          </div>
+
+          <div class="panel-body">
+
+            <div class="side-links">
+
+              <a
+                class="button secondary"
+                id="analyticsSideLink"
+                href="#"
+              >
+                Beta Analytics
+              </a>
+
+              <a
+                class="button secondary"
+                href="beta-reading.html"
+              >
+                Browse Beta Reading
+              </a>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </aside>
+
+    </div>
+
+  </div>
+
+</main>
+
+<div
+  class="toast"
+  id="toast"
+></div>
+
+
+<script>
+
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+const $ =
+  id =>
+    document.getElementById(id);
+
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
+
+const projectId =
+  params.get("id");
+
+
+let currentUser = null;
+let currentProfile = null;
+
+let project = null;
+let rounds = [];
+let currentRound = null;
+
+let interests = [];
+let assignments = [];
+let manuscripts = [];
+let reward = null;
+
+let toastTimer = null;
+
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+function showToast(
+  message,
+  type = ""
+){
+
+  const toast =
+    $("toast");
+
+  clearTimeout(
+    toastTimer
+  );
+
+  toast.textContent =
+    message;
+
+  toast.className =
+    "toast";
+
+  if(type){
+    toast.classList.add(type);
+  }
+
+  requestAnimationFrame(
+    () =>
+      toast.classList.add("show")
+  );
+
+  toastTimer =
+    setTimeout(
+      () =>
+        toast.classList.remove("show"),
+      3500
+    );
+
+}
+
+
+function dateForInput(value){
+
+  if(!value){
+    return "";
+  }
+
+  const date =
+    new Date(value);
+
+  if(
+    Number.isNaN(
+      date.getTime()
+    )
+  ){
+    return "";
+  }
+
+  return date
+    .toISOString()
+    .slice(0,10);
+
+}
+
+
+function fileSize(bytes){
+
+  const value =
+    Number(bytes || 0);
+
+  if(!value){
+    return "Unknown size";
+  }
+
+  if(value < 1024){
+    return `${value} B`;
+  }
+
+  if(value < 1048576){
+    return (
+      value / 1024
+    ).toFixed(1) + " KB";
+  }
+
+  return (
+    value / 1048576
+  ).toFixed(1) + " MB";
+
+}
+
+
+async function loadSession(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+  if(error){
+    throw error;
+  }
+
+  currentUser =
+    data?.session?.user ||
+    null;
+
+
+  if(!currentUser){
+
+    window.location.href =
+      "auth.html#login";
+
+    return false;
+
+  }
+
+
+  const {
+    data:profile
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(
+        "id,display_name,username,avatar_url"
+      )
+      .eq(
+        "id",
+        currentUser.id
+      )
+      .maybeSingle();
+
+
+  currentProfile =
+    profile ||
+    null;
+
+
+  renderNavigation();
+
+  return true;
+
+}
+
+
+function renderNavigation(){
+
+  const avatar =
+    $("navAvatar");
+
+  const name =
+    currentProfile?.display_name ||
+    currentProfile?.username ||
+    currentUser?.email ||
+    "D";
+
+
+  if(
+    currentProfile?.avatar_url
+  ){
+
+    avatar.innerHTML =
+      `<img src="${escapeHtml(
+        currentProfile.avatar_url
+      )}" alt="">`;
+
+  }
+  else{
+
+    avatar.textContent =
+      name
+        .trim()
+        .charAt(0)
+        .toUpperCase();
+
+  }
+
+}
+
+
+async function loadProject(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("beta_projects")
+      .select("*")
+      .eq(
+        "id",
+        projectId
+      )
+      .maybeSingle();
+
+
+  if(error){
+    throw error;
+  }
+
+
+  if(!data){
+
+    throw new Error(
+      "Beta project not found."
+    );
+
+  }
+
+
+  if(
+    data.owner_id !==
+    currentUser.id
+  ){
+
+    throw new Error(
+      "Only the project owner can manage this beta project."
+    );
+
+  }
+
+
+  project =
+    data;
+
+}
+
+
+async function loadRounds(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("beta_rounds")
+      .select("*")
+      .eq(
+        "project_id",
+        projectId
+      )
+      .order(
+        "round_number",
+        {
+          ascending:false
+        }
+      );
+
+
+  if(error){
+    throw error;
+  }
+
+
+  rounds =
+    data ||
+    [];
+
+
+  currentRound =
+    rounds.find(
+      row =>
+        row.status === "open"
+    ) ||
+    rounds[0] ||
+    null;
+
+}
+
+
+async function loadInterests(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("beta_interests")
+      .select(`
+        *,
+        profiles:reader_id(
+          display_name,
+          username,
+          avatar_url
+        )
+      `)
+      .eq(
+        "project_id",
+        projectId
+      )
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
+
+
+  if(error){
+    throw error;
+  }
+
+
+  interests =
+    data ||
+    [];
+
+}
+
+
+async function loadAssignments(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("beta_assignments")
+      .select(`
+        *,
+        profiles:reader_id(
+          display_name,
+          username,
+          avatar_url
+        )
+      `)
+      .eq(
+        "project_id",
+        projectId
+      )
+      .order(
+        "accepted_at",
+        {
+          ascending:false
+        }
+      );
+
+
+  if(error){
+    throw error;
+  }
+
+
+  assignments =
+    data ||
+    [];
+
+}
+
+
+async function loadManuscripts(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("beta_manuscripts")
+      .select("*")
+      .eq(
+        "project_id",
+        projectId
+      )
+      .order(
+        "version_number",
+        {
+          ascending:false
+        }
+      );
+
+
+  if(error){
+    throw error;
+  }
+
+
+  manuscripts =
+    data ||
+    [];
+
+}
+
+
+async function loadReward(){
+
+  reward = null;
+
+
+  if(!currentRound){
+    return;
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("beta_round_rewards")
+      .select("*")
+      .eq(
+        "round_id",
+        currentRound.id
+      )
+      .maybeSingle();
+
+
+  if(error){
+    throw error;
+  }
+
+
+  reward =
+    data ||
+    null;
+
+}
+
+
+function readerName(row){
+
+  return (
+    row.profiles?.display_name ||
+    row.profiles?.username ||
+    "DogEar Reader"
+  );
+
+}
+
+
+function render(){
+
+  $("projectTitle").textContent =
+    project.title ||
+    "Beta Project";
+
+
+  $("projectBlurb").textContent =
+    project.blurb ||
+    "";
+
+
+  $("projectStatus").textContent =
+    project.status ||
+    "draft";
+
+
+  const pending =
+    interests.filter(
+      row =>
+        row.status === "pending"
+    );
+
+
+  const active =
+    assignments.filter(
+      row =>
+        [
+          "accepted",
+          "reading"
+        ].includes(
+          row.status
+        )
+    );
+
+
+  const completed =
+    assignments.filter(
+      row =>
+        row.status ===
+        "completed"
+    );
+
+
+  $("pendingCount").textContent =
+    pending.length;
+
+
+  $("readerCount").textContent =
+    active.length;
+
+
+  $("completedCount").textContent =
+    completed.length;
+
+
+  $("roundNumber").textContent =
+    currentRound?.round_number ||
+    "—";
+
+
+  const analyticsUrl =
+    "beta-analytics.html?id=" +
+    encodeURIComponent(
+      projectId
+    );
+
+
+  $("analyticsLink").href =
+    analyticsUrl;
+
+  $("analyticsSideLink").href =
+    analyticsUrl;
+
+
+  renderRound();
+  renderApplicants();
+  renderReaders();
+  renderManuscripts();
+  renderReward();
+
+
+  $("loading")
+    .classList
+    .add("hidden");
+
+
+  $("projectContent")
+    .classList
+    .remove("hidden");
+
+}
+
+
+function renderRound(){
+
+  if(!currentRound){
+
+    $("roundName").value =
+      "";
+
+    $("roundDescription").value =
+      "";
+
+    $("roundDeadline").value =
+      "";
+
+    $("roundStatus").value =
+      "draft";
+
+    $("saveRoundButton").disabled =
+      true;
+
+    return;
+
+  }
+
+
+  $("roundName").value =
+    currentRound.name ||
+    `Round ${currentRound.round_number}`;
+
+
+  $("roundDescription").value =
+    currentRound.description ||
+    "";
+
+
+  $("roundDeadline").value =
+    dateForInput(
+      currentRound.deadline
+    );
+
+
+  $("roundStatus").value =
+    currentRound.status ||
+    "draft";
+
+}
+
+
+function renderApplicants(){
+
+  const holder =
+    $("applicantList");
+
+
+  const rows =
+    interests.filter(
+      row =>
+        row.status === "pending" &&
+        (
+          !currentRound ||
+          row.round_id ===
+            currentRound.id
+        )
+    );
+
+
+  if(!rows.length){
+
+    holder.innerHTML =
+      `
+        <div class="empty">
+          No pending beta-reader applications.
+        </div>
+      `;
+
+    return;
+
+  }
+
+
+  holder.innerHTML =
+    rows.map(
+      row =>
+        `
+          <div class="reader">
+
+            <div class="reader-top">
+
+              <div>
+
+                <div class="reader-name">
+                  ${escapeHtml(
+                    readerName(row)
+                  )}
+                </div>
+
+                <div class="reader-meta">
+                  Pending application
+                </div>
+
+              </div>
+
+            </div>
+
+            ${
+              row.message
+                ? `
+                    <div class="reader-message">
+                      ${escapeHtml(
+                        row.message
+                      )}
+                    </div>
+                  `
+                : ""
+            }
+
+            <div class="reader-actions">
+
+              <button
+                class="small-button accept"
+                type="button"
+                data-accept="${escapeHtml(
+                  row.id
+                )}"
+              >
+                Accept
+              </button>
+
+              <button
+                class="small-button danger"
+                type="button"
+                data-decline="${escapeHtml(
+                  row.id
+                )}"
+              >
+                Decline
+              </button>
+
+            </div>
+
+          </div>
+        `
+    )
+    .join("");
+
+
+  holder
+    .querySelectorAll(
+      "[data-accept]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            acceptReader(
+              button.dataset.accept
+            )
+        );
+
+      }
+    );
+
+
+  holder
+    .querySelectorAll(
+      "[data-decline]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            declineReader(
+              button.dataset.decline
+            )
+        );
+
+      }
+    );
+
+}
+
+
+function renderReaders(){
+
+  const holder =
+    $("readerList");
+
+
+  const rows =
+    assignments.filter(
+      row =>
+        [
+          "accepted",
+          "reading",
+          "completed"
+        ].includes(
+          row.status
+        ) &&
+        (
+          !currentRound ||
+          row.round_id ===
+            currentRound.id
+        )
+    );
+
+
+  if(!rows.length){
+
+    holder.innerHTML =
+      `
+        <div class="empty">
+          No readers have been accepted for this round yet.
+        </div>
+      `;
+
+    return;
+
+  }
+
+
+  holder.innerHTML =
+    rows.map(
+      row => {
+
+        const progress =
+          Math.max(
+            0,
+            Math.min(
+              100,
+              Number(
+                row.progress_percent ||
+                0
+              )
+            )
+          );
+
+
+        return `
+          <div class="reader">
+
+            <div class="reader-top">
+
+              <div>
+
+                <div class="reader-name">
+                  ${escapeHtml(
+                    readerName(row)
+                  )}
+                </div>
+
+                <div class="reader-meta">
+                  ${escapeHtml(
+                    row.status
+                  )}
+                  ·
+                  ${progress.toFixed(0)}%
+                  complete
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="progress">
+
+              <div
+                class="progress-bar"
+                style="width:${progress}%"
+              ></div>
+
+            </div>
+
+            <div class="reader-actions">
+
+              <button
+                class="small-button secondary"
+                type="button"
+                data-reader-detail="${escapeHtml(
+                  row.id
+                )}"
+              >
+                Reader Activity
+              </button>
+
+            </div>
+
+          </div>
+        `;
+
+      }
+    )
+    .join("");
+
+
+  holder
+    .querySelectorAll(
+      "[data-reader-detail]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            window.location.href =
+              "beta-analytics.html?id=" +
+              encodeURIComponent(
+                projectId
+              ) +
+              "&assignment=" +
+              encodeURIComponent(
+                button.dataset.readerDetail
+              );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+function renderManuscripts(){
+
+  const holder =
+    $("manuscriptList");
+
+
+  if(!manuscripts.length){
+
+    holder.innerHTML =
+      `
+        <div
+          class="empty"
+          style="margin-top:14px"
+        >
+          No manuscript has been uploaded yet.
+        </div>
+      `;
+
+    return;
+
+  }
+
+
+  holder.innerHTML =
+    manuscripts.map(
+      manuscript =>
+        `
+          <div class="manuscript">
+
+            <div class="manuscript-name">
+              ${escapeHtml(
+                manuscript.original_filename ||
+                "Manuscript"
+              )}
+            </div>
+
+            <div class="manuscript-meta">
+              Version
+              ${Number(
+                manuscript.version_number ||
+                1
+              )}
+              ·
+              ${escapeHtml(
+                fileSize(
+                  manuscript.file_size
+                )
+              )}
+              ·
+              ${
+                manuscript.active
+                  ? "Active"
+                  : "Archived"
+              }
+            </div>
+
+          </div>
+        `
+    )
+    .join("");
+
+}
+
+
+function renderReward(){
+
+  $("rewardEnabled").value =
+    reward?.enabled
+      ? "true"
+      : "false";
+
+
+  $("rewardCoins").value =
+    Number(
+      reward?.coin_amount ||
+      0
+    );
+
+
+  $("requireCompletion").value =
+    reward?.require_completion === false
+      ? "false"
+      : "true";
+
+
+  $("requireFeedback").value =
+    reward?.require_feedback === false
+      ? "false"
+      : "true";
+
+}
+
+
+async function saveRound(){
+
+  if(!currentRound){
+    return;
+  }
+
+
+  const button =
+    $("saveRoundButton");
+
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "Saving...";
+
+
+  try{
+
+    const deadline =
+      $("roundDeadline").value;
+
+
+    const payload = {
+
+      name:
+        $("roundName")
+          .value
+          .trim() ||
+        `Round ${currentRound.round_number}`,
+
+      description:
+        $("roundDescription")
+          .value
+          .trim() ||
+        null,
+
+      status:
+        $("roundStatus").value,
+
+      deadline:
+        deadline
+          ? new Date(
+              deadline +
+              "T23:59:59"
+            ).toISOString()
+          : null
+
+    };
+
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("beta_rounds")
+        .update(payload)
+        .eq(
+          "id",
+          currentRound.id
+        );
+
+
+    if(error){
+      throw error;
+    }
+
+
+    if(
+      payload.status === "open" &&
+      project.status !== "open"
+    ){
+
+      const {
+        error:projectError
+      } =
+        await supabaseClient
+          .from("beta_projects")
+          .update({
+            status:"open"
+          })
+          .eq(
+            "id",
+            projectId
+          );
+
+
+      if(projectError){
+        throw projectError;
+      }
+
+    }
+
+
+    showToast(
+      "Beta round saved."
+    );
+
+
+    await refresh();
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    showToast(
+      error?.message ||
+      "DogEar couldn't save the beta round.",
+      "error"
+    );
+
+  }
+  finally{
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "Save Round";
+
+  }
+
+}
+
+
+async function acceptReader(
+  interestId
+){
+
+  try{
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "accept_beta_reader",
+          {
+            p_interest_id:
+              interestId
+          }
+        );
+
+
+    if(error){
+      throw error;
+    }
+
+
+    showToast(
+      "Reader accepted."
+    );
+
+
+    await refresh();
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    showToast(
+      error?.message ||
+      "DogEar couldn't accept this reader.",
+      "error"
+    );
+
+  }
+
+}
+
+
+async function declineReader(
+  interestId
+){
+
+  try{
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "decline_beta_reader",
+          {
+            p_interest_id:
+              interestId
+          }
+        );
+
+
+    if(error){
+      throw error;
+    }
+
+
+    showToast(
+      "Application declined."
+    );
+
+
+    await refresh();
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    showToast(
+      error?.message ||
+      "DogEar couldn't decline this application.",
+      "error"
+    );
+
+  }
+
+}
+
+
+async function saveReward(){
+
+  if(!currentRound){
+
+    showToast(
+      "This project needs a beta round first.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    $("saveRewardButton");
+
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "Saving...";
+
+
+  try{
+
+    const payload = {
+
+      round_id:
+        currentRound.id,
+
+      enabled:
+        $("rewardEnabled").value ===
+        "true",
+
+      coin_amount:
+        Math.max(
+          0,
+          Number(
+            $("rewardCoins").value ||
+            0
+          )
+        ),
+
+      require_completion:
+        $("requireCompletion").value ===
+        "true",
+
+      require_feedback:
+        $("requireFeedback").value ===
+        "true"
+
+    };
+
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("beta_round_rewards")
+        .upsert(
+          payload,
+          {
+            onConflict:"round_id"
+          }
+        );
+
+
+    if(error){
+      throw error;
+    }
+
+
+    showToast(
+      "Beta reward settings saved."
+    );
+
+
+    await loadReward();
+    renderReward();
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    showToast(
+      error?.message ||
+      "DogEar couldn't save the reward.",
+      "error"
+    );
+
+  }
+  finally{
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "Save Reward";
+
+  }
+
+}
+
+
+async function uploadManuscript(){
+
+  const file =
+    $("manuscriptFile")
+      .files?.[0];
+
+
+  if(!file){
+
+    showToast(
+      "Choose a manuscript file first.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if(!currentRound){
+
+    showToast(
+      "This project does not have a beta round.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    $("uploadButton");
+
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "Uploading...";
+
+
+  let uploadedPath =
+    null;
+
+
+  try{
+
+    const manuscriptId =
+      crypto.randomUUID();
+
+
+    const nextVersion =
+      manuscripts.length
+        ? Math.max(
+            ...manuscripts.map(
+              row =>
+                Number(
+                  row.version_number ||
+                  0
+                )
+            )
+          ) + 1
+        : 1;
+
+
+    const safeName =
+      file.name
+        .replace(
+          /[^a-zA-Z0-9._-]/g,
+          "_"
+        );
+
+
+    uploadedPath =
+      currentUser.id +
+      "/" +
+      projectId +
+      "/" +
+      manuscriptId +
+      "/" +
+      safeName;
+
+
+    const {
+      error:uploadError
+    } =
+      await supabaseClient
+        .storage
+        .from(
+          "beta-manuscripts"
+        )
+        .upload(
+          uploadedPath,
+          file,
+          {
+            cacheControl:"3600",
+            upsert:false
+          }
+        );
+
+
+    if(uploadError){
+      throw uploadError;
+    }
+
+
+    /*
+      Mark previous manuscripts inactive before registering
+      this version. The original files remain private.
+    */
+
+    if(manuscripts.length){
+
+      const {
+        error:archiveError
+      } =
+        await supabaseClient
+          .from("beta_manuscripts")
+          .update({
+            active:false
+          })
+          .eq(
+            "project_id",
+            projectId
+          )
+          .eq(
+            "active",
+            true
+          );
+
+
+      if(archiveError){
+        throw archiveError;
+      }
+
+    }
+
+
+    const {
+      error:recordError
+    } =
+      await supabaseClient
+        .from("beta_manuscripts")
+        .insert({
+
+          id:
+            manuscriptId,
+
+          project_id:
+            projectId,
+
+          round_id:
+            currentRound.id,
+
+          uploaded_by:
+            currentUser.id,
+
+          version_number:
+            nextVersion,
+
+          original_filename:
+            file.name,
+
+          storage_path:
+            uploadedPath,
+
+          mime_type:
+            file.type ||
+            "application/octet-stream",
+
+          file_size:
+            file.size,
+
+          active:
+            true
+
+        });
+
+
+    if(recordError){
+      throw recordError;
+    }
+
+
+    $("manuscriptFile").value =
+      "";
+
+
+    showToast(
+      "Manuscript uploaded privately."
+    );
+
+
+    await loadManuscripts();
+    renderManuscripts();
+
+
+    /*
+      IMPORTANT:
+
+      The original file is now safely stored.
+
+      The next DogEar manuscript-ingestion step will convert
+      supported manuscript formats into protected
+      beta_manuscript_sections for the Kindle-style reader.
+
+      We deliberately do NOT create a public or signed download
+      URL here.
+    */
+
+  }
+  catch(error){
+
+    console.error(error);
+
+
+    /*
+      If the database registration fails after storage upload,
+      remove the orphaned file.
+    */
+
+    if(uploadedPath){
+
+      try{
+
+        await supabaseClient
+          .storage
+          .from(
+            "beta-manuscripts"
+          )
+          .remove([
+            uploadedPath
+          ]);
+
+      }
+      catch(cleanupError){
+
+        console.error(
+          "Manuscript cleanup:",
+          cleanupError
+        );
+
+      }
+
+    }
+
+
+    showToast(
+      error?.message ||
+      "DogEar couldn't upload the manuscript.",
+      "error"
+    );
+
+  }
+  finally{
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "Upload Manuscript";
+
+  }
+
+}
+
+
+async function refresh(){
+
+  await loadProject();
+
+  await Promise.all([
+    loadRounds(),
+    loadInterests(),
+    loadAssignments(),
+    loadManuscripts()
+  ]);
+
+
+  await loadReward();
+
+
+  render();
+
+}
+
+
+async function initialize(){
+
+  try{
+
+    if(!projectId){
+
+      throw new Error(
+        "No beta project was selected."
+      );
+
+    }
+
+
+    const loggedIn =
+      await loadSession();
+
+
+    if(!loggedIn){
+      return;
+    }
+
+
+    await refresh();
+
+  }
+  catch(error){
+
+    console.error(
+      "Beta project initialization:",
+      error
+    );
+
+
+    $("loading").innerHTML =
+      `
+        <strong style="
+          display:block;
+          color:var(--cream);
+          font-size:24px;
+          margin-bottom:10px;
+        ">
+          DogEar couldn't open this project.
+        </strong>
+
+        ${escapeHtml(
+          error?.message ||
+          "Unknown error."
+        )}
+
+        <div style="margin-top:20px">
+          <a
+            class="button secondary"
+            href="beta-reading.html"
+          >
+            Back to Beta Reading
+          </a>
+        </div>
+      `;
+
+  }
+
+}
+
+
+$("saveRoundButton")
+  .addEventListener(
+    "click",
+    saveRound
+  );
+
+
+$("saveRewardButton")
+  .addEventListener(
+    "click",
+    saveReward
+  );
+
+
+$("uploadButton")
+  .addEventListener(
+    "click",
+    uploadManuscript
+  );
+
+
+initialize();
+
+</script>
+
+</body>
+</html>
