@@ -1,312 +1,359 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!doctype html>
 
-<title>DogEar — Beta Project</title>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1"
+>
+
+<title>
+  DogEar — Beta Project
+</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 :root{
-  --ink:#090b0a;
-  --panel:#101410;
-  --panel2:#151a15;
-  --cream:#f1e7cf;
-  --cream2:#d9cfb8;
-  --gold:#c79b59;
-  --gold2:#dfbd7e;
-  --green:#26362b;
-  --green2:#34483a;
-  --muted:#aaa18f;
-  --line:rgba(199,155,89,.22);
-  --line-soft:rgba(199,155,89,.11);
-  --danger:#e6a09a;
-  --ok:#b9d6b2;
+  --bg:#07130f;
+  --panel:#0d1d17;
+  --panel2:#11271e;
+  --text:#f4efe2;
+  --muted:#b8c7bf;
+  --gold:#d6b45d;
+  --gold2:#f1d88a;
+  --line:#284338;
+  --danger:#ff8f8f;
+  --success:#8fd9a8;
+  --shadow:0 18px 45px rgba(0,0,0,.28);
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
 
 body{
   margin:0;
-  min-height:100vh;
-  color:var(--cream);
   background:
-    radial-gradient(circle at 8% 0%,rgba(53,73,59,.28),transparent 26%),
-    radial-gradient(circle at 90% 15%,rgba(199,155,89,.07),transparent 24%),
-    var(--ink);
-  font-family:Georgia,"Times New Roman",serif;
-}
-
-button,input,select,textarea{
-  font:inherit;
-}
-
-button{
-  color:inherit;
+    radial-gradient(
+      circle at top,
+      #123225 0,
+      var(--bg) 42%
+    );
+  color:var(--text);
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  min-height:100vh;
 }
 
 a{
   color:inherit;
 }
 
+button,
+input,
+textarea,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.hidden{
+  display:none !important;
+}
+
+.shell{
+  width:min(1440px, calc(100% - 32px));
+  margin:0 auto;
+}
+
 .topbar{
-  min-height:76px;
+  position:sticky;
+  top:0;
+  z-index:40;
+  border-bottom:1px solid rgba(214,180,93,.18);
+  background:rgba(7,19,15,.94);
+  backdrop-filter:blur(14px);
+}
+
+.topbar-inner{
+  min-height:72px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:24px;
-  padding:0 clamp(18px,4vw,60px);
-  border-bottom:1px solid var(--line);
-  background:rgba(9,11,10,.95);
-  backdrop-filter:blur(14px);
-  position:sticky;
-  top:0;
-  z-index:50;
 }
 
 .brand{
   display:flex;
   align-items:center;
-  gap:11px;
-  color:var(--gold2);
+  gap:12px;
   text-decoration:none;
-  font:800 13px Arial,sans-serif;
-  letter-spacing:.17em;
-  text-transform:uppercase;
+  font-weight:900;
+  letter-spacing:.02em;
 }
 
 .brand-mark{
-  width:34px;
-  height:34px;
-  border:1px solid var(--gold);
-  border-radius:50% 50% 50% 12%;
-  transform:rotate(-8deg);
-  position:relative;
-}
-
-.brand-mark::after{
-  content:"";
-  position:absolute;
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:var(--gold);
-  right:7px;
-  top:7px;
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(214,180,93,.35);
+  border-radius:14px;
+  color:var(--gold2);
+  background:rgba(214,180,93,.08);
+  font-size:20px;
 }
 
 .nav{
   display:flex;
   align-items:center;
-  gap:22px;
-  font:700 11px Arial,sans-serif;
-  letter-spacing:.1em;
-  text-transform:uppercase;
+  gap:6px;
+  flex-wrap:wrap;
 }
 
 .nav a{
   color:var(--muted);
   text-decoration:none;
+  padding:9px 12px;
+  border-radius:10px;
+  font-size:14px;
+  font-weight:700;
 }
 
 .nav a:hover,
 .nav a.active{
-  color:var(--gold2);
-}
-
-.avatar{
-  width:38px;
-  height:38px;
-  border:1px solid var(--line);
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-  background:var(--green);
-  text-decoration:none;
-  font:800 13px Arial,sans-serif;
-}
-
-.avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+  color:var(--text);
+  background:rgba(214,180,93,.09);
 }
 
 .page{
-  width:min(1320px,calc(100% - 32px));
-  margin:auto;
-  padding:42px 0 110px;
+  padding:34px 0 70px;
 }
 
-.back-link{
-  display:inline-flex;
-  margin-bottom:20px;
-  color:var(--gold2);
-  text-decoration:none;
-  font:800 9px Arial,sans-serif;
-  letter-spacing:.1em;
-  text-transform:uppercase;
+.loading{
+  min-height:55vh;
+  display:grid;
+  place-items:center;
+  color:var(--muted);
+  text-align:center;
+  padding:40px 20px;
 }
 
 .hero{
-  border:1px solid var(--line);
-  border-radius:24px;
-  padding:clamp(28px,5vw,55px);
-  background:
-    linear-gradient(
-      135deg,
-      rgba(38,54,43,.76),
-      rgba(16,20,16,.92) 62%,
-      rgba(199,155,89,.05)
-    );
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:28px;
+  align-items:start;
+  margin-bottom:24px;
 }
 
 .eyebrow{
-  color:var(--gold);
-  font:800 9px Arial,sans-serif;
-  letter-spacing:.17em;
+  color:var(--gold2);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.14em;
   text-transform:uppercase;
+  margin-bottom:10px;
 }
 
 h1{
-  margin:10px 0 0;
-  font-size:clamp(38px,6vw,68px);
-  line-height:.96;
-  font-weight:400;
+  margin:0;
+  font-size:clamp(30px,5vw,52px);
+  line-height:1.02;
   letter-spacing:-.04em;
 }
 
-.hero-copy{
-  max-width:780px;
-  margin-top:18px;
-  color:var(--cream2);
-  font:12px/1.7 Arial,sans-serif;
+.hero-description{
+  color:var(--muted);
+  line-height:1.7;
+  max-width:820px;
+  margin:14px 0 0;
+  white-space:pre-wrap;
+}
+
+.status-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  border-radius:999px;
+  padding:9px 13px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.03);
+  color:var(--muted);
+  font-size:13px;
+  font-weight:850;
+}
+
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--gold);
 }
 
 .hero-actions{
-  margin-top:24px;
   display:flex;
+  align-items:center;
+  gap:10px;
   flex-wrap:wrap;
-  gap:9px;
+  justify-content:flex-end;
 }
 
 .button{
   min-height:42px;
-  padding:0 16px;
-  border-radius:999px;
-  cursor:pointer;
-  text-decoration:none;
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  font:800 8px Arial,sans-serif;
-  letter-spacing:.09em;
-  text-transform:uppercase;
+  gap:8px;
+  border:1px solid transparent;
+  border-radius:12px;
+  padding:10px 15px;
+  text-decoration:none;
+  font-weight:850;
+  transition:
+    transform .15s ease,
+    border-color .15s ease,
+    background .15s ease;
+}
+
+.button:hover{
+  transform:translateY(-1px);
 }
 
 .button.primary{
-  border:1px solid var(--gold);
   background:var(--gold);
-  color:#11130f;
+  color:#182019;
 }
 
 .button.secondary{
-  border:1px solid var(--line);
-  background:transparent;
-  color:var(--gold2);
+  border-color:var(--line);
+  background:rgba(255,255,255,.035);
+  color:var(--text);
 }
 
 .button.danger{
-  border:1px solid rgba(230,160,154,.4);
-  background:transparent;
-  color:var(--danger);
+  border-color:rgba(255,143,143,.35);
+  background:rgba(255,143,143,.08);
+  color:#ffd1d1;
+}
+
+.button.small{
+  min-height:34px;
+  padding:7px 11px;
+  font-size:13px;
+  border-radius:10px;
 }
 
 .button:disabled{
-  opacity:.5;
+  opacity:.55;
   cursor:not-allowed;
+  transform:none;
 }
 
 .stats{
-  margin-top:20px;
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:12px;
+  gap:14px;
+  margin-bottom:24px;
 }
 
 .stat{
-  padding:16px;
   border:1px solid var(--line);
-  border-radius:14px;
-  background:rgba(9,11,10,.38);
+  border-radius:16px;
+  background:rgba(13,29,23,.88);
+  box-shadow:var(--shadow);
+  padding:18px;
 }
 
 .stat-label{
   color:var(--muted);
-  font:800 7px Arial,sans-serif;
-  letter-spacing:.09em;
+  font-size:12px;
+  font-weight:800;
   text-transform:uppercase;
+  letter-spacing:.08em;
 }
 
 .stat-value{
-  margin-top:6px;
-  font-size:25px;
+  margin-top:7px;
+  font-size:28px;
+  font-weight:950;
+  letter-spacing:-.03em;
 }
 
 .layout{
-  margin-top:28px;
   display:grid;
-  grid-template-columns:minmax(0,1fr) 330px;
-  gap:20px;
+  grid-template-columns:minmax(0,1fr) 340px;
+  gap:22px;
   align-items:start;
 }
 
-.stack{
+.main-column,
+.side-column{
   display:grid;
-  gap:20px;
+  gap:18px;
 }
 
-.panel{
+.card{
   border:1px solid var(--line);
   border-radius:18px;
-  background:rgba(16,20,16,.91);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(17,39,30,.94),
+      rgba(13,29,23,.94)
+    );
+  box-shadow:var(--shadow);
   overflow:hidden;
 }
 
-.panel-head{
-  padding:19px 20px;
-  border-bottom:1px solid var(--line-soft);
+.card-header{
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  gap:15px;
+  align-items:flex-start;
+  gap:16px;
+  padding:19px 20px 0;
 }
 
-.panel-title{
+.card-title{
   margin:0;
-  font-size:25px;
-  font-weight:400;
+  font-size:19px;
+  letter-spacing:-.015em;
 }
 
-.panel-kicker{
-  margin-bottom:5px;
-  color:var(--gold);
-  font:800 8px Arial,sans-serif;
-  letter-spacing:.12em;
-  text-transform:uppercase;
+.card-subtitle{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.55;
+  margin-top:5px;
 }
 
-.panel-body{
+.card-body{
   padding:20px;
 }
 
 .form-grid{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:13px;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
 }
 
 .field{
@@ -315,1021 +362,1003 @@ h1{
 }
 
 .field.full{
-  grid-column:1/-1;
+  grid-column:1 / -1;
 }
 
-.label{
-  color:var(--gold);
-  font:800 8px Arial,sans-serif;
-  letter-spacing:.08em;
-  text-transform:uppercase;
+label{
+  color:#d9e4de;
+  font-size:13px;
+  font-weight:800;
 }
 
-.input,
-.select,
-.textarea{
+input,
+textarea,
+select{
   width:100%;
   border:1px solid var(--line);
-  background:#0b0e0c;
-  color:var(--cream);
-  border-radius:10px;
+  border-radius:11px;
+  background:#091711;
+  color:var(--text);
+  padding:11px 12px;
   outline:none;
-  font:12px Arial,sans-serif;
 }
 
-.input,
-.select{
-  min-height:43px;
-  padding:0 12px;
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:rgba(214,180,93,.7);
+  box-shadow:0 0 0 3px rgba(214,180,93,.09);
 }
 
-.textarea{
-  min-height:100px;
-  padding:12px;
+textarea{
   resize:vertical;
+  min-height:100px;
 }
 
-.row-actions{
-  margin-top:15px;
+.help{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.55;
+}
+
+.form-actions{
   display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:16px;
   flex-wrap:wrap;
-  gap:8px;
 }
 
-.reader-list{
+.empty{
+  padding:22px;
+  border:1px dashed rgba(184,199,191,.25);
+  border-radius:14px;
+  color:var(--muted);
+  text-align:center;
+  line-height:1.6;
+}
+
+.list{
   display:grid;
   gap:11px;
 }
 
-.reader{
+.list-item{
+  border:1px solid rgba(40,67,56,.9);
+  border-radius:14px;
+  background:rgba(7,19,15,.42);
   padding:15px;
-  border:1px solid var(--line-soft);
-  border-radius:12px;
-  background:#0c0f0d;
 }
 
-.reader-top{
+.item-top{
   display:flex;
-  justify-content:space-between;
   align-items:flex-start;
-  gap:12px;
-}
-
-.reader-name{
-  font-size:18px;
-}
-
-.reader-meta{
-  margin-top:4px;
-  color:var(--muted);
-  font:9px/1.5 Arial,sans-serif;
-}
-
-.reader-message{
-  margin-top:11px;
-  color:var(--cream2);
-  font:11px/1.6 Arial,sans-serif;
-}
-
-.progress{
-  margin-top:11px;
-  height:7px;
-  overflow:hidden;
-  border-radius:999px;
-  background:#050706;
-}
-
-.progress-bar{
-  height:100%;
-  background:var(--gold);
-}
-
-.reader-actions{
-  margin-top:12px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-}
-
-/* =========================================================
-   AUTHOR-SHARED DOGEARS
-========================================================= */
-
-.dogear-list{
-  display:grid;
-  gap:12px;
-}
-
-.dogear-card{
-  padding:16px;
-  border:1px solid var(--line-soft);
-  border-radius:13px;
-  background:#0c0f0d;
-}
-
-.dogear-card-top{
-  display:flex;
   justify-content:space-between;
-  align-items:flex-start;
   gap:14px;
 }
 
-.dogear-reader{
-  font-size:18px;
+.item-title{
+  font-weight:900;
+  line-height:1.35;
 }
 
-.dogear-location{
-  margin-top:4px;
+.item-meta{
   color:var(--muted);
-  font:9px/1.5 Arial,sans-serif;
+  font-size:12px;
+  margin-top:5px;
+  line-height:1.5;
 }
 
-.dogear-quote{
-  margin-top:13px;
-  padding:12px 14px;
-  border-left:2px solid var(--gold);
-  background:rgba(199,155,89,.06);
-  color:var(--cream2);
-  font:italic 13px/1.65 Georgia,"Times New Roman",serif;
+.item-actions{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
 }
 
-.dogear-note{
-  margin-top:11px;
-  color:var(--cream);
-  font:12px/1.65 Arial,sans-serif;
+.badge{
+  display:inline-flex;
+  align-items:center;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.035);
+  color:var(--muted);
+  padding:5px 9px;
+  font-size:11px;
+  font-weight:850;
+  white-space:nowrap;
 }
 
-.dogear-date{
+.badge.gold{
+  border-color:rgba(214,180,93,.35);
+  background:rgba(214,180,93,.08);
+  color:var(--gold2);
+}
+
+.badge.success{
+  border-color:rgba(143,217,168,.3);
+  background:rgba(143,217,168,.08);
+  color:#b9f0ca;
+}
+
+.badge.danger{
+  border-color:rgba(255,143,143,.3);
+  background:rgba(255,143,143,.08);
+  color:#ffd0d0;
+}
+
+.detail-list{
+  display:grid;
+  gap:13px;
+}
+
+.detail-row{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  padding-bottom:12px;
+  border-bottom:1px solid rgba(40,67,56,.65);
+}
+
+.detail-row:last-child{
+  padding-bottom:0;
+  border-bottom:0;
+}
+
+.detail-key{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.detail-value{
+  text-align:right;
+  font-size:13px;
+  font-weight:800;
+  max-width:190px;
+  overflow-wrap:anywhere;
+}
+
+.quote{
+  border-left:3px solid rgba(214,180,93,.55);
+  padding-left:12px;
+  margin:10px 0 0;
+  color:#dfe8e3;
+  font-size:13px;
+  line-height:1.6;
+  white-space:pre-wrap;
+}
+
+.feedback-block{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid rgba(40,67,56,.65);
+}
+
+.rating-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
   margin-top:10px;
+}
+
+.rating{
+  border:1px solid rgba(40,67,56,.85);
+  border-radius:10px;
+  padding:9px;
+  background:rgba(255,255,255,.025);
+}
+
+.rating-label{
   color:var(--muted);
-  font:8px/1.5 Arial,sans-serif;
+  font-size:10px;
   text-transform:uppercase;
   letter-spacing:.06em;
 }
 
-/* =========================================================
-   SUBMITTED READER FEEDBACK
-========================================================= */
-
-.feedback-list{
-  display:grid;
-  gap:12px;
-}
-
-.feedback-card{
-  padding:16px;
-  border:1px solid var(--line-soft);
-  border-radius:13px;
-  background:#0c0f0d;
-}
-
-.feedback-card-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:14px;
-}
-
-.feedback-reader{
-  font-size:18px;
-}
-
-.feedback-meta{
-  margin-top:4px;
-  color:var(--muted);
-  font:9px/1.5 Arial,sans-serif;
-}
-
-.feedback-ratings{
-  margin-top:14px;
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:8px;
-}
-
-.feedback-rating{
-  padding:10px;
-  border:1px solid var(--line-soft);
-  border-radius:10px;
-  background:rgba(199,155,89,.04);
-}
-
-.feedback-rating-label{
-  color:var(--muted);
-  font:800 7px Arial,sans-serif;
-  letter-spacing:.07em;
-  text-transform:uppercase;
-}
-
-.feedback-rating-value{
-  margin-top:5px;
-  color:var(--gold2);
-  font:700 15px Georgia,"Times New Roman",serif;
-}
-
-.feedback-text-grid{
-  margin-top:14px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.feedback-text{
-  padding:12px;
-  border:1px solid var(--line-soft);
-  border-radius:10px;
-  background:rgba(9,11,10,.35);
-}
-
-.feedback-text-label{
-  color:var(--gold);
-  font:800 7px Arial,sans-serif;
-  letter-spacing:.07em;
-  text-transform:uppercase;
-}
-
-.feedback-text-copy{
-  margin-top:7px;
-  color:var(--cream2);
-  white-space:pre-wrap;
-  font:11px/1.65 Arial,sans-serif;
-}
-
-@media(max-width:720px){
-  .feedback-ratings,
-  .feedback-text-grid{
-    grid-template-columns:1fr;
-  }
-}
-
-.small-button{
-  min-height:34px;
-  padding:0 12px;
-  border-radius:999px;
-  cursor:pointer;
-  font:800 7px Arial,sans-serif;
-  letter-spacing:.07em;
-  text-transform:uppercase;
-}
-
-.small-button.accept{
-  border:1px solid var(--gold);
-  background:var(--gold);
-  color:#11130f;
-}
-
-.small-button.secondary{
-  border:1px solid var(--line);
-  background:transparent;
-  color:var(--gold2);
-}
-
-.small-button.danger{
-  border:1px solid rgba(230,160,154,.35);
-  background:transparent;
-  color:var(--danger);
-}
-
-.empty{
-  padding:32px 18px;
-  text-align:center;
-  border:1px dashed var(--line);
-  border-radius:12px;
-  color:var(--muted);
-  font:10px/1.65 Arial,sans-serif;
+.rating-value{
+  margin-top:3px;
+  font-weight:900;
 }
 
 .upload-box{
-  border:1px dashed var(--line);
+  border:1px dashed rgba(214,180,93,.38);
   border-radius:14px;
-  padding:20px;
+  padding:16px;
+  background:rgba(214,180,93,.035);
 }
 
-.upload-note{
-  color:var(--muted);
-  font:10px/1.65 Arial,sans-serif;
-}
-
-.file-input{
-  width:100%;
-  margin-top:14px;
-  color:var(--cream2);
-  font:11px Arial,sans-serif;
-}
-
-.manuscript{
-  margin-top:14px;
-  padding:14px;
-  border:1px solid var(--line-soft);
-  border-radius:11px;
-}
-
-.manuscript-name{
-  font-size:16px;
-}
-
-.manuscript-meta{
-  margin-top:5px;
-  color:var(--muted);
-  font:9px/1.5 Arial,sans-serif;
-}
-
-.side-note{
-  color:var(--muted);
-  font:10px/1.65 Arial,sans-serif;
-}
-
-.side-links{
-  margin-top:14px;
+.upload-row{
   display:grid;
-  gap:8px;
-}
-
-.side-links .button{
-  width:100%;
-}
-
-.status{
-  display:inline-flex;
-  border:1px solid var(--line);
-  border-radius:999px;
-  padding:6px 8px;
-  color:var(--gold2);
-  font:800 7px Arial,sans-serif;
-  letter-spacing:.07em;
-  text-transform:uppercase;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:10px;
+  align-items:end;
 }
 
 .toast{
   position:fixed;
-  right:20px;
-  bottom:20px;
-  z-index:200;
-  max-width:390px;
-  padding:14px 16px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:#111512;
-  color:var(--cream2);
-  font:11px/1.5 Arial,sans-serif;
-  opacity:0;
-  transform:translateY(10px);
-  pointer-events:none;
-  transition:.18s;
-}
-
-.toast.show{
-  opacity:1;
-  transform:none;
+  right:18px;
+  bottom:18px;
+  z-index:100;
+  max-width:min(420px,calc(100vw - 36px));
+  border:1px solid rgba(143,217,168,.32);
+  background:#10271c;
+  color:#dff6e6;
+  box-shadow:var(--shadow);
+  border-radius:14px;
+  padding:13px 15px;
+  font-weight:750;
+  line-height:1.45;
 }
 
 .toast.error{
-  color:var(--danger);
+  border-color:rgba(255,143,143,.38);
+  background:#321717;
+  color:#ffd9d9;
 }
 
-.loading{
-  padding:80px 20px;
-  text-align:center;
+.muted{
   color:var(--muted);
-  font:11px Arial,sans-serif;
 }
 
-.hidden{
-  display:none !important;
+.small-text{
+  font-size:12px;
 }
 
-@media(max-width:950px){
+.section-separator{
+  height:1px;
+  background:rgba(40,67,56,.65);
+  margin:18px 0;
+}
+
+@media(max-width:1050px){
+
   .layout{
     grid-template-columns:1fr;
   }
 
-  .stats{
-    grid-template-columns:repeat(2,1fr);
+  .side-column{
+    grid-template-columns:repeat(2,minmax(0,1fr));
   }
+
 }
 
-@media(max-width:720px){
-  .nav{
-    display:none;
+@media(max-width:780px){
+
+  .shell{
+    width:min(100% - 22px,1440px);
   }
 
-  .form-grid{
+  .topbar-inner{
+    padding:10px 0;
+    align-items:flex-start;
+    flex-direction:column;
+    gap:8px;
+  }
+
+  .nav{
+    width:100%;
+    overflow:auto;
+    flex-wrap:nowrap;
+    padding-bottom:3px;
+  }
+
+  .hero{
     grid-template-columns:1fr;
   }
 
-  .field.full{
-    grid-column:auto;
+  .hero-actions{
+    justify-content:flex-start;
   }
 
   .stats{
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:repeat(2,minmax(0,1fr));
   }
+
+  .form-grid,
+  .side-column{
+    grid-template-columns:1fr;
+  }
+
+  .upload-row{
+    grid-template-columns:1fr;
+  }
+
 }
+
+@media(max-width:520px){
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .item-top{
+    flex-direction:column;
+  }
+
+  .item-actions{
+    justify-content:flex-start;
+  }
+
+  .rating-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+}
+
 </style>
+
 </head>
 
 <body>
 
-<header class="topbar">
+<div class="topbar">
 
-  <a class="brand" href="index.html">
-    <span class="brand-mark"></span>
-    <span>DogEar</span>
-  </a>
+  <div class="shell topbar-inner">
 
-  <nav class="nav">
-    <a href="dashboard.html">Home</a>
-    <a href="discover.html">Discover</a>
-    <a href="clubs.html">Clubs</a>
-    <a href="marketplace.html">Marketplace</a>
-    <a class="active" href="beta-reading.html">Beta Reading</a>
-  </nav>
+    <a
+      class="brand"
+      href="index.html"
+    >
 
-  <a
-    class="avatar"
-    id="navAvatar"
-    href="profile.html"
-  >?</a>
+      <span class="brand-mark">
+        ◩
+      </span>
 
-</header>
+      <span>
+        DogEar
+      </span>
+
+    </a>
+
+    <nav class="nav">
+
+      <a href="dashboard.html">
+        Dashboard
+      </a>
+
+      <a href="discover.html">
+        Discover
+      </a>
+
+      <a href="clubs.html">
+        Clubs
+      </a>
+
+      <a
+        class="active"
+        href="beta-reading.html"
+      >
+        Beta Reading
+      </a>
+
+      <a href="marketplace.html">
+        Marketplace
+      </a>
+
+      <a href="profile.html">
+        Profile
+      </a>
+
+    </nav>
+
+  </div>
+
+</div>
+
 
 <main class="page">
 
-  <a
-    class="back-link"
-    href="beta-reading.html"
-  >
-    ← Beta Reading
-  </a>
+  <div class="shell">
 
-  <div
-    class="loading"
-    id="loading"
-  >
-    Loading beta project...
-  </div>
+    <div
+      id="loading"
+      class="loading"
+    >
+      Loading beta project…
+    </div>
 
-  <div
-    id="projectContent"
-    class="hidden"
-  >
 
-    <section class="hero">
+    <div
+      id="projectContent"
+      class="hidden"
+    >
 
-      <div class="eyebrow">
-        Beta Project
-      </div>
+      <section class="hero">
 
-      <h1 id="projectTitle">
-        Project
-      </h1>
+        <div>
 
-      <div
-        class="hero-copy"
-        id="projectBlurb"
-      ></div>
+          <div class="eyebrow">
+            Beta Project
+          </div>
 
-      <div class="hero-actions">
+          <h1 id="projectTitle">
+            Untitled Project
+          </h1>
 
-        <span
-          class="status"
-          id="projectStatus"
-        ></span>
+          <p
+            id="projectDescription"
+            class="hero-description"
+          ></p>
 
-        <a
-          class="button secondary"
-          id="analyticsLink"
-          href="#"
-        >
-          Analytics
-        </a>
+        </div>
 
-      </div>
+        <div class="hero-actions">
 
-      <div class="stats">
+          <span
+            id="projectStatus"
+            class="status-pill"
+          >
+
+            <span class="status-dot"></span>
+
+            <span>
+              Loading
+            </span>
+
+          </span>
+
+          <a
+            id="analyticsLink"
+            class="button secondary"
+            href="beta-analytics.html"
+          >
+            Analytics
+          </a>
+
+        </div>
+
+      </section>
+
+
+      <section class="stats">
 
         <div class="stat">
+
           <div class="stat-label">
             Pending Applicants
           </div>
+
           <div
-            class="stat-value"
             id="pendingCount"
-          >0</div>
+            class="stat-value"
+          >
+            0
+          </div>
+
         </div>
 
+
         <div class="stat">
+
           <div class="stat-label">
             Active Readers
           </div>
+
           <div
+            id="activeReaderCount"
             class="stat-value"
-            id="readerCount"
-          >0</div>
+          >
+            0
+          </div>
+
         </div>
 
+
         <div class="stat">
+
           <div class="stat-label">
             Completed
           </div>
+
           <div
+            id="completedReaderCount"
             class="stat-value"
-            id="completedCount"
-          >0</div>
+          >
+            0
+          </div>
+
         </div>
 
+
         <div class="stat">
+
           <div class="stat-label">
             Current Round
           </div>
+
           <div
+            id="roundNumberStat"
             class="stat-value"
-            id="roundNumber"
-          >1</div>
+          >
+            —
+          </div>
+
         </div>
 
-      </div>
+      </section>
 
-    </section>
 
-    <div class="layout">
+      <div class="layout">
 
-      <!-- MAIN COLUMN -->
-      <div class="stack">
+        <div class="main-column">
 
-        <!-- CURRENT ROUND -->
-        <section class="panel">
 
-          <div class="panel-head">
-            <div>
-              <div class="panel-kicker">
-                Beta Round
+          <!-- CURRENT ROUND -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <div>
+
+                <h2 class="card-title">
+                  Current Round
+                </h2>
+
+                <div class="card-subtitle">
+                  Control the active beta-reading round and its deadline.
+                </div>
+
               </div>
 
-              <h2 class="panel-title">
-                Current Round
-              </h2>
-            </div>
-          </div>
-
-          <div class="panel-body">
-
-            <div class="form-grid">
-
-              <label class="field">
-                <span class="label">
-                  Round Name
-                </span>
-
-                <input
-                  class="input"
-                  id="roundName"
-                  type="text"
-                  maxlength="120"
-                  placeholder="Round 1"
-                >
-              </label>
-
-              <label class="field">
-                <span class="label">
-                  Status
-                </span>
-
-                <select
-                  class="select"
-                  id="roundStatus"
-                >
-                  <option value="draft">
-                    Draft
-                  </option>
-
-                  <option value="open">
-                    Open
-                  </option>
-
-                  <option value="closed">
-                    Closed
-                  </option>
-
-                  <option value="completed">
-                    Completed
-                  </option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span class="label">
-                  Deadline
-                </span>
-
-                <input
-                  class="input"
-                  id="roundDeadline"
-                  type="date"
-                >
-              </label>
-
-              <label class="field full">
-                <span class="label">
-                  Round Description
-                </span>
-
-                <textarea
-                  class="textarea"
-                  id="roundDescription"
-                  maxlength="2000"
-                  placeholder="What should readers focus on during this round?"
-                ></textarea>
-              </label>
-
-            </div>
-
-            <div class="row-actions">
-
-              <button
-                class="button primary"
-                id="saveRoundButton"
-                type="button"
+              <span
+                id="roundStatusBadge"
+                class="badge gold"
               >
-                Save Round
-              </button>
+                No round
+              </span>
 
             </div>
 
-          </div>
+            <div class="card-body">
 
-        </section>
+              <div class="form-grid">
+
+                <div class="field">
+
+                  <label for="roundNumber">
+                    Round number
+                  </label>
+
+                  <input
+                    id="roundNumber"
+                    type="number"
+                    min="1"
+                    step="1"
+                  >
+
+                </div>
 
 
-        <!-- MANUSCRIPT -->
-        <section class="panel">
+                <div class="field">
 
-          <div class="panel-head">
-            <div>
+                  <label for="roundDeadline">
+                    Deadline
+                  </label>
 
-              <div class="panel-kicker">
-                Private Manuscript
+                  <input
+                    id="roundDeadline"
+                    type="date"
+                  >
+
+                </div>
+
+
+                <div class="field">
+
+                  <label for="roundStatus">
+                    Status
+                  </label>
+
+                  <select id="roundStatus">
+
+                    <option value="draft">
+                      Draft
+                    </option>
+
+                    <option value="open">
+                      Open
+                    </option>
+
+                    <option value="closed">
+                      Closed
+                    </option>
+
+                    <option value="completed">
+                      Completed
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label for="roundReaderLimit">
+                    Reader limit
+                  </label>
+
+                  <input
+                    id="roundReaderLimit"
+                    type="number"
+                    min="1"
+                    step="1"
+                  >
+
+                </div>
+
+
+                <div class="field full">
+
+                  <label for="roundNotes">
+                    Author notes
+                  </label>
+
+                  <textarea
+                    id="roundNotes"
+                    placeholder="Anything readers should know about this round…"
+                  ></textarea>
+
+                </div>
+
               </div>
 
-              <h2 class="panel-title">
-                Manuscript
-              </h2>
-
-            </div>
-          </div>
-
-          <div class="panel-body">
-
-            <div class="upload-box">
-
-              <div class="upload-note">
-                Your original manuscript remains private.
-                Accepted beta readers read through DogEar's
-                protected browser reader. DogEar does not
-                provide readers with the original manuscript
-                file or a download button.
-                <br><br>
-                TXT and Markdown manuscripts can currently
-                be processed directly into the DogEar reader.
-                Additional manuscript formats will be added
-                to the processing pipeline later.
-              </div>
-
-              <input
-                class="file-input"
-                id="manuscriptFile"
-                type="file"
-                accept=".txt,.md,text/plain,text/markdown"
-              >
-
-              <div class="row-actions">
+              <div class="form-actions">
 
                 <button
+                  id="saveRoundButton"
                   class="button primary"
-                  id="uploadButton"
                   type="button"
                 >
-                  Upload Manuscript
+                  Save Round
                 </button>
 
               </div>
 
             </div>
 
-            <div id="manuscriptList"></div>
-
-          </div>
-
-        </section>
+          </section>
 
 
-        <!-- PENDING READERS -->
-        <section class="panel">
+          <!-- MANUSCRIPT -->
 
-          <div class="panel-head">
+          <section class="card">
 
-            <div>
+            <div class="card-header">
 
-              <div class="panel-kicker">
-                Applications
+              <div>
+
+                <h2 class="card-title">
+                  Manuscript
+                </h2>
+
+                <div class="card-subtitle">
+                  Upload the manuscript readers will see during this round.
+                </div>
+
               </div>
-
-              <h2 class="panel-title">
-                Pending Readers
-              </h2>
 
             </div>
 
-          </div>
+            <div class="card-body">
 
-          <div class="panel-body">
+              <div class="upload-box">
 
-            <div
-              class="reader-list"
-              id="pendingReaders"
-            ></div>
+                <div class="upload-row">
 
-          </div>
+                  <div class="field">
 
-        </section>
+                    <label for="manuscriptFile">
+                      Manuscript file
+                    </label>
 
+                    <input
+                      id="manuscriptFile"
+                      type="file"
+                      accept=".txt,.md,.markdown,.docx,text/plain,text/markdown,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    >
 
-        <!-- ACCEPTED READERS -->
-        <section class="panel">
-
-          <div class="panel-head">
-
-            <div>
-
-              <div class="panel-kicker">
-                Beta Team
-              </div>
-
-              <h2 class="panel-title">
-                Accepted Readers
-              </h2>
-
-            </div>
-
-          </div>
-
-          <div class="panel-body">
-
-            <div
-              class="reader-list"
-              id="acceptedReaders"
-            ></div>
-
-          </div>
-
-        </section>
-
-
-        <!-- =================================================
-             AUTHOR-SHARED DOGEARS
-        ================================================== -->
-        <section class="panel">
-
-          <div class="panel-head">
-
-            <div>
-
-              <div class="panel-kicker">
-                Reader Notes
-              </div>
-
-              <h2 class="panel-title">
-                Reader DogEars & Feedback
-              </h2>
-
-            </div>
-
-            <span
-              class="status"
-              id="sharedDogEarCount"
-            >
-              0 Shared
-            </span>
-
-          </div>
+                    <div class="help">
+                      Supported formats: Microsoft Word (.docx), Notepad/plain text (.txt), and Markdown (.md/.markdown). The original manuscript stays private; beta readers receive only DogEar's processed reading copy.
                     </div>
 
-          <div class="panel-body">
+                  </div>
 
-            <div class="side-note">
-              These are passages and notes that beta readers
-              explicitly chose to share with you. Private
-              DogEars are never shown here.
-            </div>
+                  <button
+                    id="uploadButton"
+                    class="button primary"
+                    type="button"
+                  >
+                    Upload Manuscript
+                  </button>
 
-            <div
-              class="dogear-list"
-              id="sharedDogEars"
-              style="margin-top:16px"
-            ></div>
+                </div>
 
-          </div>
-
-        </section>
-
-
-        <!-- =================================================
-             SUBMITTED READER FEEDBACK
-        ================================================== -->
-        <section class="panel">
-
-          <div class="panel-head">
-
-            <div>
-
-              <div class="panel-kicker">
-                Final Feedback
               </div>
 
-              <h2 class="panel-title">
-                Submitted Reader Feedback
-              </h2>
+              <div
+                id="manuscriptList"
+                class="list"
+                style="margin-top:14px;"
+              ></div>
 
             </div>
 
-            <span
-              class="status"
-              id="submittedFeedbackCount"
-            >
-              0 Submitted
-            </span>
-
-          </div>
-
-          <div class="panel-body">
-
-            <div class="side-note">
-              This section contains overall feedback that beta
-              readers have explicitly submitted to you.
-              Saved drafts remain private to the reader and
-              never appear here.
-            </div>
-
-            <div
-              class="feedback-list"
-              id="submittedFeedback"
-              style="margin-top:16px"
-            ></div>
-
-          </div>
-
-        </section>
+          </section>
 
 
-        <!-- REWARDS -->
-        <section class="panel">
+          <!-- PENDING READERS -->
 
-          <div class="panel-head">
+          <section class="card">
 
-            <div>
+            <div class="card-header">
 
-              <div class="panel-kicker">
-                Incentives
+              <div>
+
+                <h2 class="card-title">
+                  Pending Readers
+                </h2>
+
+                <div class="card-subtitle">
+                  Review people waiting to join this beta project.
+                </div>
+
               </div>
 
-              <h2 class="panel-title">
-                Reader Rewards
-              </h2>
+            </div>
+
+            <div class="card-body">
+
+              <div
+                id="pendingReaders"
+                class="list"
+              ></div>
 
             </div>
 
-          </div>
+          </section>
 
-          <div class="panel-body">
 
-            <div class="form-grid">
+          <!-- ACCEPTED READERS -->
 
-              <label class="field">
+          <section class="card">
 
-                <span class="label">
-                  Coins Offered
-                </span>
+            <div class="card-header">
 
-                <input
-                  class="input"
-                  id="rewardCoins"
-                  type="number"
-                  min="0"
-                  step="1"
-                  placeholder="0"
+              <div>
+
+                <h2 class="card-title">
+                  Accepted Readers
+                </h2>
+
+                <div class="card-subtitle">
+                  Readers currently assigned to this project.
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="card-body">
+
+              <div
+                id="acceptedReaders"
+                class="list"
+              ></div>
+
+            </div>
+
+          </section>
+
+
+          <!-- SHARED DOGEARS -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <div>
+
+                <h2 class="card-title">
+                  Reader DogEars
+                </h2>
+
+                <div class="card-subtitle">
+                  Notes readers intentionally shared with the author.
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="card-body">
+
+              <div
+                id="sharedDogEars"
+                class="list"
+              ></div>
+
+            </div>
+
+          </section>
+
+
+          <!-- SUBMITTED FEEDBACK -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <div>
+
+                <h2 class="card-title">
+                  Submitted Reader Feedback
+                </h2>
+
+                <div class="card-subtitle">
+                  Structured feedback readers have submitted to you.
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="card-body">
+
+              <div
+                id="submittedFeedback"
+                class="list"
+              ></div>
+
+            </div>
+
+          </section>
+
+
+          <!-- REWARDS -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <div>
+
+                <h2 class="card-title">
+                  Reader Rewards
+                </h2>
+
+                <div class="card-subtitle">
+                  Configure the DogEar coin reward offered for this beta round.
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="card-body">
+
+              <div class="form-grid">
+
+                <div class="field">
+
+                  <label for="rewardCoins">
+                    Coins offered
+                  </label>
+
+                  <input
+                    id="rewardCoins"
+                    type="number"
+                    min="0"
+                    step="1"
+                    value="0"
+                  >
+
+                  <div class="help">
+                    This records the round's reward offer. Coin movement remains controlled by DogEar's audited coin system.
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="form-actions">
+
+                <button
+                  id="saveRewardButton"
+                  class="button secondary"
+                  type="button"
                 >
+                  Save Reward
+                </button>
 
-              </label>
+              </div>
 
             </div>
 
-            <div class="row-actions">
+          </section>
 
-              <button
-                class="button primary"
-                id="saveRewardButton"
-                type="button"
+        </div>
+
+
+        <!-- SIDEBAR -->
+
+        <aside class="side-column">
+
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <div>
+
+                <h2 class="card-title">
+                  Details
+                </h2>
+
+              </div>
+
+            </div>
+
+            <div class="card-body">
+
+              <div
+                id="projectDetails"
+                class="detail-list"
+              ></div>
+
+            </div>
+
+          </section>
+
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <div>
+
+                <h2 class="card-title">
+                  Tools
+                </h2>
+
+              </div>
+
+            </div>
+
+            <div class="card-body">
+
+              <div
+                style="
+                  display:grid;
+                  gap:10px;
+                "
               >
-                Save Reward
-              </button>
+
+                <a
+                  class="button secondary"
+                  href="beta-reading.html"
+                >
+                  Beta Reading Home
+                </a>
+
+                <a
+                  id="sideAnalyticsLink"
+                  class="button secondary"
+                  href="beta-analytics.html"
+                >
+                  View Analytics
+                </a>
+
+              </div>
 
             </div>
 
-            <div
-              class="side-note"
-              style="margin-top:14px"
-            >
-              DogEar coin rewards use the site's existing
-              audited coin system. A beta reward record does
-              not create a second wallet or separate currency.
-            </div>
+          </section>
 
-          </div>
-
-        </section>
+        </aside>
 
       </div>
-
-
-      <!-- =================================================
-           SIDEBAR
-      ================================================== -->
-      <aside class="stack">
-
-        <section class="panel">
-
-          <div class="panel-head">
-
-            <div>
-
-              <div class="panel-kicker">
-                Project
-              </div>
-
-              <h2 class="panel-title">
-                Details
-              </h2>
-
-            </div>
-
-          </div>
-
-          <div class="panel-body">
-
-            <div
-              class="side-note"
-              id="projectDetails"
-            ></div>
-
-          </div>
-
-        </section>
-
-
-        <section class="panel">
-
-          <div class="panel-head">
-
-            <div>
-
-              <div class="panel-kicker">
-                Management
-              </div>
-
-              <h2 class="panel-title">
-                Project Tools
-              </h2>
-
-            </div>
-
-          </div>
-
-          <div class="panel-body">
-
-            <div class="side-links">
-
-              <a
-                class="button secondary"
-                id="sideAnalyticsLink"
-                href="#"
-              >
-                View Analytics
-              </a>
-
-              <a
-                class="button secondary"
-                href="beta-reading.html"
-              >
-                Beta Reading Home
-              </a>
-
-            </div>
-
-          </div>
-
-        </section>
-
-      </aside>
 
     </div>
 
@@ -1339,8 +1368,8 @@ h1{
 
 
 <div
-  class="toast"
   id="toast"
+  class="toast hidden"
 ></div>
 
 
@@ -1355,6 +1384,7 @@ const SUPABASE_URL =
 
 const SUPABASE_KEY =
   "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
 
 const supabaseClient =
   window.supabase.createClient(
@@ -1372,26 +1402,50 @@ const params =
     window.location.search
   );
 
+
 const projectId =
-  params.get("id");
+  params.get(
+    "project"
+  ) ||
+  params.get(
+    "id"
+  );
 
-let currentUser = null;
 
-let currentProfile = null;
+let currentUser =
+  null;
 
-let project = null;
 
-let currentRound = null;
+let currentProfile =
+  null;
 
-let assignments = [];
 
-let manuscripts = [];
+let project =
+  null;
 
-let sharedDogEars = [];
 
-let submittedFeedback = [];
+let currentRound =
+  null;
 
-let rewardRecord = null;
+
+let assignments =
+  [];
+
+
+let manuscripts =
+  [];
+
+
+let sharedDogEars =
+  [];
+
+
+let submittedFeedback =
+  [];
+
+
+let rewardRecord =
+  null;
 
 
 /* =========================================================
@@ -1400,69 +1454,65 @@ let rewardRecord = null;
 
 const $ =
   id =>
-    document.getElementById(id);
+    document.getElementById(
+      id
+    );
 
 
-function escapeHtml(value){
+function escapeHtml(
+  value
+){
 
   return String(
     value ?? ""
   )
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-}
-
-
-function showToast(
-  message,
-  type = ""
-){
-
-  const toast =
-    $("toast");
-
-  toast.textContent =
-    message;
-
-  toast.className =
-    `toast show ${type}`;
-
-  clearTimeout(
-    showToast.timer
-  );
-
-  showToast.timer =
-    setTimeout(
-      () => {
-        toast.className =
-          "toast";
-      },
-      3500
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
     );
 
 }
 
 
-function formatDate(value){
+function formatDate(
+  value
+){
 
   if(!value){
-    return "Not set";
+    return "—";
   }
 
+
   const date =
-    new Date(value);
+    new Date(
+      value
+    );
+
 
   if(
     Number.isNaN(
       date.getTime()
     )
   ){
-    return String(value);
+    return "—";
   }
+
 
   return date.toLocaleDateString(
     undefined,
@@ -1476,90 +1526,188 @@ function formatDate(value){
 }
 
 
-function formatDateTime(value){
+function formatDateTime(
+  value
+){
 
   if(!value){
-    return "";
+    return "—";
   }
 
+
   const date =
-    new Date(value);
+    new Date(
+      value
+    );
+
 
   if(
     Number.isNaN(
       date.getTime()
     )
   ){
-    return "";
+    return "—";
   }
 
-  return date.toLocaleString(
-    undefined,
-    {
-      year:"numeric",
-      month:"short",
-      day:"numeric",
-      hour:"numeric",
-      minute:"2-digit"
-    }
-  );
 
+  return date.toLocaleString();
 }
 
 
-function safePercent(value){
-
-  const number =
-    Number(value || 0);
-
-  return Math.max(
-    0,
-    Math.min(
-      100,
-      Math.round(number)
-    )
-  );
-
-}
-
-
-function readerDisplayName(
-  assignment
+function titleCase(
+  value
 ){
 
-  const profile =
-    assignment.profiles ||
-    assignment.profile ||
-    {};
+  return String(
+    value || ""
+  )
+    .replace(
+      /[_-]+/g,
+      " "
+    )
+    .replace(
+      /\b\w/g,
+      letter =>
+        letter.toUpperCase()
+    );
+
+}
+
+
+function showToast(
+  message,
+  type = "success"
+){
+
+  const toast =
+    $("toast");
+
+
+  toast.textContent =
+    message;
+
+
+  toast.classList
+    .toggle(
+      "error",
+      type === "error"
+    );
+
+
+  toast.classList
+    .remove(
+      "hidden"
+    );
+
+
+  window.clearTimeout(
+    showToast.timer
+  );
+
+
+  showToast.timer =
+    window.setTimeout(
+      () => {
+
+        toast.classList
+          .add(
+            "hidden"
+          );
+
+      },
+      4500
+    );
+
+}
+
+
+function profileName(
+  profile,
+  fallback = "DogEar reader"
+){
+
+  if(!profile){
+    return fallback;
+  }
+
 
   return (
     profile.display_name ||
     profile.username ||
-    "DogEar Reader"
+    profile.full_name ||
+    profile.name ||
+    fallback
   );
 
 }
 
 
-function readerUsername(
+function assignmentStatus(
   assignment
 ){
 
-  const profile =
-    assignment.profiles ||
-    assignment.profile ||
-    {};
+  return String(
+    assignment?.status ||
+    ""
+  )
+    .trim()
+    .toLowerCase();
+
+}
+
+
+function isPendingAssignment(
+  assignment
+){
+
+  const status =
+    assignmentStatus(
+      assignment
+    );
+
 
   return (
-    profile.username ||
-    ""
+    status === "pending" ||
+    status === "applied" ||
+    status === "requested"
   );
 
 }
 
 
-/* =========================================================
-   AUTHENTICATION
+function isAcceptedAssignment(
+  assignment
+){
+
+  const status =
+    assignmentStatus(
+      assignment
+    );
+
+
+  return (
+    status === "accepted" ||
+    status === "reading" ||
+    status === "completed"
+  );
+
+}
+
+
+function isCompletedAssignment(
+  assignment
+){
+
+  return (
+    assignmentStatus(
+      assignment
+    ) ===
+    "completed"
+  );
+
+}
+  /* =========================================================
+   AUTH
 ========================================================= */
 
 async function loadSession(){
@@ -1572,15 +1720,16 @@ async function loadSession(){
       .auth
       .getSession();
 
+
   if(error){
-
     throw error;
-
   }
 
+
   currentUser =
-    data.session?.user ||
+    data?.session?.user ||
     null;
+
 
   if(!currentUser){
 
@@ -1589,12 +1738,15 @@ async function loadSession(){
         window.location.href
       );
 
+
     window.location.href =
-      `auth.html#login?returnTo=${returnTo}`;
+      `auth.html#login?return=${returnTo}`;
+
 
     return false;
 
   }
+
 
   return true;
 
@@ -1602,7 +1754,7 @@ async function loadSession(){
 
 
 /* =========================================================
-   PROFILE
+   LOAD PROFILE
 ========================================================= */
 
 async function loadProfile(){
@@ -1612,72 +1764,37 @@ async function loadProfile(){
     error
   } =
     await supabaseClient
-      .from("profiles")
-      .select(
-        "id,username,display_name,avatar_url"
+      .from(
+        "profiles"
       )
+      .select("*")
       .eq(
         "id",
         currentUser.id
       )
       .maybeSingle();
 
+
   if(error){
 
-    console.error(
-      "Profile:",
+    console.warn(
+      "Load profile:",
       error
     );
+
+
+    currentProfile =
+      null;
+
 
     return;
 
   }
+
 
   currentProfile =
     data ||
     null;
-
-  renderAvatar();
-
-}
-
-
-function renderAvatar(){
-
-  const holder =
-    $("navAvatar");
-
-  if(!holder){
-    return;
-  }
-
-  const avatarUrl =
-    currentProfile?.avatar_url;
-
-  if(avatarUrl){
-
-    holder.innerHTML =
-      `<img
-        src="${escapeHtml(avatarUrl)}"
-        alt=""
-      >`;
-
-    return;
-
-  }
-
-  const name =
-    currentProfile?.display_name ||
-    currentProfile?.username ||
-    currentUser?.email ||
-    "?";
-
-  holder.textContent =
-    String(name)
-      .trim()
-      .charAt(0)
-      .toUpperCase() ||
-    "?";
 
 }
 
@@ -1687,14 +1804,6 @@ function renderAvatar(){
 ========================================================= */
 
 async function loadProject(){
-
-  if(!projectId){
-
-    throw new Error(
-      "This DogEar link does not contain a beta project."
-    );
-
-  }
 
   const {
     data,
@@ -1709,13 +1818,22 @@ async function loadProject(){
         "id",
         projectId
       )
-      .single();
+      .maybeSingle();
+
 
   if(error){
-
     throw error;
+  }
+
+
+  if(!data){
+
+    throw new Error(
+      "This beta project could not be found."
+    );
 
   }
+
 
   if(
     data.owner_id !==
@@ -1723,10 +1841,11 @@ async function loadProject(){
   ){
 
     throw new Error(
-      "Only the owner of this beta project can manage it."
+      "Only the owner of this beta project can open the author dashboard."
     );
 
   }
+
 
   project =
     data;
@@ -1761,11 +1880,11 @@ async function loadCurrentRound(){
       )
       .limit(1);
 
+
   if(error){
-
     throw error;
-
   }
+
 
   currentRound =
     data?.[0] ||
@@ -1786,16 +1905,11 @@ async function loadAssignments(){
   } =
     await supabaseClient
       .from(
-        "beta_assignments"
+        "beta_reader_assignments"
       )
       .select(`
         *,
-        profiles:reader_id(
-          id,
-          username,
-          display_name,
-          avatar_url
-        )
+        reader:profiles!beta_reader_assignments_reader_id_fkey(*)
       `)
       .eq(
         "project_id",
@@ -1808,11 +1922,131 @@ async function loadAssignments(){
         }
       );
 
+
   if(error){
 
-    throw error;
+    /*
+      Some Supabase schemas do not expose the relationship
+      name to PostgREST. Fall back to loading assignments
+      and reader profiles separately.
+    */
+
+    const {
+      data:fallbackAssignments,
+      error:fallbackError
+    } =
+      await supabaseClient
+        .from(
+          "beta_reader_assignments"
+        )
+        .select("*")
+        .eq(
+          "project_id",
+          projectId
+        )
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        );
+
+
+    if(fallbackError){
+      throw fallbackError;
+    }
+
+
+    const readerIds =
+      [
+        ...new Set(
+          (
+            fallbackAssignments ||
+            []
+          )
+            .map(
+              assignment =>
+                assignment.reader_id
+            )
+            .filter(Boolean)
+        )
+      ];
+
+
+    let profileMap =
+      new Map();
+
+
+    if(
+      readerIds.length
+    ){
+
+      const {
+        data:profiles,
+        error:profileError
+      } =
+        await supabaseClient
+          .from(
+            "profiles"
+          )
+          .select("*")
+          .in(
+            "id",
+            readerIds
+          );
+
+
+      if(profileError){
+
+        console.warn(
+          "Load assignment profiles:",
+          profileError
+        );
+
+      }
+      else{
+
+        profileMap =
+          new Map(
+            (
+              profiles ||
+              []
+            )
+              .map(
+                profile => [
+                  profile.id,
+                  profile
+                ]
+              )
+          );
+
+      }
+
+    }
+
+
+    assignments =
+      (
+        fallbackAssignments ||
+        []
+      )
+        .map(
+          assignment => ({
+            ...assignment,
+
+            reader:
+              profileMap.get(
+                assignment.reader_id
+              ) ||
+              null
+          })
+        );
+
+
+    return;
 
   }
+
 
   assignments =
     data ||
@@ -1847,11 +2081,11 @@ async function loadManuscripts(){
         }
       );
 
+
   if(error){
-
     throw error;
-
   }
+
 
   manuscripts =
     data ||
@@ -1861,7 +2095,7 @@ async function loadManuscripts(){
 
 
 /* =========================================================
-   LOAD AUTHOR-SHARED DOGEARS
+   LOAD SHARED DOGEARS
 ========================================================= */
 
 async function loadSharedDogEars(){
@@ -1879,18 +2113,23 @@ async function loadSharedDogEars(){
         }
       );
 
+
   if(error){
 
-    console.error(
-      "Shared DogEars:",
+    console.warn(
+      "Load shared DogEars:",
       error
     );
 
-    sharedDogEars = [];
+
+    sharedDogEars =
+      [];
+
 
     return;
 
   }
+
 
   sharedDogEars =
     data ||
@@ -1900,7 +2139,7 @@ async function loadSharedDogEars(){
 
 
 /* =========================================================
-   LOAD SUBMITTED READER FEEDBACK
+   LOAD SUBMITTED FEEDBACK
 ========================================================= */
 
 async function loadSubmittedFeedback(){
@@ -1918,18 +2157,23 @@ async function loadSubmittedFeedback(){
         }
       );
 
+
   if(error){
 
-    console.error(
-      "Submitted feedback:",
+    console.warn(
+      "Load submitted feedback:",
       error
     );
 
-    submittedFeedback = [];
+
+    submittedFeedback =
+      [];
+
 
     return;
 
   }
+
 
   submittedFeedback =
     data ||
@@ -1949,9 +2193,11 @@ async function loadReward(){
     rewardRecord =
       null;
 
+
     return;
 
   }
+
 
   const {
     data,
@@ -1968,19 +2214,23 @@ async function loadReward(){
       )
       .maybeSingle();
 
+
   if(error){
 
-    console.error(
-      "Reward:",
+    console.warn(
+      "Load beta reward:",
       error
     );
+
 
     rewardRecord =
       null;
 
+
     return;
 
   }
+
 
   rewardRecord =
     data ||
@@ -1997,6 +2247,7 @@ async function loadProjectData(){
 
   await loadProject();
 
+
   await Promise.all([
     loadCurrentRound(),
     loadAssignments(),
@@ -2004,6 +2255,7 @@ async function loadProjectData(){
     loadSharedDogEars(),
     loadSubmittedFeedback()
   ]);
+
 
   await loadReward();
 
@@ -2019,80 +2271,116 @@ function renderProjectHeader(){
   $("projectTitle")
     .textContent =
       project.title ||
-      "Untitled Beta Project";
+      "Untitled Project";
 
-  $("projectBlurb")
+
+  $("projectDescription")
     .textContent =
       project.description ||
-      project.blurb ||
-      "Private beta-reading project.";
+      "No project description yet.";
+
+
+  const status =
+    String(
+      project.status ||
+      "draft"
+    )
+      .toLowerCase();
+
 
   $("projectStatus")
-    .textContent =
-      project.status ||
-      "active";
+    .innerHTML =
+      `
+        <span
+          class="status-dot"
+        ></span>
+
+        <span>
+          ${escapeHtml(
+            titleCase(
+              status
+            )
+          )}
+        </span>
+      `;
+
+
+  const analyticsHref =
+    `beta-analytics.html?project=${encodeURIComponent(
+      projectId
+    )}`;
+
+
+  $("analyticsLink")
+    .href =
+      analyticsHref;
+
+
+  $("sideAnalyticsLink")
+    .href =
+      analyticsHref;
+
 
   const pending =
-    assignments.filter(
-      assignment =>
-        assignment.status ===
-        "pending"
-    );
+    assignments
+      .filter(
+        isPendingAssignment
+      )
+      .length;
 
-  const accepted =
-    assignments.filter(
-      assignment =>
-        [
-          "accepted",
-          "reading"
-        ].includes(
-          assignment.status
-        )
-    );
+
+  const active =
+    assignments
+      .filter(
+        assignment =>
+          isAcceptedAssignment(
+            assignment
+          ) &&
+          !isCompletedAssignment(
+            assignment
+          )
+      )
+      .length;
+
 
   const completed =
-    assignments.filter(
-      assignment =>
-        assignment.status ===
-        "completed"
-    );
+    assignments
+      .filter(
+        isCompletedAssignment
+      )
+      .length;
+
 
   $("pendingCount")
     .textContent =
       String(
-        pending.length
+        pending
       );
 
-  $("readerCount")
+
+  $("activeReaderCount")
     .textContent =
       String(
-        accepted.length
+        active
       );
 
-  $("completedCount")
+
+  $("completedReaderCount")
     .textContent =
       String(
-        completed.length
+        completed
       );
 
-  $("roundNumber")
+
+  $("roundNumberStat")
     .textContent =
-      String(
-        currentRound
-          ?.round_number ||
-        1
-      );
-
-  const analyticsUrl =
-    `beta-analytics.html?project=${encodeURIComponent(projectId)}`;
-
-  $("analyticsLink")
-    .href =
-      analyticsUrl;
-
-  $("sideAnalyticsLink")
-    .href =
-      analyticsUrl;
+      currentRound
+        ? String(
+            currentRound
+              .round_number ||
+            1
+          )
+        : "—";
 
 }
 
@@ -2103,111 +2391,1314 @@ function renderProjectHeader(){
 
 function renderProjectDetails(){
 
+  const details =
+    [];
+
+
   const genre =
     project.genre ||
-    "Not specified";
+    project.category ||
+    project.book_genre ||
+    "—";
+
 
   const wordCount =
-    Number(
-      project.word_count ||
-      0
-    );
+    project.word_count ||
+    project.target_word_count ||
+    "—";
+
 
   const readersWanted =
-    Number(
-      project.readers_wanted ||
-      0
-    );
+    project.readers_wanted ||
+    project.reader_limit ||
+    currentRound?.reader_limit ||
+    currentRound?.max_readers ||
+    "—";
+
 
   const deadline =
-    project.deadline ||
     currentRound?.deadline ||
+    project.deadline ||
     null;
+
+
+  details.push([
+    "Genre",
+    genre
+  ]);
+
+
+  details.push([
+    "Word count",
+    typeof wordCount ===
+      "number"
+        ? wordCount
+            .toLocaleString()
+        : wordCount
+  ]);
+
+
+  details.push([
+    "Readers wanted",
+    readersWanted
+  ]);
+
+
+  details.push([
+    "Deadline",
+    formatDate(
+      deadline
+    )
+  ]);
+
 
   $("projectDetails")
     .innerHTML =
-      `
-        <strong>Genre</strong><br>
-        ${escapeHtml(genre)}
-        <br><br>
+      details
+        .map(
+          ([key,value]) =>
+            `
+              <div class="detail-row">
 
-        <strong>Word count</strong><br>
-        ${
-          wordCount
-            ? escapeHtml(
-                wordCount
-                  .toLocaleString()
-              )
-            : "Not specified"
-        }
-        <br><br>
+                <div class="detail-key">
+                  ${escapeHtml(
+                    key
+                  )}
+                </div>
 
-        <strong>Readers wanted</strong><br>
-        ${
-          readersWanted
-            ? escapeHtml(
-                readersWanted
-              )
-            : "Not specified"
-        }
-        <br><br>
+                <div class="detail-value">
+                  ${escapeHtml(
+                    value
+                  )}
+                </div>
 
-        <strong>Deadline</strong><br>
-        ${escapeHtml(
-          formatDate(
-            deadline
-          )
-        )}
-      `;
+              </div>
+            `
+        )
+        .join("");
 
 }
 
 
 /* =========================================================
-   RENDER CURRENT ROUND
+   RENDER ROUND
 ========================================================= */
 
 function renderRound(){
 
   if(!currentRound){
 
-    $("roundName")
-      .value =
-        "Round 1";
+    $("roundStatusBadge")
+      .textContent =
+        "No round";
 
-    $("roundStatus")
+
+    $("roundNumber")
       .value =
-        "draft";
+        1;
+
 
     $("roundDeadline")
       .value =
         "";
 
-    $("roundDescription")
+
+    $("roundStatus")
+      .value =
+        "draft";
+
+
+    $("roundReaderLimit")
+      .value =
+        project.readers_wanted ||
+        project.reader_limit ||
+        1;
+
+
+    $("roundNotes")
       .value =
         "";
+
 
     return;
 
   }
 
-  $("roundName")
-    .value =
-      currentRound.name ||
+
+  $("roundStatusBadge")
+    .textContent =
       `Round ${
         currentRound.round_number ||
         1
+      } · ${
+        titleCase(
+          currentRound.status ||
+          "draft"
+        )
       }`;
 
+
+  $("roundNumber")
+    .value =
+      currentRound.round_number ||
+      1;
+
+
+  $("roundDeadline")
+    .value =
+      currentRound.deadline
+        ? String(
+            currentRound.deadline
+          )
+            .slice(
+              0,
+              10
+            )
+        : "";
+
+
   $("roundStatus")
-        if(error){
-        throw error;
+    .value =
+      currentRound.status ||
+      "draft";
+
+
+  $("roundReaderLimit")
+    .value =
+      currentRound.reader_limit ||
+      currentRound.max_readers ||
+      project.readers_wanted ||
+      1;
+
+
+  $("roundNotes")
+    .value =
+      currentRound.author_notes ||
+      currentRound.notes ||
+      "";
+
+}
+
+
+/* =========================================================
+   RENDER MANUSCRIPTS
+========================================================= */
+
+function renderManuscripts(){
+
+  const container =
+    $("manuscriptList");
+
+
+  if(
+    !manuscripts.length
+  ){
+
+    container.innerHTML =
+      `
+        <div class="empty">
+          No manuscript has been uploaded yet.
+        </div>
+      `;
+
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    manuscripts
+      .map(
+        manuscript => {
+
+          const processingStatus =
+            String(
+              manuscript.processing_status ||
+              "pending"
+            )
+              .toLowerCase();
+
+
+          const active =
+            manuscript.active
+              ? " · Active"
+              : "";
+
+
+          const statusClass =
+            processingStatus ===
+              "ready"
+                ? "success"
+                : processingStatus ===
+                    "failed"
+                  ? "danger"
+                  : "gold";
+
+
+          const wordCount =
+            Number(
+              manuscript.word_count ||
+              0
+            );
+
+
+          const chapterCount =
+            Number(
+              manuscript.chapter_count ||
+              0
+            );
+
+
+          const errorText =
+            manuscript.processing_error
+              ? `
+                  <div
+                    class="small-text"
+                    style="
+                      color:var(--danger);
+                      margin-top:9px;
+                      line-height:1.55;
+                    "
+                  >
+                    ${escapeHtml(
+                      manuscript
+                        .processing_error
+                    )}
+                  </div>
+                `
+              : "";
+
+
+          const retryButton =
+            processingStatus ===
+              "failed"
+                ? `
+                    <button
+                      class="button secondary small"
+                      type="button"
+                      data-reprocess-manuscript="${escapeHtml(
+                        manuscript.id
+                      )}"
+                    >
+                      Retry Processing
+                    </button>
+                  `
+                : "";
+
+
+          return `
+            <div class="list-item">
+
+              <div class="item-top">
+
+                <div>
+
+                  <div class="item-title">
+                    Version ${
+                      escapeHtml(
+                        manuscript
+                          .version_number ||
+                        "?"
+                      )
+                    }${active}
+                  </div>
+
+                  <div class="item-meta">
+                    ${escapeHtml(
+                      manuscript
+                        .original_filename ||
+                      "Manuscript"
+                    )}
+                    ·
+                    ${wordCount
+                      .toLocaleString()
+                    } words
+                    ·
+                    ${chapterCount
+                      .toLocaleString()
+                    } sections
+                  </div>
+
+                  ${errorText}
+
+                </div>
+
+                <div class="item-actions">
+
+                  <span
+                    class="badge ${statusClass}"
+                  >
+                    ${escapeHtml(
+                      titleCase(
+                        processingStatus
+                      )
+                    )}
+                  </span>
+
+                  ${retryButton}
+
+                </div>
+
+              </div>
+
+            </div>
+          `;
+
+        }
+      )
+      .join("");
+
+
+  container
+    .querySelectorAll(
+      "[data-reprocess-manuscript]"
+    )
+    .forEach(
+      button => {
+
+        button
+          .addEventListener(
+            "click",
+            async () => {
+
+              const manuscriptId =
+                button.dataset
+                  .reprocessManuscript;
+
+
+              if(!manuscriptId){
+                return;
+              }
+
+
+              button.disabled =
+                true;
+
+
+              try{
+
+                await requestProcessing(
+                  manuscriptId
+                );
+
+
+                await processManuscript(
+                  manuscriptId
+                );
+
+
+                showToast(
+                  "Manuscript processing started."
+                );
+
+
+                await loadManuscripts();
+
+
+                renderManuscripts();
+
+              }
+              catch(error){
+
+                console.error(
+                  "Retry manuscript processing:",
+                  error
+                );
+
+
+                showToast(
+                  error.message ||
+                  "DogEar couldn't retry this manuscript.",
+                  "error"
+                );
+
+              }
+              finally{
+
+                button.disabled =
+                  false;
+
+              }
+
+            }
+          );
+
       }
+    );
 
-      currentRound =
-        data;
+}
 
-    }else{
+
+/* =========================================================
+   READER DISPLAY HELPERS
+========================================================= */
+
+function readerDisplayName(
+  assignment
+){
+
+  return profileName(
+    assignment.reader,
+    assignment.reader_name ||
+    assignment.reader_email ||
+    "DogEar reader"
+  );
+
+}
+
+
+function readerSecondaryText(
+  assignment
+){
+
+  const profile =
+    assignment.reader ||
+    {};
+
+
+  return (
+    profile.username ||
+    profile.email ||
+    assignment.reader_email ||
+    ""
+  );
+
+}
+
+
+/* =========================================================
+   RENDER PENDING READERS
+========================================================= */
+
+function renderPendingReaders(){
+
+  const container =
+    $("pendingReaders");
+
+
+  const pending =
+    assignments
+      .filter(
+        isPendingAssignment
+      );
+
+
+  if(
+    !pending.length
+  ){
+
+    container.innerHTML =
+      `
+        <div class="empty">
+          No readers are waiting for approval.
+        </div>
+      `;
+
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    pending
+      .map(
+        assignment => {
+
+          const name =
+            readerDisplayName(
+              assignment
+            );
+
+
+          const secondary =
+            readerSecondaryText(
+              assignment
+            );
+
+
+          return `
+            <div class="list-item">
+
+              <div class="item-top">
+
+                <div>
+
+                  <div class="item-title">
+                    ${escapeHtml(
+                      name
+                    )}
+                  </div>
+
+                  ${
+                    secondary
+                      ? `
+                          <div class="item-meta">
+                            ${escapeHtml(
+                              secondary
+                            )}
+                          </div>
+                        `
+                      : ""
+                  }
+
+                  <div class="item-meta">
+                    Applied ${
+                      escapeHtml(
+                        formatDateTime(
+                          assignment.created_at
+                        )
+                      )
+                    }
+                  </div>
+
+                </div>
+
+                <div class="item-actions">
+
+                  <button
+                    class="button primary small"
+                    type="button"
+                    data-accept-assignment="${escapeHtml(
+                      assignment.id
+                    )}"
+                  >
+                    Accept
+                  </button>
+
+                  <button
+                    class="button danger small"
+                    type="button"
+                    data-decline-assignment="${escapeHtml(
+                      assignment.id
+                    )}"
+                  >
+                    Decline
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+          `;
+
+        }
+      )
+      .join("");
+
+
+  container
+    .querySelectorAll(
+      "[data-accept-assignment]"
+    )
+    .forEach(
+      button => {
+
+        button
+          .addEventListener(
+            "click",
+            async () => {
+
+              await updateAssignmentStatus(
+                button.dataset
+                  .acceptAssignment,
+                "accepted",
+                button
+              );
+
+            }
+          );
+
+      }
+    );
+
+
+  container
+    .querySelectorAll(
+      "[data-decline-assignment]"
+    )
+    .forEach(
+      button => {
+
+        button
+          .addEventListener(
+            "click",
+            async () => {
+
+              await updateAssignmentStatus(
+                button.dataset
+                  .declineAssignment,
+                "declined",
+                button
+              );
+
+            }
+          );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   RENDER ACCEPTED READERS
+========================================================= */
+
+function renderAcceptedReaders(){
+
+  const container =
+    $("acceptedReaders");
+
+
+  const accepted =
+    assignments
+      .filter(
+        isAcceptedAssignment
+      );
+
+
+  if(
+    !accepted.length
+  ){
+
+    container.innerHTML =
+      `
+        <div class="empty">
+          No readers have been accepted yet.
+        </div>
+      `;
+
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    accepted
+      .map(
+        assignment => {
+
+          const name =
+            readerDisplayName(
+              assignment
+            );
+
+
+          const secondary =
+            readerSecondaryText(
+              assignment
+            );
+
+
+          const status =
+            assignmentStatus(
+              assignment
+            ) ||
+            "accepted";
+
+
+          const readerHref =
+            `beta-reader.html?assignment=${encodeURIComponent(
+              assignment.id
+            )}`;
+
+
+          return `
+            <div class="list-item">
+
+              <div class="item-top">
+
+                <div>
+
+                  <div class="item-title">
+                    ${escapeHtml(
+                      name
+                    )}
+                  </div>
+
+                  ${
+                    secondary
+                      ? `
+                          <div class="item-meta">
+                            ${escapeHtml(
+                              secondary
+                            )}
+                          </div>
+                        `
+                      : ""
+                  }
+
+                  <div class="item-meta">
+                    Status:
+                    ${escapeHtml(
+                      titleCase(
+                        status
+                      )
+                    )}
+                  </div>
+
+                </div>
+
+                <div class="item-actions">
+
+                  <span
+                    class="badge ${
+                      status ===
+                        "completed"
+                          ? "success"
+                          : "gold"
+                    }"
+                  >
+                    ${escapeHtml(
+                      titleCase(
+                        status
+                      )
+                    )}
+                  </span>
+
+                  <a
+                    class="button secondary small"
+                    href="${readerHref}"
+                  >
+                    Reader View
+                  </a>
+
+                </div>
+
+              </div>
+
+            </div>
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   RENDER SHARED DOGEARS
+========================================================= */
+
+function renderSharedDogEars(){
+
+  const container =
+    $("sharedDogEars");
+
+
+  if(
+    !sharedDogEars.length
+  ){
+
+    container.innerHTML =
+      `
+        <div class="empty">
+          Readers haven't shared any DogEars with you yet.
+        </div>
+      `;
+
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    sharedDogEars
+      .map(
+        dogear => {
+
+          const reader =
+            dogear.reader_name ||
+            dogear.display_name ||
+            dogear.username ||
+            "DogEar reader";
+
+
+          const section =
+            dogear.section_title ||
+            dogear.chapter_title ||
+            (
+              dogear.section_number
+                ? `Section ${dogear.section_number}`
+                : "Manuscript"
+            );
+
+
+          const quote =
+            dogear.quote_text ||
+            dogear.selected_text ||
+            "";
+
+
+          const note =
+            dogear.note_text ||
+            dogear.note ||
+            dogear.content ||
+            "";
+
+
+          return `
+            <div class="list-item">
+
+              <div class="item-top">
+
+                <div>
+
+                  <div class="item-title">
+                    ${escapeHtml(
+                      reader
+                    )}
+                  </div>
+
+                  <div class="item-meta">
+                    ${escapeHtml(
+                      section
+                    )}
+                    ·
+                    ${escapeHtml(
+                      formatDateTime(
+                        dogear.updated_at ||
+                        dogear.created_at
+                      )
+                    )}
+                  </div>
+
+                </div>
+
+                <span class="badge gold">
+                  Shared DogEar
+                </span>
+
+              </div>
+
+              ${
+                quote
+                  ? `
+                      <div class="quote">
+                        “${escapeHtml(
+                          quote
+                        )}”
+                      </div>
+                    `
+                  : ""
+              }
+
+              ${
+                note
+                  ? `
+                      <div
+                        style="
+                          margin-top:11px;
+                          line-height:1.65;
+                          white-space:pre-wrap;
+                        "
+                      >
+                        ${escapeHtml(
+                          note
+                        )}
+                      </div>
+                    `
+                  : ""
+              }
+
+            </div>
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   FEEDBACK RATING
+========================================================= */
+
+function feedbackRating(
+  feedback,
+  ...keys
+){
+
+  for(
+    const key
+    of keys
+  ){
+
+    if(
+      feedback[key] !==
+        undefined &&
+      feedback[key] !==
+        null &&
+      feedback[key] !==
+        ""
+    ){
+
+      return feedback[key];
+
+    }
+
+  }
+
+
+  return null;
+
+}
+
+
+/* =========================================================
+   RENDER SUBMITTED FEEDBACK
+========================================================= */
+
+function renderSubmittedFeedback(){
+
+  const container =
+    $("submittedFeedback");
+
+
+  if(
+    !submittedFeedback.length
+  ){
+
+    container.innerHTML =
+      `
+        <div class="empty">
+          No reader feedback has been submitted yet.
+        </div>
+      `;
+
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    submittedFeedback
+      .map(
+        feedback => {
+
+          const reader =
+            feedback.reader_name ||
+            feedback.display_name ||
+            feedback.username ||
+            "DogEar reader";
+
+
+          const ratings =
+            [
+              [
+                "Overall",
+                feedbackRating(
+                  feedback,
+                  "overall_rating",
+                  "overall"
+                )
+              ],
+
+              [
+                "Pacing",
+                feedbackRating(
+                  feedback,
+                  "pacing_rating",
+                  "pacing"
+                )
+              ],
+
+              [
+                "Characters",
+                feedbackRating(
+                  feedback,
+                  "characters_rating",
+                  "character_rating",
+                  "characters"
+                )
+              ],
+
+              [
+                "Plot",
+                feedbackRating(
+                  feedback,
+                  "plot_rating",
+                  "plot"
+                )
+              ],
+
+              [
+                "Worldbuilding",
+                feedbackRating(
+                  feedback,
+                  "worldbuilding_rating",
+                  "world_building_rating",
+                  "worldbuilding"
+                )
+              ],
+
+              [
+                "Romance",
+                feedbackRating(
+                  feedback,
+                  "romance_rating",
+                  "romance"
+                )
+              ]
+            ]
+              .filter(
+                ([,value]) =>
+                  value !==
+                    null
+              );
+
+
+          const text =
+            feedback.feedback_text ||
+            feedback.comments ||
+            feedback.notes ||
+            feedback.body ||
+            "";
+
+
+          return `
+            <div class="list-item">
+
+              <div class="item-top">
+
+                <div>
+
+                  <div class="item-title">
+                    ${escapeHtml(
+                      reader
+                    )}
+                  </div>
+
+                  <div class="item-meta">
+                    Submitted
+                    ${escapeHtml(
+                      formatDateTime(
+                        feedback.submitted_at ||
+                        feedback.updated_at ||
+                        feedback.created_at
+                      )
+                    )}
+                  </div>
+
+                </div>
+
+                <span class="badge success">
+                  Submitted
+                </span>
+
+              </div>
+
+              ${
+                ratings.length
+                  ? `
+                      <div class="rating-grid">
+
+                        ${ratings
+                          .map(
+                            ([label,value]) =>
+                              `
+                                <div class="rating">
+
+                                  <div class="rating-label">
+                                    ${escapeHtml(
+                                      label
+                                    )}
+                                  </div>
+
+                                  <div class="rating-value">
+                                    ${escapeHtml(
+                                      value
+                                    )}
+                                  </div>
+
+                                </div>
+                              `
+                          )
+                          .join("")}
+
+                      </div>
+                    `
+                  : ""
+              }
+
+              ${
+                text
+                  ? `
+                      <div class="feedback-block">
+
+                        <div
+                          style="
+                            line-height:1.7;
+                            white-space:pre-wrap;
+                          "
+                        >
+                          ${escapeHtml(
+                            text
+                          )}
+                        </div>
+
+                      </div>
+                    `
+                  : ""
+              }
+
+            </div>
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   RENDER REWARD
+========================================================= */
+
+function renderReward(){
+
+  let coins =
+    0;
+
+
+  if(rewardRecord){
+
+    coins =
+      Number(
+        rewardRecord.coins_offered ??
+        rewardRecord.coin_amount ??
+        rewardRecord.amount ??
+        0
+      );
+
+  }
+
+
+  $("rewardCoins")
+    .value =
+      String(
+        Number.isFinite(
+          coins
+        )
+          ? coins
+          : 0
+      );
+
+}
+
+
+/* =========================================================
+   RENDER ALL
+========================================================= */
+
+function renderAll(){
+
+  renderProjectHeader();
+
+  renderProjectDetails();
+
+  renderRound();
+
+  renderManuscripts();
+
+  renderPendingReaders();
+
+  renderAcceptedReaders();
+
+  renderSharedDogEars();
+
+  renderSubmittedFeedback();
+
+  renderReward();
+
+}
+  /* =========================================================
+   SAVE ROUND
+========================================================= */
+
+async function saveRound(){
+
+  const button =
+    $("saveRoundButton");
+
+
+  const roundNumber =
+    Math.max(
+      1,
+      Math.floor(
+        Number(
+          $("roundNumber")
+            .value ||
+          1
+        )
+      )
+    );
+
+
+  const deadline =
+    $("roundDeadline")
+      .value ||
+    null;
+
+
+  const status =
+    $("roundStatus")
+      .value ||
+    "draft";
+
+
+  const readerLimit =
+    Math.max(
+      1,
+      Math.floor(
+        Number(
+          $("roundReaderLimit")
+            .value ||
+          1
+        )
+      )
+    );
+
+
+  const notes =
+    $("roundNotes")
+      .value
+      .trim();
+
+
+  button.disabled =
+    true;
+
+
+  try{
+
+    if(currentRound){
+
+      const payload =
+        {
+          round_number:
+            roundNumber,
+
+          deadline,
+
+          status,
+
+          reader_limit:
+            readerLimit,
+
+          author_notes:
+            notes || null
+        };
+
 
       const {
         data,
@@ -2217,49 +3708,107 @@ function renderRound(){
           .from(
             "beta_rounds"
           )
-          .insert({
-            project_id:
-              projectId,
-            round_number:1,
-            name,
-            status,
-            deadline,
-            description
-          })
-          .select()
+          .update(
+            payload
+          )
+          .eq(
+            "id",
+            currentRound.id
+          )
+          .select("*")
           .single();
+
 
       if(error){
         throw error;
       }
+
+
+      currentRound =
+        data;
+
+    }
+    else{
+
+      const payload =
+        {
+          project_id:
+            projectId,
+
+          round_number:
+            roundNumber,
+
+          deadline,
+
+          status,
+
+          reader_limit:
+            readerLimit,
+
+          author_notes:
+            notes || null
+        };
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from(
+            "beta_rounds"
+          )
+          .insert(
+            payload
+          )
+          .select("*")
+          .single();
+
+
+      if(error){
+        throw error;
+      }
+
 
       currentRound =
         data;
 
     }
 
+
+    await loadReward();
+
+
     renderRound();
 
     renderProjectHeader();
+
+    renderProjectDetails();
+
+    renderReward();
+
 
     showToast(
       "Beta round saved."
     );
 
-  }catch(error){
+  }
+  catch(error){
 
     console.error(
-      "Save round:",
+      "Save beta round:",
       error
     );
 
+
     showToast(
       error.message ||
-      "DogEar could not save this round.",
+      "DogEar couldn't save this beta round.",
       "error"
     );
 
-  }finally{
+  }
+  finally{
 
     button.disabled =
       false;
@@ -2270,226 +3819,364 @@ function renderRound(){
 
 
 /* =========================================================
-   MANUSCRIPT PROCESSING
+   UPDATE READER ASSIGNMENT
 ========================================================= */
 
-function normalizeText(
-  text
+async function updateAssignmentStatus(
+  assignmentId,
+  status,
+  button
 ){
-
-  return String(
-    text || ""
-  )
-    .replace(
-      /\r\n/g,
-      "\n"
-    )
-    .replace(
-      /\r/g,
-      "\n"
-    )
-    .replace(
-      /\u0000/g,
-      ""
-    )
-    .trim();
-
-}
-
-
-function stripMarkdown(
-  text
-){
-
-  return String(
-    text || ""
-  )
-    .replace(
-      /^#{1,6}\s+/gm,
-      ""
-    )
-    .replace(
-      /\*\*(.*?)\*\*/g,
-      "$1"
-    )
-    .replace(
-      /__(.*?)__/g,
-      "$1"
-    )
-    .replace(
-      /\*(.*?)\*/g,
-      "$1"
-    )
-    .replace(
-      /_(.*?)_/g,
-      "$1"
-    )
-    .replace(
-      /`([^`]+)`/g,
-      "$1"
-    )
-    .replace(
-      /^\s*>\s?/gm,
-      ""
-    );
-}
-
-
-function splitManuscriptIntoSections(
-  text
-){
-
-  const normalized =
-    normalizeText(
-      text
-    );
-
-  if(!normalized){
-
-    return [];
-
-  }
-
-  const lines =
-    normalized.split(
-      "\n"
-    );
-
-  const sections = [];
-
-  let currentTitle =
-    "Beginning";
-
-  let currentLines = [];
-
-  const chapterPattern =
-    /^\s*(chapter|chap\.?|part|prologue|epilogue)\s+([a-z0-9ivxlcdm]+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)(?:\s*[:\-–—]\s*.*)?\s*$/i;
-
-  const numberedPattern =
-    /^\s*(\d{1,3})\s*$/;
-
-  function pushCurrent(){
-
-    const content =
-      normalizeText(
-        currentLines.join(
-          "\n"
-        )
-      );
-
-    if(!content){
-      return;
-    }
-
-    sections.push({
-      title:
-        currentTitle,
-      content
-    });
-
-  }
-
-  lines.forEach(
-    line => {
-
-      const trimmed =
-        line.trim();
-
-      const isChapter =
-        chapterPattern.test(
-          trimmed
-        ) ||
-        numberedPattern.test(
-          trimmed
-        );
-
-      if(isChapter){
-
-        pushCurrent();
-
-        currentTitle =
-          trimmed;
-
-        currentLines = [];
-
-      }else{
-
-        currentLines.push(
-          line
-        );
-
-      }
-
-    }
-  );
-
-  pushCurrent();
 
   if(
-    sections.length === 0
+    !assignmentId
   ){
-
-    sections.push({
-      title:
-        "Manuscript",
-      content:
-        normalized
-    });
-
+    return;
   }
 
-  return sections;
+
+  if(button){
+    button.disabled =
+      true;
+  }
+
+
+  try{
+
+    const payload =
+      {
+        status
+      };
+
+
+    if(
+      status ===
+      "accepted"
+    ){
+
+      payload.accepted_at =
+        new Date()
+          .toISOString();
+
+    }
+
+
+    if(
+      status ===
+      "declined"
+    ){
+
+      payload.declined_at =
+        new Date()
+          .toISOString();
+
+    }
+
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from(
+          "beta_reader_assignments"
+        )
+        .update(
+          payload
+        )
+        .eq(
+          "id",
+          assignmentId
+        )
+        .eq(
+          "project_id",
+          projectId
+        );
+
+
+    if(error){
+      throw error;
+    }
+
+
+    await loadAssignments();
+
+
+    renderProjectHeader();
+
+    renderPendingReaders();
+
+    renderAcceptedReaders();
+
+
+    showToast(
+      status ===
+        "accepted"
+          ? "Reader accepted."
+          : "Reader declined."
+    );
+
+  }
+  catch(error){
+
+    console.error(
+      "Update beta reader:",
+      error
+    );
+
+
+    showToast(
+      error.message ||
+      "DogEar couldn't update this reader.",
+      "error"
+    );
+
+  }
+  finally{
+
+    if(button){
+      button.disabled =
+        false;
+    }
+
+  }
 
 }
 
 
-function countWords(
-  text
+/* =========================================================
+   REQUEST MANUSCRIPT PROCESSING
+========================================================= */
+
+async function requestProcessing(
+  manuscriptId
 ){
 
-  const normalized =
-    String(
-      text || ""
-    )
-      .trim();
+  const {
+    error
+  } =
+    await supabaseClient
+      .rpc(
+        "request_beta_manuscript_processing",
+        {
+          p_manuscript_id:
+            manuscriptId
+        }
+      );
 
-  if(!normalized){
-    return 0;
+
+  if(error){
+    throw error;
   }
-
-  return normalized
-    .split(
-      /\s+/
-    )
-    .filter(
-      Boolean
-    )
-    .length;
 
 }
 
 
-function makeStoragePath(
+/* =========================================================
+   INVOKE MANUSCRIPT PROCESSOR
+========================================================= */
+
+async function processManuscript(
+  manuscriptId
+){
+
+  /*
+    The actual extraction happens inside the private
+    process-beta-manuscript Supabase Edge Function.
+
+    TXT and Markdown are read as text.
+
+    DOCX files are opened by the Edge Function and the
+    Word document XML is converted into DogEar reader
+    sections.
+
+    The original uploaded file is never exposed to
+    beta readers.
+  */
+
+  const {
+    data:sessionData,
+    error:sessionError
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if(sessionError){
+    throw sessionError;
+  }
+
+
+  const accessToken =
+    sessionData
+      ?.session
+      ?.access_token;
+
+
+  if(!accessToken){
+
+    throw new Error(
+      "Your DogEar session expired. Please sign in again."
+    );
+
+  }
+
+
+  const response =
+    await fetch(
+      `${SUPABASE_URL}/functions/v1/process-beta-manuscript`,
+      {
+        method:
+          "POST",
+
+        headers:{
+          "Content-Type":
+            "application/json",
+
+          "Authorization":
+            `Bearer ${accessToken}`,
+
+          "apikey":
+            SUPABASE_KEY
+        },
+
+        body:
+          JSON.stringify({
+            manuscript_id:
+              manuscriptId
+          })
+      }
+    );
+
+
+  let result =
+    null;
+
+
+  try{
+
+    result =
+      await response.json();
+
+  }
+  catch{
+
+    result =
+      null;
+
+  }
+
+
+  if(
+    !response.ok ||
+    result?.success ===
+      false
+  ){
+
+    throw new Error(
+      result?.error ||
+      `Manuscript processing failed with HTTP ${response.status}.`
+    );
+
+  }
+
+
+  return result;
+
+}
+
+
+/* =========================================================
+   SUPPORTED MANUSCRIPT FILES
+========================================================= */
+
+function manuscriptFileExtension(
+  filename
+){
+
+  const name =
+    String(
+      filename ||
+      ""
+    )
+      .trim()
+      .toLowerCase();
+
+
+  const dot =
+    name.lastIndexOf(
+      "."
+    );
+
+
+  if(
+    dot === -1
+  ){
+    return "";
+  }
+
+
+  return name.slice(
+    dot
+  );
+
+}
+
+
+function isSupportedManuscriptFile(
   file
 ){
 
-  const safeName =
-    String(
-      file.name ||
-      "manuscript.txt"
-    )
-      .replace(
-        /[^a-zA-Z0-9._-]/g,
-        "-"
-      );
+  if(!file){
+    return false;
+  }
 
-  return [
-    currentUser.id,
-    projectId,
-    currentRound?.id ||
-      "no-round",
-    `${Date.now()}-${safeName}`
-  ].join("/");
+
+  const extension =
+    manuscriptFileExtension(
+      file.name
+    );
+
+
+  const mime =
+    String(
+      file.type ||
+      ""
+    )
+      .toLowerCase();
+
+
+  /*
+    We check both extension and MIME type because browsers
+    do not always report a useful MIME type for local
+    TXT/Markdown files.
+
+    Old binary .doc files are intentionally NOT accepted.
+    DogEar supports modern .docx Word documents.
+  */
+
+  return (
+    extension ===
+      ".txt" ||
+
+    extension ===
+      ".md" ||
+
+    extension ===
+      ".markdown" ||
+
+    extension ===
+      ".docx" ||
+
+    mime ===
+      "text/plain" ||
+
+    mime ===
+      "text/markdown" ||
+
+    mime ===
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  );
 
 }
 
@@ -2503,11 +4190,14 @@ async function uploadManuscript(){
   const button =
     $("uploadButton");
 
+
   const input =
     $("manuscriptFile");
 
+
   const file =
     input.files?.[0];
+
 
   if(!file){
 
@@ -2516,102 +4206,62 @@ async function uploadManuscript(){
       "error"
     );
 
-    return;
-
-  }
-
-  if(!currentRound){
-
-    showToast(
-      "Save a beta round before uploading a manuscript.",
-      "error"
-    );
 
     return;
 
   }
 
-  const extension =
-    String(
-      file.name
-    )
-      .toLowerCase()
-      .split(".")
-      .pop();
+
+  /*
+    Reject unsupported files BEFORE anything is uploaded
+    to private Storage.
+
+    Supported:
+      .txt
+      .md
+      .markdown
+      .docx
+  */
 
   if(
-    ![
-      "txt",
-      "md"
-    ].includes(
-      extension
+    !isSupportedManuscriptFile(
+      file
     )
   ){
 
     showToast(
-      "DogEar currently accepts TXT and Markdown manuscripts.",
+      "DogEar supports Microsoft Word (.docx), plain text (.txt), and Markdown (.md/.markdown) manuscripts.",
       "error"
     );
+
+
+    input.value =
+      "";
+
 
     return;
 
   }
 
+
+  if(!currentRound){
+
+    showToast(
+      "Save the beta round before uploading a manuscript.",
+      "error"
+    );
+
+
+    return;
+
+  }
+
+
   button.disabled =
     true;
 
-  button.textContent =
-    "Uploading...";
-
-  let manuscriptRecord =
-    null;
-
-  let storagePath =
-    null;
 
   try{
-
-    let rawText =
-      await file.text();
-
-    if(
-      extension === "md"
-    ){
-
-      rawText =
-        stripMarkdown(
-          rawText
-        );
-
-    }
-
-    const cleanText =
-      normalizeText(
-        rawText
-      );
-
-    if(!cleanText){
-
-      throw new Error(
-        "This manuscript file is empty."
-      );
-
-    }
-
-    const parsedSections =
-      splitManuscriptIntoSections(
-        cleanText
-      );
-
-    if(
-      !parsedSections.length
-    ){
-
-      throw new Error(
-        "DogEar could not find readable manuscript text."
-      );
-
-    }
 
     const nextVersion =
       manuscripts.length
@@ -2627,10 +4277,28 @@ async function uploadManuscript(){
           ) + 1
         : 1;
 
-    storagePath =
-      makeStoragePath(
-        file
-      );
+
+    const manuscriptId =
+      crypto.randomUUID();
+
+
+    const cleanName =
+      file.name
+        .replace(
+          /[^a-zA-Z0-9._-]/g,
+          "_"
+        );
+
+
+    /*
+      Private Storage layout:
+
+      owner / project / manuscript / filename
+    */
+
+    const storagePath =
+      `${currentUser.id}/${projectId}/${manuscriptId}/${cleanName}`;
+
 
     const {
       error:uploadError
@@ -2644,88 +4312,84 @@ async function uploadManuscript(){
           storagePath,
           file,
           {
-            upsert:false,
+            cacheControl:
+              "3600",
+
+            upsert:
+              false,
+
             contentType:
               file.type ||
               (
-                extension === "md"
-                  ? "text/markdown"
-                  : "text/plain"
+                manuscriptFileExtension(
+                  file.name
+                ) ===
+                  ".docx"
+                    ? "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    : "application/octet-stream"
               )
           }
         );
+
 
     if(uploadError){
       throw uploadError;
     }
 
+
     /*
-      Previous versions remain in the private storage bucket
-      for project history, but only one manuscript is active
-      for the current project/round.
+      IMPORTANT:
+
+      The Edge Function reads uploaded_by and active from
+      beta_manuscripts, so the browser and processor must
+      use those same database column names.
     */
 
-    const activeVersions =
-      manuscripts.filter(
-        manuscript =>
-          manuscript.active
-      );
+    const manuscriptRow =
+      {
 
-    for(
-      const oldVersion of
-      activeVersions
-    ){
+        id:
+          manuscriptId,
 
-      const {
-        error
-      } =
-        await supabaseClient
-          .from(
-            "beta_manuscripts"
-          )
-          .update({
-            active:false
-          })
-          .eq(
-            "id",
-            oldVersion.id
-          );
+        project_id:
+          projectId,
 
-      if(error){
-        throw error;
-      }
+        round_id:
+          currentRound.id,
 
-    }
+        uploaded_by:
+          currentUser.id,
 
-    const manuscriptPayload = {
-      project_id:
-        projectId,
-      round_id:
-        currentRound.id,
-      uploaded_by:
-        currentUser.id,
-      original_filename:
-        file.name,
-      storage_bucket:
-        "beta-manuscripts",
-      storage_path:
-        storagePath,
-      file_type:
-        extension,
-      file_size:
-        file.size,
-      version_number:
-        nextVersion,
-      active:true,
-      processing_status:
-        "processing",
-      word_count:
-        countWords(
-          cleanText
-        ),
-      chapter_count:
-        parsedSections.length
-    };
+        version_number:
+          nextVersion,
+
+        original_filename:
+          file.name,
+
+        storage_path:
+          storagePath,
+
+        file_size:
+          file.size,
+
+        mime_type:
+          file.type ||
+          (
+            manuscriptFileExtension(
+              file.name
+            ) ===
+              ".docx"
+                ? "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                : "application/octet-stream"
+          ),
+
+        active:
+          true,
+
+        processing_status:
+          "pending"
+      };
+
 
     const {
       data:newManuscript,
@@ -2736,123 +4400,16 @@ async function uploadManuscript(){
           "beta_manuscripts"
         )
         .insert(
-          manuscriptPayload
+          manuscriptRow
         )
-        .select()
+        .select("*")
         .single();
 
+
     if(insertError){
-      throw insertError;
-    }
-
-    manuscriptRecord =
-      newManuscript;
-
-    const sectionRows =
-      parsedSections.map(
-        (
-          section,
-          index
-        ) => ({
-          manuscript_id:
-            manuscriptRecord.id,
-          section_number:
-            index + 1,
-          title:
-            section.title ||
-            `Chapter ${index + 1}`,
-          content_text:
-            section.content,
-          word_count:
-            countWords(
-              section.content
-            )
-        })
-      );
-
-    const {
-      error:sectionError
-    } =
-      await supabaseClient
-        .from(
-          "beta_manuscript_sections"
-        )
-        .insert(
-          sectionRows
-        );
-
-    if(sectionError){
-      throw sectionError;
-    }
-
-    const {
-      error:readyError
-    } =
-      await supabaseClient
-        .from(
-          "beta_manuscripts"
-        )
-        .update({
-          processing_status:
-            "ready",
-          processed_at:
-            new Date()
-              .toISOString(),
-          processing_error:
-            null
-        })
-        .eq(
-          "id",
-          manuscriptRecord.id
-        );
-
-    if(readyError){
-      throw readyError;
-    }
-
-    await loadManuscripts();
-
-    renderManuscripts();
-
-    input.value = "";
-
-    showToast(
-      "Manuscript uploaded and prepared for the DogEar reader."
-    );
-
-  }catch(error){
-
-    console.error(
-      "Upload manuscript:",
-      error
-    );
-
-    if(
-      manuscriptRecord?.id
-    ){
-
-      await supabaseClient
-        .from(
-          "beta_manuscripts"
-        )
-        .update({
-          processing_status:
-            "failed",
-          processing_error:
-            error.message ||
-            "Processing failed."
-        })
-        .eq(
-          "id",
-          manuscriptRecord.id
-        );
-
-    }else if(
-      storagePath
-    ){
 
       /*
-        If storage succeeded but the database insert did not,
+        If the database insert fails after Storage succeeds,
         remove the orphaned private file.
       */
 
@@ -2865,226 +4422,157 @@ async function uploadManuscript(){
           storagePath
         ]);
 
+
+      throw insertError;
+
     }
+
+
+    /*
+      Older versions remain in the project history but
+      cease being the active manuscript.
+    */
+
+    const olderIds =
+      manuscripts
+        .filter(
+          manuscript =>
+            manuscript.active
+        )
+        .map(
+          manuscript =>
+            manuscript.id
+        );
+
+
+    if(
+      olderIds.length
+    ){
+
+      const {
+        error:deactivateError
+      } =
+        await supabaseClient
+          .from(
+            "beta_manuscripts"
+          )
+          .update({
+            active:false
+          })
+          .in(
+            "id",
+            olderIds
+          )
+          .eq(
+            "project_id",
+            projectId
+          );
+
+
+      if(deactivateError){
+
+        console.error(
+          "Deactivate previous manuscripts:",
+          deactivateError
+        );
+
+      }
+
+    }
+
+
+    /*
+      The Edge Function itself calls the processing-request
+      RPC as part of its verified processing flow.
+
+      We therefore invoke the processor directly here
+      rather than asking for processing twice.
+    */
+
+    showToast(
+      "Manuscript uploaded. DogEar is processing it."
+    );
+
+
+    try{
+
+      const processingResult =
+        await processManuscript(
+          newManuscript.id
+        );
+
+
+      if(
+        processingResult?.success
+      ){
+
+        const sectionCount =
+          Number(
+            processingResult.sections ||
+            0
+          );
+
+
+        const wordCount =
+          Number(
+            processingResult.word_count ||
+            0
+          );
+
+
+        showToast(
+          `Manuscript ready — ${wordCount.toLocaleString()} words across ${sectionCount.toLocaleString()} reader section${sectionCount === 1 ? "" : "s"}.`
+        );
+
+      }
+
+    }
+    catch(processError){
+
+      console.error(
+        "Process manuscript:",
+        processError
+      );
+
+
+      showToast(
+        processError.message ||
+        "The manuscript uploaded, but processing did not finish. You can retry processing later.",
+        "error"
+      );
+
+    }
+
+
+    input.value =
+      "";
+
+
+    await loadManuscripts();
+
+
+    renderManuscripts();
+
+  }
+  catch(error){
+
+    console.error(
+      "Upload manuscript:",
+      error
+    );
+
 
     showToast(
       error.message ||
-      "DogEar could not upload this manuscript.",
+      "DogEar couldn't upload this manuscript.",
       "error"
     );
 
-  }finally{
+  }
+  finally{
 
     button.disabled =
       false;
-
-    button.textContent =
-      "Upload Manuscript";
-
-  }
-
-}
-
-
-/* =========================================================
-   ACCEPT READER
-========================================================= */
-
-async function acceptReader(
-  assignmentId
-){
-
-  const assignment =
-    assignments.find(
-      item =>
-        item.id ===
-        assignmentId
-    );
-
-  if(!assignment){
-    return;
-  }
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from(
-          "beta_assignments"
-        )
-        .update({
-          status:
-            "accepted",
-          accepted_at:
-            new Date()
-              .toISOString()
-        })
-        .eq(
-          "id",
-          assignmentId
-        )
-        .eq(
-          "project_id",
-          projectId
-        )
-        .select(`
-          *,
-          profiles:reader_id(
-            id,
-            username,
-            display_name,
-            avatar_url
-          )
-        `)
-        .single();
-
-    if(error){
-      throw error;
-    }
-
-    const index =
-      assignments.findIndex(
-        item =>
-          item.id ===
-          assignmentId
-      );
-
-    assignments[index] =
-      data;
-
-    renderProjectHeader();
-
-    renderPendingReaders();
-
-    renderAcceptedReaders();
-
-    showToast(
-      "Reader accepted."
-    );
-
-  }catch(error){
-
-    console.error(
-      "Accept reader:",
-      error
-    );
-
-    showToast(
-      error.message ||
-      "DogEar could not accept this reader.",
-      "error"
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   DECLINE READER
-========================================================= */
-
-async function declineReader(
-  assignmentId
-){
-
-  const assignment =
-    assignments.find(
-      item =>
-        item.id ===
-        assignmentId
-    );
-
-  if(!assignment){
-    return;
-  }
-
-  const confirmed =
-    window.confirm(
-      `Decline ${readerDisplayName(
-        assignment
-      )}'s beta-reading application?`
-    );
-
-  if(!confirmed){
-    return;
-  }
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from(
-          "beta_assignments"
-        )
-        .update({
-          status:
-            "declined",
-          declined_at:
-            new Date()
-              .toISOString()
-        })
-        .eq(
-          "id",
-          assignmentId
-        )
-        .eq(
-          "project_id",
-          projectId
-        )
-        .select(`
-          *,
-          profiles:reader_id(
-            id,
-            username,
-            display_name,
-            avatar_url
-          )
-        `)
-        .single();
-
-    if(error){
-      throw error;
-    }
-
-    const index =
-      assignments.findIndex(
-        item =>
-          item.id ===
-          assignmentId
-      );
-
-    assignments[index] =
-      data;
-
-    renderProjectHeader();
-
-    renderPendingReaders();
-
-    renderAcceptedReaders();
-
-    showToast(
-      "Reader declined."
-    );
-
-  }catch(error){
-
-    console.error(
-      "Decline reader:",
-      error
-    );
-
-    showToast(
-      error.message ||
-      "DogEar could not decline this reader.",
-      "error"
-    );
 
   }
 
@@ -3097,21 +4585,24 @@ async function declineReader(
 
 async function saveReward(){
 
+  const button =
+    $("saveRewardButton");
+
+
   if(!currentRound){
 
     showToast(
-      "Save a beta round first.",
+      "Save the beta round first.",
       "error"
     );
+
 
     return;
 
   }
 
-  const button =
-    $("saveRewardButton");
 
-  const amount =
+  const coins =
     Math.max(
       0,
       Math.floor(
@@ -3123,18 +4614,61 @@ async function saveReward(){
       )
     );
 
+
   button.disabled =
     true;
 
+
   try{
+
+    /*
+      beta_round_rewards stores the beta-round offer.
+
+      It does NOT directly move coins. Actual coin movement
+      remains connected to DogEar's audited coin ledger.
+    */
 
     if(rewardRecord){
 
-      /*
-        Keep compatibility with the reward row that was
-        loaded. The canonical DogEar beta schema uses
-        coins_offered.
-      */
+      const updatePayload =
+        {};
+
+
+      if(
+        Object.prototype
+          .hasOwnProperty
+          .call(
+            rewardRecord,
+            "coins_offered"
+          )
+      ){
+
+        updatePayload
+          .coins_offered =
+            coins;
+
+      }
+      else if(
+        Object.prototype
+          .hasOwnProperty
+          .call(
+            rewardRecord,
+            "coin_amount"
+          )
+      ){
+
+        updatePayload
+          .coin_amount =
+            coins;
+
+      }
+      else{
+
+        updatePayload.amount =
+          coins;
+
+      }
+
 
       const {
         data,
@@ -3144,25 +4678,27 @@ async function saveReward(){
           .from(
             "beta_round_rewards"
           )
-          .update({
-            coins_offered:
-              amount
-          })
+          .update(
+            updatePayload
+          )
           .eq(
             "id",
             rewardRecord.id
           )
-          .select()
+          .select("*")
           .single();
+
 
       if(error){
         throw error;
       }
 
+
       rewardRecord =
         data;
 
-    }else{
+    }
+    else{
 
       const {
         data,
@@ -3173,45 +4709,56 @@ async function saveReward(){
             "beta_round_rewards"
           )
           .insert({
+
             project_id:
               projectId,
+
             round_id:
               currentRound.id,
+
             coins_offered:
-              amount
+              coins
+
           })
-          .select()
+          .select("*")
           .single();
+
 
       if(error){
         throw error;
       }
+
 
       rewardRecord =
         data;
 
     }
 
+
     renderReward();
+
 
     showToast(
       "Reader reward saved."
     );
 
-  }catch(error){
+  }
+  catch(error){
 
     console.error(
       "Save reward:",
       error
     );
 
+
     showToast(
       error.message ||
-      "DogEar could not save this reward.",
+      "DogEar couldn't save the reader reward.",
       "error"
     );
 
-  }finally{
+  }
+  finally{
 
     button.disabled =
       false;
@@ -3222,28 +4769,205 @@ async function saveReward(){
 
 
 /* =========================================================
+   REFRESH AUTHOR READER DATA
+========================================================= */
+
+async function refreshAuthorReaderData(){
+
+  try{
+
+    await Promise.all([
+      loadSharedDogEars(),
+      loadSubmittedFeedback()
+    ]);
+
+
+    renderSharedDogEars();
+
+
+    renderSubmittedFeedback();
+
+  }
+  catch(error){
+
+    console.error(
+      "Refresh author reader data:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
    EVENT LISTENERS
 ========================================================= */
 
-$("saveRoundButton")
-  .addEventListener(
-    "click",
-    saveRound
+function bindEvents(){
+
+  $("saveRoundButton")
+    .addEventListener(
+      "click",
+      saveRound
+    );
+
+
+  $("uploadButton")
+    .addEventListener(
+      "click",
+      uploadManuscript
+    );
+
+
+  $("saveRewardButton")
+    .addEventListener(
+      "click",
+      saveReward
+    );
+
+
+  /*
+    Refresh author-visible reader data whenever this tab
+    becomes active again.
+
+    This includes both shared DogEars and submitted
+    structured reader feedback.
+  */
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+
+      if(
+        document.visibilityState ===
+        "visible"
+      ){
+
+        refreshAuthorReaderData();
+
+      }
+
+    }
   );
 
 
-$("uploadButton")
-  .addEventListener(
-    "click",
-    uploadManuscript
+  /*
+    Also refresh when the browser window regains focus.
+  */
+
+  window.addEventListener(
+    "focus",
+    () => {
+
+      refreshAuthorReaderData();
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   SHOW PROJECT
+========================================================= */
+
+function showProject(){
+
+  $("loading")
+    .classList
+    .add(
+      "hidden"
+    );
+
+
+  $("projectContent")
+    .classList
+    .remove(
+      "hidden"
+    );
+
+}
+
+
+/* =========================================================
+   SHOW LOAD ERROR
+========================================================= */
+
+function showLoadError(
+  error
+){
+
+  console.error(
+    "Beta project:",
+    error
   );
 
 
-$("saveRewardButton")
-  .addEventListener(
-    "click",
-    saveReward
-  );
+  $("projectContent")
+    .classList
+    .add(
+      "hidden"
+    );
+
+
+  $("loading")
+    .classList
+    .remove(
+      "hidden"
+    );
+
+
+  $("loading")
+    .innerHTML =
+      `
+        <div
+          style="
+            max-width:620px;
+            margin:auto;
+          "
+        >
+
+          <div
+            style="
+              color:var(--danger);
+              font-size:20px;
+              margin-bottom:10px;
+            "
+          >
+            DogEar couldn't open this beta project.
+          </div>
+
+          <div
+            style="
+              line-height:1.7;
+            "
+          >
+            ${escapeHtml(
+              error?.message ||
+              "Unknown project error."
+            )}
+          </div>
+
+          <div
+            style="
+              margin-top:22px;
+            "
+          >
+
+            <a
+              class="button secondary"
+              href="beta-reading.html"
+            >
+              Back to Beta Reading
+            </a>
+
+          </div>
+
+        </div>
+      `;
+
+}
 
 
 /* =========================================================
@@ -3257,48 +4981,55 @@ async function initialize(){
     if(!projectId){
 
       throw new Error(
-        "This beta project link is missing its project ID."
+        "This DogEar link does not contain a project ID."
       );
 
     }
 
-    const hasSession =
-      await loadSession();
-
-    if(!hasSession){
-      return;
-    }
-
-    await loadProfile();
-
-    await loadProjectData();
-
-    renderAll();
-
-    $("loading")
-      .classList
-      .add("hidden");
-
-    $("projectContent")
-      .classList
-      .remove("hidden");
-
-  }catch(error){
-
-    console.error(
-      "Beta project initialization:",
-      error
-    );
 
     $("loading")
       .textContent =
-        error.message ||
-        "DogEar could not load this beta project.";
+        "Checking your DogEar account…";
 
-    showToast(
-      error.message ||
-      "DogEar could not load this beta project.",
-      "error"
+
+    const loggedIn =
+      await loadSession();
+
+
+    if(!loggedIn){
+      return;
+    }
+
+
+    $("loading")
+      .textContent =
+        "Loading your profile…";
+
+
+    await loadProfile();
+
+
+    $("loading")
+      .textContent =
+        "Opening your beta project…";
+
+
+    await loadProjectData();
+
+
+    renderAll();
+
+
+    bindEvents();
+
+
+    showProject();
+
+  }
+  catch(error){
+
+    showLoadError(
+      error
     );
 
   }
@@ -3306,9 +5037,14 @@ async function initialize(){
 }
 
 
+/* =========================================================
+   START
+========================================================= */
+
 initialize();
 
 </script>
 
 </body>
+
 </html>
