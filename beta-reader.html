@@ -1,0 +1,8231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>DogEar — Beta Reader</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+:root{
+  --ink:#090b0a;
+  --panel:#101410;
+  --panel2:#151a15;
+  --reader:#f1e7cf;
+  --reader-ink:#211e19;
+  --cream:#f1e7cf;
+  --cream2:#d9cfb8;
+  --gold:#c79b59;
+  --gold2:#dfbd7e;
+  --green:#26362b;
+  --green2:#34483a;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.22);
+  --line-soft:rgba(199,155,89,.11);
+  --danger:#e6a09a;
+  --ok:#b9d6b2;
+  --highlight:#f3d786;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--cream);
+  background:
+    radial-gradient(
+      circle at 8% 0%,
+      rgba(53,73,59,.28),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 90% 15%,
+      rgba(199,155,89,.07),
+      transparent 24%
+    ),
+    var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+button{
+  color:inherit;
+}
+
+a{
+  color:inherit;
+}
+
+.hidden{
+  display:none !important;
+}
+
+
+/* =========================================================
+   TOP NAVIGATION
+========================================================= */
+
+.topbar{
+  min-height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:0 clamp(16px,4vw,50px);
+  border-bottom:1px solid var(--line);
+  background:rgba(9,11,10,.97);
+  backdrop-filter:blur(14px);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  color:var(--gold2);
+  text-decoration:none;
+  font:800 13px Arial,sans-serif;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+.brand-mark{
+  width:32px;
+  height:32px;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  transform:rotate(-8deg);
+  position:relative;
+}
+
+.brand-mark::after{
+  content:"";
+  position:absolute;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--gold);
+  right:6px;
+  top:6px;
+}
+
+.reader-title-nav{
+  flex:1;
+  min-width:0;
+  text-align:center;
+}
+
+.reader-title-nav strong{
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:14px;
+  font-weight:400;
+}
+
+.reader-title-nav span{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font:8px Arial,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.nav-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.icon-button{
+  min-width:38px;
+  min-height:38px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:transparent;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 12px;
+  color:var(--gold2);
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.icon-button:hover{
+  border-color:var(--gold);
+}
+
+
+/* =========================================================
+   READER LAYOUT
+========================================================= */
+
+.reader-shell{
+  min-height:calc(100vh - 70px);
+  display:grid;
+  grid-template-columns:280px minmax(0,1fr) 330px;
+}
+
+.sidebar{
+  position:sticky;
+  top:70px;
+  height:calc(100vh - 70px);
+  overflow:auto;
+  background:rgba(12,15,13,.97);
+}
+
+.sidebar.left{
+  border-right:1px solid var(--line);
+}
+
+.sidebar.right{
+  border-left:1px solid var(--line);
+}
+
+.sidebar-head{
+  position:sticky;
+  top:0;
+  z-index:3;
+  padding:18px;
+  border-bottom:1px solid var(--line);
+  background:#0d100e;
+}
+
+.sidebar-kicker{
+  color:var(--gold);
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.sidebar-title{
+  margin-top:5px;
+  font-size:22px;
+}
+
+.sidebar-body{
+  padding:14px;
+}
+
+.sidebar-empty{
+  padding:24px 14px;
+  text-align:center;
+  color:var(--muted);
+  font:10px/1.6 Arial,sans-serif;
+}
+
+
+/* =========================================================
+   TABLE OF CONTENTS
+========================================================= */
+
+.toc{
+  display:grid;
+  gap:5px;
+}
+
+.toc-button{
+  width:100%;
+  border:1px solid transparent;
+  border-radius:10px;
+  background:transparent;
+  color:var(--cream2);
+  padding:11px;
+  text-align:left;
+  cursor:pointer;
+  font:10px/1.4 Arial,sans-serif;
+}
+
+.toc-button:hover{
+  background:rgba(199,155,89,.06);
+  border-color:var(--line-soft);
+}
+
+.toc-button.active{
+  border-color:var(--line);
+  background:rgba(199,155,89,.1);
+  color:var(--gold2);
+}
+
+.toc-number{
+  display:block;
+  margin-bottom:3px;
+  color:var(--muted);
+  font:800 7px Arial,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+
+/* =========================================================
+   CENTER READER
+========================================================= */
+
+.reader-center{
+  min-width:0;
+  padding:
+    28px
+    clamp(18px,5vw,80px)
+    110px;
+}
+
+.reader-toolbar{
+  width:min(850px,100%);
+  margin:0 auto 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.progress-wrap{
+  flex:1;
+  min-width:180px;
+}
+
+.progress-label{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:6px;
+  color:var(--muted);
+  font:8px Arial,sans-serif;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+
+.progress-track{
+  height:6px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#050706;
+}
+
+.progress-bar{
+  height:100%;
+  width:0;
+  background:var(--gold);
+  transition:width .2s ease;
+}
+
+.reader-card{
+  width:min(850px,100%);
+  min-height:72vh;
+  margin:auto;
+  border-radius:8px;
+  background:var(--reader);
+  color:var(--reader-ink);
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.32);
+  overflow:hidden;
+}
+
+.chapter-head{
+  padding:
+    clamp(36px,7vw,76px)
+    clamp(24px,8vw,82px)
+    24px;
+}
+
+.chapter-number{
+  color:#82693f;
+  font:800 9px Arial,sans-serif;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+}
+
+.chapter-title{
+  margin:10px 0 0;
+  font-size:clamp(32px,5vw,54px);
+  line-height:1;
+  font-weight:400;
+}
+
+.chapter-body{
+  padding:
+    10px
+    clamp(24px,8vw,82px)
+    80px;
+  font-size:19px;
+  line-height:1.85;
+}
+
+.reader-paragraph{
+  position:relative;
+  margin:0 0 1.25em;
+  white-space:pre-wrap;
+  scroll-margin-top:120px;
+}
+
+.reader-paragraph.spoken{
+  background:rgba(199,155,89,.18);
+  border-radius:4px;
+  outline:4px solid rgba(199,155,89,.08);
+}
+
+.reader-paragraph.jump-target{
+  animation:jumpFlash 1.5s ease;
+}
+
+@keyframes jumpFlash{
+  0%{
+    background:rgba(199,155,89,.42);
+  }
+
+  100%{
+    background:transparent;
+  }
+}
+
+.reader-highlight{
+  background:var(--highlight);
+  border-radius:2px;
+}
+
+.reader-highlight.shared{
+  text-decoration:
+    underline
+    dotted
+    #7d6336;
+  text-underline-offset:3px;
+}
+
+
+/* =========================================================
+   CHAPTER NAVIGATION
+========================================================= */
+
+.chapter-navigation{
+  width:min(850px,100%);
+  margin:18px auto 0;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:10px;
+  align-items:center;
+}
+
+.nav-button{
+  min-height:45px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:rgba(16,20,16,.9);
+  color:var(--gold2);
+  cursor:pointer;
+  padding:0 16px;
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.nav-button:last-child{
+  justify-self:end;
+}
+
+.nav-button:disabled{
+  opacity:.35;
+  cursor:not-allowed;
+}
+
+.chapter-position{
+  color:var(--muted);
+  font:9px Arial,sans-serif;
+}
+
+
+/* =========================================================
+   SELECTION TOOLBAR
+========================================================= */
+
+.selection-toolbar{
+  position:fixed;
+  z-index:300;
+  display:none;
+  gap:5px;
+  padding:6px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#111512;
+  box-shadow:0 12px 35px rgba(0,0,0,.4);
+}
+
+.selection-toolbar.show{
+  display:flex;
+}
+
+.selection-button{
+  min-height:32px;
+  padding:0 11px;
+  border:0;
+  border-radius:999px;
+  background:transparent;
+  color:var(--gold2);
+  cursor:pointer;
+  font:800 7px Arial,sans-serif;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.selection-button:hover{
+  background:rgba(199,155,89,.12);
+}
+
+
+/* =========================================================
+   NOTES / BOOKMARKS
+========================================================= */
+
+.panel-tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5px;
+  margin-bottom:12px;
+}
+
+.panel-tab{
+  min-height:36px;
+  border:1px solid var(--line-soft);
+  border-radius:8px;
+  background:transparent;
+  color:var(--muted);
+  cursor:pointer;
+  font:800 7px Arial,sans-serif;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.panel-tab.active{
+  border-color:var(--line);
+  background:rgba(199,155,89,.09);
+  color:var(--gold2);
+}
+
+.annotation-list,
+.bookmark-list{
+  display:grid;
+  gap:8px;
+}
+
+.annotation-card,
+.bookmark-card{
+  border:1px solid var(--line-soft);
+  border-radius:10px;
+  padding:11px;
+  background:#0b0e0c;
+  cursor:pointer;
+}
+
+.annotation-card:hover,
+.bookmark-card:hover{
+  border-color:var(--line);
+}
+
+.annotation-type{
+  color:var(--gold);
+  font:800 7px Arial,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.annotation-quote{
+  margin-top:7px;
+  color:var(--cream2);
+  font:italic 10px/1.5 Georgia,serif;
+}
+
+.annotation-note{
+  margin-top:8px;
+  color:var(--muted);
+  font:10px/1.5 Arial,sans-serif;
+}
+
+.annotation-meta{
+  margin-top:8px;
+  color:var(--muted);
+  font:7px Arial,sans-serif;
+  text-transform:uppercase;
+}
+
+.annotation-actions{
+  margin-top:9px;
+  display:flex;
+  gap:5px;
+}
+
+.mini-button{
+  min-height:28px;
+  padding:0 9px;
+  border:1px solid var(--line-soft);
+  border-radius:999px;
+  background:transparent;
+  color:var(--gold2);
+  cursor:pointer;
+  font:800 6px Arial,sans-serif;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+
+.mini-button.danger{
+  color:var(--danger);
+}
+
+
+/* =========================================================
+   READ ALOUD
+========================================================= */
+
+.tts-panel{
+  margin-bottom:15px;
+  padding:12px;
+  border:1px solid var(--line-soft);
+  border-radius:12px;
+  background:#0b0e0c;
+}
+
+.tts-title{
+  color:var(--gold);
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.tts-controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:10px;
+}
+
+.tts-button{
+  min-height:34px;
+  padding:0 10px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:transparent;
+  color:var(--gold2);
+  cursor:pointer;
+  font:800 7px Arial,sans-serif;
+}
+
+.tts-field{
+  display:grid;
+  gap:5px;
+  margin-top:10px;
+}
+
+.tts-label{
+  color:var(--muted);
+  font:800 7px Arial,sans-serif;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.tts-select{
+  width:100%;
+  min-height:36px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#080a09;
+  color:var(--cream2);
+  padding:0 8px;
+  font:9px Arial,sans-serif;
+}
+
+
+/* =========================================================
+   MODALS
+========================================================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:500;
+  display:none;
+  place-items:center;
+  padding:20px;
+  background:rgba(0,0,0,.78);
+}
+
+.modal.show{
+  display:grid;
+}
+
+.modal-card{
+  width:min(620px,100%);
+  max-height:90vh;
+  overflow:auto;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:var(--panel);
+  padding:25px;
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  align-items:flex-start;
+}
+
+.modal-kicker{
+  color:var(--gold);
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.modal-title{
+  margin:5px 0 0;
+  font-size:30px;
+  font-weight:400;
+}
+
+.close-button{
+  width:36px;
+  height:36px;
+  flex:0 0 auto;
+  border:1px solid var(--line);
+  border-radius:50%;
+  background:transparent;
+  cursor:pointer;
+}
+
+.field{
+  display:grid;
+  gap:7px;
+  margin-top:15px;
+}
+
+.label{
+  color:var(--gold);
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.input,
+.select,
+.textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#0b0e0c;
+  color:var(--cream);
+  outline:none;
+  font:11px Arial,sans-serif;
+}
+
+.input,
+.select{
+  min-height:42px;
+  padding:0 11px;
+}
+
+.textarea{
+  min-height:115px;
+  padding:11px;
+  resize:vertical;
+}
+
+.modal-actions{
+  margin-top:18px;
+  display:flex;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.primary-button,
+.secondary-button{
+  min-height:41px;
+  padding:0 15px;
+  border-radius:999px;
+  cursor:pointer;
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.primary-button{
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:#11130f;
+}
+
+.secondary-button{
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--gold2);
+}
+
+
+/* =========================================================
+   FEEDBACK
+========================================================= */
+
+.rating-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.feedback-status{
+  margin-top:12px;
+  padding:12px;
+  border:1px solid var(--line-soft);
+  border-radius:10px;
+  color:var(--muted);
+  font:10px/1.6 Arial,sans-serif;
+}
+
+
+/* =========================================================
+   LOADING / ERROR
+========================================================= */
+
+.loading-screen{
+  min-height:calc(100vh - 70px);
+  display:grid;
+  place-items:center;
+  padding:30px;
+  text-align:center;
+}
+
+.loading-card{
+  width:min(520px,100%);
+  padding:35px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:var(--panel);
+}
+
+.loading-title{
+  font-size:30px;
+}
+
+.loading-copy{
+  margin-top:10px;
+  color:var(--muted);
+  font:11px/1.65 Arial,sans-serif;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:700;
+  max-width:390px;
+  padding:14px 16px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#111512;
+  color:var(--cream2);
+  font:11px/1.5 Arial,sans-serif;
+  opacity:0;
+  transform:translateY(10px);
+  pointer-events:none;
+  transition:.18s;
+}
+
+.toast.show{
+  opacity:1;
+  transform:none;
+}
+
+.toast.error{
+  color:var(--danger);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:1100px){
+
+  .reader-shell{
+    grid-template-columns:230px minmax(0,1fr);
+  }
+
+  .sidebar.right{
+    position:fixed;
+    right:0;
+    top:70px;
+    width:min(350px,92vw);
+    z-index:150;
+    transform:translateX(100%);
+    transition:transform .2s ease;
+    box-shadow:-20px 0 50px rgba(0,0,0,.35);
+  }
+
+  .sidebar.right.open{
+    transform:none;
+  }
+
+}
+
+@media(max-width:760px){
+
+  .reader-shell{
+    display:block;
+  }
+
+  .sidebar.left{
+    position:fixed;
+    left:0;
+    top:70px;
+    width:min(300px,90vw);
+    z-index:150;
+    transform:translateX(-100%);
+    transition:transform .2s ease;
+    box-shadow:20px 0 50px rgba(0,0,0,.35);
+  }
+
+  .sidebar.left.open{
+    transform:none;
+  }
+
+  .reader-center{
+    padding:
+      18px
+      10px
+      100px;
+  }
+
+  .reader-card{
+    border-radius:4px;
+  }
+
+  .chapter-body{
+    font-size:18px;
+    line-height:1.75;
+  }
+
+  .reader-title-nav span{
+    display:none;
+  }
+
+  .nav-actions .desktop-label{
+    display:none;
+  }
+
+  .rating-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+  <a
+    class="brand"
+    href="beta-reading.html"
+  >
+    <span class="brand-mark"></span>
+    <span>DogEar</span>
+  </a>
+
+  <div class="reader-title-nav">
+
+    <strong id="navBookTitle">
+      Beta Manuscript
+    </strong>
+
+    <span id="navChapterTitle">
+      Private Beta Reader
+    </span>
+
+  </div>
+
+  <div class="nav-actions">
+
+    <button
+      class="icon-button"
+      id="tocToggleButton"
+      type="button"
+    >
+      ☰
+      <span class="desktop-label">
+        Chapters
+      </span>
+    </button>
+
+    <button
+      class="icon-button"
+      id="notesToggleButton"
+      type="button"
+    >
+      ✎
+      <span class="desktop-label">
+        Notes
+      </span>
+    </button>
+
+  </div>
+
+</header>
+
+
+<!-- ======================================================
+     LOADING
+======================================================= -->
+
+<section
+  class="loading-screen"
+  id="loadingScreen"
+>
+
+  <div class="loading-card">
+
+    <div class="loading-title">
+      Opening your DogEar…
+    </div>
+
+    <div
+      class="loading-copy"
+      id="loadingMessage"
+    >
+      Checking your beta-reader access and preparing
+      the private manuscript.
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ======================================================
+     READER
+======================================================= -->
+
+<main
+  class="reader-shell hidden"
+  id="readerShell"
+>
+
+
+  <!-- LEFT / TABLE OF CONTENTS -->
+
+  <aside
+    class="sidebar left"
+    id="tocSidebar"
+  >
+
+    <div class="sidebar-head">
+
+      <div class="sidebar-kicker">
+        Manuscript
+      </div>
+
+      <div class="sidebar-title">
+        Chapters
+      </div>
+
+    </div>
+
+    <div class="sidebar-body">
+
+      <div
+        class="toc"
+        id="tocList"
+      ></div>
+
+    </div>
+
+  </aside>
+
+
+  <!-- CENTER -->
+
+  <section class="reader-center">
+
+    <div class="reader-toolbar">
+
+      <button
+        class="icon-button"
+        id="bookmarkButton"
+        type="button"
+      >
+        ♡ Bookmark
+      </button>
+
+      <div class="progress-wrap">
+
+        <div class="progress-label">
+
+          <span>
+            Reading progress
+          </span>
+
+          <span id="progressText">
+            0%
+          </span>
+
+        </div>
+
+        <div class="progress-track">
+
+          <div
+            class="progress-bar"
+            id="progressBar"
+          ></div>
+
+        </div>
+
+      </div>
+
+      <button
+        class="icon-button"
+        id="feedbackButton"
+        type="button"
+      >
+        Feedback
+      </button>
+
+    </div>
+
+
+    <article
+      class="reader-card"
+      id="readerCard"
+    >
+
+      <header class="chapter-head">
+
+        <div
+          class="chapter-number"
+          id="chapterNumber"
+        >
+          Section 1
+        </div>
+
+        <h1
+          class="chapter-title"
+          id="chapterTitle"
+        >
+          Loading…
+        </h1>
+
+      </header>
+
+      <div
+        class="chapter-body"
+        id="chapterBody"
+      ></div>
+
+    </article>
+
+
+    <div class="chapter-navigation">
+
+      <button
+        class="nav-button"
+        id="previousChapterButton"
+        type="button"
+      >
+        ← Previous
+      </button>
+
+      <div
+        class="chapter-position"
+        id="chapterPosition"
+      >
+        1 / 1
+      </div>
+
+      <button
+        class="nav-button"
+        id="nextChapterButton"
+        type="button"
+      >
+        Next →
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- RIGHT / NOTES + READ ALOUD -->
+
+  <aside
+    class="sidebar right"
+    id="notesSidebar"
+  >
+
+    <div class="sidebar-head">
+
+      <div class="sidebar-kicker">
+        Your DogEars
+      </div>
+
+      <div class="sidebar-title">
+        Reading Tools
+      </div>
+
+    </div>
+
+    <div class="sidebar-body">
+
+
+      <!-- READ ALOUD -->
+
+      <section class="tts-panel">
+
+        <div class="tts-title">
+          Read Aloud
+        </div>
+
+        <div class="tts-controls">
+
+          <button
+            class="tts-button"
+            id="ttsPreviousButton"
+            type="button"
+            title="Previous paragraph"
+          >
+            ◀
+          </button>
+
+          <button
+            class="tts-button"
+            id="ttsPlayButton"
+            type="button"
+          >
+            ▶ Read
+          </button>
+
+          <button
+            class="tts-button"
+            id="ttsNextButton"
+            type="button"
+            title="Next paragraph"
+          >
+            ▶
+          </button>
+
+        </div>
+
+        <label class="tts-field">
+
+          <span class="tts-label">
+            Speed
+          </span>
+
+          <select
+            class="tts-select"
+            id="ttsRate"
+          >
+            <option value="0.5">
+              0.5×
+            </option>
+
+            <option value="0.75">
+              0.75×
+            </option>
+
+            <option value="1" selected>
+              1×
+            </option>
+
+            <option value="1.25">
+              1.25×
+            </option>
+
+            <option value="1.5">
+              1.5×
+            </option>
+
+            <option value="1.75">
+              1.75×
+            </option>
+
+            <option value="2">
+              2×
+            </option>
+          </select>
+
+        </label>
+
+        <label class="tts-field">
+
+          <span class="tts-label">
+            Voice
+          </span>
+
+          <select
+            class="tts-select"
+            id="ttsVoice"
+          >
+            <option value="">
+              Device default
+            </option>
+          </select>
+
+        </label>
+
+      </section>
+
+
+      <!-- NOTES / BOOKMARKS TABS -->
+
+      <div class="panel-tabs">
+
+        <button
+          class="panel-tab active"
+          id="annotationsTab"
+          type="button"
+        >
+          Notes & Highlights
+        </button>
+
+        <button
+          class="panel-tab"
+          id="bookmarksTab"
+          type="button"
+        >
+          Bookmarks
+        </button>
+
+      </div>
+
+
+      <div id="annotationsPanel">
+
+        <label
+          class="tts-field"
+          style="margin-bottom:10px"
+        >
+
+          <span class="tts-label">
+            Chapter filter
+          </span>
+
+          <select
+            class="tts-select"
+            id="annotationChapterFilter"
+          >
+            <option value="">
+              All chapters
+            </option>
+          </select>
+
+        </label>
+
+        <div
+          class="annotation-list"
+          id="annotationList"
+        ></div>
+
+      </div>
+
+
+      <div
+        class="hidden"
+        id="bookmarksPanel"
+      >
+
+        <div
+          class="bookmark-list"
+          id="bookmarkList"
+        ></div>
+
+      </div>
+
+    </div>
+
+  </aside>
+
+</main>
+
+
+<!-- ======================================================
+     TEXT SELECTION TOOLBAR
+======================================================= -->
+
+<div
+  class="selection-toolbar"
+  id="selectionToolbar"
+>
+
+  <button
+    class="selection-button"
+    id="highlightSelectionButton"
+    type="button"
+  >
+    Highlight
+  </button>
+
+  <button
+    class="selection-button"
+    id="noteSelectionButton"
+    type="button"
+  >
+    Add Note
+  </button>
+
+</div>
+
+
+<!-- ======================================================
+     NOTE MODAL
+======================================================= -->
+
+<div
+  class="modal"
+  id="noteModal"
+>
+
+  <div class="modal-card">
+
+    <div class="modal-head">
+
+      <div>
+
+        <div class="modal-kicker">
+          DogEar
+        </div>
+
+        <h2 class="modal-title">
+          Add a Note
+        </h2>
+
+      </div>
+
+      <button
+        class="close-button"
+        id="closeNoteModal"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div
+      class="feedback-status"
+      id="selectedQuotePreview"
+    ></div>
+
+    <label class="field">
+
+      <span class="label">
+        Your note
+      </span>
+
+      <textarea
+        class="textarea"
+        id="noteText"
+        maxlength="5000"
+        placeholder="What are you thinking here?"
+      ></textarea>
+
+    </label>
+
+    <label class="field">
+
+      <span class="label">
+        Who can see this?
+      </span>
+
+      <select
+        class="select"
+        id="noteVisibility"
+      >
+
+        <option value="private">
+          Private — only me
+        </option>
+
+        <option value="author">
+          Share with author
+        </option>
+
+      </select>
+
+    </label>
+
+    <div class="modal-actions">
+
+      <button
+        class="secondary-button"
+        id="cancelNoteButton"
+        type="button"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="primary-button"
+        id="saveNoteButton"
+        type="button"
+      >
+        Save Note
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ======================================================
+     FEEDBACK MODAL
+======================================================= -->
+
+<div
+  class="modal"
+  id="feedbackModal"
+>
+
+  <div class="modal-card">
+
+    <div class="modal-head">
+
+      <div>
+
+        <div class="modal-kicker">
+          Beta Feedback
+        </div>
+
+        <h2 class="modal-title">
+          Reader Feedback
+        </h2>
+
+      </div>
+
+      <button
+        class="close-button"
+        id="closeFeedbackModal"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div class="rating-grid">
+
+      <label class="field">
+
+        <span class="label">
+          Overall
+        </span>
+
+        <select
+          class="select"
+          id="ratingOverall"
+        >
+          <option value="">
+            Not rated
+          </option>
+          <option value="1">1 / 5</option>
+          <option value="2">2 / 5</option>
+          <option value="3">3 / 5</option>
+          <option value="4">4 / 5</option>
+          <option value="5">5 / 5</option>
+        </select>
+
+      </label>
+
+      <label class="field">
+
+        <span class="label">
+          Pacing
+        </span>
+
+        <select
+          class="select"
+          id="ratingPacing"
+        >
+          <option value="">
+            Not rated
+          </option>
+          <option value="1">1 / 5</option>
+          <option value="2">2 / 5</option>
+          <option value="3">3 / 5</option>
+          <option value="4">4 / 5</option>
+          <option value="5">5 / 5</option>
+        </select>
+
+      </label>
+
+      <label class="field">
+
+        <span class="label">
+          Characters
+        </span>
+
+        <select
+          class="select"
+          id="ratingCharacter"
+        >
+          <option value="">
+            Not rated
+          </option>
+          <option value="1">1 / 5</option>
+          <option value="2">2 / 5</option>
+          <option value="3">3 / 5</option>
+          <option value="4">4 / 5</option>
+          <option value="5">5 / 5</option>
+        </select>
+
+      </label>
+
+      <label class="field">
+
+        <span class="label">
+          Plot
+        </span>
+
+        <select
+          class="select"
+          id="ratingPlot"
+        >
+          <option value="">
+            Not rated
+          </option>
+          <option value="1">1 / 5</option>
+          <option value="2">2 / 5</option>
+          <option value="3">3 / 5</option>
+          <option value="4">4 / 5</option>
+          <option value="5">5 / 5</option>
+        </select>
+
+      </label>
+
+      <label class="field">
+
+        <span class="label">
+          Worldbuilding
+        </span>
+
+        <select
+          class="select"
+          id="ratingWorldbuilding"
+        >
+          <option value="">
+            Not rated
+          </option>
+          <option value="1">1 / 5</option>
+          <option value="2">2 / 5</option>
+          <option value="3">3 / 5</option>
+          <option value="4">4 / 5</option>
+          <option value="5">5 / 5</option>
+        </select>
+
+      </label>
+
+      <label class="field">
+
+        <span class="label">
+          Romance
+        </span>
+
+        <select
+          class="select"
+          id="ratingRomance"
+        >
+          <option value="">
+            Not rated / N/A
+          </option>
+          <option value="1">1 / 5</option>
+          <option value="2">2 / 5</option>
+          <option value="3">3 / 5</option>
+          <option value="4">4 / 5</option>
+          <option value="5">5 / 5</option>
+        </select>
+
+      </label>
+
+    </div>
+
+    <label class="field">
+
+      <span class="label">
+        What confused you?
+      </span>
+
+      <textarea
+        class="textarea"
+        id="confusionNotes"
+        placeholder="Anything unclear, contradictory, or difficult to follow?"
+      ></textarea>
+
+    </label>
+
+    <label class="field">
+
+      <span class="label">
+        Favorite parts
+      </span>
+
+      <textarea
+        class="textarea"
+        id="favoriteParts"
+        placeholder="What worked especially well?"
+      ></textarea>
+
+    </label>
+
+    <label class="field">
+
+      <span class="label">
+        What could be improved?
+      </span>
+
+      <textarea
+        class="textarea"
+        id="improvementNotes"
+        placeholder="Pacing, characterization, plot, prose, worldbuilding..."
+      ></textarea>
+
+    </label>
+
+    <label class="field">
+
+      <span class="label">
+        Anything else?
+      </span>
+
+      <textarea
+        class="textarea"
+        id="generalComments"
+        placeholder="Additional thoughts for the author."
+      ></textarea>
+
+    </label>
+
+    <div
+      class="feedback-status"
+      id="feedbackStatus"
+    >
+      You can save feedback as you read and submit it when
+      you're finished.
+    </div>
+
+    <div class="modal-actions">
+
+      <button
+        class="secondary-button"
+        id="saveFeedbackButton"
+        type="button"
+      >
+        Save Draft
+      </button>
+
+      <button
+        class="primary-button"
+        id="submitFeedbackButton"
+        type="button"
+      >
+        Submit Feedback
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div
+  class="toast"
+  id="toast"
+></div>
+
+
+<script>
+
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+const $ =
+  id =>
+    document.getElementById(id);
+
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
+
+
+const assignmentId =
+  params.get("assignment");
+
+
+let currentUser = null;
+
+let assignment = null;
+let project = null;
+let round = null;
+let manuscript = null;
+
+let sections = [];
+let currentSectionIndex = 0;
+
+let readingPosition = null;
+let sectionProgress = [];
+
+let bookmarks = [];
+let annotations = [];
+let feedback = null;
+
+let selectedPassage = null;
+
+let toastTimer = null;
+
+let positionSaveTimer = null;
+let progressSaveTimer = null;
+
+
+/*
+  Text-to-speech state.
+*/
+
+let speechSupported =
+  "speechSynthesis" in window &&
+  "SpeechSynthesisUtterance" in window;
+
+let availableVoices = [];
+
+let ttsParagraphIndex = 0;
+let ttsSpeaking = false;
+let ttsPaused = false;
+let activeUtterance = null;
+
+
+/*
+  Prevent overlapping navigation operations.
+*/
+
+let sectionLoading = false;
+  /* =========================================================
+   BASIC HELPERS
+========================================================= */
+
+function escapeHtml(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+
+function showToast(
+  message,
+  type = ""
+){
+
+  const toast =
+    $("toast");
+
+  clearTimeout(
+    toastTimer
+  );
+
+  toast.textContent =
+    message;
+
+  toast.className =
+    "toast";
+
+  if(type){
+    toast.classList.add(
+      type
+    );
+  }
+
+  requestAnimationFrame(
+    () =>
+      toast.classList.add(
+        "show"
+      )
+  );
+
+  toastTimer =
+    setTimeout(
+      () =>
+        toast.classList.remove(
+          "show"
+        ),
+      3500
+    );
+
+}
+
+
+function clamp(
+  value,
+  min,
+  max
+){
+
+  return Math.min(
+    max,
+    Math.max(
+      min,
+      value
+    )
+  );
+
+}
+
+
+function numericValue(
+  value
+){
+
+  if(
+    value === "" ||
+    value === null ||
+    value === undefined
+  ){
+    return null;
+  }
+
+  const number =
+    Number(value);
+
+  return Number.isFinite(
+    number
+  )
+    ? number
+    : null;
+
+}
+
+
+function normalizeParagraphs(
+  text
+){
+
+  const normalized =
+    String(text || "")
+      .replace(/\r\n/g,"\n")
+      .replace(/\r/g,"\n")
+      .trim();
+
+  if(!normalized){
+    return [];
+  }
+
+  return normalized
+    .split(/\n\s*\n/)
+    .map(
+      paragraph =>
+        paragraph.trim()
+    )
+    .filter(Boolean);
+
+}
+
+
+/* =========================================================
+   AUTHENTICATION
+========================================================= */
+
+async function loadSession(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if(error){
+    throw error;
+  }
+
+
+  currentUser =
+    data?.session?.user ||
+    null;
+
+
+  if(!currentUser){
+
+    window.location.href =
+      "auth.html#login";
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   ASSIGNMENT ACCESS
+========================================================= */
+
+async function loadAssignment(){
+
+  if(!assignmentId){
+
+    throw new Error(
+      "No beta-reading assignment was selected."
+    );
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_assignments"
+      )
+      .select("*")
+      .eq(
+        "id",
+        assignmentId
+      )
+      .maybeSingle();
+
+
+  if(error){
+    throw error;
+  }
+
+
+  if(!data){
+
+    throw new Error(
+      "This beta-reading assignment could not be found."
+    );
+
+  }
+
+
+  if(
+    data.reader_id !==
+    currentUser.id
+  ){
+
+    throw new Error(
+      "This manuscript is not assigned to your DogEar account."
+    );
+
+  }
+
+
+  if(
+    ![
+      "accepted",
+      "reading",
+      "completed"
+    ].includes(
+      data.status
+    )
+  ){
+
+    throw new Error(
+      "Your access to this manuscript is no longer active."
+    );
+
+  }
+
+
+  assignment =
+    data;
+
+}
+
+
+/* =========================================================
+   PROJECT + ROUND
+========================================================= */
+
+async function loadProject(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_projects"
+      )
+      .select("*")
+      .eq(
+        "id",
+        assignment.project_id
+      )
+      .maybeSingle();
+
+
+  if(error){
+    throw error;
+  }
+
+
+  if(!data){
+
+    throw new Error(
+      "The beta project could not be found."
+    );
+
+  }
+
+
+  project =
+    data;
+
+}
+
+
+async function loadRound(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_rounds"
+      )
+      .select("*")
+      .eq(
+        "id",
+        assignment.round_id
+      )
+      .maybeSingle();
+
+
+  if(error){
+    throw error;
+  }
+
+
+  round =
+    data ||
+    null;
+
+}
+
+
+/* =========================================================
+   MANUSCRIPT
+========================================================= */
+
+async function loadManuscript(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_manuscripts"
+      )
+      .select(`
+        id,
+        project_id,
+        round_id,
+        version_number,
+        word_count,
+        chapter_count,
+        active,
+        processing_status,
+        processed_at
+      `)
+      .eq(
+        "project_id",
+        assignment.project_id
+      )
+      .eq(
+        "round_id",
+        assignment.round_id
+      )
+      .eq(
+        "active",
+        true
+      )
+      .eq(
+        "processing_status",
+        "ready"
+      )
+      .order(
+        "version_number",
+        {
+          ascending:false
+        }
+      )
+      .limit(1)
+      .maybeSingle();
+
+
+  if(error){
+    throw error;
+  }
+
+
+  if(!data){
+
+    throw new Error(
+      "The author has not made a processed manuscript available for this beta round yet."
+    );
+
+  }
+
+
+  manuscript =
+    data;
+
+}
+
+
+/* =========================================================
+   MANUSCRIPT SECTIONS
+========================================================= */
+
+async function loadSections(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_manuscript_sections"
+      )
+      .select(`
+        id,
+        manuscript_id,
+        section_number,
+        title,
+        content_text,
+        word_count
+      `)
+      .eq(
+        "manuscript_id",
+        manuscript.id
+      )
+      .order(
+        "section_number",
+        {
+          ascending:true
+        }
+      );
+
+
+  if(error){
+    throw error;
+  }
+
+
+  sections =
+    data ||
+    [];
+
+
+  if(!sections.length){
+
+    throw new Error(
+      "This manuscript does not contain any readable sections."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   READING POSITION
+========================================================= */
+
+async function loadReadingPosition(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_reading_positions"
+      )
+      .select("*")
+      .eq(
+        "assignment_id",
+        assignment.id
+      )
+      .maybeSingle();
+
+
+  if(error){
+
+    console.error(
+      "Reading position:",
+      error
+    );
+
+    readingPosition =
+      null;
+
+    return;
+
+  }
+
+
+  readingPosition =
+    data ||
+    null;
+
+}
+
+
+/* =========================================================
+   SECTION PROGRESS
+========================================================= */
+
+async function loadSectionProgress(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_section_progress"
+      )
+      .select("*")
+      .eq(
+        "assignment_id",
+        assignment.id
+      );
+
+
+  if(error){
+
+    console.error(
+      "Section progress:",
+      error
+    );
+
+    sectionProgress =
+      [];
+
+    return;
+
+  }
+
+
+  sectionProgress =
+    data ||
+    [];
+
+}
+
+
+/* =========================================================
+   BOOKMARKS
+========================================================= */
+
+async function loadBookmarks(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_bookmarks"
+      )
+      .select("*")
+      .eq(
+        "assignment_id",
+        assignment.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
+
+
+  if(error){
+
+    console.error(
+      "Bookmarks:",
+      error
+    );
+
+    bookmarks =
+      [];
+
+    return;
+
+  }
+
+
+  bookmarks =
+    data ||
+    [];
+
+}
+
+
+/* =========================================================
+   ANNOTATIONS
+========================================================= */
+
+async function loadAnnotations(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_annotations"
+      )
+      .select("*")
+      .eq(
+        "assignment_id",
+        assignment.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
+
+
+  if(error){
+
+    console.error(
+      "Annotations:",
+      error
+    );
+
+    annotations =
+      [];
+
+    return;
+
+  }
+
+
+  annotations =
+    data ||
+    [];
+
+}
+
+
+/* =========================================================
+   FEEDBACK
+========================================================= */
+
+async function loadFeedback(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_feedback"
+      )
+      .select("*")
+      .eq(
+        "assignment_id",
+        assignment.id
+      )
+      .is(
+        "section_id",
+        null
+      )
+      .eq(
+        "feedback_type",
+        "overall"
+      )
+      .maybeSingle();
+
+
+  if(error){
+
+    console.error(
+      "Feedback:",
+      error
+    );
+
+    feedback =
+      null;
+
+    return;
+
+  }
+
+
+  feedback =
+    data ||
+    null;
+
+}
+
+
+/* =========================================================
+   ANALYTICS EVENTS
+========================================================= */
+
+async function logEvent(
+  eventType,
+  eventData = {},
+  sectionId = null
+){
+
+  try{
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from(
+          "beta_analytics_events"
+        )
+        .insert({
+          project_id:
+            assignment.project_id,
+
+          round_id:
+            assignment.round_id,
+
+          assignment_id:
+            assignment.id,
+
+          section_id:
+            sectionId,
+
+          user_id:
+            currentUser.id,
+
+          event_type:
+            eventType,
+
+          event_data:
+            eventData
+        });
+
+
+    if(error){
+
+      console.error(
+        "Analytics event:",
+        error
+      );
+
+    }
+
+  }
+  catch(error){
+
+    console.error(
+      "Analytics event:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   INITIAL POSITION
+========================================================= */
+
+function determineInitialSection(){
+
+  if(
+    readingPosition?.section_id
+  ){
+
+    const index =
+      sections.findIndex(
+        section =>
+          section.id ===
+          readingPosition.section_id
+      );
+
+
+    if(index >= 0){
+
+      currentSectionIndex =
+        index;
+
+      return;
+
+    }
+
+  }
+
+
+  currentSectionIndex =
+    0;
+
+}
+
+
+/* =========================================================
+   MAIN STATIC UI
+========================================================= */
+
+function renderStaticInformation(){
+
+  $("navBookTitle")
+    .textContent =
+      project.title ||
+      "Beta Manuscript";
+
+
+  $("navChapterTitle")
+    .textContent =
+      round?.name ||
+      "Private Beta Reader";
+
+
+  buildTableOfContents();
+
+  buildAnnotationFilter();
+
+  renderBookmarks();
+
+  renderAnnotations();
+
+  populateFeedbackForm();
+
+  renderOverallProgress();
+
+}
+
+
+/* =========================================================
+   TABLE OF CONTENTS
+========================================================= */
+
+function buildTableOfContents(){
+
+  const holder =
+    $("tocList");
+
+
+  holder.innerHTML =
+    "";
+
+
+  sections.forEach(
+    (
+      section,
+      index
+    ) => {
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.type =
+        "button";
+
+
+      button.className =
+        "toc-button";
+
+
+      button.dataset
+        .sectionIndex =
+          String(index);
+
+
+      button.innerHTML =
+        `
+          <span class="toc-number">
+            Section ${escapeHtml(
+              section.section_number
+            )}
+          </span>
+
+          ${escapeHtml(
+            section.title ||
+            `Section ${section.section_number}`
+          )}
+        `;
+
+
+      button.addEventListener(
+        "click",
+        async () => {
+
+          await goToSection(
+            index,
+            {
+              savePrevious:true,
+              scrollTop:true
+            }
+          );
+
+
+          if(
+            window.innerWidth <=
+            760
+          ){
+
+            $("tocSidebar")
+              .classList
+              .remove(
+                "open"
+              );
+
+          }
+
+        }
+      );
+
+
+      holder.appendChild(
+        button
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   ANNOTATION CHAPTER FILTER
+========================================================= */
+
+function buildAnnotationFilter(){
+
+  const select =
+    $("annotationChapterFilter");
+
+
+  select.innerHTML =
+    `
+      <option value="">
+        All chapters
+      </option>
+    `;
+
+
+  sections.forEach(
+    section => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        section.id;
+
+
+      option.textContent =
+        section.title ||
+        `Section ${section.section_number}`;
+
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   RENDER CURRENT SECTION
+========================================================= */
+
+async function renderCurrentSection(
+  options = {}
+){
+
+  const section =
+    sections[
+      currentSectionIndex
+    ];
+
+
+  if(!section){
+    return;
+  }
+
+
+  stopSpeech();
+
+
+  $("chapterNumber")
+    .textContent =
+      `Section ${
+        section.section_number
+      }`;
+
+
+  $("chapterTitle")
+    .textContent =
+      section.title ||
+      `Section ${
+        section.section_number
+      }`;
+
+
+  $("navChapterTitle")
+    .textContent =
+      section.title ||
+      `Section ${
+        section.section_number
+      }`;
+
+
+  $("chapterPosition")
+    .textContent =
+      `${
+        currentSectionIndex + 1
+      } / ${
+        sections.length
+      }`;
+
+
+  $("previousChapterButton")
+    .disabled =
+      currentSectionIndex ===
+      0;
+
+
+  $("nextChapterButton")
+    .disabled =
+      currentSectionIndex >=
+      sections.length - 1;
+
+
+  document
+    .querySelectorAll(
+      ".toc-button"
+    )
+    .forEach(
+      button => {
+
+        button.classList
+          .toggle(
+            "active",
+            Number(
+              button.dataset
+                .sectionIndex
+            ) ===
+              currentSectionIndex
+          );
+
+      }
+    );
+
+
+  const paragraphs =
+    normalizeParagraphs(
+      section.content_text
+    );
+
+
+  const holder =
+    $("chapterBody");
+
+
+  holder.innerHTML =
+    "";
+
+
+  if(!paragraphs.length){
+
+    holder.innerHTML =
+      `
+        <p class="reader-paragraph">
+          This section contains no readable text.
+        </p>
+      `;
+
+  }
+  else{
+
+    paragraphs.forEach(
+      (
+        paragraph,
+        paragraphIndex
+      ) => {
+
+        const p =
+          document.createElement(
+            "p"
+          );
+
+
+        p.className =
+          "reader-paragraph";
+
+
+        p.dataset
+          .paragraphIndex =
+            String(
+              paragraphIndex
+            );
+
+
+        p.textContent =
+          paragraph;
+
+
+        holder.appendChild(
+          p
+        );
+
+      }
+    );
+
+  }
+
+
+  applyAnnotationsToCurrentSection();
+
+  updateBookmarkButton();
+
+  renderOverallProgress();
+
+
+  if(
+    options.restorePosition
+  ){
+
+    restoreSavedPosition();
+
+  }
+
+
+  if(
+    options.scrollTop
+  ){
+
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
+
+  }
+
+
+  await markSectionStarted(
+    section
+  );
+
+
+  logEvent(
+    "section_started",
+    {
+      section_number:
+        section.section_number,
+
+      source:
+        options.source ||
+        "reader"
+    },
+    section.id
+  );
+
+}
+
+
+/* =========================================================
+   SECTION NAVIGATION
+========================================================= */
+
+async function goToSection(
+  index,
+  options = {}
+){
+
+  if(sectionLoading){
+    return;
+  }
+
+
+  const nextIndex =
+    clamp(
+      Number(index),
+      0,
+      sections.length - 1
+    );
+
+
+  if(
+    nextIndex ===
+      currentSectionIndex &&
+    !options.force
+  ){
+
+    if(options.scrollTop){
+
+      window.scrollTo({
+        top:0,
+        behavior:"smooth"
+      });
+
+    }
+
+    return;
+
+  }
+
+
+  sectionLoading =
+    true;
+
+
+  try{
+
+    if(
+      options.savePrevious !==
+      false
+    ){
+
+      await saveCurrentPosition(
+        true
+      );
+
+    }
+
+
+    currentSectionIndex =
+      nextIndex;
+
+
+    await renderCurrentSection({
+      scrollTop:
+        options.scrollTop !==
+        false,
+
+      source:
+        options.source ||
+        "navigation"
+    });
+
+  }
+  finally{
+
+    sectionLoading =
+      false;
+
+  }
+
+}
+
+
+/* =========================================================
+   RESTORE POSITION
+========================================================= */
+
+function restoreSavedPosition(){
+
+  if(
+    !readingPosition ||
+    readingPosition.section_id !==
+      sections[
+        currentSectionIndex
+      ]?.id
+  ){
+
+    return;
+
+  }
+
+
+  const paragraphIndex =
+    Number(
+      readingPosition
+        .paragraph_index ||
+      0
+    );
+
+
+  const paragraph =
+    document.querySelector(
+      `.reader-paragraph[data-paragraph-index="${paragraphIndex}"]`
+    );
+
+
+  if(!paragraph){
+    return;
+  }
+
+
+  setTimeout(
+    () => {
+
+      paragraph.scrollIntoView({
+        behavior:"auto",
+        block:"center"
+      });
+
+    },
+    80
+  );
+
+}
+
+
+/* =========================================================
+   FIND READING POSITION FROM VIEWPORT
+========================================================= */
+
+function getVisibleParagraphIndex(){
+
+  const paragraphs =
+    [
+      ...document
+        .querySelectorAll(
+          ".reader-paragraph"
+        )
+    ];
+
+
+  if(!paragraphs.length){
+    return 0;
+  }
+
+
+  const targetY =
+    window.innerHeight *
+    0.35;
+
+
+  let closestIndex =
+    0;
+
+
+  let closestDistance =
+    Infinity;
+
+
+  paragraphs.forEach(
+    (
+      paragraph,
+      index
+    ) => {
+
+      const rect =
+        paragraph
+          .getBoundingClientRect();
+
+
+      const distance =
+        Math.abs(
+          rect.top -
+          targetY
+        );
+
+
+      if(
+        distance <
+        closestDistance
+      ){
+
+        closestDistance =
+          distance;
+
+        closestIndex =
+          index;
+
+      }
+
+    }
+  );
+
+
+  return closestIndex;
+
+}
+
+
+/* =========================================================
+   CALCULATE READING PROGRESS
+========================================================= */
+
+function calculateCurrentProgress(){
+
+  if(!sections.length){
+    return 0;
+  }
+
+
+  const section =
+    sections[
+      currentSectionIndex
+    ];
+
+
+  const paragraphs =
+    [
+      ...document
+        .querySelectorAll(
+          ".reader-paragraph"
+        )
+    ];
+
+
+  const paragraphIndex =
+    getVisibleParagraphIndex();
+
+
+  const paragraphFraction =
+    paragraphs.length > 0
+      ? clamp(
+          (
+            paragraphIndex + 1
+          ) /
+          paragraphs.length,
+          0,
+          1
+        )
+      : 0;
+
+
+  const overall =
+    (
+      currentSectionIndex +
+      paragraphFraction
+    ) /
+    sections.length;
+
+
+  return clamp(
+    overall * 100,
+    0,
+    100
+  );
+
+}
+
+
+/* =========================================================
+   SAVE READING POSITION
+========================================================= */
+
+async function saveCurrentPosition(
+  immediate = false
+){
+
+  if(
+    !assignment ||
+    !manuscript ||
+    !sections.length
+  ){
+    return;
+  }
+
+
+  if(
+    !immediate
+  ){
+
+    clearTimeout(
+      positionSaveTimer
+    );
+
+
+    positionSaveTimer =
+      setTimeout(
+        () =>
+          saveCurrentPosition(
+            true
+          ),
+        700
+      );
+
+
+    return;
+
+  }
+
+
+  const section =
+    sections[
+      currentSectionIndex
+    ];
+
+
+  if(!section){
+    return;
+  }
+
+
+  const paragraphIndex =
+    getVisibleParagraphIndex();
+
+
+  const progressPercent =
+    calculateCurrentProgress();
+
+
+  const payload = {
+    assignment_id:
+      assignment.id,
+
+    manuscript_id:
+      manuscript.id,
+
+    section_id:
+      section.id,
+
+    paragraph_index:
+      paragraphIndex,
+
+    character_offset:
+      0,
+
+    progress_percent:
+      progressPercent
+  };
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_reading_positions"
+      )
+      .upsert(
+        payload,
+        {
+          onConflict:
+            "assignment_id"
+        }
+      )
+      .select("*")
+      .single();
+
+
+  if(error){
+
+    console.error(
+      "Save reading position:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  readingPosition =
+    data;
+
+
+  scheduleSectionProgressSave();
+
+}
+
+
+/* =========================================================
+   SECTION PROGRESS
+========================================================= */
+
+function sectionProgressValue(
+  sectionId
+){
+
+  const row =
+    sectionProgress.find(
+      item =>
+        item.section_id ===
+        sectionId
+    );
+
+
+  return Number(
+    row?.overall_progress ||
+    0
+  );
+
+}
+
+
+async function markSectionStarted(
+  section
+){
+
+  const existing =
+    sectionProgress.find(
+      row =>
+        row.section_id ===
+        section.id
+    );
+
+
+  const now =
+    new Date()
+      .toISOString();
+
+
+  const payload = {
+    assignment_id:
+      assignment.id,
+
+    section_id:
+      section.id,
+
+    reading_progress:
+      Number(
+        existing
+          ?.reading_progress ||
+        0
+      ),
+
+    listening_progress:
+      Number(
+        existing
+          ?.listening_progress ||
+        0
+      ),
+
+    overall_progress:
+      Number(
+        existing
+          ?.overall_progress ||
+        0
+      ),
+
+    started_at:
+      existing
+        ?.started_at ||
+      now,
+
+    last_activity_at:
+      now
+  };
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_section_progress"
+      )
+      .upsert(
+        payload,
+        {
+          onConflict:
+            "assignment_id,section_id"
+        }
+      )
+      .select("*")
+      .single();
+
+
+  if(error){
+
+    console.error(
+      "Mark section started:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  const index =
+    sectionProgress.findIndex(
+      row =>
+        row.section_id ===
+        section.id
+    );
+
+
+  if(index >= 0){
+
+    sectionProgress[index] =
+      data;
+
+  }
+  else{
+
+    sectionProgress.push(
+      data
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   SAVE SECTION READING PROGRESS
+========================================================= */
+
+function scheduleSectionProgressSave(){
+
+  clearTimeout(
+    progressSaveTimer
+  );
+
+
+  progressSaveTimer =
+    setTimeout(
+      () =>
+        saveSectionReadingProgress(),
+      900
+    );
+
+}
+
+
+async function saveSectionReadingProgress(){
+
+  const section =
+    sections[
+      currentSectionIndex
+    ];
+
+
+  if(!section){
+    return;
+  }
+
+
+  const paragraphs =
+    [
+      ...document
+        .querySelectorAll(
+          ".reader-paragraph"
+        )
+    ];
+
+
+  const paragraphIndex =
+    getVisibleParagraphIndex();
+
+
+  const readingProgress =
+    paragraphs.length
+      ? clamp(
+          (
+            paragraphIndex + 1
+          ) /
+          paragraphs.length *
+          100,
+          0,
+          100
+        )
+      : 0;
+
+
+  const existing =
+    sectionProgress.find(
+      row =>
+        row.section_id ===
+        section.id
+    );
+
+
+  const listeningProgress =
+    Number(
+      existing
+        ?.listening_progress ||
+      0
+    );
+
+
+  const bestReading =
+    Math.max(
+      Number(
+        existing
+          ?.reading_progress ||
+        0
+      ),
+      readingProgress
+    );
+
+
+  const overallProgress =
+    Math.max(
+      bestReading,
+      listeningProgress
+    );
+
+
+  const completed =
+    overallProgress >=
+    98;
+
+
+  const now =
+    new Date()
+      .toISOString();
+
+
+  const payload = {
+    assignment_id:
+      assignment.id,
+
+    section_id:
+      section.id,
+
+    reading_progress:
+      bestReading,
+
+    listening_progress:
+      listeningProgress,
+
+    overall_progress:
+      overallProgress,
+
+    started_at:
+      existing
+        ?.started_at ||
+      now,
+
+    completed_at:
+      completed
+        ? (
+            existing
+              ?.completed_at ||
+            now
+          )
+        : null,
+
+    last_activity_at:
+      now
+  };
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_section_progress"
+      )
+      .upsert(
+        payload,
+        {
+          onConflict:
+            "assignment_id,section_id"
+        }
+      )
+      .select("*")
+      .single();
+
+
+  if(error){
+
+    console.error(
+      "Save section progress:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  const index =
+    sectionProgress.findIndex(
+      row =>
+        row.section_id ===
+        section.id
+    );
+
+
+  if(index >= 0){
+
+    sectionProgress[index] =
+      data;
+
+  }
+  else{
+
+    sectionProgress.push(
+      data
+    );
+
+  }
+
+
+  if(
+    completed &&
+    Number(
+      existing
+        ?.overall_progress ||
+      0
+    ) < 98
+  ){
+
+    logEvent(
+      "section_completed",
+      {
+        mode:
+          listeningProgress >
+          bestReading
+            ? "listening"
+            : (
+                listeningProgress >
+                0
+                  ? "mixed"
+                  : "reading"
+              )
+      },
+      section.id
+    );
+
+  }
+
+
+  await updateAssignmentProgress();
+
+  renderOverallProgress();
+
+}
+
+
+/* =========================================================
+   OVERALL PROGRESS
+========================================================= */
+
+function calculateStoredOverallProgress(){
+
+  if(!sections.length){
+    return 0;
+  }
+
+
+  let total = 0;
+
+
+  sections.forEach(
+    section => {
+
+      total +=
+        sectionProgressValue(
+          section.id
+        );
+
+    }
+  );
+
+
+  return clamp(
+    total /
+    sections.length,
+    0,
+    100
+  );
+
+}
+
+
+function renderOverallProgress(){
+
+  let progress =
+    calculateStoredOverallProgress();
+
+
+  const liveProgress =
+    calculateCurrentProgress();
+
+
+  progress =
+    Math.max(
+      progress,
+      liveProgress
+    );
+
+
+  progress =
+    clamp(
+      progress,
+      0,
+      100
+    );
+
+
+  $("progressBar")
+    .style.width =
+      `${progress}%`;
+
+
+  $("progressText")
+    .textContent =
+      `${Math.round(
+        progress
+      )}%`;
+
+}
+
+
+/* =========================================================
+   UPDATE ASSIGNMENT PROGRESS
+========================================================= */
+
+async function updateAssignmentProgress(){
+
+  const progress =
+    calculateStoredOverallProgress();
+
+
+  assignment.progress_percent =
+    progress;
+
+
+  /*
+    Assignment RLS may intentionally prevent
+    readers from directly updating assignment
+    records. We attempt the update, but the
+    reader itself does not depend on it because
+    section progress remains the source of truth
+    for the reading experience.
+  */
+
+  const updatePayload = {
+    progress_percent:
+      progress,
+
+    last_activity_at:
+      new Date()
+        .toISOString()
+  };
+
+
+  if(
+    assignment.status ===
+      "accepted" &&
+    progress > 0
+  ){
+
+    updatePayload.status =
+      "reading";
+
+    updatePayload.started_at =
+      assignment.started_at ||
+      new Date()
+        .toISOString();
+
+  }
+
+
+  if(progress >= 99.5){
+
+    updatePayload.status =
+      "completed";
+
+    updatePayload.completed_at =
+      assignment.completed_at ||
+      new Date()
+        .toISOString();
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_assignments"
+      )
+      .update(
+        updatePayload
+      )
+      .eq(
+        "id",
+        assignment.id
+      )
+      .eq(
+        "reader_id",
+        currentUser.id
+      )
+      .select("*")
+      .maybeSingle();
+
+
+  if(error){
+
+    console.warn(
+      "Assignment progress update was not permitted:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  if(data){
+
+    const previousStatus =
+      assignment.status;
+
+
+    assignment =
+      data;
+
+
+    if(
+      assignment.status ===
+        "completed" &&
+      previousStatus !==
+        "completed"
+    ){
+
+      logEvent(
+        "manuscript_completed",
+        {
+          progress_percent:
+            progress
+        }
+      );
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   BOOKMARK CURRENT POSITION
+========================================================= */
+
+function currentBookmark(){
+
+  const section =
+    sections[
+      currentSectionIndex
+    ];
+
+
+  if(!section){
+    return null;
+  }
+
+
+  const paragraphIndex =
+    getVisibleParagraphIndex();
+
+
+  return bookmarks.find(
+    bookmark =>
+      bookmark.section_id ===
+        section.id &&
+      Number(
+        bookmark.paragraph_index ||
+        0
+      ) ===
+        paragraphIndex
+  ) || null;
+
+}
+
+
+function updateBookmarkButton(){
+
+  const bookmark =
+    currentBookmark();
+
+
+  $("bookmarkButton")
+    .textContent =
+      bookmark
+        ? "♥ Bookmarked"
+        : "♡ Bookmark";
+
+}
+
+
+/* =========================================================
+   CREATE / REMOVE BOOKMARK
+========================================================= */
+
+async function toggleBookmark(){
+
+  const section =
+    sections[
+      currentSectionIndex
+    ];
+
+
+  if(!section){
+    return;
+  }
+
+
+  const paragraphIndex =
+    getVisibleParagraphIndex();
+
+
+  const existing =
+    bookmarks.find(
+      bookmark =>
+        bookmark.section_id ===
+          section.id &&
+        Number(
+          bookmark.paragraph_index ||
+          0
+        ) ===
+          paragraphIndex
+    );
+
+
+  if(existing){
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from(
+          "beta_bookmarks"
+        )
+        .delete()
+        .eq(
+          "id",
+          existing.id
+        )
+        .eq(
+          "assignment_id",
+          assignment.id
+        );
+
+
+    if(error){
+
+      showToast(
+        error.message ||
+        "DogEar couldn't remove the bookmark.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    bookmarks =
+      bookmarks.filter(
+        bookmark =>
+          bookmark.id !==
+          existing.id
+      );
+
+
+    showToast(
+      "Bookmark removed."
+    );
+
+  }
+  else{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "beta_bookmarks"
+        )
+        .insert({
+          assignment_id:
+            assignment.id,
+
+          section_id:
+            section.id,
+
+          paragraph_index:
+            paragraphIndex,
+
+          character_offset:
+            0,
+
+          label:
+            section.title ||
+            `Section ${section.section_number}`
+        })
+        .select("*")
+        .single();
+
+
+    if(error){
+
+      showToast(
+        error.message ||
+        "DogEar couldn't save the bookmark.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    bookmarks.unshift(
+      data
+    );
+
+
+    logEvent(
+      "bookmark_created",
+      {
+        paragraph_index:
+          paragraphIndex
+      },
+      section.id
+    );
+
+
+    showToast(
+      "DogEar saved."
+    );
+
+  }
+
+
+  updateBookmarkButton();
+
+  renderBookmarks();
+
+}
+
+
+/* =========================================================
+   RENDER BOOKMARKS
+========================================================= */
+
+function renderBookmarks(){
+
+  const holder =
+    $("bookmarkList");
+
+
+  holder.innerHTML =
+    "";
+
+
+  if(!bookmarks.length){
+
+    holder.innerHTML =
+      `
+        <div class="sidebar-empty">
+          No bookmarks yet. Tap Bookmark while
+          reading to save your place.
+        </div>
+      `;
+
+    return;
+
+  }
+
+
+  bookmarks.forEach(
+    bookmark => {
+
+      const section =
+        sections.find(
+          row =>
+            row.id ===
+            bookmark.section_id
+        );
+
+
+      if(!section){
+        return;
+      }
+
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "bookmark-card";
+
+
+      card.innerHTML =
+        `
+          <div class="annotation-type">
+            Bookmark
+          </div>
+
+          <div class="annotation-note">
+            ${escapeHtml(
+              bookmark.label ||
+              section.title ||
+              `Section ${section.section_number}`
+            )}
+          </div>
+
+          <div class="annotation-meta">
+            Paragraph ${
+              Number(
+                bookmark.paragraph_index ||
+                0
+              ) + 1
+            }
+          </div>
+
+          <div class="annotation-actions">
+
+            <button
+              class="mini-button"
+              type="button"
+              data-jump-bookmark="${escapeHtml(
+                bookmark.id
+              )}"
+            >
+              Go
+            </button>
+
+            <button
+              class="mini-button danger"
+              type="button"
+              data-delete-bookmark="${escapeHtml(
+                bookmark.id
+              )}"
+            >
+              Remove
+            </button>
+
+          </div>
+        `;
+
+
+      card
+        .querySelector(
+          "[data-jump-bookmark]"
+        )
+        .addEventListener(
+          "click",
+          event => {
+
+            event.stopPropagation();
+
+            jumpToBookmark(
+              bookmark
+            );
+
+          }
+        );
+
+
+      card
+        .querySelector(
+          "[data-delete-bookmark]"
+        )
+        .addEventListener(
+          "click",
+          async event => {
+
+            event.stopPropagation();
+
+            await deleteBookmark(
+              bookmark.id
+            );
+
+          }
+        );
+
+
+      holder.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   JUMP TO BOOKMARK
+========================================================= */
+
+async function jumpToBookmark(
+  bookmark
+){
+
+  const sectionIndex =
+    sections.findIndex(
+      section =>
+        section.id ===
+        bookmark.section_id
+    );
+
+
+  if(sectionIndex < 0){
+    return;
+  }
+
+
+  await goToSection(
+    sectionIndex,
+    {
+      savePrevious:true,
+      scrollTop:false,
+      source:"bookmark",
+      force:
+        sectionIndex ===
+        currentSectionIndex
+    }
+  );
+
+
+  setTimeout(
+    () => {
+
+      const paragraph =
+        document.querySelector(
+          `.reader-paragraph[data-paragraph-index="${
+            Number(
+              bookmark.paragraph_index ||
+              0
+            )
+          }"]`
+        );
+
+
+      if(!paragraph){
+        return;
+      }
+
+
+      paragraph.scrollIntoView({
+        behavior:"smooth",
+        block:"center"
+      });
+
+
+      paragraph.classList.add(
+        "jump-target"
+      );
+
+
+      setTimeout(
+        () =>
+          paragraph
+            .classList
+            .remove(
+              "jump-target"
+            ),
+        1600
+      );
+
+    },
+    60
+  );
+
+}
+
+
+/* =========================================================
+   DELETE BOOKMARK
+========================================================= */
+
+async function deleteBookmark(
+  bookmarkId
+){
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_bookmarks"
+      )
+      .delete()
+      .eq(
+        "id",
+        bookmarkId
+      )
+      .eq(
+        "assignment_id",
+        assignment.id
+      );
+
+
+  if(error){
+
+    showToast(
+      error.message ||
+      "DogEar couldn't remove the bookmark.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  bookmarks =
+    bookmarks.filter(
+      bookmark =>
+        bookmark.id !==
+        bookmarkId
+    );
+
+
+  renderBookmarks();
+
+  updateBookmarkButton();
+
+  showToast(
+    "Bookmark removed."
+  );
+
+}
+
+
+/* =========================================================
+   TEXT SELECTION
+========================================================= */
+
+function clearSelectedPassage(){
+
+  selectedPassage =
+    null;
+
+
+  $("selectionToolbar")
+    .classList
+    .remove(
+      "show"
+    );
+
+}
+
+
+function captureSelection(){
+
+  const selection =
+    window.getSelection();
+
+
+  if(
+    !selection ||
+    selection.rangeCount === 0 ||
+    selection.isCollapsed
+  ){
+
+    $("selectionToolbar")
+      .classList
+      .remove(
+        "show"
+      );
+
+    return;
+
+  }
+
+
+  const range =
+    selection.getRangeAt(0);
+
+
+  const startParagraph =
+    range.startContainer
+      .parentElement
+      ?.closest(
+        ".reader-paragraph"
+      );
+
+
+  const endParagraph =
+    range.endContainer
+      .parentElement
+      ?.closest(
+        ".reader-paragraph"
+      );
+
+
+  if(
+    !startParagraph ||
+    !endParagraph ||
+    startParagraph !==
+      endParagraph
+  ){
+
+    $("selectionToolbar")
+      .classList
+      .remove(
+        "show"
+      );
+
+    return;
+
+  }
+
+
+  const quote =
+    selection
+      .toString()
+      .trim();
+
+
+  if(!quote){
+
+    $("selectionToolbar")
+      .classList
+      .remove(
+        "show"
+      );
+
+    return;
+
+  }
+
+
+  const paragraphIndex =
+    Number(
+      startParagraph
+        .dataset
+        .paragraphIndex
+    );
+
+
+  const offsets =
+    getSelectionOffsets(
+      startParagraph,
+      range
+    );
+
+
+  if(!offsets){
+    return;
+  }
+
+
+  selectedPassage = {
+    section_id:
+      sections[
+        currentSectionIndex
+      ].id,
+
+    paragraph_index:
+      paragraphIndex,
+
+    start_offset:
+      offsets.start,
+
+    end_offset:
+      offsets.end,
+
+    text_quote:
+      quote
+  };
+
+
+  const rect =
+    range
+      .getBoundingClientRect();
+
+
+  const toolbar =
+    $("selectionToolbar");
+
+
+  toolbar.style.left =
+    `${clamp(
+      rect.left +
+      rect.width / 2 -
+      90,
+      8,
+      window.innerWidth -
+      190
+    )}px`;
+
+
+  toolbar.style.top =
+    `${clamp(
+      rect.top - 48,
+      78,
+      window.innerHeight -
+      50
+    )}px`;
+
+
+  toolbar
+    .classList
+    .add(
+      "show"
+    );
+
+}
+
+
+/* =========================================================
+   TEXT OFFSETS
+========================================================= */
+
+function getSelectionOffsets(
+  paragraph,
+  range
+){
+
+  try{
+
+    const beforeStart =
+      document.createRange();
+
+
+    beforeStart.selectNodeContents(
+      paragraph
+    );
+
+
+    beforeStart.setEnd(
+      range.startContainer,
+      range.startOffset
+    );
+
+
+    const beforeEnd =
+      document.createRange();
+
+
+    beforeEnd.selectNodeContents(
+      paragraph
+    );
+
+
+    beforeEnd.setEnd(
+      range.endContainer,
+      range.endOffset
+    );
+
+
+    const start =
+      beforeStart
+        .toString()
+        .length;
+
+
+    const end =
+      beforeEnd
+        .toString()
+        .length;
+
+
+    if(end <= start){
+      return null;
+    }
+
+
+    return {
+      start,
+      end
+    };
+
+  }
+  catch(error){
+
+    console.error(
+      "Selection offsets:",
+      error
+    );
+
+    return null;
+
+  }
+
+}
+
+
+/* =========================================================
+   CREATE HIGHLIGHT
+========================================================= */
+
+async function createHighlight(){
+
+  if(!selectedPassage){
+    return;
+  }
+
+
+  const payload = {
+    assignment_id:
+      assignment.id,
+
+    section_id:
+      selectedPassage
+        .section_id,
+
+    paragraph_index:
+      selectedPassage
+        .paragraph_index,
+
+    start_offset:
+      selectedPassage
+        .start_offset,
+
+    end_offset:
+      selectedPassage
+        .end_offset,
+
+    text_quote:
+      selectedPassage
+        .text_quote,
+
+    note_text:
+      null,
+
+    visibility:
+      "private",
+
+    annotation_type:
+      "highlight"
+  };
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_annotations"
+      )
+      .insert(
+        payload
+      )
+      .select("*")
+      .single();
+
+
+  if(error){
+
+    showToast(
+      error.message ||
+      "DogEar couldn't save the highlight.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  annotations.unshift(
+    data
+  );
+
+
+  logEvent(
+    "annotation_created",
+    {
+      annotation_type:
+        "highlight",
+
+      visibility:
+        "private"
+    },
+    selectedPassage
+      .section_id
+  );
+
+
+  clearSelectedPassage();
+
+  window
+    .getSelection()
+    ?.removeAllRanges();
+
+
+  applyAnnotationsToCurrentSection();
+
+  renderAnnotations();
+
+  showToast(
+    "Highlight saved."
+  );
+
+}
+
+
+/* =========================================================
+   OPEN NOTE MODAL
+========================================================= */
+
+function openNoteModal(){
+
+  if(!selectedPassage){
+    return;
+  }
+
+
+  $("selectedQuotePreview")
+    .textContent =
+      `"${selectedPassage.text_quote}"`;
+
+
+  $("noteText")
+    .value =
+      "";
+
+
+  $("noteVisibility")
+    .value =
+      "private";
+
+
+  $("selectionToolbar")
+    .classList
+    .remove(
+      "show"
+    );
+
+
+  $("noteModal")
+    .classList
+    .add(
+      "show"
+    );
+
+
+  setTimeout(
+    () =>
+      $("noteText")
+        .focus(),
+    50
+  );
+
+}
+
+
+/* =========================================================
+   SAVE NOTE
+========================================================= */
+
+async function saveNote(){
+
+  if(!selectedPassage){
+    return;
+  }
+
+
+  const noteText =
+    $("noteText")
+      .value
+      .trim();
+
+
+  if(!noteText){
+
+    showToast(
+      "Write a note first.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const visibility =
+    $("noteVisibility")
+      .value ===
+      "author"
+        ? "author"
+        : "private";
+
+
+  const payload = {
+    assignment_id:
+      assignment.id,
+
+    section_id:
+      selectedPassage
+        .section_id,
+
+    paragraph_index:
+      selectedPassage
+        .paragraph_index,
+
+    start_offset:
+      selectedPassage
+        .start_offset,
+
+    end_offset:
+      selectedPassage
+        .end_offset,
+
+    text_quote:
+      selectedPassage
+        .text_quote,
+
+    note_text:
+      noteText,
+
+    visibility,
+
+    annotation_type:
+      "note"
+  };
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_annotations"
+      )
+      .insert(
+        payload
+      )
+      .select("*")
+      .single();
+
+
+  if(error){
+
+    showToast(
+      error.message ||
+      "DogEar couldn't save your note.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  annotations.unshift(
+    data
+  );
+
+
+  logEvent(
+    visibility === "author"
+      ? "annotation_shared"
+      : "annotation_created",
+    {
+      annotation_type:
+        "note",
+
+      visibility
+    },
+    selectedPassage
+      .section_id
+  );
+
+
+  $("noteModal")
+    .classList
+    .remove(
+      "show"
+    );
+
+
+  clearSelectedPassage();
+
+
+  window
+    .getSelection()
+    ?.removeAllRanges();
+
+
+  applyAnnotationsToCurrentSection();
+
+  renderAnnotations();
+
+
+  showToast(
+    visibility ===
+      "author"
+        ? "Note saved and shared with the author."
+        : "Private note saved."
+  );
+
+}
+
+
+/* =========================================================
+   APPLY ANNOTATIONS TO TEXT
+========================================================= */
+
+function applyAnnotationsToCurrentSection(){
+
+  const section =
+    sections[
+      currentSectionIndex
+    ];
+
+
+  if(!section){
+    return;
+  }
+
+
+  const sectionAnnotations =
+    annotations
+      .filter(
+        annotation =>
+          annotation.section_id ===
+          section.id
+      );
+
+
+  const paragraphs =
+    [
+      ...document
+        .querySelectorAll(
+          ".reader-paragraph"
+        )
+    ];
+
+
+  paragraphs.forEach(
+    paragraph => {
+
+      const paragraphIndex =
+        Number(
+          paragraph
+            .dataset
+            .paragraphIndex
+        );
+
+
+      const originalText =
+        paragraph.textContent ||
+        "";
+
+
+      const relevant =
+        sectionAnnotations
+          .filter(
+            annotation =>
+              Number(
+                annotation
+                  .paragraph_index
+              ) ===
+              paragraphIndex
+          )
+          .map(
+            annotation => ({
+              ...annotation,
+
+              start:
+                clamp(
+                  Number(
+                    annotation
+                      .start_offset ||
+                    0
+                  ),
+                  0,
+                  originalText.length
+                ),
+
+              end:
+                clamp(
+                  Number(
+                    annotation
+                      .end_offset ||
+                    0
+                  ),
+                  0,
+                  originalText.length
+                )
+            })
+          )
+          .filter(
+            annotation =>
+              annotation.end >
+              annotation.start
+          )
+          .sort(
+            (a,b) =>
+              a.start -
+              b.start
+          );
+
+
+      if(!relevant.length){
+        return;
+      }
+
+
+      /*
+        Rebuild the paragraph using text nodes and
+        highlight spans. Overlapping annotations are
+        merged visually so the manuscript text itself
+        is never altered.
+      */
+
+      const boundaries =
+        new Set([
+          0,
+          originalText.length
+        ]);
+
+
+      relevant.forEach(
+        annotation => {
+
+          boundaries.add(
+            annotation.start
+          );
+
+          boundaries.add(
+            annotation.end
+          );
+
+        }
+      );
+
+
+      const points =
+        [...boundaries]
+          .sort(
+            (a,b) =>
+              a - b
+          );
+
+
+      paragraph.innerHTML =
+        "";
+
+
+      for(
+        let i = 0;
+        i <
+        points.length - 1;
+        i++
+      ){
+
+        const start =
+          points[i];
+
+
+        const end =
+          points[i + 1];
+
+
+        if(end <= start){
+          continue;
+        }
+
+
+        const text =
+          originalText.slice(
+            start,
+            end
+          );
+
+
+        const active =
+          relevant.filter(
+            annotation =>
+              annotation.start <
+                end &&
+              annotation.end >
+                start
+          );
+
+
+        if(!active.length){
+
+          paragraph.appendChild(
+            document.createTextNode(
+              text
+            )
+          );
+
+          continue;
+
+        }
+
+
+        const span =
+          document.createElement(
+            "span"
+          );
+
+
+        span.className =
+          "reader-highlight";
+
+
+        if(
+          active.some(
+            annotation =>
+              annotation.visibility ===
+              "author"
+          )
+        ){
+
+          span.classList.add(
+            "shared"
+          );
+
+        }
+
+
+        span.textContent =
+          text;
+
+
+        paragraph.appendChild(
+          span
+        );
+
+      }
+
+    }
+  );
+
+}
+  /* =========================================================
+   RENDER ANNOTATIONS
+========================================================= */
+
+function renderAnnotations(){
+
+  const holder =
+    $("annotationList");
+
+
+  const filter =
+    $("annotationChapterFilter")
+      .value;
+
+
+  const visible =
+    annotations.filter(
+      annotation =>
+        !filter ||
+        annotation.section_id ===
+        filter
+    );
+
+
+  holder.innerHTML =
+    "";
+
+
+  if(!visible.length){
+
+    holder.innerHTML =
+      `
+        <div class="sidebar-empty">
+          No notes or highlights here yet.
+          Select text in the manuscript to create a DogEar.
+        </div>
+      `;
+
+    return;
+
+  }
+
+
+  visible.forEach(
+    annotation => {
+
+      const section =
+        sections.find(
+          row =>
+            row.id ===
+            annotation.section_id
+        );
+
+
+      if(!section){
+        return;
+      }
+
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "annotation-card";
+
+
+      const shared =
+        annotation.visibility ===
+        "author";
+
+
+      const typeLabel =
+        annotation.annotation_type ===
+        "note"
+          ? (
+              shared
+                ? "Note · Shared with Author"
+                : "Private Note"
+            )
+          : "Highlight";
+
+
+      card.innerHTML =
+        `
+          <div class="annotation-type">
+            ${escapeHtml(typeLabel)}
+          </div>
+
+          <div class="annotation-quote">
+            “${escapeHtml(
+              annotation.text_quote ||
+              ""
+            )}”
+          </div>
+
+          ${
+            annotation.note_text
+              ? `
+                  <div class="annotation-note">
+                    ${escapeHtml(
+                      annotation.note_text
+                    )}
+                  </div>
+                `
+              : ""
+          }
+
+          <div class="annotation-meta">
+            ${escapeHtml(
+              section.title ||
+              `Section ${section.section_number}`
+            )}
+            · Paragraph ${
+              Number(
+                annotation.paragraph_index ||
+                0
+              ) + 1
+            }
+          </div>
+
+          <div class="annotation-actions">
+
+            <button
+              class="mini-button"
+              type="button"
+              data-jump-annotation="${escapeHtml(
+                annotation.id
+              )}"
+            >
+              Go
+            </button>
+
+            ${
+              annotation.annotation_type ===
+                "note"
+                ? `
+                    <button
+                      class="mini-button"
+                      type="button"
+                      data-toggle-share="${escapeHtml(
+                        annotation.id
+                      )}"
+                    >
+                      ${
+                        shared
+                          ? "Make Private"
+                          : "Share"
+                      }
+                    </button>
+                  `
+                : ""
+            }
+
+            <button
+              class="mini-button danger"
+              type="button"
+              data-delete-annotation="${escapeHtml(
+                annotation.id
+              )}"
+            >
+              Delete
+            </button>
+
+          </div>
+        `;
+
+
+      card
+        .querySelector(
+          "[data-jump-annotation]"
+        )
+        .addEventListener(
+          "click",
+          event => {
+
+            event.stopPropagation();
+
+            jumpToAnnotation(
+              annotation
+            );
+
+          }
+        );
+
+
+      const shareButton =
+        card.querySelector(
+          "[data-toggle-share]"
+        );
+
+
+      if(shareButton){
+
+        shareButton
+          .addEventListener(
+            "click",
+            async event => {
+
+              event.stopPropagation();
+
+              await toggleAnnotationSharing(
+                annotation
+              );
+
+            }
+          );
+
+      }
+
+
+      card
+        .querySelector(
+          "[data-delete-annotation]"
+        )
+        .addEventListener(
+          "click",
+          async event => {
+
+            event.stopPropagation();
+
+            await deleteAnnotation(
+              annotation.id
+            );
+
+          }
+        );
+
+
+      holder.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   JUMP TO ANNOTATION
+========================================================= */
+
+async function jumpToAnnotation(
+  annotation
+){
+
+  const sectionIndex =
+    sections.findIndex(
+      section =>
+        section.id ===
+        annotation.section_id
+    );
+
+
+  if(sectionIndex < 0){
+    return;
+  }
+
+
+  await goToSection(
+    sectionIndex,
+    {
+      savePrevious:true,
+      scrollTop:false,
+      source:"annotation",
+      force:
+        sectionIndex ===
+        currentSectionIndex
+    }
+  );
+
+
+  setTimeout(
+    () => {
+
+      const paragraph =
+        document.querySelector(
+          `.reader-paragraph[data-paragraph-index="${
+            Number(
+              annotation.paragraph_index ||
+              0
+            )
+          }"]`
+        );
+
+
+      if(!paragraph){
+        return;
+      }
+
+
+      paragraph.scrollIntoView({
+        behavior:"smooth",
+        block:"center"
+      });
+
+
+      paragraph.classList.add(
+        "jump-target"
+      );
+
+
+      setTimeout(
+        () =>
+          paragraph
+            .classList
+            .remove(
+              "jump-target"
+            ),
+        1600
+      );
+
+    },
+    60
+  );
+
+}
+
+
+/* =========================================================
+   TOGGLE NOTE SHARING
+========================================================= */
+
+async function toggleAnnotationSharing(
+  annotation
+){
+
+  if(
+    annotation.annotation_type !==
+    "note"
+  ){
+    return;
+  }
+
+
+  const nextVisibility =
+    annotation.visibility ===
+      "author"
+        ? "private"
+        : "author";
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_annotations"
+      )
+      .update({
+        visibility:
+          nextVisibility
+      })
+      .eq(
+        "id",
+        annotation.id
+      )
+      .eq(
+        "assignment_id",
+        assignment.id
+      )
+      .select("*")
+      .single();
+
+
+  if(error){
+
+    showToast(
+      error.message ||
+      "DogEar couldn't update this note.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const index =
+    annotations.findIndex(
+      row =>
+        row.id ===
+        annotation.id
+    );
+
+
+  if(index >= 0){
+
+    annotations[index] =
+      data;
+
+  }
+
+
+  logEvent(
+    nextVisibility ===
+      "author"
+        ? "annotation_shared"
+        : "annotation_private",
+    {
+      annotation_id:
+        annotation.id,
+
+      visibility:
+        nextVisibility
+    },
+    annotation.section_id
+  );
+
+
+  applyAnnotationsToCurrentSection();
+
+  renderAnnotations();
+
+
+  showToast(
+    nextVisibility ===
+      "author"
+        ? "Note shared with the author."
+        : "Note is private again."
+  );
+
+}
+
+
+/* =========================================================
+   DELETE ANNOTATION
+========================================================= */
+
+async function deleteAnnotation(
+  annotationId
+){
+
+  const annotation =
+    annotations.find(
+      row =>
+        row.id ===
+        annotationId
+    );
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_annotations"
+      )
+      .delete()
+      .eq(
+        "id",
+        annotationId
+      )
+      .eq(
+        "assignment_id",
+        assignment.id
+      );
+
+
+  if(error){
+
+    showToast(
+      error.message ||
+      "DogEar couldn't delete this DogEar.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  annotations =
+    annotations.filter(
+      row =>
+        row.id !==
+        annotationId
+    );
+
+
+  if(annotation){
+
+    logEvent(
+      "annotation_deleted",
+      {
+        annotation_type:
+          annotation.annotation_type
+      },
+      annotation.section_id
+    );
+
+  }
+
+
+  /*
+    Re-rendering the chapter restores the original
+    manuscript text and then reapplies the remaining
+    annotations.
+  */
+
+  await renderCurrentSection({
+    scrollTop:false,
+    source:"annotation_update"
+  });
+
+
+  renderAnnotations();
+
+
+  showToast(
+    "DogEar removed."
+  );
+
+}
+
+
+/* =========================================================
+   TEXT TO SPEECH — VOICES
+========================================================= */
+
+function loadVoices(){
+
+  if(!speechSupported){
+    return;
+  }
+
+
+  availableVoices =
+    window
+      .speechSynthesis
+      .getVoices() ||
+    [];
+
+
+  const select =
+    $("ttsVoice");
+
+
+  const previous =
+    select.value;
+
+
+  select.innerHTML =
+    `
+      <option value="">
+        Device default
+      </option>
+    `;
+
+
+  availableVoices.forEach(
+    voice => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        voice.name;
+
+
+      option.textContent =
+        `${voice.name} · ${voice.lang}`;
+
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+  if(
+    previous &&
+    availableVoices.some(
+      voice =>
+        voice.name ===
+        previous
+    )
+  ){
+
+    select.value =
+      previous;
+
+  }
+
+}
+
+
+/* =========================================================
+   TTS CURRENT PARAGRAPHS
+========================================================= */
+
+function getReaderParagraphs(){
+
+  return [
+    ...document
+      .querySelectorAll(
+        ".reader-paragraph"
+      )
+  ];
+
+}
+
+
+function clearSpokenParagraph(){
+
+  document
+    .querySelectorAll(
+      ".reader-paragraph.spoken"
+    )
+    .forEach(
+      paragraph =>
+        paragraph.classList
+          .remove(
+            "spoken"
+          )
+    );
+
+}
+
+
+function highlightSpokenParagraph(
+  paragraphIndex
+){
+
+  clearSpokenParagraph();
+
+
+  const paragraph =
+    document.querySelector(
+      `.reader-paragraph[data-paragraph-index="${paragraphIndex}"]`
+    );
+
+
+  if(!paragraph){
+    return;
+  }
+
+
+  paragraph.classList.add(
+    "spoken"
+  );
+
+
+  paragraph.scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+  });
+
+}
+
+
+/* =========================================================
+   SAVE TTS STATE
+========================================================= */
+
+async function saveTtsState(
+  isActive = false
+){
+
+  if(
+    !assignment ||
+    !sections.length
+  ){
+    return;
+  }
+
+
+  const section =
+    sections[
+      currentSectionIndex
+    ];
+
+
+  const payload = {
+    assignment_id:
+      assignment.id,
+
+    section_id:
+      section.id,
+
+    paragraph_index:
+      ttsParagraphIndex,
+
+    character_offset:
+      0,
+
+    rate:
+      Number(
+        $("ttsRate").value ||
+        1
+      ),
+
+    voice_name:
+      $("ttsVoice").value ||
+      null,
+
+    is_active:
+      Boolean(
+        isActive
+      )
+  };
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_tts_state"
+      )
+      .upsert(
+        payload,
+        {
+          onConflict:
+            "assignment_id"
+        }
+      );
+
+
+  if(error){
+
+    console.warn(
+      "TTS state:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   LOAD TTS STATE
+========================================================= */
+
+async function loadTtsState(){
+
+  if(!speechSupported){
+    return;
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_tts_state"
+      )
+      .select("*")
+      .eq(
+        "assignment_id",
+        assignment.id
+      )
+      .maybeSingle();
+
+
+  if(error){
+
+    console.warn(
+      "Load TTS state:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  if(!data){
+    return;
+  }
+
+
+  if(
+    Number(data.rate) >=
+      .5 &&
+    Number(data.rate) <=
+      2
+  ){
+
+    $("ttsRate").value =
+      String(
+        Number(
+          data.rate
+        )
+      );
+
+  }
+
+
+  if(data.voice_name){
+
+    const applyVoice =
+      () => {
+
+        if(
+          [
+            ...$("ttsVoice")
+              .options
+          ].some(
+            option =>
+              option.value ===
+              data.voice_name
+          )
+        ){
+
+          $("ttsVoice").value =
+            data.voice_name;
+
+        }
+
+      };
+
+
+    applyVoice();
+
+    setTimeout(
+      applyVoice,
+      300
+    );
+
+  }
+
+
+  if(
+    data.section_id ===
+    sections[
+      currentSectionIndex
+    ]?.id
+  ){
+
+    ttsParagraphIndex =
+      Number(
+        data.paragraph_index ||
+        0
+      );
+
+  }
+
+}
+
+
+/* =========================================================
+   SPEAK PARAGRAPH
+========================================================= */
+
+function speakParagraph(
+  paragraphIndex
+){
+
+  if(!speechSupported){
+
+    showToast(
+      "Read Aloud is not supported by this browser.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const paragraphs =
+    getReaderParagraphs();
+
+
+  if(!paragraphs.length){
+    return;
+  }
+
+
+  paragraphIndex =
+    clamp(
+      paragraphIndex,
+      0,
+      paragraphs.length - 1
+    );
+
+
+  const paragraph =
+    paragraphs[
+      paragraphIndex
+    ];
+
+
+  const text =
+    paragraph
+      .textContent
+      .trim();
+
+
+  if(!text){
+
+    if(
+      paragraphIndex <
+      paragraphs.length - 1
+    ){
+
+      speakParagraph(
+        paragraphIndex + 1
+      );
+
+    }
+
+    return;
+
+  }
+
+
+  window
+    .speechSynthesis
+    .cancel();
+
+
+  ttsParagraphIndex =
+    paragraphIndex;
+
+
+  const utterance =
+    new SpeechSynthesisUtterance(
+      text
+    );
+
+
+  activeUtterance =
+    utterance;
+
+
+  utterance.rate =
+    Number(
+      $("ttsRate").value ||
+      1
+    );
+
+
+  const selectedVoiceName =
+    $("ttsVoice").value;
+
+
+  if(selectedVoiceName){
+
+    const voice =
+      availableVoices.find(
+        item =>
+          item.name ===
+          selectedVoiceName
+      );
+
+
+    if(voice){
+
+      utterance.voice =
+        voice;
+
+    }
+
+  }
+
+
+  utterance.onstart =
+    () => {
+
+      ttsSpeaking =
+        true;
+
+      ttsPaused =
+        false;
+
+
+      $("ttsPlayButton")
+        .textContent =
+          "❚❚ Pause";
+
+
+      highlightSpokenParagraph(
+        paragraphIndex
+      );
+
+
+      saveTtsState(
+        true
+      );
+
+
+      logEvent(
+        "listening_started",
+        {
+          paragraph_index:
+            paragraphIndex,
+
+          rate:
+            utterance.rate
+        },
+        sections[
+          currentSectionIndex
+        ].id
+      );
+
+    };
+
+
+  utterance.onend =
+    async () => {
+
+      if(
+        activeUtterance !==
+        utterance
+      ){
+        return;
+      }
+
+
+      await recordListeningProgress(
+        paragraphIndex
+      );
+
+
+      const currentParagraphs =
+        getReaderParagraphs();
+
+
+      if(
+        ttsSpeaking &&
+        paragraphIndex <
+          currentParagraphs.length -
+          1
+      ){
+
+        speakParagraph(
+          paragraphIndex + 1
+        );
+
+        return;
+
+      }
+
+
+      /*
+        If the final paragraph of this section was
+        spoken, Read Aloud automatically advances to
+        the next manuscript section when one exists.
+      */
+
+      if(
+        ttsSpeaking &&
+        currentSectionIndex <
+          sections.length - 1
+      ){
+
+        const nextSection =
+          currentSectionIndex + 1;
+
+
+        ttsSpeaking =
+          false;
+
+        activeUtterance =
+          null;
+
+
+        await goToSection(
+          nextSection,
+          {
+            savePrevious:true,
+            scrollTop:true,
+            source:"tts"
+          }
+        );
+
+
+        ttsParagraphIndex =
+          0;
+
+        speakParagraph(
+          0
+        );
+
+        return;
+
+      }
+
+
+      ttsSpeaking =
+        false;
+
+      ttsPaused =
+        false;
+
+      activeUtterance =
+        null;
+
+
+      $("ttsPlayButton")
+        .textContent =
+          "▶ Read";
+
+
+      clearSpokenParagraph();
+
+
+      saveTtsState(
+        false
+      );
+
+    };
+
+
+  utterance.onerror =
+    event => {
+
+      /*
+        Browsers often fire "interrupted" or "canceled"
+        when DogEar intentionally moves between
+        paragraphs. Those are not user-facing errors.
+      */
+
+      if(
+        event.error !==
+          "interrupted" &&
+        event.error !==
+          "canceled"
+      ){
+
+        console.error(
+          "Speech synthesis:",
+          event
+        );
+
+      }
+
+    };
+
+
+  window
+    .speechSynthesis
+    .speak(
+      utterance
+    );
+
+}
+
+
+/* =========================================================
+   PLAY / PAUSE TTS
+========================================================= */
+
+function toggleSpeech(){
+
+  if(!speechSupported){
+
+    showToast(
+      "Read Aloud is not supported by this browser.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if(
+    ttsSpeaking &&
+    !ttsPaused
+  ){
+
+    window
+      .speechSynthesis
+      .pause();
+
+
+    ttsPaused =
+      true;
+
+
+    $("ttsPlayButton")
+      .textContent =
+        "▶ Resume";
+
+
+    saveTtsState(
+      false
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    ttsSpeaking &&
+    ttsPaused
+  ){
+
+    window
+      .speechSynthesis
+      .resume();
+
+
+    ttsPaused =
+      false;
+
+
+    $("ttsPlayButton")
+      .textContent =
+        "❚❚ Pause";
+
+
+    saveTtsState(
+      true
+    );
+
+
+    return;
+
+  }
+
+
+  const paragraphs =
+    getReaderParagraphs();
+
+
+  if(!paragraphs.length){
+    return;
+  }
+
+
+  /*
+    If the saved TTS paragraph is outside the
+    current chapter, begin at the paragraph nearest
+    the reader's current visual position.
+  */
+
+  if(
+    ttsParagraphIndex <
+      0 ||
+    ttsParagraphIndex >=
+      paragraphs.length
+  ){
+
+    ttsParagraphIndex =
+      getVisibleParagraphIndex();
+
+  }
+
+
+  speakParagraph(
+    ttsParagraphIndex
+  );
+
+}
+
+
+/* =========================================================
+   STOP TTS
+========================================================= */
+
+function stopSpeech(){
+
+  if(!speechSupported){
+    return;
+  }
+
+
+  ttsSpeaking =
+    false;
+
+  ttsPaused =
+    false;
+
+  activeUtterance =
+    null;
+
+
+  window
+    .speechSynthesis
+    .cancel();
+
+
+  $("ttsPlayButton")
+    .textContent =
+      "▶ Read";
+
+
+  clearSpokenParagraph();
+
+}
+
+
+/* =========================================================
+   PREVIOUS / NEXT TTS PARAGRAPH
+========================================================= */
+
+function previousSpokenParagraph(){
+
+  if(!speechSupported){
+    return;
+  }
+
+
+  const next =
+    Math.max(
+      0,
+      ttsParagraphIndex - 1
+    );
+
+
+  ttsSpeaking =
+    true;
+
+
+  speakParagraph(
+    next
+  );
+
+}
+
+
+function nextSpokenParagraph(){
+
+  if(!speechSupported){
+    return;
+  }
+
+
+  const paragraphs =
+    getReaderParagraphs();
+
+
+  if(!paragraphs.length){
+    return;
+  }
+
+
+  if(
+    ttsParagraphIndex <
+    paragraphs.length - 1
+  ){
+
+    ttsSpeaking =
+      true;
+
+
+    speakParagraph(
+      ttsParagraphIndex + 1
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    currentSectionIndex <
+    sections.length - 1
+  ){
+
+    goToSection(
+      currentSectionIndex + 1,
+      {
+        savePrevious:true,
+        scrollTop:true,
+        source:"tts"
+      }
+    )
+      .then(
+        () => {
+
+          ttsParagraphIndex =
+            0;
+
+          ttsSpeaking =
+            true;
+
+          speakParagraph(
+            0
+          );
+
+        }
+      );
+
+  }
+
+}
+
+
+/* =========================================================
+   LISTENING PROGRESS
+========================================================= */
+
+async function recordListeningProgress(
+  paragraphIndex
+){
+
+  const section =
+    sections[
+      currentSectionIndex
+    ];
+
+
+  if(!section){
+    return;
+  }
+
+
+  const paragraphs =
+    getReaderParagraphs();
+
+
+  if(!paragraphs.length){
+    return;
+  }
+
+
+  const listeningProgress =
+    clamp(
+      (
+        paragraphIndex + 1
+      ) /
+      paragraphs.length *
+      100,
+      0,
+      100
+    );
+
+
+  const existing =
+    sectionProgress.find(
+      row =>
+        row.section_id ===
+        section.id
+    );
+
+
+  const readingProgress =
+    Number(
+      existing
+        ?.reading_progress ||
+      0
+    );
+
+
+  const bestListening =
+    Math.max(
+      Number(
+        existing
+          ?.listening_progress ||
+        0
+      ),
+      listeningProgress
+    );
+
+
+  const overallProgress =
+    Math.max(
+      readingProgress,
+      bestListening
+    );
+
+
+  const completed =
+    overallProgress >=
+    98;
+
+
+  const now =
+    new Date()
+      .toISOString();
+
+
+  const payload = {
+    assignment_id:
+      assignment.id,
+
+    section_id:
+      section.id,
+
+    reading_progress:
+      readingProgress,
+
+    listening_progress:
+      bestListening,
+
+    overall_progress:
+      overallProgress,
+
+    started_at:
+      existing
+        ?.started_at ||
+      now,
+
+    completed_at:
+      completed
+        ? (
+            existing
+              ?.completed_at ||
+            now
+          )
+        : null,
+
+    last_activity_at:
+      now
+  };
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_section_progress"
+      )
+      .upsert(
+        payload,
+        {
+          onConflict:
+            "assignment_id,section_id"
+        }
+      )
+      .select("*")
+      .single();
+
+
+  if(error){
+
+    console.error(
+      "Listening progress:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  const index =
+    sectionProgress.findIndex(
+      row =>
+        row.section_id ===
+        section.id
+    );
+
+
+  if(index >= 0){
+
+    sectionProgress[index] =
+      data;
+
+  }
+  else{
+
+    sectionProgress.push(
+      data
+    );
+
+  }
+
+
+  logEvent(
+    "listening_progress",
+    {
+      paragraph_index:
+        paragraphIndex,
+
+      listening_progress:
+        bestListening
+    },
+    section.id
+  );
+
+
+  if(
+    completed &&
+    Number(
+      existing
+        ?.overall_progress ||
+      0
+    ) < 98
+  ){
+
+    logEvent(
+      "listening_completed",
+      {
+        section_number:
+          section.section_number
+      },
+      section.id
+    );
+
+  }
+
+
+  await updateAssignmentProgress();
+
+  renderOverallProgress();
+
+}
+
+
+/* =========================================================
+   FEEDBACK FORM
+========================================================= */
+
+function populateFeedbackForm(){
+
+  $("ratingOverall").value =
+    feedback
+      ?.rating_overall ??
+    "";
+
+
+  $("ratingPacing").value =
+    feedback
+      ?.rating_pacing ??
+    "";
+
+
+  $("ratingCharacter").value =
+    feedback
+      ?.rating_character ??
+    "";
+
+
+  $("ratingPlot").value =
+    feedback
+      ?.rating_plot ??
+    "";
+
+
+  $("ratingWorldbuilding").value =
+    feedback
+      ?.rating_worldbuilding ??
+    "";
+
+
+  $("ratingRomance").value =
+    feedback
+      ?.rating_romance ??
+    "";
+
+
+  $("confusionNotes").value =
+    feedback
+      ?.confusion_notes ||
+    "";
+
+
+  $("favoriteParts").value =
+    feedback
+      ?.favorite_parts ||
+    "";
+
+
+  $("improvementNotes").value =
+    feedback
+      ?.improvement_notes ||
+    "";
+
+
+  $("generalComments").value =
+    feedback
+      ?.general_comments ||
+    "";
+
+
+  if(
+    feedback?.submitted
+  ){
+
+    $("feedbackStatus")
+      .textContent =
+        "Feedback submitted. You can still update it while your beta access remains active.";
+
+  }
+  else if(feedback){
+
+    $("feedbackStatus")
+      .textContent =
+        "Draft saved. Submit it when you're ready to send your overall feedback to the author.";
+
+  }
+  else{
+
+    $("feedbackStatus")
+      .textContent =
+        "You can save feedback as you read and submit it when you're finished.";
+
+  }
+
+}
+
+
+/* =========================================================
+   FEEDBACK PAYLOAD
+========================================================= */
+
+function buildFeedbackPayload(
+  submitted
+){
+
+  return {
+    assignment_id:
+      assignment.id,
+
+    section_id:
+      null,
+
+    feedback_type:
+      "overall",
+
+    rating_pacing:
+      numericValue(
+        $("ratingPacing")
+          .value
+      ),
+
+    rating_character:
+      numericValue(
+        $("ratingCharacter")
+          .value
+      ),
+
+    rating_plot:
+      numericValue(
+        $("ratingPlot")
+          .value
+      ),
+
+    rating_worldbuilding:
+      numericValue(
+        $("ratingWorldbuilding")
+          .value
+      ),
+
+    rating_romance:
+      numericValue(
+        $("ratingRomance")
+          .value
+      ),
+
+    rating_overall:
+      numericValue(
+        $("ratingOverall")
+          .value
+      ),
+
+    confusion_notes:
+      $("confusionNotes")
+        .value
+        .trim() ||
+      null,
+
+    favorite_parts:
+      $("favoriteParts")
+        .value
+        .trim() ||
+      null,
+
+    improvement_notes:
+      $("improvementNotes")
+        .value
+        .trim() ||
+      null,
+
+    general_comments:
+      $("generalComments")
+        .value
+        .trim() ||
+      null,
+
+    submitted:
+      Boolean(
+        submitted
+      ),
+
+    submitted_at:
+      submitted
+        ? new Date()
+            .toISOString()
+        : null
+  };
+
+}
+
+
+/* =========================================================
+   SAVE / SUBMIT FEEDBACK
+========================================================= */
+
+async function saveFeedback(
+  submitted = false
+){
+
+  const payload =
+    buildFeedbackPayload(
+      submitted
+    );
+
+
+  let result;
+
+
+  if(feedback?.id){
+
+    result =
+      await supabaseClient
+        .from(
+          "beta_feedback"
+        )
+        .update(
+          payload
+        )
+        .eq(
+          "id",
+          feedback.id
+        )
+        .eq(
+          "assignment_id",
+          assignment.id
+        )
+        .select("*")
+        .single();
+
+  }
+  else{
+
+    result =
+      await supabaseClient
+        .from(
+          "beta_feedback"
+        )
+        .insert(
+          payload
+        )
+        .select("*")
+        .single();
+
+  }
+
+
+  if(result.error){
+
+    showToast(
+      result.error.message ||
+      "DogEar couldn't save your feedback.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  feedback =
+    result.data;
+
+
+  populateFeedbackForm();
+
+
+  logEvent(
+    submitted
+      ? "feedback_submitted"
+      : "feedback_saved",
+    {
+      feedback_type:
+        "overall"
+    }
+  );
+
+
+  if(submitted){
+
+    showToast(
+      "Feedback submitted to the author."
+    );
+
+
+    $("feedbackModal")
+      .classList
+      .remove(
+        "show"
+      );
+
+  }
+  else{
+
+    showToast(
+      "Feedback draft saved."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   SIDEBAR TABS
+========================================================= */
+
+function showAnnotationsPanel(){
+
+  $("annotationsTab")
+    .classList
+    .add(
+      "active"
+    );
+
+
+  $("bookmarksTab")
+    .classList
+    .remove(
+      "active"
+    );
+
+
+  $("annotationsPanel")
+    .classList
+    .remove(
+      "hidden"
+    );
+
+
+  $("bookmarksPanel")
+    .classList
+    .add(
+      "hidden"
+    );
+
+}
+
+
+function showBookmarksPanel(){
+
+  $("bookmarksTab")
+    .classList
+    .add(
+      "active"
+    );
+
+
+  $("annotationsTab")
+    .classList
+    .remove(
+      "active"
+    );
+
+
+  $("bookmarksPanel")
+    .classList
+    .remove(
+      "hidden"
+    );
+
+
+  $("annotationsPanel")
+    .classList
+    .add(
+      "hidden"
+    );
+
+}
+
+
+/* =========================================================
+   OPEN / CLOSE SIDEBARS
+========================================================= */
+
+function toggleTocSidebar(){
+
+  $("tocSidebar")
+    .classList
+    .toggle(
+      "open"
+    );
+
+}
+
+
+function toggleNotesSidebar(){
+
+  $("notesSidebar")
+    .classList
+    .toggle(
+      "open"
+    );
+
+}
+
+
+/* =========================================================
+   EVENT LISTENERS
+========================================================= */
+
+$("previousChapterButton")
+  .addEventListener(
+    "click",
+    async () => {
+
+      if(
+        currentSectionIndex >
+        0
+      ){
+
+        await goToSection(
+          currentSectionIndex - 1,
+          {
+            savePrevious:true,
+            scrollTop:true,
+            source:"previous_button"
+          }
+        );
+
+      }
+
+    }
+  );
+
+
+$("nextChapterButton")
+  .addEventListener(
+    "click",
+    async () => {
+
+      if(
+        currentSectionIndex <
+        sections.length - 1
+      ){
+
+        await goToSection(
+          currentSectionIndex + 1,
+          {
+            savePrevious:true,
+            scrollTop:true,
+            source:"next_button"
+          }
+        );
+
+      }
+
+    }
+  );
+
+
+$("bookmarkButton")
+  .addEventListener(
+    "click",
+    toggleBookmark
+  );
+
+
+$("tocToggleButton")
+  .addEventListener(
+    "click",
+    toggleTocSidebar
+  );
+
+
+$("notesToggleButton")
+  .addEventListener(
+    "click",
+    toggleNotesSidebar
+  );
+
+
+$("annotationsTab")
+  .addEventListener(
+    "click",
+    showAnnotationsPanel
+  );
+
+
+$("bookmarksTab")
+  .addEventListener(
+    "click",
+    showBookmarksPanel
+  );
+
+
+$("annotationChapterFilter")
+  .addEventListener(
+    "change",
+    renderAnnotations
+  );
+
+
+$("highlightSelectionButton")
+  .addEventListener(
+    "click",
+    createHighlight
+  );
+
+
+$("noteSelectionButton")
+  .addEventListener(
+    "click",
+    openNoteModal
+  );
+
+
+$("closeNoteModal")
+  .addEventListener(
+    "click",
+    () => {
+
+      $("noteModal")
+        .classList
+        .remove(
+          "show"
+        );
+
+      clearSelectedPassage();
+
+    }
+  );
+
+
+$("cancelNoteButton")
+  .addEventListener(
+    "click",
+    () => {
+
+      $("noteModal")
+        .classList
+        .remove(
+          "show"
+        );
+
+      clearSelectedPassage();
+
+    }
+  );
+
+
+$("saveNoteButton")
+  .addEventListener(
+    "click",
+    saveNote
+  );
+
+
+$("feedbackButton")
+  .addEventListener(
+    "click",
+    () => {
+
+      populateFeedbackForm();
+
+      $("feedbackModal")
+        .classList
+        .add(
+          "show"
+        );
+
+    }
+  );
+
+
+$("closeFeedbackModal")
+  .addEventListener(
+    "click",
+    () =>
+      $("feedbackModal")
+        .classList
+        .remove(
+          "show"
+        )
+  );
+
+
+$("saveFeedbackButton")
+  .addEventListener(
+    "click",
+    () =>
+      saveFeedback(
+        false
+      )
+  );
+
+
+$("submitFeedbackButton")
+  .addEventListener(
+    "click",
+    () =>
+      saveFeedback(
+        true
+      )
+  );
+
+
+$("ttsPlayButton")
+  .addEventListener(
+    "click",
+    toggleSpeech
+  );
+
+
+$("ttsPreviousButton")
+  .addEventListener(
+    "click",
+    previousSpokenParagraph
+  );
+
+
+$("ttsNextButton")
+  .addEventListener(
+    "click",
+    nextSpokenParagraph
+  );
+
+
+$("ttsRate")
+  .addEventListener(
+    "change",
+    () => {
+
+      saveTtsState(
+        ttsSpeaking &&
+        !ttsPaused
+      );
+
+
+      if(
+        ttsSpeaking &&
+        !ttsPaused
+      ){
+
+        speakParagraph(
+          ttsParagraphIndex
+        );
+
+      }
+
+    }
+  );
+
+
+$("ttsVoice")
+  .addEventListener(
+    "change",
+    () => {
+
+      saveTtsState(
+        ttsSpeaking &&
+        !ttsPaused
+      );
+
+
+      if(
+        ttsSpeaking &&
+        !ttsPaused
+      ){
+
+        speakParagraph(
+          ttsParagraphIndex
+        );
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   SELECTION EVENTS
+========================================================= */
+
+$("chapterBody")
+  .addEventListener(
+    "mouseup",
+    () =>
+      setTimeout(
+        captureSelection,
+        10
+      )
+  );
+
+
+$("chapterBody")
+  .addEventListener(
+    "touchend",
+    () =>
+      setTimeout(
+        captureSelection,
+        100
+      )
+  );
+
+
+document
+  .addEventListener(
+    "mousedown",
+    event => {
+
+      if(
+        !event.target.closest(
+          "#selectionToolbar"
+        ) &&
+        !event.target.closest(
+          "#chapterBody"
+        )
+      ){
+
+        $("selectionToolbar")
+          .classList
+          .remove(
+            "show"
+          );
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   SCROLL POSITION TRACKING
+========================================================= */
+
+window
+  .addEventListener(
+    "scroll",
+    () => {
+
+      if(
+        $("readerShell")
+          .classList
+          .contains(
+            "hidden"
+          )
+      ){
+        return;
+      }
+
+
+      renderOverallProgress();
+
+      updateBookmarkButton();
+
+      saveCurrentPosition(
+        false
+      );
+
+    },
+    {
+      passive:true
+    }
+  );
+
+
+/* =========================================================
+   SAVE BEFORE LEAVING
+========================================================= */
+
+window
+  .addEventListener(
+    "pagehide",
+    () => {
+
+      if(
+        assignment &&
+        manuscript
+      ){
+
+        /*
+          pagehide cannot reliably wait for network
+          operations, but calling the save here catches
+          many normal navigations. Regular scrolling
+          already persists the position.
+        */
+
+        saveCurrentPosition(
+          true
+        );
+
+        saveTtsState(
+          false
+        );
+
+      }
+
+
+      stopSpeech();
+
+    }
+  );
+
+
+/* =========================================================
+   KEYBOARD READING CONTROLS
+========================================================= */
+
+document
+  .addEventListener(
+    "keydown",
+    async event => {
+
+      const tag =
+        document.activeElement
+          ?.tagName
+          ?.toLowerCase();
+
+
+      if(
+        tag === "input" ||
+        tag === "textarea" ||
+        tag === "select"
+      ){
+        return;
+      }
+
+
+      if(
+        event.key ===
+        "ArrowLeft" &&
+        currentSectionIndex >
+        0
+      ){
+
+        await goToSection(
+          currentSectionIndex - 1,
+          {
+            savePrevious:true,
+            scrollTop:true,
+            source:"keyboard"
+          }
+        );
+
+      }
+
+
+      if(
+        event.key ===
+        "ArrowRight" &&
+        currentSectionIndex <
+        sections.length - 1
+      ){
+
+        await goToSection(
+          currentSectionIndex + 1,
+          {
+            savePrevious:true,
+            scrollTop:true,
+            source:"keyboard"
+          }
+        );
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   SPEECH SYNTHESIS INITIALIZATION
+========================================================= */
+
+if(speechSupported){
+
+  loadVoices();
+
+
+  window
+    .speechSynthesis
+    .addEventListener(
+      "voiceschanged",
+      loadVoices
+    );
+
+}
+else{
+
+  $("ttsPlayButton")
+    .disabled =
+      true;
+
+
+  $("ttsPreviousButton")
+    .disabled =
+      true;
+
+
+  $("ttsNextButton")
+    .disabled =
+      true;
+
+
+  $("ttsVoice")
+    .disabled =
+      true;
+
+
+  $("ttsRate")
+    .disabled =
+      true;
+
+
+  $("ttsPlayButton")
+    .textContent =
+      "Unavailable";
+
+}
+  /* =========================================================
+   MODAL BACKDROP CLOSING
+========================================================= */
+
+$("noteModal")
+  .addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target ===
+        $("noteModal")
+      ){
+
+        $("noteModal")
+          .classList
+          .remove(
+            "show"
+          );
+
+        clearSelectedPassage();
+
+      }
+
+    }
+  );
+
+
+$("feedbackModal")
+  .addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target ===
+        $("feedbackModal")
+      ){
+
+        $("feedbackModal")
+          .classList
+          .remove(
+            "show"
+          );
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   ESCAPE KEY
+========================================================= */
+
+document
+  .addEventListener(
+    "keydown",
+    event => {
+
+      if(
+        event.key !==
+        "Escape"
+      ){
+        return;
+      }
+
+
+      $("selectionToolbar")
+        .classList
+        .remove(
+          "show"
+        );
+
+
+      $("noteModal")
+        .classList
+        .remove(
+          "show"
+        );
+
+
+      $("feedbackModal")
+        .classList
+        .remove(
+          "show"
+        );
+
+
+      if(
+        window.innerWidth <=
+        760
+      ){
+
+        $("tocSidebar")
+          .classList
+          .remove(
+            "open"
+          );
+
+      }
+
+
+      if(
+        window.innerWidth <=
+        1100
+      ){
+
+        $("notesSidebar")
+          .classList
+          .remove(
+            "open"
+          );
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   SHOW READER
+========================================================= */
+
+function showReader(){
+
+  $("loadingScreen")
+    .classList
+    .add(
+      "hidden"
+    );
+
+
+  $("readerShell")
+    .classList
+    .remove(
+      "hidden"
+    );
+
+}
+
+
+/* =========================================================
+   SHOW LOAD ERROR
+========================================================= */
+
+function showLoadError(
+  error
+){
+
+  console.error(
+    "DogEar Beta Reader:",
+    error
+  );
+
+
+  const message =
+    error?.message ||
+    "DogEar couldn't open this manuscript.";
+
+
+  $("loadingMessage")
+    .innerHTML =
+      `
+        <div style="
+          color:var(--danger);
+          margin-bottom:18px;
+        ">
+          ${escapeHtml(message)}
+        </div>
+
+        <a
+          class="secondary-button"
+          href="beta-reading.html"
+          style="
+            display:inline-flex;
+            text-decoration:none;
+          "
+        >
+          Back to Beta Reading
+        </a>
+      `;
+
+}
+
+
+/* =========================================================
+   INITIALIZE ASSIGNMENT STATUS
+========================================================= */
+
+async function markAssignmentOpened(){
+
+  if(!assignment){
+    return;
+  }
+
+
+  /*
+    Migration #8 may not permit the reader to update
+    beta_assignments directly. This is deliberately
+    non-fatal. The actual reader does not depend on
+    this update succeeding.
+  */
+
+  const payload = {
+    last_activity_at:
+      new Date()
+        .toISOString()
+  };
+
+
+  if(
+    assignment.status ===
+    "accepted"
+  ){
+
+    payload.status =
+      "reading";
+
+
+    payload.started_at =
+      assignment.started_at ||
+      new Date()
+        .toISOString();
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "beta_assignments"
+      )
+      .update(
+        payload
+      )
+      .eq(
+        "id",
+        assignment.id
+      )
+      .eq(
+        "reader_id",
+        currentUser.id
+      )
+      .select("*")
+      .maybeSingle();
+
+
+  if(error){
+
+    console.warn(
+      "Assignment status update was not permitted:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  if(data){
+
+    assignment =
+      data;
+
+  }
+
+}
+
+
+/* =========================================================
+   INITIAL ANALYTICS
+========================================================= */
+
+async function recordReaderOpen(){
+
+  const hasExistingProgress =
+    Boolean(
+      readingPosition ||
+      sectionProgress.some(
+        row =>
+          Number(
+            row.overall_progress ||
+            0
+          ) > 0
+      )
+    );
+
+
+  await logEvent(
+    hasExistingProgress
+      ? "reading_resumed"
+      : "reading_started",
+    {
+      manuscript_id:
+        manuscript.id,
+
+      version_number:
+        manuscript.version_number,
+
+      section_count:
+        sections.length
+    },
+    sections[
+      currentSectionIndex
+    ]?.id ||
+    null
+  );
+
+}
+
+
+/* =========================================================
+   INITIALIZE READER
+========================================================= */
+
+async function initialize(){
+
+  try{
+
+    if(!assignmentId){
+
+      throw new Error(
+        "This DogEar link does not contain a beta-reader assignment."
+      );
+
+    }
+
+
+    $("loadingMessage")
+      .textContent =
+        "Checking your DogEar account…";
+
+
+    const loggedIn =
+      await loadSession();
+
+
+    if(!loggedIn){
+      return;
+    }
+
+
+    $("loadingMessage")
+      .textContent =
+        "Checking your beta-reader access…";
+
+
+    await loadAssignment();
+
+
+    $("loadingMessage")
+      .textContent =
+        "Loading the beta project…";
+
+
+    await Promise.all([
+      loadProject(),
+      loadRound()
+    ]);
+
+
+    $("loadingMessage")
+      .textContent =
+        "Finding the private manuscript…";
+
+
+    await loadManuscript();
+
+
+    $("loadingMessage")
+      .textContent =
+        "Preparing the manuscript reader…";
+
+
+    await loadSections();
+
+
+    /*
+      Everything below is reader-owned state.
+      Loading it in parallel keeps manuscript opening
+      reasonably quick.
+    */
+
+    await Promise.all([
+      loadReadingPosition(),
+      loadSectionProgress(),
+      loadBookmarks(),
+      loadAnnotations(),
+      loadFeedback()
+    ]);
+
+
+    determineInitialSection();
+
+
+    renderStaticInformation();
+
+
+    await renderCurrentSection({
+      restorePosition:true,
+      scrollTop:false,
+      source:"initial_open"
+    });
+
+
+    await loadTtsState();
+
+
+    showReader();
+
+
+    await markAssignmentOpened();
+
+
+    await recordReaderOpen();
+
+
+    /*
+      Persist an initial position even if the reader
+      opens the manuscript and does not scroll.
+    */
+
+    setTimeout(
+      () => {
+
+        saveCurrentPosition(
+          true
+        );
+
+      },
+      1000
+    );
+
+  }
+  catch(error){
+
+    showLoadError(
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   START DOGEAR READER
+========================================================= */
+
+initialize();
+
+</script>
+
+</body>
+</html>
