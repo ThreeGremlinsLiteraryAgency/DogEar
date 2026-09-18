@@ -801,7 +801,6 @@ h1{
 
         </section>
 
-
         <!-- MANUSCRIPT -->
 
         <section class="panel">
@@ -860,7 +859,6 @@ h1{
 
         </section>
 
-
         <!-- APPLICANTS -->
 
         <section class="panel">
@@ -887,7 +885,6 @@ h1{
           </div>
 
         </section>
-
 
         <!-- ACCEPTED READERS -->
 
@@ -917,7 +914,6 @@ h1{
         </section>
 
       </div>
-
 
       <!-- SIDEBAR -->
 
@@ -1039,7 +1035,6 @@ h1{
 
         </section>
 
-
         <section class="panel">
 
           <div class="panel-head">
@@ -1093,17 +1088,21 @@ h1{
 ></div>
 
 <script>
-
-const SUPABASE_URL =
+  const SUPABASE_URL =
   "https://nrtutxjznkfvvbmaagum.supabase.co";
 
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+/*
+  IMPORTANT:
+  Keep the same browser-safe Supabase publishable key
+  from your currently working beta-project.html here.
+*/
+const SUPABASE_KEY =
+  "YOUR_EXISTING_SUPABASE_PUBLISHABLE_KEY";
 
 const supabaseClient =
-  supabase.createClient(
+  window.supabase.createClient(
     SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
+    SUPABASE_KEY
   );
 
 const $ =
@@ -1119,19 +1118,21 @@ const projectId =
   params.get("id");
 
 let currentUser = null;
-let currentProfile = null;
-
+let profile = null;
 let project = null;
 let rounds = [];
 let currentRound = null;
-
 let interests = [];
 let assignments = [];
 let manuscripts = [];
 let reward = null;
 
-let toastTimer = null;
-  function escapeHtml(value){
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(value){
 
   return String(value ?? "")
     .replaceAll("&","&amp;")
@@ -1151,134 +1152,162 @@ function showToast(
   const toast =
     $("toast");
 
-  clearTimeout(
-    toastTimer
-  );
-
   toast.textContent =
     message;
 
   toast.className =
-    "toast";
+    `toast show ${type}`;
 
-  if(type){
-    toast.classList.add(type);
-  }
 
-  requestAnimationFrame(
-    () =>
-      toast.classList.add("show")
+  clearTimeout(
+    showToast.timer
   );
 
-  toastTimer =
+
+  showToast.timer =
     setTimeout(
-      () =>
-        toast.classList.remove("show"),
+      () => {
+
+        toast.className =
+          "toast";
+
+      },
       3500
     );
 
 }
 
 
-function dateForInput(value){
+function formatDate(value){
 
   if(!value){
-    return "";
+    return "No deadline";
   }
+
 
   const date =
     new Date(value);
+
 
   if(
     Number.isNaN(
       date.getTime()
     )
   ){
-    return "";
+    return "No deadline";
   }
 
-  return date
-    .toISOString()
-    .slice(0,10);
+
+  return date.toLocaleDateString(
+    undefined,
+    {
+      year:"numeric",
+      month:"short",
+      day:"numeric"
+    }
+  );
 
 }
 
 
-function fileSize(bytes){
+function formatBytes(bytes){
 
   const value =
     Number(bytes || 0);
 
+
   if(!value){
-    return "Unknown size";
+    return "0 B";
   }
+
 
   if(value < 1024){
     return `${value} B`;
   }
 
-  if(value < 1048576){
-    return (
-      value / 1024
-    ).toFixed(1) + " KB";
+
+  if(value < 1024 * 1024){
+
+    return `${
+      (
+        value / 1024
+      ).toFixed(1)
+    } KB`;
+
   }
 
-  return (
-    value / 1048576
-  ).toFixed(1) + " MB";
+
+  return `${
+    (
+      value /
+      1024 /
+      1024
+    ).toFixed(1)
+  } MB`;
 
 }
 
 
-function processingLabel(status){
-
-  switch(status){
-
-    case "pending":
-      return "Waiting to process";
-
-    case "processing":
-      return "Processing";
-
-    case "ready":
-      return "Ready";
-
-    case "failed":
-      return "Processing failed";
-
-    default:
-      return "Waiting to process";
-
-  }
-
-}
-
-
-function manuscriptCanProcess(
-  manuscript
+function getDisplayName(
+  joinedProfile,
+  fallback = "Reader"
 ){
 
-  const filename =
-    String(
-      manuscript.original_filename ||
-      ""
-    ).toLowerCase();
+  if(!joinedProfile){
+    return fallback;
+  }
 
-  const mime =
-    String(
-      manuscript.mime_type ||
-      ""
-    ).toLowerCase();
 
   return (
-    filename.endsWith(".txt") ||
-    filename.endsWith(".md") ||
-    mime === "text/plain" ||
-    mime === "text/markdown"
+    joinedProfile.display_name ||
+    joinedProfile.full_name ||
+    joinedProfile.name ||
+    joinedProfile.username ||
+    fallback
   );
 
 }
 
+
+function getInitials(value){
+
+  const words =
+    String(
+      value || ""
+    )
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+
+  if(!words.length){
+    return "?";
+  }
+
+
+  if(words.length === 1){
+
+    return words[0]
+      .slice(0,1)
+      .toUpperCase();
+
+  }
+
+
+  return (
+    words[0].slice(0,1) +
+    words[
+      words.length - 1
+    ].slice(0,1)
+  )
+    .toUpperCase();
+
+}
+
+
+/* =========================================================
+   SESSION
+========================================================= */
 
 async function loadSession(){
 
@@ -1290,9 +1319,11 @@ async function loadSession(){
       .auth
       .getSession();
 
+
   if(error){
     throw error;
   }
+
 
   currentUser =
     data?.session?.user ||
@@ -1309,14 +1340,24 @@ async function loadSession(){
   }
 
 
+  return true;
+
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+async function loadProfile(){
+
   const {
-    data:profile
+    data,
+    error
   } =
     await supabaseClient
       .from("profiles")
-      .select(
-        "id,display_name,username,avatar_url"
-      )
+      .select("*")
       .eq(
         "id",
         currentUser.id
@@ -1324,52 +1365,96 @@ async function loadSession(){
       .maybeSingle();
 
 
-  currentProfile =
-    profile ||
+  if(error){
+    throw error;
+  }
+
+
+  profile =
+    data ||
     null;
 
 
-  renderNavigation();
+  const displayName =
+    getDisplayName(
+      profile,
+      currentUser.email ||
+      "Author"
+    );
 
-  return true;
-
-}
-
-
-function renderNavigation(){
 
   const avatar =
     $("navAvatar");
 
-  const name =
-    currentProfile?.display_name ||
-    currentProfile?.username ||
-    currentUser?.email ||
-    "D";
+
+  const avatarUrl =
+    profile?.avatar_url ||
+    profile?.profile_image_url ||
+    currentUser
+      ?.user_metadata
+      ?.avatar_url ||
+    "";
 
 
-  if(
-    currentProfile?.avatar_url
-  ){
+  avatar.innerHTML =
+    "";
 
-    avatar.innerHTML =
-      `<img src="${escapeHtml(
-        currentProfile.avatar_url
-      )}" alt="">`;
+
+  if(avatarUrl){
+
+    const image =
+      document.createElement(
+        "img"
+      );
+
+
+    image.src =
+      avatarUrl;
+
+
+    image.alt =
+      `${displayName} profile picture`;
+
+
+    image.addEventListener(
+      "error",
+      () => {
+
+        avatar.innerHTML =
+          "";
+
+        avatar.textContent =
+          getInitials(
+            displayName
+          );
+
+      },
+      {
+        once:true
+      }
+    );
+
+
+    avatar.appendChild(
+      image
+    );
 
   }
   else{
 
     avatar.textContent =
-      name
-        .trim()
-        .charAt(0)
-        .toUpperCase();
+      getInitials(
+        displayName
+      );
 
   }
 
 }
 
+
+/* =========================================================
+   PROJECT
+========================================================= */
 
 async function loadProject(){
 
@@ -1384,20 +1469,11 @@ async function loadProject(){
         "id",
         projectId
       )
-      .maybeSingle();
+      .single();
 
 
   if(error){
     throw error;
-  }
-
-
-  if(!data){
-
-    throw new Error(
-      "Beta project not found."
-    );
-
   }
 
 
@@ -1407,7 +1483,7 @@ async function loadProject(){
   ){
 
     throw new Error(
-      "Only the project owner can manage this beta project."
+      "Only the author who owns this beta project can manage it."
     );
 
   }
@@ -1416,8 +1492,48 @@ async function loadProject(){
   project =
     data;
 
+
+  $("projectTitle")
+    .textContent =
+      project.title ||
+      "Untitled Beta Project";
+
+
+  $("projectBlurb")
+    .textContent =
+      project.blurb ||
+      "No project description yet.";
+
+
+  $("projectStatus")
+    .textContent =
+      project.status ||
+      "draft";
+
+
+  const analyticsUrl =
+    `beta-analytics.html?id=${
+      encodeURIComponent(
+        project.id
+      )
+    }`;
+
+
+  $("analyticsLink")
+    .href =
+      analyticsUrl;
+
+
+  $("analyticsSideLink")
+    .href =
+      analyticsUrl;
+
 }
 
+
+/* =========================================================
+   ROUNDS
+========================================================= */
 
 async function loadRounds(){
 
@@ -1452,14 +1568,19 @@ async function loadRounds(){
 
   currentRound =
     rounds.find(
-      row =>
-        row.status === "open"
+      round =>
+        round.status ===
+        "open"
     ) ||
     rounds[0] ||
     null;
 
 }
 
+
+/* =========================================================
+   INTERESTS
+========================================================= */
 
 async function loadInterests(){
 
@@ -1471,9 +1592,12 @@ async function loadInterests(){
       .from("beta_interests")
       .select(`
         *,
-        profiles:reader_id(
-          display_name,
+        profiles:reader_id (
+          id,
           username,
+          display_name,
+          full_name,
+          name,
           avatar_url
         )
       `)
@@ -1484,7 +1608,7 @@ async function loadInterests(){
       .order(
         "created_at",
         {
-          ascending:false
+          ascending:true
         }
       );
 
@@ -1501,6 +1625,10 @@ async function loadInterests(){
 }
 
 
+/* =========================================================
+   ASSIGNMENTS
+========================================================= */
+
 async function loadAssignments(){
 
   const {
@@ -1511,9 +1639,12 @@ async function loadAssignments(){
       .from("beta_assignments")
       .select(`
         *,
-        profiles:reader_id(
-          display_name,
+        profiles:reader_id (
+          id,
           username,
+          display_name,
+          full_name,
+          name,
           avatar_url
         )
       `)
@@ -1524,7 +1655,7 @@ async function loadAssignments(){
       .order(
         "accepted_at",
         {
-          ascending:false
+          ascending:true
         }
       );
 
@@ -1541,6 +1672,10 @@ async function loadAssignments(){
 }
 
 
+/* =========================================================
+   MANUSCRIPTS
+========================================================= */
+
 async function loadManuscripts(){
 
   const {
@@ -1548,7 +1683,9 @@ async function loadManuscripts(){
     error
   } =
     await supabaseClient
-      .from("beta_manuscripts")
+      .from(
+        "beta_manuscripts"
+      )
       .select("*")
       .eq(
         "project_id",
@@ -1574,9 +1711,14 @@ async function loadManuscripts(){
 }
 
 
+/* =========================================================
+   REWARD
+========================================================= */
+
 async function loadReward(){
 
-  reward = null;
+  reward =
+    null;
 
 
   if(!currentRound){
@@ -1589,7 +1731,9 @@ async function loadReward(){
     error
   } =
     await supabaseClient
-      .from("beta_round_rewards")
+      .from(
+        "beta_round_rewards"
+      )
       .select("*")
       .eq(
         "round_id",
@@ -1610,110 +1754,105 @@ async function loadReward(){
 }
 
 
-function readerName(row){
-
-  return (
-    row.profiles?.display_name ||
-    row.profiles?.username ||
-    "DogEar Reader"
-  );
-
-}
-
+/* =========================================================
+   RENDER
+========================================================= */
 
 function render(){
 
-  $("projectTitle").textContent =
-    project.title ||
-    "Beta Project";
-
-
-  $("projectBlurb").textContent =
-    project.blurb ||
-    "";
-
-
-  $("projectStatus").textContent =
-    project.status ||
-    "draft";
-
-
-  const pending =
-    interests.filter(
-      row =>
-        row.status === "pending"
-    );
-
-
-  const active =
-    assignments.filter(
-      row =>
-        [
-          "accepted",
-          "reading"
-        ].includes(
-          row.status
-        )
-    );
-
-
-  const completed =
-    assignments.filter(
-      row =>
-        row.status ===
-        "completed"
-    );
-
-
-  $("pendingCount").textContent =
-    pending.length;
-
-
-  $("readerCount").textContent =
-    active.length;
-
-
-  $("completedCount").textContent =
-    completed.length;
-
-
-  $("roundNumber").textContent =
-    currentRound?.round_number ||
-    "—";
-
-
-  const analyticsUrl =
-    "beta-analytics.html?id=" +
-    encodeURIComponent(
-      projectId
-    );
-
-
-  $("analyticsLink").href =
-    analyticsUrl;
-
-  $("analyticsSideLink").href =
-    analyticsUrl;
-
-
+  renderStats();
   renderRound();
   renderApplicants();
   renderReaders();
   renderManuscripts();
   renderReward();
 
-
-  $("loading")
-    .classList
-    .add("hidden");
+}
 
 
-  $("projectContent")
-    .classList
-    .remove("hidden");
+/* =========================================================
+   STATS
+========================================================= */
+
+function renderStats(){
+
+  const pending =
+    interests.filter(
+      interest =>
+        interest.status ===
+        "pending" &&
+        (
+          !currentRound ||
+          !interest.round_id ||
+          interest.round_id ===
+          currentRound.id
+        )
+    );
+
+
+  const active =
+    assignments.filter(
+      assignment =>
+        (
+          assignment.status ===
+            "accepted" ||
+          assignment.status ===
+            "reading"
+        ) &&
+        (
+          !currentRound ||
+          assignment.round_id ===
+          currentRound.id
+        )
+    );
+
+
+  const completed =
+    assignments.filter(
+      assignment =>
+        assignment.status ===
+          "completed" &&
+        (
+          !currentRound ||
+          assignment.round_id ===
+          currentRound.id
+        )
+    );
+
+
+  $("pendingCount")
+    .textContent =
+      String(
+        pending.length
+      );
+
+
+  $("readerCount")
+    .textContent =
+      String(
+        active.length
+      );
+
+
+  $("completedCount")
+    .textContent =
+      String(
+        completed.length
+      );
+
+
+  $("roundNumber")
+    .textContent =
+      currentRound
+        ?.round_number ||
+      "—";
 
 }
 
+
+/* =========================================================
+   ROUND FORM
+========================================================= */
 
 function renderRound(){
 
@@ -1722,45 +1861,59 @@ function renderRound(){
     $("roundName").value =
       "";
 
-    $("roundDescription").value =
-      "";
-
     $("roundDeadline").value =
       "";
 
     $("roundStatus").value =
       "draft";
 
-    $("saveRoundButton").disabled =
-      true;
+    $("roundDescription").value =
+      "";
+
+    $("saveRoundButton")
+      .disabled =
+        true;
 
     return;
 
   }
 
 
+  $("saveRoundButton")
+    .disabled =
+      false;
+
+
   $("roundName").value =
     currentRound.name ||
-    `Round ${currentRound.round_number}`;
-
-
-  $("roundDescription").value =
-    currentRound.description ||
-    "";
+    `Round ${
+      currentRound.round_number
+    }`;
 
 
   $("roundDeadline").value =
-    dateForInput(
-      currentRound.deadline
-    );
+    currentRound.deadline
+      ? String(
+          currentRound.deadline
+        ).slice(0,10)
+      : "";
 
 
   $("roundStatus").value =
     currentRound.status ||
     "draft";
 
+
+  $("roundDescription").value =
+    currentRound.description ||
+    "";
+
 }
 
+
+/* =========================================================
+   APPLICANTS
+========================================================= */
 
 function renderApplicants(){
 
@@ -1768,19 +1921,21 @@ function renderApplicants(){
     $("applicantList");
 
 
-  const rows =
+  const pending =
     interests.filter(
-      row =>
-        row.status === "pending" &&
+      interest =>
+        interest.status ===
+        "pending" &&
         (
           !currentRound ||
-          row.round_id ===
-            currentRound.id
+          !interest.round_id ||
+          interest.round_id ===
+          currentRound.id
         )
     );
 
 
-  if(!rows.length){
+  if(!pending.length){
 
     holder.innerHTML =
       `
@@ -1795,110 +1950,142 @@ function renderApplicants(){
 
 
   holder.innerHTML =
-    rows.map(
-      row =>
+    "";
+
+
+  pending.forEach(
+    interest => {
+
+      const readerProfile =
+        interest.profiles;
+
+
+      const name =
+        getDisplayName(
+          readerProfile,
+          "Beta Reader"
+        );
+
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "reader";
+
+
+      card.innerHTML =
         `
-          <div class="reader">
+          <div class="reader-top">
 
-            <div class="reader-top">
+            <div>
 
-              <div>
+              <div class="reader-name">
+                ${escapeHtml(name)}
+              </div>
 
-                <div class="reader-name">
-                  ${escapeHtml(
-                    readerName(row)
-                  )}
-                </div>
-
-                <div class="reader-meta">
-                  Pending application
-                </div>
-
+              <div class="reader-meta">
+                Applied ${
+                  escapeHtml(
+                    formatDate(
+                      interest.created_at
+                    )
+                  )
+                }
               </div>
 
             </div>
 
-            ${
-              row.message
-                ? `
-                    <div class="reader-message">
-                      ${escapeHtml(
-                        row.message
-                      )}
-                    </div>
-                  `
-                : ""
-            }
-
-            <div class="reader-actions">
-
-              <button
-                class="small-button accept"
-                type="button"
-                data-accept="${escapeHtml(
-                  row.id
-                )}"
-              >
-                Accept
-              </button>
-
-              <button
-                class="small-button danger"
-                type="button"
-                data-decline="${escapeHtml(
-                  row.id
-                )}"
-              >
-                Decline
-              </button>
-
-            </div>
+            <span class="status">
+              Pending
+            </span>
 
           </div>
-        `
-    )
-    .join("");
+
+          ${
+            interest.message
+              ? `
+                  <div class="reader-message">
+                    ${escapeHtml(
+                      interest.message
+                    )}
+                  </div>
+                `
+              : ""
+          }
+
+          <div class="reader-actions">
+
+            <button
+              class="small-button accept"
+              type="button"
+              data-accept-interest="${
+                escapeHtml(
+                  interest.id
+                )
+              }"
+            >
+              Accept
+            </button>
+
+            <button
+              class="small-button danger"
+              type="button"
+              data-decline-interest="${
+                escapeHtml(
+                  interest.id
+                )
+              }"
+            >
+              Decline
+            </button>
+
+          </div>
+        `;
 
 
-  holder
-    .querySelectorAll(
-      "[data-accept]"
-    )
-    .forEach(
-      button => {
-
-        button.addEventListener(
+      card
+        .querySelector(
+          "[data-accept-interest]"
+        )
+        .addEventListener(
           "click",
           () =>
             acceptReader(
-              button.dataset.accept
+              interest.id
             )
         );
 
-      }
-    );
 
-
-  holder
-    .querySelectorAll(
-      "[data-decline]"
-    )
-    .forEach(
-      button => {
-
-        button.addEventListener(
+      card
+        .querySelector(
+          "[data-decline-interest]"
+        )
+        .addEventListener(
           "click",
           () =>
             declineReader(
-              button.dataset.decline
+              interest.id
             )
         );
 
-      }
-    );
+
+      holder.appendChild(
+        card
+      );
+
+    }
+  );
 
 }
 
+
+/* =========================================================
+   ACCEPTED READERS
+========================================================= */
 
 function renderReaders(){
 
@@ -1906,30 +2093,27 @@ function renderReaders(){
     $("readerList");
 
 
-  const rows =
+  const readers =
     assignments.filter(
-      row =>
-        [
-          "accepted",
-          "reading",
-          "completed"
-        ].includes(
-          row.status
-        ) &&
+      assignment =>
+        assignment.status !==
+          "removed" &&
+        assignment.status !==
+          "withdrawn" &&
         (
           !currentRound ||
-          row.round_id ===
-            currentRound.id
+          assignment.round_id ===
+          currentRound.id
         )
     );
 
 
-  if(!rows.length){
+  if(!readers.length){
 
     holder.innerHTML =
       `
         <div class="empty">
-          No readers have been accepted for this round yet.
+          No accepted beta readers yet.
         </div>
       `;
 
@@ -1939,108 +2123,153 @@ function renderReaders(){
 
 
   holder.innerHTML =
-    rows.map(
-      row => {
+    "";
 
-        const progress =
-          Math.max(
-            0,
-            Math.min(
-              100,
-              Number(
-                row.progress_percent ||
-                0
-              )
+
+  readers.forEach(
+    assignment => {
+
+      const readerProfile =
+        assignment.profiles;
+
+
+      const name =
+        getDisplayName(
+          readerProfile,
+          "Beta Reader"
+        );
+
+
+      const progress =
+        Math.max(
+          0,
+          Math.min(
+            100,
+            Number(
+              assignment.progress_percent ||
+              0
             )
-          );
+          )
+        );
 
 
-        return `
-          <div class="reader">
+      const card =
+        document.createElement(
+          "div"
+        );
 
-            <div class="reader-top">
 
-              <div>
+      card.className =
+        "reader";
 
-                <div class="reader-name">
-                  ${escapeHtml(
-                    readerName(row)
-                  )}
-                </div>
 
-                <div class="reader-meta">
-                  ${escapeHtml(
-                    row.status
-                  )}
-                  ·
-                  ${progress.toFixed(0)}%
-                  complete
-                </div>
+      card.innerHTML =
+        `
+          <div class="reader-top">
 
+            <div>
+
+              <div class="reader-name">
+                ${escapeHtml(name)}
+              </div>
+
+              <div class="reader-meta">
+                ${
+                  escapeHtml(
+                    assignment.status ||
+                    "accepted"
+                  )
+                }
+                · Accepted ${
+                  escapeHtml(
+                    formatDate(
+                      assignment.accepted_at
+                    )
+                  )
+                }
               </div>
 
             </div>
 
-            <div class="progress">
+            <span class="status">
+              ${Math.round(progress)}%
+            </span>
 
-              <div
-                class="progress-bar"
-                style="width:${progress}%"
-              ></div>
+          </div>
 
-            </div>
+          <div class="progress">
+            <div
+              class="progress-bar"
+              style="width:${progress}%"
+            ></div>
+          </div>
 
-            <div class="reader-actions">
+          <div class="reader-actions">
 
-              <button
-                class="small-button secondary"
-                type="button"
-                data-reader-detail="${escapeHtml(
-                  row.id
-                )}"
-              >
-                Reader Activity
-              </button>
-
-            </div>
+            <a
+              class="small-button secondary"
+              href="beta-reader.html?assignment=${
+                encodeURIComponent(
+                  assignment.id
+                )
+              }"
+              style="text-decoration:none"
+            >
+              Reader View
+            </a>
 
           </div>
         `;
 
-      }
-    )
-    .join("");
 
+      holder.appendChild(
+        card
+      );
 
-  holder
-    .querySelectorAll(
-      "[data-reader-detail]"
-    )
-    .forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            window.location.href =
-              "beta-analytics.html?id=" +
-              encodeURIComponent(
-                projectId
-              ) +
-              "&assignment=" +
-              encodeURIComponent(
-                button.dataset.readerDetail
-              );
-
-          }
-        );
-
-      }
-    );
+    }
+  );
 
 }
-  function renderManuscripts(){
+
+
+/* =========================================================
+   MANUSCRIPT STATUS
+========================================================= */
+
+function manuscriptStatusLabel(
+  manuscript
+){
+
+  const status =
+    manuscript.processing_status ||
+    "pending";
+
+
+  if(status === "ready"){
+    return "Ready";
+  }
+
+
+  if(status === "processing"){
+    return "Processing";
+  }
+
+
+  if(status === "failed"){
+    return "Processing Failed";
+  }
+
+
+  return "Waiting to Process";
+
+}
+
+
+/* =========================================================
+   RENDER MANUSCRIPTS
+========================================================= */
+
+function renderManuscripts(){
 
   const holder =
     $("manuscriptList");
@@ -2064,181 +2293,178 @@ function renderReaders(){
 
 
   holder.innerHTML =
-    manuscripts.map(
-      manuscript => {
-
-        const status =
-          manuscript.processing_status ||
-          "pending";
-
-        const canRetry =
-          status === "failed" &&
-          manuscriptCanProcess(
-            manuscript
-          );
-
-        const sections =
-          Number(
-            manuscript.chapter_count ||
-            0
-          );
-
-        const words =
-          Number(
-            manuscript.word_count ||
-            0
-          );
-
-        const processingDetails =
-          status === "ready"
-            ? `
-                <div class="manuscript-meta">
-                  ${sections.toLocaleString()}
-                  ${
-                    sections === 1
-                      ? "section"
-                      : "sections"
-                  }
-                  ·
-                  ${words.toLocaleString()}
-                  words
-                </div>
-              `
-            : "";
+    "";
 
 
-        const errorDetails =
-          status === "failed" &&
-          manuscript.processing_error
-            ? `
-                <div
-                  class="reader-message"
-                  style="color:var(--danger)"
-                >
-                  ${escapeHtml(
-                    manuscript.processing_error
-                  )}
-                </div>
-              `
-            : "";
+  manuscripts.forEach(
+    manuscript => {
+
+      const item =
+        document.createElement(
+          "div"
+        );
 
 
-        const retryButton =
-          canRetry
-            ? `
-                <div class="reader-actions">
-
-                  <button
-                    class="small-button secondary"
-                    type="button"
-                    data-retry-processing="${escapeHtml(
-                      manuscript.id
-                    )}"
-                  >
-                    Retry Processing
-                  </button>
-
-                </div>
-              `
-            : "";
+      item.className =
+        "manuscript";
 
 
-        return `
-          <div class="manuscript">
+      const status =
+        manuscript.processing_status ||
+        "pending";
 
-            <div class="reader-top">
 
-              <div>
+      const retryButton =
+        status === "failed" ||
+        status === "pending"
+          ? `
+              <button
+                class="small-button secondary"
+                type="button"
+                data-process-manuscript="${
+                  escapeHtml(
+                    manuscript.id
+                  )
+                }"
+              >
+                ${
+                  status === "failed"
+                    ? "Retry Processing"
+                    : "Process Now"
+                }
+              </button>
+            `
+          : "";
 
-                <div class="manuscript-name">
-                  ${escapeHtml(
-                    manuscript.original_filename ||
-                    "Manuscript"
-                  )}
-                </div>
 
-                <div class="manuscript-meta">
-                  Version
-                  ${Number(
-                    manuscript.version_number ||
-                    1
-                  )}
-                  ·
-                  ${escapeHtml(
-                    fileSize(
-                      manuscript.file_size
-                    )
-                  )}
-                  ·
-                  ${
-                    manuscript.active
-                      ? "Active"
-                      : "Archived"
-                  }
-                </div>
+      item.innerHTML =
+        `
+          <div class="reader-top">
 
+            <div>
+
+              <div class="manuscript-name">
+                ${escapeHtml(
+                  manuscript.original_filename ||
+                  "Manuscript"
+                )}
               </div>
 
-              <span class="status">
-                ${escapeHtml(
-                  processingLabel(
-                    status
+              <div class="manuscript-meta">
+                Version ${
+                  Number(
+                    manuscript.version_number ||
+                    1
                   )
-                )}
-              </span>
+                }
+                · ${
+                  escapeHtml(
+                    formatBytes(
+                      manuscript.file_size
+                    )
+                  )
+                }
+                · ${
+                  manuscript.active
+                    ? "Active"
+                    : "Archived"
+                }
+              </div>
+
+              ${
+                manuscript.processing_error
+                  ? `
+                      <div
+                        class="reader-message"
+                        style="color:var(--danger)"
+                      >
+                        ${escapeHtml(
+                          manuscript.processing_error
+                        )}
+                      </div>
+                    `
+                  : ""
+              }
 
             </div>
 
-            ${processingDetails}
-
-            ${errorDetails}
-
-            ${retryButton}
+            <span class="status">
+              ${escapeHtml(
+                manuscriptStatusLabel(
+                  manuscript
+                )
+              )}
+            </span>
 
           </div>
+
+          ${
+            retryButton
+              ? `
+                  <div class="reader-actions">
+                    ${retryButton}
+                  </div>
+                `
+              : ""
+          }
         `;
 
-      }
-    )
-    .join("");
 
-
-  holder
-    .querySelectorAll(
-      "[data-retry-processing]"
-    )
-    .forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          async () => {
-
-            const manuscriptId =
-              button.dataset
-                .retryProcessing;
-
-            button.disabled =
-              true;
-
-            button.textContent =
-              "Processing...";
-
-            await processManuscript(
-              manuscriptId,
-              {
-                showSuccessToast:true
-              }
-            );
-
-          }
+      const processButton =
+        item.querySelector(
+          "[data-process-manuscript]"
         );
 
+
+      if(processButton){
+
+        processButton
+          .addEventListener(
+            "click",
+            async () => {
+
+              processButton.disabled =
+                true;
+
+
+              try{
+
+                await processManuscript(
+                  manuscript.id
+                );
+
+
+                await loadManuscripts();
+
+                renderManuscripts();
+
+              }
+              finally{
+
+                processButton.disabled =
+                  false;
+
+              }
+
+            }
+          );
+
       }
-    );
+
+
+      holder.appendChild(
+        item
+      );
+
+    }
+  );
 
 }
 
+
+/* =========================================================
+   REWARD FORM
+========================================================= */
 
 function renderReward(){
 
@@ -2249,25 +2475,36 @@ function renderReward(){
 
 
   $("rewardCoins").value =
-    Number(
+    String(
       reward?.coin_amount ||
       0
     );
 
 
   $("requireCompletion").value =
-    reward?.require_completion === false
-      ? "false"
-      : "true";
+    reward?.require_completion ===
+      false
+        ? "false"
+        : "true";
 
 
   $("requireFeedback").value =
-    reward?.require_feedback === false
-      ? "false"
-      : "true";
+    reward?.require_feedback ===
+      false
+        ? "false"
+        : "true";
+
+
+  $("saveRewardButton")
+    .disabled =
+      !currentRound;
 
 }
 
+
+/* =========================================================
+   SAVE ROUND
+========================================================= */
 
 async function saveRound(){
 
@@ -2283,41 +2520,32 @@ async function saveRound(){
   button.disabled =
     true;
 
-  button.textContent =
-    "Saving...";
-
 
   try{
 
-    const deadline =
-      $("roundDeadline").value;
-
-
     const payload = {
-
       name:
         $("roundName")
           .value
           .trim() ||
-        `Round ${currentRound.round_number}`,
+        `Round ${
+          currentRound.round_number
+        }`,
+
+      deadline:
+        $("roundDeadline")
+          .value ||
+        null,
+
+      status:
+        $("roundStatus")
+          .value,
 
       description:
         $("roundDescription")
           .value
           .trim() ||
-        null,
-
-      status:
-        $("roundStatus").value,
-
-      deadline:
-        deadline
-          ? new Date(
-              deadline +
-              "T23:59:59"
-            ).toISOString()
-          : null
-
+        null
     };
 
 
@@ -2330,6 +2558,10 @@ async function saveRound(){
         .eq(
           "id",
           currentRound.id
+        )
+        .eq(
+          "project_id",
+          projectId
         );
 
 
@@ -2338,47 +2570,27 @@ async function saveRound(){
     }
 
 
-    if(
-      payload.status === "open" &&
-      project.status !== "open"
-    ){
-
-      const {
-        error:projectError
-      } =
-        await supabaseClient
-          .from("beta_projects")
-          .update({
-            status:"open"
-          })
-          .eq(
-            "id",
-            projectId
-          );
-
-
-      if(projectError){
-        throw projectError;
-      }
-
-    }
-
-
     showToast(
       "Beta round saved."
     );
 
 
-    await refresh();
+    await loadRounds();
+
+    render();
 
   }
   catch(error){
 
-    console.error(error);
+    console.error(
+      "Save beta round:",
+      error
+    );
+
 
     showToast(
-      error?.message ||
-      "DogEar couldn't save the beta round.",
+      error.message ||
+      "DogEar couldn't save this round.",
       "error"
     );
 
@@ -2388,17 +2600,30 @@ async function saveRound(){
     button.disabled =
       false;
 
-    button.textContent =
-      "Save Round";
-
   }
 
 }
 
 
+/* =========================================================
+   ACCEPT READER
+========================================================= */
+
 async function acceptReader(
   interestId
 ){
+
+  if(!currentRound){
+
+    showToast(
+      "This project does not have a current beta round.",
+      "error"
+    );
+
+    return;
+
+  }
+
 
   try{
 
@@ -2421,19 +2646,29 @@ async function acceptReader(
 
 
     showToast(
-      "Reader accepted."
+      "Beta reader accepted."
     );
 
 
-    await refresh();
+    await Promise.all([
+      loadInterests(),
+      loadAssignments()
+    ]);
+
+
+    render();
 
   }
   catch(error){
 
-    console.error(error);
+    console.error(
+      "Accept beta reader:",
+      error
+    );
+
 
     showToast(
-      error?.message ||
+      error.message ||
       "DogEar couldn't accept this reader.",
       "error"
     );
@@ -2442,6 +2677,10 @@ async function acceptReader(
 
 }
 
+
+/* =========================================================
+   DECLINE READER
+========================================================= */
 
 async function declineReader(
   interestId
@@ -2468,19 +2707,25 @@ async function declineReader(
 
 
     showToast(
-      "Application declined."
+      "Beta-reader application declined."
     );
 
 
-    await refresh();
+    await loadInterests();
+
+    render();
 
   }
   catch(error){
 
-    console.error(error);
+    console.error(
+      "Decline beta reader:",
+      error
+    );
+
 
     showToast(
-      error?.message ||
+      error.message ||
       "DogEar couldn't decline this application.",
       "error"
     );
@@ -2490,12 +2735,16 @@ async function declineReader(
 }
 
 
+/* =========================================================
+   SAVE REWARD
+========================================================= */
+
 async function saveReward(){
 
   if(!currentRound){
 
     showToast(
-      "This project needs a beta round first.",
+      "Create a beta round before configuring rewards.",
       "error"
     );
 
@@ -2511,52 +2760,59 @@ async function saveReward(){
   button.disabled =
     true;
 
-  button.textContent =
-    "Saving...";
-
 
   try{
 
     const payload = {
-
       round_id:
         currentRound.id,
 
       enabled:
-        $("rewardEnabled").value ===
+        $("rewardEnabled")
+          .value ===
         "true",
 
       coin_amount:
         Math.max(
           0,
-          Number(
-            $("rewardCoins").value ||
-            0
+          Math.floor(
+            Number(
+              $("rewardCoins")
+                .value ||
+              0
+            )
           )
         ),
 
       require_completion:
-        $("requireCompletion").value ===
+        $("requireCompletion")
+          .value ===
         "true",
 
       require_feedback:
-        $("requireFeedback").value ===
+        $("requireFeedback")
+          .value ===
         "true"
-
     };
 
 
     const {
+      data,
       error
     } =
       await supabaseClient
-        .from("beta_round_rewards")
+        .from(
+          "beta_round_rewards"
+        )
         .upsert(
           payload,
           {
-            onConflict:"round_id"
+            onConflict:
+              "round_id"
           }
-        );
+        )
+        .select("*")
+        .single();
 
 
     if(error){
@@ -2564,22 +2820,29 @@ async function saveReward(){
     }
 
 
+    reward =
+      data;
+
+
+    renderReward();
+
+
     showToast(
       "Beta reward settings saved."
     );
 
-
-    await loadReward();
-    renderReward();
-
   }
   catch(error){
 
-    console.error(error);
+    console.error(
+      "Save beta reward:",
+      error
+    );
+
 
     showToast(
-      error?.message ||
-      "DogEar couldn't save the reward.",
+      error.message ||
+      "DogEar couldn't save the reward settings.",
       "error"
     );
 
@@ -2589,60 +2852,35 @@ async function saveReward(){
     button.disabled =
       false;
 
-    button.textContent =
-      "Save Reward";
-
   }
 
 }
-
-
-/*
-  Calls the deployed Supabase Edge Function.
-
-  The function verifies ownership again on the server,
-  downloads the original from the private bucket,
-  parses the manuscript, writes protected reader sections,
-  and changes processing_status to ready.
-*/
+  /* =========================================================
+   PROCESS MANUSCRIPT
+========================================================= */
 
 async function processManuscript(
-  manuscriptId,
-  options = {}
+  manuscriptId
 ){
-
-  const {
-    showSuccessToast = true
-  } =
-    options;
-
 
   try{
 
+    showToast(
+      "Processing manuscript..."
+    );
+
+
     /*
-      Immediately reflect the processing state in the
-      dashboard while the Edge Function is running.
+      IMPORTANT:
+
+      The Supabase function's DISPLAY NAME is:
+        process-beta-manuscript
+
+      But the actual deployed FUNCTION SLUG / endpoint is:
+        clever-endpoint
+
+      Supabase functions.invoke() requires the deployed slug.
     */
-
-    const localManuscript =
-      manuscripts.find(
-        row =>
-          row.id === manuscriptId
-      );
-
-
-    if(localManuscript){
-
-      localManuscript.processing_status =
-        "processing";
-
-      localManuscript.processing_error =
-        null;
-
-      renderManuscripts();
-
-    }
-
 
     const {
       data,
@@ -2651,7 +2889,7 @@ async function processManuscript(
       await supabaseClient
         .functions
         .invoke(
-          "process-beta-manuscript",
+          "clever-endpoint",
           {
             body:{
               manuscript_id:
@@ -2663,93 +2901,33 @@ async function processManuscript(
 
     if(error){
 
-      let message =
-        error.message ||
-        "The manuscript processor returned an error.";
-
-
-      /*
-        Supabase function errors may contain the actual
-        function response in the context object.
-      */
-
-      try{
-
-        if(
-          error.context &&
-          typeof error.context.json ===
-            "function"
-        ){
-
-          const details =
-            await error.context.json();
-
-          if(details?.error){
-            message =
-              details.error;
-          }
-
-        }
-
-      }
-      catch(contextError){
-
-        console.warn(
-          "Could not read Edge Function error body:",
-          contextError
-        );
-
-      }
-
-
-      throw new Error(
-        message
+      console.error(
+        "Beta manuscript function invocation:",
+        error
       );
+
+
+      throw error;
 
     }
 
 
     if(
-      !data ||
-      data.success !== true
+      data &&
+      data.success === false
     ){
 
       throw new Error(
-        data?.error ||
-        "DogEar could not process the manuscript."
+        data.error ||
+        "The manuscript processor reported an error."
       );
 
     }
 
 
-    await loadManuscripts();
-    renderManuscripts();
-
-
-    if(showSuccessToast){
-
-      showToast(
-        `Manuscript ready — ${
-          Number(
-            data.sections ||
-            0
-          ).toLocaleString()
-        } ${
-          Number(
-            data.sections ||
-            0
-          ) === 1
-            ? "section"
-            : "sections"
-        }, ${
-          Number(
-            data.word_count ||
-            0
-          ).toLocaleString()
-        } words.`
-      );
-
-    }
+    showToast(
+      "Manuscript processing complete."
+    );
 
 
     return data;
@@ -2758,52 +2936,37 @@ async function processManuscript(
   catch(error){
 
     console.error(
-      "Manuscript processing:",
+      "Process manuscript:",
       error
     );
 
 
-    /*
-      Reload from Supabase because the Edge Function records
-      its own failed state and processing_error in the
-      manuscript record.
-    */
-
-    try{
-
-      await loadManuscripts();
-      renderManuscripts();
-
-    }
-    catch(refreshError){
-
-      console.error(
-        "Could not refresh manuscript status:",
-        refreshError
-      );
-
-    }
-
-
     showToast(
-      error?.message ||
-      "DogEar couldn't process the manuscript.",
+      error.message ||
+      "DogEar couldn't process this manuscript.",
       "error"
     );
 
 
-    return null;
+    throw error;
 
   }
 
 }
 
 
+/* =========================================================
+   UPLOAD MANUSCRIPT
+========================================================= */
+
 async function uploadManuscript(){
 
+  const input =
+    $("manuscriptFile");
+
+
   const file =
-    $("manuscriptFile")
-      .files?.[0];
+    input.files?.[0];
 
 
   if(!file){
@@ -2821,7 +2984,7 @@ async function uploadManuscript(){
   if(!currentRound){
 
     showToast(
-      "This project does not have a beta round.",
+      "This project needs a beta round before a manuscript can be uploaded.",
       "error"
     );
 
@@ -2830,23 +2993,31 @@ async function uploadManuscript(){
   }
 
 
-  /*
-    The current Edge Function intentionally supports only
-    TXT and Markdown while we verify the entire private
-    ingestion pipeline.
-  */
+  const extension =
+    (
+      file.name
+        .split(".")
+        .pop() ||
+      ""
+    )
+      .toLowerCase();
 
-  const lowerName =
-    file.name.toLowerCase();
+
+  const supported =
+    [
+      "txt",
+      "md"
+    ];
 
 
   if(
-    !lowerName.endsWith(".txt") &&
-    !lowerName.endsWith(".md")
+    !supported.includes(
+      extension
+    )
   ){
 
     showToast(
-      "For this test version, upload a TXT or Markdown manuscript.",
+      "The current DogEar processor supports TXT and Markdown manuscripts.",
       "error"
     );
 
@@ -2862,66 +3033,112 @@ async function uploadManuscript(){
   button.disabled =
     true;
 
-  button.textContent =
-    "Uploading...";
-
 
   let uploadedPath =
     null;
 
-  let databaseRecordCreated =
-    false;
 
-  let manuscriptId =
+  let createdManuscriptId =
     null;
 
 
   try{
 
-    manuscriptId =
+    showToast(
+      "Uploading private manuscript..."
+    );
+
+
+    /*
+      Generate the manuscript UUID in the browser so the
+      private Storage path and beta_manuscripts row use
+      the same manuscript identifier.
+    */
+
+    const manuscriptId =
       crypto.randomUUID();
 
 
-    const nextVersion =
-      manuscripts.length
-        ? Math.max(
-            ...manuscripts.map(
-              row =>
-                Number(
-                  row.version_number ||
-                  0
-                )
+    createdManuscriptId =
+      manuscriptId;
+
+
+    const previousVersions =
+      manuscripts
+        .map(
+          manuscript =>
+            Number(
+              manuscript.version_number ||
+              0
             )
+        )
+        .filter(
+          value =>
+            Number.isFinite(
+              value
+            )
+        );
+
+
+    const versionNumber =
+      previousVersions.length
+        ? Math.max(
+            ...previousVersions
           ) + 1
         : 1;
 
 
+    /*
+      Keep the filename recognizable while preventing
+      path separators and odd URL characters from
+      becoming part of the Storage object path.
+    */
+
     const safeName =
       file.name
         .replace(
-          /[^a-zA-Z0-9._-]/g,
-          "_"
-        );
-
-
-    uploadedPath =
-      currentUser.id +
-      "/" +
-      projectId +
-      "/" +
-      manuscriptId +
-      "/" +
-      safeName;
+          /[^a-zA-Z0-9._-]+/g,
+          "-"
+        )
+        .replace(
+          /-+/g,
+          "-"
+        )
+        .replace(
+          /^-|-$/g,
+          ""
+        ) ||
+      `manuscript-${versionNumber}.${extension}`;
 
 
     /*
-      STEP 1:
-      Upload the author's original manuscript into the
-      private beta-manuscripts bucket.
+      Migration #9 validates this exact structure:
+
+      owner-user-id /
+      project-id /
+      manuscript-id /
+      filename
     */
 
+    const storagePath =
+      `${
+        currentUser.id
+      }/${
+        projectId
+      }/${
+        manuscriptId
+      }/${
+        safeName
+      }`;
+
+
+    uploadedPath =
+      storagePath;
+
+
     const {
-      error:uploadError
+      error:
+        uploadError
     } =
       await supabaseClient
         .storage
@@ -2929,11 +3146,22 @@ async function uploadManuscript(){
           "beta-manuscripts"
         )
         .upload(
-          uploadedPath,
+          storagePath,
           file,
           {
-            cacheControl:"3600",
-            upsert:false
+            cacheControl:
+              "3600",
+
+            upsert:
+              false,
+
+            contentType:
+              file.type ||
+              (
+                extension === "md"
+                  ? "text/markdown"
+                  : "text/plain"
+              )
           }
         );
 
@@ -2944,53 +3172,24 @@ async function uploadManuscript(){
 
 
     /*
-      STEP 2:
-      Archive previous active manuscript versions.
-    */
+      Create the manuscript metadata record.
 
-    if(manuscripts.length){
-
-      const {
-        error:archiveError
-      } =
-        await supabaseClient
-          .from("beta_manuscripts")
-          .update({
-            active:false
-          })
-          .eq(
-            "project_id",
-            projectId
-          )
-          .eq(
-            "active",
-            true
-          );
-
-
-      if(archiveError){
-        throw archiveError;
-      }
-
-    }
-
-
-    /*
-      STEP 3:
-      Register the new manuscript in the database.
-
-      processing_status starts as pending. Migration #10
-      supplies the default as well, but setting it here makes
-      the intended state explicit.
+      processing_status starts as "pending".
+      The Edge Function changes it to processing,
+      then ready or failed.
     */
 
     const {
-      error:recordError
+      data:
+        insertedManuscript,
+      error:
+        insertError
     } =
       await supabaseClient
-        .from("beta_manuscripts")
+        .from(
+          "beta_manuscripts"
+        )
         .insert({
-
           id:
             manuscriptId,
 
@@ -3004,18 +3203,18 @@ async function uploadManuscript(){
             currentUser.id,
 
           version_number:
-            nextVersion,
+            versionNumber,
 
           original_filename:
             file.name,
 
           storage_path:
-            uploadedPath,
+            storagePath,
 
           mime_type:
             file.type ||
             (
-              lowerName.endsWith(".md")
+              extension === "md"
                 ? "text/markdown"
                 : "text/plain"
             ),
@@ -3027,80 +3226,187 @@ async function uploadManuscript(){
             true,
 
           processing_status:
-            "pending"
+            "pending",
 
-        });
+          processing_error:
+            null
+        })
+        .select("*")
+        .single();
 
 
-    if(recordError){
-      throw recordError;
+    if(insertError){
+      throw insertError;
     }
 
 
-    databaseRecordCreated =
-      true;
+    /*
+      The new manuscript exists successfully before we
+      archive the previous version.
+
+      This avoids leaving the project with no active
+      manuscript if creation of the new database row
+      fails.
+    */
+
+    const previousActiveIds =
+      manuscripts
+        .filter(
+          manuscript =>
+            manuscript.active &&
+            manuscript.id !==
+              manuscriptId
+        )
+        .map(
+          manuscript =>
+            manuscript.id
+        );
 
 
-    $("manuscriptFile").value =
+    if(
+      previousActiveIds.length
+    ){
+
+      const {
+        error:
+          archiveError
+      } =
+        await supabaseClient
+          .from(
+            "beta_manuscripts"
+          )
+          .update({
+            active:false
+          })
+          .in(
+            "id",
+            previousActiveIds
+          )
+          .eq(
+            "project_id",
+            projectId
+          );
+
+
+      if(archiveError){
+
+        /*
+          The new manuscript itself is valid, so an
+          archive failure should not delete it. Log the
+          problem and continue processing.
+        */
+
+        console.warn(
+          "Previous manuscript archive:",
+          archiveError
+        );
+
+      }
+
+    }
+
+
+    input.value =
       "";
 
 
     /*
-      Load the newly-created manuscript immediately so the
-      author can see it transition from pending to processing.
+      Put the newly created record on screen immediately
+      so the author can see that the upload succeeded.
     */
 
-    await loadManuscripts();
+    manuscripts =
+      [
+        insertedManuscript,
+        ...manuscripts.map(
+          manuscript => ({
+            ...manuscript,
+            active:
+              previousActiveIds.includes(
+                manuscript.id
+              )
+                ? false
+                : manuscript.active
+          })
+        )
+      ];
+
+
     renderManuscripts();
 
 
     showToast(
-      "Manuscript uploaded. DogEar is processing it now."
+      "Manuscript uploaded. Starting processing..."
     );
-
-
-    button.textContent =
-      "Processing...";
 
 
     /*
-      STEP 4:
-      Invoke process-beta-manuscript.
+      Invoke the private manuscript processor.
 
-      From this point onward, failure does NOT delete the
-      original upload. Keeping it lets the author use the
-      Retry Processing button without uploading the book
-      again.
+      This now calls the actual deployed Supabase slug:
+      clever-endpoint
     */
 
-    await processManuscript(
-      manuscriptId,
-      {
-        showSuccessToast:true
-      }
-    );
+    try{
+
+      await processManuscript(
+        manuscriptId
+      );
+
+    }
+    catch(
+      processingError
+    ){
+
+      /*
+        Do NOT delete the uploaded manuscript when
+        processing fails.
+
+        The original stays private in Storage and the
+        metadata remains available so the author can
+        use Retry Processing / Process Now.
+      */
+
+      console.error(
+        "Automatic manuscript processing failed:",
+        processingError
+      );
+
+    }
+
+
+    /*
+      Reload the manuscript record after processing so
+      Waiting / Processing / Ready / Failed reflects
+      the database state written by the Edge Function.
+    */
+
+    await loadManuscripts();
+
+    renderManuscripts();
 
   }
   catch(error){
 
     console.error(
-      "Manuscript upload:",
+      "Upload manuscript:",
       error
     );
 
 
     /*
-      Only clean up the private Storage object if creation
-      failed BEFORE the beta_manuscripts database record was
-      successfully registered.
+      If Storage succeeded but creation of the database
+      manuscript row did not, clean up the orphaned
+      private Storage object.
 
-      Once registered, the manuscript is retained so failed
-      processing can be retried.
+      Once a beta_manuscripts row exists, however, we
+      keep both the row and original file so processing
+      can safely be retried.
     */
 
     if(
       uploadedPath &&
-      !databaseRecordCreated
+      !createdManuscriptId
     ){
 
       try{
@@ -3117,7 +3423,7 @@ async function uploadManuscript(){
       }
       catch(cleanupError){
 
-        console.error(
+        console.warn(
           "Manuscript cleanup:",
           cleanupError
         );
@@ -3128,8 +3434,8 @@ async function uploadManuscript(){
 
 
     showToast(
-      error?.message ||
-      "DogEar couldn't upload the manuscript.",
+      error.message ||
+      "DogEar couldn't upload this manuscript.",
       "error"
     );
 
@@ -3139,18 +3445,30 @@ async function uploadManuscript(){
     button.disabled =
       false;
 
-    button.textContent =
-      "Upload Manuscript";
-
   }
 
 }
-  async function refresh(){
+
+
+/* =========================================================
+   REFRESH PROJECT
+========================================================= */
+
+async function refresh(){
 
   await loadProject();
 
+
+  await loadRounds();
+
+
+  /*
+    These queries only require the project and authenticated
+    user. Loading them after the current round has been
+    resolved also makes the render state deterministic.
+  */
+
   await Promise.all([
-    loadRounds(),
     loadInterests(),
     loadAssignments(),
     loadManuscripts()
@@ -3164,6 +3482,10 @@ async function uploadManuscript(){
 
 }
 
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
 async function initialize(){
 
@@ -3187,47 +3509,116 @@ async function initialize(){
     }
 
 
+    await loadProfile();
+
+
     await refresh();
+
+
+    $("loading")
+      .classList
+      .add(
+        "hidden"
+      );
+
+
+    $("projectContent")
+      .classList
+      .remove(
+        "hidden"
+      );
 
   }
   catch(error){
 
     console.error(
-      "Beta project initialization:",
+      "Load beta project:",
       error
     );
 
 
-    $("loading").innerHTML =
-      `
-        <strong style="
-          display:block;
-          color:var(--cream);
-          font-size:24px;
-          margin-bottom:10px;
-        ">
-          DogEar couldn't open this project.
-        </strong>
+    $("projectContent")
+      .classList
+      .add(
+        "hidden"
+      );
 
-        ${escapeHtml(
-          error?.message ||
-          "Unknown error."
-        )}
 
-        <div style="margin-top:20px">
-          <a
-            class="button secondary"
-            href="beta-reading.html"
+    $("loading")
+      .classList
+      .remove(
+        "hidden"
+      );
+
+
+    $("loading")
+      .innerHTML =
+        `
+          <div
+            style="
+              max-width:620px;
+              margin:auto;
+              padding:30px;
+              border:1px solid var(--line);
+              border-radius:16px;
+              background:var(--panel);
+            "
           >
-            Back to Beta Reading
-          </a>
-        </div>
-      `;
+
+            <div
+              class="eyebrow"
+              style="margin-bottom:10px"
+            >
+              DogEar Beta
+            </div>
+
+            <div
+              style="
+                font-size:26px;
+                margin-bottom:12px;
+              "
+            >
+              We couldn't open this project.
+            </div>
+
+            <div
+              style="
+                color:var(--muted);
+                font:11px/1.7 Arial,sans-serif;
+              "
+            >
+              ${
+                escapeHtml(
+                  error.message ||
+                  "Unknown project error."
+                )
+              }
+            </div>
+
+            <div
+              style="margin-top:18px"
+            >
+
+              <a
+                class="button secondary"
+                href="beta-reading.html"
+              >
+                Back to Beta Reading
+              </a>
+
+            </div>
+
+          </div>
+        `;
 
   }
 
 }
 
+
+/* =========================================================
+   BUTTON EVENTS
+========================================================= */
 
 $("saveRoundButton")
   .addEventListener(
@@ -3249,6 +3640,36 @@ $("uploadButton")
     uploadManuscript
   );
 
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    (
+      event,
+      session
+    ) => {
+
+      if(
+        event === "SIGNED_OUT" ||
+        !session
+      ){
+
+        window.location.href =
+          "auth.html#login";
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   START
+========================================================= */
 
 initialize();
 
