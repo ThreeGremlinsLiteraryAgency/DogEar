@@ -999,6 +999,7 @@ a{
         Notes
       </span>
     </button>
+        </button>
 
   </div>
 
@@ -1851,17 +1852,21 @@ let activeUtterance = null;
 */
 
 let sectionLoading = false;
-  /* =========================================================
+
+
+/* =========================================================
    BASIC HELPERS
 ========================================================= */
 
 function escapeHtml(value){
+
   return String(value ?? "")
     .replaceAll("&","&amp;")
     .replaceAll("<","&lt;")
     .replaceAll(">","&gt;")
     .replaceAll('"',"&quot;")
     .replaceAll("'","&#039;");
+
 }
 
 
@@ -1884,9 +1889,11 @@ function showToast(
     "toast";
 
   if(type){
+
     toast.classList.add(
       type
     );
+
   }
 
   requestAnimationFrame(
@@ -1997,9 +2004,7 @@ async function loadSession(){
   currentUser =
     data?.session?.user ||
     null;
-
-
-  if(!currentUser){
+    if(!currentUser){
 
     window.location.href =
       "auth.html#login";
@@ -2998,8 +3003,7 @@ async function renderCurrentSection(
     },
     section.id
   );
-
-}
+  }
 
 
 /* =========================================================
@@ -3997,9 +4001,7 @@ function currentBookmark(){
   ) || null;
 
 }
-
-
-function updateBookmarkButton(){
+  function updateBookmarkButton(){
 
   const bookmark =
     currentBookmark();
@@ -4996,9 +4998,7 @@ async function saveNote(){
     .remove(
       "show"
     );
-
-
-  clearSelectedPassage();
+    clearSelectedPassage();
 
 
   window
@@ -5256,7 +5256,9 @@ function applyAnnotationsToCurrentSection(){
   );
 
 }
-  /* =========================================================
+
+
+/* =========================================================
    RENDER ANNOTATIONS
 ========================================================= */
 
@@ -5998,7 +6000,7 @@ async function saveTtsState(
 
 /* =========================================================
    LOAD TTS STATE
-========================================================= */
+  ========================================================= */
 
 async function loadTtsState(){
 
@@ -6304,12 +6306,6 @@ function speakParagraph(
       }
 
 
-      /*
-        If the final paragraph of this section was
-        spoken, Read Aloud automatically advances to
-        the next manuscript section when one exists.
-      */
-
       if(
         ttsSpeaking &&
         currentSectionIndex <
@@ -6376,12 +6372,6 @@ function speakParagraph(
 
   utterance.onerror =
     event => {
-
-      /*
-        Browsers often fire "interrupted" or "canceled"
-        when DogEar intentionally moves between
-        paragraphs. Those are not user-facing errors.
-      */
 
       if(
         event.error !==
@@ -6493,12 +6483,6 @@ function toggleSpeech(){
     return;
   }
 
-
-  /*
-    If the saved TTS paragraph is outside the
-    current chapter, begin at the paragraph nearest
-    the reader's current visual position.
-  */
 
   if(
     ttsParagraphIndex <
@@ -6876,37 +6860,37 @@ function populateFeedbackForm(){
 
   $("ratingOverall").value =
     feedback
-      ?.rating_overall ??
+      ?.overall_rating ??
     "";
 
 
   $("ratingPacing").value =
     feedback
-      ?.rating_pacing ??
+      ?.pacing_rating ??
     "";
 
 
   $("ratingCharacter").value =
     feedback
-      ?.rating_character ??
+      ?.character_rating ??
     "";
 
 
   $("ratingPlot").value =
     feedback
-      ?.rating_plot ??
+      ?.plot_rating ??
     "";
 
 
   $("ratingWorldbuilding").value =
     feedback
-      ?.rating_worldbuilding ??
+      ?.worldbuilding_rating ??
     "";
 
 
   $("ratingRomance").value =
     feedback
-      ?.rating_romance ??
+      ?.romance_rating ??
     "";
 
 
@@ -6979,37 +6963,37 @@ function buildFeedbackPayload(
     feedback_type:
       "overall",
 
-    rating_pacing:
+    pacing_rating:
       numericValue(
         $("ratingPacing")
           .value
       ),
 
-    rating_character:
+    character_rating:
       numericValue(
         $("ratingCharacter")
           .value
       ),
 
-    rating_plot:
+    plot_rating:
       numericValue(
         $("ratingPlot")
           .value
       ),
 
-    rating_worldbuilding:
-      numericValue(
+    worldbuilding_rating:
+            numericValue(
         $("ratingWorldbuilding")
           .value
       ),
 
-    rating_romance:
+    romance_rating:
       numericValue(
         $("ratingRomance")
           .value
       ),
 
-    rating_overall:
+    overall_rating:
       numericValue(
         $("ratingOverall")
           .value
@@ -7771,7 +7755,9 @@ else{
       "Unavailable";
 
 }
-  /* =========================================================
+
+
+/* =========================================================
    MODAL BACKDROP CLOSING
 ========================================================= */
 
@@ -7996,9 +7982,7 @@ async function markAssignmentOpened(){
         .toISOString();
 
   }
-
-
-  const {
+    const {
     data,
     error
   } =
