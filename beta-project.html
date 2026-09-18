@@ -700,19 +700,18 @@ h1{
       </div>
 
     </section>
+        <div class="layout">
 
-    <div class="layout">
-
+      <!-- MAIN COLUMN -->
       <div class="stack">
 
         <!-- CURRENT ROUND -->
-
         <section class="panel">
 
           <div class="panel-head">
             <div>
               <div class="panel-kicker">
-                Beta round
+                Beta Round
               </div>
 
               <h2 class="panel-title">
@@ -727,24 +726,15 @@ h1{
 
               <label class="field">
                 <span class="label">
-                  Round name
+                  Round Name
                 </span>
 
                 <input
                   class="input"
                   id="roundName"
-                >
-              </label>
-
-              <label class="field">
-                <span class="label">
-                  Deadline
-                </span>
-
-                <input
-                  class="input"
-                  id="roundDeadline"
-                  type="date"
+                  type="text"
+                  maxlength="120"
+                  placeholder="Round 1"
                 >
               </label>
 
@@ -760,26 +750,43 @@ h1{
                   <option value="draft">
                     Draft
                   </option>
+
                   <option value="open">
                     Open
                   </option>
+
                   <option value="closed">
                     Closed
                   </option>
+
                   <option value="completed">
                     Completed
                   </option>
                 </select>
               </label>
 
+              <label class="field">
+                <span class="label">
+                  Deadline
+                </span>
+
+                <input
+                  class="input"
+                  id="roundDeadline"
+                  type="date"
+                >
+              </label>
+
               <label class="field full">
                 <span class="label">
-                  Description
+                  Round Description
                 </span>
 
                 <textarea
                   class="textarea"
                   id="roundDescription"
+                  maxlength="2000"
+                  placeholder="What should readers focus on during this round?"
                 ></textarea>
               </label>
 
@@ -801,19 +808,21 @@ h1{
 
         </section>
 
-        <!-- MANUSCRIPT -->
 
+        <!-- MANUSCRIPT -->
         <section class="panel">
 
           <div class="panel-head">
             <div>
+
               <div class="panel-kicker">
-                Private manuscript
+                Private Manuscript
               </div>
 
               <h2 class="panel-title">
                 Manuscript
               </h2>
+
             </div>
           </div>
 
@@ -822,12 +831,16 @@ h1{
             <div class="upload-box">
 
               <div class="upload-note">
-                Original manuscript files are stored privately.
-                Beta readers never receive the original uploaded
-                file. DogEar converts the manuscript into protected
-                reader sections. TXT and Markdown are supported by
-                the current processor; DOCX, EPUB and PDF support
-                will be added to the ingestion system next.
+                Your original manuscript remains private.
+                Accepted beta readers read through DogEar's
+                protected browser reader. DogEar does not
+                provide readers with the original manuscript
+                file or a download button.
+                <br><br>
+                TXT and Markdown manuscripts can currently
+                be processed directly into the DogEar reader.
+                Additional manuscript formats will be added
+                to the processing pipeline later.
               </div>
 
               <input
@@ -851,20 +864,20 @@ h1{
 
             </div>
 
-            <div
-              id="manuscriptList"
-            ></div>
+            <div id="manuscriptList"></div>
 
           </div>
 
         </section>
 
-        <!-- APPLICANTS -->
 
+        <!-- PENDING READERS -->
         <section class="panel">
 
           <div class="panel-head">
+
             <div>
+
               <div class="panel-kicker">
                 Applications
               </div>
@@ -872,34 +885,40 @@ h1{
               <h2 class="panel-title">
                 Pending Readers
               </h2>
+
             </div>
+
           </div>
 
           <div class="panel-body">
 
             <div
               class="reader-list"
-              id="applicantList"
+              id="pendingReaderList"
             ></div>
 
           </div>
 
         </section>
 
-        <!-- ACCEPTED READERS -->
 
+        <!-- ACCEPTED READERS -->
         <section class="panel">
 
           <div class="panel-head">
+
             <div>
+
               <div class="panel-kicker">
-                Your beta team
+                Your Beta Team
               </div>
 
               <h2 class="panel-title">
                 Accepted Readers
               </h2>
+
             </div>
+
           </div>
 
           <div class="panel-body">
@@ -915,50 +934,62 @@ h1{
 
       </div>
 
-      <!-- SIDEBAR -->
 
+      <!-- SIDEBAR -->
       <aside class="stack">
 
+        <!-- COIN REWARD -->
         <section class="panel">
 
           <div class="panel-head">
+
             <div>
+
               <div class="panel-kicker">
-                Reader incentive
+                Reader Incentive
               </div>
 
               <h2 class="panel-title">
                 Coin Reward
               </h2>
+
             </div>
+
           </div>
 
           <div class="panel-body">
 
             <label class="field">
+
               <span class="label">
-                Reward enabled
+                Reward Enabled
               </span>
 
               <select
                 class="select"
                 id="rewardEnabled"
               >
+
                 <option value="false">
                   Off
                 </option>
+
                 <option value="true">
                   On
                 </option>
+
               </select>
+
             </label>
+
 
             <label
               class="field"
               style="margin-top:13px"
             >
+
               <span class="label">
-                Coins per reader
+                Coins Per Reader
               </span>
 
               <input
@@ -969,49 +1000,63 @@ h1{
                 step="1"
                 value="0"
               >
+
             </label>
+
 
             <label
               class="field"
               style="margin-top:13px"
             >
+
               <span class="label">
-                Require completion
+                Require Completion
               </span>
 
               <select
                 class="select"
                 id="requireCompletion"
               >
+
                 <option value="true">
                   Yes
                 </option>
+
                 <option value="false">
                   No
                 </option>
+
               </select>
+
             </label>
+
 
             <label
               class="field"
               style="margin-top:13px"
             >
+
               <span class="label">
-                Require feedback
+                Require Feedback
               </span>
 
               <select
                 class="select"
                 id="requireFeedback"
               >
+
                 <option value="true">
                   Yes
                 </option>
+
                 <option value="false">
                   No
                 </option>
+
               </select>
+
             </label>
+
 
             <div class="row-actions">
 
@@ -1025,28 +1070,36 @@ h1{
 
             </div>
 
+
             <p class="side-note">
-              This configures the Beta reward. Actual coin
-              transfers will use DogEar's existing audited
-              coin ledger rather than creating a second wallet.
+              This configures the Beta reward.
+              Actual coin transfers will use DogEar's
+              existing audited coin ledger rather than
+              creating a separate Beta wallet.
             </p>
 
           </div>
 
         </section>
 
+
+        <!-- PROJECT TOOLS -->
         <section class="panel">
 
           <div class="panel-head">
+
             <div>
+
               <div class="panel-kicker">
-                Project tools
+                Project Tools
               </div>
 
               <h2 class="panel-title">
                 Manage
               </h2>
+
             </div>
+
           </div>
 
           <div class="panel-body">
@@ -1082,32 +1135,27 @@ h1{
 
 </main>
 
+
 <div
   class="toast"
   id="toast"
 ></div>
 
+
 <script>
-  const SUPABASE_URL =
+
+const SUPABASE_URL =
   "https://nrtutxjznkfvvbmaagum.supabase.co";
 
-/*
-  IMPORTANT:
-  Keep the same browser-safe Supabase publishable key
-  from your currently working beta-project.html here.
-*/
-const SUPABASE_KEY =
-  "YOUR_EXISTING_SUPABASE_PUBLISHABLE_KEY";
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
 
 const supabaseClient =
-  window.supabase.createClient(
+  supabase.createClient(
     SUPABASE_URL,
-    SUPABASE_KEY
+    SUPABASE_PUBLISHABLE_KEY
   );
 
-const $ =
-  id =>
-    document.getElementById(id);
 
 const params =
   new URLSearchParams(
@@ -1117,29 +1165,54 @@ const params =
 const projectId =
   params.get("id");
 
+
 let currentUser = null;
-let profile = null;
+let currentProfile = null;
+
 let project = null;
+
 let rounds = [];
 let currentRound = null;
+
 let interests = [];
 let assignments = [];
 let manuscripts = [];
+
 let reward = null;
 
+let toastTimer = null;
 
-/* =========================================================
-   HELPERS
-========================================================= */
+
+const $ =
+  id =>
+    document.getElementById(id);
+
 
 function escapeHtml(value){
 
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+  return String(
+    value ?? ""
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
 
 }
 
@@ -1152,162 +1225,116 @@ function showToast(
   const toast =
     $("toast");
 
+  clearTimeout(
+    toastTimer
+  );
+
   toast.textContent =
     message;
 
   toast.className =
-    `toast show ${type}`;
+    "toast";
 
+  if(type){
+    toast.classList.add(
+      type
+    );
+  }
 
-  clearTimeout(
-    showToast.timer
+  requestAnimationFrame(
+    () =>
+      toast.classList.add(
+        "show"
+      )
   );
 
-
-  showToast.timer =
+  toastTimer =
     setTimeout(
-      () => {
-
-        toast.className =
-          "toast";
-
-      },
-      3500
+      () =>
+        toast.classList.remove(
+          "show"
+        ),
+      4200
     );
 
 }
 
 
-function formatDate(value){
-
-  if(!value){
-    return "No deadline";
-  }
-
-
-  const date =
-    new Date(value);
-
-
-  if(
-    Number.isNaN(
-      date.getTime()
-    )
-  ){
-    return "No deadline";
-  }
-
-
-  return date.toLocaleDateString(
-    undefined,
-    {
-      year:"numeric",
-      month:"short",
-      day:"numeric"
-    }
-  );
-
-}
-
-
-function formatBytes(bytes){
+function fileSize(bytes){
 
   const value =
-    Number(bytes || 0);
-
-
-  if(!value){
-    return "0 B";
-  }
-
+    Number(
+      bytes || 0
+    );
 
   if(value < 1024){
-    return `${value} B`;
+    return value + " B";
   }
 
+  if(value < 1048576){
 
-  if(value < 1024 * 1024){
-
-    return `${
-      (
-        value / 1024
-      ).toFixed(1)
-    } KB`;
+    return (
+      value / 1024
+    ).toFixed(1) + " KB";
 
   }
 
-
-  return `${
-    (
-      value /
-      1024 /
-      1024
-    ).toFixed(1)
-  } MB`;
+  return (
+    value / 1048576
+  ).toFixed(1) + " MB";
 
 }
 
 
-function getDisplayName(
-  joinedProfile,
-  fallback = "Reader"
-){
+function processingLabel(status){
 
-  if(!joinedProfile){
-    return fallback;
+  switch(status){
+
+    case "pending":
+      return "Waiting to process";
+
+    case "processing":
+      return "Processing";
+
+    case "ready":
+      return "Ready";
+
+    case "failed":
+      return "Processing failed";
+
+    default:
+      return "Waiting to process";
+
   }
 
+}
+
+
+function manuscriptCanProcess(
+  manuscript
+){
+
+  const filename =
+    String(
+      manuscript.original_filename ||
+      ""
+    ).toLowerCase();
+
+  const mime =
+    String(
+      manuscript.mime_type ||
+      ""
+    ).toLowerCase();
 
   return (
-    joinedProfile.display_name ||
-    joinedProfile.full_name ||
-    joinedProfile.name ||
-    joinedProfile.username ||
-    fallback
+    filename.endsWith(".txt") ||
+    filename.endsWith(".md") ||
+    mime === "text/plain" ||
+    mime === "text/markdown"
   );
 
 }
 
-
-function getInitials(value){
-
-  const words =
-    String(
-      value || ""
-    )
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean);
-
-
-  if(!words.length){
-    return "?";
-  }
-
-
-  if(words.length === 1){
-
-    return words[0]
-      .slice(0,1)
-      .toUpperCase();
-
-  }
-
-
-  return (
-    words[0].slice(0,1) +
-    words[
-      words.length - 1
-    ].slice(0,1)
-  )
-    .toUpperCase();
-
-}
-
-
-/* =========================================================
-   SESSION
-========================================================= */
 
 async function loadSession(){
 
@@ -1340,24 +1367,15 @@ async function loadSession(){
   }
 
 
-  return true;
-
-}
-
-
-/* =========================================================
-   PROFILE
-========================================================= */
-
-async function loadProfile(){
-
   const {
-    data,
-    error
+    data:profile,
+    error:profileError
   } =
     await supabaseClient
       .from("profiles")
-      .select("*")
+      .select(
+        "id,display_name,username,avatar_url"
+      )
       .eq(
         "id",
         currentUser.id
@@ -1365,96 +1383,63 @@ async function loadProfile(){
       .maybeSingle();
 
 
-  if(error){
-    throw error;
+  if(profileError){
+
+    console.warn(
+      "Could not load profile:",
+      profileError
+    );
+
   }
 
 
-  profile =
-    data ||
+  currentProfile =
+    profile ||
     null;
 
 
-  const displayName =
-    getDisplayName(
-      profile,
-      currentUser.email ||
-      "Author"
-    );
+  renderNavigation();
 
+  return true;
+
+}
+
+
+function renderNavigation(){
 
   const avatar =
     $("navAvatar");
 
 
-  const avatarUrl =
-    profile?.avatar_url ||
-    profile?.profile_image_url ||
-    currentUser
-      ?.user_metadata
-      ?.avatar_url ||
-    "";
+  const name =
+    currentProfile?.display_name ||
+    currentProfile?.username ||
+    currentUser?.email ||
+    "D";
 
 
-  avatar.innerHTML =
-    "";
+  if(
+    currentProfile?.avatar_url
+  ){
 
-
-  if(avatarUrl){
-
-    const image =
-      document.createElement(
-        "img"
-      );
-
-
-    image.src =
-      avatarUrl;
-
-
-    image.alt =
-      `${displayName} profile picture`;
-
-
-    image.addEventListener(
-      "error",
-      () => {
-
-        avatar.innerHTML =
-          "";
-
-        avatar.textContent =
-          getInitials(
-            displayName
-          );
-
-      },
-      {
-        once:true
-      }
-    );
-
-
-    avatar.appendChild(
-      image
-    );
+    avatar.innerHTML =
+      `<img src="${escapeHtml(
+        currentProfile.avatar_url
+      )}" alt="">`;
 
   }
   else{
 
     avatar.textContent =
-      getInitials(
-        displayName
-      );
+      name
+        .trim()
+        .charAt(0)
+        .toUpperCase();
 
   }
 
 }
 
-
-/* =========================================================
-   PROJECT
-========================================================= */
 
 async function loadProject(){
 
@@ -1469,11 +1454,20 @@ async function loadProject(){
         "id",
         projectId
       )
-      .single();
+      .maybeSingle();
 
 
   if(error){
     throw error;
+  }
+
+
+  if(!data){
+
+    throw new Error(
+      "Beta project not found."
+    );
+
   }
 
 
@@ -1483,7 +1477,7 @@ async function loadProject(){
   ){
 
     throw new Error(
-      "Only the author who owns this beta project can manage it."
+      "Only the project owner can manage this beta project."
     );
 
   }
@@ -1492,48 +1486,8 @@ async function loadProject(){
   project =
     data;
 
-
-  $("projectTitle")
-    .textContent =
-      project.title ||
-      "Untitled Beta Project";
-
-
-  $("projectBlurb")
-    .textContent =
-      project.blurb ||
-      "No project description yet.";
-
-
-  $("projectStatus")
-    .textContent =
-      project.status ||
-      "draft";
-
-
-  const analyticsUrl =
-    `beta-analytics.html?id=${
-      encodeURIComponent(
-        project.id
-      )
-    }`;
-
-
-  $("analyticsLink")
-    .href =
-      analyticsUrl;
-
-
-  $("analyticsSideLink")
-    .href =
-      analyticsUrl;
-
 }
 
-
-/* =========================================================
-   ROUNDS
-========================================================= */
 
 async function loadRounds(){
 
@@ -1568,19 +1522,14 @@ async function loadRounds(){
 
   currentRound =
     rounds.find(
-      round =>
-        round.status ===
-        "open"
+      row =>
+        row.status === "open"
     ) ||
     rounds[0] ||
     null;
 
 }
 
-
-/* =========================================================
-   INTERESTS
-========================================================= */
 
 async function loadInterests(){
 
@@ -1594,10 +1543,8 @@ async function loadInterests(){
         *,
         profiles:reader_id (
           id,
-          username,
           display_name,
-          full_name,
-          name,
+          username,
           avatar_url
         )
       `)
@@ -1608,7 +1555,7 @@ async function loadInterests(){
       .order(
         "created_at",
         {
-          ascending:true
+          ascending:false
         }
       );
 
@@ -1625,10 +1572,6 @@ async function loadInterests(){
 }
 
 
-/* =========================================================
-   ASSIGNMENTS
-========================================================= */
-
 async function loadAssignments(){
 
   const {
@@ -1641,10 +1584,8 @@ async function loadAssignments(){
         *,
         profiles:reader_id (
           id,
-          username,
           display_name,
-          full_name,
-          name,
+          username,
           avatar_url
         )
       `)
@@ -1655,7 +1596,7 @@ async function loadAssignments(){
       .order(
         "accepted_at",
         {
-          ascending:true
+          ascending:false
         }
       );
 
@@ -1672,10 +1613,6 @@ async function loadAssignments(){
 }
 
 
-/* =========================================================
-   MANUSCRIPTS
-========================================================= */
-
 async function loadManuscripts(){
 
   const {
@@ -1683,9 +1620,7 @@ async function loadManuscripts(){
     error
   } =
     await supabaseClient
-      .from(
-        "beta_manuscripts"
-      )
+      .from("beta_manuscripts")
       .select("*")
       .eq(
         "project_id",
@@ -1710,10 +1645,6 @@ async function loadManuscripts(){
 
 }
 
-
-/* =========================================================
-   REWARD
-========================================================= */
 
 async function loadReward(){
 
@@ -1754,15 +1685,55 @@ async function loadReward(){
 }
 
 
-/* =========================================================
-   RENDER
-========================================================= */
-
 function render(){
+
+  $("loading")
+    .classList
+    .add(
+      "hidden"
+    );
+
+  $("projectContent")
+    .classList
+    .remove(
+      "hidden"
+    );
+
+
+  $("projectTitle").textContent =
+    project.title ||
+    "Untitled Beta Project";
+
+
+  $("projectBlurb").textContent =
+    project.blurb ||
+    "No project description has been added yet.";
+
+
+  $("projectStatus").textContent =
+    String(
+      project.status ||
+      "draft"
+    ).toUpperCase();
+
+
+  const analyticsUrl =
+    "beta-analytics.html?id=" +
+    encodeURIComponent(
+      projectId
+    );
+
+
+  $("analyticsLink").href =
+    analyticsUrl;
+
+  $("analyticsSideLink").href =
+    analyticsUrl;
+
 
   renderStats();
   renderRound();
-  renderApplicants();
+  renderPendingReaders();
   renderReaders();
   renderManuscripts();
   renderReward();
@@ -1770,89 +1741,63 @@ function render(){
 }
 
 
-/* =========================================================
-   STATS
-========================================================= */
-
 function renderStats(){
 
   const pending =
     interests.filter(
-      interest =>
-        interest.status ===
+      row =>
+        row.status ===
         "pending" &&
         (
           !currentRound ||
-          !interest.round_id ||
-          interest.round_id ===
-          currentRound.id
+          row.round_id ===
+            currentRound.id
         )
+    );
+
+
+  const currentAssignments =
+    assignments.filter(
+      row =>
+        !currentRound ||
+        row.round_id ===
+          currentRound.id
     );
 
 
   const active =
-    assignments.filter(
-      assignment =>
-        (
-          assignment.status ===
-            "accepted" ||
-          assignment.status ===
-            "reading"
-        ) &&
-        (
-          !currentRound ||
-          assignment.round_id ===
-          currentRound.id
-        )
+    currentAssignments.filter(
+      row =>
+        row.status ===
+          "accepted" ||
+        row.status ===
+          "reading"
     );
 
 
   const completed =
-    assignments.filter(
-      assignment =>
-        assignment.status ===
-          "completed" &&
-        (
-          !currentRound ||
-          assignment.round_id ===
-          currentRound.id
-        )
+    currentAssignments.filter(
+      row =>
+        row.status ===
+        "completed"
     );
 
 
-  $("pendingCount")
-    .textContent =
-      String(
-        pending.length
-      );
+  $("pendingCount").textContent =
+    pending.length;
 
+  $("readerCount").textContent =
+    active.length;
 
-  $("readerCount")
-    .textContent =
-      String(
-        active.length
-      );
+  $("completedCount").textContent =
+    completed.length;
 
-
-  $("completedCount")
-    .textContent =
-      String(
-        completed.length
-      );
-
-
-  $("roundNumber")
-    .textContent =
-      currentRound
-        ?.round_number ||
-      "—";
+  $("roundNumber").textContent =
+    currentRound?.round_number ||
+    "—";
 
 }
 
-
-/* =========================================================
-   ROUND FORM
-========================================================= */
 
 function renderRound(){
 
@@ -1861,42 +1806,35 @@ function renderRound(){
     $("roundName").value =
       "";
 
-    $("roundDeadline").value =
+    $("roundDescription").value =
       "";
 
     $("roundStatus").value =
       "draft";
 
-    $("roundDescription").value =
+    $("roundDeadline").value =
       "";
 
-    $("saveRoundButton")
-      .disabled =
-        true;
+    $("saveRoundButton").disabled =
+      true;
 
     return;
 
   }
 
 
-  $("saveRoundButton")
-    .disabled =
-      false;
+  $("saveRoundButton").disabled =
+    false;
 
 
   $("roundName").value =
     currentRound.name ||
-    `Round ${
-      currentRound.round_number
-    }`;
+    `Round ${currentRound.round_number}`;
 
 
-  $("roundDeadline").value =
-    currentRound.deadline
-      ? String(
-          currentRound.deadline
-        ).slice(0,10)
-      : "";
+  $("roundDescription").value =
+    currentRound.description ||
+    "";
 
 
   $("roundStatus").value =
@@ -1904,33 +1842,43 @@ function renderRound(){
     "draft";
 
 
-  $("roundDescription").value =
-    currentRound.description ||
-    "";
+  $("roundDeadline").value =
+    currentRound.deadline
+      ? String(
+          currentRound.deadline
+        ).slice(
+          0,
+          10
+        )
+      : "";
+
+}
+  function readerName(profile){
+
+  return (
+    profile?.display_name ||
+    profile?.username ||
+    "Beta Reader"
+  );
 
 }
 
 
-/* =========================================================
-   APPLICANTS
-========================================================= */
-
-function renderApplicants(){
+function renderPendingReaders(){
 
   const holder =
-    $("applicantList");
+    $("pendingReaderList");
 
 
   const pending =
     interests.filter(
-      interest =>
-        interest.status ===
+      row =>
+        row.status ===
         "pending" &&
         (
           !currentRound ||
-          !interest.round_id ||
-          interest.round_id ===
-          currentRound.id
+          row.round_id ===
+            currentRound.id
         )
     );
 
@@ -1950,142 +1898,120 @@ function renderApplicants(){
 
 
   holder.innerHTML =
-    "";
+    pending.map(
+      interest => {
+
+        const name =
+          readerName(
+            interest.profiles
+          );
 
 
-  pending.forEach(
-    interest => {
+        return `
+          <div class="reader">
 
-      const readerProfile =
-        interest.profiles;
+            <div class="reader-top">
 
+              <div>
 
-      const name =
-        getDisplayName(
-          readerProfile,
-          "Beta Reader"
-        );
+                <div class="reader-name">
+                  ${escapeHtml(name)}
+                </div>
 
+                <div class="reader-meta">
+                  Beta-reader application
+                </div>
 
-      const card =
-        document.createElement(
-          "div"
-        );
-
-
-      card.className =
-        "reader";
-
-
-      card.innerHTML =
-        `
-          <div class="reader-top">
-
-            <div>
-
-              <div class="reader-name">
-                ${escapeHtml(name)}
               </div>
 
-              <div class="reader-meta">
-                Applied ${
-                  escapeHtml(
-                    formatDate(
-                      interest.created_at
-                    )
-                  )
-                }
-              </div>
+              <span class="status">
+                Pending
+              </span>
 
             </div>
 
-            <span class="status">
-              Pending
-            </span>
-
-          </div>
-
-          ${
-            interest.message
-              ? `
+            ${
+              interest.message
+                ? `
                   <div class="reader-message">
                     ${escapeHtml(
                       interest.message
                     )}
                   </div>
                 `
-              : ""
-          }
+                : ""
+            }
 
-          <div class="reader-actions">
+            <div class="reader-actions">
 
-            <button
-              class="small-button accept"
-              type="button"
-              data-accept-interest="${
-                escapeHtml(
+              <button
+                class="small-button accept"
+                type="button"
+                data-accept="${escapeHtml(
                   interest.id
-                )
-              }"
-            >
-              Accept
-            </button>
+                )}"
+              >
+                Accept Reader
+              </button>
 
-            <button
-              class="small-button danger"
-              type="button"
-              data-decline-interest="${
-                escapeHtml(
+              <button
+                class="small-button danger"
+                type="button"
+                data-decline="${escapeHtml(
                   interest.id
-                )
-              }"
-            >
-              Decline
-            </button>
+                )}"
+              >
+                Decline
+              </button>
+
+            </div>
 
           </div>
         `;
 
+      }
+    ).join("");
 
-      card
-        .querySelector(
-          "[data-accept-interest]"
-        )
-        .addEventListener(
+
+  holder
+    .querySelectorAll(
+      "[data-accept]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
           "click",
           () =>
             acceptReader(
-              interest.id
+              button.dataset.accept
             )
         );
 
+      }
+    );
 
-      card
-        .querySelector(
-          "[data-decline-interest]"
-        )
-        .addEventListener(
+
+  holder
+    .querySelectorAll(
+      "[data-decline]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
           "click",
           () =>
             declineReader(
-              interest.id
+              button.dataset.decline
             )
         );
 
-
-      holder.appendChild(
-        card
-      );
-
-    }
-  );
+      }
+    );
 
 }
 
-
-/* =========================================================
-   ACCEPTED READERS
-========================================================= */
 
 function renderReaders(){
 
@@ -2095,16 +2021,16 @@ function renderReaders(){
 
   const readers =
     assignments.filter(
-      assignment =>
-        assignment.status !==
-          "removed" &&
-        assignment.status !==
-          "withdrawn" &&
+      row =>
         (
           !currentRound ||
-          assignment.round_id ===
-          currentRound.id
-        )
+          row.round_id ===
+            currentRound.id
+        ) &&
+        row.status !==
+          "removed" &&
+        row.status !==
+          "withdrawn"
     );
 
 
@@ -2123,151 +2049,87 @@ function renderReaders(){
 
 
   holder.innerHTML =
-    "";
+    readers.map(
+      assignment => {
+
+        const name =
+          readerName(
+            assignment.profiles
+          );
 
 
-  readers.forEach(
-    assignment => {
-
-      const readerProfile =
-        assignment.profiles;
-
-
-      const name =
-        getDisplayName(
-          readerProfile,
-          "Beta Reader"
-        );
-
-
-      const progress =
-        Math.max(
-          0,
-          Math.min(
-            100,
-            Number(
-              assignment.progress_percent ||
-              0
+        const progress =
+          Math.max(
+            0,
+            Math.min(
+              100,
+              Number(
+                assignment.progress_percent ||
+                0
+              )
             )
-          )
-        );
+          );
 
 
-      const card =
-        document.createElement(
-          "div"
-        );
+        return `
+          <div class="reader">
 
+            <div class="reader-top">
 
-      card.className =
-        "reader";
+              <div>
 
+                <div class="reader-name">
+                  ${escapeHtml(name)}
+                </div>
 
-      card.innerHTML =
-        `
-          <div class="reader-top">
-
-            <div>
-
-              <div class="reader-name">
-                ${escapeHtml(name)}
-              </div>
-
-              <div class="reader-meta">
-                ${
-                  escapeHtml(
+                <div class="reader-meta">
+                  ${escapeHtml(
                     assignment.status ||
                     "accepted"
-                  )
-                }
-                · Accepted ${
-                  escapeHtml(
-                    formatDate(
-                      assignment.accepted_at
-                    )
-                  )
-                }
+                  )}
+                </div>
+
               </div>
+
+              <span class="status">
+                ${Math.round(progress)}%
+              </span>
 
             </div>
 
-            <span class="status">
-              ${Math.round(progress)}%
-            </span>
+            <div class="progress">
 
-          </div>
+              <div
+                class="progress-bar"
+                style="width:${progress}%"
+              ></div>
 
-          <div class="progress">
-            <div
-              class="progress-bar"
-              style="width:${progress}%"
-            ></div>
-          </div>
+            </div>
 
-          <div class="reader-actions">
+            <div class="reader-actions">
 
-            <a
-              class="small-button secondary"
-              href="beta-reader.html?assignment=${
-                encodeURIComponent(
-                  assignment.id
-                )
-              }"
-              style="text-decoration:none"
-            >
-              Reader View
-            </a>
+              <a
+                class="small-button secondary"
+                href="beta-reader.html?assignment=${
+                  encodeURIComponent(
+                    assignment.id
+                  )
+                }"
+                style="text-decoration:none"
+              >
+                Reader View
+              </a>
+
+            </div>
 
           </div>
         `;
 
-
-      holder.appendChild(
-        card
-      );
-
-    }
-  );
+      }
+    ).join("");
 
 }
 
-
-/* =========================================================
-   MANUSCRIPT STATUS
-========================================================= */
-
-function manuscriptStatusLabel(
-  manuscript
-){
-
-  const status =
-    manuscript.processing_status ||
-    "pending";
-
-
-  if(status === "ready"){
-    return "Ready";
-  }
-
-
-  if(status === "processing"){
-    return "Processing";
-  }
-
-
-  if(status === "failed"){
-    return "Processing Failed";
-  }
-
-
-  return "Waiting to Process";
-
-}
-
-
-/* =========================================================
-   RENDER MANUSCRIPTS
-========================================================= */
 
 function renderManuscripts(){
 
@@ -2293,39 +2155,33 @@ function renderManuscripts(){
 
 
   holder.innerHTML =
-    "";
+    manuscripts.map(
+      manuscript => {
+
+        const status =
+          manuscript.processing_status ||
+          "pending";
 
 
-  manuscripts.forEach(
-    manuscript => {
-
-      const item =
-        document.createElement(
-          "div"
-        );
+        const canProcess =
+          manuscriptCanProcess(
+            manuscript
+          );
 
 
-      item.className =
-        "manuscript";
-
-
-      const status =
-        manuscript.processing_status ||
-        "pending";
-
-
-      const retryButton =
-        status === "failed" ||
-        status === "pending"
-          ? `
+        const processButton =
+          canProcess &&
+          (
+            status === "pending" ||
+            status === "failed"
+          )
+            ? `
               <button
                 class="small-button secondary"
                 type="button"
-                data-process-manuscript="${
-                  escapeHtml(
-                    manuscript.id
-                  )
-                }"
+                data-process="${escapeHtml(
+                  manuscript.id
+                )}"
               >
                 ${
                   status === "failed"
@@ -2334,137 +2190,139 @@ function renderManuscripts(){
                 }
               </button>
             `
-          : "";
+            : "";
 
 
-      item.innerHTML =
-        `
-          <div class="reader-top">
-
-            <div>
-
-              <div class="manuscript-name">
+        const processingError =
+          manuscript.processing_error
+            ? `
+              <div
+                class="reader-message"
+                style="color:var(--danger)"
+              >
                 ${escapeHtml(
-                  manuscript.original_filename ||
-                  "Manuscript"
+                  manuscript.processing_error
                 )}
               </div>
+            `
+            : "";
 
-              <div class="manuscript-meta">
-                Version ${
-                  Number(
-                    manuscript.version_number ||
-                    1
-                  )
-                }
-                · ${
-                  escapeHtml(
-                    formatBytes(
+
+        return `
+          <div class="manuscript">
+
+            <div class="reader-top">
+
+              <div>
+
+                <div class="manuscript-name">
+                  ${escapeHtml(
+                    manuscript.original_filename ||
+                    "Manuscript"
+                  )}
+                </div>
+
+                <div class="manuscript-meta">
+                  Version ${
+                    Number(
+                      manuscript.version_number ||
+                      1
+                    )
+                  }
+                  ·
+                  ${escapeHtml(
+                    fileSize(
                       manuscript.file_size
                     )
-                  )
-                }
-                · ${
-                  manuscript.active
-                    ? "Active"
-                    : "Archived"
-                }
+                  )}
+                  ·
+                  ${
+                    manuscript.active
+                      ? "Active"
+                      : "Archived"
+                  }
+                </div>
+
+                ${processingError}
+
               </div>
 
-              ${
-                manuscript.processing_error
-                  ? `
-                      <div
-                        class="reader-message"
-                        style="color:var(--danger)"
-                      >
-                        ${escapeHtml(
-                          manuscript.processing_error
-                        )}
-                      </div>
-                    `
-                  : ""
-              }
+              <span class="status">
+                ${escapeHtml(
+                  processingLabel(
+                    status
+                  )
+                )}
+              </span>
 
             </div>
 
-            <span class="status">
-              ${escapeHtml(
-                manuscriptStatusLabel(
-                  manuscript
-                )
-              )}
-            </span>
-
-          </div>
-
-          ${
-            retryButton
-              ? `
+            ${
+              processButton
+                ? `
                   <div class="reader-actions">
-                    ${retryButton}
+                    ${processButton}
                   </div>
                 `
-              : ""
-          }
+                : ""
+            }
+
+          </div>
         `;
 
-
-      const processButton =
-        item.querySelector(
-          "[data-process-manuscript]"
-        );
+      }
+    ).join("");
 
 
-      if(processButton){
+  holder
+    .querySelectorAll(
+      "[data-process]"
+    )
+    .forEach(
+      button => {
 
-        processButton
-          .addEventListener(
-            "click",
-            async () => {
+        button.addEventListener(
+          "click",
+          async () => {
 
-              processButton.disabled =
-                true;
-
-
-              try{
-
-                await processManuscript(
-                  manuscript.id
-                );
+            button.disabled =
+              true;
 
 
-                await loadManuscripts();
+            try{
 
-                renderManuscripts();
+              await processManuscript(
+                button.dataset.process
+              );
 
-              }
-              finally{
+              await loadManuscripts();
 
-                processButton.disabled =
-                  false;
-
-              }
+              renderManuscripts();
 
             }
-          );
+            catch(error){
+
+              console.error(
+                "Manual manuscript processing:",
+                error
+              );
+
+            }
+            finally{
+
+              button.disabled =
+                false;
+
+            }
+
+          }
+        );
 
       }
-
-
-      holder.appendChild(
-        item
-      );
-
-    }
-  );
+    );
 
 }
 
-
-/* =========================================================
-   REWARD FORM
-========================================================= */
 
 function renderReward(){
 
@@ -2475,7 +2333,7 @@ function renderReward(){
 
 
   $("rewardCoins").value =
-    String(
+    Number(
       reward?.coin_amount ||
       0
     );
@@ -2484,32 +2342,34 @@ function renderReward(){
   $("requireCompletion").value =
     reward?.require_completion ===
       false
-        ? "false"
-        : "true";
+      ? "false"
+      : "true";
 
 
   $("requireFeedback").value =
     reward?.require_feedback ===
       false
-        ? "false"
-        : "true";
+      ? "false"
+      : "true";
 
 
-  $("saveRewardButton")
-    .disabled =
-      !currentRound;
+  $("saveRewardButton").disabled =
+    !currentRound;
 
 }
 
 
-/* =========================================================
-   SAVE ROUND
-========================================================= */
-
 async function saveRound(){
 
   if(!currentRound){
+
+    showToast(
+      "There is no current beta round to save.",
+      "error"
+    );
+
     return;
+
   }
 
 
@@ -2524,28 +2384,28 @@ async function saveRound(){
   try{
 
     const payload = {
+
       name:
         $("roundName")
           .value
           .trim() ||
-        `Round ${
-          currentRound.round_number
-        }`,
+        `Round ${currentRound.round_number}`,
 
-      deadline:
-        $("roundDeadline")
-          .value ||
+      description:
+        $("roundDescription")
+          .value
+          .trim() ||
         null,
 
       status:
         $("roundStatus")
           .value,
 
-      description:
-        $("roundDescription")
-          .value
-          .trim() ||
+      deadline:
+        $("roundDeadline")
+          .value ||
         null
+
     };
 
 
@@ -2577,20 +2437,22 @@ async function saveRound(){
 
     await loadRounds();
 
+    await loadReward();
+
     render();
 
   }
   catch(error){
 
     console.error(
-      "Save beta round:",
+      "Save round:",
       error
     );
 
 
     showToast(
       error.message ||
-      "DogEar couldn't save this round.",
+      "DogEar couldn't save this beta round.",
       "error"
     );
 
@@ -2605,25 +2467,9 @@ async function saveRound(){
 }
 
 
-/* =========================================================
-   ACCEPT READER
-========================================================= */
-
 async function acceptReader(
   interestId
 ){
-
-  if(!currentRound){
-
-    showToast(
-      "This project does not have a current beta round.",
-      "error"
-    );
-
-    return;
-
-  }
-
 
   try{
 
@@ -2669,7 +2515,7 @@ async function acceptReader(
 
     showToast(
       error.message ||
-      "DogEar couldn't accept this reader.",
+      "DogEar couldn't accept this beta reader.",
       "error"
     );
 
@@ -2677,10 +2523,6 @@ async function acceptReader(
 
 }
 
-
-/* =========================================================
-   DECLINE READER
-========================================================= */
 
 async function declineReader(
   interestId
@@ -2735,16 +2577,12 @@ async function declineReader(
 }
 
 
-/* =========================================================
-   SAVE REWARD
-========================================================= */
-
 async function saveReward(){
 
   if(!currentRound){
 
     showToast(
-      "Create a beta round before configuring rewards.",
+      "There is no current beta round.",
       "error"
     );
 
@@ -2764,6 +2602,7 @@ async function saveReward(){
   try{
 
     const payload = {
+
       round_id:
         currentRound.id,
 
@@ -2793,6 +2632,7 @@ async function saveReward(){
         $("requireFeedback")
           .value ===
         "true"
+
     };
 
 
@@ -2835,7 +2675,7 @@ async function saveReward(){
   catch(error){
 
     console.error(
-      "Save beta reward:",
+      "Save reward:",
       error
     );
 
@@ -2855,32 +2695,26 @@ async function saveReward(){
   }
 
 }
-  /* =========================================================
-   PROCESS MANUSCRIPT
+
+
+/* =========================================================
+   MANUSCRIPT PROCESSING
+   IMPORTANT:
+   The Supabase dashboard displays the function as
+   "process-beta-manuscript", but its deployed slug is
+   "clever-endpoint".
 ========================================================= */
 
 async function processManuscript(
   manuscriptId
 ){
 
+  showToast(
+    "Processing manuscript..."
+  );
+
+
   try{
-
-    showToast(
-      "Processing manuscript..."
-    );
-
-
-    /*
-      IMPORTANT:
-
-      The Supabase function's DISPLAY NAME is:
-        process-beta-manuscript
-
-      But the actual deployed FUNCTION SLUG / endpoint is:
-        clever-endpoint
-
-      Supabase functions.invoke() requires the deployed slug.
-    */
 
     const {
       data,
@@ -2902,10 +2736,9 @@ async function processManuscript(
     if(error){
 
       console.error(
-        "Beta manuscript function invocation:",
+        "Edge Function invocation error:",
         error
       );
-
 
       throw error;
 
@@ -2913,8 +2746,7 @@ async function processManuscript(
 
 
     if(
-      data &&
-      data.success === false
+      data?.success === false
     ){
 
       throw new Error(
@@ -2953,9 +2785,7 @@ async function processManuscript(
   }
 
 }
-
-
-/* =========================================================
+  /* =========================================================
    UPLOAD MANUSCRIPT
 ========================================================= */
 
@@ -2963,7 +2793,6 @@ async function uploadManuscript(){
 
   const input =
     $("manuscriptFile");
-
 
   const file =
     input.files?.[0];
@@ -2993,27 +2822,22 @@ async function uploadManuscript(){
   }
 
 
+  const filename =
+    String(
+      file.name || ""
+    );
+
   const extension =
-    (
-      file.name
-        .split(".")
-        .pop() ||
-      ""
-    )
-      .toLowerCase();
-
-
-  const supported =
-    [
-      "txt",
-      "md"
-    ];
+    filename
+      .split(".")
+      .pop()
+      ?.toLowerCase() ||
+    "";
 
 
   if(
-    !supported.includes(
-      extension
-    )
+    extension !== "txt" &&
+    extension !== "md"
   ){
 
     showToast(
@@ -3029,7 +2853,6 @@ async function uploadManuscript(){
   const button =
     $("uploadButton");
 
-
   button.disabled =
     true;
 
@@ -3037,9 +2860,8 @@ async function uploadManuscript(){
   let uploadedPath =
     null;
 
-
-  let createdManuscriptId =
-    null;
+  let databaseRecordCreated =
+    false;
 
 
   try{
@@ -3049,21 +2871,11 @@ async function uploadManuscript(){
     );
 
 
-    /*
-      Generate the manuscript UUID in the browser so the
-      private Storage path and beta_manuscripts row use
-      the same manuscript identifier.
-    */
-
     const manuscriptId =
       crypto.randomUUID();
 
 
-    createdManuscriptId =
-      manuscriptId;
-
-
-    const previousVersions =
+    const versionNumbers =
       manuscripts
         .map(
           manuscript =>
@@ -3073,29 +2885,23 @@ async function uploadManuscript(){
             )
         )
         .filter(
-          value =>
+          number =>
             Number.isFinite(
-              value
+              number
             )
         );
 
 
     const versionNumber =
-      previousVersions.length
+      versionNumbers.length
         ? Math.max(
-            ...previousVersions
+            ...versionNumbers
           ) + 1
         : 1;
 
 
-    /*
-      Keep the filename recognizable while preventing
-      path separators and odd URL characters from
-      becoming part of the Storage object path.
-    */
-
-    const safeName =
-      file.name
+    const safeFilename =
+      filename
         .replace(
           /[^a-zA-Z0-9._-]+/g,
           "-"
@@ -3105,22 +2911,22 @@ async function uploadManuscript(){
           "-"
         )
         .replace(
-          /^-|-$/g,
+          /^-+|-+$/g,
           ""
         ) ||
       `manuscript-${versionNumber}.${extension}`;
 
 
     /*
-      Migration #9 validates this exact structure:
+      Private Storage path:
 
-      owner-user-id /
+      owner-id /
       project-id /
       manuscript-id /
       filename
     */
 
-    const storagePath =
+    uploadedPath =
       `${
         currentUser.id
       }/${
@@ -3128,17 +2934,22 @@ async function uploadManuscript(){
       }/${
         manuscriptId
       }/${
-        safeName
+        safeFilename
       }`;
 
 
-    uploadedPath =
-      storagePath;
+    const mimeType =
+      file.type ||
+      (
+        extension === "md"
+          ? "text/markdown"
+          : "text/plain"
+      );
 
 
     const {
       error:
-        uploadError
+        storageError
     } =
       await supabaseClient
         .storage
@@ -3146,7 +2957,7 @@ async function uploadManuscript(){
           "beta-manuscripts"
         )
         .upload(
-          storagePath,
+          uploadedPath,
           file,
           {
             cacheControl:
@@ -3156,40 +2967,36 @@ async function uploadManuscript(){
               false,
 
             contentType:
-              file.type ||
-              (
-                extension === "md"
-                  ? "text/markdown"
-                  : "text/plain"
-              )
+              mimeType
           }
         );
 
 
-    if(uploadError){
-      throw uploadError;
+    if(storageError){
+      throw storageError;
     }
 
 
     /*
-      Create the manuscript metadata record.
+      Create the new manuscript metadata record BEFORE
+      archiving the previous active manuscript.
 
-      processing_status starts as "pending".
-      The Edge Function changes it to processing,
-      then ready or failed.
+      That way a failed insert cannot leave the project
+      without an active manuscript.
     */
 
     const {
       data:
-        insertedManuscript,
+        newManuscript,
       error:
-        insertError
+        manuscriptError
     } =
       await supabaseClient
         .from(
           "beta_manuscripts"
         )
         .insert({
+
           id:
             manuscriptId,
 
@@ -3206,18 +3013,13 @@ async function uploadManuscript(){
             versionNumber,
 
           original_filename:
-            file.name,
+            filename,
 
           storage_path:
-            storagePath,
+            uploadedPath,
 
           mime_type:
-            file.type ||
-            (
-              extension === "md"
-                ? "text/markdown"
-                : "text/plain"
-            ),
+            mimeType,
 
           file_size:
             file.size,
@@ -3230,23 +3032,24 @@ async function uploadManuscript(){
 
           processing_error:
             null
+
         })
         .select("*")
         .single();
 
 
-    if(insertError){
-      throw insertError;
+    if(manuscriptError){
+      throw manuscriptError;
     }
 
 
-    /*
-      The new manuscript exists successfully before we
-      archive the previous version.
+    databaseRecordCreated =
+      true;
 
-      This avoids leaving the project with no active
-      manuscript if creation of the new database row
-      fails.
+
+    /*
+      Archive any older active manuscript only after
+      the new manuscript row exists successfully.
     */
 
     const previousActiveIds =
@@ -3281,23 +3084,13 @@ async function uploadManuscript(){
           .in(
             "id",
             previousActiveIds
-          )
-          .eq(
-            "project_id",
-            projectId
           );
 
 
       if(archiveError){
 
-        /*
-          The new manuscript itself is valid, so an
-          archive failure should not delete it. Log the
-          problem and continue processing.
-        */
-
         console.warn(
-          "Previous manuscript archive:",
+          "Could not archive previous manuscript:",
           archiveError
         );
 
@@ -3311,22 +3104,25 @@ async function uploadManuscript(){
 
 
     /*
-      Put the newly created record on screen immediately
-      so the author can see that the upload succeeded.
+      Immediately put the manuscript on screen.
     */
 
     manuscripts =
       [
-        insertedManuscript,
+        newManuscript,
+
         ...manuscripts.map(
           manuscript => ({
+
             ...manuscript,
+
             active:
               previousActiveIds.includes(
                 manuscript.id
               )
                 ? false
                 : manuscript.active
+
           })
         )
       ];
@@ -3341,9 +3137,12 @@ async function uploadManuscript(){
 
 
     /*
-      Invoke the private manuscript processor.
+      Start the Edge Function.
 
-      This now calls the actual deployed Supabase slug:
+      IMPORTANT:
+      processManuscript() now invokes the actual
+      deployed Supabase function slug:
+
       clever-endpoint
     */
 
@@ -3359,12 +3158,11 @@ async function uploadManuscript(){
     ){
 
       /*
-        Do NOT delete the uploaded manuscript when
+        Do not remove the private manuscript if
         processing fails.
 
-        The original stays private in Storage and the
-        metadata remains available so the author can
-        use Retry Processing / Process Now.
+        Keeping the file and database row allows
+        Process Now / Retry Processing to be used.
       */
 
       console.error(
@@ -3376,9 +3174,8 @@ async function uploadManuscript(){
 
 
     /*
-      Reload the manuscript record after processing so
-      Waiting / Processing / Ready / Failed reflects
-      the database state written by the Edge Function.
+      Reload from Supabase so the processing status
+      written by the Edge Function appears on screen.
     */
 
     await loadManuscripts();
@@ -3395,37 +3192,50 @@ async function uploadManuscript(){
 
 
     /*
-      If Storage succeeded but creation of the database
-      manuscript row did not, clean up the orphaned
-      private Storage object.
+      If the Storage object was uploaded but creation
+      of beta_manuscripts failed, remove the orphaned
+      private file.
 
-      Once a beta_manuscripts row exists, however, we
-      keep both the row and original file so processing
-      can safely be retried.
+      Once the database record exists we deliberately
+      retain the file so processing can be retried.
     */
 
     if(
       uploadedPath &&
-      !createdManuscriptId
+      !databaseRecordCreated
     ){
 
       try{
 
-        await supabaseClient
-          .storage
-          .from(
-            "beta-manuscripts"
-          )
-          .remove([
-            uploadedPath
-          ]);
+        const {
+          error:
+            cleanupError
+        } =
+          await supabaseClient
+            .storage
+            .from(
+              "beta-manuscripts"
+            )
+            .remove([
+              uploadedPath
+            ]);
+
+
+        if(cleanupError){
+
+          console.warn(
+            "Storage cleanup failed:",
+            cleanupError
+          );
+
+        }
 
       }
-      catch(cleanupError){
+      catch(cleanupException){
 
         console.warn(
-          "Manuscript cleanup:",
-          cleanupError
+          "Storage cleanup exception:",
+          cleanupException
         );
 
       }
@@ -3451,27 +3261,24 @@ async function uploadManuscript(){
 
 
 /* =========================================================
-   REFRESH PROJECT
+   REFRESH
 ========================================================= */
 
 async function refresh(){
 
   await loadProject();
 
-
   await loadRounds();
 
 
-  /*
-    These queries only require the project and authenticated
-    user. Loading them after the current round has been
-    resolved also makes the render state deterministic.
-  */
-
   await Promise.all([
+
     loadInterests(),
+
     loadAssignments(),
+
     loadManuscripts()
+
   ]);
 
 
@@ -3509,24 +3316,7 @@ async function initialize(){
     }
 
 
-    await loadProfile();
-
-
     await refresh();
-
-
-    $("loading")
-      .classList
-      .add(
-        "hidden"
-      );
-
-
-    $("projectContent")
-      .classList
-      .remove(
-        "hidden"
-      );
 
   }
   catch(error){
@@ -3617,7 +3407,7 @@ async function initialize(){
 
 
 /* =========================================================
-   BUTTON EVENTS
+   EVENT LISTENERS
 ========================================================= */
 
 $("saveRoundButton")
@@ -3642,7 +3432,7 @@ $("uploadButton")
 
 
 /* =========================================================
-   AUTH STATE
+   AUTH CHANGES
 ========================================================= */
 
 supabaseClient
@@ -3654,7 +3444,8 @@ supabaseClient
     ) => {
 
       if(
-        event === "SIGNED_OUT" ||
+        event ===
+          "SIGNED_OUT" ||
         !session
       ){
 
