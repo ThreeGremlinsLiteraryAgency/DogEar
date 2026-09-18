@@ -847,7 +847,8 @@ h1{
             id="roundNumber"
           >1</div>
         </div>
-              </div>
+
+      </div>
 
     </section>
 
@@ -1111,6 +1112,7 @@ h1{
             </span>
 
           </div>
+                    </div>
 
           <div class="panel-body">
 
@@ -1982,7 +1984,7 @@ async function loadReward(){
 
   rewardRecord =
     data ||
-        null;
+    null;
 
 }
 
@@ -2198,1019 +2200,14 @@ function renderRound(){
       }`;
 
   $("roundStatus")
-    .value =
-      currentRound.status ||
-      "draft";
-
-  $("roundDeadline")
-    .value =
-      currentRound.deadline
-        ? String(
-            currentRound.deadline
-          ).slice(
-            0,
-            10
-          )
-        : "";
-
-  $("roundDescription")
-    .value =
-      currentRound.description ||
-      "";
-
-}
-
-
-/* =========================================================
-   RENDER MANUSCRIPTS
-========================================================= */
-
-function renderManuscripts(){
-
-  const holder =
-    $("manuscriptList");
-
-  holder.innerHTML =
-    "";
-
-  if(
-    !manuscripts.length
-  ){
-
-    holder.innerHTML =
-      `
-        <div
-          class="empty"
-          style="margin-top:14px"
-        >
-          No manuscript has been uploaded yet.
-        </div>
-      `;
-
-    return;
-
-  }
-
-  manuscripts.forEach(
-    manuscript => {
-
-      const card =
-        document.createElement(
-          "div"
-        );
-
-      card.className =
-        "manuscript";
-
-      const status =
-        manuscript.processing_status ||
-        "pending";
-
-      const active =
-        manuscript.is_active
-          ? " · Active"
-          : "";
-
-      const size =
-        Number(
-          manuscript.file_size ||
-          0
-        );
-
-      card.innerHTML =
-        `
-          <div class="manuscript-name">
-            ${escapeHtml(
-              manuscript.original_filename ||
-              manuscript.file_name ||
-              "Manuscript"
-            )}
-          </div>
-
-          <div class="manuscript-meta">
-            Version
-            ${escapeHtml(
-              manuscript.version_number ||
-              1
-            )}
-            ${
-              size
-                ? ` · ${escapeHtml(
-                    size.toLocaleString()
-                  )} B`
-                : ""
-            }
-            ${escapeHtml(active)}
-          </div>
-
-          <div
-            class="manuscript-meta"
-            style="margin-top:7px"
-          >
-            Processing:
-            <strong>
-              ${escapeHtml(
-                status.toUpperCase()
-              )}
-            </strong>
-          </div>
-
-          ${
-            manuscript.processing_error
-              ? `
-                  <div
-                    class="reader-message"
-                    style="color:var(--danger)"
-                  >
-                    ${escapeHtml(
-                      manuscript.processing_error
-                    )}
-                  </div>
-                `
-              : ""
-          }
-        `;
-
-      holder.appendChild(
-        card
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   RENDER PENDING READERS
-========================================================= */
-
-function renderPendingReaders(){
-
-  const holder =
-    $("pendingReaders");
-
-  holder.innerHTML =
-    "";
-
-  const pending =
-    assignments.filter(
-      assignment =>
-        assignment.status ===
-        "pending"
-    );
-
-  if(!pending.length){
-
-    holder.innerHTML =
-      `
-        <div class="empty">
-          No pending reader applications.
-        </div>
-      `;
-
-    return;
-
-  }
-
-  pending.forEach(
-    assignment => {
-
-      const card =
-        document.createElement(
-          "div"
-        );
-
-      card.className =
-        "reader";
-
-      const displayName =
-        readerDisplayName(
-          assignment
-        );
-
-      const username =
-        readerUsername(
-          assignment
-        );
-
-      const message =
-        assignment.application_message ||
-        assignment.message ||
-        assignment.reader_message ||
-        "";
-
-      card.innerHTML =
-        `
-          <div class="reader-top">
-
-            <div>
-
-              <div class="reader-name">
-                ${escapeHtml(
-                  displayName
-                )}
-              </div>
-
-              <div class="reader-meta">
-                ${
-                  username
-                    ? `@${escapeHtml(
-                        username
-                      )} · `
-                    : ""
-                }
-                Applied
-                ${escapeHtml(
-                  formatDate(
-                    assignment.created_at
-                  )
-                )}
-              </div>
-
-            </div>
-
-            <span class="status">
-              Pending
-            </span>
-
-          </div>
-
-          ${
-            message
-              ? `
-                  <div class="reader-message">
-                    ${escapeHtml(
-                      message
-                    )}
-                  </div>
-                `
-              : ""
-          }
-
-          <div class="reader-actions">
-
-            <button
-              class="small-button accept"
-              type="button"
-              data-accept-reader="${escapeHtml(
-                assignment.id
-              )}"
-            >
-              Accept Reader
-            </button>
-
-            <button
-              class="small-button danger"
-              type="button"
-              data-decline-reader="${escapeHtml(
-                assignment.id
-              )}"
-            >
-              Decline
-            </button>
-
-          </div>
-        `;
-
-      holder.appendChild(
-        card
-      );
-
-    }
-  );
-
-  holder
-    .querySelectorAll(
-      "[data-accept-reader]"
-    )
-    .forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          () =>
-            acceptReader(
-              button.dataset
-                .acceptReader
-            )
-        );
-
-      }
-    );
-
-  holder
-    .querySelectorAll(
-      "[data-decline-reader]"
-    )
-    .forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          () =>
-            declineReader(
-              button.dataset
-                .declineReader
-            )
-        );
-
-      }
-    );
-
-}
-
-
-/* =========================================================
-   RENDER ACCEPTED READERS
-========================================================= */
-
-function renderAcceptedReaders(){
-
-  const holder =
-    $("acceptedReaders");
-
-  holder.innerHTML =
-    "";
-
-  const accepted =
-    assignments.filter(
-      assignment =>
-        [
-          "accepted",
-          "reading",
-          "completed"
-        ].includes(
-          assignment.status
-        )
-    );
-
-  if(!accepted.length){
-
-    holder.innerHTML =
-      `
-        <div class="empty">
-          No accepted beta readers yet.
-        </div>
-      `;
-
-    return;
-
-  }
-
-  accepted.forEach(
-    assignment => {
-
-      const card =
-        document.createElement(
-          "div"
-        );
-
-      card.className =
-        "reader";
-
-      const displayName =
-        readerDisplayName(
-          assignment
-        );
-
-      const username =
-        readerUsername(
-          assignment
-        );
-
-      const progress =
-        safePercent(
-          assignment.progress_percent ||
-          assignment.progress ||
-          (
-            assignment.status ===
-            "completed"
-              ? 100
-              : 0
-          )
-        );
-
-      const readerUrl =
-        `beta-reader.html?assignment=${encodeURIComponent(
-          assignment.id
-        )}`;
-
-      card.innerHTML =
-        `
-          <div class="reader-top">
-
-            <div>
-
-              <div class="reader-name">
-                ${escapeHtml(
-                  displayName
-                )}
-              </div>
-
-              <div class="reader-meta">
-                ${
-                  username
-                    ? `@${escapeHtml(
-                        username
-                      )} · `
-                    : ""
-                }
-
-                ${escapeHtml(
-                  assignment.status ||
-                  "accepted"
-                )}
-              </div>
-
-            </div>
-
-            <span class="status">
-              ${escapeHtml(
-                assignment.status ||
-                "accepted"
-              )}
-            </span>
-
-          </div>
-
-          <div class="progress">
-
-            <div
-              class="progress-bar"
-              style="width:${progress}%"
-            ></div>
-
-          </div>
-
-          <div class="reader-meta">
-            ${progress}% complete
-          </div>
-
-          <div class="reader-actions">
-
-            <a
-              class="small-button secondary"
-              href="${readerUrl}"
-            >
-              Reader View
-            </a>
-
-          </div>
-        `;
-
-      holder.appendChild(
-        card
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   RENDER AUTHOR-SHARED DOGEARS
-========================================================= */
-
-function renderSharedDogEars(){
-
-  const holder =
-    $("sharedDogEars");
-
-  const count =
-    $("sharedDogEarCount");
-
-  holder.innerHTML =
-    "";
-
-  count.textContent =
-    `${
-      sharedDogEars.length
-    } Shared`;
-
-  if(
-    !sharedDogEars.length
-  ){
-
-    holder.innerHTML =
-      `
-        <div class="empty">
-          No reader DogEars have been shared
-          with you yet.
-          <br><br>
-          Readers' private notes and highlights
-          are never shown here.
-        </div>
-      `;
-
-    return;
-
-  }
-
-  sharedDogEars.forEach(
-    dogear => {
-
-      const card =
-        document.createElement(
-          "article"
-        );
-
-      card.className =
-        "dogear-card";
-
-      const readerName =
-        dogear.reader_display_name ||
-        dogear.reader_username ||
-        "DogEar Reader";
-
-      const username =
-        dogear.reader_username
-          ? `@${dogear.reader_username}`
-          : "";
-
-      const sectionName =
-        dogear.section_title ||
-        (
-          dogear.section_number
-            ? `Section ${dogear.section_number}`
-            : "Manuscript"
-        );
-
-      const type =
-        dogear.annotation_type ||
-        "note";
-
-      const quote =
-        dogear.text_quote ||
-        "";
-
-      const note =
-        dogear.note_text ||
-        "";
-
-      card.innerHTML =
-        `
-          <div class="dogear-card-top">
-
-            <div>
-
-              <div class="dogear-reader">
-                ${escapeHtml(
-                  readerName
-                )}
-              </div>
-
-              <div class="dogear-location">
-
-                ${
-                  username
-                    ? `${escapeHtml(
-                        username
-                      )} · `
-                    : ""
-                }
-
-                ${escapeHtml(
-                  sectionName
-                )}
-
-                ·
-
-                ${escapeHtml(
-                  type
-                )}
-
-              </div>
-
-            </div>
-
-            <span class="status">
-              Shared
-            </span>
-
-          </div>
-
-          ${
-            quote
-              ? `
-                  <div class="dogear-quote">
-                    “${escapeHtml(
-                      quote
-                    )}”
-                  </div>
-                `
-              : ""
-          }
-
-          ${
-            note
-              ? `
-                  <div class="dogear-note">
-                    ${escapeHtml(
-                      note
-                    )}
-                  </div>
-                `
-              : ""
-          }
-
-          <div class="dogear-date">
-            Shared
-            ${escapeHtml(
-              formatDateTime(
-                dogear.created_at
-              )
-            )}
-          </div>
-        `;
-
-      holder.appendChild(
-        card
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   RENDER SUBMITTED READER FEEDBACK
-========================================================= */
-
-function renderSubmittedFeedback(){
-
-  const holder =
-    $("submittedFeedback");
-
-  const count =
-    $("submittedFeedbackCount");
-
-  holder.innerHTML =
-    "";
-
-  count.textContent =
-    `${
-      submittedFeedback.length
-    } Submitted`;
-
-  if(
-    !submittedFeedback.length
-  ){
-
-    holder.innerHTML =
-      `
-        <div class="empty">
-          No readers have submitted their
-          overall feedback yet.
-          <br><br>
-          Reader drafts remain private until
-          the reader chooses Submit Feedback.
-        </div>
-      `;
-
-    return;
-
-  }
-
-  submittedFeedback.forEach(
-    feedback => {
-
-      const card =
-        document.createElement(
-          "article"
-        );
-
-      card.className =
-        "feedback-card";
-
-      const readerName =
-        feedback.reader_display_name ||
-        feedback.reader_username ||
-        "DogEar Reader";
-
-      const username =
-        feedback.reader_username
-          ? `@${feedback.reader_username}`
-          : "";
-
-      const ratingValue =
-        value => {
-
-          const number =
-            Number(value);
-
-          if(
-            !Number.isFinite(number) ||
-            number <= 0
-          ){
-            return "Not rated";
-          }
-
-          return `${number} / 5`;
-
-        };
-
-      const textBlock =
-        (
-          label,
-          value
-        ) => {
-
-          if(
-            !value ||
-            !String(value).trim()
-          ){
-            return "";
-          }
-
-          return `
-            <div class="feedback-text">
-
-              <div class="feedback-text-label">
-                ${escapeHtml(label)}
-              </div>
-
-              <div class="feedback-text-copy">
-                ${escapeHtml(value)}
-              </div>
-
-            </div>
-          `;
-
-        };
-
-      card.innerHTML =
-        `
-          <div class="feedback-card-top">
-
-            <div>
-
-              <div class="feedback-reader">
-                ${escapeHtml(
-                  readerName
-                )}
-              </div>
-
-              <div class="feedback-meta">
-                ${
-                  username
-                    ? `${escapeHtml(
-                        username
-                      )} · `
-                    : ""
-                }
-
-                Submitted
-                ${escapeHtml(
-                  formatDateTime(
-                    feedback.submitted_at
-                  )
-                )}
-              </div>
-
-            </div>
-
-            <span class="status">
-              Submitted
-            </span>
-
-          </div>
-
-          <div class="feedback-ratings">
-
-            <div class="feedback-rating">
-              <div class="feedback-rating-label">
-                Overall
-              </div>
-              <div class="feedback-rating-value">
-                ${escapeHtml(
-                  ratingValue(
-                    feedback.overall_rating
-                  )
-                )}
-              </div>
-            </div>
-
-            <div class="feedback-rating">
-              <div class="feedback-rating-label">
-                Pacing
-              </div>
-              <div class="feedback-rating-value">
-                ${escapeHtml(
-                  ratingValue(
-                    feedback.pacing_rating
-                  )
-                )}
-              </div>
-            </div>
-
-            <div class="feedback-rating">
-              <div class="feedback-rating-label">
-                Character
-              </div>
-              <div class="feedback-rating-value">
-                ${escapeHtml(
-                  ratingValue(
-                    feedback.character_rating
-                  )
-                )}
-              </div>
-            </div>
-
-            <div class="feedback-rating">
-              <div class="feedback-rating-label">
-                Plot
-              </div>
-              <div class="feedback-rating-value">
-                ${escapeHtml(
-                  ratingValue(
-                    feedback.plot_rating
-                  )
-                )}
-              </div>
-            </div>
-
-            <div class="feedback-rating">
-              <div class="feedback-rating-label">
-                Worldbuilding
-              </div>
-              <div class="feedback-rating-value">
-                ${escapeHtml(
-                  ratingValue(
-                    feedback.worldbuilding_rating
-                  )
-                )}
-              </div>
-            </div>
-
-            <div class="feedback-rating">
-              <div class="feedback-rating-label">
-                Romance
-              </div>
-              <div class="feedback-rating-value">
-                ${escapeHtml(
-                  ratingValue(
-                    feedback.romance_rating
-                  )
-                )}
-              </div>
-            </div>
-
-          </div>
-
-          <div class="feedback-text-grid">
-
-            ${textBlock(
-              "What confused you?",
-              feedback.confusion_notes
-            )}
-
-            ${textBlock(
-              "Favorite parts",
-              feedback.favorite_parts
-            )}
-
-            ${textBlock(
-              "What could be improved?",
-              feedback.improvement_notes
-            )}
-
-            ${textBlock(
-              "Anything else?",
-              feedback.general_comments
-            )}
-
-          </div>
-        `;
-
-      holder.appendChild(
-        card
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   RENDER REWARD
-========================================================= */
-
-function renderReward(){
-
-  $("rewardCoins")
-    .value =
-      rewardRecord
-        ?.coins_offered ??
-      rewardRecord
-        ?.coin_amount ??
-      rewardRecord
-        ?.amount ??
-      0;
-
-}
-
-
-/* =========================================================
-   RENDER EVERYTHING
-========================================================= */
-
-function renderAll(){
-
-  renderProjectHeader();
-
-  renderProjectDetails();
-
-  renderRound();
-
-  renderManuscripts();
-
-  renderPendingReaders();
-
-  renderAcceptedReaders();
-
-  renderSharedDogEars();
-
-  renderSubmittedFeedback();
-
-  renderReward();
-
-}
-
-
-/* =========================================================
-   SAVE ROUND
-========================================================= */
-
-async function saveRound(){
-    const button =
-    $("saveRoundButton");
-
-  button.disabled =
-    true;
-
-  try{
-
-    const name =
-      $("roundName")
-        .value
-        .trim() ||
-      "Round 1";
-
-    const status =
-      $("roundStatus")
-        .value;
-
-    const deadline =
-      $("roundDeadline")
-        .value ||
-      null;
-
-    const description =
-      $("roundDescription")
-        .value
-        .trim() ||
-      null;
-
-    if(currentRound){
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from(
-            "beta_rounds"
-          )
-          .update({
-            name,
-            status,
-            deadline,
-            description
-          })
-          .eq(
-            "id",
-            currentRound.id
-          )
-          .eq(
-            "project_id",
-            projectId
-          )
-          .select("*")
-          .single();
-
-      if(error){
+        if(error){
         throw error;
       }
 
       currentRound =
         data;
 
-    }
-    else{
+    }else{
 
       const {
         data,
@@ -3223,19 +2220,13 @@ async function saveRound(){
           .insert({
             project_id:
               projectId,
-
-            round_number:
-              1,
-
+            round_number:1,
             name,
-
             status,
-
             deadline,
-
             description
           })
-          .select("*")
+          .select()
           .single();
 
       if(error){
@@ -3251,14 +2242,11 @@ async function saveRound(){
 
     renderProjectHeader();
 
-    renderProjectDetails();
-
     showToast(
       "Beta round saved."
     );
 
-  }
-  catch(error){
+  }catch(error){
 
     console.error(
       "Save round:",
@@ -3267,12 +2255,11 @@ async function saveRound(){
 
     showToast(
       error.message ||
-      "DogEar couldn't save this beta round.",
+      "DogEar could not save this round.",
       "error"
     );
 
-  }
-  finally{
+  }finally{
 
     button.disabled =
       false;
@@ -3283,216 +2270,226 @@ async function saveRound(){
 
 
 /* =========================================================
-   ACCEPT READER
+   MANUSCRIPT PROCESSING
 ========================================================= */
 
-async function acceptReader(
-  assignmentId
+function normalizeText(
+  text
 ){
 
-  if(!assignmentId){
-    return;
-  }
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .rpc(
-          "accept_beta_reader",
-          {
-            p_assignment_id:
-              assignmentId
-          }
-        );
-
-    if(error){
-      throw error;
-    }
-
-    await loadAssignments();
-
-    renderProjectHeader();
-
-    renderPendingReaders();
-
-    renderAcceptedReaders();
-
-    await Promise.all([
-      loadSharedDogEars(),
-      loadSubmittedFeedback()
-    ]);
-
-    renderSharedDogEars();
-
-    renderSubmittedFeedback();
-
-    showToast(
-      "Reader accepted."
-    );
-
-    return data;
-
-  }
-  catch(error){
-
-    console.error(
-      "Accept reader:",
-      error
-    );
-
-    showToast(
-      error.message ||
-      "DogEar couldn't accept this reader.",
-      "error"
-    );
-
-  }
+  return String(
+    text || ""
+  )
+    .replace(
+      /\r\n/g,
+      "\n"
+    )
+    .replace(
+      /\r/g,
+      "\n"
+    )
+    .replace(
+      /\u0000/g,
+      ""
+    )
+    .trim();
 
 }
 
 
-/* =========================================================
-   DECLINE READER
-========================================================= */
-
-async function declineReader(
-  assignmentId
+function stripMarkdown(
+  text
 ){
 
-  if(!assignmentId){
-    return;
-  }
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .rpc(
-          "decline_beta_reader",
-          {
-            p_assignment_id:
-              assignmentId
-          }
-        );
-
-    if(error){
-      throw error;
-    }
-
-    await loadAssignments();
-
-    renderProjectHeader();
-
-    renderPendingReaders();
-
-    renderAcceptedReaders();
-
-    await Promise.all([
-      loadSharedDogEars(),
-      loadSubmittedFeedback()
-    ]);
-
-    renderSharedDogEars();
-
-    renderSubmittedFeedback();
-
-    showToast(
-      "Reader declined."
+  return String(
+    text || ""
+  )
+    .replace(
+      /^#{1,6}\s+/gm,
+      ""
+    )
+    .replace(
+      /\*\*(.*?)\*\*/g,
+      "$1"
+    )
+    .replace(
+      /__(.*?)__/g,
+      "$1"
+    )
+    .replace(
+      /\*(.*?)\*/g,
+      "$1"
+    )
+    .replace(
+      /_(.*?)_/g,
+      "$1"
+    )
+    .replace(
+      /`([^`]+)`/g,
+      "$1"
+    )
+    .replace(
+      /^\s*>\s?/gm,
+      ""
     );
-
-    return data;
-
-  }
-  catch(error){
-
-    console.error(
-      "Decline reader:",
-      error
-    );
-
-    showToast(
-      error.message ||
-      "DogEar couldn't decline this reader.",
-      "error"
-    );
-
-  }
-
 }
 
 
-/* =========================================================
-   REQUEST MANUSCRIPT PROCESSING
-========================================================= */
-
-async function requestProcessing(
-  manuscriptId
+function splitManuscriptIntoSections(
+  text
 ){
 
-  if(!manuscriptId){
-    return;
+  const normalized =
+    normalizeText(
+      text
+    );
+
+  if(!normalized){
+
+    return [];
+
   }
 
-  const {
-    error
-  } =
-    await supabaseClient
-      .rpc(
-        "request_beta_manuscript_processing",
-        {
-          p_manuscript_id:
-            manuscriptId
-        }
+  const lines =
+    normalized.split(
+      "\n"
+    );
+
+  const sections = [];
+
+  let currentTitle =
+    "Beginning";
+
+  let currentLines = [];
+
+  const chapterPattern =
+    /^\s*(chapter|chap\.?|part|prologue|epilogue)\s+([a-z0-9ivxlcdm]+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)(?:\s*[:\-–—]\s*.*)?\s*$/i;
+
+  const numberedPattern =
+    /^\s*(\d{1,3})\s*$/;
+
+  function pushCurrent(){
+
+    const content =
+      normalizeText(
+        currentLines.join(
+          "\n"
+        )
       );
 
-  if(error){
+    if(!content){
+      return;
+    }
 
-    console.error(
-      "Request processing:",
-      error
-    );
+    sections.push({
+      title:
+        currentTitle,
+      content
+    });
 
   }
+
+  lines.forEach(
+    line => {
+
+      const trimmed =
+        line.trim();
+
+      const isChapter =
+        chapterPattern.test(
+          trimmed
+        ) ||
+        numberedPattern.test(
+          trimmed
+        );
+
+      if(isChapter){
+
+        pushCurrent();
+
+        currentTitle =
+          trimmed;
+
+        currentLines = [];
+
+      }else{
+
+        currentLines.push(
+          line
+        );
+
+      }
+
+    }
+  );
+
+  pushCurrent();
+
+  if(
+    sections.length === 0
+  ){
+
+    sections.push({
+      title:
+        "Manuscript",
+      content:
+        normalized
+    });
+
+  }
+
+  return sections;
 
 }
 
 
-/* =========================================================
-   CALL MANUSCRIPT PROCESSOR
-========================================================= */
-
-async function processManuscript(
-  manuscriptId
+function countWords(
+  text
 ){
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .functions
-      .invoke(
-        "process-beta-manuscript",
-        {
-          body:{
-            manuscript_id:
-              manuscriptId
-          }
-        }
-      );
+  const normalized =
+    String(
+      text || ""
+    )
+      .trim();
 
-  if(error){
-    throw error;
+  if(!normalized){
+    return 0;
   }
 
-  return data;
+  return normalized
+    .split(
+      /\s+/
+    )
+    .filter(
+      Boolean
+    )
+    .length;
+
+}
+
+
+function makeStoragePath(
+  file
+){
+
+  const safeName =
+    String(
+      file.name ||
+      "manuscript.txt"
+    )
+      .replace(
+        /[^a-zA-Z0-9._-]/g,
+        "-"
+      );
+
+  return [
+    currentUser.id,
+    projectId,
+    currentRound?.id ||
+      "no-round",
+    `${Date.now()}-${safeName}`
+  ].join("/");
 
 }
 
@@ -3526,7 +2523,33 @@ async function uploadManuscript(){
   if(!currentRound){
 
     showToast(
-      "Save the beta round before uploading a manuscript.",
+      "Save a beta round before uploading a manuscript.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  const extension =
+    String(
+      file.name
+    )
+      .toLowerCase()
+      .split(".")
+      .pop();
+
+  if(
+    ![
+      "txt",
+      "md"
+    ].includes(
+      extension
+    )
+  ){
+
+    showToast(
+      "DogEar currently accepts TXT and Markdown manuscripts.",
       "error"
     );
 
@@ -3537,7 +2560,58 @@ async function uploadManuscript(){
   button.disabled =
     true;
 
+  button.textContent =
+    "Uploading...";
+
+  let manuscriptRecord =
+    null;
+
+  let storagePath =
+    null;
+
   try{
+
+    let rawText =
+      await file.text();
+
+    if(
+      extension === "md"
+    ){
+
+      rawText =
+        stripMarkdown(
+          rawText
+        );
+
+    }
+
+    const cleanText =
+      normalizeText(
+        rawText
+      );
+
+    if(!cleanText){
+
+      throw new Error(
+        "This manuscript file is empty."
+      );
+
+    }
+
+    const parsedSections =
+      splitManuscriptIntoSections(
+        cleanText
+      );
+
+    if(
+      !parsedSections.length
+    ){
+
+      throw new Error(
+        "DogEar could not find readable manuscript text."
+      );
+
+    }
 
     const nextVersion =
       manuscripts.length
@@ -3553,24 +2627,10 @@ async function uploadManuscript(){
           ) + 1
         : 1;
 
-    const manuscriptId =
-      crypto.randomUUID();
-
-    const cleanName =
-      file.name
-        .replace(
-          /[^a-zA-Z0-9._-]/g,
-          "_"
-        );
-
-    /*
-      Migration #9 uses this private storage layout:
-
-      owner / project / manuscript / filename
-    */
-
-    const storagePath =
-      `${currentUser.id}/${projectId}/${manuscriptId}/${cleanName}`;
+    storagePath =
+      makeStoragePath(
+        file
+      );
 
     const {
       error:uploadError
@@ -3584,15 +2644,14 @@ async function uploadManuscript(){
           storagePath,
           file,
           {
-            cacheControl:
-              "3600",
-
-            upsert:
-              false,
-
+            upsert:false,
             contentType:
               file.type ||
-              "application/octet-stream"
+              (
+                extension === "md"
+                  ? "text/markdown"
+                  : "text/plain"
+              )
           }
         );
 
@@ -3600,41 +2659,72 @@ async function uploadManuscript(){
       throw uploadError;
     }
 
-    const manuscriptRow = {
+    /*
+      Previous versions remain in the private storage bucket
+      for project history, but only one manuscript is active
+      for the current project/round.
+    */
 
-      id:
-        manuscriptId,
+    const activeVersions =
+      manuscripts.filter(
+        manuscript =>
+          manuscript.active
+      );
 
+    for(
+      const oldVersion of
+      activeVersions
+    ){
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from(
+            "beta_manuscripts"
+          )
+          .update({
+            active:false
+          })
+          .eq(
+            "id",
+            oldVersion.id
+          );
+
+      if(error){
+        throw error;
+      }
+
+    }
+
+    const manuscriptPayload = {
       project_id:
         projectId,
-
       round_id:
         currentRound.id,
-
-      owner_id:
+      uploaded_by:
         currentUser.id,
-
-      version_number:
-        nextVersion,
-
       original_filename:
         file.name,
-
+      storage_bucket:
+        "beta-manuscripts",
       storage_path:
         storagePath,
-
+      file_type:
+        extension,
       file_size:
         file.size,
-
-      mime_type:
-        file.type ||
-        "application/octet-stream",
-
-      is_active:
-        true,
-
+      version_number:
+        nextVersion,
+      active:true,
       processing_status:
-        "pending"
+        "processing",
+      word_count:
+        countWords(
+          cleanText
+        ),
+      chapter_count:
+        parsedSections.length
     };
 
     const {
@@ -3646,15 +2736,123 @@ async function uploadManuscript(){
           "beta_manuscripts"
         )
         .insert(
-          manuscriptRow
+          manuscriptPayload
         )
-        .select("*")
+        .select()
         .single();
 
     if(insertError){
+      throw insertError;
+    }
+
+    manuscriptRecord =
+      newManuscript;
+
+    const sectionRows =
+      parsedSections.map(
+        (
+          section,
+          index
+        ) => ({
+          manuscript_id:
+            manuscriptRecord.id,
+          section_number:
+            index + 1,
+          title:
+            section.title ||
+            `Chapter ${index + 1}`,
+          content_text:
+            section.content,
+          word_count:
+            countWords(
+              section.content
+            )
+        })
+      );
+
+    const {
+      error:sectionError
+    } =
+      await supabaseClient
+        .from(
+          "beta_manuscript_sections"
+        )
+        .insert(
+          sectionRows
+        );
+
+    if(sectionError){
+      throw sectionError;
+    }
+
+    const {
+      error:readyError
+    } =
+      await supabaseClient
+        .from(
+          "beta_manuscripts"
+        )
+        .update({
+          processing_status:
+            "ready",
+          processed_at:
+            new Date()
+              .toISOString(),
+          processing_error:
+            null
+        })
+        .eq(
+          "id",
+          manuscriptRecord.id
+        );
+
+    if(readyError){
+      throw readyError;
+    }
+
+    await loadManuscripts();
+
+    renderManuscripts();
+
+    input.value = "";
+
+    showToast(
+      "Manuscript uploaded and prepared for the DogEar reader."
+    );
+
+  }catch(error){
+
+    console.error(
+      "Upload manuscript:",
+      error
+    );
+
+    if(
+      manuscriptRecord?.id
+    ){
+
+      await supabaseClient
+        .from(
+          "beta_manuscripts"
+        )
+        .update({
+          processing_status:
+            "failed",
+          processing_error:
+            error.message ||
+            "Processing failed."
+        })
+        .eq(
+          "id",
+          manuscriptRecord.id
+        );
+
+    }else if(
+      storagePath
+    ){
 
       /*
-        If the database row fails after the file upload,
+        If storage succeeded but the database insert did not,
         remove the orphaned private file.
       */
 
@@ -3667,121 +2865,226 @@ async function uploadManuscript(){
           storagePath
         ]);
 
-      throw insertError;
-
     }
-
-    /*
-      Older manuscript versions remain in the project,
-      but only the newest uploaded version is active.
-    */
-
-    const olderIds =
-      manuscripts
-        .filter(
-          manuscript =>
-            manuscript.is_active
-        )
-        .map(
-          manuscript =>
-            manuscript.id
-        );
-
-    if(
-      olderIds.length
-    ){
-
-      const {
-        error:deactivateError
-      } =
-        await supabaseClient
-          .from(
-            "beta_manuscripts"
-          )
-          .update({
-            is_active:false
-          })
-          .in(
-            "id",
-            olderIds
-          )
-          .eq(
-            "project_id",
-            projectId
-          );
-
-      if(deactivateError){
-
-        console.error(
-          "Deactivate previous manuscripts:",
-          deactivateError
-        );
-
-      }
-
-    }
-
-    await requestProcessing(
-      newManuscript.id
-    );
 
     showToast(
-      "Manuscript uploaded. DogEar is processing it."
+      error.message ||
+      "DogEar could not upload this manuscript.",
+      "error"
     );
 
-    /*
-      Invoke the deployed processor immediately.
-      The processor itself performs ownership and
-      manuscript checks before extracting sections.
-    */
+  }finally{
 
-    try{
+    button.disabled =
+      false;
 
-      await processManuscript(
-        newManuscript.id
-      );
-
-    }
-    catch(processError){
-
-      console.error(
-        "Process manuscript:",
-        processError
-      );
-
-      showToast(
-        "The manuscript uploaded, but processing did not finish. You can retry processing later.",
-        "error"
-      );
-
-    }
-
-    input.value =
-      "";
-
-    await loadManuscripts();
-
-    renderManuscripts();
+    button.textContent =
+      "Upload Manuscript";
 
   }
-  catch(error){
+
+}
+
+
+/* =========================================================
+   ACCEPT READER
+========================================================= */
+
+async function acceptReader(
+  assignmentId
+){
+
+  const assignment =
+    assignments.find(
+      item =>
+        item.id ===
+        assignmentId
+    );
+
+  if(!assignment){
+    return;
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "beta_assignments"
+        )
+        .update({
+          status:
+            "accepted",
+          accepted_at:
+            new Date()
+              .toISOString()
+        })
+        .eq(
+          "id",
+          assignmentId
+        )
+        .eq(
+          "project_id",
+          projectId
+        )
+        .select(`
+          *,
+          profiles:reader_id(
+            id,
+            username,
+            display_name,
+            avatar_url
+          )
+        `)
+        .single();
+
+    if(error){
+      throw error;
+    }
+
+    const index =
+      assignments.findIndex(
+        item =>
+          item.id ===
+          assignmentId
+      );
+
+    assignments[index] =
+      data;
+
+    renderProjectHeader();
+
+    renderPendingReaders();
+
+    renderAcceptedReaders();
+
+    showToast(
+      "Reader accepted."
+    );
+
+  }catch(error){
 
     console.error(
-      "Upload manuscript:",
+      "Accept reader:",
       error
     );
 
     showToast(
       error.message ||
-      "DogEar couldn't upload this manuscript.",
+      "DogEar could not accept this reader.",
       "error"
     );
 
   }
-  finally{
 
-    button.disabled =
-      false;
+}
+
+
+/* =========================================================
+   DECLINE READER
+========================================================= */
+
+async function declineReader(
+  assignmentId
+){
+
+  const assignment =
+    assignments.find(
+      item =>
+        item.id ===
+        assignmentId
+    );
+
+  if(!assignment){
+    return;
+  }
+
+  const confirmed =
+    window.confirm(
+      `Decline ${readerDisplayName(
+        assignment
+      )}'s beta-reading application?`
+    );
+
+  if(!confirmed){
+    return;
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "beta_assignments"
+        )
+        .update({
+          status:
+            "declined",
+          declined_at:
+            new Date()
+              .toISOString()
+        })
+        .eq(
+          "id",
+          assignmentId
+        )
+        .eq(
+          "project_id",
+          projectId
+        )
+        .select(`
+          *,
+          profiles:reader_id(
+            id,
+            username,
+            display_name,
+            avatar_url
+          )
+        `)
+        .single();
+
+    if(error){
+      throw error;
+    }
+
+    const index =
+      assignments.findIndex(
+        item =>
+          item.id ===
+          assignmentId
+      );
+
+    assignments[index] =
+      data;
+
+    renderProjectHeader();
+
+    renderPendingReaders();
+
+    renderAcceptedReaders();
+
+    showToast(
+      "Reader declined."
+    );
+
+  }catch(error){
+
+    console.error(
+      "Decline reader:",
+      error
+    );
+
+    showToast(
+      error.message ||
+      "DogEar could not decline this reader.",
+      "error"
+    );
 
   }
 
@@ -3794,13 +3097,10 @@ async function uploadManuscript(){
 
 async function saveReward(){
 
-  const button =
-    $("saveRewardButton");
-
   if(!currentRound){
 
     showToast(
-      "Save the beta round first.",
+      "Save a beta round first.",
       "error"
     );
 
@@ -3808,7 +3108,10 @@ async function saveReward(){
 
   }
 
-  const coins =
+  const button =
+    $("saveRewardButton");
+
+  const amount =
     Math.max(
       0,
       Math.floor(
@@ -3825,53 +3128,13 @@ async function saveReward(){
 
   try{
 
-    /*
-      beta_round_rewards stores the beta-round offer.
-      It does NOT directly move coins.
-
-      Actual coin movement must remain connected to
-      DogEar's existing audited coin ledger.
-    */
-
     if(rewardRecord){
 
-      const updatePayload =
-        {};
-
-      if(
-        Object.prototype
-          .hasOwnProperty
-          .call(
-            rewardRecord,
-            "coins_offered"
-          )
-      ){
-
-        updatePayload
-          .coins_offered =
-            coins;
-
-      }
-      else if(
-        Object.prototype
-          .hasOwnProperty
-          .call(
-            rewardRecord,
-            "coin_amount"
-          )
-      ){
-
-        updatePayload
-          .coin_amount =
-            coins;
-
-      }
-      else{
-
-        updatePayload.amount =
-          coins;
-
-      }
+      /*
+        Keep compatibility with the reward row that was
+        loaded. The canonical DogEar beta schema uses
+        coins_offered.
+      */
 
       const {
         data,
@@ -3881,14 +3144,15 @@ async function saveReward(){
           .from(
             "beta_round_rewards"
           )
-          .update(
-            updatePayload
-          )
+          .update({
+            coins_offered:
+              amount
+          })
           .eq(
             "id",
             rewardRecord.id
           )
-          .select("*")
+          .select()
           .single();
 
       if(error){
@@ -3898,13 +3162,7 @@ async function saveReward(){
       rewardRecord =
         data;
 
-    }
-    else{
-
-      /*
-        Migration #8 created beta_round_rewards.
-        The normal DogEar field is coins_offered.
-      */
+    }else{
 
       const {
         data,
@@ -3917,14 +3175,12 @@ async function saveReward(){
           .insert({
             project_id:
               projectId,
-
             round_id:
               currentRound.id,
-
             coins_offered:
-              coins
+              amount
           })
-          .select("*")
+          .select()
           .single();
 
       if(error){
@@ -3942,8 +3198,7 @@ async function saveReward(){
       "Reader reward saved."
     );
 
-  }
-  catch(error){
+  }catch(error){
 
     console.error(
       "Save reward:",
@@ -3952,12 +3207,11 @@ async function saveReward(){
 
     showToast(
       error.message ||
-      "DogEar couldn't save the reader reward.",
+      "DogEar could not save this reward.",
       "error"
     );
 
-  }
-  finally{
+  }finally{
 
     button.disabled =
       false;
@@ -3968,198 +3222,28 @@ async function saveReward(){
 
 
 /* =========================================================
-   REFRESH AUTHOR READER DATA
-========================================================= */
-
-async function refreshAuthorReaderData(){
-
-  try{
-
-    await Promise.all([
-      loadSharedDogEars(),
-      loadSubmittedFeedback()
-    ]);
-
-    renderSharedDogEars();
-
-    renderSubmittedFeedback();
-
-  }
-  catch(error){
-
-    console.error(
-      "Refresh author reader data:",
-      error
-    );
-
-  }
-
-}
-
-
-/* =========================================================
    EVENT LISTENERS
 ========================================================= */
 
-function bindEvents(){
-
-  $("saveRoundButton")
-    .addEventListener(
-      "click",
-      saveRound
-    );
-
-
-  $("uploadButton")
-    .addEventListener(
-      "click",
-      uploadManuscript
-    );
-
-
-  $("saveRewardButton")
-    .addEventListener(
-      "click",
-      saveReward
-    );
-
-
-  /*
-    Refresh author-visible reader data whenever this tab
-    becomes active again.
-
-    This includes both shared DogEars and submitted
-    structured reader feedback.
-  */
-
-  document.addEventListener(
-    "visibilitychange",
-    () => {
-
-      if(
-        document.visibilityState ===
-        "visible"
-      ){
-
-        refreshAuthorReaderData();
-
-      }
-
-    }
+$("saveRoundButton")
+  .addEventListener(
+    "click",
+    saveRound
   );
 
 
-  /*
-    Also refresh when the browser window regains focus.
-  */
-
-  window.addEventListener(
-    "focus",
-    () => {
-
-      refreshAuthorReaderData();
-
-    }
-  );
-  }
-
-
-/* =========================================================
-   SHOW PROJECT
-========================================================= */
-
-function showProject(){
-
-  $("loading")
-    .classList
-    .add(
-      "hidden"
-    );
-
-  $("projectContent")
-    .classList
-    .remove(
-      "hidden"
-    );
-
-}
-
-
-/* =========================================================
-   SHOW LOAD ERROR
-========================================================= */
-
-function showLoadError(
-  error
-){
-
-  console.error(
-    "Beta project:",
-    error
+$("uploadButton")
+  .addEventListener(
+    "click",
+    uploadManuscript
   );
 
-  $("projectContent")
-    .classList
-    .add(
-      "hidden"
-    );
 
-  $("loading")
-    .classList
-    .remove(
-      "hidden"
-    );
-
-  $("loading")
-    .innerHTML =
-      `
-        <div
-          style="
-            max-width:620px;
-            margin:auto;
-          "
-        >
-
-          <div
-            style="
-              color:var(--danger);
-              font-size:20px;
-              margin-bottom:10px;
-            "
-          >
-            DogEar couldn't open this beta project.
-          </div>
-
-          <div
-            style="
-              line-height:1.7;
-            "
-          >
-            ${escapeHtml(
-              error?.message ||
-              "Unknown project error."
-            )}
-          </div>
-
-          <div
-            style="
-              margin-top:22px;
-            "
-          >
-
-            <a
-              class="button secondary"
-              href="beta-reading.html"
-            >
-              Back to Beta Reading
-            </a>
-
-          </div>
-
-        </div>
-      `;
-
-}
+$("saveRewardButton")
+  .addEventListener(
+    "click",
+    saveReward
+  );
 
 
 /* =========================================================
@@ -4173,65 +3257,54 @@ async function initialize(){
     if(!projectId){
 
       throw new Error(
-        "This DogEar link does not contain a project ID."
+        "This beta project link is missing its project ID."
       );
 
     }
 
-
-    $("loading")
-      .textContent =
-        "Checking your DogEar account…";
-
-
-    const loggedIn =
+    const hasSession =
       await loadSession();
 
-
-    if(!loggedIn){
+    if(!hasSession){
       return;
     }
 
-
-    $("loading")
-      .textContent =
-        "Loading your profile…";
-
-
     await loadProfile();
-
-
-    $("loading")
-      .textContent =
-        "Opening your beta project…";
-
 
     await loadProjectData();
 
-
     renderAll();
 
+    $("loading")
+      .classList
+      .add("hidden");
 
-    bindEvents();
+    $("projectContent")
+      .classList
+      .remove("hidden");
 
+  }catch(error){
 
-    showProject();
-
-  }
-  catch(error){
-
-    showLoadError(
+    console.error(
+      "Beta project initialization:",
       error
+    );
+
+    $("loading")
+      .textContent =
+        error.message ||
+        "DogEar could not load this beta project.";
+
+    showToast(
+      error.message ||
+      "DogEar could not load this beta project.",
+      "error"
     );
 
   }
 
 }
 
-
-/* =========================================================
-   START
-========================================================= */
 
 initialize();
 
