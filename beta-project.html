@@ -824,17 +824,18 @@ h1{
 
               <div class="upload-note">
                 Original manuscript files are stored privately.
-                Beta readers do not receive access to the uploaded
-                DOCX, PDF or EPUB file itself. The DogEar reader
-                will use protected manuscript sections after the
-                manuscript is processed.
+                Beta readers never receive the original uploaded
+                file. DogEar converts the manuscript into protected
+                reader sections. TXT and Markdown are supported by
+                the current processor; DOCX, EPUB and PDF support
+                will be added to the ingestion system next.
               </div>
 
               <input
                 class="file-input"
                 id="manuscriptFile"
                 type="file"
-                accept=".docx,.pdf,.epub,.txt,.md"
+                accept=".txt,.md,text/plain,text/markdown"
               >
 
               <div class="row-actions">
@@ -1091,7 +1092,6 @@ h1{
   id="toast"
 ></div>
 
-
 <script>
 
 const SUPABASE_URL =
@@ -1106,11 +1106,9 @@ const supabaseClient =
     SUPABASE_PUBLISHABLE_KEY
   );
 
-
 const $ =
   id =>
     document.getElementById(id);
-
 
 const params =
   new URLSearchParams(
@@ -1119,7 +1117,6 @@ const params =
 
 const projectId =
   params.get("id");
-
 
 let currentUser = null;
 let currentProfile = null;
@@ -1134,9 +1131,7 @@ let manuscripts = [];
 let reward = null;
 
 let toastTimer = null;
-
-
-function escapeHtml(value){
+  function escapeHtml(value){
 
   return String(value ?? "")
     .replaceAll("&","&amp;")
@@ -1231,6 +1226,56 @@ function fileSize(bytes){
   return (
     value / 1048576
   ).toFixed(1) + " MB";
+
+}
+
+
+function processingLabel(status){
+
+  switch(status){
+
+    case "pending":
+      return "Waiting to process";
+
+    case "processing":
+      return "Processing";
+
+    case "ready":
+      return "Ready";
+
+    case "failed":
+      return "Processing failed";
+
+    default:
+      return "Waiting to process";
+
+  }
+
+}
+
+
+function manuscriptCanProcess(
+  manuscript
+){
+
+  const filename =
+    String(
+      manuscript.original_filename ||
+      ""
+    ).toLowerCase();
+
+  const mime =
+    String(
+      manuscript.mime_type ||
+      ""
+    ).toLowerCase();
+
+  return (
+    filename.endsWith(".txt") ||
+    filename.endsWith(".md") ||
+    mime === "text/plain" ||
+    mime === "text/markdown"
+  );
 
 }
 
@@ -1995,9 +2040,7 @@ function renderReaders(){
     );
 
 }
-
-
-function renderManuscripts(){
+  function renderManuscripts(){
 
   const holder =
     $("manuscriptList");
@@ -2022,41 +2065,177 @@ function renderManuscripts(){
 
   holder.innerHTML =
     manuscripts.map(
-      manuscript =>
-        `
+      manuscript => {
+
+        const status =
+          manuscript.processing_status ||
+          "pending";
+
+        const canRetry =
+          status === "failed" &&
+          manuscriptCanProcess(
+            manuscript
+          );
+
+        const sections =
+          Number(
+            manuscript.chapter_count ||
+            0
+          );
+
+        const words =
+          Number(
+            manuscript.word_count ||
+            0
+          );
+
+        const processingDetails =
+          status === "ready"
+            ? `
+                <div class="manuscript-meta">
+                  ${sections.toLocaleString()}
+                  ${
+                    sections === 1
+                      ? "section"
+                      : "sections"
+                  }
+                  ·
+                  ${words.toLocaleString()}
+                  words
+                </div>
+              `
+            : "";
+
+
+        const errorDetails =
+          status === "failed" &&
+          manuscript.processing_error
+            ? `
+                <div
+                  class="reader-message"
+                  style="color:var(--danger)"
+                >
+                  ${escapeHtml(
+                    manuscript.processing_error
+                  )}
+                </div>
+              `
+            : "";
+
+
+        const retryButton =
+          canRetry
+            ? `
+                <div class="reader-actions">
+
+                  <button
+                    class="small-button secondary"
+                    type="button"
+                    data-retry-processing="${escapeHtml(
+                      manuscript.id
+                    )}"
+                  >
+                    Retry Processing
+                  </button>
+
+                </div>
+              `
+            : "";
+
+
+        return `
           <div class="manuscript">
 
-            <div class="manuscript-name">
-              ${escapeHtml(
-                manuscript.original_filename ||
-                "Manuscript"
-              )}
+            <div class="reader-top">
+
+              <div>
+
+                <div class="manuscript-name">
+                  ${escapeHtml(
+                    manuscript.original_filename ||
+                    "Manuscript"
+                  )}
+                </div>
+
+                <div class="manuscript-meta">
+                  Version
+                  ${Number(
+                    manuscript.version_number ||
+                    1
+                  )}
+                  ·
+                  ${escapeHtml(
+                    fileSize(
+                      manuscript.file_size
+                    )
+                  )}
+                  ·
+                  ${
+                    manuscript.active
+                      ? "Active"
+                      : "Archived"
+                  }
+                </div>
+
+              </div>
+
+              <span class="status">
+                ${escapeHtml(
+                  processingLabel(
+                    status
+                  )
+                )}
+              </span>
+
             </div>
 
-            <div class="manuscript-meta">
-              Version
-              ${Number(
-                manuscript.version_number ||
-                1
-              )}
-              ·
-              ${escapeHtml(
-                fileSize(
-                  manuscript.file_size
-                )
-              )}
-              ·
-              ${
-                manuscript.active
-                  ? "Active"
-                  : "Archived"
-              }
-            </div>
+            ${processingDetails}
+
+            ${errorDetails}
+
+            ${retryButton}
 
           </div>
-        `
+        `;
+
+      }
     )
     .join("");
+
+
+  holder
+    .querySelectorAll(
+      "[data-retry-processing]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          async () => {
+
+            const manuscriptId =
+              button.dataset
+                .retryProcessing;
+
+            button.disabled =
+              true;
+
+            button.textContent =
+              "Processing...";
+
+            await processManuscript(
+              manuscriptId,
+              {
+                showSuccessToast:true
+              }
+            );
+
+          }
+        );
+
+      }
+    );
 
 }
 
@@ -2418,6 +2597,208 @@ async function saveReward(){
 }
 
 
+/*
+  Calls the deployed Supabase Edge Function.
+
+  The function verifies ownership again on the server,
+  downloads the original from the private bucket,
+  parses the manuscript, writes protected reader sections,
+  and changes processing_status to ready.
+*/
+
+async function processManuscript(
+  manuscriptId,
+  options = {}
+){
+
+  const {
+    showSuccessToast = true
+  } =
+    options;
+
+
+  try{
+
+    /*
+      Immediately reflect the processing state in the
+      dashboard while the Edge Function is running.
+    */
+
+    const localManuscript =
+      manuscripts.find(
+        row =>
+          row.id === manuscriptId
+      );
+
+
+    if(localManuscript){
+
+      localManuscript.processing_status =
+        "processing";
+
+      localManuscript.processing_error =
+        null;
+
+      renderManuscripts();
+
+    }
+
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .functions
+        .invoke(
+          "process-beta-manuscript",
+          {
+            body:{
+              manuscript_id:
+                manuscriptId
+            }
+          }
+        );
+
+
+    if(error){
+
+      let message =
+        error.message ||
+        "The manuscript processor returned an error.";
+
+
+      /*
+        Supabase function errors may contain the actual
+        function response in the context object.
+      */
+
+      try{
+
+        if(
+          error.context &&
+          typeof error.context.json ===
+            "function"
+        ){
+
+          const details =
+            await error.context.json();
+
+          if(details?.error){
+            message =
+              details.error;
+          }
+
+        }
+
+      }
+      catch(contextError){
+
+        console.warn(
+          "Could not read Edge Function error body:",
+          contextError
+        );
+
+      }
+
+
+      throw new Error(
+        message
+      );
+
+    }
+
+
+    if(
+      !data ||
+      data.success !== true
+    ){
+
+      throw new Error(
+        data?.error ||
+        "DogEar could not process the manuscript."
+      );
+
+    }
+
+
+    await loadManuscripts();
+    renderManuscripts();
+
+
+    if(showSuccessToast){
+
+      showToast(
+        `Manuscript ready — ${
+          Number(
+            data.sections ||
+            0
+          ).toLocaleString()
+        } ${
+          Number(
+            data.sections ||
+            0
+          ) === 1
+            ? "section"
+            : "sections"
+        }, ${
+          Number(
+            data.word_count ||
+            0
+          ).toLocaleString()
+        } words.`
+      );
+
+    }
+
+
+    return data;
+
+  }
+  catch(error){
+
+    console.error(
+      "Manuscript processing:",
+      error
+    );
+
+
+    /*
+      Reload from Supabase because the Edge Function records
+      its own failed state and processing_error in the
+      manuscript record.
+    */
+
+    try{
+
+      await loadManuscripts();
+      renderManuscripts();
+
+    }
+    catch(refreshError){
+
+      console.error(
+        "Could not refresh manuscript status:",
+        refreshError
+      );
+
+    }
+
+
+    showToast(
+      error?.message ||
+      "DogEar couldn't process the manuscript.",
+      "error"
+    );
+
+
+    return null;
+
+  }
+
+}
+
+
 async function uploadManuscript(){
 
   const file =
@@ -2449,6 +2830,31 @@ async function uploadManuscript(){
   }
 
 
+  /*
+    The current Edge Function intentionally supports only
+    TXT and Markdown while we verify the entire private
+    ingestion pipeline.
+  */
+
+  const lowerName =
+    file.name.toLowerCase();
+
+
+  if(
+    !lowerName.endsWith(".txt") &&
+    !lowerName.endsWith(".md")
+  ){
+
+    showToast(
+      "For this test version, upload a TXT or Markdown manuscript.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
   const button =
     $("uploadButton");
 
@@ -2463,10 +2869,16 @@ async function uploadManuscript(){
   let uploadedPath =
     null;
 
+  let databaseRecordCreated =
+    false;
+
+  let manuscriptId =
+    null;
+
 
   try{
 
-    const manuscriptId =
+    manuscriptId =
       crypto.randomUUID();
 
 
@@ -2502,6 +2914,12 @@ async function uploadManuscript(){
       safeName;
 
 
+    /*
+      STEP 1:
+      Upload the author's original manuscript into the
+      private beta-manuscripts bucket.
+    */
+
     const {
       error:uploadError
     } =
@@ -2526,8 +2944,8 @@ async function uploadManuscript(){
 
 
     /*
-      Mark previous manuscripts inactive before registering
-      this version. The original files remain private.
+      STEP 2:
+      Archive previous active manuscript versions.
     */
 
     if(manuscripts.length){
@@ -2556,6 +2974,15 @@ async function uploadManuscript(){
 
     }
 
+
+    /*
+      STEP 3:
+      Register the new manuscript in the database.
+
+      processing_status starts as pending. Migration #10
+      supplies the default as well, but setting it here makes
+      the intended state explicit.
+    */
 
     const {
       error:recordError
@@ -2587,13 +3014,20 @@ async function uploadManuscript(){
 
           mime_type:
             file.type ||
-            "application/octet-stream",
+            (
+              lowerName.endsWith(".md")
+                ? "text/markdown"
+                : "text/plain"
+            ),
 
           file_size:
             file.size,
 
           active:
-            true
+            true,
+
+          processing_status:
+            "pending"
 
         });
 
@@ -2603,44 +3037,71 @@ async function uploadManuscript(){
     }
 
 
+    databaseRecordCreated =
+      true;
+
+
     $("manuscriptFile").value =
       "";
 
 
-    showToast(
-      "Manuscript uploaded privately."
-    );
-
+    /*
+      Load the newly-created manuscript immediately so the
+      author can see it transition from pending to processing.
+    */
 
     await loadManuscripts();
     renderManuscripts();
 
 
+    showToast(
+      "Manuscript uploaded. DogEar is processing it now."
+    );
+
+
+    button.textContent =
+      "Processing...";
+
+
     /*
-      IMPORTANT:
+      STEP 4:
+      Invoke process-beta-manuscript.
 
-      The original file is now safely stored.
-
-      The next DogEar manuscript-ingestion step will convert
-      supported manuscript formats into protected
-      beta_manuscript_sections for the Kindle-style reader.
-
-      We deliberately do NOT create a public or signed download
-      URL here.
+      From this point onward, failure does NOT delete the
+      original upload. Keeping it lets the author use the
+      Retry Processing button without uploading the book
+      again.
     */
+
+    await processManuscript(
+      manuscriptId,
+      {
+        showSuccessToast:true
+      }
+    );
 
   }
   catch(error){
 
-    console.error(error);
+    console.error(
+      "Manuscript upload:",
+      error
+    );
 
 
     /*
-      If the database registration fails after storage upload,
-      remove the orphaned file.
+      Only clean up the private Storage object if creation
+      failed BEFORE the beta_manuscripts database record was
+      successfully registered.
+
+      Once registered, the manuscript is retained so failed
+      processing can be retried.
     */
 
-    if(uploadedPath){
+    if(
+      uploadedPath &&
+      !databaseRecordCreated
+    ){
 
       try{
 
@@ -2684,9 +3145,7 @@ async function uploadManuscript(){
   }
 
 }
-
-
-async function refresh(){
+  async function refresh(){
 
   await loadProject();
 
