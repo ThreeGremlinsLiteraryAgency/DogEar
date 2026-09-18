@@ -467,6 +467,101 @@ h1{
   letter-spacing:.06em;
 }
 
+/* =========================================================
+   SUBMITTED READER FEEDBACK
+========================================================= */
+
+.feedback-list{
+  display:grid;
+  gap:12px;
+}
+
+.feedback-card{
+  padding:16px;
+  border:1px solid var(--line-soft);
+  border-radius:13px;
+  background:#0c0f0d;
+}
+
+.feedback-card-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:14px;
+}
+
+.feedback-reader{
+  font-size:18px;
+}
+
+.feedback-meta{
+  margin-top:4px;
+  color:var(--muted);
+  font:9px/1.5 Arial,sans-serif;
+}
+
+.feedback-ratings{
+  margin-top:14px;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+
+.feedback-rating{
+  padding:10px;
+  border:1px solid var(--line-soft);
+  border-radius:10px;
+  background:rgba(199,155,89,.04);
+}
+
+.feedback-rating-label{
+  color:var(--muted);
+  font:800 7px Arial,sans-serif;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.feedback-rating-value{
+  margin-top:5px;
+  color:var(--gold2);
+  font:700 15px Georgia,"Times New Roman",serif;
+}
+
+.feedback-text-grid{
+  margin-top:14px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.feedback-text{
+  padding:12px;
+  border:1px solid var(--line-soft);
+  border-radius:10px;
+  background:rgba(9,11,10,.35);
+}
+
+.feedback-text-label{
+  color:var(--gold);
+  font:800 7px Arial,sans-serif;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.feedback-text-copy{
+  margin-top:7px;
+  color:var(--cream2);
+  white-space:pre-wrap;
+  font:11px/1.65 Arial,sans-serif;
+}
+
+@media(max-width:720px){
+  .feedback-ratings,
+  .feedback-text-grid{
+    grid-template-columns:1fr;
+  }
+}
+
 .small-button{
   min-height:34px;
   padding:0 12px;
@@ -752,8 +847,7 @@ h1{
             id="roundNumber"
           >1</div>
         </div>
-
-      </div>
+              </div>
 
     </section>
 
@@ -948,7 +1042,8 @@ h1{
           </div>
 
           <div class="panel-body">
-                        <div
+
+            <div
               class="reader-list"
               id="pendingReaders"
             ></div>
@@ -1028,6 +1123,54 @@ h1{
             <div
               class="dogear-list"
               id="sharedDogEars"
+              style="margin-top:16px"
+            ></div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SUBMITTED READER FEEDBACK
+        ================================================== -->
+        <section class="panel">
+
+          <div class="panel-head">
+
+            <div>
+
+              <div class="panel-kicker">
+                Final Feedback
+              </div>
+
+              <h2 class="panel-title">
+                Submitted Reader Feedback
+              </h2>
+
+            </div>
+
+            <span
+              class="status"
+              id="submittedFeedbackCount"
+            >
+              0 Submitted
+            </span>
+
+          </div>
+
+          <div class="panel-body">
+
+            <div class="side-note">
+              This section contains overall feedback that beta
+              readers have explicitly submitted to you.
+              Saved drafts remain private to the reader and
+              never appear here.
+            </div>
+
+            <div
+              class="feedback-list"
+              id="submittedFeedback"
               style="margin-top:16px"
             ></div>
 
@@ -1243,6 +1386,8 @@ let assignments = [];
 let manuscripts = [];
 
 let sharedDogEars = [];
+
+let submittedFeedback = [];
 
 let rewardRecord = null;
 
@@ -1753,6 +1898,45 @@ async function loadSharedDogEars(){
 
 
 /* =========================================================
+   LOAD SUBMITTED READER FEEDBACK
+========================================================= */
+
+async function loadSubmittedFeedback(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .rpc(
+        "get_beta_project_submitted_feedback",
+        {
+          p_project_id:
+            projectId
+        }
+      );
+
+  if(error){
+
+    console.error(
+      "Submitted feedback:",
+      error
+    );
+
+    submittedFeedback = [];
+
+    return;
+
+  }
+
+  submittedFeedback =
+    data ||
+    [];
+
+}
+
+
+/* =========================================================
    LOAD REWARD
 ========================================================= */
 
@@ -1798,7 +1982,7 @@ async function loadReward(){
 
   rewardRecord =
     data ||
-    null;
+        null;
 
 }
 
@@ -1815,7 +1999,8 @@ async function loadProjectData(){
     loadCurrentRound(),
     loadAssignments(),
     loadManuscripts(),
-    loadSharedDogEars()
+    loadSharedDogEars(),
+    loadSubmittedFeedback()
   ]);
 
   await loadReward();
@@ -2334,6 +2519,8 @@ function renderPendingReaders(){
     );
 
 }
+
+
 /* =========================================================
    RENDER ACCEPTED READERS
 ========================================================= */
@@ -2649,6 +2836,266 @@ function renderSharedDogEars(){
 
 
 /* =========================================================
+   RENDER SUBMITTED READER FEEDBACK
+========================================================= */
+
+function renderSubmittedFeedback(){
+
+  const holder =
+    $("submittedFeedback");
+
+  const count =
+    $("submittedFeedbackCount");
+
+  holder.innerHTML =
+    "";
+
+  count.textContent =
+    `${
+      submittedFeedback.length
+    } Submitted`;
+
+  if(
+    !submittedFeedback.length
+  ){
+
+    holder.innerHTML =
+      `
+        <div class="empty">
+          No readers have submitted their
+          overall feedback yet.
+          <br><br>
+          Reader drafts remain private until
+          the reader chooses Submit Feedback.
+        </div>
+      `;
+
+    return;
+
+  }
+
+  submittedFeedback.forEach(
+    feedback => {
+
+      const card =
+        document.createElement(
+          "article"
+        );
+
+      card.className =
+        "feedback-card";
+
+      const readerName =
+        feedback.reader_display_name ||
+        feedback.reader_username ||
+        "DogEar Reader";
+
+      const username =
+        feedback.reader_username
+          ? `@${feedback.reader_username}`
+          : "";
+
+      const ratingValue =
+        value => {
+
+          const number =
+            Number(value);
+
+          if(
+            !Number.isFinite(number) ||
+            number <= 0
+          ){
+            return "Not rated";
+          }
+
+          return `${number} / 5`;
+
+        };
+
+      const textBlock =
+        (
+          label,
+          value
+        ) => {
+
+          if(
+            !value ||
+            !String(value).trim()
+          ){
+            return "";
+          }
+
+          return `
+            <div class="feedback-text">
+
+              <div class="feedback-text-label">
+                ${escapeHtml(label)}
+              </div>
+
+              <div class="feedback-text-copy">
+                ${escapeHtml(value)}
+              </div>
+
+            </div>
+          `;
+
+        };
+
+      card.innerHTML =
+        `
+          <div class="feedback-card-top">
+
+            <div>
+
+              <div class="feedback-reader">
+                ${escapeHtml(
+                  readerName
+                )}
+              </div>
+
+              <div class="feedback-meta">
+                ${
+                  username
+                    ? `${escapeHtml(
+                        username
+                      )} · `
+                    : ""
+                }
+
+                Submitted
+                ${escapeHtml(
+                  formatDateTime(
+                    feedback.submitted_at
+                  )
+                )}
+              </div>
+
+            </div>
+
+            <span class="status">
+              Submitted
+            </span>
+
+          </div>
+
+          <div class="feedback-ratings">
+
+            <div class="feedback-rating">
+              <div class="feedback-rating-label">
+                Overall
+              </div>
+              <div class="feedback-rating-value">
+                ${escapeHtml(
+                  ratingValue(
+                    feedback.overall_rating
+                  )
+                )}
+              </div>
+            </div>
+
+            <div class="feedback-rating">
+              <div class="feedback-rating-label">
+                Pacing
+              </div>
+              <div class="feedback-rating-value">
+                ${escapeHtml(
+                  ratingValue(
+                    feedback.pacing_rating
+                  )
+                )}
+              </div>
+            </div>
+
+            <div class="feedback-rating">
+              <div class="feedback-rating-label">
+                Character
+              </div>
+              <div class="feedback-rating-value">
+                ${escapeHtml(
+                  ratingValue(
+                    feedback.character_rating
+                  )
+                )}
+              </div>
+            </div>
+
+            <div class="feedback-rating">
+              <div class="feedback-rating-label">
+                Plot
+              </div>
+              <div class="feedback-rating-value">
+                ${escapeHtml(
+                  ratingValue(
+                    feedback.plot_rating
+                  )
+                )}
+              </div>
+            </div>
+
+            <div class="feedback-rating">
+              <div class="feedback-rating-label">
+                Worldbuilding
+              </div>
+              <div class="feedback-rating-value">
+                ${escapeHtml(
+                  ratingValue(
+                    feedback.worldbuilding_rating
+                  )
+                )}
+              </div>
+            </div>
+
+            <div class="feedback-rating">
+              <div class="feedback-rating-label">
+                Romance
+              </div>
+              <div class="feedback-rating-value">
+                ${escapeHtml(
+                  ratingValue(
+                    feedback.romance_rating
+                  )
+                )}
+              </div>
+            </div>
+
+          </div>
+
+          <div class="feedback-text-grid">
+
+            ${textBlock(
+              "What confused you?",
+              feedback.confusion_notes
+            )}
+
+            ${textBlock(
+              "Favorite parts",
+              feedback.favorite_parts
+            )}
+
+            ${textBlock(
+              "What could be improved?",
+              feedback.improvement_notes
+            )}
+
+            ${textBlock(
+              "Anything else?",
+              feedback.general_comments
+            )}
+
+          </div>
+        `;
+
+      holder.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
    RENDER REWARD
 ========================================================= */
 
@@ -2687,6 +3134,8 @@ function renderAll(){
 
   renderSharedDogEars();
 
+  renderSubmittedFeedback();
+
   renderReward();
 
 }
@@ -2697,8 +3146,7 @@ function renderAll(){
 ========================================================= */
 
 async function saveRound(){
-
-  const button =
+    const button =
     $("saveRoundButton");
 
   button.disabled =
@@ -2873,9 +3321,14 @@ async function acceptReader(
 
     renderAcceptedReaders();
 
-    await loadSharedDogEars();
+    await Promise.all([
+      loadSharedDogEars(),
+      loadSubmittedFeedback()
+    ]);
 
     renderSharedDogEars();
+
+    renderSubmittedFeedback();
 
     showToast(
       "Reader accepted."
@@ -2941,9 +3394,14 @@ async function declineReader(
 
     renderAcceptedReaders();
 
-    await loadSharedDogEars();
+    await Promise.all([
+      loadSharedDogEars(),
+      loadSubmittedFeedback()
+    ]);
 
     renderSharedDogEars();
+
+    renderSubmittedFeedback();
 
     showToast(
       "Reader declined."
@@ -3328,7 +3786,9 @@ async function uploadManuscript(){
   }
 
 }
-  /* =========================================================
+
+
+/* =========================================================
    SAVE REWARD
 ========================================================= */
 
@@ -3508,22 +3968,27 @@ async function saveReward(){
 
 
 /* =========================================================
-   REFRESH SHARED DOGEARS
+   REFRESH AUTHOR READER DATA
 ========================================================= */
 
-async function refreshSharedDogEars(){
+async function refreshAuthorReaderData(){
 
   try{
 
-    await loadSharedDogEars();
+    await Promise.all([
+      loadSharedDogEars(),
+      loadSubmittedFeedback()
+    ]);
 
     renderSharedDogEars();
+
+    renderSubmittedFeedback();
 
   }
   catch(error){
 
     console.error(
-      "Refresh shared DogEars:",
+      "Refresh author reader data:",
       error
     );
 
@@ -3560,13 +4025,11 @@ function bindEvents(){
 
 
   /*
-    Refresh shared DogEars whenever this tab becomes active
-    again.
+    Refresh author-visible reader data whenever this tab
+    becomes active again.
 
-    Example:
-    Tate shares a note while Milo already has this project
-    open in another tab. Returning to Milo's tab refreshes
-    the author-visible feed.
+    This includes both shared DogEars and submitted
+    structured reader feedback.
   */
 
   document.addEventListener(
@@ -3578,7 +4041,7 @@ function bindEvents(){
         "visible"
       ){
 
-        refreshSharedDogEars();
+        refreshAuthorReaderData();
 
       }
 
@@ -3594,12 +4057,11 @@ function bindEvents(){
     "focus",
     () => {
 
-      refreshSharedDogEars();
+      refreshAuthorReaderData();
 
     }
   );
-
-}
+  }
 
 
 /* =========================================================
