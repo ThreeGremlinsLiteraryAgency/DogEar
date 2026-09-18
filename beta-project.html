@@ -700,7 +700,8 @@ h1{
       </div>
 
     </section>
-        <div class="layout">
+
+    <div class="layout">
 
       <!-- MAIN COLUMN -->
       <div class="stack">
@@ -898,8 +899,7 @@ h1{
             ></div>
 
           </div>
-
-        </section>
+                  </section>
 
 
         <!-- ACCEPTED READERS -->
@@ -1748,7 +1748,7 @@ function renderStats(){
       row =>
         row.status ===
         "pending" &&
-        (
+                (
           !currentRound ||
           row.round_id ===
             currentRound.id
@@ -1853,7 +1853,9 @@ function renderRound(){
       : "";
 
 }
-  function readerName(profile){
+
+
+function readerName(profile){
 
   return (
     profile?.display_name ||
@@ -2597,9 +2599,7 @@ async function saveReward(){
 
   button.disabled =
     true;
-
-
-  try{
+    try{
 
     const payload = {
 
@@ -2700,9 +2700,8 @@ async function saveReward(){
 /* =========================================================
    MANUSCRIPT PROCESSING
    IMPORTANT:
-   The Supabase dashboard displays the function as
-   "process-beta-manuscript", but its deployed slug is
-   "clever-endpoint".
+   The deployed Supabase Edge Function is
+   "process-beta-manuscript".
 ========================================================= */
 
 async function processManuscript(
@@ -2723,7 +2722,7 @@ async function processManuscript(
       await supabaseClient
         .functions
         .invoke(
-          "clever-endpoint",
+          "process-beta-manuscript",
           {
             body:{
               manuscript_id:
@@ -2785,7 +2784,9 @@ async function processManuscript(
   }
 
 }
-  /* =========================================================
+
+
+/* =========================================================
    UPLOAD MANUSCRIPT
 ========================================================= */
 
@@ -3139,11 +3140,9 @@ async function uploadManuscript(){
     /*
       Start the Edge Function.
 
-      IMPORTANT:
-      processManuscript() now invokes the actual
-      deployed Supabase function slug:
+      processManuscript() invokes the deployed function:
 
-      clever-endpoint
+      process-beta-manuscript
     */
 
     try{
