@@ -646,8 +646,7 @@
       line-height:1.6;
       font-size:14px;
     }
-
-    /* =====================================================
+        /* =====================================================
        LOADING
        ===================================================== */
 
@@ -816,26 +815,28 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- =====================================================
-       LOADING SCREEN
+       LOADING
        ===================================================== -->
 
   <div
     class="loading-screen"
     id="loadingScreen"
   >
+
     <div class="loading-mark"></div>
 
     <div class="loading-text">
-      Opening DogEar
+      Opening DogEar...
     </div>
+
   </div>
 
-
   <!-- =====================================================
-       TOP NAV
+       TOP NAVIGATION
        ===================================================== -->
 
   <header class="topbar">
@@ -844,10 +845,12 @@
       class="brand"
       href="dashboard.html"
     >
-      <span class="brand-mark"></span>
-      <span>DogEar</span>
-    </a>
 
+      <span class="brand-mark"></span>
+
+      DogEar
+
+    </a>
 
     <nav class="nav-links">
 
@@ -867,29 +870,37 @@
       </a>
 
       <!--
-        Beta is now a first-class DogEar destination.
+        DogEar Beta entry point.
+
+        Readers use this page to discover beta projects
+        and manage their accepted beta reads.
+
+        Authors use the same page to reach their beta
+        projects and create new ones.
       -->
       <a href="beta-reading.html">
         Beta
       </a>
 
-      <a href="books.html">
+      <a href="marketplace.html">
         Books
       </a>
 
     </nav>
 
-
     <div class="nav-account">
 
       <!--
-        Hidden unless the logged-in user exists
-        in public.admin_users.
+        Hidden from everyone by default.
+        JavaScript only shows this if the logged-in user
+        has an active row in admin_users.
       -->
+
       <a
         class="admin-button"
         id="adminButton"
         href="admin-dashboard.html"
+        aria-label="Open DogEar administration"
       >
         Admin
       </a>
@@ -898,7 +909,7 @@
         class="nav-avatar"
         id="navAvatar"
         href="profile.html"
-        aria-label="Open profile"
+        aria-label="Your profile"
       >
         ?
       </a>
@@ -907,16 +918,15 @@
 
   </header>
 
-
   <!-- =====================================================
        PAGE
        ===================================================== -->
 
   <main class="page">
 
-    <!-- ===================================================
+    <!-- =================================================
          WELCOME
-         =================================================== -->
+         ================================================= -->
 
     <section class="welcome">
 
@@ -938,7 +948,6 @@
 
       </div>
 
-
       <a
         class="discover-button"
         href="discover.html"
@@ -948,12 +957,7 @@
 
     </section>
 
-
-    <!-- ===================================================
-         DASHBOARD GRID
-         =================================================== -->
-
-    <section class="dashboard-grid">
+    <div class="dashboard-grid">
 
       <!-- =================================================
            MAIN COLUMN
@@ -961,9 +965,9 @@
 
       <div class="main-column">
 
-        <!-- ===============================================
-             CURRENT BOOK
-             =============================================== -->
+        <!-- =============================================
+             BOOK OF THE MONTH
+             ============================================= -->
 
         <section class="card">
 
@@ -982,32 +986,44 @@
 
           </div>
 
+          <div class="book-feature">
 
-          <div
-            id="currentBookArea"
-          >
+            <div class="book-cover">
+              Book cover
+            </div>
 
-            <div class="empty-state">
+            <div class="book-info">
 
-              <div class="empty-state-symbol">
-                ◇
+              <div class="mini-label">
+                Book of the Month
               </div>
 
               <h3>
-                No club book yet
+                Your next read is waiting.
               </h3>
 
-              <p>
-                Join a club and vote on what everyone
-                should read next.
+              <p class="empty-text">
+                Once you join a book club, its current
+                Book of the Month will appear here.
               </p>
 
-              <a
-                class="action-button"
-                href="discover.html"
-              >
-                Find a Club
-              </a>
+              <div class="action-row">
+
+                <a
+                  class="action-button"
+                  href="clubs.html"
+                >
+                  Find a Club
+                </a>
+
+                <a
+                  class="action-button"
+                  href="discover.html"
+                >
+                  Browse Books
+                </a>
+
+              </div>
 
             </div>
 
@@ -1015,31 +1031,33 @@
 
         </section>
 
-
-        <!-- ===============================================
-             ACTIVITY
-             =============================================== -->
+        <!-- =============================================
+             COMMUNITY FEED
+             ============================================= -->
 
         <section class="card">
 
           <div class="card-header">
 
             <h2>
-              Recent Activity
+              Around DogEar
             </h2>
+
+            <a
+              class="small-link"
+              href="discover.html"
+            >
+              Explore
+            </a>
 
           </div>
 
+          <div class="feed-list">
 
-          <div
-            class="feed-list"
-            id="activityFeed"
-          >
-
-            <div class="feed-item">
+            <article class="feed-item">
 
               <div class="feed-icon">
-                ◌
+                ◇
               </div>
 
               <div class="feed-content">
@@ -1049,38 +1067,88 @@
                 </h3>
 
                 <p>
-                  Your reading life will start appearing
-                  here as you join clubs, vote, discuss,
-                  save books, and beta read.
+                  This is where activity from your clubs,
+                  books, and people you follow will eventually
+                  appear.
                 </p>
 
                 <div class="feed-time">
-                  Just now
+                  Your feed starts here
                 </div>
 
               </div>
 
-            </div>
+            </article>
+
+            <article class="feed-item">
+
+              <div class="feed-icon">
+                ↟
+              </div>
+
+              <div class="feed-content">
+
+                <h3>
+                  Find your people
+                </h3>
+
+                <p>
+                  Join a club, discover a book, or wander
+                  into a conversation about something you've
+                  been dying to talk about.
+                </p>
+
+                <div class="feed-time">
+                  Discover DogEar
+                </div>
+
+              </div>
+
+            </article>
+
+            <article class="feed-item">
+
+              <div class="feed-icon">
+                ✦
+              </div>
+
+              <div class="feed-content">
+
+                <h3>
+                  Writers belong here too
+                </h3>
+
+                <p>
+                  DogEar is being built for readers,
+                  writers, agents, editors, and the people
+                  who make books happen.
+                </p>
+
+                <div class="feed-time">
+                  Community
+                </div>
+
+              </div>
+
+            </article>
 
           </div>
 
         </section>
 
-
-        <!-- ===============================================
+        <!-- =============================================
              QUICK ACTIONS
-             =============================================== -->
+             ============================================= -->
 
         <section class="card">
 
           <div class="card-header">
 
             <h2>
-              Quick Actions
+              Find Something to Do
             </h2>
 
           </div>
-
 
           <div class="quick-grid">
 
@@ -1100,13 +1168,13 @@
                 </h3>
 
                 <p>
-                  Find books and clubs.
+                  Wander through books, readers,
+                  writers, and clubs.
                 </p>
 
               </div>
 
             </a>
-
 
             <a
               class="quick-link"
@@ -1120,84 +1188,29 @@
               <div>
 
                 <h3>
-                  Your Clubs
+                  Book Clubs
                 </h3>
 
                 <p>
-                  Jump back into your reading groups.
+                  Find a club that reads the way
+                  you do.
                 </p>
 
               </div>
 
             </a>
 
+            <!-- =========================================
+                 BETA READING
+                 ========================================= -->
 
-            <a
-              class="quick-link"
-              href="books.html"
-            >
-
-              <div class="quick-symbol">
-                ▤
-              </div>
-
-              <div>
-
-                <h3>
-                  Books
-                </h3>
-
-                <p>
-                  Browse DogEar's book catalog.
-                </p>
-
-              </div>
-
-            </a>
-
-
-            <a
-              class="quick-link"
-              href="profile.html"
-            >
-
-              <div class="quick-symbol">
-                ◎
-              </div>
-
-              <div>
-
-                <h3>
-                  Profile
-                </h3>
-
-                <p>
-                  Update your reader identity.
-                </p>
-
-              </div>
-
-            </a>
-
-
-            <!--
-              NEW:
-              Beta Reading quick action.
-
-              All DogEar readers can browse and
-              participate in Beta for free.
-
-              Paid-tier restrictions belong on
-              manuscript/project-author actions,
-              not on reader access to this page.
-            -->
             <a
               class="quick-link"
               href="beta-reading.html"
             >
 
               <div class="quick-symbol">
-                β
+                ◇
               </div>
 
               <div>
@@ -1207,8 +1220,56 @@
                 </h3>
 
                 <p>
-                  Read early manuscripts and help
-                  authors shape what comes next.
+                  Read manuscripts before publication,
+                  give authors feedback, or find readers
+                  for your own work.
+                </p>
+
+              </div>
+
+            </a>
+
+            <a
+              class="quick-link"
+              href="marketplace.html"
+            >
+
+              <div class="quick-symbol">
+                ▱
+              </div>
+
+              <div>
+
+                <h3>
+                  Books
+                </h3>
+
+                <p>
+                  Browse what DogEar is reading.
+                </p>
+
+              </div>
+
+            </a>
+
+            <a
+              class="quick-link"
+              href="profile.html"
+            >
+
+              <div class="quick-symbol">
+                ☺
+              </div>
+
+              <div>
+
+                <h3>
+                  Your Profile
+                </h3>
+
+                <p>
+                  Make your corner of DogEar
+                  feel like you.
                 </p>
 
               </div>
@@ -1220,67 +1281,56 @@
         </section>
 
       </div>
-
-
-      <!-- =================================================
+            <!-- =================================================
            SIDE COLUMN
            ================================================= -->
 
       <aside class="side-column">
 
-        <!-- ===============================================
+        <!-- =============================================
              PROFILE
-             =============================================== -->
+             ============================================= -->
 
-        <section class="card">
+        <section class="card profile-card">
 
-          <div class="profile-card">
-
-            <div
-              class="profile-avatar"
-              id="profileAvatar"
-            >
-              ?
-            </div>
-
-
-            <h2 id="profileName">
-              Reader
-            </h2>
-
-
-            <div
-              class="profile-handle"
-              id="profileHandle"
-            >
-              @reader
-            </div>
-
-
-            <p
-              class="profile-bio"
-              id="profileBio"
-            >
-              Your DogEar profile is waiting for
-              its personality.
-            </p>
-
-
-            <a
-              class="profile-button"
-              href="profile.html"
-            >
-              Edit Profile
-            </a>
-
+          <div
+            class="profile-avatar"
+            id="profileAvatar"
+          >
+            ?
           </div>
+
+          <h2 id="profileName">
+            DogEar Reader
+          </h2>
+
+          <div
+            class="profile-handle"
+            id="profileUsername"
+          >
+            @reader
+          </div>
+
+          <p
+            class="profile-bio"
+            id="profileBio"
+          >
+            Your profile is your little corner
+            of DogEar.
+          </p>
+
+          <a
+            class="profile-button"
+            href="profile.html"
+          >
+            Edit Profile
+          </a>
 
         </section>
 
-
-        <!-- ===============================================
-             CLUBS
-             =============================================== -->
+        <!-- =============================================
+             YOUR CLUBS
+             ============================================= -->
 
         <section class="card">
 
@@ -1299,7 +1349,6 @@
 
           </div>
 
-
           <div
             class="club-list"
             id="clubList"
@@ -1308,7 +1357,7 @@
             <div class="empty-state">
 
               <div class="empty-state-symbol">
-                ◌
+                ◉
               </div>
 
               <h3>
@@ -1316,9 +1365,16 @@
               </h3>
 
               <p>
-                Find a club that reads the kind of
-                books you can't stop talking about.
+                Once you join a book club,
+                it will appear here.
               </p>
+
+              <a
+                class="action-button"
+                href="clubs.html"
+              >
+                Find a Club
+              </a>
 
             </div>
 
@@ -1328,58 +1384,87 @@
 
       </aside>
 
-    </section>
+    </div>
 
   </main>
 
-
   <!-- =====================================================
-       MOBILE NAV
+       MOBILE NAVIGATION
        ===================================================== -->
 
-  <nav class="mobile-nav">
+  <nav
+    class="mobile-nav"
+    aria-label="Mobile navigation"
+  >
 
     <a href="dashboard.html">
+
       <span>⌂</span>
-      <span>Home</span>
+
+      <span>
+        Home
+      </span>
+
     </a>
 
     <a href="discover.html">
+
       <span>⌕</span>
-      <span>Discover</span>
+
+      <span>
+        Discover
+      </span>
+
     </a>
 
     <a href="clubs.html">
+
       <span>◉</span>
-      <span>Clubs</span>
+
+      <span>
+        Clubs
+      </span>
+
     </a>
 
+    <!--
+      Beta Reading is intentionally available from
+      mobile navigation too. Readers should not need
+      desktop mode to reach accepted manuscripts.
+    -->
+
     <a href="beta-reading.html">
-      <span>β</span>
-      <span>Beta</span>
+
+      <span>◇</span>
+
+      <span>
+        Beta
+      </span>
+
     </a>
 
     <a href="profile.html">
-      <span>◎</span>
-      <span>Profile</span>
+
+      <span>☺</span>
+
+      <span>
+        Profile
+      </span>
+
     </a>
 
   </nav>
-
 
   <!-- =====================================================
        SUPABASE
        ===================================================== -->
 
-  <script src=
-    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-  </script>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
 
     /* =====================================================
-       SUPABASE CONFIGURATION
+       DOGEAR CONFIG
        ===================================================== */
 
     const SUPABASE_URL =
@@ -1387,16 +1472,10 @@
 
 
     /*
-      FIXED:
-      The uploaded dashboard had the literal placeholder:
-
-      YOUR_EXISTING_SUPABASE_PUBLISHABLE_KEY
-
-      That prevented this page from loading the signed-in
-      user's profile and checking admin_users.
-
-      This is DogEar's existing browser-safe publishable key.
+      Keep the same browser-safe publishable key that is
+      already used throughout the current DogEar frontend.
     */
+
     const SUPABASE_KEY =
       "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
 
@@ -1409,74 +1488,39 @@
 
 
     /* =====================================================
-       ELEMENT REFERENCES
+       ELEMENT HELPERS
        ===================================================== */
 
-    const loadingScreen =
-      document.getElementById(
-        "loadingScreen"
-      );
-
-
-    const welcomeHeading =
-      document.getElementById(
-        "welcomeHeading"
-      );
-
-
-    const navAvatar =
-      document.getElementById(
-        "navAvatar"
-      );
-
-
-    const adminButton =
-      document.getElementById(
-        "adminButton"
-      );
-
-
-    const profileAvatar =
-      document.getElementById(
-        "profileAvatar"
-      );
-
-
-    const profileName =
-      document.getElementById(
-        "profileName"
-      );
-
-
-    const profileHandle =
-      document.getElementById(
-        "profileHandle"
-      );
-
-
-    const profileBio =
-      document.getElementById(
-        "profileBio"
-      );
-
-
-    const currentBookArea =
-      document.getElementById(
-        "currentBookArea"
-      );
-
-
-    const clubList =
-      document.getElementById(
-        "clubList"
-      );
+    const $ =
+      id =>
+        document.getElementById(
+          id
+        );
 
 
     /* =====================================================
-       HELPERS
+       STATE
        ===================================================== */
 
-    function escapeHtml(value) {
+    let currentUser =
+      null;
+
+
+    let currentProfile =
+      null;
+
+
+    let memberships =
+      [];
+
+
+    /* =====================================================
+       ESCAPE HTML
+       ===================================================== */
+
+    function escapeHtml(
+      value
+    ){
 
       return String(
         value ?? ""
@@ -1505,96 +1549,65 @@
     }
 
 
-    function initialsFromName(name) {
+    /* =====================================================
+       INITIALS
+       ===================================================== */
 
-      const clean =
+    function getInitials(
+      value
+    ){
+
+      const words =
         String(
-          name || ""
+          value ||
+          ""
         )
-          .trim();
-
-
-      if (!clean) {
-        return "?";
-      }
-
-
-      const parts =
-        clean
+          .trim()
           .split(/\s+/)
           .filter(Boolean);
 
 
-      if (parts.length === 1) {
+      if(!words.length){
+        return "?";
+      }
 
-        return parts[0]
-          .slice(0,1)
+
+      if(words.length === 1){
+
+        return words[0]
+          .slice(
+            0,
+            1
+          )
           .toUpperCase();
 
       }
 
 
       return (
-        parts[0].slice(0,1) +
-        parts[
-          parts.length - 1
-        ].slice(0,1)
-      ).toUpperCase();
-
-    }
-
-
-    function safeImage(url) {
-
-      if (!url) {
-        return "";
-      }
-
-
-      const value =
-        String(url).trim();
-
-
-      if (
-        !value.startsWith("http://") &&
-        !value.startsWith("https://")
-      ) {
-        return "";
-      }
-
-
-      return value;
-
-    }
-
-
-    function formatRole(role) {
-
-      const clean =
-        String(
-          role || "member"
-        )
-          .replaceAll(
-            "_",
-            " "
-          );
-
-
-      return clean
-        .replace(
-          /\b\w/g,
-          letter =>
-            letter.toUpperCase()
-        );
+        words[0]
+          .slice(
+            0,
+            1
+          ) +
+        words[
+          words.length - 1
+        ]
+          .slice(
+            0,
+            1
+          )
+      )
+        .toUpperCase();
 
     }
 
 
     /* =====================================================
-       SESSION
+       LOAD SESSION
        ===================================================== */
 
-    async function getSessionUser() {
+    async function loadSession(){
 
       const {
         data,
@@ -1605,42 +1618,36 @@
           .getSession();
 
 
-      if (error) {
+      if(error){
         throw error;
       }
 
 
-      const session =
-        data?.session;
+      currentUser =
+        data?.session?.user ||
+        null;
 
 
-      if (!session) {
+      if(!currentUser){
 
         window.location.href =
-          "index.html";
+          "auth.html#login";
 
-        return null;
+        return false;
 
       }
 
 
-      return session.user;
+      return true;
 
     }
 
 
     /* =====================================================
-       ADMIN ACCESS
+       LOAD PROFILE
        ===================================================== */
 
-    async function loadAdminAccess(
-      user
-    ) {
-
-      if (!user) {
-        return false;
-      }
-
+    async function loadProfile(){
 
       const {
         data,
@@ -1648,44 +1655,99 @@
       } =
         await supabaseClient
           .from(
-            "admin_users"
+            "profiles"
           )
-          .select(
-            "user_id"
-          )
+          .select("*")
           .eq(
-            "user_id",
-            user.id
+            "id",
+            currentUser.id
           )
           .maybeSingle();
 
 
-      if (error) {
+      if(error){
+        throw error;
+      }
+
+
+      currentProfile =
+        data ||
+        null;
+
+    }
+
+
+    /* =====================================================
+       CHECK ADMIN
+       ===================================================== */
+
+    async function loadAdminStatus(){
+
+      try{
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from(
+              "admin_users"
+            )
+            .select("*")
+            .eq(
+              "user_id",
+              currentUser.id
+            )
+            .maybeSingle();
+
+
+        if(error){
+
+          console.warn(
+            "Admin check:",
+            error
+          );
+
+          return;
+
+        }
+
+
+        if(data){
+
+          /*
+            Some versions of DogEar's admin_users table
+            include an active/enabled flag and some do not.
+            If one exists and is explicitly false, do not
+            expose the admin button.
+          */
+
+          const disabled =
+            data.active === false ||
+            data.enabled === false;
+
+
+          if(!disabled){
+
+            $("adminButton")
+              .classList
+              .add(
+                "show"
+              );
+
+          }
+
+        }
+
+      }
+      catch(error){
 
         console.warn(
-          "Admin access check failed:",
+          "Admin check:",
           error
         );
 
-        return false;
-
       }
-
-
-      if (data) {
-
-        adminButton
-          .classList
-          .add(
-            "show"
-          );
-
-        return true;
-
-      }
-
-
-      return false;
 
     }
         /* =====================================================
