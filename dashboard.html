@@ -461,7 +461,7 @@
 
     .quick-grid {
       display:grid;
-      grid-template-columns:1fr 1fr;
+      grid-template-columns:repeat(2,1fr);
       gap:1px;
       background:var(--line);
     }
@@ -646,8 +646,7 @@
       line-height:1.6;
       font-size:14px;
     }
-
-    /* =====================================================
+        /* =====================================================
        LOADING
        ===================================================== */
 
@@ -742,7 +741,13 @@
         z-index:200;
         min-height:64px;
         display:grid;
-        grid-template-columns:repeat(4,1fr);
+
+        /*
+          Five destinations now:
+          Home / Discover / Clubs / Beta / Profile
+        */
+        grid-template-columns:repeat(5,1fr);
+
         border:1px solid var(--line);
         border-radius:18px;
         background:rgba(9,11,10,.95);
@@ -862,6 +867,19 @@
 
       <a href="clubs.html">
         Clubs
+      </a>
+
+      <!--
+        DogEar Beta entry point.
+
+        Readers use this page to discover beta projects
+        and manage their accepted beta reads.
+
+        Authors use the same page to reach their beta
+        projects and create new ones.
+      -->
+      <a href="beta-reading.html">
+        Beta
       </a>
 
       <a href="marketplace.html">
@@ -1182,6 +1200,35 @@
 
             </a>
 
+            <!-- =========================================
+                 BETA READING
+                 ========================================= -->
+
+            <a
+              class="quick-link"
+              href="beta-reading.html"
+            >
+
+              <div class="quick-symbol">
+                ◇
+              </div>
+
+              <div>
+
+                <h3>
+                  Beta Reading
+                </h3>
+
+                <p>
+                  Read manuscripts before publication,
+                  give authors feedback, or find readers
+                  for your own work.
+                </p>
+
+              </div>
+
+            </a>
+
             <a
               class="quick-link"
               href="marketplace.html"
@@ -1281,8 +1328,7 @@
           </a>
 
         </section>
-
-        <!-- =============================================
+                <!-- =============================================
              YOUR CLUBS
              ============================================= -->
 
@@ -1303,69 +1349,34 @@
 
           </div>
 
-          <div class="empty-state">
+          <div
+            class="club-list"
+            id="clubList"
+          >
 
-            <div class="empty-state-symbol">
-              ◌
+            <div class="empty-state">
+
+              <div class="empty-state-symbol">
+                ◉
+              </div>
+
+              <h3>
+                No clubs yet
+              </h3>
+
+              <p>
+                Once you join a book club,
+                it will appear here.
+              </p>
+
+              <a
+                class="action-button"
+                href="clubs.html"
+              >
+                Find a Club
+              </a>
+
             </div>
-
-            <h3>
-              No clubs yet.
-            </h3>
-
-            <p>
-              Once you join a club, it will appear
-              here for quick access.
-            </p>
-
-            <a
-              class="action-button"
-              href="clubs.html"
-            >
-              Find a Club
-            </a>
-
-          </div>
-
-        </section>
-
-        <!-- =============================================
-             WANDER
-             ============================================= -->
-
-        <section class="card">
-
-          <div class="card-header">
-
-            <h2>
-              Wander
-            </h2>
-
-          </div>
-
-          <div class="empty-state">
-
-            <div class="empty-state-symbol">
-              ✦
-            </div>
-
-            <h3>
-              Feeling indecisive?
-            </h3>
-
-            <p>
-              Wander will eventually throw you somewhere
-              interesting in DogEar: a strange book,
-              a lively club, or a conversation you
-              weren't looking for.
-            </p>
-
-            <a
-              class="action-button"
-              href="discover.html"
-            >
-              Wander
-            </a>
 
           </div>
 
@@ -1378,16 +1389,21 @@
   </main>
 
   <!-- =====================================================
-       MOBILE NAV
+       MOBILE NAVIGATION
        ===================================================== -->
 
-  <nav class="mobile-nav">
+  <nav
+    class="mobile-nav"
+    aria-label="Mobile navigation"
+  >
 
     <a href="dashboard.html">
 
       <span>⌂</span>
 
-      Home
+      <span>
+        Home
+      </span>
 
     </a>
 
@@ -1395,7 +1411,9 @@
 
       <span>⌕</span>
 
-      Discover
+      <span>
+        Discover
+      </span>
 
     </a>
 
@@ -1403,7 +1421,25 @@
 
       <span>◉</span>
 
-      Clubs
+      <span>
+        Clubs
+      </span>
+
+    </a>
+
+    <!--
+      Beta Reading is intentionally available from
+      mobile navigation too. Readers should not need
+      desktop mode to reach accepted manuscripts.
+    -->
+
+    <a href="beta-reading.html">
+
+      <span>◇</span>
+
+      <span>
+        Beta
+      </span>
 
     </a>
 
@@ -1411,7 +1447,9 @@
 
       <span>☺</span>
 
-      Profile
+      <span>
+        Profile
+      </span>
 
     </a>
 
@@ -1421,152 +1459,231 @@
        SUPABASE
        ===================================================== -->
 
-  <script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-  ></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
 
     /* =====================================================
-       SUPABASE CONNECTION
+       DOGEAR CONFIG
        ===================================================== */
 
     const SUPABASE_URL =
       "https://nrtutxjznkfvvbmaagum.supabase.co";
 
-    const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+    /*
+      Keep the same browser-safe publishable key that is
+      already used throughout the current DogEar frontend.
+    */
+
+    const SUPABASE_KEY =
+      "YOUR_EXISTING_SUPABASE_PUBLISHABLE_KEY";
+
 
     const supabaseClient =
-      supabase.createClient(
+      window.supabase.createClient(
         SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
+        SUPABASE_KEY
       );
+
 
     /* =====================================================
-       PAGE ELEMENTS
+       ELEMENT HELPERS
        ===================================================== */
 
-    const loadingScreen =
-      document.getElementById(
-        "loadingScreen"
-      );
+    const $ =
+      id =>
+        document.getElementById(
+          id
+        );
 
-    const welcomeHeading =
-      document.getElementById(
-        "welcomeHeading"
-      );
 
-    const profileName =
-      document.getElementById(
-        "profileName"
-      );
-
-    const profileUsername =
-      document.getElementById(
-        "profileUsername"
-      );
-
-    const profileBio =
-      document.getElementById(
-        "profileBio"
-      );
-
-    const profileAvatar =
-      document.getElementById(
-        "profileAvatar"
-      );
-
-    const navAvatar =
-      document.getElementById(
-        "navAvatar"
-      );
-
-    const adminButton =
-      document.getElementById(
-        "adminButton"
-      );
+    /* =====================================================
+       STATE
+       ===================================================== */
 
     let currentUser =
       null;
 
+
+    let currentProfile =
+      null;
+
+
+    let memberships =
+      [];
+
+
     /* =====================================================
-       SHOW AVATAR
+       ESCAPE HTML
        ===================================================== */
 
-    function setAvatar(
-      container,
-      avatarUrl,
-      displayName
-    ) {
+    function escapeHtml(
+      value
+    ){
 
-      container.innerHTML =
-        "";
-
-      if(avatarUrl) {
-
-        const image =
-          document.createElement(
-            "img"
-          );
-
-        image.src =
-          avatarUrl;
-
-        image.alt =
-          displayName ||
-          "Profile image";
-
-        image.onerror =
-          function() {
-
-            container.innerHTML =
-              "";
-
-            container.textContent =
-              displayName
-                ? displayName
-                    .charAt(0)
-                    .toUpperCase()
-                : "?";
-
-          };
-
-        container.appendChild(
-          image
+      return String(
+        value ?? ""
+      )
+        .replaceAll(
+          "&",
+          "&amp;"
+        )
+        .replaceAll(
+          "<",
+          "&lt;"
+        )
+        .replaceAll(
+          ">",
+          "&gt;"
+        )
+        .replaceAll(
+          '"',
+          "&quot;"
+        )
+        .replaceAll(
+          "'",
+          "&#039;"
         );
-
-      }
-      else {
-
-        container.textContent =
-          displayName
-            ? displayName
-                .charAt(0)
-                .toUpperCase()
-            : "?";
-
-      }
 
     }
 
+
     /* =====================================================
-       ADMIN ACCESS
+       INITIALS
        ===================================================== */
 
-    async function loadAdminAccess() {
+    function getInitials(
+      value
+    ){
 
-      /*
-        This is only the interface check.
+      const words =
+        String(
+          value ||
+          ""
+        )
+          .trim()
+          .split(/\s+/)
+          .filter(Boolean);
 
-        Supabase RLS and protected RPCs remain responsible
-        for actual admin security.
 
-        A normal user cannot become an admin simply by
-        unhiding this button in their browser.
-      */
+      if(!words.length){
+        return "?";
+      }
 
-      try {
+
+      if(words.length === 1){
+
+        return words[0]
+          .slice(
+            0,
+            1
+          )
+          .toUpperCase();
+
+      }
+
+
+      return (
+        words[0]
+          .slice(
+            0,
+            1
+          ) +
+        words[
+          words.length - 1
+        ]
+          .slice(
+            0,
+            1
+          )
+      )
+        .toUpperCase();
+
+    }
+
+
+    /* =====================================================
+       LOAD SESSION
+       ===================================================== */
+
+    async function loadSession(){
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .auth
+          .getSession();
+
+
+      if(error){
+        throw error;
+      }
+
+
+      currentUser =
+        data?.session?.user ||
+        null;
+
+
+      if(!currentUser){
+
+        window.location.href =
+          "auth.html#login";
+
+        return false;
+
+      }
+
+
+      return true;
+
+    }
+
+
+    /* =====================================================
+       LOAD PROFILE
+       ===================================================== */
+
+    async function loadProfile(){
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from(
+            "profiles"
+          )
+          .select("*")
+          .eq(
+            "id",
+            currentUser.id
+          )
+          .maybeSingle();
+
+
+      if(error){
+        throw error;
+      }
+
+
+      currentProfile =
+        data ||
+        null;
+
+    }
+
+
+    /* =====================================================
+       CHECK ADMIN
+       ===================================================== */
+
+    async function loadAdminStatus(){
+
+      try{
 
         const {
           data,
@@ -1576,250 +1693,626 @@
             .from(
               "admin_users"
             )
-            .select(
-              "user_id,active"
-            )
+            .select("*")
             .eq(
               "user_id",
               currentUser.id
             )
             .maybeSingle();
 
-        if(error) {
-          throw error;
-        }
 
-        const isAdmin =
-          Boolean(
-            data &&
-            data.active === true
+        if(error){
+
+          console.warn(
+            "Admin check:",
+            error
           );
-
-        adminButton
-          .classList
-          .toggle(
-            "show",
-            isAdmin
-          );
-
-        return isAdmin;
-
-      }
-      catch(error) {
-
-        console.warn(
-          "Admin access check failed:",
-          error.message
-        );
-
-        /*
-          Fail closed.
-
-          If DogEar cannot confirm that the user is an
-          active admin, the Admin button remains hidden.
-        */
-
-        adminButton
-          .classList
-          .remove(
-            "show"
-          );
-
-        return false;
-
-      }
-
-    }
-
-    /* =====================================================
-       LOAD USER
-       ===================================================== */
-
-    async function loadDashboard() {
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient
-            .auth
-            .getUser();
-
-        if(
-          error ||
-          !data.user
-        ) {
-
-          window.location.href =
-            "auth.html#login";
 
           return;
 
         }
 
-        currentUser =
-          data.user;
 
-        /*
-          Load the normal member experience first.
-        */
+        if(data){
 
-        await loadProfile();
+          /*
+            Some versions of DogEar's admin_users table
+            include an active/enabled flag and some do not.
+            If one exists and is explicitly false, do not
+            expose the admin button.
+          */
 
-        /*
-          Then check whether this same normal DogEar account
-          also has administrator privileges.
-        */
+          const disabled =
+            data.active === false ||
+            data.enabled === false;
 
-        await loadAdminAccess();
 
-        loadingScreen
-          .classList
-          .add(
-            "hidden"
-          );
+          if(!disabled){
+
+            $("adminButton")
+              .classList
+              .add(
+                "show"
+              );
+
+          }
+
+        }
 
       }
-      catch(error) {
+      catch(error){
 
-        console.error(
-          "Dashboard loading error:",
+        console.warn(
+          "Admin check:",
           error
         );
-
-        window.location.href =
-          "auth.html#login";
 
       }
 
     }
 
+
     /* =====================================================
-       LOAD PROFILE
+       PROFILE DISPLAY NAME
        ===================================================== */
 
-    async function loadProfile() {
+    function getDisplayName(){
 
-      let displayName =
+      return (
+        currentProfile
+          ?.display_name ||
+        currentProfile
+          ?.full_name ||
+        currentProfile
+          ?.name ||
+        currentProfile
+          ?.username ||
         currentUser
           ?.user_metadata
           ?.display_name ||
-        "Reader";
-
-      let username =
-        "";
-
-      let avatarUrl =
-        "";
-
-      let bio =
-        "";
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient
-            .rpc(
-              "get_public_profile",
-              {
-                check_user_id:
-                  currentUser.id
-              }
-            );
-
-        if(error) {
-          throw error;
-        }
-
-        let profile =
-          null;
-
-        if(
-          Array.isArray(data)
-        ) {
-
-          profile =
-            data[0];
-
-        }
-        else {
-
-          profile =
-            data;
-
-        }
-
-        if(profile) {
-
-          displayName =
-            profile.display_name ||
-            displayName;
-
-          username =
-            profile.username ||
-            "";
-
-          avatarUrl =
-            profile.avatar_url ||
-            "";
-
-          bio =
-            profile.bio ||
-            "";
-
-        }
-
-      }
-      catch(error) {
-
-        console.error(
-          "Profile loading error:",
-          error
-        );
-
-      }
-
-      welcomeHeading.textContent =
-        "Welcome back, " +
-        displayName +
-        ".";
-
-      profileName.textContent =
-        displayName;
-
-      profileUsername.textContent =
-        username
-          ? "@" + username
-          : "@choose-a-username";
-
-      profileBio.textContent =
-        bio ||
-        "Add a bio so the people you meet around DogEar know a little about you.";
-
-      setAvatar(
-        profileAvatar,
-        avatarUrl,
-        displayName
-      );
-
-      setAvatar(
-        navAvatar,
-        avatarUrl,
-        displayName
+        currentUser
+          ?.user_metadata
+          ?.full_name ||
+        "Reader"
       );
 
     }
+
+
+    /* =====================================================
+       PROFILE USERNAME
+       ===================================================== */
+
+    function getUsername(){
+
+      const username =
+        currentProfile
+          ?.username ||
+        currentUser
+          ?.user_metadata
+          ?.username ||
+        "";
+
+
+      if(!username){
+
+        return "choose-a-username";
+
+      }
+
+
+      return String(
+        username
+      )
+        .replace(
+          /^@/,
+          ""
+        );
+
+    }
+
+
+    /* =====================================================
+       PROFILE BIO
+       ===================================================== */
+
+    function getBio(){
+
+      return (
+        currentProfile
+          ?.bio ||
+        "Add a bio so the people you meet around DogEar know a little about you."
+      );
+
+    }
+
+
+    /* =====================================================
+       PROFILE AVATAR URL
+       ===================================================== */
+
+    function getAvatarUrl(){
+
+      return (
+        currentProfile
+          ?.avatar_url ||
+        currentProfile
+          ?.profile_image_url ||
+        currentUser
+          ?.user_metadata
+          ?.avatar_url ||
+        ""
+      );
+
+    }
+
+
+    /* =====================================================
+       RENDER AVATAR
+       ===================================================== */
+
+    function renderAvatar(
+      element,
+      name,
+      avatarUrl
+    ){
+
+      if(!element){
+        return;
+      }
+
+
+      element.innerHTML =
+        "";
+
+
+      if(avatarUrl){
+
+        const image =
+          document.createElement(
+            "img"
+          );
+
+
+        image.src =
+          avatarUrl;
+
+
+        image.alt =
+          `${name} profile picture`;
+
+
+        image.addEventListener(
+          "error",
+          () => {
+
+            element.innerHTML =
+              "";
+
+
+            element.textContent =
+              getInitials(
+                name
+              );
+
+          },
+          {
+            once:true
+          }
+        );
+
+
+        element.appendChild(
+          image
+        );
+
+
+        return;
+
+      }
+
+
+      element.textContent =
+        getInitials(
+          name
+        );
+
+    }
+
+
+    /* =====================================================
+       RENDER PROFILE
+       ===================================================== */
+
+    function renderProfile(){
+
+      const name =
+        getDisplayName();
+
+
+      const username =
+        getUsername();
+
+
+      const bio =
+        getBio();
+
+
+      const avatarUrl =
+        getAvatarUrl();
+
+
+      $("welcomeHeading")
+        .textContent =
+          `Welcome back, ${name}.`;
+
+
+      $("profileName")
+        .textContent =
+          name;
+
+
+      $("profileUsername")
+        .textContent =
+          `@${username}`;
+
+
+      $("profileBio")
+        .textContent =
+          bio;
+
+
+      renderAvatar(
+        $("profileAvatar"),
+        name,
+        avatarUrl
+      );
+
+
+      renderAvatar(
+        $("navAvatar"),
+        name,
+        avatarUrl
+      );
+
+    }
+
+
+    /* =====================================================
+       LOAD CLUB MEMBERSHIPS
+       ===================================================== */
+
+    async function loadMemberships(){
+
+      /*
+        DogEar's club membership table already connects
+        the logged-in user to their clubs.
+
+        We intentionally keep this query simple so the
+        Beta Reading navigation addition does not alter
+        club behavior.
+      */
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from(
+            "club_members"
+          )
+          .select(`
+            *,
+            clubs (
+              id,
+              name
+            )
+          `)
+          .eq(
+            "user_id",
+            currentUser.id
+          );
+
+
+      if(error){
+
+        console.warn(
+          "Club memberships:",
+          error
+        );
+
+
+        memberships =
+          [];
+
+
+        return;
+
+      }
+
+
+      memberships =
+        data ||
+        [];
+
+    }
+
+
+    /* =====================================================
+       RENDER CLUBS
+       ===================================================== */
+
+    function renderClubs(){
+
+      const holder =
+        $("clubList");
+
+
+      if(!holder){
+        return;
+      }
+
+
+      const activeMemberships =
+        memberships.filter(
+          membership => {
+
+            /*
+              Pending join requests should not appear as
+              established clubs on the user's dashboard.
+            */
+
+            const status =
+              String(
+                membership.status ||
+                ""
+              )
+                .toLowerCase();
+
+
+            if(
+              status ===
+                "pending" ||
+              status ===
+                "declined" ||
+              status ===
+                "rejected" ||
+              status ===
+                "banned"
+            ){
+
+              return false;
+
+            }
+
+
+            return Boolean(
+              membership.clubs
+            );
+
+          }
+        );
+
+
+      if(!activeMemberships.length){
+
+        holder.innerHTML =
+          `
+            <div class="empty-state">
+
+              <div class="empty-state-symbol">
+                ◉
+              </div>
+
+              <h3>
+                No clubs yet
+              </h3>
+
+              <p>
+                Once you join a book club,
+                it will appear here.
+              </p>
+
+              <a
+                class="action-button"
+                href="clubs.html"
+              >
+                Find a Club
+              </a>
+
+            </div>
+          `;
+
+
+        return;
+
+      }
+
+
+      holder.innerHTML =
+        "";
+
+
+      activeMemberships
+        .slice(
+          0,
+          6
+        )
+        .forEach(
+          membership => {
+
+            const club =
+              membership.clubs;
+
+
+            const row =
+              document.createElement(
+                "a"
+              );
+
+
+            row.className =
+              "club-row";
+
+
+            row.href =
+              `club.html?id=${encodeURIComponent(
+                club.id
+              )}`;
+
+
+            row.style
+              .textDecoration =
+                "none";
+
+
+            row.innerHTML =
+              `
+                <div class="club-dot">
+                  ${escapeHtml(
+                    getInitials(
+                      club.name
+                    )
+                  )}
+                </div>
+
+                <div class="club-info">
+
+                  <strong>
+                    ${escapeHtml(
+                      club.name ||
+                      "Book Club"
+                    )}
+                  </strong>
+
+                  <span>
+                    ${escapeHtml(
+                      membership.role ||
+                      "Member"
+                    )}
+                  </span>
+
+                </div>
+              `;
+
+
+            holder.appendChild(
+              row
+            );
+
+          }
+        );
+
+    }
+
+
+    /* =====================================================
+       SHOW PAGE
+       ===================================================== */
+
+    function showPage(){
+
+      $("loadingScreen")
+        .classList
+        .add(
+          "hidden"
+        );
+
+    }
+
+
+    /* =====================================================
+       INITIALIZE DASHBOARD
+       ===================================================== */
+
+    async function initialize(){
+
+      try{
+
+        const loggedIn =
+          await loadSession();
+
+
+        if(!loggedIn){
+          return;
+        }
+
+
+        await loadProfile();
+
+
+        renderProfile();
+
+
+        /*
+          These are independent once the user's profile
+          has loaded, so they can run together.
+        */
+
+        await Promise.all([
+          loadAdminStatus(),
+          loadMemberships()
+        ]);
+
+
+        renderClubs();
+
+
+        showPage();
+
+      }
+      catch(error){
+
+        console.error(
+          "DogEar dashboard:",
+          error
+        );
+
+
+        /*
+          Do not leave the user trapped behind the loading
+          overlay if a non-auth dashboard query fails.
+        */
+
+        showPage();
+
+      }
+
+    }
+
+
+    /* =====================================================
+       AUTH STATE
+       ===================================================== */
+
+    supabaseClient
+      .auth
+      .onAuthStateChange(
+        (
+          event,
+          session
+        ) => {
+
+          if(
+            event ===
+              "SIGNED_OUT" ||
+            !session
+          ){
+
+            window.location.href =
+              "auth.html#login";
+
+          }
+
+        }
+      );
+
 
     /* =====================================================
        START
        ===================================================== */
 
-    loadDashboard();
+    initialize();
 
   </script>
 
