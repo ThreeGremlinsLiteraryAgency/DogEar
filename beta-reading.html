@@ -11,15 +11,12 @@
 <style>
 :root{
   --ink:#090b0a;
-  --ink2:#0d100e;
   --panel:#101410;
-  --panel2:#151a15;
   --cream:#f1e7cf;
   --cream2:#d9cfb8;
   --gold:#c79b59;
   --gold2:#dfbd7e;
   --green:#26362b;
-  --green2:#34483a;
   --muted:#aaa18f;
   --line:rgba(199,155,89,.22);
   --line-soft:rgba(199,155,89,.11);
@@ -27,13 +24,9 @@
   --ok:#b9d6b2;
 }
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
-html{
-  scroll-behavior:smooth;
-}
+html{scroll-behavior:smooth}
 
 body{
   margin:0;
@@ -46,20 +39,9 @@ body{
   font-family:Georgia,"Times New Roman",serif;
 }
 
-button,
-input,
-select,
-textarea{
-  font:inherit;
-}
-
-button{
-  color:inherit;
-}
-
-a{
-  color:inherit;
-}
+button,input,select,textarea{font:inherit}
+button{color:inherit}
+a{color:inherit}
 
 .topbar{
   min-height:76px;
@@ -165,13 +147,12 @@ a{
   overflow:hidden;
   display:grid;
   grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);
-  background:
-    linear-gradient(
-      135deg,
-      rgba(38,54,43,.76),
-      rgba(16,20,16,.9) 58%,
-      rgba(199,155,89,.06)
-    );
+  background:linear-gradient(
+    135deg,
+    rgba(38,54,43,.76),
+    rgba(16,20,16,.9) 58%,
+    rgba(199,155,89,.06)
+  );
 }
 
 .hero-copy{
@@ -359,7 +340,11 @@ h1{
 .project-top{
   padding:20px 20px 17px;
   border-bottom:1px solid var(--line-soft);
-  background:linear-gradient(145deg,rgba(38,54,43,.6),rgba(16,20,16,.3));
+  background:linear-gradient(
+    145deg,
+    rgba(38,54,43,.6),
+    rgba(16,20,16,.3)
+  );
 }
 
 .project-tags{
@@ -455,6 +440,7 @@ h1{
   padding-top:18px;
   display:flex;
   gap:8px;
+  flex-wrap:wrap;
 }
 
 .card-button{
@@ -477,6 +463,11 @@ h1{
   border:1px solid var(--line);
   background:transparent;
   color:var(--gold2);
+}
+
+.card-button:disabled{
+  opacity:.55;
+  cursor:not-allowed;
 }
 
 .empty{
@@ -630,9 +621,7 @@ h1{
 }
 
 @media(max-width:720px){
-  .nav{
-    display:none;
-  }
+  .nav{display:none}
 
   .toolbar{
     grid-template-columns:1fr;
@@ -661,7 +650,6 @@ h1{
 <body>
 
 <header class="topbar">
-
   <a class="brand" href="index.html">
     <span class="brand-mark"></span>
     <span>DogEar</span>
@@ -683,22 +671,15 @@ h1{
       aria-label="Profile"
     >?</a>
   </div>
-
 </header>
 
 <main class="page">
 
 <section class="hero">
-
   <div class="hero-copy">
+    <div class="eyebrow">Writers meet readers</div>
 
-    <div class="eyebrow">
-      Writers meet readers
-    </div>
-
-    <h1>
-      Stories need readers.
-    </h1>
+    <h1>Stories need readers.</h1>
 
     <p class="hero-description">
       Find beta readers who love the kind of stories you write,
@@ -707,7 +688,6 @@ h1{
     </p>
 
     <div class="hero-actions">
-
       <button
         class="primary-button"
         id="listProjectButton"
@@ -716,45 +696,27 @@ h1{
         Find Beta Readers
       </button>
 
-      <a
-        class="secondary-button"
-        href="#projects"
-      >
+      <a class="secondary-button" href="#projects">
         Become a Beta Reader
       </a>
-
     </div>
-
   </div>
 
   <div class="hero-side">
-
     <div class="hero-note">
-
-      <div class="note-number">
-        03
-      </div>
-
-      <div class="note-title">
-        Create.
-      </div>
+      <div class="note-number">03</div>
+      <div class="note-title">Create.</div>
 
       <div class="note-copy">
-        Beta reading is about collaboration, not publishing
-        unfinished manuscripts to the internet. DogEar displays
-        project information publicly while keeping manuscript
-        sharing between writers and the readers they choose.
+        Readers use DogEar Beta for free. Authors with Beta access
+        can manage private manuscripts, choose their readers,
+        run reading rounds and receive structured feedback.
       </div>
-
     </div>
-
   </div>
-
 </section>
 
-
 <section class="toolbar">
-
   <input
     class="input"
     id="searchInput"
@@ -762,71 +724,47 @@ h1{
     placeholder="Search title, author, genre..."
   >
 
-  <select
-    class="select"
-    id="genreFilter"
-  >
+  <select class="select" id="genreFilter">
     <option value="">All genres</option>
   </select>
 
-  <select
-    class="select"
-    id="statusFilter"
-  >
+  <select class="select" id="statusFilter">
     <option value="open">Seeking readers</option>
     <option value="">All projects</option>
     <option value="closed">Closed</option>
+    <option value="completed">Completed</option>
   </select>
-
 </section>
-
 
 <section
   class="section my-projects"
   id="myProjectsSection"
 >
-
   <div class="section-head">
-
     <div>
-
-      <div class="section-kicker">
-        Your writing
-      </div>
+      <div class="section-kicker">Your writing</div>
 
       <h2 class="section-title">
         My Beta Projects
       </h2>
 
       <div class="section-description">
-        Manage projects you've listed and review readers
-        interested in helping.
+        Manage your beta rounds, manuscripts, applicants,
+        accepted readers, rewards and analytics.
       </div>
-
     </div>
-
   </div>
 
   <div
     class="project-grid"
     id="myProjectsGrid"
   ></div>
-
 </section>
 
-
-<section
-  class="section"
-  id="projects"
->
-
+<section class="section" id="projects">
   <div class="section-head">
-
     <div>
-
-      <div class="section-kicker">
-        Open manuscripts
-      </div>
+      <div class="section-kicker">Open manuscripts</div>
 
       <h2 class="section-title">
         Find Something to Read
@@ -834,10 +772,9 @@ h1{
 
       <div class="section-description">
         Browse writers currently looking for beta readers.
-        Expressing interest does not automatically give access
-        to a manuscript—the writer chooses who receives it.
+        Applying is free. Manuscript access is only granted
+        after the writer accepts you.
       </div>
-
     </div>
 
     <div
@@ -846,54 +783,35 @@ h1{
     >
       Loading...
     </div>
-
   </div>
 
   <div
     class="project-grid"
     id="projectGrid"
   ></div>
-
 </section>
 
 </main>
 
-
 <!-- CREATE PROJECT -->
 
-<div
-  class="modal"
-  id="projectModal"
->
-
+<div class="modal" id="projectModal">
   <div class="modal-card">
 
     <div class="modal-head">
-
       <div>
-
-        <div class="section-kicker">
-          Writers
-        </div>
-
-        <h2 class="modal-title">
-          Find Beta Readers
-        </h2>
-
+        <div class="section-kicker">Writers</div>
+        <h2 class="modal-title">Find Beta Readers</h2>
       </div>
 
       <button
         class="close-button"
         id="closeProjectModal"
         type="button"
-      >
-        ×
-      </button>
-
+      >×</button>
     </div>
 
     <form id="projectForm">
-
       <div class="form-grid">
 
         <label class="field full">
@@ -930,7 +848,7 @@ h1{
         </label>
 
         <label class="field">
-          <span class="label">Beta deadline</span>
+          <span class="label">Round 1 deadline</span>
           <input
             class="input"
             id="projectDeadline"
@@ -945,7 +863,7 @@ h1{
             id="readersWanted"
             type="number"
             min="1"
-            max="100"
+            max="1000"
             value="3"
           >
         </label>
@@ -966,7 +884,6 @@ h1{
           <textarea
             class="textarea"
             id="feedbackWanted"
-            maxlength="1500"
             placeholder="Plot holes, pacing, characters, romance, worldbuilding..."
           ></textarea>
         </label>
@@ -976,7 +893,6 @@ h1{
           <textarea
             class="textarea"
             id="contentNotes"
-            maxlength="1000"
             placeholder="Optional content warnings or information readers should know."
           ></textarea>
         </label>
@@ -984,14 +900,14 @@ h1{
       </div>
 
       <div class="privacy-note">
-        <strong>Manuscript privacy:</strong>
-        this listing does not upload or publicly expose your manuscript.
-        It only publishes the project information above. You decide how
-        and when an accepted beta reader receives the manuscript.
+        <strong>Private manuscripts:</strong>
+        creating the project does not make your manuscript public.
+        Manuscripts are managed separately inside the author project
+        dashboard and are only readable by readers you accept.
+        DogEar does not provide readers with a manuscript download button.
       </div>
 
       <div class="modal-actions">
-
         <button
           class="secondary-button"
           id="cancelProjectButton"
@@ -1002,36 +918,24 @@ h1{
 
         <button
           class="primary-button"
+          id="submitProjectButton"
           type="submit"
         >
-          List Project
+          Create Project
         </button>
-
       </div>
-
     </form>
-
   </div>
-
 </div>
-
 
 <!-- INTEREST MODAL -->
 
-<div
-  class="modal"
-  id="interestModal"
->
-
+<div class="modal" id="interestModal">
   <div class="modal-card">
 
     <div class="modal-head">
-
       <div>
-
-        <div class="section-kicker">
-          Beta reader
-        </div>
+        <div class="section-kicker">Beta reader</div>
 
         <h2
           class="modal-title"
@@ -1039,28 +943,22 @@ h1{
         >
           I'm Interested
         </h2>
-
       </div>
 
       <button
         class="close-button"
         id="closeInterestModal"
         type="button"
-      >
-        ×
-      </button>
-
+      >×</button>
     </div>
 
     <form id="interestForm">
-
       <input
         id="interestProjectId"
         type="hidden"
       >
 
       <div class="form-grid">
-
         <label class="field full">
           <span class="label">
             Tell the writer why you're interested
@@ -1074,16 +972,16 @@ h1{
             placeholder="What drew you to this project? What kind of beta-reading experience do you have?"
           ></textarea>
         </label>
-
       </div>
 
       <div class="privacy-note">
         The writer will see your DogEar profile and this message.
-        Expressing interest does not automatically provide manuscript access.
+        Applying does not give you manuscript access. If the writer
+        accepts you, the manuscript will become available through
+        DogEar's private reader.
       </div>
 
       <div class="modal-actions">
-
         <button
           class="secondary-button"
           id="cancelInterestButton"
@@ -1094,34 +992,22 @@ h1{
 
         <button
           class="primary-button"
+          id="submitInterestButton"
           type="submit"
         >
           Send Interest
         </button>
-
       </div>
-
     </form>
-
   </div>
-
 </div>
 
-
-<div
-  class="toast"
-  id="toast"
-></div>
-
+<div class="toast" id="toast"></div>
 
 <script>
 const SUPABASE_URL =
   "https://nrtutxjznkfvvbmaagum.supabase.co";
 
-/*
-  Use the same browser-safe Supabase publishable key
-  already used throughout the rest of DogEar.
-*/
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
 
@@ -1133,32 +1019,27 @@ const supabaseClient =
 
 let currentUser = null;
 let currentProfile = null;
+
 let projects = [];
+let rounds = [];
 let interests = [];
+let assignments = [];
+
 let toastTimer = null;
 
-const $ =
-  id =>
-    document.getElementById(id);
-
+const $ = id =>
+  document.getElementById(id);
 
 function escapeHtml(value){
-
   return String(value ?? "")
     .replaceAll("&","&amp;")
     .replaceAll("<","&lt;")
     .replaceAll(">","&gt;")
     .replaceAll('"',"&quot;")
     .replaceAll("'","&#039;");
-
 }
 
-
-function showToast(
-  message,
-  type = ""
-){
-
+function showToast(message,type=""){
   const toast = $("toast");
 
   clearTimeout(toastTimer);
@@ -1174,17 +1055,13 @@ function showToast(
     () => toast.classList.add("show")
   );
 
-  toastTimer =
-    setTimeout(
-      () => toast.classList.remove("show"),
-      3500
-    );
-
+  toastTimer = setTimeout(
+    () => toast.classList.remove("show"),
+    3500
+  );
 }
 
-
 function formatWords(value){
-
   const words = Number(value || 0);
 
   if(!words){
@@ -1192,20 +1069,18 @@ function formatWords(value){
   }
 
   return words.toLocaleString() + " words";
-
 }
 
-
 function formatDeadline(value){
-
   if(!value){
     return "No deadline";
   }
 
-  const date =
-    new Date(
-      value + "T12:00:00"
-    );
+  const date = new Date(value);
+
+  if(Number.isNaN(date.getTime())){
+    return "No deadline";
+  }
 
   return date.toLocaleDateString(
     undefined,
@@ -1215,39 +1090,105 @@ function formatDeadline(value){
       year:"numeric"
     }
   );
-
 }
 
-
 function profileName(project){
-
   return (
     project.profiles?.display_name ||
     project.profiles?.username ||
     "DogEar Writer"
   );
-
 }
 
+function getProjectRounds(projectId){
+  return rounds
+    .filter(round => round.project_id === projectId)
+    .sort(
+      (a,b) =>
+        Number(b.round_number || 0) -
+        Number(a.round_number || 0)
+    );
+}
+
+function getCurrentRound(projectId){
+  const projectRounds =
+    getProjectRounds(projectId);
+
+  return (
+    projectRounds.find(
+      round => round.status === "open"
+    ) ||
+    projectRounds.find(
+      round => round.status === "draft"
+    ) ||
+    projectRounds[0] ||
+    null
+  );
+}
+
+function getProjectInterests(projectId){
+  return interests.filter(
+    interest =>
+      interest.project_id === projectId &&
+      interest.status !== "withdrawn"
+  );
+}
+
+function getProjectAssignments(projectId){
+  return assignments.filter(
+    assignment =>
+      assignment.project_id === projectId &&
+      ["accepted","reading","completed"]
+        .includes(assignment.status)
+  );
+}
+
+function hasAppliedToRound(projectId,roundId){
+  if(!currentUser){
+    return false;
+  }
+
+  return interests.some(
+    interest =>
+      interest.project_id === projectId &&
+      interest.reader_id === currentUser.id &&
+      interest.round_id === roundId &&
+      interest.status !== "withdrawn"
+  );
+}
+
+function myAssignmentForProject(projectId){
+  if(!currentUser){
+    return null;
+  }
+
+  return assignments.find(
+    assignment =>
+      assignment.project_id === projectId &&
+      assignment.reader_id === currentUser.id &&
+      ["accepted","reading","completed"]
+        .includes(assignment.status)
+  ) || null;
+}
 
 async function loadSession(){
-
-  const {
-    data
-  } =
+  const {data,error} =
     await supabaseClient
       .auth
       .getSession();
+
+  if(error){
+    console.error(error);
+  }
 
   currentUser =
     data?.session?.user ||
     null;
 
-  if(currentUser){
+  currentProfile = null;
 
-    const {
-      data:profile
-    } =
+  if(currentUser){
+    const {data:profile,error:profileError} =
       await supabaseClient
         .from("profiles")
         .select(
@@ -1259,29 +1200,26 @@ async function loadSession(){
         )
         .maybeSingle();
 
+    if(profileError){
+      console.error(profileError);
+    }
+
     currentProfile =
       profile ||
       null;
-
   }
 
   renderNavigation();
-
 }
 
-
 function renderNavigation(){
-
   const avatar =
     $("navAvatar");
 
   if(!currentUser){
-
     avatar.textContent = "↪";
     avatar.href = "auth.html#login";
-
     return;
-
   }
 
   avatar.href =
@@ -1294,32 +1232,22 @@ function renderNavigation(){
     "D";
 
   if(currentProfile?.avatar_url){
-
     avatar.innerHTML =
       `<img src="${escapeHtml(
         currentProfile.avatar_url
       )}" alt="">`;
-
   }
   else{
-
     avatar.textContent =
       name
         .trim()
         .charAt(0)
         .toUpperCase();
-
   }
-
 }
 
-
 async function loadProjects(){
-
-  const {
-    data,
-    error
-  } =
+  const {data,error} =
     await supabaseClient
       .from("beta_projects")
       .select(`
@@ -1332,13 +1260,10 @@ async function loadProjects(){
       `)
       .order(
         "created_at",
-        {
-          ascending:false
-        }
+        {ascending:false}
       );
 
   if(error){
-
     console.error(error);
 
     projects = [];
@@ -1346,12 +1271,11 @@ async function loadProjects(){
     renderProjects();
 
     showToast(
-      "Beta reading needs its database tables installed before projects can load.",
+      "DogEar couldn't load beta projects.",
       "error"
     );
 
     return;
-
   }
 
   projects =
@@ -1359,23 +1283,37 @@ async function loadProjects(){
     [];
 
   buildGenreFilter();
-  renderProjects();
-
 }
 
+async function loadRounds(){
+  const {data,error} =
+    await supabaseClient
+      .from("beta_rounds")
+      .select("*")
+      .order(
+        "round_number",
+        {ascending:false}
+      );
+
+  if(error){
+    console.error(error);
+    rounds = [];
+    return;
+  }
+
+  rounds =
+    data ||
+    [];
+}
 
 async function loadMyInterests(){
-
   interests = [];
 
   if(!currentUser){
     return;
   }
 
-  const {
-    data,
-    error
-  } =
+  const {data,error} =
     await supabaseClient
       .from("beta_interests")
       .select("*")
@@ -1384,15 +1322,98 @@ async function loadMyInterests(){
         currentUser.id
       );
 
-  if(!error){
-    interests = data || [];
+  if(error){
+    console.error(error);
+    return;
   }
 
+  interests =
+    data ||
+    [];
 }
 
+async function loadOwnerInterests(){
+  if(!currentUser){
+    return;
+  }
+
+  const mine =
+    projects
+      .filter(
+        project =>
+          project.owner_id === currentUser.id
+      )
+      .map(project => project.id);
+
+  if(!mine.length){
+    return;
+  }
+
+  const {data,error} =
+    await supabaseClient
+      .from("beta_interests")
+      .select("*")
+      .in(
+        "project_id",
+        mine
+      );
+
+  if(error){
+    console.error(error);
+    return;
+  }
+
+  const existing =
+    new Map(
+      interests.map(
+        row => [row.id,row]
+      )
+    );
+
+  (data || []).forEach(
+    row => existing.set(row.id,row)
+  );
+
+  interests =
+    [...existing.values()];
+}
+
+async function loadAssignments(){
+  assignments = [];
+
+  if(!currentUser){
+    return;
+  }
+
+  const {data,error} =
+    await supabaseClient
+      .from("beta_assignments")
+      .select("*");
+
+  if(error){
+    console.error(error);
+    return;
+  }
+
+  assignments =
+    data ||
+    [];
+}
+
+async function loadAllData(){
+  await loadProjects();
+  await loadRounds();
+
+  if(currentUser){
+    await loadMyInterests();
+    await loadOwnerInterests();
+    await loadAssignments();
+  }
+
+  renderProjects();
+}
 
 function buildGenreFilter(){
-
   const select =
     $("genreFilter");
 
@@ -1415,11 +1436,8 @@ function buildGenreFilter(){
 
   genres.forEach(
     genre => {
-
       const option =
-        document.createElement(
-          "option"
-        );
+        document.createElement("option");
 
       option.value =
         genre;
@@ -1427,21 +1445,15 @@ function buildGenreFilter(){
       option.textContent =
         genre;
 
-      select.appendChild(
-        option
-      );
-
+      select.appendChild(option);
     }
   );
 
   select.value =
     current;
-
 }
 
-
 function renderProjects(){
-
   const query =
     $("searchInput")
       .value
@@ -1457,7 +1469,6 @@ function renderProjects(){
   const visible =
     projects.filter(
       project => {
-
         const searchText =
           [
             project.title,
@@ -1490,7 +1501,6 @@ function renderProjects(){
         }
 
         return true;
-
       }
     );
 
@@ -1508,23 +1518,15 @@ function renderProjects(){
   );
 
   renderMyProjects();
-
 }
 
-
 function renderMyProjects(){
-
   const section =
     $("myProjectsSection");
 
   if(!currentUser){
-
-    section.classList.remove(
-      "show"
-    );
-
+    section.classList.remove("show");
     return;
-
   }
 
   const mine =
@@ -1535,77 +1537,58 @@ function renderMyProjects(){
     );
 
   if(!mine.length){
-
-    section.classList.remove(
-      "show"
-    );
-
+    section.classList.remove("show");
     return;
-
   }
 
-  section.classList.add(
-    "show"
-  );
+  section.classList.add("show");
 
   renderProjectGrid(
     $("myProjectsGrid"),
     mine,
     true
   );
-
 }
-
 
 function renderProjectGrid(
   holder,
   rows,
   ownerView
 ){
-
   holder.innerHTML = "";
 
   if(!rows.length){
-
     holder.innerHTML =
       `
         <div class="empty">
-          <strong>
-            Nothing here yet.
-          </strong>
+          <strong>Nothing here yet.</strong>
           ${
             ownerView
-              ? "List a manuscript when you're ready to find beta readers."
+              ? "Create a beta project when you're ready to work with readers."
               : "No beta projects match these filters right now."
           }
         </div>
       `;
 
     return;
-
   }
 
   rows.forEach(
     project => {
-
       holder.appendChild(
         createProjectCard(
           project,
           ownerView
         )
       );
-
     }
   );
-
 }
-
 
 function createProjectCard(
   project,
   ownerView
 ){
-
   const card =
     document.createElement(
       "article"
@@ -1614,17 +1597,43 @@ function createProjectCard(
   card.className =
     "project-card";
 
-  const alreadyInterested =
-    interests.some(
-      interest =>
-        interest.project_id ===
-        project.id
-    );
-
   const isOwner =
     currentUser &&
     project.owner_id ===
-    currentUser.id;
+      currentUser.id;
+
+  const round =
+    getCurrentRound(
+      project.id
+    );
+
+  const projectInterests =
+    getProjectInterests(
+      project.id
+    );
+
+  const pendingInterests =
+    projectInterests.filter(
+      row => row.status === "pending"
+    ).length;
+
+  const activeReaders =
+    getProjectAssignments(
+      project.id
+    ).length;
+
+  const assignment =
+    myAssignmentForProject(
+      project.id
+    );
+
+  const alreadyInterested =
+    round
+      ? hasAppliedToRound(
+          project.id,
+          round.id
+        )
+      : false;
 
   const readersWanted =
     Number(
@@ -1632,18 +1641,106 @@ function createProjectCard(
       0
     );
 
-  const interestCount =
-    Number(
-      project.interest_count ||
-      0
-    );
+  const deadline =
+    round?.deadline ||
+    null;
+
+  let actionHtml = "";
+
+  if(ownerView || isOwner){
+    actionHtml =
+      `
+        <button
+          class="card-button primary"
+          type="button"
+          data-manage-project="${escapeHtml(project.id)}"
+        >
+          Manage Project
+        </button>
+
+        <button
+          class="card-button secondary"
+          type="button"
+          data-toggle-project="${escapeHtml(project.id)}"
+        >
+          ${
+            project.status === "open"
+              ? "Close Project"
+              : "Reopen"
+          }
+        </button>
+      `;
+  }
+  else if(assignment){
+    actionHtml =
+      `
+        <button
+          class="card-button primary"
+          type="button"
+          data-open-reader="${escapeHtml(assignment.id)}"
+        >
+          ${
+            assignment.status === "completed"
+              ? "Open Manuscript"
+              : "Continue Reading"
+          }
+        </button>
+      `;
+  }
+  else if(project.status !== "open"){
+    actionHtml =
+      `
+        <button
+          class="card-button secondary"
+          type="button"
+          disabled
+        >
+          Closed
+        </button>
+      `;
+  }
+  else if(!round || round.status !== "open"){
+    actionHtml =
+      `
+        <button
+          class="card-button secondary"
+          type="button"
+          disabled
+        >
+          Round Closed
+        </button>
+      `;
+  }
+  else if(alreadyInterested){
+    actionHtml =
+      `
+        <button
+          class="card-button secondary"
+          type="button"
+          disabled
+        >
+          Interest Sent
+        </button>
+      `;
+  }
+  else{
+    actionHtml =
+      `
+        <button
+          class="card-button primary"
+          type="button"
+          data-interest="${escapeHtml(project.id)}"
+        >
+          I'm Interested
+        </button>
+      `;
+  }
 
   card.innerHTML =
     `
       <div class="project-top">
 
         <div class="project-tags">
-
           ${
             project.genre
               ? `
@@ -1658,10 +1755,22 @@ function createProjectCard(
             ${
               project.status === "open"
                 ? "Seeking Readers"
-                : "Closed"
+                : project.status
             }
           </span>
 
+          ${
+            round
+              ? `
+                <span class="tag">
+                  ${escapeHtml(
+                    round.name ||
+                    `Round ${round.round_number}`
+                  )}
+                </span>
+              `
+              : ""
+          }
         </div>
 
         <h3 class="project-title">
@@ -1673,7 +1782,6 @@ function createProjectCard(
             profileName(project)
           )}
         </div>
-
       </div>
 
       <div class="project-body">
@@ -1688,7 +1796,6 @@ function createProjectCard(
         <div class="project-info">
 
           <div class="info-box">
-
             <div class="info-label">
               Length
             </div>
@@ -1700,27 +1807,21 @@ function createProjectCard(
                 )
               )}
             </div>
-
           </div>
 
           <div class="info-box">
-
             <div class="info-label">
               Deadline
             </div>
 
             <div class="info-value">
               ${escapeHtml(
-                formatDeadline(
-                  project.deadline
-                )
+                formatDeadline(deadline)
               )}
             </div>
-
           </div>
 
           <div class="info-box">
-
             <div class="info-label">
               Readers wanted
             </div>
@@ -1731,19 +1832,24 @@ function createProjectCard(
                 "Open"
               }
             </div>
-
           </div>
 
           <div class="info-box">
-
             <div class="info-label">
-              Interested
+              ${
+                isOwner
+                  ? "Applicants"
+                  : "Readers"
+              }
             </div>
 
             <div class="info-value">
-              ${interestCount}
+              ${
+                isOwner
+                  ? pendingInterests
+                  : activeReaders
+              }
             </div>
-
           </div>
 
         </div>
@@ -1752,7 +1858,6 @@ function createProjectCard(
           project.feedback_wanted
             ? `
               <div class="feedback">
-
                 <strong>
                   Feedback wanted
                 </strong>
@@ -1762,7 +1867,6 @@ function createProjectCard(
                     project.feedback_wanted
                   )}
                 </span>
-
               </div>
             `
             : ""
@@ -1772,7 +1876,6 @@ function createProjectCard(
           project.content_notes
             ? `
               <div class="feedback">
-
                 <strong>
                   Content notes
                 </strong>
@@ -1782,68 +1885,13 @@ function createProjectCard(
                     project.content_notes
                   )}
                 </span>
-
               </div>
             `
             : ""
         }
 
         <div class="project-actions">
-
-          ${
-            ownerView || isOwner
-              ? `
-                <button
-                  class="card-button secondary"
-                  type="button"
-                  data-manage-project="${escapeHtml(project.id)}"
-                >
-                  Manage Readers
-                </button>
-
-                <button
-                  class="card-button secondary"
-                  type="button"
-                  data-toggle-project="${escapeHtml(project.id)}"
-                >
-                  ${
-                    project.status === "open"
-                      ? "Close Project"
-                      : "Reopen"
-                  }
-                </button>
-              `
-              : project.status !== "open"
-                ? `
-                  <button
-                    class="card-button secondary"
-                    type="button"
-                    disabled
-                  >
-                    Closed
-                  </button>
-                `
-                : alreadyInterested
-                  ? `
-                    <button
-                      class="card-button secondary"
-                      type="button"
-                      disabled
-                    >
-                      Interest Sent
-                    </button>
-                  `
-                  : `
-                    <button
-                      class="card-button primary"
-                      type="button"
-                      data-interest="${escapeHtml(project.id)}"
-                    >
-                      I'm Interested
-                    </button>
-                  `
-          }
-
+          ${actionHtml}
         </div>
 
       </div>
@@ -1855,7 +1903,6 @@ function createProjectCard(
     )
     .forEach(
       button => {
-
         button.addEventListener(
           "click",
           () =>
@@ -1863,7 +1910,6 @@ function createProjectCard(
               project
             )
         );
-
       }
     );
 
@@ -1873,7 +1919,6 @@ function createProjectCard(
     )
     .forEach(
       button => {
-
         button.addEventListener(
           "click",
           () =>
@@ -1881,7 +1926,6 @@ function createProjectCard(
               project
             )
         );
-
       }
     );
 
@@ -1891,25 +1935,39 @@ function createProjectCard(
     )
     .forEach(
       button => {
-
         button.addEventListener(
           "click",
           () =>
-            manageReaders(
+            manageProject(
               project
             )
         );
+      }
+    );
 
+  card
+    .querySelectorAll(
+      "[data-open-reader]"
+    )
+    .forEach(
+      button => {
+        button.addEventListener(
+          "click",
+          () => {
+            window.location.href =
+              "beta-reader.html?assignment=" +
+              encodeURIComponent(
+                button.dataset.openReader
+              );
+          }
+        );
       }
     );
 
   return card;
-
 }
 
-
 function requireLogin(){
-
   if(currentUser){
     return true;
   }
@@ -1918,12 +1976,9 @@ function requireLogin(){
     "auth.html#login";
 
   return false;
-
 }
 
-
 function openProjectModal(){
-
   if(!requireLogin()){
     return;
   }
@@ -1934,21 +1989,15 @@ function openProjectModal(){
   $("projectModal")
     .classList
     .add("show");
-
 }
 
-
 function closeProjectModal(){
-
   $("projectModal")
     .classList
     .remove("show");
-
 }
 
-
 function openInterestModal(project){
-
   if(!requireLogin()){
     return;
   }
@@ -1957,13 +2006,28 @@ function openInterestModal(project){
     project.owner_id ===
     currentUser.id
   ){
-
     showToast(
       "That's your project. You don't need to volunteer for your own manuscript."
     );
 
     return;
+  }
 
+  const round =
+    getCurrentRound(
+      project.id
+    );
+
+  if(
+    !round ||
+    round.status !== "open"
+  ){
+    showToast(
+      "This project does not currently have an open beta round.",
+      "error"
+    );
+
+    return;
   }
 
   $("interestProjectId").value =
@@ -1978,203 +2042,309 @@ function openInterestModal(project){
   $("interestModal")
     .classList
     .add("show");
-
 }
 
-
 function closeInterestModal(){
-
   $("interestModal")
     .classList
     .remove("show");
-
 }
-
 
 $("projectForm")
   .addEventListener(
     "submit",
     async event => {
-
       event.preventDefault();
 
       if(!requireLogin()){
         return;
       }
 
-      const payload = {
+      const submitButton =
+        $("submitProjectButton");
 
-        owner_id:
-          currentUser.id,
+      submitButton.disabled = true;
+      submitButton.textContent =
+        "Creating...";
 
-        title:
-          $("projectTitle")
-            .value
-            .trim(),
+      try{
+        const payload = {
+          owner_id:
+            currentUser.id,
 
-        genre:
-          $("projectGenre")
-            .value
-            .trim(),
+          title:
+            $("projectTitle")
+              .value
+              .trim(),
 
-        word_count:
-          Number(
-            $("projectWordCount")
-              .value ||
-            0
-          ) || null,
+          genre:
+            $("projectGenre")
+              .value
+              .trim(),
 
-        deadline:
-          $("projectDeadline")
-            .value ||
-          null,
+          word_count:
+            Number(
+              $("projectWordCount")
+                .value ||
+              0
+            ) || null,
 
-        readers_wanted:
-          Number(
-            $("readersWanted")
-              .value ||
-            3
-          ),
+          readers_wanted:
+            Number(
+              $("readersWanted")
+                .value ||
+              3
+            ),
 
-        blurb:
-          $("projectBlurb")
-            .value
-            .trim(),
+          blurb:
+            $("projectBlurb")
+              .value
+              .trim(),
 
-        feedback_wanted:
-          $("feedbackWanted")
-            .value
-            .trim() ||
-          null,
+          feedback_wanted:
+            $("feedbackWanted")
+              .value
+              .trim() ||
+            null,
 
-        content_notes:
-          $("contentNotes")
-            .value
-            .trim() ||
-          null,
+          content_notes:
+            $("contentNotes")
+              .value
+              .trim() ||
+            null,
 
-        status:"open"
+          status:"open"
+        };
 
-      };
+        const {
+          data:createdProject,
+          error
+        } =
+          await supabaseClient
+            .from("beta_projects")
+            .insert(payload)
+            .select("*")
+            .single();
 
-      const {
-        error
-      } =
-        await supabaseClient
-          .from("beta_projects")
-          .insert(payload);
+        if(error){
+          throw error;
+        }
 
-      if(error){
+        /*
+          Migration #8 automatically creates Round 1
+          when the project is inserted.
 
+          We fetch that generated round and apply the
+          deadline selected in this form.
+        */
+
+        const {
+          data:createdRound,
+          error:roundError
+        } =
+          await supabaseClient
+            .from("beta_rounds")
+            .select("*")
+            .eq(
+              "project_id",
+              createdProject.id
+            )
+            .eq(
+              "round_number",
+              1
+            )
+            .maybeSingle();
+
+        if(roundError){
+          throw roundError;
+        }
+
+        if(createdRound){
+          const deadline =
+            $("projectDeadline").value;
+
+          const roundUpdate = {
+            status:"open",
+            starts_at:
+              new Date()
+                .toISOString()
+          };
+
+          if(deadline){
+            roundUpdate.deadline =
+              new Date(
+                deadline +
+                "T23:59:59"
+              ).toISOString();
+          }
+
+          const {error:updateRoundError} =
+            await supabaseClient
+              .from("beta_rounds")
+              .update(roundUpdate)
+              .eq(
+                "id",
+                createdRound.id
+              );
+
+          if(updateRoundError){
+            throw updateRoundError;
+          }
+        }
+
+        closeProjectModal();
+
+        showToast(
+          "Your beta-reading project is live."
+        );
+
+        await loadAllData();
+      }
+      catch(error){
         console.error(error);
 
         showToast(
-          "DogEar couldn't list the project.",
+          error?.message ||
+          "DogEar couldn't create the project.",
           "error"
         );
-
-        return;
-
       }
-
-      closeProjectModal();
-
-      showToast(
-        "Your beta-reading project is live."
-      );
-
-      await loadProjects();
-
+      finally{
+        submitButton.disabled = false;
+        submitButton.textContent =
+          "Create Project";
+      }
     }
   );
-
 
 $("interestForm")
   .addEventListener(
     "submit",
     async event => {
-
       event.preventDefault();
 
       if(!requireLogin()){
         return;
       }
 
-      const projectId =
-        $("interestProjectId")
-          .value;
+      const submitButton =
+        $("submitInterestButton");
 
-      const message =
-        $("interestMessage")
-          .value
-          .trim();
+      submitButton.disabled = true;
+      submitButton.textContent =
+        "Sending...";
 
-      const {
-        error
-      } =
-        await supabaseClient
-          .from("beta_interests")
-          .insert({
+      try{
+        const projectId =
+          $("interestProjectId")
+            .value;
 
-            project_id:
-              projectId,
+        const project =
+          projects.find(
+            row => row.id === projectId
+          );
 
-            reader_id:
-              currentUser.id,
+        if(!project){
+          throw new Error(
+            "This beta project could not be found."
+          );
+        }
 
-            message,
-
-            status:"pending"
-
-          });
-
-      if(error){
+        const round =
+          getCurrentRound(
+            projectId
+          );
 
         if(
-          String(
-            error.message ||
-            ""
+          !round ||
+          round.status !== "open"
+        ){
+          throw new Error(
+            "This beta round is no longer accepting readers."
+          );
+        }
+
+        if(
+          hasAppliedToRound(
+            projectId,
+            round.id
           )
+        ){
+          throw new Error(
+            "You've already expressed interest in this beta round."
+          );
+        }
+
+        const message =
+          $("interestMessage")
+            .value
+            .trim();
+
+        const {error} =
+          await supabaseClient
+            .from("beta_interests")
+            .insert({
+              project_id:
+                projectId,
+
+              round_id:
+                round.id,
+
+              reader_id:
+                currentUser.id,
+
+              message,
+
+              status:"pending"
+            });
+
+        if(error){
+          throw error;
+        }
+
+        closeInterestModal();
+
+        showToast(
+          "Interest sent to the writer."
+        );
+
+        await loadAllData();
+      }
+      catch(error){
+        console.error(error);
+
+        const message =
+          String(
+            error?.message ||
+            ""
+          );
+
+        if(
+          message
             .toLowerCase()
             .includes("duplicate")
         ){
-
           showToast(
-            "You've already expressed interest in this project."
+            "You've already expressed interest in this beta round."
           );
-
         }
         else{
-
-          console.error(error);
-
           showToast(
+            message ||
             "DogEar couldn't send your interest.",
             "error"
           );
-
         }
-
-        return;
-
       }
-
-      closeInterestModal();
-
-      showToast(
-        "Interest sent to the writer."
-      );
-
-      await loadMyInterests();
-
-      renderProjects();
-
+      finally{
+        submitButton.disabled = false;
+        submitButton.textContent =
+          "Send Interest";
+      }
     }
   );
 
-
 async function toggleProjectStatus(project){
-
   if(
     !currentUser ||
     project.owner_id !==
@@ -2188,62 +2358,84 @@ async function toggleProjectStatus(project){
       ? "closed"
       : "open";
 
-  const {
-    error
-  } =
-    await supabaseClient
-      .from("beta_projects")
-      .update({
-        status:nextStatus
-      })
-      .eq(
-        "id",
+  try{
+    const {error} =
+      await supabaseClient
+        .from("beta_projects")
+        .update({
+          status:nextStatus
+        })
+        .eq(
+          "id",
+          project.id
+        )
+        .eq(
+          "owner_id",
+          currentUser.id
+        );
+
+    if(error){
+      throw error;
+    }
+
+    /*
+      Keep the current beta round aligned with the
+      project's discovery status.
+    */
+
+    const round =
+      getCurrentRound(
         project.id
-      )
-      .eq(
-        "owner_id",
-        currentUser.id
       );
 
-  if(error){
+    if(round){
+      const nextRoundStatus =
+        nextStatus === "open"
+          ? "open"
+          : "closed";
 
+      const {error:roundError} =
+        await supabaseClient
+          .from("beta_rounds")
+          .update({
+            status:nextRoundStatus
+          })
+          .eq(
+            "id",
+            round.id
+          );
+
+      if(roundError){
+        throw roundError;
+      }
+    }
+
+    showToast(
+      nextStatus === "open"
+        ? "Project reopened."
+        : "Project closed."
+    );
+
+    await loadAllData();
+  }
+  catch(error){
     console.error(error);
 
     showToast(
+      error?.message ||
       "DogEar couldn't update the project.",
       "error"
     );
-
-    return;
-
   }
-
-  showToast(
-    nextStatus === "open"
-      ? "Project reopened."
-      : "Project closed."
-  );
-
-  await loadProjects();
-
 }
 
-
-/*
-  The reader-management page is intentionally its own destination.
-  This keeps this page focused on discovery/listing while establishing
-  the navigation architecture for the writer's acceptance workflow.
-*/
-function manageReaders(project){
-
+function manageProject(project){
   window.location.href =
     "beta-project.html?id=" +
     encodeURIComponent(
       project.id
     );
-
 }
-
 
 $("listProjectButton")
   .addEventListener(
@@ -2293,69 +2485,77 @@ $("statusFilter")
     renderProjects
   );
 
-
 $("projectModal")
   .addEventListener(
     "click",
     event => {
-
       if(
         event.target ===
         $("projectModal")
       ){
         closeProjectModal();
       }
-
     }
   );
-
 
 $("interestModal")
   .addEventListener(
     "click",
     event => {
-
       if(
         event.target ===
         $("interestModal")
       ){
         closeInterestModal();
       }
-
     }
   );
-
 
 document.addEventListener(
   "keydown",
   event => {
-
-    if(
-      event.key === "Escape"
-    ){
-
+    if(event.key === "Escape"){
       closeProjectModal();
       closeInterestModal();
-
     }
-
   }
 );
 
+supabaseClient.auth.onAuthStateChange(
+  async (
+    event,
+    session
+  ) => {
+    const newUser =
+      session?.user ||
+      null;
 
-async function initialize(){
+    const oldId =
+      currentUser?.id ||
+      null;
 
-  try{
+    const newId =
+      newUser?.id ||
+      null;
+
+    if(oldId === newId){
+      return;
+    }
+
+    currentUser =
+      newUser;
 
     await loadSession();
+    await loadAllData();
+  }
+);
 
-    await loadMyInterests();
-
-    await loadProjects();
-
+async function initialize(){
+  try{
+    await loadSession();
+    await loadAllData();
   }
   catch(error){
-
     console.error(
       "Beta reading initialization:",
       error
@@ -2365,14 +2565,10 @@ async function initialize(){
       "DogEar couldn't finish loading beta reading.",
       "error"
     );
-
   }
-
 }
 
-
 initialize();
-
 </script>
 
 </body>
