@@ -602,37 +602,63 @@ a{
    READ ALOUD
 ========================================================= */
 
-.tts-panel{
-  margin-bottom:15px;
-  padding:12px;
-  border:1px solid var(--line-soft);
+.tts-card{
+  margin-bottom:14px;
+  border:1px solid var(--line);
   border-radius:12px;
-  background:#0b0e0c;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(199,155,89,.08),
+      rgba(199,155,89,.025)
+    );
+  padding:12px;
+}
+
+.tts-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
 }
 
 .tts-title{
-  color:var(--gold);
-  font:800 8px Arial,sans-serif;
-  letter-spacing:.09em;
+  font-size:15px;
+}
+
+.tts-status{
+  color:var(--muted);
+  font:7px Arial,sans-serif;
+  letter-spacing:.06em;
   text-transform:uppercase;
 }
 
 .tts-controls{
-  display:flex;
-  flex-wrap:wrap;
+  display:grid;
+  grid-template-columns:36px 1fr 36px;
   gap:6px;
-  margin-top:10px;
+  align-items:center;
 }
 
 .tts-button{
-  min-height:34px;
-  padding:0 10px;
-  border:1px solid var(--line);
+  min-height:36px;
+  border:1px solid var(--line-soft);
   border-radius:999px;
-  background:transparent;
+  background:#0b0e0c;
   color:var(--gold2);
   cursor:pointer;
+}
+
+.tts-button.primary{
   font:800 7px Arial,sans-serif;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.tts-button:disabled{
+  opacity:.35;
+  cursor:not-allowed;
 }
 
 .tts-field{
@@ -650,13 +676,48 @@ a{
 
 .tts-select{
   width:100%;
-  min-height:36px;
-  border:1px solid var(--line);
+  min-height:34px;
+  border:1px solid var(--line-soft);
   border-radius:8px;
-  background:#080a09;
-  color:var(--cream2);
-  padding:0 8px;
+  background:#090c0a;
+  color:var(--cream);
+  padding:0 9px;
+  outline:none;
   font:9px Arial,sans-serif;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.primary-button,
+.secondary-button{
+  min-height:42px;
+  border-radius:999px;
+  cursor:pointer;
+  padding:0 15px;
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.primary-button{
+  border:1px solid var(--gold);
+  background:var(--gold);
+  color:#111;
+}
+
+.secondary-button{
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--gold2);
+}
+
+.primary-button:disabled,
+.secondary-button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
 }
 
 
@@ -669,36 +730,39 @@ a{
   inset:0;
   z-index:500;
   display:none;
-  place-items:center;
+  align-items:center;
+  justify-content:center;
   padding:20px;
-  background:rgba(0,0,0,.78);
+  background:rgba(0,0,0,.72);
 }
 
 .modal.show{
-  display:grid;
+  display:flex;
 }
 
 .modal-card{
-  width:min(620px,100%);
+  width:min(720px,100%);
   max-height:90vh;
   overflow:auto;
   border:1px solid var(--line);
-  border-radius:20px;
-  background:var(--panel);
-  padding:25px;
+  border-radius:18px;
+  background:#101410;
+  padding:20px;
+  box-shadow:0 30px 100px rgba(0,0,0,.5);
 }
 
 .modal-head{
   display:flex;
-  justify-content:space-between;
-  gap:20px;
   align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:16px;
 }
 
 .modal-kicker{
   color:var(--gold);
   font:800 8px Arial,sans-serif;
-  letter-spacing:.12em;
+  letter-spacing:.13em;
   text-transform:uppercase;
 }
 
@@ -709,25 +773,26 @@ a{
 }
 
 .close-button{
-  width:36px;
-  height:36px;
-  flex:0 0 auto;
+  width:38px;
+  height:38px;
   border:1px solid var(--line);
-  border-radius:50%;
+  border-radius:999px;
   background:transparent;
+  color:var(--gold2);
   cursor:pointer;
+  font-size:20px;
 }
 
 .field{
   display:grid;
-  gap:7px;
-  margin-top:15px;
+  gap:6px;
+  margin-top:12px;
 }
 
 .label{
-  color:var(--gold);
+  color:var(--muted);
   font:800 8px Arial,sans-serif;
-  letter-spacing:.08em;
+  letter-spacing:.06em;
   text-transform:uppercase;
 }
 
@@ -735,138 +800,114 @@ a{
 .select,
 .textarea{
   width:100%;
-  border:1px solid var(--line);
-  border-radius:10px;
-  background:#0b0e0c;
+  border:1px solid var(--line-soft);
+  border-radius:9px;
+  background:#090c0a;
   color:var(--cream);
   outline:none;
-  font:11px Arial,sans-serif;
-}
-
-.input,
-.select{
-  min-height:42px;
-  padding:0 11px;
+  padding:11px;
+  font:11px/1.5 Arial,sans-serif;
 }
 
 .textarea{
-  min-height:115px;
-  padding:11px;
+  min-height:110px;
   resize:vertical;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus{
+  border-color:var(--gold);
 }
 
 .modal-actions{
   margin-top:18px;
   display:flex;
   justify-content:flex-end;
-  flex-wrap:wrap;
   gap:8px;
+  flex-wrap:wrap;
 }
-
-.primary-button,
-.secondary-button{
-  min-height:41px;
-  padding:0 15px;
-  border-radius:999px;
-  cursor:pointer;
-  font:800 8px Arial,sans-serif;
-  letter-spacing:.07em;
-  text-transform:uppercase;
-}
-
-.primary-button{
-  border:1px solid var(--gold);
-  background:var(--gold);
-  color:#11130f;
-}
-
-.secondary-button{
-  border:1px solid var(--line);
-  background:transparent;
-  color:var(--gold2);
-}
-
-
-/* =========================================================
-   FEEDBACK
-========================================================= */
 
 .rating-grid{
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:repeat(2,minmax(0,1fr));
   gap:10px;
 }
 
 .feedback-status{
   margin-top:12px;
-  padding:12px;
   border:1px solid var(--line-soft);
-  border-radius:10px;
+  border-radius:9px;
+  padding:10px;
   color:var(--muted);
-  font:10px/1.6 Arial,sans-serif;
+  background:#0b0e0c;
+  font:9px/1.5 Arial,sans-serif;
 }
 
 
 /* =========================================================
-   LOADING / ERROR
+   LOADING / ERRORS / TOAST
 ========================================================= */
 
-.loading-screen{
+.full-state{
   min-height:calc(100vh - 70px);
   display:grid;
   place-items:center;
   padding:30px;
+}
+
+.state-card{
+  width:min(600px,100%);
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:var(--panel);
+  padding:28px;
   text-align:center;
 }
 
-.loading-card{
-  width:min(520px,100%);
-  padding:35px;
-  border:1px solid var(--line);
-  border-radius:20px;
-  background:var(--panel);
+.state-card h1{
+  margin:0 0 10px;
+  font-size:36px;
+  font-weight:400;
 }
 
-.loading-title{
-  font-size:30px;
-}
-
-.loading-copy{
-  margin-top:10px;
+.state-card p{
+  margin:0;
   color:var(--muted);
-  font:11px/1.65 Arial,sans-serif;
+  font:11px/1.7 Arial,sans-serif;
 }
 
-
-/* =========================================================
-   TOAST
-========================================================= */
+.state-card .primary-button{
+  margin-top:18px;
+}
 
 .toast{
   position:fixed;
-  right:20px;
-  bottom:20px;
-  z-index:700;
-  max-width:390px;
-  padding:14px 16px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:#111512;
-  color:var(--cream2);
-  font:11px/1.5 Arial,sans-serif;
+  left:50%;
+  bottom:24px;
+  z-index:800;
+  transform:
+    translate(-50%,20px);
   opacity:0;
-  transform:translateY(10px);
   pointer-events:none;
-  transition:.18s;
+  min-width:220px;
+  max-width:min(90vw,560px);
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#111512;
+  color:var(--cream);
+  padding:11px 16px;
+  text-align:center;
+  font:9px/1.4 Arial,sans-serif;
+  transition:
+    opacity .18s ease,
+    transform .18s ease;
 }
 
 .toast.show{
   opacity:1;
-  transform:none;
-}
-
-.toast.error{
-  color:var(--danger);
+  transform:
+    translate(-50%,0);
 }
 
 
@@ -874,7 +915,11 @@ a{
    MOBILE
 ========================================================= */
 
-@media(max-width:1100px){
+.mobile-backdrop{
+  display:none;
+}
+
+@media(max-width:1180px){
 
   .reader-shell{
     grid-template-columns:230px minmax(0,1fr);
@@ -882,64 +927,115 @@ a{
 
   .sidebar.right{
     position:fixed;
-    right:0;
     top:70px;
-    width:min(350px,92vw);
-    z-index:150;
-    transform:translateX(100%);
+    right:0;
+    width:min(360px,92vw);
+    z-index:220;
+    transform:translateX(102%);
     transition:transform .2s ease;
-    box-shadow:-20px 0 50px rgba(0,0,0,.35);
+    box-shadow:-20px 0 60px rgba(0,0,0,.4);
   }
 
-  .sidebar.right.open{
-    transform:none;
+  .sidebar.right.mobile-open{
+    transform:translateX(0);
+  }
+
+  .mobile-backdrop{
+    position:fixed;
+    inset:70px 0 0;
+    z-index:210;
+    background:rgba(0,0,0,.55);
+  }
+
+  .mobile-backdrop.show{
+    display:block;
   }
 
 }
 
-@media(max-width:760px){
+@media(max-width:800px){
+
+  .topbar{
+    min-height:62px;
+    padding:0 12px;
+    gap:8px;
+  }
+
+  .brand{
+    font-size:10px;
+    letter-spacing:.1em;
+  }
+
+  .brand-mark{
+    width:27px;
+    height:27px;
+  }
+
+  .reader-title-nav{
+    text-align:left;
+  }
+
+  .reader-title-nav strong{
+    font-size:11px;
+  }
+
+  .desktop-label{
+    display:none;
+  }
 
   .reader-shell{
     display:block;
   }
 
+  .sidebar{
+    top:62px;
+    height:calc(100vh - 62px);
+  }
+
   .sidebar.left{
     position:fixed;
     left:0;
-    top:70px;
     width:min(300px,90vw);
-    z-index:150;
-    transform:translateX(-100%);
+    z-index:220;
+    transform:translateX(-102%);
     transition:transform .2s ease;
-    box-shadow:20px 0 50px rgba(0,0,0,.35);
+    box-shadow:20px 0 60px rgba(0,0,0,.4);
   }
 
-  .sidebar.left.open{
-    transform:none;
+  .sidebar.left.mobile-open{
+    transform:translateX(0);
+  }
+
+  .sidebar.right{
+    top:62px;
+    height:calc(100vh - 62px);
+  }
+
+  .mobile-backdrop{
+    inset:62px 0 0;
   }
 
   .reader-center{
     padding:
       18px
       10px
-      100px;
+      90px;
   }
 
-  .reader-card{
-    border-radius:4px;
+  .chapter-head{
+    padding:
+      36px
+      22px
+      20px;
   }
 
   .chapter-body{
-    font-size:18px;
+    padding:
+      8px
+      22px
+      60px;
+    font-size:17px;
     line-height:1.75;
-  }
-
-  .reader-title-nav span{
-    display:none;
-  }
-
-  .nav-actions .desktop-label{
-    display:none;
   }
 
   .rating-grid{
@@ -954,6 +1050,11 @@ a{
 
 <body>
 
+
+<!-- ======================================================
+     TOP NAVIGATION
+======================================================= -->
+
 <header class="topbar">
 
   <a
@@ -961,17 +1062,17 @@ a{
     href="beta-reading.html"
   >
     <span class="brand-mark"></span>
-    <span>DogEar</span>
+    DogEar
   </a>
 
   <div class="reader-title-nav">
 
     <strong id="navBookTitle">
-      Beta Manuscript
+      Beta Reader
     </strong>
 
     <span id="navChapterTitle">
-      Private Beta Reader
+      Loading manuscript...
     </span>
 
   </div>
@@ -982,6 +1083,7 @@ a{
       class="icon-button"
       id="tocToggleButton"
       type="button"
+      title="Chapters"
     >
       ☰
       <span class="desktop-label">
@@ -993,13 +1095,13 @@ a{
       class="icon-button"
       id="notesToggleButton"
       type="button"
+      title="Notes and bookmarks"
     >
       ✎
       <span class="desktop-label">
         Notes
       </span>
     </button>
-        </button>
 
   </div>
 
@@ -1007,27 +1109,56 @@ a{
 
 
 <!-- ======================================================
-     LOADING
+     LOADING STATE
 ======================================================= -->
 
 <section
-  class="loading-screen"
-  id="loadingScreen"
+  class="full-state"
+  id="loadingState"
 >
 
-  <div class="loading-card">
+  <div class="state-card">
 
-    <div class="loading-title">
-      Opening your DogEar…
-    </div>
+    <h1>
+      Opening your manuscript...
+    </h1>
 
-    <div
-      class="loading-copy"
-      id="loadingMessage"
+    <p>
+      DogEar is checking your beta-reading assignment
+      and restoring your place.
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- ======================================================
+     ERROR STATE
+======================================================= -->
+
+<section
+  class="full-state hidden"
+  id="errorState"
+>
+
+  <div class="state-card">
+
+    <h1 id="errorTitle">
+      We couldn't open this manuscript.
+    </h1>
+
+    <p id="errorMessage">
+      Your beta-reading assignment may no longer be active.
+    </p>
+
+    <button
+      class="primary-button"
+      id="errorBackButton"
+      type="button"
     >
-      Checking your beta-reader access and preparing
-      the private manuscript.
-    </div>
+      Back to Beta Reading
+    </button>
 
   </div>
 
@@ -1044,11 +1175,11 @@ a{
 >
 
 
-  <!-- LEFT / TABLE OF CONTENTS -->
+  <!-- LEFT SIDEBAR -->
 
   <aside
     class="sidebar left"
-    id="tocSidebar"
+    id="leftSidebar"
   >
 
     <div class="sidebar-head">
@@ -1057,7 +1188,10 @@ a{
         Manuscript
       </div>
 
-      <div class="sidebar-title">
+      <div
+        class="sidebar-title"
+        id="sidebarBookTitle"
+      >
         Chapters
       </div>
 
@@ -1075,30 +1209,22 @@ a{
   </aside>
 
 
-  <!-- CENTER -->
+  <!-- CENTER READER -->
 
   <section class="reader-center">
 
     <div class="reader-toolbar">
 
-      <button
-        class="icon-button"
-        id="bookmarkButton"
-        type="button"
-      >
-        ♡ Bookmark
-      </button>
-
       <div class="progress-wrap">
 
         <div class="progress-label">
 
-          <span>
-            Reading progress
+          <span id="progressText">
+            0% read
           </span>
 
-          <span id="progressText">
-            0%
+          <span id="assignmentStatusText">
+            Beta reading
           </span>
 
         </div>
@@ -1115,7 +1241,15 @@ a{
       </div>
 
       <button
-        class="icon-button"
+        class="secondary-button"
+        id="bookmarkButton"
+        type="button"
+      >
+        ☆ Bookmark
+      </button>
+
+      <button
+        class="primary-button"
         id="feedbackButton"
         type="button"
       >
@@ -1136,14 +1270,14 @@ a{
           class="chapter-number"
           id="chapterNumber"
         >
-          Section 1
+          Chapter
         </div>
 
         <h1
           class="chapter-title"
           id="chapterTitle"
         >
-          Loading…
+          Loading...
         </h1>
 
       </header>
@@ -1156,7 +1290,7 @@ a{
     </article>
 
 
-    <div class="chapter-navigation">
+    <nav class="chapter-navigation">
 
       <button
         class="nav-button"
@@ -1170,7 +1304,7 @@ a{
         class="chapter-position"
         id="chapterPosition"
       >
-        1 / 1
+        1 of 1
       </div>
 
       <button
@@ -1181,26 +1315,26 @@ a{
         Next →
       </button>
 
-    </div>
+    </nav>
 
   </section>
 
 
-  <!-- RIGHT / NOTES + READ ALOUD -->
+  <!-- RIGHT SIDEBAR -->
 
   <aside
     class="sidebar right"
-    id="notesSidebar"
+    id="rightSidebar"
   >
 
     <div class="sidebar-head">
 
       <div class="sidebar-kicker">
-        Your DogEars
+        Reader Tools
       </div>
 
       <div class="sidebar-title">
-        Reading Tools
+        Your DogEars
       </div>
 
     </div>
@@ -1210,10 +1344,21 @@ a{
 
       <!-- READ ALOUD -->
 
-      <section class="tts-panel">
+      <section class="tts-card">
 
-        <div class="tts-title">
-          Read Aloud
+        <div class="tts-head">
+
+          <div class="tts-title">
+            Read Aloud
+          </div>
+
+          <div
+            class="tts-status"
+            id="ttsStatus"
+          >
+            Ready
+          </div>
+
         </div>
 
         <div class="tts-controls">
@@ -1228,11 +1373,11 @@ a{
           </button>
 
           <button
-            class="tts-button"
+            class="tts-button primary"
             id="ttsPlayButton"
             type="button"
           >
-            ▶ Read
+            Play
           </button>
 
           <button
@@ -1800,62 +1945,64 @@ const params =
   new URLSearchParams(
     window.location.search
   );
-
-
-const assignmentId =
+  const assignmentId =
   params.get("assignment");
 
 
 let currentUser = null;
 
 let assignment = null;
+
 let project = null;
+
 let round = null;
+
 let manuscript = null;
 
 let sections = [];
+
 let currentSectionIndex = 0;
 
 let readingPosition = null;
+
 let sectionProgress = [];
 
 let bookmarks = [];
+
 let annotations = [];
+
 let feedback = null;
 
 let selectedPassage = null;
 
-let toastTimer = null;
-
 let positionSaveTimer = null;
+
 let progressSaveTimer = null;
 
+let toastTimer = null;
 
-/*
-  Text-to-speech state.
-*/
 
-let speechSupported =
+/* =========================================================
+   TEXT TO SPEECH STATE
+========================================================= */
+
+const speechSupported =
   "speechSynthesis" in window &&
   "SpeechSynthesisUtterance" in window;
 
 let availableVoices = [];
 
 let ttsParagraphIndex = 0;
+
 let ttsSpeaking = false;
+
 let ttsPaused = false;
+
 let activeUtterance = null;
 
 
-/*
-  Prevent overlapping navigation operations.
-*/
-
-let sectionLoading = false;
-
-
 /* =========================================================
-   BASIC HELPERS
+   HELPERS
 ========================================================= */
 
 function escapeHtml(value){
@@ -1870,51 +2017,6 @@ function escapeHtml(value){
 }
 
 
-function showToast(
-  message,
-  type = ""
-){
-
-  const toast =
-    $("toast");
-
-  clearTimeout(
-    toastTimer
-  );
-
-  toast.textContent =
-    message;
-
-  toast.className =
-    "toast";
-
-  if(type){
-
-    toast.classList.add(
-      type
-    );
-
-  }
-
-  requestAnimationFrame(
-    () =>
-      toast.classList.add(
-        "show"
-      )
-  );
-
-  toastTimer =
-    setTimeout(
-      () =>
-        toast.classList.remove(
-          "show"
-        ),
-      3500
-    );
-
-}
-
-
 function clamp(
   value,
   min,
@@ -1922,19 +2024,14 @@ function clamp(
 ){
 
   return Math.min(
-    max,
-    Math.max(
-      min,
-      value
-    )
+    Math.max(value,min),
+    max
   );
 
 }
 
 
-function numericValue(
-  value
-){
+function numberOrNull(value){
 
   if(
     value === "" ||
@@ -1947,11 +2044,147 @@ function numericValue(
   const number =
     Number(value);
 
-  return Number.isFinite(
-    number
-  )
+  return Number.isFinite(number)
     ? number
     : null;
+
+}
+
+
+function formatDate(value){
+
+  if(!value){
+    return "";
+  }
+
+  const date =
+    new Date(value);
+
+  if(
+    Number.isNaN(
+      date.getTime()
+    )
+  ){
+    return "";
+  }
+
+  return date.toLocaleDateString(
+    undefined,
+    {
+      month:"short",
+      day:"numeric",
+      year:"numeric"
+    }
+  );
+
+}
+
+
+function showToast(message){
+
+  const toast =
+    $("toast");
+
+  toast.textContent =
+    message;
+
+  toast.classList.add("show");
+
+  clearTimeout(
+    toastTimer
+  );
+
+  toastTimer =
+    setTimeout(
+      () => {
+        toast.classList.remove(
+          "show"
+        );
+      },
+      2600
+    );
+
+}
+
+
+function showError(
+  title,
+  message
+){
+
+  $("loadingState")
+    .classList
+    .add("hidden");
+
+  $("readerShell")
+    .classList
+    .add("hidden");
+
+  $("errorTitle")
+    .textContent =
+      title ||
+      "We couldn't open this manuscript.";
+
+  $("errorMessage")
+    .textContent =
+      message ||
+      "Please return to Beta Reading and try again.";
+
+  $("errorState")
+    .classList
+    .remove("hidden");
+
+}
+
+
+function getCurrentSection(){
+
+  return sections[
+    currentSectionIndex
+  ] || null;
+
+}
+
+
+function getSectionById(
+  sectionId
+){
+
+  return sections.find(
+    section =>
+      section.id === sectionId
+  ) || null;
+
+}
+
+
+function getSectionIndexById(
+  sectionId
+){
+
+  return sections.findIndex(
+    section =>
+      section.id === sectionId
+  );
+
+}
+
+
+function sectionDisplayTitle(
+  section,
+  index
+){
+
+  const title =
+    String(
+      section?.title || ""
+    ).trim();
+
+  if(title){
+    return title;
+  }
+
+  return `Chapter ${index + 1}`;
 
 }
 
@@ -1971,7 +2204,7 @@ function normalizeParagraphs(
   }
 
   return normalized
-    .split(/\n\s*\n/)
+    .split(/\n\s*\n+/)
     .map(
       paragraph =>
         paragraph.trim()
@@ -1981,8 +2214,69 @@ function normalizeParagraphs(
 }
 
 
+function currentParagraphElements(){
+
+  return Array.from(
+    $("chapterBody")
+      .querySelectorAll(
+        ".reader-paragraph"
+      )
+  );
+
+}
+
+
 /* =========================================================
-   AUTHENTICATION
+   ANALYTICS
+========================================================= */
+
+async function logAnalyticsEvent(
+  eventType,
+  eventData = {}
+){
+
+  if(
+    !currentUser ||
+    !assignment
+  ){
+    return;
+  }
+
+  try{
+
+    await supabaseClient
+      .from(
+        "beta_analytics_events"
+      )
+      .insert({
+        assignment_id:
+          assignment.id,
+        project_id:
+          assignment.project_id,
+        round_id:
+          assignment.round_id,
+        reader_id:
+          currentUser.id,
+        event_type:
+          eventType,
+        event_data:
+          eventData
+      });
+
+  }catch(error){
+
+    console.warn(
+      "Analytics event failed:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   SESSION
 ========================================================= */
 
 async function loadSession(){
@@ -1995,24 +2289,26 @@ async function loadSession(){
       .auth
       .getSession();
 
-
   if(error){
     throw error;
   }
 
-
   currentUser =
     data?.session?.user ||
     null;
-    if(!currentUser){
+
+  if(!currentUser){
+
+    const returnTo =
+      encodeURIComponent(
+        window.location.href
+      );
 
     window.location.href =
-      "auth.html#login";
+      `auth.html#login?return=${returnTo}`;
 
     return false;
-
   }
-
 
   return true;
 
@@ -2020,7 +2316,7 @@ async function loadSession(){
 
 
 /* =========================================================
-   ASSIGNMENT ACCESS
+   ASSIGNMENT
 ========================================================= */
 
 async function loadAssignment(){
@@ -2028,11 +2324,10 @@ async function loadAssignment(){
   if(!assignmentId){
 
     throw new Error(
-      "No beta-reading assignment was selected."
+      "No beta-reading assignment was provided."
     );
 
   }
-
 
   const {
     data,
@@ -2049,11 +2344,9 @@ async function loadAssignment(){
       )
       .maybeSingle();
 
-
   if(error){
     throw error;
   }
-
 
   if(!data){
 
@@ -2063,44 +2356,43 @@ async function loadAssignment(){
 
   }
 
-
   if(
     data.reader_id !==
     currentUser.id
   ){
 
     throw new Error(
-      "This manuscript is not assigned to your DogEar account."
+      "This beta-reading assignment belongs to another reader."
     );
 
   }
 
-
-  if(
-    ![
+  const allowedStatuses =
+    [
       "accepted",
       "reading",
       "completed"
-    ].includes(
+    ];
+
+  if(
+    !allowedStatuses.includes(
       data.status
     )
   ){
 
     throw new Error(
-      "Your access to this manuscript is no longer active."
+      "This beta-reading assignment is not currently available to read."
     );
 
   }
 
-
-  assignment =
-    data;
+  assignment = data;
 
 }
 
 
 /* =========================================================
-   PROJECT + ROUND
+   PROJECT
 ========================================================= */
 
 async function loadProject(){
@@ -2120,28 +2412,37 @@ async function loadProject(){
       )
       .maybeSingle();
 
-
   if(error){
     throw error;
   }
 
-
   if(!data){
 
     throw new Error(
-      "The beta project could not be found."
+      "The beta-reading project could not be found."
     );
 
   }
 
-
-  project =
-    data;
+  project = data;
 
 }
 
 
+/* =========================================================
+   ROUND
+========================================================= */
+
 async function loadRound(){
+
+  if(
+    !assignment.round_id
+  ){
+
+    round = null;
+    return;
+
+  }
 
   const {
     data,
@@ -2158,15 +2459,12 @@ async function loadRound(){
       )
       .maybeSingle();
 
-
   if(error){
     throw error;
   }
 
-
   round =
-    data ||
-    null;
+    data || null;
 
 }
 
@@ -2177,15 +2475,13 @@ async function loadRound(){
 
 async function loadManuscript(){
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
+  let query =
+    supabaseClient
       .from(
         "beta_manuscripts"
       )
-      .select(`
+      .select(
+        `
         id,
         project_id,
         round_id,
@@ -2195,14 +2491,11 @@ async function loadManuscript(){
         active,
         processing_status,
         processed_at
-      `)
+        `
+      )
       .eq(
         "project_id",
         assignment.project_id
-      )
-      .eq(
-        "round_id",
-        assignment.round_id
       )
       .eq(
         "active",
@@ -2211,7 +2504,25 @@ async function loadManuscript(){
       .eq(
         "processing_status",
         "ready"
-      )
+      );
+
+  if(
+    assignment.round_id
+  ){
+
+    query =
+      query.eq(
+        "round_id",
+        assignment.round_id
+      );
+
+  }
+
+  const {
+    data,
+    error
+  } =
+    await query
       .order(
         "version_number",
         {
@@ -2221,23 +2532,19 @@ async function loadManuscript(){
       .limit(1)
       .maybeSingle();
 
-
   if(error){
     throw error;
   }
 
-
   if(!data){
 
     throw new Error(
-      "The author has not made a processed manuscript available for this beta round yet."
+      "The manuscript for this beta-reading round is not ready yet."
     );
 
   }
 
-
-  manuscript =
-    data;
+  manuscript = data;
 
 }
 
@@ -2256,14 +2563,16 @@ async function loadSections(){
       .from(
         "beta_manuscript_sections"
       )
-      .select(`
+      .select(
+        `
         id,
         manuscript_id,
         section_number,
         title,
         content_text,
         word_count
-      `)
+        `
+      )
       .eq(
         "manuscript_id",
         manuscript.id
@@ -2275,18 +2584,18 @@ async function loadSections(){
         }
       );
 
-
   if(error){
     throw error;
   }
 
-
   sections =
-    data ||
-    [];
+    Array.isArray(data)
+      ? data
+      : [];
 
-
-  if(!sections.length){
+  if(
+    sections.length === 0
+  ){
 
     throw new Error(
       "This manuscript does not contain any readable sections."
@@ -2318,25 +2627,12 @@ async function loadReadingPosition(){
       )
       .maybeSingle();
 
-
   if(error){
-
-    console.error(
-      "Reading position:",
-      error
-    );
-
-    readingPosition =
-      null;
-
-    return;
-
+    throw error;
   }
 
-
   readingPosition =
-    data ||
-    null;
+    data || null;
 
 }
 
@@ -2361,25 +2657,14 @@ async function loadSectionProgress(){
         assignment.id
       );
 
-
   if(error){
-
-    console.error(
-      "Section progress:",
-      error
-    );
-
-    sectionProgress =
-      [];
-
-    return;
-
+    throw error;
   }
 
-
   sectionProgress =
-    data ||
-    [];
+    Array.isArray(data)
+      ? data
+      : [];
 
 }
 
@@ -2410,25 +2695,14 @@ async function loadBookmarks(){
         }
       );
 
-
   if(error){
-
-    console.error(
-      "Bookmarks:",
-      error
-    );
-
-    bookmarks =
-      [];
-
-    return;
-
+    throw error;
   }
 
-
   bookmarks =
-    data ||
-    [];
+    Array.isArray(data)
+      ? data
+      : [];
 
 }
 
@@ -2459,25 +2733,14 @@ async function loadAnnotations(){
         }
       );
 
-
   if(error){
-
-    console.error(
-      "Annotations:",
-      error
-    );
-
-    annotations =
-      [];
-
-    return;
-
+    throw error;
   }
 
-
   annotations =
-    data ||
-    [];
+    Array.isArray(data)
+      ? data
+      : [];
 
 }
 
@@ -2511,159 +2774,50 @@ async function loadFeedback(){
       )
       .maybeSingle();
 
-
   if(error){
-
-    console.error(
-      "Feedback:",
-      error
-    );
-
-    feedback =
-      null;
-
-    return;
-
+    throw error;
   }
-
 
   feedback =
-    data ||
-    null;
+    data || null;
 
 }
 
 
 /* =========================================================
-   ANALYTICS EVENTS
+   STATIC READER UI
 ========================================================= */
 
-async function logEvent(
-  eventType,
-  eventData = {},
-  sectionId = null
-){
+function renderStaticReader(){
 
-  try{
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from(
-          "beta_analytics_events"
-        )
-        .insert({
-          project_id:
-            assignment.project_id,
-
-          round_id:
-            assignment.round_id,
-
-          assignment_id:
-            assignment.id,
-
-          section_id:
-            sectionId,
-
-          user_id:
-            currentUser.id,
-
-          event_type:
-            eventType,
-
-          event_data:
-            eventData
-        });
-
-
-    if(error){
-
-      console.error(
-        "Analytics event:",
-        error
-      );
-
-    }
-
-  }
-  catch(error){
-
-    console.error(
-      "Analytics event:",
-      error
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   INITIAL POSITION
-========================================================= */
-
-function determineInitialSection(){
-
-  if(
-    readingPosition?.section_id
-  ){
-
-    const index =
-      sections.findIndex(
-        section =>
-          section.id ===
-          readingPosition.section_id
-      );
-
-
-    if(index >= 0){
-
-      currentSectionIndex =
-        index;
-
-      return;
-
-    }
-
-  }
-
-
-  currentSectionIndex =
-    0;
-
-}
-
-
-/* =========================================================
-   MAIN STATIC UI
-========================================================= */
-
-function renderStaticInformation(){
+  const title =
+    project?.title ||
+    project?.book_title ||
+    project?.project_title ||
+    "Beta Manuscript";
 
   $("navBookTitle")
     .textContent =
-      project.title ||
-      "Beta Manuscript";
+      title;
 
-
-  $("navChapterTitle")
+  $("sidebarBookTitle")
     .textContent =
-      round?.name ||
-      "Private Beta Reader";
+      title;
 
+  document.title =
+    `${title} — DogEar Beta Reader`;
 
-  buildTableOfContents();
+  renderTableOfContents();
 
-  buildAnnotationFilter();
-
-  renderBookmarks();
+  renderAnnotationChapterFilter();
 
   renderAnnotations();
 
+  renderBookmarks();
+
   populateFeedbackForm();
 
-  renderOverallProgress();
+  initializeSpeechControls();
 
 }
 
@@ -2672,15 +2826,12 @@ function renderStaticInformation(){
    TABLE OF CONTENTS
 ========================================================= */
 
-function buildTableOfContents(){
+function renderTableOfContents(){
 
-  const holder =
+  const container =
     $("tocList");
 
-
-  holder.innerHTML =
-    "";
-
+  container.innerHTML = "";
 
   sections.forEach(
     (
@@ -2693,34 +2844,35 @@ function buildTableOfContents(){
           "button"
         );
 
-
       button.type =
         "button";
-
 
       button.className =
         "toc-button";
 
-
-      button.dataset
-        .sectionIndex =
-          String(index);
-
+      button.dataset.index =
+        String(index);
 
       button.innerHTML =
         `
-          <span class="toc-number">
-            Section ${escapeHtml(
-              section.section_number
-            )}
-          </span>
+        <span class="toc-number">
+          ${
+            escapeHtml(
+              section.section_number ??
+              index + 1
+            )
+          }
+        </span>
 
-          ${escapeHtml(
-            section.title ||
-            `Section ${section.section_number}`
-          )}
+        ${
+          escapeHtml(
+            sectionDisplayTitle(
+              section,
+              index
+            )
+          )
+        }
         `;
-
 
       button.addEventListener(
         "click",
@@ -2728,31 +2880,15 @@ function buildTableOfContents(){
 
           await goToSection(
             index,
-            {
-              savePrevious:true,
-              scrollTop:true
-            }
+            true
           );
 
-
-          if(
-            window.innerWidth <=
-            760
-          ){
-
-            $("tocSidebar")
-              .classList
-              .remove(
-                "open"
-              );
-
-          }
+          closeMobileSidebars();
 
         }
       );
 
-
-      holder.appendChild(
+      container.appendChild(
         button
       );
 
@@ -2766,37 +2902,37 @@ function buildTableOfContents(){
    ANNOTATION CHAPTER FILTER
 ========================================================= */
 
-function buildAnnotationFilter(){
+function renderAnnotationChapterFilter(){
 
   const select =
     $("annotationChapterFilter");
 
-
   select.innerHTML =
     `
-      <option value="">
-        All chapters
-      </option>
+    <option value="">
+      All chapters
+    </option>
     `;
 
-
   sections.forEach(
-    section => {
+    (
+      section,
+      index
+    ) => {
 
       const option =
         document.createElement(
           "option"
         );
 
-
       option.value =
         section.id;
 
-
       option.textContent =
-        section.title ||
-        `Section ${section.section_number}`;
-
+        sectionDisplayTitle(
+          section,
+          index
+        );
 
       select.appendChild(
         option
@@ -2809,70 +2945,59 @@ function buildAnnotationFilter(){
 
 
 /* =========================================================
-   RENDER CURRENT SECTION
+   CURRENT SECTION
 ========================================================= */
 
 async function renderCurrentSection(
   options = {}
 ){
 
-  const section =
-    sections[
-      currentSectionIndex
-    ];
+  const {
+    restorePosition = false
+  } = options;
 
+  stopSpeech();
+
+  const section =
+    getCurrentSection();
 
   if(!section){
     return;
   }
 
-
-  stopSpeech();
-
-
-  $("chapterNumber")
-    .textContent =
-      `Section ${
-        section.section_number
-      }`;
-
-
-  $("chapterTitle")
-    .textContent =
-      section.title ||
-      `Section ${
-        section.section_number
-      }`;
-
+  const sectionTitle =
+    sectionDisplayTitle(
+      section,
+      currentSectionIndex
+    );
 
   $("navChapterTitle")
     .textContent =
-      section.title ||
-      `Section ${
-        section.section_number
+      sectionTitle;
+
+  $("chapterNumber")
+    .textContent =
+      `Chapter ${
+        section.section_number ??
+        currentSectionIndex + 1
       }`;
 
+  $("chapterTitle")
+    .textContent =
+      sectionTitle;
 
   $("chapterPosition")
     .textContent =
-      `${
-        currentSectionIndex + 1
-      } / ${
-        sections.length
-      }`;
-
+      `${currentSectionIndex + 1} of ${sections.length}`;
 
   $("previousChapterButton")
     .disabled =
-      currentSectionIndex ===
-      0;
-
+      currentSectionIndex === 0;
 
   $("nextChapterButton")
     .disabled =
-      currentSectionIndex >=
+      currentSectionIndex ===
       sections.length - 1;
-
 
   document
     .querySelectorAll(
@@ -2881,75 +3006,73 @@ async function renderCurrentSection(
     .forEach(
       button => {
 
-        button.classList
-          .toggle(
-            "active",
-            Number(
-              button.dataset
-                .sectionIndex
-            ) ===
-              currentSectionIndex
-          );
+        button.classList.toggle(
+          "active",
+          Number(
+            button.dataset.index
+          ) ===
+          currentSectionIndex
+        );
 
       }
     );
-
 
   const paragraphs =
     normalizeParagraphs(
       section.content_text
     );
 
-
-  const holder =
+  const chapterBody =
     $("chapterBody");
 
+  chapterBody.innerHTML = "";
 
-  holder.innerHTML =
-    "";
+  if(
+    paragraphs.length === 0
+  ){
 
+    const paragraph =
+      document.createElement(
+        "p"
+      );
 
-  if(!paragraphs.length){
+    paragraph.className =
+      "reader-paragraph";
 
-    holder.innerHTML =
-      `
-        <p class="reader-paragraph">
-          This section contains no readable text.
-        </p>
-      `;
+    paragraph.dataset.paragraphIndex =
+      "0";
 
-  }
-  else{
+    paragraph.textContent =
+      "This section does not contain any readable text.";
+
+    chapterBody.appendChild(
+      paragraph
+    );
+
+  }else{
 
     paragraphs.forEach(
       (
-        paragraph,
-        paragraphIndex
+        text,
+        index
       ) => {
 
-        const p =
+        const paragraph =
           document.createElement(
             "p"
           );
 
-
-        p.className =
+        paragraph.className =
           "reader-paragraph";
 
+        paragraph.dataset.paragraphIndex =
+          String(index);
 
-        p.dataset
-          .paragraphIndex =
-            String(
-              paragraphIndex
-            );
+        paragraph.textContent =
+          text;
 
-
-        p.textContent =
-          paragraph;
-
-
-        holder.appendChild(
-          p
+        chapterBody.appendChild(
+          paragraph
         );
 
       }
@@ -2957,53 +3080,50 @@ async function renderCurrentSection(
 
   }
 
-
   applyAnnotationsToCurrentSection();
 
   updateBookmarkButton();
 
-  renderOverallProgress();
+  updateProgressDisplay();
 
+  ttsParagraphIndex = 0;
+
+  updateTtsStatus();
 
   if(
-    options.restorePosition
+    restorePosition &&
+    readingPosition &&
+    readingPosition.section_id ===
+      section.id
   ){
 
     restoreSavedPosition();
 
-  }
-
-
-  if(
-    options.scrollTop
-  ){
+  }else{
 
     window.scrollTo({
       top:0,
-      behavior:"smooth"
+      behavior:"auto"
     });
 
   }
 
-
   await markSectionStarted(
-    section
-  );
-
-
-  logEvent(
-    "section_started",
-    {
-      section_number:
-        section.section_number,
-
-      source:
-        options.source ||
-        "reader"
-    },
     section.id
   );
-  }
+
+  await logAnalyticsEvent(
+    "section_started",
+    {
+      section_id:
+        section.id,
+      section_number:
+        section.section_number ??
+        currentSectionIndex + 1
+    }
+  );
+
+}
 
 
 /* =========================================================
@@ -3012,29 +3132,22 @@ async function renderCurrentSection(
 
 async function goToSection(
   index,
-  options = {}
+  userInitiated = false
 ){
 
-  if(sectionLoading){
+  if(
+    index < 0 ||
+    index >= sections.length
+  ){
     return;
   }
 
-
-  const nextIndex =
-    clamp(
-      Number(index),
-      0,
-      sections.length - 1
-    );
-
-
   if(
-    nextIndex ===
-      currentSectionIndex &&
-    !options.force
+    index ===
+    currentSectionIndex
   ){
 
-    if(options.scrollTop){
+    if(userInitiated){
 
       window.scrollTo({
         top:0,
@@ -3044,47 +3157,29 @@ async function goToSection(
     }
 
     return;
-
   }
 
+  await saveReadingPosition();
 
-  sectionLoading =
-    true;
+  currentSectionIndex =
+    index;
 
+  await renderCurrentSection({
+    restorePosition:false
+  });
 
-  try{
+  if(userInitiated){
 
-    if(
-      options.savePrevious !==
-      false
-    ){
-
-      await saveCurrentPosition(
-        true
-      );
-
-    }
-
-
-    currentSectionIndex =
-      nextIndex;
-
-
-    await renderCurrentSection({
-      scrollTop:
-        options.scrollTop !==
-        false,
-
-      source:
-        options.source ||
-        "navigation"
-    });
-
-  }
-  finally{
-
-    sectionLoading =
-      false;
+    await logAnalyticsEvent(
+      "section_navigated",
+      {
+        section_id:
+          getCurrentSection()?.id ||
+          null,
+        section_index:
+          currentSectionIndex
+      }
+    );
 
   }
 
@@ -3097,85 +3192,69 @@ async function goToSection(
 
 function restoreSavedPosition(){
 
-  if(
-    !readingPosition ||
-    readingPosition.section_id !==
-      sections[
-        currentSectionIndex
-      ]?.id
-  ){
-
-    return;
-
-  }
-
-
   const paragraphIndex =
-    Number(
-      readingPosition
-        .paragraph_index ||
-      0
+    clamp(
+      Number(
+        readingPosition
+          ?.paragraph_index || 0
+      ),
+      0,
+      Math.max(
+        currentParagraphElements()
+          .length - 1,
+        0
+      )
     );
 
+  const paragraphs =
+    currentParagraphElements();
 
   const paragraph =
-    document.querySelector(
-      `.reader-paragraph[data-paragraph-index="${paragraphIndex}"]`
+    paragraphs[
+      paragraphIndex
+    ];
+
+  if(paragraph){
+
+    requestAnimationFrame(
+      () => {
+
+        paragraph.scrollIntoView({
+          block:"center",
+          behavior:"auto"
+        });
+
+      }
     );
 
-
-  if(!paragraph){
-    return;
   }
-
-
-  setTimeout(
-    () => {
-
-      paragraph.scrollIntoView({
-        behavior:"auto",
-        block:"center"
-      });
-
-    },
-    80
-  );
 
 }
 
 
 /* =========================================================
-   FIND READING POSITION FROM VIEWPORT
+   VISIBLE PARAGRAPH
 ========================================================= */
 
 function getVisibleParagraphIndex(){
 
   const paragraphs =
-    [
-      ...document
-        .querySelectorAll(
-          ".reader-paragraph"
-        )
-    ];
+    currentParagraphElements();
 
-
-  if(!paragraphs.length){
+  if(
+    paragraphs.length === 0
+  ){
     return 0;
   }
-
 
   const targetY =
     window.innerHeight *
     0.35;
 
-
-  let closestIndex =
-    0;
-
+  let closestIndex = 0;
 
   let closestDistance =
     Infinity;
-
 
   paragraphs.forEach(
     (
@@ -3184,16 +3263,16 @@ function getVisibleParagraphIndex(){
     ) => {
 
       const rect =
-        paragraph
-          .getBoundingClientRect();
+        paragraph.getBoundingClientRect();
 
+      const center =
+        rect.top +
+        rect.height / 2;
 
       const distance =
         Math.abs(
-          rect.top -
-          targetY
+          center - targetY
         );
-
 
       if(
         distance <
@@ -3211,68 +3290,103 @@ function getVisibleParagraphIndex(){
     }
   );
 
-
   return closestIndex;
 
 }
 
 
 /* =========================================================
-   CALCULATE READING PROGRESS
+   LIVE PROGRESS
 ========================================================= */
 
 function calculateCurrentProgress(){
 
-  if(!sections.length){
+  if(
+    sections.length === 0
+  ){
     return 0;
   }
 
-
-  const section =
-    sections[
-      currentSectionIndex
-    ];
-
-
   const paragraphs =
-    [
-      ...document
-        .querySelectorAll(
-          ".reader-paragraph"
-        )
-    ];
-
+    currentParagraphElements();
 
   const paragraphIndex =
     getVisibleParagraphIndex();
 
-
   const paragraphFraction =
-    paragraphs.length > 0
-      ? clamp(
-          (
-            paragraphIndex + 1
-          ) /
-          paragraphs.length,
-          0,
-          1
-        )
-      : 0;
+    paragraphs.length > 1
+      ? paragraphIndex /
+        (paragraphs.length - 1)
+      : 1;
 
-
-  const overall =
+  const sectionFraction =
     (
       currentSectionIndex +
       paragraphFraction
     ) /
     sections.length;
 
-
   return clamp(
-    overall * 100,
+    sectionFraction * 100,
     0,
     100
   );
+
+}
+
+
+function updateProgressDisplay(){
+
+  const liveProgress =
+    calculateCurrentProgress();
+
+  const savedProgress =
+    Number(
+      readingPosition
+        ?.overall_progress || 0
+    );
+
+  const progress =
+    Math.max(
+      liveProgress,
+      savedProgress
+    );
+
+  $("progressBar")
+    .style.width =
+      `${progress.toFixed(2)}%`;
+
+  $("progressText")
+    .textContent =
+      `${Math.round(progress)}% read`;
+
+  const status =
+    assignment?.status ||
+    "accepted";
+
+  if(
+    status === "completed"
+  ){
+
+    $("assignmentStatusText")
+      .textContent =
+        "Completed";
+
+  }else if(
+    progress > 0
+  ){
+
+    $("assignmentStatusText")
+      .textContent =
+        "Reading";
+
+  }else{
+
+    $("assignmentStatusText")
+      .textContent =
+        "Ready to read";
+
+  }
 
 }
 
@@ -3281,822 +3395,38 @@ function calculateCurrentProgress(){
    SAVE READING POSITION
 ========================================================= */
 
-async function saveCurrentPosition(
-  immediate = false
-){
+async function saveReadingPosition(){
 
   if(
     !assignment ||
-    !manuscript ||
-    !sections.length
+    !getCurrentSection()
   ){
     return;
   }
 
-
-  if(
-    !immediate
-  ){
-
-    clearTimeout(
-      positionSaveTimer
-    );
-
-
-    positionSaveTimer =
-      setTimeout(
-        () =>
-          saveCurrentPosition(
-            true
-          ),
-        700
-      );
-
-
-    return;
-
-  }
-
-
   const section =
-    sections[
-      currentSectionIndex
-    ];
-
-
-  if(!section){
-    return;
-  }
-
+    getCurrentSection();
 
   const paragraphIndex =
     getVisibleParagraphIndex();
-
-
-  const progressPercent =
-    calculateCurrentProgress();
-
-
-  const payload = {
-    assignment_id:
-      assignment.id,
-
-    manuscript_id:
-      manuscript.id,
-
-    section_id:
-      section.id,
-
-    paragraph_index:
-      paragraphIndex,
-
-    character_offset:
-      0,
-
-    progress_percent:
-      progressPercent
-  };
-
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from(
-        "beta_reading_positions"
-      )
-      .upsert(
-        payload,
-        {
-          onConflict:
-            "assignment_id"
-        }
-      )
-      .select("*")
-      .single();
-
-
-  if(error){
-
-    console.error(
-      "Save reading position:",
-      error
-    );
-
-    return;
-
-  }
-
-
-  readingPosition =
-    data;
-
-
-  scheduleSectionProgressSave();
-
-}
-
-
-/* =========================================================
-   SECTION PROGRESS
-========================================================= */
-
-function sectionProgressValue(
-  sectionId
-){
-
-  const row =
-    sectionProgress.find(
-      item =>
-        item.section_id ===
-        sectionId
-    );
-
-
-  return Number(
-    row?.overall_progress ||
-    0
-  );
-
-}
-
-
-async function markSectionStarted(
-  section
-){
-
-  const existing =
-    sectionProgress.find(
-      row =>
-        row.section_id ===
-        section.id
-    );
-
-
-  const now =
-    new Date()
-      .toISOString();
-
-
-  const payload = {
-    assignment_id:
-      assignment.id,
-
-    section_id:
-      section.id,
-
-    reading_progress:
-      Number(
-        existing
-          ?.reading_progress ||
-        0
-      ),
-
-    listening_progress:
-      Number(
-        existing
-          ?.listening_progress ||
-        0
-      ),
-
-    overall_progress:
-      Number(
-        existing
-          ?.overall_progress ||
-        0
-      ),
-
-    started_at:
-      existing
-        ?.started_at ||
-      now,
-
-    last_activity_at:
-      now
-  };
-
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from(
-        "beta_section_progress"
-      )
-      .upsert(
-        payload,
-        {
-          onConflict:
-            "assignment_id,section_id"
-        }
-      )
-      .select("*")
-      .single();
-
-
-  if(error){
-
-    console.error(
-      "Mark section started:",
-      error
-    );
-
-    return;
-
-  }
-
-
-  const index =
-    sectionProgress.findIndex(
-      row =>
-        row.section_id ===
-        section.id
-    );
-
-
-  if(index >= 0){
-
-    sectionProgress[index] =
-      data;
-
-  }
-  else{
-
-    sectionProgress.push(
-      data
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   SAVE SECTION READING PROGRESS
-========================================================= */
-
-function scheduleSectionProgressSave(){
-
-  clearTimeout(
-    progressSaveTimer
-  );
-
-
-  progressSaveTimer =
-    setTimeout(
-      () =>
-        saveSectionReadingProgress(),
-      900
-    );
-
-}
-
-
-async function saveSectionReadingProgress(){
-
-  const section =
-    sections[
-      currentSectionIndex
-    ];
-
-
-  if(!section){
-    return;
-  }
-
-
-  const paragraphs =
-    [
-      ...document
-        .querySelectorAll(
-          ".reader-paragraph"
-        )
-    ];
-
-
-  const paragraphIndex =
-    getVisibleParagraphIndex();
-
-
-  const readingProgress =
-    paragraphs.length
-      ? clamp(
-          (
-            paragraphIndex + 1
-          ) /
-          paragraphs.length *
-          100,
-          0,
-          100
-        )
-      : 0;
-
-
-  const existing =
-    sectionProgress.find(
-      row =>
-        row.section_id ===
-        section.id
-    );
-
-
-  const listeningProgress =
-    Number(
-      existing
-        ?.listening_progress ||
-      0
-    );
-
-
-  const bestReading =
-    Math.max(
-      Number(
-        existing
-          ?.reading_progress ||
-        0
-      ),
-      readingProgress
-    );
-
 
   const overallProgress =
-    Math.max(
-      bestReading,
-      listeningProgress
-    );
-
-
-  const completed =
-    overallProgress >=
-    98;
-
-
-  const now =
-    new Date()
-      .toISOString();
-
+    calculateCurrentProgress();
 
   const payload = {
     assignment_id:
       assignment.id,
-
     section_id:
       section.id,
-
-    reading_progress:
-      bestReading,
-
-    listening_progress:
-      listeningProgress,
-
+    paragraph_index:
+      paragraphIndex,
     overall_progress:
       overallProgress,
-
-    started_at:
-      existing
-        ?.started_at ||
-      now,
-
-    completed_at:
-      completed
-        ? (
-            existing
-              ?.completed_at ||
-            now
-          )
-        : null,
-
-    last_activity_at:
-      now
+    updated_at:
+      new Date().toISOString()
   };
 
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from(
-        "beta_section_progress"
-      )
-      .upsert(
-        payload,
-        {
-          onConflict:
-            "assignment_id,section_id"
-        }
-      )
-      .select("*")
-      .single();
-
-
-  if(error){
-
-    console.error(
-      "Save section progress:",
-      error
-    );
-
-    return;
-
-  }
-
-
-  const index =
-    sectionProgress.findIndex(
-      row =>
-        row.section_id ===
-        section.id
-    );
-
-
-  if(index >= 0){
-
-    sectionProgress[index] =
-      data;
-
-  }
-  else{
-
-    sectionProgress.push(
-      data
-    );
-
-  }
-
-
-  if(
-    completed &&
-    Number(
-      existing
-        ?.overall_progress ||
-      0
-    ) < 98
-  ){
-
-    logEvent(
-      "section_completed",
-      {
-        mode:
-          listeningProgress >
-          bestReading
-            ? "listening"
-            : (
-                listeningProgress >
-                0
-                  ? "mixed"
-                  : "reading"
-              )
-      },
-      section.id
-    );
-
-  }
-
-
-  await updateAssignmentProgress();
-
-  renderOverallProgress();
-
-}
-
-
-/* =========================================================
-   OVERALL PROGRESS
-========================================================= */
-
-function calculateStoredOverallProgress(){
-
-  if(!sections.length){
-    return 0;
-  }
-
-
-  let total = 0;
-
-
-  sections.forEach(
-    section => {
-
-      total +=
-        sectionProgressValue(
-          section.id
-        );
-
-    }
-  );
-
-
-  return clamp(
-    total /
-    sections.length,
-    0,
-    100
-  );
-
-}
-
-
-function renderOverallProgress(){
-
-  let progress =
-    calculateStoredOverallProgress();
-
-
-  const liveProgress =
-    calculateCurrentProgress();
-
-
-  progress =
-    Math.max(
-      progress,
-      liveProgress
-    );
-
-
-  progress =
-    clamp(
-      progress,
-      0,
-      100
-    );
-
-
-  $("progressBar")
-    .style.width =
-      `${progress}%`;
-
-
-  $("progressText")
-    .textContent =
-      `${Math.round(
-        progress
-      )}%`;
-
-}
-
-
-/* =========================================================
-   UPDATE ASSIGNMENT PROGRESS
-========================================================= */
-
-async function updateAssignmentProgress(){
-
-  const progress =
-    calculateStoredOverallProgress();
-
-
-  assignment.progress_percent =
-    progress;
-
-
-  /*
-    Assignment RLS may intentionally prevent
-    readers from directly updating assignment
-    records. We attempt the update, but the
-    reader itself does not depend on it because
-    section progress remains the source of truth
-    for the reading experience.
-  */
-
-  const updatePayload = {
-    progress_percent:
-      progress,
-
-    last_activity_at:
-      new Date()
-        .toISOString()
-  };
-
-
-  if(
-    assignment.status ===
-      "accepted" &&
-    progress > 0
-  ){
-
-    updatePayload.status =
-      "reading";
-
-    updatePayload.started_at =
-      assignment.started_at ||
-      new Date()
-        .toISOString();
-
-  }
-
-
-  if(progress >= 99.5){
-
-    updatePayload.status =
-      "completed";
-
-    updatePayload.completed_at =
-      assignment.completed_at ||
-      new Date()
-        .toISOString();
-
-  }
-
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from(
-        "beta_assignments"
-      )
-      .update(
-        updatePayload
-      )
-      .eq(
-        "id",
-        assignment.id
-      )
-      .eq(
-        "reader_id",
-        currentUser.id
-      )
-      .select("*")
-      .maybeSingle();
-
-
-  if(error){
-
-    console.warn(
-      "Assignment progress update was not permitted:",
-      error
-    );
-
-    return;
-
-  }
-
-
-  if(data){
-
-    const previousStatus =
-      assignment.status;
-
-
-    assignment =
-      data;
-
-
-    if(
-      assignment.status ===
-        "completed" &&
-      previousStatus !==
-        "completed"
-    ){
-
-      logEvent(
-        "manuscript_completed",
-        {
-          progress_percent:
-            progress
-        }
-      );
-
-    }
-
-  }
-
-}
-
-
-/* =========================================================
-   BOOKMARK CURRENT POSITION
-========================================================= */
-
-function currentBookmark(){
-
-  const section =
-    sections[
-      currentSectionIndex
-    ];
-
-
-  if(!section){
-    return null;
-  }
-
-
-  const paragraphIndex =
-    getVisibleParagraphIndex();
-
-
-  return bookmarks.find(
-    bookmark =>
-      bookmark.section_id ===
-        section.id &&
-      Number(
-        bookmark.paragraph_index ||
-        0
-      ) ===
-        paragraphIndex
-  ) || null;
-
-}
-  function updateBookmarkButton(){
-
-  const bookmark =
-    currentBookmark();
-
-
-  $("bookmarkButton")
-    .textContent =
-      bookmark
-        ? "♥ Bookmarked"
-        : "♡ Bookmark";
-
-}
-
-
-/* =========================================================
-   CREATE / REMOVE BOOKMARK
-========================================================= */
-
-async function toggleBookmark(){
-
-  const section =
-    sections[
-      currentSectionIndex
-    ];
-
-
-  if(!section){
-    return;
-  }
-
-
-  const paragraphIndex =
-    getVisibleParagraphIndex();
-
-
-  const existing =
-    bookmarks.find(
-      bookmark =>
-        bookmark.section_id ===
-          section.id &&
-        Number(
-          bookmark.paragraph_index ||
-          0
-        ) ===
-          paragraphIndex
-    );
-
-
-  if(existing){
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from(
-          "beta_bookmarks"
-        )
-        .delete()
-        .eq(
-          "id",
-          existing.id
-        )
-        .eq(
-          "assignment_id",
-          assignment.id
-        );
-
-
-    if(error){
-
-      showToast(
-        error.message ||
-        "DogEar couldn't remove the bookmark.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    bookmarks =
-      bookmarks.filter(
-        bookmark =>
-          bookmark.id !==
-          existing.id
-      );
-
-
-    showToast(
-      "Bookmark removed."
-    );
-
-  }
-  else{
+  try{
 
     const {
       data,
@@ -4104,67 +3434,594 @@ async function toggleBookmark(){
     } =
       await supabaseClient
         .from(
-          "beta_bookmarks"
+          "beta_reading_positions"
         )
-        .insert({
-          assignment_id:
-            assignment.id,
-
-          section_id:
-            section.id,
-
-          paragraph_index:
-            paragraphIndex,
-
-          character_offset:
-            0,
-
-          label:
-            section.title ||
-            `Section ${section.section_number}`
-        })
-        .select("*")
+        .upsert(
+          payload,
+          {
+            onConflict:
+              "assignment_id"
+          }
+        )
+        .select()
         .single();
 
+    if(error){
+      throw error;
+    }
+
+    readingPosition =
+      data;
+
+    await saveSectionReadingProgress(
+      section.id,
+      paragraphIndex
+    );
+
+    await updateAssignmentProgress(
+      overallProgress
+    );
+
+  }catch(error){
+
+    console.warn(
+      "Could not save reading position:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   SECTION READING PROGRESS
+========================================================= */
+
+async function saveSectionReadingProgress(
+  sectionId,
+  paragraphIndex
+){
+
+  const section =
+    getSectionById(
+      sectionId
+    );
+
+  if(!section){
+    return;
+  }
+
+  const paragraphs =
+    sectionId ===
+    getCurrentSection()?.id
+      ? currentParagraphElements()
+      : normalizeParagraphs(
+          section.content_text
+        );
+
+  const totalParagraphs =
+    Math.max(
+      paragraphs.length,
+      1
+    );
+
+  const readingPercent =
+    clamp(
+      (
+        (
+          paragraphIndex + 1
+        ) /
+        totalParagraphs
+      ) * 100,
+      0,
+      100
+    );
+
+  const existing =
+    sectionProgress.find(
+      item =>
+        item.section_id ===
+        sectionId
+    );
+
+  const existingReading =
+    Number(
+      existing
+        ?.reading_progress || 0
+    );
+
+  const existingListening =
+    Number(
+      existing
+        ?.listening_progress || 0
+    );
+
+  const mergedReading =
+    Math.max(
+      existingReading,
+      readingPercent
+    );
+
+  const completion =
+    Math.max(
+      mergedReading,
+      existingListening
+    );
+
+  const payload = {
+    assignment_id:
+      assignment.id,
+    section_id:
+      sectionId,
+    reading_progress:
+      mergedReading,
+    listening_progress:
+      existingListening,
+    completed:
+      completion >= 98,
+    updated_at:
+      new Date().toISOString()
+  };
+
+  if(
+    completion >= 98 &&
+    !existing?.completed_at
+  ){
+
+    payload.completed_at =
+      new Date().toISOString();
+
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "beta_section_progress"
+        )
+        .upsert(
+          payload,
+          {
+            onConflict:
+              "assignment_id,section_id"
+          }
+        )
+        .select()
+        .single();
+
+    if(error){
+      throw error;
+    }
+
+    const existingIndex =
+      sectionProgress.findIndex(
+        item =>
+          item.section_id ===
+          sectionId
+      );
+
+    if(
+      existingIndex >= 0
+    ){
+
+      sectionProgress[
+        existingIndex
+      ] = data;
+
+    }else{
+
+      sectionProgress.push(
+        data
+      );
+
+    }
+
+  }catch(error){
+
+    console.warn(
+      "Could not save section progress:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   SECTION START
+========================================================= */
+
+async function markSectionStarted(
+  sectionId
+){
+
+  const existing =
+    sectionProgress.find(
+      item =>
+        item.section_id ===
+        sectionId
+    );
+
+  if(existing){
+    return;
+  }
+
+  const payload = {
+    assignment_id:
+      assignment.id,
+    section_id:
+      sectionId,
+    reading_progress:0,
+    listening_progress:0,
+    completed:false,
+    started_at:
+      new Date().toISOString(),
+    updated_at:
+      new Date().toISOString()
+  };
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "beta_section_progress"
+        )
+        .upsert(
+          payload,
+          {
+            onConflict:
+              "assignment_id,section_id"
+          }
+        )
+        .select()
+        .single();
+
+    if(error){
+      throw error;
+    }
+
+    sectionProgress.push(
+      data
+    );
+
+  }catch(error){
+
+    console.warn(
+      "Could not mark section started:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   ASSIGNMENT PROGRESS
+========================================================= */
+
+async function updateAssignmentProgress(
+  overallProgress
+){
+
+  if(!assignment){
+    return;
+  }
+
+  const progress =
+    clamp(
+      Number(
+        overallProgress || 0
+      ),
+      0,
+      100
+    );
+
+  let nextStatus =
+    assignment.status;
+
+  if(
+    progress > 0 &&
+    nextStatus === "accepted"
+  ){
+
+    nextStatus =
+      "reading";
+
+  }
+
+  if(
+    progress >= 99.5
+  ){
+
+    nextStatus =
+      "completed";
+
+  }
+
+  const payload = {
+    progress_percent:
+      progress,
+    status:
+      nextStatus,
+    updated_at:
+      new Date().toISOString()
+  };
+
+  if(
+    nextStatus === "reading" &&
+    !assignment.started_at
+  ){
+
+    payload.started_at =
+      new Date().toISOString();
+
+  }
+
+  if(
+    nextStatus === "completed" &&
+    !assignment.completed_at
+  ){
+
+    payload.completed_at =
+      new Date().toISOString();
+
+  }
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "beta_assignments"
+        )
+        .update(
+          payload
+        )
+        .eq(
+          "id",
+          assignment.id
+        )
+        .select()
+        .maybeSingle();
+
+    /*
+      Some deployments intentionally keep beta_assignments
+      owner-managed through RLS. If reader-side assignment
+      updates are blocked, reading-position data remains the
+      source of truth and this failure is non-fatal.
+    */
 
     if(error){
 
-      showToast(
-        error.message ||
-        "DogEar couldn't save the bookmark.",
-        "error"
+      console.warn(
+        "Assignment progress update was blocked:",
+        error
       );
 
       return;
 
     }
 
+    if(data){
 
-    bookmarks.unshift(
-      data
-    );
+      const previousStatus =
+        assignment.status;
 
+      assignment = data;
 
-    logEvent(
-      "bookmark_created",
-      {
-        paragraph_index:
-          paragraphIndex
-      },
-      section.id
-    );
+      if(
+        previousStatus !==
+          "completed" &&
+        assignment.status ===
+          "completed"
+      ){
 
+        await logAnalyticsEvent(
+          "manuscript_completed",
+          {
+            progress:
+              progress
+          }
+        );
 
-    showToast(
-      "DogEar saved."
+      }
+
+    }
+
+  }catch(error){
+
+    console.warn(
+      "Could not update assignment progress:",
+      error
     );
 
   }
 
+  updateProgressDisplay();
 
-  updateBookmarkButton();
+}
 
-  renderBookmarks();
+
+/* =========================================================
+   BOOKMARK HELPERS
+========================================================= */
+
+function currentBookmark(){
+
+  const section =
+    getCurrentSection();
+
+  if(!section){
+    return null;
+  }
+
+  return bookmarks.find(
+    bookmark =>
+      bookmark.section_id ===
+      section.id
+  ) || null;
+
+}
+
+
+function updateBookmarkButton(){
+
+  const bookmark =
+    currentBookmark();
+
+  $("bookmarkButton")
+    .textContent =
+      bookmark
+        ? "★ Bookmarked"
+        : "☆ Bookmark";
+
+}
+
+
+/* =========================================================
+   TOGGLE BOOKMARK
+========================================================= */
+
+async function toggleBookmark(){
+
+  const section =
+    getCurrentSection();
+
+  if(!section){
+    return;
+  }
+
+  const existing =
+    currentBookmark();
+
+  $("bookmarkButton")
+    .disabled =
+      true;
+
+  try{
+
+    if(existing){
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from(
+            "beta_bookmarks"
+          )
+          .delete()
+          .eq(
+            "id",
+            existing.id
+          );
+
+      if(error){
+        throw error;
+      }
+
+      bookmarks =
+        bookmarks.filter(
+          bookmark =>
+            bookmark.id !==
+            existing.id
+        );
+
+      showToast(
+        "Bookmark removed."
+      );
+
+      await logAnalyticsEvent(
+        "bookmark_removed",
+        {
+          section_id:
+            section.id
+        }
+      );
+
+    }else{
+
+      const paragraphIndex =
+        getVisibleParagraphIndex();
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from(
+            "beta_bookmarks"
+          )
+          .insert({
+            assignment_id:
+              assignment.id,
+            section_id:
+              section.id,
+            paragraph_index:
+              paragraphIndex
+          })
+          .select()
+          .single();
+
+      if(error){
+        throw error;
+      }
+
+      bookmarks.unshift(
+        data
+      );
+
+      showToast(
+        "Bookmark saved."
+      );
+
+      await logAnalyticsEvent(
+        "bookmark_created",
+        {
+          section_id:
+            section.id,
+          paragraph_index:
+            paragraphIndex
+        }
+      );
+
+    }
+
+    updateBookmarkButton();
+
+    renderBookmarks();
+
+  }catch(error){
+
+    console.error(
+      "Bookmark update failed:",
+      error
+    );
+
+    showToast(
+      "DogEar couldn't update that bookmark."
+    );
+
+  }finally{
+
+    $("bookmarkButton")
+      .disabled =
+        false;
+
+  }
 
 }
 
@@ -4175,141 +4032,93 @@ async function toggleBookmark(){
 
 function renderBookmarks(){
 
-  const holder =
+  const container =
     $("bookmarkList");
 
+  container.innerHTML = "";
 
-  holder.innerHTML =
-    "";
+  if(
+    bookmarks.length === 0
+  ){
 
-
-  if(!bookmarks.length){
-
-    holder.innerHTML =
+    container.innerHTML =
       `
-        <div class="sidebar-empty">
-          No bookmarks yet. Tap Bookmark while
-          reading to save your place.
-        </div>
+      <div class="sidebar-empty">
+        No bookmarks yet.
+        <br>
+        Save your place in any chapter.
+      </div>
       `;
 
     return;
-
   }
-
 
   bookmarks.forEach(
     bookmark => {
 
       const section =
-        sections.find(
-          row =>
-            row.id ===
-            bookmark.section_id
+        getSectionById(
+          bookmark.section_id
         );
 
+      const sectionIndex =
+        getSectionIndexById(
+          bookmark.section_id
+        );
 
-      if(!section){
+      if(
+        !section ||
+        sectionIndex < 0
+      ){
         return;
       }
-
 
       const card =
         document.createElement(
           "div"
         );
 
-
       card.className =
         "bookmark-card";
 
-
       card.innerHTML =
         `
-          <div class="annotation-type">
-            Bookmark
-          </div>
+        <div class="annotation-type">
+          Bookmark
+        </div>
 
-          <div class="annotation-note">
-            ${escapeHtml(
-              bookmark.label ||
-              section.title ||
-              `Section ${section.section_number}`
-            )}
-          </div>
+        <div class="annotation-note">
+          ${
+            escapeHtml(
+              sectionDisplayTitle(
+                section,
+                sectionIndex
+              )
+            )
+          }
+        </div>
 
-          <div class="annotation-meta">
-            Paragraph ${
-              Number(
-                bookmark.paragraph_index ||
-                0
-              ) + 1
-            }
-          </div>
-
-          <div class="annotation-actions">
-
-            <button
-              class="mini-button"
-              type="button"
-              data-jump-bookmark="${escapeHtml(
-                bookmark.id
-              )}"
-            >
-              Go
-            </button>
-
-            <button
-              class="mini-button danger"
-              type="button"
-              data-delete-bookmark="${escapeHtml(
-                bookmark.id
-              )}"
-            >
-              Remove
-            </button>
-
-          </div>
+        <div class="annotation-meta">
+          Paragraph ${
+            Number(
+              bookmark.paragraph_index || 0
+            ) + 1
+          }
+        </div>
         `;
 
+      card.addEventListener(
+        "click",
+        () => {
 
-      card
-        .querySelector(
-          "[data-jump-bookmark]"
-        )
-        .addEventListener(
-          "click",
-          event => {
+          jumpToBookmark(
+            bookmark
+          );
 
-            event.stopPropagation();
+        }
+      );
 
-            jumpToBookmark(
-              bookmark
-            );
-
-          }
-        );
-
-
-      card
-        .querySelector(
-          "[data-delete-bookmark]"
-        )
-        .addEventListener(
-          "click",
-          async event => {
-
-            event.stopPropagation();
-
-            await deleteBookmark(
-              bookmark.id
-            );
-
-          }
-        );
-
-
-      holder.appendChild(
+      container.appendChild(
         card
       );
 
@@ -4328,197 +4137,173 @@ async function jumpToBookmark(
 ){
 
   const sectionIndex =
-    sections.findIndex(
-      section =>
-        section.id ===
-        bookmark.section_id
+    getSectionIndexById(
+      bookmark.section_id
     );
 
-
-  if(sectionIndex < 0){
+  if(
+    sectionIndex < 0
+  ){
     return;
   }
 
+  if(
+    currentSectionIndex !==
+    sectionIndex
+  ){
 
-  await goToSection(
-    sectionIndex,
-    {
-      savePrevious:true,
-      scrollTop:false,
-      source:"bookmark",
-      force:
-        sectionIndex ===
-        currentSectionIndex
-    }
-  );
+    await goToSection(
+      sectionIndex,
+      false
+    );
 
+  }
 
-  setTimeout(
-    () => {
+  const paragraph =
+    currentParagraphElements()[
+      Number(
+        bookmark.paragraph_index || 0
+      )
+    ];
 
-      const paragraph =
-        document.querySelector(
-          `.reader-paragraph[data-paragraph-index="${
-            Number(
-              bookmark.paragraph_index ||
-              0
-            )
-          }"]`
+  if(paragraph){
+
+    paragraph.scrollIntoView({
+      behavior:"smooth",
+      block:"center"
+    });
+
+    paragraph.classList.add(
+      "jump-target"
+    );
+
+    setTimeout(
+      () => {
+        paragraph.classList.remove(
+          "jump-target"
         );
-
-
-      if(!paragraph){
-        return;
-      }
-
-
-      paragraph.scrollIntoView({
-        behavior:"smooth",
-        block:"center"
-      });
-
-
-      paragraph.classList.add(
-        "jump-target"
-      );
-
-
-      setTimeout(
-        () =>
-          paragraph
-            .classList
-            .remove(
-              "jump-target"
-            ),
-        1600
-      );
-
-    },
-    60
-  );
-
-}
-
-
-/* =========================================================
-   DELETE BOOKMARK
-========================================================= */
-
-async function deleteBookmark(
-  bookmarkId
-){
-
-  const {
-    error
-  } =
-    await supabaseClient
-      .from(
-        "beta_bookmarks"
-      )
-      .delete()
-      .eq(
-        "id",
-        bookmarkId
-      )
-      .eq(
-        "assignment_id",
-        assignment.id
-      );
-
-
-  if(error){
-
-    showToast(
-      error.message ||
-      "DogEar couldn't remove the bookmark.",
-      "error"
+      },
+      1600
     );
-
-    return;
 
   }
 
-
-  bookmarks =
-    bookmarks.filter(
-      bookmark =>
-        bookmark.id !==
-        bookmarkId
-    );
-
-
-  renderBookmarks();
-
-  updateBookmarkButton();
-
-  showToast(
-    "Bookmark removed."
-  );
+  closeMobileSidebars();
 
 }
 
 
 /* =========================================================
-   TEXT SELECTION
+   SELECTION HELPERS
 ========================================================= */
 
 function clearSelectedPassage(){
 
-  selectedPassage =
-    null;
-
+  selectedPassage = null;
 
   $("selectionToolbar")
     .classList
-    .remove(
-      "show"
-    );
+    .remove("show");
 
 }
 
 
-function captureSelection(){
+function selectionInsideReader(
+  selection
+){
+
+  if(
+    !selection ||
+    selection.rangeCount === 0
+  ){
+    return false;
+  }
+
+  const range =
+    selection.getRangeAt(0);
+
+  const commonNode =
+    range.commonAncestorContainer;
+
+  const element =
+    commonNode.nodeType ===
+      Node.ELEMENT_NODE
+      ? commonNode
+      : commonNode.parentElement;
+
+  return Boolean(
+    element &&
+    element.closest(
+      "#chapterBody"
+    )
+  );
+
+}
+
+
+function getParagraphElementFromNode(
+  node
+){
+
+  if(!node){
+    return null;
+  }
+
+  const element =
+    node.nodeType ===
+      Node.ELEMENT_NODE
+      ? node
+      : node.parentElement;
+
+  return element?.closest(
+    ".reader-paragraph"
+  ) || null;
+
+}
+
+
+/* =========================================================
+   CAPTURE TEXT SELECTION
+========================================================= */
+
+function captureTextSelection(){
 
   const selection =
     window.getSelection();
 
-
   if(
     !selection ||
-    selection.rangeCount === 0 ||
-    selection.isCollapsed
+    selection.isCollapsed ||
+    !selectionInsideReader(
+      selection
+    )
   ){
 
-    $("selectionToolbar")
-      .classList
-      .remove(
-        "show"
-      );
+    clearSelectedPassage();
 
     return;
 
   }
 
-
   const range =
     selection.getRangeAt(0);
 
-
   const startParagraph =
-    range.startContainer
-      .parentElement
-      ?.closest(
-        ".reader-paragraph"
-      );
-
+    getParagraphElementFromNode(
+      range.startContainer
+    );
 
   const endParagraph =
-    range.endContainer
-      .parentElement
-      ?.closest(
-        ".reader-paragraph"
-      );
+    getParagraphElementFromNode(
+      range.endContainer
+    );
 
+  /*
+    DogEar annotations intentionally stay within one
+    paragraph. This keeps offsets stable and makes the
+    highlights reconstructable after the manuscript is
+    rendered again.
+  */
 
   if(
     !startParagraph ||
@@ -4527,284 +4312,171 @@ function captureSelection(){
       endParagraph
   ){
 
-    $("selectionToolbar")
-      .classList
-      .remove(
-        "show"
-      );
+    clearSelectedPassage();
+
+    showToast(
+      "Select text within a single paragraph to create a DogEar."
+    );
 
     return;
 
   }
-
 
   const quote =
     selection
       .toString()
       .trim();
 
-
   if(!quote){
 
-    $("selectionToolbar")
-      .classList
-      .remove(
-        "show"
-      );
+    clearSelectedPassage();
 
     return;
-
   }
-
 
   const paragraphIndex =
     Number(
       startParagraph
         .dataset
-        .paragraphIndex
+        .paragraphIndex || 0
     );
 
+  const paragraphText =
+    startParagraph
+      .textContent || "";
 
-  const offsets =
-    getSelectionOffsets(
-      startParagraph,
-      range
-    );
+  const preRange =
+    document.createRange();
 
+  preRange.selectNodeContents(
+    startParagraph
+  );
 
-  if(!offsets){
-    return;
-  }
+  preRange.setEnd(
+    range.startContainer,
+    range.startOffset
+  );
 
+  const startOffset =
+    preRange
+      .toString()
+      .length;
+
+  const selectedLength =
+    range
+      .toString()
+      .length;
+
+  const endOffset =
+    startOffset +
+    selectedLength;
 
   selectedPassage = {
-    section_id:
-      sections[
-        currentSectionIndex
-      ].id,
-
-    paragraph_index:
+    sectionId:
+      getCurrentSection()?.id ||
+      null,
+    paragraphIndex:
       paragraphIndex,
-
-    start_offset:
-      offsets.start,
-
-    end_offset:
-      offsets.end,
-
-    text_quote:
+    startOffset:
+      clamp(
+        startOffset,
+        0,
+        paragraphText.length
+      ),
+    endOffset:
+      clamp(
+        endOffset,
+        0,
+        paragraphText.length
+      ),
+    quote:
       quote
   };
 
-
-  const rect =
+  positionSelectionToolbar(
     range
-      .getBoundingClientRect();
+  );
 
+}
+
+
+/* =========================================================
+   POSITION SELECTION TOOLBAR
+========================================================= */
+
+function positionSelectionToolbar(
+  range
+){
 
   const toolbar =
     $("selectionToolbar");
 
+  const rect =
+    range.getBoundingClientRect();
 
-  toolbar.style.left =
-    `${clamp(
-      rect.left +
-      rect.width / 2 -
-      90,
-      8,
-      window.innerWidth -
-      190
-    )}px`;
+  toolbar.classList.add(
+    "show"
+  );
 
+  requestAnimationFrame(
+    () => {
 
-  toolbar.style.top =
-    `${clamp(
-      rect.top - 48,
-      78,
-      window.innerHeight -
-      50
-    )}px`;
+      const toolbarRect =
+        toolbar
+          .getBoundingClientRect();
 
+      let left =
+        rect.left +
+        rect.width / 2 -
+        toolbarRect.width / 2;
 
-  toolbar
-    .classList
-    .add(
-      "show"
-    );
+      left =
+        clamp(
+          left,
+          8,
+          window.innerWidth -
+          toolbarRect.width -
+          8
+        );
 
-}
+      let top =
+        rect.top -
+        toolbarRect.height -
+        10;
 
+      if(top < 8){
 
-/* =========================================================
-   TEXT OFFSETS
-========================================================= */
+        top =
+          rect.bottom + 10;
 
-function getSelectionOffsets(
-  paragraph,
-  range
-){
+      }
 
-  try{
+      toolbar.style.left =
+        `${left}px`;
 
-    const beforeStart =
-      document.createRange();
+      toolbar.style.top =
+        `${top}px`;
 
-
-    beforeStart.selectNodeContents(
-      paragraph
-    );
-
-
-    beforeStart.setEnd(
-      range.startContainer,
-      range.startOffset
-    );
-
-
-    const beforeEnd =
-      document.createRange();
-
-
-    beforeEnd.selectNodeContents(
-      paragraph
-    );
-
-
-    beforeEnd.setEnd(
-      range.endContainer,
-      range.endOffset
-    );
-
-
-    const start =
-      beforeStart
-        .toString()
-        .length;
-
-
-    const end =
-      beforeEnd
-        .toString()
-        .length;
-
-
-    if(end <= start){
-      return null;
     }
-
-
-    return {
-      start,
-      end
-    };
-
-  }
-  catch(error){
-
-    console.error(
-      "Selection offsets:",
-      error
-    );
-
-    return null;
-
-  }
+  );
 
 }
-
-
-/* =========================================================
+  /* =========================================================
    CREATE HIGHLIGHT
 ========================================================= */
 
 async function createHighlight(){
 
-  if(!selectedPassage){
+  if(
+    !selectedPassage ||
+    !selectedPassage.sectionId
+  ){
     return;
   }
 
-
-  const payload = {
-    assignment_id:
-      assignment.id,
-
-    section_id:
-      selectedPassage
-        .section_id,
-
-    paragraph_index:
-      selectedPassage
-        .paragraph_index,
-
-    start_offset:
-      selectedPassage
-        .start_offset,
-
-    end_offset:
-      selectedPassage
-        .end_offset,
-
-    text_quote:
-      selectedPassage
-        .text_quote,
-
-    note_text:
-      null,
-
-    visibility:
-      "private",
-
-    annotation_type:
-      "highlight"
+  const passage = {
+    ...selectedPassage
   };
-
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from(
-        "beta_annotations"
-      )
-      .insert(
-        payload
-      )
-      .select("*")
-      .single();
-
-
-  if(error){
-
-    showToast(
-      error.message ||
-      "DogEar couldn't save the highlight.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  annotations.unshift(
-    data
-  );
-
-
-  logEvent(
-    "annotation_created",
-    {
-      annotation_type:
-        "highlight",
-
-      visibility:
-        "private"
-    },
-    selectedPassage
-      .section_id
-  );
-
 
   clearSelectedPassage();
 
@@ -4812,14 +4484,79 @@ async function createHighlight(){
     .getSelection()
     ?.removeAllRanges();
 
+  try{
 
-  applyAnnotationsToCurrentSection();
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "beta_annotations"
+        )
+        .insert({
+          assignment_id:
+            assignment.id,
+          section_id:
+            passage.sectionId,
+          paragraph_index:
+            passage.paragraphIndex,
+          start_offset:
+            passage.startOffset,
+          end_offset:
+            passage.endOffset,
+          text_quote:
+            passage.quote,
+          note_text:
+            null,
+          visibility:
+            "private",
+          annotation_type:
+            "highlight"
+        })
+        .select()
+        .single();
 
-  renderAnnotations();
+    if(error){
+      throw error;
+    }
 
-  showToast(
-    "Highlight saved."
-  );
+    annotations.unshift(
+      data
+    );
+
+    applyAnnotationsToCurrentSection();
+
+    renderAnnotations();
+
+    showToast(
+      "Highlight saved."
+    );
+
+    await logAnalyticsEvent(
+      "annotation_created",
+      {
+        annotation_id:
+          data.id,
+        annotation_type:
+          "highlight",
+        section_id:
+          passage.sectionId
+      }
+    );
+
+  }catch(error){
+
+    console.error(
+      "Could not create highlight:",
+      error
+    );
+
+    showToast(
+      "DogEar couldn't save that highlight."
+    );
+
+  }
 
 }
 
@@ -4834,41 +4571,76 @@ function openNoteModal(){
     return;
   }
 
-
   $("selectedQuotePreview")
     .textContent =
-      `"${selectedPassage.text_quote}"`;
-
+      `“${selectedPassage.quote}”`;
 
   $("noteText")
-    .value =
-      "";
-
+    .value = "";
 
   $("noteVisibility")
     .value =
       "private";
 
+  $("noteModal")
+    .classList
+    .add("show");
 
   $("selectionToolbar")
     .classList
-    .remove(
-      "show"
-    );
+    .remove("show");
 
+  setTimeout(
+    () => {
+      $("noteText").focus();
+    },
+    50
+  );
+
+}
+
+
+/* =========================================================
+   CLOSE NOTE MODAL
+========================================================= */
+
+function closeNoteModal(){
 
   $("noteModal")
     .classList
-    .add(
-      "show"
-    );
+    .remove("show");
+
+  clearSelectedPassage();
+
+  window
+    .getSelection()
+    ?.removeAllRanges();
+
+}
 
 
-  setTimeout(
-    () =>
-      $("noteText")
-        .focus(),
-    50
+/* =========================================================
+   URL DETECTION
+========================================================= */
+
+/*
+  DogEars are notes, not link posts.
+
+  URLs are intentionally blocked so a shared DogEar cannot
+  be used as a spam, phishing, or off-platform promotion
+  surface.
+*/
+
+function containsUrl(value){
+
+  const text =
+    String(value || "");
+
+  const urlPattern =
+    /(?:https?:\/\/|www\.|(?:[a-z0-9-]+\.)+(?:com|org|net|io|co|us|uk|ca|me|tv|gg|app|dev|info|biz|xyz|link|site|online|store|shop|club|pro|edu|gov)(?:\/|\b))/i;
+
+  return urlPattern.test(
+    text
   );
 
 }
@@ -4880,257 +4652,274 @@ function openNoteModal(){
 
 async function saveNote(){
 
-  if(!selectedPassage){
+  if(
+    !selectedPassage ||
+    !selectedPassage.sectionId
+  ){
     return;
   }
-
 
   const noteText =
     $("noteText")
       .value
       .trim();
 
-
   if(!noteText){
 
     showToast(
-      "Write a note first.",
-      "error"
+      "Write a note before saving."
     );
 
-    return;
+    $("noteText").focus();
 
+    return;
   }
 
+  if(
+    containsUrl(
+      noteText
+    )
+  ){
+
+    showToast(
+      "DogEars cannot contain URLs."
+    );
+
+    $("noteText").focus();
+
+    return;
+  }
 
   const visibility =
     $("noteVisibility")
-      .value ===
-      "author"
-        ? "author"
-        : "private";
+      .value === "author"
+      ? "author"
+      : "private";
 
-
-  const payload = {
-    assignment_id:
-      assignment.id,
-
-    section_id:
-      selectedPassage
-        .section_id,
-
-    paragraph_index:
-      selectedPassage
-        .paragraph_index,
-
-    start_offset:
-      selectedPassage
-        .start_offset,
-
-    end_offset:
-      selectedPassage
-        .end_offset,
-
-    text_quote:
-      selectedPassage
-        .text_quote,
-
-    note_text:
-      noteText,
-
-    visibility,
-
-    annotation_type:
-      "note"
+  const passage = {
+    ...selectedPassage
   };
 
+  $("saveNoteButton")
+    .disabled =
+      true;
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from(
-        "beta_annotations"
-      )
-      .insert(
-        payload
-      )
-      .select("*")
-      .single();
+  try{
 
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "beta_annotations"
+        )
+        .insert({
+          assignment_id:
+            assignment.id,
+          section_id:
+            passage.sectionId,
+          paragraph_index:
+            passage.paragraphIndex,
+          start_offset:
+            passage.startOffset,
+          end_offset:
+            passage.endOffset,
+          text_quote:
+            passage.quote,
+          note_text:
+            noteText,
+          visibility:
+            visibility,
+          annotation_type:
+            "note"
+        })
+        .select()
+        .single();
 
-  if(error){
+    if(error){
+      throw error;
+    }
 
-    showToast(
-      error.message ||
-      "DogEar couldn't save your note.",
-      "error"
+    annotations.unshift(
+      data
     );
 
-    return;
+    $("noteModal")
+      .classList
+      .remove("show");
 
-  }
-
-
-  annotations.unshift(
-    data
-  );
-
-
-  logEvent(
-    visibility === "author"
-      ? "annotation_shared"
-      : "annotation_created",
-    {
-      annotation_type:
-        "note",
-
-      visibility
-    },
-    selectedPassage
-      .section_id
-  );
-
-
-  $("noteModal")
-    .classList
-    .remove(
-      "show"
-    );
     clearSelectedPassage();
 
+    window
+      .getSelection()
+      ?.removeAllRanges();
 
-  window
-    .getSelection()
-    ?.removeAllRanges();
+    applyAnnotationsToCurrentSection();
 
+    renderAnnotations();
 
-  applyAnnotationsToCurrentSection();
+    showToast(
+      visibility === "author"
+        ? "DogEar shared with the author."
+        : "Private DogEar saved."
+    );
 
-  renderAnnotations();
+    await logAnalyticsEvent(
+      visibility === "author"
+        ? "annotation_shared"
+        : "annotation_created",
+      {
+        annotation_id:
+          data.id,
+        annotation_type:
+          "note",
+        section_id:
+          passage.sectionId,
+        visibility:
+          visibility
+      }
+    );
 
+  }catch(error){
 
-  showToast(
-    visibility ===
-      "author"
-        ? "Note saved and shared with the author."
-        : "Private note saved."
-  );
+    console.error(
+      "Could not save note:",
+      error
+    );
+
+    showToast(
+      "DogEar couldn't save that note."
+    );
+
+  }finally{
+
+    $("saveNoteButton")
+      .disabled =
+        false;
+
+  }
 
 }
 
 
 /* =========================================================
-   APPLY ANNOTATIONS TO TEXT
+   APPLY ANNOTATIONS TO CURRENT SECTION
 ========================================================= */
 
 function applyAnnotationsToCurrentSection(){
 
   const section =
-    sections[
-      currentSectionIndex
-    ];
-
+    getCurrentSection();
 
   if(!section){
     return;
   }
 
+  const paragraphs =
+    currentParagraphElements();
 
   const sectionAnnotations =
-    annotations
-      .filter(
-        annotation =>
-          annotation.section_id ===
-          section.id
-      );
-
-
-  const paragraphs =
-    [
-      ...document
-        .querySelectorAll(
-          ".reader-paragraph"
-        )
-    ];
-
+    annotations.filter(
+      annotation =>
+        annotation.section_id ===
+        section.id
+    );
 
   paragraphs.forEach(
-    paragraph => {
-
-      const paragraphIndex =
-        Number(
-          paragraph
-            .dataset
-            .paragraphIndex
-        );
-
+    (
+      paragraph,
+      paragraphIndex
+    ) => {
 
       const originalText =
+        normalizeParagraphs(
+          section.content_text
+        )[paragraphIndex] ||
         paragraph.textContent ||
         "";
 
+      paragraph.textContent =
+        originalText;
 
-      const relevant =
+      const paragraphAnnotations =
         sectionAnnotations
           .filter(
             annotation =>
               Number(
-                annotation
-                  .paragraph_index
+                annotation.paragraph_index
               ) ===
               paragraphIndex
           )
+          .sort(
+            (
+              a,
+              b
+            ) =>
+              Number(
+                a.start_offset || 0
+              ) -
+              Number(
+                b.start_offset || 0
+              )
+          );
+
+      if(
+        paragraphAnnotations.length ===
+        0
+      ){
+        return;
+      }
+
+      const validAnnotations =
+        paragraphAnnotations
           .map(
-            annotation => ({
-              ...annotation,
+            annotation => {
 
-              start:
+              const start =
                 clamp(
                   Number(
-                    annotation
-                      .start_offset ||
+                    annotation.start_offset ||
                     0
                   ),
                   0,
                   originalText.length
-                ),
+                );
 
-              end:
+              const end =
                 clamp(
                   Number(
-                    annotation
-                      .end_offset ||
-                    0
+                    annotation.end_offset ||
+                    start
                   ),
-                  0,
+                  start,
                   originalText.length
-                )
-            })
+                );
+
+              return {
+                ...annotation,
+                start,
+                end
+              };
+
+            }
           )
           .filter(
             annotation =>
               annotation.end >
               annotation.start
-          )
-          .sort(
-            (a,b) =>
-              a.start -
-              b.start
           );
 
-
-      if(!relevant.length){
+      if(
+        validAnnotations.length ===
+        0
+      ){
         return;
       }
 
-
       /*
-        Rebuild the paragraph using text nodes and
-        highlight spans. Overlapping annotations are
-        merged visually so the manuscript text itself
-        is never altered.
+        Build boundaries from all annotations so overlapping
+        highlights and notes can safely coexist.
       */
 
       const boundaries =
@@ -5139,8 +4928,7 @@ function applyAnnotationsToCurrentSection(){
           originalText.length
         ]);
 
-
-      relevant.forEach(
+      validAnnotations.forEach(
         annotation => {
 
           boundaries.add(
@@ -5154,38 +4942,38 @@ function applyAnnotationsToCurrentSection(){
         }
       );
 
-
       const points =
-        [...boundaries]
+        Array.from(
+          boundaries
+        )
           .sort(
-            (a,b) =>
-              a - b
+            (
+              a,
+              b
+            ) => a - b
           );
 
-
-      paragraph.innerHTML =
-        "";
-
+      const fragment =
+        document.createDocumentFragment();
 
       for(
-        let i = 0;
-        i <
-        points.length - 1;
-        i++
+        let index = 0;
+        index <
+          points.length - 1;
+        index++
       ){
 
         const start =
-          points[i];
-
+          points[index];
 
         const end =
-          points[i + 1];
+          points[index + 1];
 
-
-        if(end <= start){
+        if(
+          end <= start
+        ){
           continue;
         }
-
 
         const text =
           originalText.slice(
@@ -5193,9 +4981,8 @@ function applyAnnotationsToCurrentSection(){
             end
           );
 
-
-        const active =
-          relevant.filter(
+        const activeAnnotations =
+          validAnnotations.filter(
             annotation =>
               annotation.start <
                 end &&
@@ -5203,32 +4990,30 @@ function applyAnnotationsToCurrentSection(){
                 start
           );
 
+        if(
+          activeAnnotations.length ===
+          0
+        ){
 
-        if(!active.length){
-
-          paragraph.appendChild(
+          fragment.appendChild(
             document.createTextNode(
               text
             )
           );
 
           continue;
-
         }
-
 
         const span =
           document.createElement(
             "span"
           );
 
-
         span.className =
           "reader-highlight";
 
-
         if(
-          active.some(
+          activeAnnotations.some(
             annotation =>
               annotation.visibility ===
               "author"
@@ -5241,16 +5026,20 @@ function applyAnnotationsToCurrentSection(){
 
         }
 
-
         span.textContent =
           text;
 
-
-        paragraph.appendChild(
+        fragment.appendChild(
           span
         );
 
       }
+
+      paragraph.textContent = "";
+
+      paragraph.appendChild(
+        fragment
+      );
 
     }
   );
@@ -5264,175 +5053,185 @@ function applyAnnotationsToCurrentSection(){
 
 function renderAnnotations(){
 
-  const holder =
+  const container =
     $("annotationList");
 
+  container.innerHTML = "";
 
-  const filter =
+  const filterSectionId =
     $("annotationChapterFilter")
-      .value;
+      ?.value || "";
 
-
-  const visible =
+  const visibleAnnotations =
     annotations.filter(
       annotation =>
-        !filter ||
+        !filterSectionId ||
         annotation.section_id ===
-        filter
+          filterSectionId
     );
 
+  if(
+    visibleAnnotations.length ===
+    0
+  ){
 
-  holder.innerHTML =
-    "";
-
-
-  if(!visible.length){
-
-    holder.innerHTML =
+    container.innerHTML =
       `
-        <div class="sidebar-empty">
-          No notes or highlights here yet.
-          Select text in the manuscript to create a DogEar.
-        </div>
+      <div class="sidebar-empty">
+        No DogEars here yet.
+        <br>
+        Highlight text or add a note while you read.
+      </div>
       `;
 
     return;
-
   }
 
-
-  visible.forEach(
+  visibleAnnotations.forEach(
     annotation => {
 
       const section =
-        sections.find(
-          row =>
-            row.id ===
-            annotation.section_id
+        getSectionById(
+          annotation.section_id
         );
 
+      const sectionIndex =
+        getSectionIndexById(
+          annotation.section_id
+        );
 
-      if(!section){
+      if(
+        !section ||
+        sectionIndex < 0
+      ){
         return;
       }
 
+      const isNote =
+        annotation.annotation_type ===
+        "note";
+
+      const isShared =
+        annotation.visibility ===
+        "author";
 
       const card =
         document.createElement(
           "div"
         );
 
-
       card.className =
         "annotation-card";
 
+      let typeLabel =
+        "Highlight";
 
-      const shared =
-        annotation.visibility ===
-        "author";
+      if(isNote){
 
+        typeLabel =
+          isShared
+            ? "Note · Shared with Author"
+            : "Private Note";
 
-      const typeLabel =
-        annotation.annotation_type ===
-        "note"
-          ? (
-              shared
-                ? "Note · Shared with Author"
-                : "Private Note"
-            )
-          : "Highlight";
+      }
 
+      const quote =
+        String(
+          annotation.text_quote || ""
+        );
+
+      const note =
+        String(
+          annotation.note_text || ""
+        );
 
       card.innerHTML =
         `
-          <div class="annotation-type">
-            ${escapeHtml(typeLabel)}
-          </div>
+        <div class="annotation-type">
+          ${escapeHtml(typeLabel)}
+        </div>
 
-          <div class="annotation-quote">
-            “${escapeHtml(
-              annotation.text_quote ||
-              ""
-            )}”
-          </div>
+        ${
+          quote
+            ? `
+              <div class="annotation-quote">
+                “${escapeHtml(quote)}”
+              </div>
+              `
+            : ""
+        }
+
+        ${
+          note
+            ? `
+              <div class="annotation-note">
+                ${escapeHtml(note)}
+              </div>
+              `
+            : ""
+        }
+
+        <div class="annotation-meta">
+          ${
+            escapeHtml(
+              sectionDisplayTitle(
+                section,
+                sectionIndex
+              )
+            )
+          }
+          · Paragraph ${
+            Number(
+              annotation.paragraph_index ||
+              0
+            ) + 1
+          }
+        </div>
+
+        <div class="annotation-actions">
+
+          <button
+            class="mini-button"
+            type="button"
+            data-action="jump"
+          >
+            Go
+          </button>
 
           ${
-            annotation.note_text
+            isNote
               ? `
-                  <div class="annotation-note">
-                    ${escapeHtml(
-                      annotation.note_text
-                    )}
-                  </div>
+                <button
+                  class="mini-button"
+                  type="button"
+                  data-action="share"
+                >
+                  ${
+                    isShared
+                      ? "Make Private"
+                      : "Share"
+                  }
+                </button>
                 `
               : ""
           }
 
-          <div class="annotation-meta">
-            ${escapeHtml(
-              section.title ||
-              `Section ${section.section_number}`
-            )}
-            · Paragraph ${
-              Number(
-                annotation.paragraph_index ||
-                0
-              ) + 1
-            }
-          </div>
+          <button
+            class="mini-button danger"
+            type="button"
+            data-action="delete"
+          >
+            Delete
+          </button>
 
-          <div class="annotation-actions">
-
-            <button
-              class="mini-button"
-              type="button"
-              data-jump-annotation="${escapeHtml(
-                annotation.id
-              )}"
-            >
-              Go
-            </button>
-
-            ${
-              annotation.annotation_type ===
-                "note"
-                ? `
-                    <button
-                      class="mini-button"
-                      type="button"
-                      data-toggle-share="${escapeHtml(
-                        annotation.id
-                      )}"
-                    >
-                      ${
-                        shared
-                          ? "Make Private"
-                          : "Share"
-                      }
-                    </button>
-                  `
-                : ""
-            }
-
-            <button
-              class="mini-button danger"
-              type="button"
-              data-delete-annotation="${escapeHtml(
-                annotation.id
-              )}"
-            >
-              Delete
-            </button>
-
-          </div>
+        </div>
         `;
-
 
       card
         .querySelector(
-          "[data-jump-annotation]"
+          '[data-action="jump"]'
         )
-        .addEventListener(
+        ?.addEventListener(
           "click",
           event => {
 
@@ -5445,51 +5244,52 @@ function renderAnnotations(){
           }
         );
 
-
-      const shareButton =
-        card.querySelector(
-          "[data-toggle-share]"
-        );
-
-
-      if(shareButton){
-
-        shareButton
-          .addEventListener(
-            "click",
-            async event => {
-
-              event.stopPropagation();
-
-              await toggleAnnotationSharing(
-                annotation
-              );
-
-            }
-          );
-
-      }
-
-
       card
         .querySelector(
-          "[data-delete-annotation]"
+          '[data-action="share"]'
         )
-        .addEventListener(
+        ?.addEventListener(
           "click",
-          async event => {
+          event => {
 
             event.stopPropagation();
 
-            await deleteAnnotation(
-              annotation.id
+            toggleAnnotationSharing(
+              annotation
             );
 
           }
         );
 
+      card
+        .querySelector(
+          '[data-action="delete"]'
+        )
+        ?.addEventListener(
+          "click",
+          event => {
 
-      holder.appendChild(
+            event.stopPropagation();
+
+            deleteAnnotation(
+              annotation
+            );
+
+          }
+        );
+
+      card.addEventListener(
+        "click",
+        () => {
+
+          jumpToAnnotation(
+            annotation
+          );
+
+        }
+      );
+
+      container.appendChild(
         card
       );
 
@@ -5508,80 +5308,78 @@ async function jumpToAnnotation(
 ){
 
   const sectionIndex =
-    sections.findIndex(
-      section =>
-        section.id ===
-        annotation.section_id
+    getSectionIndexById(
+      annotation.section_id
     );
 
-
-  if(sectionIndex < 0){
+  if(
+    sectionIndex < 0
+  ){
     return;
   }
 
+  if(
+    currentSectionIndex !==
+    sectionIndex
+  ){
 
-  await goToSection(
-    sectionIndex,
-    {
-      savePrevious:true,
-      scrollTop:false,
-      source:"annotation",
-      force:
-        sectionIndex ===
-        currentSectionIndex
-    }
-  );
+    await goToSection(
+      sectionIndex,
+      false
+    );
 
+  }
 
-  setTimeout(
-    () => {
+  const paragraphIndex =
+    clamp(
+      Number(
+        annotation.paragraph_index ||
+        0
+      ),
+      0,
+      Math.max(
+        currentParagraphElements()
+          .length - 1,
+        0
+      )
+    );
 
-      const paragraph =
-        document.querySelector(
-          `.reader-paragraph[data-paragraph-index="${
-            Number(
-              annotation.paragraph_index ||
-              0
-            )
-          }"]`
+  const paragraph =
+    currentParagraphElements()[
+      paragraphIndex
+    ];
+
+  if(paragraph){
+
+    paragraph.scrollIntoView({
+      behavior:"smooth",
+      block:"center"
+    });
+
+    paragraph.classList.add(
+      "jump-target"
+    );
+
+    setTimeout(
+      () => {
+
+        paragraph.classList.remove(
+          "jump-target"
         );
 
+      },
+      1600
+    );
 
-      if(!paragraph){
-        return;
-      }
+  }
 
-
-      paragraph.scrollIntoView({
-        behavior:"smooth",
-        block:"center"
-      });
-
-
-      paragraph.classList.add(
-        "jump-target"
-      );
-
-
-      setTimeout(
-        () =>
-          paragraph
-            .classList
-            .remove(
-              "jump-target"
-            ),
-        1600
-      );
-
-    },
-    60
-  );
+  closeMobileSidebars();
 
 }
 
 
 /* =========================================================
-   TOGGLE NOTE SHARING
+   TOGGLE ANNOTATION SHARING
 ========================================================= */
 
 async function toggleAnnotationSharing(
@@ -5595,94 +5393,102 @@ async function toggleAnnotationSharing(
     return;
   }
 
+  if(
+    containsUrl(
+      annotation.note_text
+    )
+  ){
+
+    showToast(
+      "DogEars containing URLs cannot be shared."
+    );
+
+    return;
+  }
 
   const nextVisibility =
     annotation.visibility ===
       "author"
-        ? "private"
-        : "author";
+      ? "private"
+      : "author";
 
+  try{
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from(
-        "beta_annotations"
-      )
-      .update({
-        visibility:
-          nextVisibility
-      })
-      .eq(
-        "id",
-        annotation.id
-      )
-      .eq(
-        "assignment_id",
-        assignment.id
-      )
-      .select("*")
-      .single();
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "beta_annotations"
+        )
+        .update({
+          visibility:
+            nextVisibility,
+          updated_at:
+            new Date().toISOString()
+        })
+        .eq(
+          "id",
+          annotation.id
+        )
+        .select()
+        .single();
 
+    if(error){
+      throw error;
+    }
 
-  if(error){
+    const index =
+      annotations.findIndex(
+        item =>
+          item.id ===
+          annotation.id
+      );
+
+    if(
+      index >= 0
+    ){
+
+      annotations[index] =
+        data;
+
+    }
+
+    applyAnnotationsToCurrentSection();
+
+    renderAnnotations();
 
     showToast(
-      error.message ||
-      "DogEar couldn't update this note.",
-      "error"
+      nextVisibility === "author"
+        ? "DogEar shared with the author."
+        : "DogEar is private again."
     );
 
-    return;
-
-  }
-
-
-  const index =
-    annotations.findIndex(
-      row =>
-        row.id ===
-        annotation.id
-    );
-
-
-  if(index >= 0){
-
-    annotations[index] =
-      data;
-
-  }
-
-
-  logEvent(
-    nextVisibility ===
-      "author"
+    await logAnalyticsEvent(
+      nextVisibility === "author"
         ? "annotation_shared"
-        : "annotation_private",
-    {
-      annotation_id:
-        annotation.id,
+        : "annotation_unshared",
+      {
+        annotation_id:
+          annotation.id,
+        section_id:
+          annotation.section_id
+      }
+    );
 
-      visibility:
-        nextVisibility
-    },
-    annotation.section_id
-  );
+  }catch(error){
 
+    console.error(
+      "Could not update DogEar sharing:",
+      error
+    );
 
-  applyAnnotationsToCurrentSection();
+    showToast(
+      "DogEar couldn't update that note."
+    );
 
-  renderAnnotations();
-
-
-  showToast(
-    nextVisibility ===
-      "author"
-        ? "Note shared with the author."
-        : "Note is private again."
-  );
+  }
 
 }
 
@@ -5692,142 +5498,133 @@ async function toggleAnnotationSharing(
 ========================================================= */
 
 async function deleteAnnotation(
-  annotationId
+  annotation
 ){
 
-  const annotation =
-    annotations.find(
-      row =>
-        row.id ===
-        annotationId
+  const confirmed =
+    window.confirm(
+      annotation.annotation_type ===
+        "note"
+        ? "Delete this DogEar note?"
+        : "Delete this highlight?"
     );
 
+  if(!confirmed){
+    return;
+  }
 
-  const {
-    error
-  } =
-    await supabaseClient
-      .from(
-        "beta_annotations"
-      )
-      .delete()
-      .eq(
-        "id",
-        annotationId
-      )
-      .eq(
-        "assignment_id",
-        assignment.id
+  try{
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from(
+          "beta_annotations"
+        )
+        .delete()
+        .eq(
+          "id",
+          annotation.id
+        );
+
+    if(error){
+      throw error;
+    }
+
+    annotations =
+      annotations.filter(
+        item =>
+          item.id !==
+          annotation.id
       );
 
+    applyAnnotationsToCurrentSection();
 
-  if(error){
+    renderAnnotations();
 
     showToast(
-      error.message ||
-      "DogEar couldn't delete this DogEar.",
-      "error"
+      annotation.annotation_type ===
+        "note"
+        ? "DogEar deleted."
+        : "Highlight deleted."
     );
 
-    return;
-
-  }
-
-
-  annotations =
-    annotations.filter(
-      row =>
-        row.id !==
-        annotationId
-    );
-
-
-  if(annotation){
-
-    logEvent(
+    await logAnalyticsEvent(
       "annotation_deleted",
       {
+        annotation_id:
+          annotation.id,
         annotation_type:
-          annotation.annotation_type
-      },
-      annotation.section_id
+          annotation.annotation_type,
+        section_id:
+          annotation.section_id,
+        was_shared:
+          annotation.visibility ===
+          "author"
+      }
+    );
+
+  }catch(error){
+
+    console.error(
+      "Could not delete annotation:",
+      error
+    );
+
+    showToast(
+      "DogEar couldn't delete that annotation."
     );
 
   }
-
-
-  /*
-    Re-rendering the chapter restores the original
-    manuscript text and then reapplies the remaining
-    annotations.
-  */
-
-  await renderCurrentSection({
-    scrollTop:false,
-    source:"annotation_update"
-  });
-
-
-  renderAnnotations();
-
-
-  showToast(
-    "DogEar removed."
-  );
 
 }
 
 
 /* =========================================================
-   TEXT TO SPEECH — VOICES
+   TEXT TO SPEECH VOICES
 ========================================================= */
 
-function loadVoices(){
+function loadSpeechVoices(){
 
   if(!speechSupported){
     return;
   }
 
-
   availableVoices =
     window
       .speechSynthesis
-      .getVoices() ||
-    [];
-
+      .getVoices();
 
   const select =
     $("ttsVoice");
 
-
-  const previous =
+  const previousValue =
     select.value;
-
 
   select.innerHTML =
     `
-      <option value="">
-        Device default
-      </option>
+    <option value="">
+      Device default
+    </option>
     `;
 
-
   availableVoices.forEach(
-    voice => {
+    (
+      voice,
+      index
+    ) => {
 
       const option =
         document.createElement(
           "option"
         );
 
-
       option.value =
-        voice.name;
-
+        String(index);
 
       option.textContent =
-        `${voice.name} · ${voice.lang}`;
-
+        `${voice.name} (${voice.lang})`;
 
       select.appendChild(
         option
@@ -5836,18 +5633,14 @@ function loadVoices(){
     }
   );
 
-
   if(
-    previous &&
-    availableVoices.some(
-      voice =>
-        voice.name ===
-        previous
-    )
+    previousValue &&
+    Number(previousValue) <
+      availableVoices.length
   ){
 
     select.value =
-      previous;
+      previousValue;
 
   }
 
@@ -5855,423 +5648,281 @@ function loadVoices(){
 
 
 /* =========================================================
-   TTS CURRENT PARAGRAPHS
+   INITIALIZE SPEECH CONTROLS
 ========================================================= */
 
-function getReaderParagraphs(){
+function initializeSpeechControls(){
 
-  return [
-    ...document
-      .querySelectorAll(
-        ".reader-paragraph"
-      )
+  if(!speechSupported){
+
+    $("ttsStatus")
+      .textContent =
+        "Not supported";
+
+    $("ttsPlayButton")
+      .disabled =
+        true;
+
+    $("ttsPreviousButton")
+      .disabled =
+        true;
+
+    $("ttsNextButton")
+      .disabled =
+        true;
+
+    $("ttsRate")
+      .disabled =
+        true;
+
+    $("ttsVoice")
+      .disabled =
+        true;
+
+    return;
+
+  }
+
+  loadSpeechVoices();
+
+  if(
+    typeof window
+      .speechSynthesis
+      .onvoiceschanged !==
+      "undefined"
+  ){
+
+    window
+      .speechSynthesis
+      .onvoiceschanged =
+        loadSpeechVoices;
+
+  }
+
+  updateTtsStatus();
+
+}
+
+
+/* =========================================================
+   TTS STATUS
+========================================================= */
+
+function updateTtsStatus(){
+
+  if(!speechSupported){
+    return;
+  }
+
+  const paragraphs =
+    currentParagraphElements();
+
+  if(
+    paragraphs.length === 0
+  ){
+
+    $("ttsStatus")
+      .textContent =
+        "No text";
+
+    $("ttsPlayButton")
+      .textContent =
+        "Play";
+
+    return;
+  }
+
+  ttsParagraphIndex =
+    clamp(
+      ttsParagraphIndex,
+      0,
+      paragraphs.length - 1
+    );
+
+  if(ttsPaused){
+
+    $("ttsStatus")
+      .textContent =
+        `Paused · ${ttsParagraphIndex + 1}/${paragraphs.length}`;
+
+    $("ttsPlayButton")
+      .textContent =
+        "Resume";
+
+  }else if(ttsSpeaking){
+
+    $("ttsStatus")
+      .textContent =
+        `Reading · ${ttsParagraphIndex + 1}/${paragraphs.length}`;
+
+    $("ttsPlayButton")
+      .textContent =
+        "Pause";
+
+  }else{
+
+    $("ttsStatus")
+      .textContent =
+        `Ready · ${ttsParagraphIndex + 1}/${paragraphs.length}`;
+
+    $("ttsPlayButton")
+      .textContent =
+        "Play";
+
+  }
+
+  markSpokenParagraph();
+
+}
+
+
+/* =========================================================
+   MARK SPOKEN PARAGRAPH
+========================================================= */
+
+function markSpokenParagraph(){
+
+  const paragraphs =
+    currentParagraphElements();
+
+  paragraphs.forEach(
+    (
+      paragraph,
+      index
+    ) => {
+
+      paragraph.classList.toggle(
+        "spoken",
+        (
+          ttsSpeaking ||
+          ttsPaused
+        ) &&
+        index ===
+          ttsParagraphIndex
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   GET SELECTED VOICE
+========================================================= */
+
+function getSelectedVoice(){
+
+  const value =
+    $("ttsVoice")
+      .value;
+
+  if(value === ""){
+    return null;
+  }
+
+  const index =
+    Number(value);
+
+  if(
+    !Number.isInteger(index) ||
+    index < 0 ||
+    index >=
+      availableVoices.length
+  ){
+    return null;
+  }
+
+  return availableVoices[
+    index
   ];
 
 }
 
 
-function clearSpokenParagraph(){
-
-  document
-    .querySelectorAll(
-      ".reader-paragraph.spoken"
-    )
-    .forEach(
-      paragraph =>
-        paragraph.classList
-          .remove(
-            "spoken"
-          )
-    );
-
-}
-
-
-function highlightSpokenParagraph(
-  paragraphIndex
-){
-
-  clearSpokenParagraph();
-
-
-  const paragraph =
-    document.querySelector(
-      `.reader-paragraph[data-paragraph-index="${paragraphIndex}"]`
-    );
-
-
-  if(!paragraph){
-    return;
-  }
-
-
-  paragraph.classList.add(
-    "spoken"
-  );
-
-
-  paragraph.scrollIntoView({
-    behavior:"smooth",
-    block:"center"
-  });
-
-}
-
-
 /* =========================================================
-   SAVE TTS STATE
+   SPEAK CURRENT PARAGRAPH
 ========================================================= */
 
-async function saveTtsState(
-  isActive = false
-){
-
-  if(
-    !assignment ||
-    !sections.length
-  ){
-    return;
-  }
-
-
-  const section =
-    sections[
-      currentSectionIndex
-    ];
-
-
-  const payload = {
-    assignment_id:
-      assignment.id,
-
-    section_id:
-      section.id,
-
-    paragraph_index:
-      ttsParagraphIndex,
-
-    character_offset:
-      0,
-
-    rate:
-      Number(
-        $("ttsRate").value ||
-        1
-      ),
-
-    voice_name:
-      $("ttsVoice").value ||
-      null,
-
-    is_active:
-      Boolean(
-        isActive
-      )
-  };
-
-
-  const {
-    error
-  } =
-    await supabaseClient
-      .from(
-        "beta_tts_state"
-      )
-      .upsert(
-        payload,
-        {
-          onConflict:
-            "assignment_id"
-        }
-      );
-
-
-  if(error){
-
-    console.warn(
-      "TTS state:",
-      error
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   LOAD TTS STATE
-  ========================================================= */
-
-async function loadTtsState(){
+function speakCurrentParagraph(){
 
   if(!speechSupported){
     return;
   }
-
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from(
-        "beta_tts_state"
-      )
-      .select("*")
-      .eq(
-        "assignment_id",
-        assignment.id
-      )
-      .maybeSingle();
-
-
-  if(error){
-
-    console.warn(
-      "Load TTS state:",
-      error
-    );
-
-    return;
-
-  }
-
-
-  if(!data){
-    return;
-  }
-
-
-  if(
-    Number(data.rate) >=
-      .5 &&
-    Number(data.rate) <=
-      2
-  ){
-
-    $("ttsRate").value =
-      String(
-        Number(
-          data.rate
-        )
-      );
-
-  }
-
-
-  if(data.voice_name){
-
-    const applyVoice =
-      () => {
-
-        if(
-          [
-            ...$("ttsVoice")
-              .options
-          ].some(
-            option =>
-              option.value ===
-              data.voice_name
-          )
-        ){
-
-          $("ttsVoice").value =
-            data.voice_name;
-
-        }
-
-      };
-
-
-    applyVoice();
-
-    setTimeout(
-      applyVoice,
-      300
-    );
-
-  }
-
-
-  if(
-    data.section_id ===
-    sections[
-      currentSectionIndex
-    ]?.id
-  ){
-
-    ttsParagraphIndex =
-      Number(
-        data.paragraph_index ||
-        0
-      );
-
-  }
-
-}
-
-
-/* =========================================================
-   SPEAK PARAGRAPH
-========================================================= */
-
-function speakParagraph(
-  paragraphIndex
-){
-
-  if(!speechSupported){
-
-    showToast(
-      "Read Aloud is not supported by this browser.",
-      "error"
-    );
-
-    return;
-
-  }
-
 
   const paragraphs =
-    getReaderParagraphs();
+    currentParagraphElements();
 
-
-  if(!paragraphs.length){
+  if(
+    paragraphs.length === 0
+  ){
     return;
   }
 
-
-  paragraphIndex =
+  ttsParagraphIndex =
     clamp(
-      paragraphIndex,
+      ttsParagraphIndex,
       0,
       paragraphs.length - 1
     );
 
-
   const paragraph =
     paragraphs[
-      paragraphIndex
+      ttsParagraphIndex
     ];
-
 
   const text =
     paragraph
       .textContent
       .trim();
 
-
   if(!text){
 
-    if(
-      paragraphIndex <
-      paragraphs.length - 1
-    ){
-
-      speakParagraph(
-        paragraphIndex + 1
-      );
-
-    }
+    advanceSpeech();
 
     return;
-
   }
-
 
   window
     .speechSynthesis
     .cancel();
-
-
-  ttsParagraphIndex =
-    paragraphIndex;
-
 
   const utterance =
     new SpeechSynthesisUtterance(
       text
     );
 
-
   activeUtterance =
     utterance;
 
-
-  utterance.rate =
+  const rate =
     Number(
       $("ttsRate").value ||
       1
     );
 
+  utterance.rate =
+    clamp(
+      rate,
+      0.5,
+      2
+    );
 
-  const selectedVoiceName =
-    $("ttsVoice").value;
+  const voice =
+    getSelectedVoice();
 
+  if(voice){
 
-  if(selectedVoiceName){
+    utterance.voice =
+      voice;
 
-    const voice =
-      availableVoices.find(
-        item =>
-          item.name ===
-          selectedVoiceName
-      );
-
-
-    if(voice){
-
-      utterance.voice =
-        voice;
-
-    }
+    utterance.lang =
+      voice.lang;
 
   }
 
-
   utterance.onstart =
     () => {
-
-      ttsSpeaking =
-        true;
-
-      ttsPaused =
-        false;
-
-
-      $("ttsPlayButton")
-        .textContent =
-          "❚❚ Pause";
-
-
-      highlightSpokenParagraph(
-        paragraphIndex
-      );
-
-
-      saveTtsState(
-        true
-      );
-
-
-      logEvent(
-        "listening_started",
-        {
-          paragraph_index:
-            paragraphIndex,
-
-          rate:
-            utterance.rate
-        },
-        sections[
-          currentSectionIndex
-        ].id
-      );
-
-    };
-
-
-  utterance.onend =
-    async () => {
 
       if(
         activeUtterance !==
@@ -6280,70 +5931,48 @@ function speakParagraph(
         return;
       }
 
+      ttsSpeaking =
+        true;
 
-      await recordListeningProgress(
-        paragraphIndex
+      ttsPaused =
+        false;
+
+      updateTtsStatus();
+
+      paragraph.scrollIntoView({
+        behavior:"smooth",
+        block:"center"
+      });
+
+      saveTtsState();
+
+      logAnalyticsEvent(
+        "listening_started",
+        {
+          section_id:
+            getCurrentSection()?.id ||
+            null,
+          paragraph_index:
+            ttsParagraphIndex,
+          rate:
+            utterance.rate
+        }
       );
 
+    };
 
-      const currentParagraphs =
-        getReaderParagraphs();
-
-
-      if(
-        ttsSpeaking &&
-        paragraphIndex <
-          currentParagraphs.length -
-          1
-      ){
-
-        speakParagraph(
-          paragraphIndex + 1
-        );
-
-        return;
-
-      }
-
+  utterance.onend =
+    () => {
 
       if(
-        ttsSpeaking &&
-        currentSectionIndex <
-          sections.length - 1
+        activeUtterance !==
+        utterance
       ){
-
-        const nextSection =
-          currentSectionIndex + 1;
-
-
-        ttsSpeaking =
-          false;
-
-        activeUtterance =
-          null;
-
-
-        await goToSection(
-          nextSection,
-          {
-            savePrevious:true,
-            scrollTop:true,
-            source:"tts"
-          }
-        );
-
-
-        ttsParagraphIndex =
-          0;
-
-        speakParagraph(
-          0
-        );
-
         return;
-
       }
 
+      activeUtterance =
+        null;
 
       ttsSpeaking =
         false;
@@ -6351,27 +5980,19 @@ function speakParagraph(
       ttsPaused =
         false;
 
-      activeUtterance =
-        null;
+      saveListeningProgress();
 
-
-      $("ttsPlayButton")
-        .textContent =
-          "▶ Read";
-
-
-      clearSpokenParagraph();
-
-
-      saveTtsState(
-        false
-      );
+      advanceSpeech();
 
     };
 
-
   utterance.onerror =
     event => {
+
+      /*
+        "interrupted" and "canceled" are normal when the
+        reader manually moves between paragraphs.
+      */
 
       if(
         event.error !==
@@ -6380,15 +6001,32 @@ function speakParagraph(
           "canceled"
       ){
 
-        console.error(
-          "Speech synthesis:",
-          event
+        console.warn(
+          "Speech synthesis error:",
+          event.error
         );
 
       }
 
-    };
+      if(
+        activeUtterance ===
+        utterance
+      ){
 
+        activeUtterance =
+          null;
+
+        ttsSpeaking =
+          false;
+
+        ttsPaused =
+          false;
+
+        updateTtsStatus();
+
+      }
+
+    };
 
   window
     .speechSynthesis
@@ -6400,95 +6038,59 @@ function speakParagraph(
 
 
 /* =========================================================
-   PLAY / PAUSE TTS
+   PLAY / PAUSE SPEECH
 ========================================================= */
 
 function toggleSpeech(){
 
   if(!speechSupported){
-
-    showToast(
-      "Read Aloud is not supported by this browser.",
-      "error"
-    );
-
     return;
-
   }
 
-
-  if(
-    ttsSpeaking &&
-    !ttsPaused
-  ){
-
-    window
-      .speechSynthesis
-      .pause();
-
-
-    ttsPaused =
-      true;
-
-
-    $("ttsPlayButton")
-      .textContent =
-        "▶ Resume";
-
-
-    saveTtsState(
-      false
-    );
-
-
-    return;
-
-  }
-
-
-  if(
-    ttsSpeaking &&
-    ttsPaused
-  ){
+  if(ttsPaused){
 
     window
       .speechSynthesis
       .resume();
 
-
     ttsPaused =
       false;
 
+    ttsSpeaking =
+      true;
 
-    $("ttsPlayButton")
-      .textContent =
-        "❚❚ Pause";
+    updateTtsStatus();
 
+    saveTtsState();
 
-    saveTtsState(
-      true
-    );
-
-
-    return;
-
-  }
-
-
-  const paragraphs =
-    getReaderParagraphs();
-
-
-  if(!paragraphs.length){
     return;
   }
 
+  if(ttsSpeaking){
+
+    window
+      .speechSynthesis
+      .pause();
+
+    ttsPaused =
+      true;
+
+    updateTtsStatus();
+
+    saveTtsState();
+
+    return;
+  }
+
+  /*
+    When starting fresh, begin at the paragraph nearest the
+    reader's current viewport unless a stored listening
+    position has already been restored.
+  */
 
   if(
-    ttsParagraphIndex <
-      0 ||
-    ttsParagraphIndex >=
-      paragraphs.length
+    !activeUtterance &&
+    ttsParagraphIndex === 0
   ){
 
     ttsParagraphIndex =
@@ -6496,24 +6098,52 @@ function toggleSpeech(){
 
   }
 
-
-  speakParagraph(
-    ttsParagraphIndex
-  );
+  speakCurrentParagraph();
 
 }
 
 
 /* =========================================================
-   STOP TTS
+   ADVANCE SPEECH
 ========================================================= */
 
-function stopSpeech(){
+async function advanceSpeech(){
 
-  if(!speechSupported){
+  const paragraphs =
+    currentParagraphElements();
+
+  if(
+    ttsParagraphIndex <
+    paragraphs.length - 1
+  ){
+
+    ttsParagraphIndex += 1;
+
+    updateTtsStatus();
+
+    speakCurrentParagraph();
+
     return;
   }
 
+  await saveListeningProgress();
+
+  if(
+    currentSectionIndex <
+    sections.length - 1
+  ){
+
+    await goToSection(
+      currentSectionIndex + 1,
+      false
+    );
+
+    ttsParagraphIndex = 0;
+
+    speakCurrentParagraph();
+
+    return;
+  }
 
   ttsSpeaking =
     false;
@@ -6524,114 +6154,95 @@ function stopSpeech(){
   activeUtterance =
     null;
 
+  updateTtsStatus();
 
-  window
-    .speechSynthesis
-    .cancel();
+  showToast(
+    "You've reached the end of the manuscript."
+  );
 
-
-  $("ttsPlayButton")
-    .textContent =
-      "▶ Read";
-
-
-  clearSpokenParagraph();
-
-}
-
-
-/* =========================================================
-   PREVIOUS / NEXT TTS PARAGRAPH
-========================================================= */
-
-function previousSpokenParagraph(){
-
-  if(!speechSupported){
-    return;
-  }
-
-
-  const next =
-    Math.max(
-      0,
-      ttsParagraphIndex - 1
-    );
-
-
-  ttsSpeaking =
-    true;
-
-
-  speakParagraph(
-    next
+  await updateAssignmentProgress(
+    100
   );
 
 }
 
 
-function nextSpokenParagraph(){
+/* =========================================================
+   PREVIOUS TTS PARAGRAPH
+========================================================= */
+
+function previousSpeechParagraph(){
 
   if(!speechSupported){
     return;
   }
 
+  window
+    .speechSynthesis
+    .cancel();
 
-  const paragraphs =
-    getReaderParagraphs();
+  activeUtterance =
+    null;
+
+  ttsSpeaking =
+    false;
+
+  ttsPaused =
+    false;
+
+  ttsParagraphIndex =
+    Math.max(
+      ttsParagraphIndex - 1,
+      0
+    );
+
+  updateTtsStatus();
+
+  speakCurrentParagraph();
+
+}
 
 
-  if(!paragraphs.length){
+/* =========================================================
+   NEXT TTS PARAGRAPH
+========================================================= */
+
+function nextSpeechParagraph(){
+
+  if(!speechSupported){
     return;
   }
 
+  window
+    .speechSynthesis
+    .cancel();
+
+  activeUtterance =
+    null;
+
+  ttsSpeaking =
+    false;
+
+  ttsPaused =
+    false;
+
+  const paragraphs =
+    currentParagraphElements();
 
   if(
     ttsParagraphIndex <
     paragraphs.length - 1
   ){
 
-    ttsSpeaking =
-      true;
+    ttsParagraphIndex += 1;
 
+    updateTtsStatus();
 
-    speakParagraph(
-      ttsParagraphIndex + 1
-    );
+    speakCurrentParagraph();
 
+  }else{
 
-    return;
-
-  }
-
-
-  if(
-    currentSectionIndex <
-    sections.length - 1
-  ){
-
-    goToSection(
-      currentSectionIndex + 1,
-      {
-        savePrevious:true,
-        scrollTop:true,
-        source:"tts"
-      }
-    )
-      .then(
-        () => {
-
-          ttsParagraphIndex =
-            0;
-
-          ttsSpeaking =
-            true;
-
-          speakParagraph(
-            0
-          );
-
-        }
-      );
+    advanceSpeech();
 
   }
 
@@ -6639,215 +6250,391 @@ function nextSpokenParagraph(){
 
 
 /* =========================================================
-   LISTENING PROGRESS
+   STOP SPEECH
 ========================================================= */
 
-async function recordListeningProgress(
-  paragraphIndex
-){
+function stopSpeech(){
+
+  if(!speechSupported){
+    return;
+  }
+
+  if(
+    ttsSpeaking ||
+    ttsPaused
+  ){
+
+    saveListeningProgress();
+
+  }
+
+  window
+    .speechSynthesis
+    .cancel();
+
+  activeUtterance =
+    null;
+
+  ttsSpeaking =
+    false;
+
+  ttsPaused =
+    false;
+
+  document
+    .querySelectorAll(
+      ".reader-paragraph.spoken"
+    )
+    .forEach(
+      paragraph =>
+        paragraph
+          .classList
+          .remove("spoken")
+    );
+
+  updateTtsStatus();
+
+}
+
+
+/* =========================================================
+   SAVE LISTENING PROGRESS
+========================================================= */
+
+async function saveListeningProgress(){
 
   const section =
-    sections[
-      currentSectionIndex
-    ];
+    getCurrentSection();
 
-
-  if(!section){
+  if(
+    !section ||
+    !assignment
+  ){
     return;
   }
-
 
   const paragraphs =
-    getReaderParagraphs();
+    currentParagraphElements();
 
+  const totalParagraphs =
+    Math.max(
+      paragraphs.length,
+      1
+    );
 
-  if(!paragraphs.length){
-    return;
-  }
-
-
-  const listeningProgress =
+  const listeningPercent =
     clamp(
       (
-        paragraphIndex + 1
-      ) /
-      paragraphs.length *
-      100,
+        (
+          ttsParagraphIndex + 1
+        ) /
+        totalParagraphs
+      ) * 100,
       0,
       100
     );
 
-
   const existing =
     sectionProgress.find(
-      row =>
-        row.section_id ===
+      item =>
+        item.section_id ===
         section.id
     );
 
-
-  const readingProgress =
+  const existingReading =
     Number(
       existing
-        ?.reading_progress ||
-      0
+        ?.reading_progress || 0
     );
 
+  const existingListening =
+    Number(
+      existing
+        ?.listening_progress || 0
+    );
 
-  const bestListening =
+  const mergedListening =
     Math.max(
-      Number(
-        existing
-          ?.listening_progress ||
-        0
-      ),
-      listeningProgress
+      existingListening,
+      listeningPercent
     );
 
-
-  const overallProgress =
+  const completion =
     Math.max(
-      readingProgress,
-      bestListening
+      existingReading,
+      mergedListening
     );
-
-
-  const completed =
-    overallProgress >=
-    98;
-
-
-  const now =
-    new Date()
-      .toISOString();
-
 
   const payload = {
     assignment_id:
       assignment.id,
-
     section_id:
       section.id,
-
     reading_progress:
-      readingProgress,
-
+      existingReading,
     listening_progress:
-      bestListening,
-
-    overall_progress:
-      overallProgress,
-
-    started_at:
-      existing
-        ?.started_at ||
-      now,
-
-    completed_at:
-      completed
-        ? (
-            existing
-              ?.completed_at ||
-            now
-          )
-        : null,
-
-    last_activity_at:
-      now
+      mergedListening,
+    completed:
+      completion >= 98,
+    updated_at:
+      new Date().toISOString()
   };
 
+  if(
+    completion >= 98 &&
+    !existing?.completed_at
+  ){
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from(
-        "beta_section_progress"
-      )
-      .upsert(
-        payload,
-        {
-          onConflict:
-            "assignment_id,section_id"
-        }
-      )
-      .select("*")
-      .single();
+    payload.completed_at =
+      new Date().toISOString();
 
+  }
 
-  if(error){
+  try{
 
-    console.error(
-      "Listening progress:",
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "beta_section_progress"
+        )
+        .upsert(
+          payload,
+          {
+            onConflict:
+              "assignment_id,section_id"
+          }
+        )
+        .select()
+        .single();
+
+    if(error){
+      throw error;
+    }
+
+    const index =
+      sectionProgress.findIndex(
+        item =>
+          item.section_id ===
+          section.id
+      );
+
+    if(
+      index >= 0
+    ){
+
+      sectionProgress[index] =
+        data;
+
+    }else{
+
+      sectionProgress.push(
+        data
+      );
+
+    }
+
+  }catch(error){
+
+    console.warn(
+      "Could not save listening progress:",
       error
     );
 
-    return;
-
   }
 
-
-  const index =
-    sectionProgress.findIndex(
-      row =>
-        row.section_id ===
-        section.id
-    );
+}
 
 
-  if(index >= 0){
+/* =========================================================
+   TTS LOCAL STORAGE KEY
+========================================================= */
 
-    sectionProgress[index] =
-      data;
-
-  }
-  else{
-
-    sectionProgress.push(
-      data
-    );
-
-  }
-
-
-  logEvent(
-    "listening_progress",
-    {
-      paragraph_index:
-        paragraphIndex,
-
-      listening_progress:
-        bestListening
-    },
-    section.id
-  );
-
+function getTtsStorageKey(){
 
   if(
-    completed &&
-    Number(
-      existing
-        ?.overall_progress ||
-      0
-    ) < 98
+    !assignment?.id
   ){
+    return null;
+  }
 
-    logEvent(
-      "listening_completed",
-      {
-        section_number:
-          section.section_number
-      },
-      section.id
+  return (
+    `dogear-beta-tts-${assignment.id}`
+  );
+
+}
+
+
+/* =========================================================
+   SAVE TTS STATE
+========================================================= */
+
+function saveTtsState(){
+
+  const key =
+    getTtsStorageKey();
+
+  const section =
+    getCurrentSection();
+
+  if(
+    !key ||
+    !section
+  ){
+    return;
+  }
+
+  const payload = {
+    section_id:
+      section.id,
+    paragraph_index:
+      ttsParagraphIndex,
+    rate:
+      $("ttsRate")?.value ||
+      "1",
+    voice:
+      $("ttsVoice")?.value ||
+      "",
+    saved_at:
+      new Date().toISOString()
+  };
+
+  try{
+
+    localStorage.setItem(
+      key,
+      JSON.stringify(
+        payload
+      )
+    );
+
+  }catch(error){
+
+    console.warn(
+      "Could not save read-aloud state:",
+      error
     );
 
   }
 
+}
 
-  await updateAssignmentProgress();
 
-  renderOverallProgress();
+/* =========================================================
+   LOAD TTS STATE
+========================================================= */
+
+function loadTtsState(){
+
+  const key =
+    getTtsStorageKey();
+
+  if(!key){
+    return;
+  }
+
+  try{
+
+    const raw =
+      localStorage.getItem(
+        key
+      );
+
+    if(!raw){
+      return;
+    }
+
+    const saved =
+      JSON.parse(
+        raw
+      );
+
+    if(
+      saved.rate &&
+      Array.from(
+        $("ttsRate").options
+      )
+        .some(
+          option =>
+            option.value ===
+            String(saved.rate)
+        )
+    ){
+
+      $("ttsRate").value =
+        String(saved.rate);
+
+    }
+
+    if(
+      saved.voice !==
+        undefined &&
+      saved.voice !==
+        null
+    ){
+
+      const voiceValue =
+        String(
+          saved.voice
+        );
+
+      if(
+        voiceValue === "" ||
+        Array.from(
+          $("ttsVoice").options
+        )
+          .some(
+            option =>
+              option.value ===
+              voiceValue
+          )
+      ){
+
+        $("ttsVoice").value =
+          voiceValue;
+
+      }
+
+    }
+
+    const savedSectionIndex =
+      getSectionIndexById(
+        saved.section_id
+      );
+
+    if(
+      savedSectionIndex ===
+      currentSectionIndex
+    ){
+
+      ttsParagraphIndex =
+        clamp(
+          Number(
+            saved.paragraph_index ||
+            0
+          ),
+          0,
+          Math.max(
+            currentParagraphElements()
+              .length - 1,
+            0
+          )
+        );
+
+    }
+
+    updateTtsStatus();
+
+  }catch(error){
+
+    console.warn(
+      "Could not restore read-aloud state:",
+      error
+    );
+
+  }
 
 }
 
@@ -6859,64 +6646,55 @@ async function recordListeningProgress(
 function populateFeedbackForm(){
 
   $("ratingOverall").value =
-    feedback
-      ?.overall_rating ??
+    feedback?.rating_overall ??
     "";
-
 
   $("ratingPacing").value =
-    feedback
-      ?.pacing_rating ??
+    feedback?.rating_pacing ??
     "";
-
 
   $("ratingCharacter").value =
-    feedback
-      ?.character_rating ??
+    feedback?.rating_character ??
     "";
-
 
   $("ratingPlot").value =
-    feedback
-      ?.plot_rating ??
+    feedback?.rating_plot ??
     "";
-
 
   $("ratingWorldbuilding").value =
-    feedback
-      ?.worldbuilding_rating ??
+    feedback?.rating_worldbuilding ??
     "";
-
 
   $("ratingRomance").value =
-    feedback
-      ?.romance_rating ??
+    feedback?.rating_romance ??
     "";
-
 
   $("confusionNotes").value =
-    feedback
-      ?.confusion_notes ||
+    feedback?.confusion_notes ||
     "";
-
 
   $("favoriteParts").value =
-    feedback
-      ?.favorite_parts ||
+    feedback?.favorite_parts ||
     "";
-
 
   $("improvementNotes").value =
-    feedback
-      ?.improvement_notes ||
+    feedback?.improvement_notes ||
     "";
-
 
   $("generalComments").value =
-    feedback
-      ?.general_comments ||
+    feedback?.general_comments ||
     "";
 
+  updateFeedbackStatus();
+
+}
+
+
+/* =========================================================
+   FEEDBACK STATUS
+========================================================= */
+
+function updateFeedbackStatus(){
 
   if(
     feedback?.submitted
@@ -6924,21 +6702,40 @@ function populateFeedbackForm(){
 
     $("feedbackStatus")
       .textContent =
-        "Feedback submitted. You can still update it while your beta access remains active.";
+        feedback.submitted_at
+          ? `Submitted ${formatDate(feedback.submitted_at)}. You can still update your feedback.`
+          : "Feedback submitted. You can still update it.";
 
-  }
-  else if(feedback){
+    /*
+      Once feedback has been submitted, subsequent saves
+      remain submitted. This prevents "Save Draft" from
+      accidentally withdrawing feedback the author has
+      already received.
+    */
+
+    $("saveFeedbackButton")
+      .textContent =
+        "Save Update";
+
+    $("submitFeedbackButton")
+      .textContent =
+        "Update Feedback";
+
+  }else{
 
     $("feedbackStatus")
       .textContent =
-        "Draft saved. Submit it when you're ready to send your overall feedback to the author.";
+        feedback
+          ? "Draft saved. The author cannot see it until you submit."
+          : "You can save feedback as you read and submit it when you're finished.";
 
-  }
-  else{
-
-    $("feedbackStatus")
+    $("saveFeedbackButton")
       .textContent =
-        "You can save feedback as you read and submit it when you're finished.";
+        "Save Draft";
+
+    $("submitFeedbackButton")
+      .textContent =
+        "Submit Feedback";
 
   }
 
@@ -6946,205 +6743,267 @@ function populateFeedbackForm(){
 
 
 /* =========================================================
-   FEEDBACK PAYLOAD
+   BUILD FEEDBACK PAYLOAD
 ========================================================= */
 
 function buildFeedbackPayload(
-  submitted
+  requestedSubmission
 ){
+
+  /*
+    Submitted feedback stays submitted. Saving an update
+    must never silently convert it back into a private draft.
+  */
+
+  const submitted =
+    Boolean(
+      requestedSubmission ||
+      feedback?.submitted
+    );
+
+  const previousSubmittedAt =
+    feedback?.submitted_at ||
+    null;
 
   return {
     assignment_id:
       assignment.id,
-
+    project_id:
+      assignment.project_id,
+    round_id:
+      assignment.round_id,
     section_id:
       null,
-
     feedback_type:
       "overall",
 
-    pacing_rating:
-      numericValue(
-        $("ratingPacing")
-          .value
+    rating_overall:
+      numberOrNull(
+        $("ratingOverall").value
       ),
 
-    character_rating:
-      numericValue(
-        $("ratingCharacter")
-          .value
+    rating_pacing:
+      numberOrNull(
+        $("ratingPacing").value
       ),
 
-    plot_rating:
-      numericValue(
-        $("ratingPlot")
-          .value
+    rating_character:
+      numberOrNull(
+        $("ratingCharacter").value
       ),
 
-    worldbuilding_rating:
-            numericValue(
-        $("ratingWorldbuilding")
-          .value
+    rating_plot:
+      numberOrNull(
+        $("ratingPlot").value
       ),
 
-    romance_rating:
-      numericValue(
-        $("ratingRomance")
-          .value
+    rating_worldbuilding:
+      numberOrNull(
+        $("ratingWorldbuilding").value
       ),
 
-    overall_rating:
-      numericValue(
-        $("ratingOverall")
-          .value
+    rating_romance:
+      numberOrNull(
+        $("ratingRomance").value
       ),
 
     confusion_notes:
       $("confusionNotes")
         .value
-        .trim() ||
-      null,
+        .trim(),
 
     favorite_parts:
       $("favoriteParts")
         .value
-        .trim() ||
-      null,
+        .trim(),
 
     improvement_notes:
       $("improvementNotes")
         .value
-        .trim() ||
-      null,
+        .trim(),
 
     general_comments:
       $("generalComments")
         .value
-        .trim() ||
-      null,
+        .trim(),
 
     submitted:
-      Boolean(
-        submitted
-      ),
+      submitted,
 
     submitted_at:
       submitted
-        ? new Date()
-            .toISOString()
-        : null
+        ? (
+            previousSubmittedAt ||
+            new Date().toISOString()
+          )
+        : null,
+
+    updated_at:
+      new Date().toISOString()
   };
 
 }
 
 
 /* =========================================================
-   SAVE / SUBMIT FEEDBACK
+   SAVE FEEDBACK
 ========================================================= */
 
 async function saveFeedback(
-  submitted = false
+  submitted
 ){
+
+  if(
+    !assignment
+  ){
+    return;
+  }
 
   const payload =
     buildFeedbackPayload(
       submitted
     );
 
+  $("saveFeedbackButton")
+    .disabled =
+      true;
 
-  let result;
+  $("submitFeedbackButton")
+    .disabled =
+      true;
 
+  try{
 
-  if(feedback?.id){
+    let result;
 
-    result =
-      await supabaseClient
-        .from(
-          "beta_feedback"
-        )
-        .update(
-          payload
-        )
-        .eq(
-          "id",
-          feedback.id
-        )
-        .eq(
-          "assignment_id",
-          assignment.id
-        )
-        .select("*")
-        .single();
+    if(
+      feedback?.id
+    ){
 
-  }
-  else{
+      result =
+        await supabaseClient
+          .from(
+            "beta_feedback"
+          )
+          .update(
+            payload
+          )
+          .eq(
+            "id",
+            feedback.id
+          )
+          .select()
+          .single();
 
-    result =
-      await supabaseClient
-        .from(
-          "beta_feedback"
-        )
-        .insert(
-          payload
-        )
-        .select("*")
-        .single();
+    }else{
 
-  }
+      result =
+        await supabaseClient
+          .from(
+            "beta_feedback"
+          )
+          .insert(
+            payload
+          )
+          .select()
+          .single();
 
+    }
 
-  if(result.error){
+    if(result.error){
+      throw result.error;
+    }
 
-    showToast(
-      result.error.message ||
-      "DogEar couldn't save your feedback.",
-      "error"
+    const wasSubmitted =
+      Boolean(
+        feedback?.submitted
+      );
+
+    feedback =
+      result.data;
+
+    updateFeedbackStatus();
+
+    if(
+      feedback.submitted
+    ){
+
+      showToast(
+        wasSubmitted
+          ? "Feedback updated."
+          : "Feedback submitted to the author."
+      );
+
+      await logAnalyticsEvent(
+        wasSubmitted
+          ? "feedback_updated"
+          : "feedback_submitted",
+        {
+          feedback_id:
+            feedback.id
+        }
+      );
+
+    }else{
+
+      showToast(
+        "Feedback draft saved."
+      );
+
+      await logAnalyticsEvent(
+        "feedback_draft_saved",
+        {
+          feedback_id:
+            feedback.id
+        }
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Could not save feedback:",
+      error
     );
 
-    return;
+    showToast(
+      "DogEar couldn't save your feedback."
+    );
+
+  }finally{
+
+    $("saveFeedbackButton")
+      .disabled =
+        false;
+
+    $("submitFeedbackButton")
+      .disabled =
+        false;
 
   }
 
+}
+  /* =========================================================
+   FEEDBACK MODAL
+========================================================= */
 
-  feedback =
-    result.data;
-
+function openFeedbackModal(){
 
   populateFeedbackForm();
 
+  $("feedbackModal")
+    .classList
+    .add("show");
 
-  logEvent(
-    submitted
-      ? "feedback_submitted"
-      : "feedback_saved",
-    {
-      feedback_type:
-        "overall"
-    }
-  );
+}
 
 
-  if(submitted){
+function closeFeedbackModal(){
 
-    showToast(
-      "Feedback submitted to the author."
-    );
-
-
-    $("feedbackModal")
-      .classList
-      .remove(
-        "show"
-      );
-
-  }
-  else{
-
-    showToast(
-      "Feedback draft saved."
-    );
-
-  }
+  $("feedbackModal")
+    .classList
+    .remove("show");
 
 }
 
@@ -7155,97 +7014,489 @@ async function saveFeedback(
 
 function showAnnotationsPanel(){
 
-  $("annotationsTab")
-    .classList
-    .add(
-      "active"
-    );
-
-
-  $("bookmarksTab")
-    .classList
-    .remove(
-      "active"
-    );
-
-
   $("annotationsPanel")
     .classList
-    .remove(
-      "hidden"
-    );
-
+    .remove("hidden");
 
   $("bookmarksPanel")
     .classList
-    .add(
-      "hidden"
-    );
+    .add("hidden");
+
+  $("annotationsTab")
+    .classList
+    .add("active");
+
+  $("bookmarksTab")
+    .classList
+    .remove("active");
 
 }
 
 
 function showBookmarksPanel(){
 
-  $("bookmarksTab")
+  $("annotationsPanel")
     .classList
-    .add(
-      "active"
-    );
-
-
-  $("annotationsTab")
-    .classList
-    .remove(
-      "active"
-    );
-
+    .add("hidden");
 
   $("bookmarksPanel")
     .classList
-    .remove(
-      "hidden"
+    .remove("hidden");
+
+  $("annotationsTab")
+    .classList
+    .remove("active");
+
+  $("bookmarksTab")
+    .classList
+    .add("active");
+
+}
+
+
+/* =========================================================
+   MOBILE SIDEBARS
+========================================================= */
+
+function ensureMobileBackdrop(){
+
+  let backdrop =
+    document.querySelector(
+      ".mobile-backdrop"
     );
 
+  if(backdrop){
+    return backdrop;
+  }
 
-  $("annotationsPanel")
-    .classList
-    .add(
-      "hidden"
+  backdrop =
+    document.createElement(
+      "div"
+    );
+
+  backdrop.className =
+    "mobile-backdrop";
+
+  backdrop.addEventListener(
+    "click",
+    closeMobileSidebars
+  );
+
+  document.body.appendChild(
+    backdrop
+  );
+
+  return backdrop;
+
+}
+
+
+function toggleLeftSidebar(){
+
+  const sidebar =
+    $("leftSidebar");
+
+  const backdrop =
+    ensureMobileBackdrop();
+
+  const isOpen =
+    sidebar.classList.contains(
+      "mobile-open"
+    );
+
+  closeMobileSidebars();
+
+  if(!isOpen){
+
+    sidebar.classList.add(
+      "mobile-open"
+    );
+
+    backdrop.classList.add(
+      "show"
+    );
+
+  }
+
+}
+
+
+function toggleRightSidebar(){
+
+  const sidebar =
+    $("rightSidebar");
+
+  const backdrop =
+    ensureMobileBackdrop();
+
+  const isOpen =
+    sidebar.classList.contains(
+      "mobile-open"
+    );
+
+  closeMobileSidebars();
+
+  if(!isOpen){
+
+    sidebar.classList.add(
+      "mobile-open"
+    );
+
+    backdrop.classList.add(
+      "show"
+    );
+
+  }
+
+}
+
+
+function closeMobileSidebars(){
+
+  $("leftSidebar")
+    ?.classList
+    .remove("mobile-open");
+
+  $("rightSidebar")
+    ?.classList
+    .remove("mobile-open");
+
+  document
+    .querySelector(
+      ".mobile-backdrop"
+    )
+    ?.classList
+    .remove("show");
+
+}
+
+
+/* =========================================================
+   INITIAL SECTION
+========================================================= */
+
+function determineInitialSection(){
+
+  if(
+    readingPosition?.section_id
+  ){
+
+    const savedIndex =
+      getSectionIndexById(
+        readingPosition.section_id
+      );
+
+    if(
+      savedIndex >= 0
+    ){
+
+      currentSectionIndex =
+        savedIndex;
+
+      return;
+
+    }
+
+  }
+
+  currentSectionIndex = 0;
+
+}
+
+
+/* =========================================================
+   ASSIGNMENT OPENED
+========================================================= */
+
+async function markAssignmentOpened(){
+
+  if(!assignment){
+    return;
+  }
+
+  const payload = {};
+
+  if(
+    assignment.status ===
+    "accepted"
+  ){
+
+    payload.status =
+      "reading";
+
+  }
+
+  if(
+    !assignment.started_at
+  ){
+
+    payload.started_at =
+      new Date().toISOString();
+
+  }
+
+  if(
+    Object.keys(payload)
+      .length === 0
+  ){
+    return;
+  }
+
+  payload.updated_at =
+    new Date().toISOString();
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "beta_assignments"
+        )
+        .update(
+          payload
+        )
+        .eq(
+          "id",
+          assignment.id
+        )
+        .select()
+        .maybeSingle();
+
+    if(error){
+
+      /*
+        Reader assignment updates may intentionally be
+        blocked by RLS. Reading-position records still prove
+        that the reader opened the manuscript.
+      */
+
+      console.warn(
+        "Assignment-open update was blocked:",
+        error
+      );
+
+      return;
+    }
+
+    if(data){
+      assignment = data;
+    }
+
+  }catch(error){
+
+    console.warn(
+      "Could not mark assignment opened:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   READER OPEN ANALYTICS
+========================================================= */
+
+async function recordReaderOpen(){
+
+  await logAnalyticsEvent(
+    "reader_opened",
+    {
+      manuscript_id:
+        manuscript?.id ||
+        null,
+
+      manuscript_version:
+        manuscript
+          ?.version_number ??
+        null,
+
+      section_id:
+        getCurrentSection()?.id ||
+        null
+    }
+  );
+
+}
+
+
+/* =========================================================
+   DEBOUNCED POSITION SAVE
+========================================================= */
+
+function schedulePositionSave(){
+
+  clearTimeout(
+    positionSaveTimer
+  );
+
+  positionSaveTimer =
+    setTimeout(
+      () => {
+
+        saveReadingPosition();
+
+      },
+      650
+    );
+
+}
+
+
+function scheduleProgressDisplay(){
+
+  clearTimeout(
+    progressSaveTimer
+  );
+
+  progressSaveTimer =
+    setTimeout(
+      () => {
+
+        updateProgressDisplay();
+
+      },
+      80
     );
 
 }
 
 
 /* =========================================================
-   OPEN / CLOSE SIDEBARS
+   INITIALIZE READER
 ========================================================= */
 
-function toggleTocSidebar(){
+async function initialize(){
 
-  $("tocSidebar")
-    .classList
-    .toggle(
-      "open"
+  try{
+
+    if(!assignmentId){
+
+      showError(
+        "No beta-reading assignment",
+        "This reader link is missing its assignment ID."
+      );
+
+      return;
+
+    }
+
+    const hasSession =
+      await loadSession();
+
+    if(!hasSession){
+      return;
+    }
+
+    await loadAssignment();
+
+    await Promise.all([
+      loadProject(),
+      loadRound()
+    ]);
+
+    await loadManuscript();
+
+    await loadSections();
+
+    /*
+      These records are all reader-owned state and can be
+      loaded in parallel once the assignment and manuscript
+      are known.
+    */
+
+    await Promise.all([
+      loadReadingPosition(),
+      loadSectionProgress(),
+      loadBookmarks(),
+      loadAnnotations(),
+      loadFeedback()
+    ]);
+
+    determineInitialSection();
+
+    renderStaticReader();
+
+    await renderCurrentSection({
+      restorePosition:true
+    });
+
+    /*
+      Speech controls need rendered paragraphs before a
+      stored paragraph index can be restored.
+    */
+
+    loadTtsState();
+
+    $("loadingState")
+      .classList
+      .add("hidden");
+
+    $("errorState")
+      .classList
+      .add("hidden");
+
+    $("readerShell")
+      .classList
+      .remove("hidden");
+
+    await markAssignmentOpened();
+
+    updateProgressDisplay();
+
+    await recordReaderOpen();
+
+    /*
+      Establish an initial server-side reading position even
+      if the reader opens the manuscript and does not scroll.
+    */
+
+    setTimeout(
+      () => {
+
+        saveReadingPosition();
+
+      },
+      1000
     );
 
-}
+  }catch(error){
 
-
-function toggleNotesSidebar(){
-
-  $("notesSidebar")
-    .classList
-    .toggle(
-      "open"
+    console.error(
+      "Beta reader initialization failed:",
+      error
     );
+
+    showError(
+      "We couldn't open this manuscript.",
+      error?.message ||
+      "DogEar ran into an unexpected problem while loading your beta-reading assignment."
+    );
+
+  }
 
 }
 
 
 /* =========================================================
-   EVENT LISTENERS
+   EVENTS — NAVIGATION
 ========================================================= */
+
+$("errorBackButton")
+  .addEventListener(
+    "click",
+    () => {
+
+      window.location.href =
+        "beta-reading.html";
+
+    }
+  );
+
 
 $("previousChapterButton")
   .addEventListener(
@@ -7253,17 +7504,12 @@ $("previousChapterButton")
     async () => {
 
       if(
-        currentSectionIndex >
-        0
+        currentSectionIndex > 0
       ){
 
         await goToSection(
           currentSectionIndex - 1,
-          {
-            savePrevious:true,
-            scrollTop:true,
-            source:"previous_button"
-          }
+          true
         );
 
       }
@@ -7284,11 +7530,7 @@ $("nextChapterButton")
 
         await goToSection(
           currentSectionIndex + 1,
-          {
-            savePrevious:true,
-            scrollTop:true,
-            source:"next_button"
-          }
+          true
         );
 
       }
@@ -7304,17 +7546,59 @@ $("bookmarkButton")
   );
 
 
+/* =========================================================
+   EVENTS — SIDEBARS
+========================================================= */
+
 $("tocToggleButton")
   .addEventListener(
     "click",
-    toggleTocSidebar
+    () => {
+
+      /*
+        On desktop the chapter sidebar is already visible.
+        The toggle becomes useful when the responsive layout
+        converts it into a drawer.
+      */
+
+      if(
+        window.matchMedia(
+          "(max-width:800px)"
+        ).matches
+      ){
+
+        toggleLeftSidebar();
+
+      }
+
+    }
   );
 
 
 $("notesToggleButton")
   .addEventListener(
     "click",
-    toggleNotesSidebar
+    () => {
+
+      if(
+        window.matchMedia(
+          "(max-width:1180px)"
+        ).matches
+      ){
+
+        toggleRightSidebar();
+
+      }else{
+
+        $("rightSidebar")
+          .scrollTo({
+            top:0,
+            behavior:"smooth"
+          });
+
+      }
+
+    }
   );
 
 
@@ -7339,6 +7623,10 @@ $("annotationChapterFilter")
   );
 
 
+/* =========================================================
+   EVENTS — TEXT SELECTION
+========================================================= */
+
 $("highlightSelectionButton")
   .addEventListener(
     "click",
@@ -7353,37 +7641,66 @@ $("noteSelectionButton")
   );
 
 
+document.addEventListener(
+  "mouseup",
+  event => {
+
+    if(
+      event.target.closest(
+        "#selectionToolbar"
+      )
+    ){
+      return;
+    }
+
+    setTimeout(
+      captureTextSelection,
+      0
+    );
+
+  }
+);
+
+
+document.addEventListener(
+  "touchend",
+  event => {
+
+    if(
+      event.target.closest(
+        "#selectionToolbar"
+      )
+    ){
+      return;
+    }
+
+    setTimeout(
+      captureTextSelection,
+      120
+    );
+
+  },
+  {
+    passive:true
+  }
+);
+
+
+/* =========================================================
+   EVENTS — NOTE MODAL
+========================================================= */
+
 $("closeNoteModal")
   .addEventListener(
     "click",
-    () => {
-
-      $("noteModal")
-        .classList
-        .remove(
-          "show"
-        );
-
-      clearSelectedPassage();
-
-    }
+    closeNoteModal
   );
 
 
 $("cancelNoteButton")
   .addEventListener(
     "click",
-    () => {
-
-      $("noteModal")
-        .classList
-        .remove(
-          "show"
-        );
-
-      clearSelectedPassage();
-
-    }
+    closeNoteModal
   );
 
 
@@ -7394,54 +7711,53 @@ $("saveNoteButton")
   );
 
 
+/* =========================================================
+   EVENTS — FEEDBACK
+========================================================= */
+
 $("feedbackButton")
   .addEventListener(
     "click",
-    () => {
-
-      populateFeedbackForm();
-
-      $("feedbackModal")
-        .classList
-        .add(
-          "show"
-        );
-
-    }
+    openFeedbackModal
   );
 
 
 $("closeFeedbackModal")
   .addEventListener(
     "click",
-    () =>
-      $("feedbackModal")
-        .classList
-        .remove(
-          "show"
-        )
+    closeFeedbackModal
   );
 
 
 $("saveFeedbackButton")
   .addEventListener(
     "click",
-    () =>
+    () => {
+
       saveFeedback(
         false
-      )
+      );
+
+    }
   );
 
 
 $("submitFeedbackButton")
   .addEventListener(
     "click",
-    () =>
+    () => {
+
       saveFeedback(
         true
-      )
+      );
+
+    }
   );
 
+
+/* =========================================================
+   EVENTS — TEXT TO SPEECH
+========================================================= */
 
 $("ttsPlayButton")
   .addEventListener(
@@ -7453,14 +7769,14 @@ $("ttsPlayButton")
 $("ttsPreviousButton")
   .addEventListener(
     "click",
-    previousSpokenParagraph
+    previousSpeechParagraph
   );
 
 
 $("ttsNextButton")
   .addEventListener(
     "click",
-    nextSpokenParagraph
+    nextSpeechParagraph
   );
 
 
@@ -7469,20 +7785,32 @@ $("ttsRate")
     "change",
     () => {
 
-      saveTtsState(
-        ttsSpeaking &&
-        !ttsPaused
-      );
+      saveTtsState();
 
+      /*
+        Restart the active paragraph so the new rate takes
+        effect immediately.
+      */
 
       if(
-        ttsSpeaking &&
-        !ttsPaused
+        ttsSpeaking ||
+        ttsPaused
       ){
 
-        speakParagraph(
-          ttsParagraphIndex
-        );
+        window
+          .speechSynthesis
+          .cancel();
+
+        activeUtterance =
+          null;
+
+        ttsSpeaking =
+          false;
+
+        ttsPaused =
+          false;
+
+        speakCurrentParagraph();
 
       }
 
@@ -7495,20 +7823,27 @@ $("ttsVoice")
     "change",
     () => {
 
-      saveTtsState(
-        ttsSpeaking &&
-        !ttsPaused
-      );
-
+      saveTtsState();
 
       if(
-        ttsSpeaking &&
-        !ttsPaused
+        ttsSpeaking ||
+        ttsPaused
       ){
 
-        speakParagraph(
-          ttsParagraphIndex
-        );
+        window
+          .speechSynthesis
+          .cancel();
+
+        activeUtterance =
+          null;
+
+        ttsSpeaking =
+          false;
+
+        ttsPaused =
+          false;
+
+        speakCurrentParagraph();
 
       }
 
@@ -7517,248 +7852,194 @@ $("ttsVoice")
 
 
 /* =========================================================
-   SELECTION EVENTS
+   EVENTS — SCROLL
 ========================================================= */
 
-$("chapterBody")
-  .addEventListener(
-    "mouseup",
-    () =>
-      setTimeout(
-        captureSelection,
-        10
-      )
-  );
+window.addEventListener(
+  "scroll",
+  () => {
+
+    if(
+      $("readerShell")
+        .classList
+        .contains("hidden")
+    ){
+      return;
+    }
+
+    scheduleProgressDisplay();
+
+    schedulePositionSave();
+
+  },
+  {
+    passive:true
+  }
+);
 
 
-$("chapterBody")
-  .addEventListener(
-    "touchend",
-    () =>
-      setTimeout(
-        captureSelection,
-        100
-      )
-  );
+/* =========================================================
+   EVENTS — RESIZE
+========================================================= */
+
+window.addEventListener(
+  "resize",
+  () => {
+
+    clearSelectedPassage();
+
+    if(
+      window.innerWidth >
+      1180
+    ){
+
+      closeMobileSidebars();
+
+    }
+
+  }
+);
 
 
-document
-  .addEventListener(
-    "mousedown",
-    event => {
+/* =========================================================
+   EVENTS — PAGE EXIT
+========================================================= */
+
+window.addEventListener(
+  "pagehide",
+  () => {
+
+    /*
+      These writes are best-effort. Browsers may terminate
+      asynchronous work quickly during navigation.
+    */
+
+    saveReadingPosition();
+
+    saveTtsState();
+
+    if(
+      ttsSpeaking ||
+      ttsPaused
+    ){
+
+      saveListeningProgress();
+
+    }
+
+    if(speechSupported){
+
+      window
+        .speechSynthesis
+        .cancel();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   EVENTS — KEYBOARD
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  async event => {
+
+    const target =
+      event.target;
+
+    const tagName =
+      target?.tagName
+        ?.toLowerCase();
+
+    const isFormField =
+      tagName === "input" ||
+      tagName === "textarea" ||
+      tagName === "select" ||
+      target?.isContentEditable;
+
+    if(
+      event.key ===
+      "Escape"
+    ){
+
+      clearSelectedPassage();
 
       if(
-        !event.target.closest(
-          "#selectionToolbar"
-        ) &&
-        !event.target.closest(
-          "#chapterBody"
-        )
-      ){
-
-        $("selectionToolbar")
+        $("noteModal")
           .classList
-          .remove(
-            "show"
-          );
+          .contains("show")
+      ){
+
+        closeNoteModal();
 
       }
 
-    }
-  );
-
-
-/* =========================================================
-   SCROLL POSITION TRACKING
-========================================================= */
-
-window
-  .addEventListener(
-    "scroll",
-    () => {
-
       if(
-        $("readerShell")
+        $("feedbackModal")
           .classList
-          .contains(
-            "hidden"
-          )
-      ){
-        return;
-      }
-
-
-      renderOverallProgress();
-
-      updateBookmarkButton();
-
-      saveCurrentPosition(
-        false
-      );
-
-    },
-    {
-      passive:true
-    }
-  );
-
-
-/* =========================================================
-   SAVE BEFORE LEAVING
-========================================================= */
-
-window
-  .addEventListener(
-    "pagehide",
-    () => {
-
-      if(
-        assignment &&
-        manuscript
+          .contains("show")
       ){
 
-        /*
-          pagehide cannot reliably wait for network
-          operations, but calling the save here catches
-          many normal navigations. Regular scrolling
-          already persists the position.
-        */
-
-        saveCurrentPosition(
-          true
-        );
-
-        saveTtsState(
-          false
-        );
+        closeFeedbackModal();
 
       }
 
+      closeMobileSidebars();
 
-      stopSpeech();
+      return;
 
     }
-  );
 
+    if(isFormField){
+      return;
+    }
 
-/* =========================================================
-   KEYBOARD READING CONTROLS
-========================================================= */
-
-document
-  .addEventListener(
-    "keydown",
-    async event => {
-
-      const tag =
-        document.activeElement
-          ?.tagName
-          ?.toLowerCase();
-
+    if(
+      event.key ===
+      "ArrowLeft"
+    ){
 
       if(
-        tag === "input" ||
-        tag === "textarea" ||
-        tag === "select"
-      ){
-        return;
-      }
-
-
-      if(
-        event.key ===
-        "ArrowLeft" &&
-        currentSectionIndex >
-        0
+        currentSectionIndex > 0
       ){
 
         await goToSection(
           currentSectionIndex - 1,
-          {
-            savePrevious:true,
-            scrollTop:true,
-            source:"keyboard"
-          }
+          true
         );
 
       }
 
+    }
+
+    if(
+      event.key ===
+      "ArrowRight"
+    ){
 
       if(
-        event.key ===
-        "ArrowRight" &&
         currentSectionIndex <
         sections.length - 1
       ){
 
         await goToSection(
           currentSectionIndex + 1,
-          {
-            savePrevious:true,
-            scrollTop:true,
-            source:"keyboard"
-          }
+          true
         );
 
       }
 
     }
-  );
+
+  }
+);
 
 
 /* =========================================================
-   SPEECH SYNTHESIS INITIALIZATION
-========================================================= */
-
-if(speechSupported){
-
-  loadVoices();
-
-
-  window
-    .speechSynthesis
-    .addEventListener(
-      "voiceschanged",
-      loadVoices
-    );
-
-}
-else{
-
-  $("ttsPlayButton")
-    .disabled =
-      true;
-
-
-  $("ttsPreviousButton")
-    .disabled =
-      true;
-
-
-  $("ttsNextButton")
-    .disabled =
-      true;
-
-
-  $("ttsVoice")
-    .disabled =
-      true;
-
-
-  $("ttsRate")
-    .disabled =
-      true;
-
-
-  $("ttsPlayButton")
-    .textContent =
-      "Unavailable";
-
-}
-
-
-/* =========================================================
-   MODAL BACKDROP CLOSING
+   EVENTS — MODAL BACKDROPS
 ========================================================= */
 
 $("noteModal")
@@ -7771,13 +8052,7 @@ $("noteModal")
         $("noteModal")
       ){
 
-        $("noteModal")
-          .classList
-          .remove(
-            "show"
-          );
-
-        clearSelectedPassage();
+        closeNoteModal();
 
       }
 
@@ -7795,11 +8070,7 @@ $("feedbackModal")
         $("feedbackModal")
       ){
 
-        $("feedbackModal")
-          .classList
-          .remove(
-            "show"
-          );
+        closeFeedbackModal();
 
       }
 
@@ -7808,403 +8079,7 @@ $("feedbackModal")
 
 
 /* =========================================================
-   ESCAPE KEY
-========================================================= */
-
-document
-  .addEventListener(
-    "keydown",
-    event => {
-
-      if(
-        event.key !==
-        "Escape"
-      ){
-        return;
-      }
-
-
-      $("selectionToolbar")
-        .classList
-        .remove(
-          "show"
-        );
-
-
-      $("noteModal")
-        .classList
-        .remove(
-          "show"
-        );
-
-
-      $("feedbackModal")
-        .classList
-        .remove(
-          "show"
-        );
-
-
-      if(
-        window.innerWidth <=
-        760
-      ){
-
-        $("tocSidebar")
-          .classList
-          .remove(
-            "open"
-          );
-
-      }
-
-
-      if(
-        window.innerWidth <=
-        1100
-      ){
-
-        $("notesSidebar")
-          .classList
-          .remove(
-            "open"
-          );
-
-      }
-
-    }
-  );
-
-
-/* =========================================================
-   SHOW READER
-========================================================= */
-
-function showReader(){
-
-  $("loadingScreen")
-    .classList
-    .add(
-      "hidden"
-    );
-
-
-  $("readerShell")
-    .classList
-    .remove(
-      "hidden"
-    );
-
-}
-
-
-/* =========================================================
-   SHOW LOAD ERROR
-========================================================= */
-
-function showLoadError(
-  error
-){
-
-  console.error(
-    "DogEar Beta Reader:",
-    error
-  );
-
-
-  const message =
-    error?.message ||
-    "DogEar couldn't open this manuscript.";
-
-
-  $("loadingMessage")
-    .innerHTML =
-      `
-        <div style="
-          color:var(--danger);
-          margin-bottom:18px;
-        ">
-          ${escapeHtml(message)}
-        </div>
-
-        <a
-          class="secondary-button"
-          href="beta-reading.html"
-          style="
-            display:inline-flex;
-            text-decoration:none;
-          "
-        >
-          Back to Beta Reading
-        </a>
-      `;
-
-}
-
-
-/* =========================================================
-   INITIALIZE ASSIGNMENT STATUS
-========================================================= */
-
-async function markAssignmentOpened(){
-
-  if(!assignment){
-    return;
-  }
-
-
-  /*
-    Migration #8 may not permit the reader to update
-    beta_assignments directly. This is deliberately
-    non-fatal. The actual reader does not depend on
-    this update succeeding.
-  */
-
-  const payload = {
-    last_activity_at:
-      new Date()
-        .toISOString()
-  };
-
-
-  if(
-    assignment.status ===
-    "accepted"
-  ){
-
-    payload.status =
-      "reading";
-
-
-    payload.started_at =
-      assignment.started_at ||
-      new Date()
-        .toISOString();
-
-  }
-    const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from(
-        "beta_assignments"
-      )
-      .update(
-        payload
-      )
-      .eq(
-        "id",
-        assignment.id
-      )
-      .eq(
-        "reader_id",
-        currentUser.id
-      )
-      .select("*")
-      .maybeSingle();
-
-
-  if(error){
-
-    console.warn(
-      "Assignment status update was not permitted:",
-      error
-    );
-
-    return;
-
-  }
-
-
-  if(data){
-
-    assignment =
-      data;
-
-  }
-
-}
-
-
-/* =========================================================
-   INITIAL ANALYTICS
-========================================================= */
-
-async function recordReaderOpen(){
-
-  const hasExistingProgress =
-    Boolean(
-      readingPosition ||
-      sectionProgress.some(
-        row =>
-          Number(
-            row.overall_progress ||
-            0
-          ) > 0
-      )
-    );
-
-
-  await logEvent(
-    hasExistingProgress
-      ? "reading_resumed"
-      : "reading_started",
-    {
-      manuscript_id:
-        manuscript.id,
-
-      version_number:
-        manuscript.version_number,
-
-      section_count:
-        sections.length
-    },
-    sections[
-      currentSectionIndex
-    ]?.id ||
-    null
-  );
-
-}
-
-
-/* =========================================================
-   INITIALIZE READER
-========================================================= */
-
-async function initialize(){
-
-  try{
-
-    if(!assignmentId){
-
-      throw new Error(
-        "This DogEar link does not contain a beta-reader assignment."
-      );
-
-    }
-
-
-    $("loadingMessage")
-      .textContent =
-        "Checking your DogEar account…";
-
-
-    const loggedIn =
-      await loadSession();
-
-
-    if(!loggedIn){
-      return;
-    }
-
-
-    $("loadingMessage")
-      .textContent =
-        "Checking your beta-reader access…";
-
-
-    await loadAssignment();
-
-
-    $("loadingMessage")
-      .textContent =
-        "Loading the beta project…";
-
-
-    await Promise.all([
-      loadProject(),
-      loadRound()
-    ]);
-
-
-    $("loadingMessage")
-      .textContent =
-        "Finding the private manuscript…";
-
-
-    await loadManuscript();
-
-
-    $("loadingMessage")
-      .textContent =
-        "Preparing the manuscript reader…";
-
-
-    await loadSections();
-
-
-    /*
-      Everything below is reader-owned state.
-      Loading it in parallel keeps manuscript opening
-      reasonably quick.
-    */
-
-    await Promise.all([
-      loadReadingPosition(),
-      loadSectionProgress(),
-      loadBookmarks(),
-      loadAnnotations(),
-      loadFeedback()
-    ]);
-
-
-    determineInitialSection();
-
-
-    renderStaticInformation();
-
-
-    await renderCurrentSection({
-      restorePosition:true,
-      scrollTop:false,
-      source:"initial_open"
-    });
-
-
-    await loadTtsState();
-
-
-    showReader();
-
-
-    await markAssignmentOpened();
-
-
-    await recordReaderOpen();
-
-
-    /*
-      Persist an initial position even if the reader
-      opens the manuscript and does not scroll.
-    */
-
-    setTimeout(
-      () => {
-
-        saveCurrentPosition(
-          true
-        );
-
-      },
-      1000
-    );
-
-  }
-  catch(error){
-
-    showLoadError(
-      error
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   START DOGEAR READER
+   START
 ========================================================= */
 
 initialize();
