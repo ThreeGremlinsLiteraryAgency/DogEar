@@ -900,6 +900,197 @@
     }
 
     /* =====================================================
+       PAPER DOLL MAKER
+       ===================================================== */
+
+    .doll-maker {
+      border: 1px solid rgba(199, 155, 89, 0.22);
+      border-radius: 18px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 16%, rgba(199, 155, 89, 0.12), transparent 34%),
+        rgba(7, 10, 8, 0.58);
+    }
+
+    .doll-maker-head {
+      padding: 20px 22px 16px;
+      border-bottom: 1px solid rgba(199, 155, 89, 0.16);
+    }
+
+    .doll-maker-title {
+      margin: 0 0 6px;
+      color: var(--cream);
+      font-size: 24px;
+      font-weight: 400;
+    }
+
+    .doll-maker-copy {
+      margin: 0;
+      color: var(--muted);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .doll-workspace {
+      display: grid;
+      grid-template-columns: minmax(220px, 0.82fr) minmax(280px, 1.18fr);
+      gap: 0;
+    }
+
+    .doll-stage-wrap {
+      min-height: 410px;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      border-right: 1px solid rgba(199, 155, 89, 0.16);
+      background:
+        linear-gradient(rgba(231, 220, 194, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(231, 220, 194, 0.035) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    .doll-stage {
+      width: min(100%, 300px);
+      aspect-ratio: 1;
+      border: 1px solid rgba(199, 155, 89, 0.35);
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.42);
+      background: #26362b;
+    }
+
+    .doll-stage svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .doll-controls {
+      padding: 22px;
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
+    .doll-control {
+      min-width: 0;
+    }
+
+    .doll-control-label {
+      margin-bottom: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: #d8cfbc;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .doll-control-value {
+      color: var(--gold-soft);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: none;
+    }
+
+    .doll-slider {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr) 42px;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .doll-arrow,
+    .doll-action {
+      border: 1px solid rgba(199, 155, 89, 0.3);
+      background: #0c100d;
+      color: var(--gold-soft);
+      cursor: pointer;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 800;
+    }
+
+    .doll-arrow {
+      height: 38px;
+      border-radius: 10px;
+      font-size: 18px;
+    }
+
+    .doll-arrow:hover,
+    .doll-arrow:focus-visible,
+    .doll-action:hover,
+    .doll-action:focus-visible {
+      border-color: var(--gold);
+      outline: none;
+      background: rgba(199, 155, 89, 0.09);
+    }
+
+    .doll-track {
+      height: 38px;
+      border: 1px solid rgba(199, 155, 89, 0.18);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.18);
+      color: var(--paper);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      text-align: center;
+      padding: 0 10px;
+    }
+
+    .swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .swatch {
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border: 2px solid transparent;
+      border-radius: 50%;
+      background: var(--swatch);
+      box-shadow: 0 0 0 1px rgba(241, 231, 207, 0.18);
+      cursor: pointer;
+    }
+
+    .swatch[aria-pressed="true"] {
+      border-color: var(--cream);
+      box-shadow: 0 0 0 2px var(--gold);
+    }
+
+    .doll-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding-top: 2px;
+    }
+
+    .doll-action {
+      min-height: 40px;
+      border-radius: 999px;
+      font-size: 10px;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .doll-note {
+      margin: 0;
+      color: #777166;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    /* =====================================================
        ACCOUNT INFO
        ===================================================== */
 
@@ -1236,6 +1427,16 @@
           1fr;
       }
 
+      .doll-workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .doll-stage-wrap {
+        min-height: 350px;
+        border-right: 0;
+        border-bottom: 1px solid rgba(199, 155, 89, 0.16);
+      }
+
     }
 
     @media (max-width: 650px) {
@@ -1279,6 +1480,15 @@
 
       .save-button {
         width: 100%;
+      }
+
+      .doll-stage-wrap,
+      .doll-controls {
+        padding: 18px;
+      }
+
+      .doll-stage-wrap {
+        min-height: 300px;
       }
 
     }
@@ -1529,19 +1739,133 @@
 
             <div class="field">
 
-              <label for="avatarUrl">
-                Profile Image URL
-              </label>
+              <div class="doll-maker">
 
-              <input
-                id="avatarUrl"
-                type="url"
-                placeholder="https://example.com/my-photo.jpg"
-              />
+                <div class="doll-maker-head">
+                  <h3 class="doll-maker-title">Make your paper gremlin</h3>
+                  <p class="doll-maker-copy">
+                    Slide through the pieces and build a tiny storybook version of yourself.
+                  </p>
+                </div>
 
-              <div class="help">
-                For now, paste the web address of an image.
-                Direct image uploads can be added later.
+                <div class="doll-workspace">
+
+                  <div class="doll-stage-wrap">
+                    <div
+                      class="doll-stage"
+                      id="dollStage"
+                      role="img"
+                      aria-label="Your customizable Paper Gremlin avatar"
+                    ></div>
+                  </div>
+
+                  <div class="doll-controls">
+
+                    <div class="doll-control">
+                      <div class="doll-control-label">
+                        Skin tone
+                        <span class="doll-control-value" id="skinValue"></span>
+                      </div>
+                      <div class="swatches" id="skinSwatches"></div>
+                    </div>
+
+                    <div class="doll-control">
+                      <div class="doll-control-label">
+                        Eyes
+                        <span class="doll-control-value" id="eyesValue"></span>
+                      </div>
+                      <div class="doll-slider">
+                        <button class="doll-arrow" type="button" data-cycle="eyes" data-direction="-1" aria-label="Previous eye style">‹</button>
+                        <div class="doll-track" id="eyesTrack"></div>
+                        <button class="doll-arrow" type="button" data-cycle="eyes" data-direction="1" aria-label="Next eye style">›</button>
+                      </div>
+                    </div>
+
+                    <div class="doll-control">
+                      <div class="doll-control-label">
+                        Eye color
+                        <span class="doll-control-value" id="eyeColorValue"></span>
+                      </div>
+                      <div class="swatches" id="eyeColorSwatches"></div>
+                    </div>
+
+                    <div class="doll-control">
+                      <div class="doll-control-label">
+                        Hair style
+                        <span class="doll-control-value" id="hairValue"></span>
+                      </div>
+                      <div class="doll-slider">
+                        <button class="doll-arrow" type="button" data-cycle="hair" data-direction="-1" aria-label="Previous hairstyle">‹</button>
+                        <div class="doll-track" id="hairTrack"></div>
+                        <button class="doll-arrow" type="button" data-cycle="hair" data-direction="1" aria-label="Next hairstyle">›</button>
+                      </div>
+                    </div>
+
+                    <div class="doll-control">
+                      <div class="doll-control-label">
+                        Hair color
+                        <span class="doll-control-value" id="hairColorValue"></span>
+                      </div>
+                      <div class="swatches" id="hairColorSwatches"></div>
+                    </div>
+
+                    <div class="doll-control">
+                      <div class="doll-control-label">
+                        Facial hair
+                        <span class="doll-control-value" id="facialHairValue"></span>
+                      </div>
+                      <div class="doll-slider">
+                        <button class="doll-arrow" type="button" data-cycle="facialHair" data-direction="-1" aria-label="Previous facial hair">‹</button>
+                        <div class="doll-track" id="facialHairTrack"></div>
+                        <button class="doll-arrow" type="button" data-cycle="facialHair" data-direction="1" aria-label="Next facial hair">›</button>
+                      </div>
+                    </div>
+
+                    <div class="doll-control">
+                      <div class="doll-control-label">
+                        Top
+                        <span class="doll-control-value" id="topValue"></span>
+                      </div>
+                      <div class="doll-slider">
+                        <button class="doll-arrow" type="button" data-cycle="top" data-direction="-1" aria-label="Previous top">‹</button>
+                        <div class="doll-track" id="topTrack"></div>
+                        <button class="doll-arrow" type="button" data-cycle="top" data-direction="1" aria-label="Next top">›</button>
+                      </div>
+                    </div>
+
+                    <div class="doll-control">
+                      <div class="doll-control-label">
+                        Top color
+                        <span class="doll-control-value" id="topColorValue"></span>
+                      </div>
+                      <div class="swatches" id="topColorSwatches"></div>
+                    </div>
+
+                    <div class="doll-control">
+                      <div class="doll-control-label">
+                        Accessory
+                        <span class="doll-control-value" id="accessoryValue"></span>
+                      </div>
+                      <div class="doll-slider">
+                        <button class="doll-arrow" type="button" data-cycle="accessory" data-direction="-1" aria-label="Previous accessory">‹</button>
+                        <div class="doll-track" id="accessoryTrack"></div>
+                        <button class="doll-arrow" type="button" data-cycle="accessory" data-direction="1" aria-label="Next accessory">›</button>
+                      </div>
+                    </div>
+
+                    <div class="doll-actions">
+                      <button class="doll-action" id="randomizeDoll" type="button">Surprise Me</button>
+                      <button class="doll-action" id="resetDoll" type="button">Start Over</button>
+                    </div>
+
+                    <p class="doll-note">
+                      Your gremlin is saved with your profile. No photo upload is needed.
+                    </p>
+
+                  </div>
+
+                </div>
+
               </div>
 
             </div>
@@ -1731,9 +2055,9 @@
         "displayName"
       );
 
-    const avatarUrlInput =
+    const dollStage =
       document.getElementById(
-        "avatarUrl"
+        "dollStage"
       );
 
     const bioInput =
@@ -1928,6 +2252,307 @@
     );
 
     /* =====================================================
+       PAPER DOLL MAKER
+       ===================================================== */
+
+    const dollOptions = {
+      skin: [
+        { label: "Porcelain", value: "#f3d7c6" },
+        { label: "Peach", value: "#e8b895" },
+        { label: "Honey", value: "#c98f61" },
+        { label: "Caramel", value: "#a96f47" },
+        { label: "Chestnut", value: "#7b4b32" },
+        { label: "Espresso", value: "#4b2b22" },
+        { label: "Moss", value: "#87966b" },
+        { label: "Moonlit", value: "#a9a7bd" }
+      ],
+      eyes: ["Round", "Almond", "Soft", "Mischief", "Wide", "Sleepy"],
+      eyeColor: [
+        { label: "Brown", value: "#604329" },
+        { label: "Hazel", value: "#8a713c" },
+        { label: "Green", value: "#587358" },
+        { label: "Blue", value: "#577b9f" },
+        { label: "Gray", value: "#798087" },
+        { label: "Violet", value: "#725c8d" },
+        { label: "Amber", value: "#b26c24" },
+        { label: "Black", value: "#171614" }
+      ],
+      hair: ["Cropped", "Side Sweep", "Wavy", "Curly", "Bob", "Long", "Bun", "Mohawk", "Locs", "Bald"],
+      hairColor: [
+        { label: "Ink", value: "#171412" },
+        { label: "Espresso", value: "#3b271e" },
+        { label: "Chestnut", value: "#70452d" },
+        { label: "Copper", value: "#a65232" },
+        { label: "Honey", value: "#c38c43" },
+        { label: "Silver", value: "#aaa7a0" },
+        { label: "Rose", value: "#a95d6d" },
+        { label: "Violet", value: "#5f4a78" },
+        { label: "Teal", value: "#376f70" },
+        { label: "Forest", value: "#405d43" }
+      ],
+      facialHair: ["None", "Stubble", "Mustache", "Goatee", "Short Beard", "Full Beard"],
+      top: ["Tee", "Hoodie", "Sweater", "Collared", "Overalls", "Turtleneck", "Cape", "Tank"],
+      topColor: [
+        { label: "Forest", value: "#344c3a" },
+        { label: "Burgundy", value: "#713944" },
+        { label: "Midnight", value: "#29364d" },
+        { label: "Ochre", value: "#a27035" },
+        { label: "Plum", value: "#57405f" },
+        { label: "Rust", value: "#914e35" },
+        { label: "Cream", value: "#d7c9aa" },
+        { label: "Charcoal", value: "#343638" }
+      ],
+      accessory: ["None", "Round Glasses", "Square Glasses", "Leaf Earring", "Stars", "Bookish Monocle", "Tiny Crown", "Headphones"]
+    };
+
+    const defaultDoll = {
+      skin: 2,
+      eyes: 3,
+      eyeColor: 2,
+      hair: 1,
+      hairColor: 2,
+      facialHair: 0,
+      top: 1,
+      topColor: 0,
+      accessory: 0
+    };
+
+    let dollState = {
+      ...defaultDoll
+    };
+
+    function optionLabel(key) {
+      const option = dollOptions[key][dollState[key]];
+      return typeof option === "string" ? option : option.label;
+    }
+
+    function optionValue(key) {
+      const option = dollOptions[key][dollState[key]];
+      return typeof option === "string" ? option : option.value;
+    }
+
+    function cycleDollOption(key, direction) {
+      const length = dollOptions[key].length;
+      dollState[key] = (dollState[key] + direction + length) % length;
+      updatePreview();
+    }
+
+    function makeSwatches(key, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
+
+      dollOptions[key].forEach(function (option, index) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "swatch";
+        button.style.setProperty("--swatch", option.value);
+        button.setAttribute("aria-label", option.label);
+        button.setAttribute("title", option.label);
+        button.setAttribute("aria-pressed", String(index === dollState[key]));
+        button.addEventListener("click", function () {
+          dollState[key] = index;
+          updatePreview();
+        });
+        container.appendChild(button);
+      });
+    }
+
+    function updateDollControls() {
+      ["eyes", "hair", "facialHair", "top", "accessory"].forEach(function (key) {
+        const track = document.getElementById(key + "Track");
+        const value = document.getElementById(key + "Value");
+        if (track) track.textContent = optionLabel(key);
+        if (value) value.textContent = optionLabel(key);
+      });
+
+      ["skin", "eyeColor", "hairColor", "topColor"].forEach(function (key) {
+        const value = document.getElementById(key + "Value");
+        if (value) value.textContent = optionLabel(key);
+      });
+
+      makeSwatches("skin", "skinSwatches");
+      makeSwatches("eyeColor", "eyeColorSwatches");
+      makeSwatches("hairColor", "hairColorSwatches");
+      makeSwatches("topColor", "topColorSwatches");
+    }
+
+    function hairBackSvg(style, color) {
+      const common = `fill="${color}" stroke="#33251e" stroke-width="5" stroke-linejoin="round"`;
+      const styles = {
+        "Long": `<path d="M84 112 Q83 49 150 43 Q218 49 216 116 L225 243 Q196 260 176 239 L124 239 Q102 261 75 242 Z" ${common}/>` ,
+        "Bob": `<path d="M82 111 Q84 45 150 43 Q215 46 218 113 L211 189 Q192 205 172 192 L128 192 Q106 206 88 187 Z" ${common}/>` ,
+        "Bun": `<circle cx="150" cy="34" r="34" ${common}/><path d="M88 115 Q84 51 150 44 Q216 52 212 116 L199 151 L101 151 Z" ${common}/>` ,
+        "Locs": `<path d="M92 92 Q103 46 150 45 Q201 48 210 94" fill="none" stroke="${color}" stroke-width="31" stroke-linecap="round"/><g fill="none" stroke="${color}" stroke-width="12" stroke-linecap="round"><path d="M95 82 Q69 145 90 227"/><path d="M112 67 Q86 143 105 240"/><path d="M188 67 Q214 143 195 240"/><path d="M205 82 Q231 145 210 227"/></g>`
+      };
+      return styles[style] || "";
+    }
+
+    function hairFrontSvg(style, color) {
+      const common = `fill="${color}" stroke="#33251e" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"`;
+      const styles = {
+        "Cropped": `<path d="M93 103 Q88 54 130 45 Q185 31 209 84 L205 104 Q185 79 162 82 Q126 67 93 103 Z" ${common}/>` ,
+        "Side Sweep": `<path d="M89 105 Q87 48 145 43 Q206 40 214 96 Q168 83 119 114 Q106 123 91 120 Z" ${common}/><path d="M110 75 Q158 89 201 61" fill="none" stroke="${color}" stroke-width="19" stroke-linecap="round"/>` ,
+        "Wavy": `<path d="M87 110 Q80 60 111 49 Q127 31 147 45 Q171 29 185 50 Q214 55 215 103 Q199 91 188 103 Q174 86 159 101 Q140 82 124 100 Q106 86 87 110 Z" ${common}/>` ,
+        "Curly": `<g ${common}><circle cx="100" cy="91" r="27"/><circle cx="114" cy="62" r="25"/><circle cx="145" cy="53" r="27"/><circle cx="177" cy="60" r="26"/><circle cx="201" cy="87" r="27"/><circle cx="178" cy="91" r="25"/><circle cx="132" cy="87" r="26"/></g>` ,
+        "Bob": `<path d="M89 103 Q88 52 144 43 Q202 39 214 98 Q181 78 160 99 Q127 76 89 111 Z" ${common}/>` ,
+        "Long": `<path d="M88 110 Q83 54 143 43 Q205 38 215 103 Q185 82 161 101 Q128 76 88 112 Z" ${common}/>` ,
+        "Bun": `<path d="M91 105 Q88 53 145 45 Q204 43 211 105 Q184 82 160 99 Q128 78 91 105 Z" ${common}/>` ,
+        "Mohawk": `<path d="M126 71 L136 22 L151 52 L169 12 L177 63 Q195 66 205 93 Q164 74 126 71 Z" ${common}/>` ,
+        "Locs": `<path d="M91 101 Q90 54 145 44 Q204 43 211 100 Q182 80 160 98 Q127 77 91 101 Z" ${common}/>` ,
+        "Bald": ``
+      };
+      return styles[style] || "";
+    }
+
+    function eyesSvg(style, color) {
+      const iris = (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${color}" stroke="#2d211c" stroke-width="2"/><circle cx="${x}" cy="${y}" r="${Math.max(3, r * 0.42)}" fill="#151311"/><circle cx="${x - 3}" cy="${y - 3}" r="2.5" fill="#fff" opacity=".85"/>`;
+      const styles = {
+        "Round": `<g fill="#fffaf0" stroke="#3a2921" stroke-width="4"><circle cx="124" cy="128" r="16"/><circle cx="176" cy="128" r="16"/></g>${iris(124,128,9)}${iris(176,128,9)}` ,
+        "Almond": `<path d="M105 128 Q124 109 143 128 Q124 146 105 128 Z M157 128 Q176 109 195 128 Q176 146 157 128 Z" fill="#fffaf0" stroke="#3a2921" stroke-width="4"/>${iris(124,128,8)}${iris(176,128,8)}` ,
+        "Soft": `<path d="M106 130 Q124 116 142 130 Q124 143 106 130 Z M158 130 Q176 116 194 130 Q176 143 158 130 Z" fill="#fffaf0" stroke="#3a2921" stroke-width="3"/>${iris(124,130,7)}${iris(176,130,7)}` ,
+        "Mischief": `<path d="M106 123 Q124 116 142 130 Q124 143 106 127 Z M158 130 Q176 116 194 123 L194 127 Q176 143 158 130 Z" fill="#fffaf0" stroke="#3a2921" stroke-width="4"/>${iris(125,129,7)}${iris(175,129,7)}` ,
+        "Wide": `<g fill="#fffaf0" stroke="#3a2921" stroke-width="4"><ellipse cx="123" cy="128" rx="18" ry="21"/><ellipse cx="177" cy="128" rx="18" ry="21"/></g>${iris(123,129,10)}${iris(177,129,10)}` ,
+        "Sleepy": `<path d="M105 132 Q124 116 143 132 M157 132 Q176 116 195 132" fill="none" stroke="#3a2921" stroke-width="5" stroke-linecap="round"/><path d="M109 135 Q124 143 139 135 M161 135 Q176 143 191 135" fill="none" stroke="${color}" stroke-width="5" stroke-linecap="round"/>`
+      };
+      return styles[style] || styles.Round;
+    }
+
+    function topSvg(style, color, skin) {
+      const outline = `stroke="#35271f" stroke-width="5" stroke-linejoin="round"`;
+      const base = `<path d="M75 300 L82 252 Q88 218 124 207 L176 207 Q212 218 218 252 L225 300 Z" fill="${color}" ${outline}/>`;
+      const styles = {
+        "Tee": `${base}<path d="M125 210 Q150 232 175 210" fill="none" stroke="#d7c9aa" stroke-width="5" opacity=".65"/>` ,
+        "Hoodie": `${base}<path d="M112 218 Q150 193 188 218 L176 247 Q150 229 124 247 Z" fill="none" stroke="#d7c9aa" stroke-width="6" opacity=".45"/><path d="M144 231 V270 M156 231 V270" stroke="#d7c9aa" stroke-width="3"/>` ,
+        "Sweater": `${base}<g stroke="#d7c9aa" stroke-width="3" opacity=".38"><path d="M100 245 L200 245"/><path d="M96 263 L204 263"/><path d="M93 281 L207 281"/></g>` ,
+        "Collared": `${base}<path d="M121 209 L150 239 L179 209 L166 252 L150 239 L134 252 Z" fill="#e3d8bf" ${outline}/><path d="M150 239 V300" stroke="#35271f" stroke-width="4"/>` ,
+        "Overalls": `<path d="M75 300 L82 252 Q88 218 124 207 L176 207 Q212 218 218 252 L225 300 Z" fill="#d7c9aa" ${outline}/><path d="M112 211 V251 H188 V211 M108 246 H192 V300 H108 Z" fill="${color}" ${outline}/><circle cx="121" cy="252" r="5" fill="#c79b59"/><circle cx="179" cy="252" r="5" fill="#c79b59"/>` ,
+        "Turtleneck": `${base}<path d="M125 201 H175 V236 Q150 247 125 236 Z" fill="${color}" ${outline}/>` ,
+        "Cape": `${base}<path d="M118 207 Q74 218 56 291 L105 300 L130 222 Z M182 207 Q226 218 244 291 L195 300 L170 222 Z" fill="#713944" ${outline}/><circle cx="150" cy="216" r="8" fill="#c79b59"/>` ,
+        "Tank": `<path d="M91 300 L94 247 Q99 220 126 209 L128 242 Q150 252 172 242 L174 209 Q201 220 206 247 L209 300 Z" fill="${color}" ${outline}/><path d="M128 211 Q150 234 172 211" fill="${skin}" stroke="#35271f" stroke-width="4"/>`
+      };
+      return styles[style] || base;
+    }
+
+    function facialHairSvg(style, color) {
+      const common = `fill="${color}" stroke="#33251e" stroke-width="3" stroke-linejoin="round"`;
+      const styles = {
+        "None": "",
+        "Stubble": `<g fill="#33251e" opacity=".45"><circle cx="131" cy="176" r="1.8"/><circle cx="141" cy="183" r="1.8"/><circle cx="151" cy="177" r="1.8"/><circle cx="161" cy="183" r="1.8"/><circle cx="171" cy="176" r="1.8"/><circle cx="145" cy="193" r="1.8"/><circle cx="158" cy="193" r="1.8"/></g>` ,
+        "Mustache": `<path d="M150 173 Q137 161 122 175 Q138 181 150 175 Q162 181 178 175 Q163 161 150 173 Z" ${common}/>` ,
+        "Goatee": `<path d="M150 173 Q137 163 125 175 Q139 181 150 175 Q161 181 175 175 Q163 163 150 173 Z M137 187 Q150 205 163 187 L160 211 Q150 222 140 211 Z" ${common}/>` ,
+        "Short Beard": `<path d="M105 158 Q112 204 150 218 Q188 204 195 158 Q183 181 170 185 Q150 204 130 185 Q117 181 105 158 Z" ${common}/>` ,
+        "Full Beard": `<path d="M101 151 Q101 210 150 231 Q199 210 199 151 Q190 174 177 183 Q171 215 150 220 Q129 215 123 183 Q110 174 101 151 Z" ${common}/>`
+      };
+      return styles[style] || "";
+    }
+
+    function accessorySvg(style) {
+      const styles = {
+        "None": "",
+        "Round Glasses": `<g fill="none" stroke="#33251e" stroke-width="5"><circle cx="123" cy="129" r="22"/><circle cx="177" cy="129" r="22"/><path d="M145 129 H155 M101 125 L88 119 M199 125 L212 119"/></g>` ,
+        "Square Glasses": `<g fill="none" stroke="#33251e" stroke-width="5" stroke-linejoin="round"><rect x="101" y="108" width="43" height="38" rx="7"/><rect x="156" y="108" width="43" height="38" rx="7"/><path d="M144 126 H156 M101 121 L88 116 M199 121 L212 116"/></g>` ,
+        "Leaf Earring": `<path d="M207 158 Q230 164 210 185 Q199 170 207 158 Z" fill="#c79b59" stroke="#33251e" stroke-width="3"/><path d="M207 161 L211 179" stroke="#33251e" stroke-width="2"/>` ,
+        "Stars": `<g fill="#dfbd7e" stroke="#33251e" stroke-width="2"><path d="M91 89 l5 10 11 2-8 8 2 11-10-5-10 5 2-11-8-8 11-2z"/><path d="M213 61 l4 8 9 1-7 7 2 9-8-4-8 4 2-9-7-7 9-1z"/></g>` ,
+        "Bookish Monocle": `<circle cx="177" cy="129" r="24" fill="none" stroke="#c79b59" stroke-width="5"/><path d="M195 145 Q218 174 205 211" fill="none" stroke="#c79b59" stroke-width="4"/>` ,
+        "Tiny Crown": `<path d="M118 56 L124 24 L145 45 L163 18 L178 46 L198 27 L194 62 Z" fill="#c79b59" stroke="#33251e" stroke-width="4" stroke-linejoin="round"/><circle cx="163" cy="43" r="5" fill="#713944"/>` ,
+        "Headphones": `<path d="M88 126 Q84 58 150 53 Q216 58 212 126" fill="none" stroke="#33251e" stroke-width="10"/><rect x="78" y="117" width="27" height="55" rx="12" fill="#c79b59" stroke="#33251e" stroke-width="5"/><rect x="195" y="117" width="27" height="55" rx="12" fill="#c79b59" stroke="#33251e" stroke-width="5"/>`
+      };
+      return styles[style] || "";
+    }
+
+    function getAvatarSvg() {
+      const skin = optionValue("skin");
+      const eyeColor = optionValue("eyeColor");
+      const hairColor = optionValue("hairColor");
+      const topColor = optionValue("topColor");
+      const hair = optionLabel("hair");
+      const paperLight = "#e9ddc4";
+      const paperDark = "#cbb98f";
+
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" role="img" aria-label="Custom Paper Gremlin avatar">
+        <metadata data-kind="paper-gremlin-avatar">${JSON.stringify(dollState)}</metadata>
+        <defs>
+          <radialGradient id="paperBg" cx="35%" cy="24%" r="85%"><stop offset="0" stop-color="${paperLight}"/><stop offset="1" stop-color="${paperDark}"/></radialGradient>
+          <filter id="paperShadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="7" stdDeviation="6" flood-color="#15110d" flood-opacity=".32"/></filter>
+          <pattern id="speckles" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="4" cy="6" r="1" fill="#4c3829" opacity=".10"/><circle cx="21" cy="18" r=".8" fill="#4c3829" opacity=".08"/></pattern>
+        </defs>
+        <rect width="300" height="300" fill="url(#paperBg)"/>
+        <rect width="300" height="300" fill="url(#speckles)"/>
+        <path d="M25 250 Q62 231 99 250 T175 250 T275 250 V300 H25 Z" fill="#26362b" opacity=".22"/>
+        <g filter="url(#paperShadow)">
+          ${hairBackSvg(hair, hairColor)}
+          ${topSvg(optionLabel("top"), topColor, skin)}
+          <path d="M130 190 H170 L175 220 Q150 236 125 220 Z" fill="${skin}" stroke="#35271f" stroke-width="5"/>
+          <path d="M95 115 L62 91 Q54 85 58 105 L72 148 Q77 162 97 155 Z" fill="${skin}" stroke="#35271f" stroke-width="5" stroke-linejoin="round"/>
+          <path d="M205 115 L238 91 Q246 85 242 105 L228 148 Q223 162 203 155 Z" fill="${skin}" stroke="#35271f" stroke-width="5" stroke-linejoin="round"/>
+          <ellipse cx="150" cy="133" rx="61" ry="76" fill="${skin}" stroke="#35271f" stroke-width="5"/>
+          <path d="M70 105 L82 118 L67 122 Z M230 105 L218 118 L233 122 Z" fill="#dfbd7e" opacity=".55"/>
+          ${eyesSvg(optionLabel("eyes"), eyeColor)}
+          <path d="M150 137 Q143 154 151 158" fill="none" stroke="#6e4a39" stroke-width="3" stroke-linecap="round" opacity=".72"/>
+          <path d="M132 177 Q150 189 168 177" fill="none" stroke="#6e3f3d" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="111" cy="160" r="9" fill="#bd6b68" opacity=".16"/><circle cx="189" cy="160" r="9" fill="#bd6b68" opacity=".16"/>
+          ${facialHairSvg(optionLabel("facialHair"), hairColor)}
+          ${hairFrontSvg(hair, hairColor)}
+          ${accessorySvg(optionLabel("accessory"))}
+        </g>
+      </svg>`;
+    }
+
+    function getAvatarDataUri() {
+      const svg = getAvatarSvg();
+      return "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svg)));
+    }
+
+    function restoreDollFromAvatar(avatarUrl) {
+      if (!avatarUrl || !avatarUrl.startsWith("data:image/svg+xml;base64,")) return false;
+
+      try {
+        const encoded = avatarUrl.split(",")[1];
+        const svg = decodeURIComponent(escape(atob(encoded)));
+        const match = svg.match(/<metadata data-kind="paper-gremlin-avatar">([^<]+)<\/metadata>/);
+        if (!match) return false;
+        const saved = JSON.parse(match[1]);
+
+        Object.keys(defaultDoll).forEach(function (key) {
+          const value = Number(saved[key]);
+          if (Number.isInteger(value) && value >= 0 && value < dollOptions[key].length) {
+            dollState[key] = value;
+          }
+        });
+        return true;
+      }
+      catch (error) {
+        console.warn("Could not restore Paper Gremlin avatar:", error);
+        return false;
+      }
+    }
+
+    function renderDoll() {
+      const svg = getAvatarSvg();
+      dollStage.innerHTML = svg;
+      updateDollControls();
+      setAvatar(getAvatarDataUri(), displayNameInput.value.trim());
+    }
+
+    document.querySelectorAll("[data-cycle]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        cycleDollOption(button.dataset.cycle, Number(button.dataset.direction));
+      });
+    });
+
+    document.getElementById("randomizeDoll").addEventListener("click", function () {
+      Object.keys(dollState).forEach(function (key) {
+        dollState[key] = Math.floor(Math.random() * dollOptions[key].length);
+      });
+      updatePreview();
+    });
+
+    document.getElementById("resetDoll").addEventListener("click", function () {
+      dollState = { ...defaultDoll };
+      updatePreview();
+    });
+
+    /* =====================================================
        PROFILE PREVIEW
        ===================================================== */
 
@@ -1945,11 +2570,6 @@
 
       const bio =
         bioInput
-          .value
-          .trim();
-
-      const avatarUrl =
-        avatarUrlInput
           .value
           .trim();
 
@@ -1988,22 +2608,7 @@
         bioInput.value.length +
         " / 500";
 
-      if (avatarUrl) {
-
-        setAvatar(
-          avatarUrl,
-          displayName
-        );
-
-      }
-
-      else {
-
-        showAvatarInitial(
-          displayName
-        );
-
-      }
+      renderDoll();
 
     }
 
@@ -2058,11 +2663,6 @@
     }
 
     displayNameInput.addEventListener(
-      "input",
-      updatePreview
-    );
-
-    avatarUrlInput.addEventListener(
       "input",
       updatePreview
     );
@@ -2326,9 +2926,10 @@
               ?.display_name ||
             "";
 
-          avatarUrlInput.value =
+          restoreDollFromAvatar(
             profile.avatar_url ||
-            "";
+            ""
+          );
 
           bioInput.value =
             profile.bio ||
@@ -2527,9 +3128,7 @@
             .trim();
 
         const avatarUrl =
-          avatarUrlInput
-            .value
-            .trim();
+          getAvatarDataUri();
 
         const bio =
           bioInput
