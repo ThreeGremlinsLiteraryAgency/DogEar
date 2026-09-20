@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+  name="description"
+  content="Your Paper Gremlin book ratings and reviews."
+>
+
+<title>Paper Gremlin — My Ratings</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+:root{
+  --ink:#090b0a;
+  --ink-2:#101410;
+  --cream:#f1e7cf;
+  --gold:#c79b59;
+  --gold-soft:#dfbd7e;
+  --green:#26362b;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.22);
+  --error:#e6a09a;
+  --shadow:0 22px 70px rgba(0,0,0,.34);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(53,73,59,.24),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 92% 10%,
+      rgba(199,155,89,.09),
+      transparent 25%
+    ),
+    var(--ink);
+  color:var(--cream);
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+}
+
+a{
+  color:inherit;
+}
+
+button{
+  font:inherit;
+}
+
+/* =========================================================
+   NAV
+========================================================= */
+
+.topbar{
+  min-height:76px;
+  padding:0 clamp(18px,4vw,60px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:28px;
+  position:sticky;
+  top:0;
+  z-index:100;
+  border-bottom:1px solid var(--line);
+  background:rgba(9,11,10,.92);
+  backdrop-filter:blur(14px);
+}
+
+.brand{
+  display:inline-flex;
+  align-items:center;
+  gap:11px;
+  color:var(--gold-soft);
+  text-decoration:none;
+  font:800 13px Arial,Helvetica,sans-serif;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  position:relative;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  transform:rotate(-8deg);
+}
+
+.brand-mark::after{
+  content:"";
+  position:absolute;
+  width:11px;
+  height:11px;
+  right:2px;
+  top:2px;
+  border-left:1px solid var(--gold);
+  border-bottom:1px solid var(--gold);
+  background:var(--ink);
+}
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:25px;
+  font:700 11px Arial,Helvetica,sans-serif;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.nav-links a{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.nav-links a:hover{
+  color:var(--gold-soft);
+}
+
+.nav-avatar{
+  width:38px;
+  height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:50%;
+  background:var(--green);
+  color:var(--gold-soft);
+  text-decoration:none;
+  font:800 13px Arial,Helvetica,sans-serif;
+}
+
+.nav-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.page{
+  width:min(1050px,calc(100% - 36px));
+  margin:0 auto;
+  padding:58px 0 110px;
+}
+
+.hero{
+  margin-bottom:34px;
+}
+
+.eyebrow{
+  margin-bottom:11px;
+  color:var(--gold);
+  font:800 10px Arial,Helvetica,sans-serif;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+
+h1,
+h2,
+h3,
+p{
+  margin-top:0;
+}
+
+h1{
+  margin-bottom:13px;
+  font-size:clamp(44px,7vw,76px);
+  line-height:.97;
+  font-weight:400;
+  letter-spacing:-.04em;
+}
+
+.hero p{
+  max-width:690px;
+  margin-bottom:0;
+  color:var(--muted);
+  font-size:17px;
+  line-height:1.7;
+}
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.summary{
+  margin-bottom:32px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+.summary-card{
+  padding:22px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:rgba(16,20,16,.82);
+  box-shadow:var(--shadow);
+}
+
+.summary-label{
+  margin-bottom:8px;
+  color:var(--muted);
+  font:800 9px Arial,Helvetica,sans-serif;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+
+.summary-value{
+  color:var(--gold-soft);
+  font-size:31px;
+}
+
+/* =========================================================
+   REVIEWS
+========================================================= */
+
+.review-list{
+  display:grid;
+  gap:17px;
+}
+
+.review-card{
+  display:grid;
+  grid-template-columns:110px minmax(0,1fr);
+  gap:22px;
+  padding:20px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(16,20,16,.82);
+  box-shadow:var(--shadow);
+}
+
+.cover{
+  width:110px;
+  aspect-ratio:2/3;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  border:1px solid rgba(199,155,89,.25);
+  border-radius:8px;
+  background:
+    linear-gradient(
+      145deg,
+      #35483b,
+      #141a15
+    );
+  color:#81796c;
+  text-align:center;
+  font-size:12px;
+  font-style:italic;
+}
+
+.cover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.review-content{
+  min-width:0;
+}
+
+.rating-stars{
+  margin-bottom:8px;
+  color:var(--gold-soft);
+  font:20px Arial,Helvetica,sans-serif;
+  letter-spacing:.04em;
+}
+
+.book-title{
+  margin-bottom:5px;
+  font-size:25px;
+  font-weight:400;
+}
+
+.book-author{
+  margin-bottom:13px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.review-text{
+  margin-bottom:16px;
+  color:#c8beaa;
+  line-height:1.7;
+  white-space:pre-wrap;
+}
+
+.no-review{
+  color:#746e63;
+  font-style:italic;
+}
+
+.review-meta{
+  margin-bottom:16px;
+  color:#706a60;
+  font:10px Arial,Helvetica,sans-serif;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+}
+
+.button{
+  min-height:38px;
+  padding:0 16px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:transparent;
+  color:var(--gold-soft);
+  text-decoration:none;
+  cursor:pointer;
+  font:800 9px Arial,Helvetica,sans-serif;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.button:hover{
+  border-color:var(--gold);
+}
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty{
+  padding:55px 25px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(16,20,16,.72);
+  text-align:center;
+}
+
+.empty-symbol{
+  margin-bottom:15px;
+  color:var(--gold);
+  font-size:34px;
+}
+
+.empty h2{
+  margin-bottom:9px;
+  font-size:25px;
+  font-weight:400;
+}
+
+.empty p{
+  max-width:500px;
+  margin:0 auto 22px;
+  color:var(--muted);
+  line-height:1.65;
+}
+
+.empty a{
+  min-height:42px;
+  padding:0 20px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--gold);
+  border-radius:999px;
+  background:var(--gold);
+  color:#17130e;
+  text-decoration:none;
+  font:800 10px Arial,Helvetica,sans-serif;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.message{
+  display:none;
+  margin-bottom:22px;
+  padding:14px 16px;
+  border:1px solid rgba(230,160,154,.35);
+  border-radius:12px;
+  background:rgba(230,160,154,.06);
+  color:var(--error);
+  font:13px Arial,Helvetica,sans-serif;
+  line-height:1.5;
+}
+
+.message.show{
+  display:block;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading-screen{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:15px;
+  background:var(--ink);
+  color:var(--gold-soft);
+}
+
+.loading-screen.hidden{
+  display:none;
+}
+
+.loading-mark{
+  width:48px;
+  height:48px;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  animation:pulse 1.1s infinite alternate;
+}
+
+@keyframes pulse{
+
+  from{
+    opacity:.3;
+    transform:rotate(-8deg) scale(.94);
+  }
+
+  to{
+    opacity:1;
+    transform:rotate(-8deg) scale(1.05);
+  }
+
+}
+
+.loading-text{
+  font:800 10px Arial,Helvetica,sans-serif;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+.mobile-nav{
+  display:none;
+}
+
+@media(max-width:700px){
+
+  .nav-links{
+    display:none;
+  }
+
+  .summary{
+    grid-template-columns:1fr;
+  }
+
+  .review-card{
+    grid-template-columns:80px minmax(0,1fr);
+    gap:16px;
+    padding:16px;
+  }
+
+  .cover{
+    width:80px;
+  }
+
+  .book-title{
+    font-size:20px;
+  }
+
+  .mobile-nav{
+    position:fixed;
+    left:12px;
+    right:12px;
+    bottom:12px;
+    z-index:200;
+    min-height:64px;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:rgba(9,11,10,.95);
+    backdrop-filter:blur(14px);
+  }
+
+  .mobile-nav a{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    color:var(--muted);
+    text-decoration:none;
+    font:9px Arial,Helvetica,sans-serif;
+    text-transform:uppercase;
+  }
+
+  .mobile-nav a span:first-child{
+    color:var(--gold-soft);
+    font-size:17px;
+  }
+
+  .page{
+    padding-bottom:120px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div
+  class="loading-screen"
+  id="loadingScreen"
+>
+  <div class="loading-mark"></div>
+
+  <div class="loading-text">
+    Gathering your ratings...
+  </div>
+</div>
+
+<header class="topbar">
+
+  <a
+    class="brand"
+    href="dashboard.html"
+  >
+    <span class="brand-mark"></span>
+    Paper Gremlin
+  </a>
+
+  <nav class="nav-links">
+
+    <a href="dashboard.html">
+      Home
+    </a>
+
+    <a href="discover.html">
+      Discover
+    </a>
+
+    <a href="clubs.html">
+      Clubs
+    </a>
+
+    <a href="beta-reading.html">
+      Beta
+    </a>
+
+    <a href="marketplace.html">
+      Books
+    </a>
+
+  </nav>
+
+  <a
+    class="nav-avatar"
+    id="navAvatar"
+    href="profile.html"
+    aria-label="Your profile"
+  >
+    ?
+  </a>
+
+</header>
+
+<main class="page">
+
+  <section class="hero">
+
+    <div class="eyebrow">
+      Your reading history
+    </div>
+
+    <h1>
+      My Ratings & Reviews
+    </h1>
+
+    <p>
+      Every book you've rated on Paper Gremlin lives here.
+      Ratings without written reviews count too.
+    </p>
+
+  </section>
+
+  <div
+    class="message"
+    id="message"
+  ></div>
+
+  <section
+    class="summary"
+    id="summary"
+  >
+
+    <div class="summary-card">
+
+      <div class="summary-label">
+        Books Rated
+      </div>
+
+      <div
+        class="summary-value"
+        id="ratedCount"
+      >
+        0
+      </div>
+
+    </div>
+
+    <div class="summary-card">
+
+      <div class="summary-label">
+        Written Reviews
+      </div>
+
+      <div
+        class="summary-value"
+        id="writtenCount"
+      >
+        0
+      </div>
+
+    </div>
+
+    <div class="summary-card">
+
+      <div class="summary-label">
+        Your Average Rating
+      </div>
+
+      <div
+        class="summary-value"
+        id="averageRating"
+      >
+        —
+      </div>
+
+    </div>
+
+  </section>
+
+  <section
+    class="review-list"
+    id="reviewList"
+  ></section>
+
+</main>
+
+<nav class="mobile-nav">
+
+  <a href="dashboard.html">
+    <span>⌂</span>
+    Home
+  </a>
+
+  <a href="discover.html">
+    <span>⌕</span>
+    Discover
+  </a>
+
+  <a href="clubs.html">
+    <span>◉</span>
+    Clubs
+  </a>
+
+  <a href="marketplace.html">
+    <span>▱</span>
+    Books
+  </a>
+
+  <a href="profile.html">
+    <span>☺</span>
+    Profile
+  </a>
+
+</nav>
+
+<script>
+
+/* =========================================================
+   CONFIG
+========================================================= */
+
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const loadingScreen =
+  document.getElementById(
+    "loadingScreen"
+  );
+
+const message =
+  document.getElementById(
+    "message"
+  );
+
+const reviewList =
+  document.getElementById(
+    "reviewList"
+  );
+
+const ratedCount =
+  document.getElementById(
+    "ratedCount"
+  );
+
+const writtenCount =
+  document.getElementById(
+    "writtenCount"
+  );
+
+const averageRating =
+  document.getElementById(
+    "averageRating"
+  );
+
+const navAvatar =
+  document.getElementById(
+    "navAvatar"
+  );
+
+let currentUser =
+  null;
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(
+  value
+){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+function initials(
+  value
+){
+
+  const parts =
+    String(value || "")
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+  if(!parts.length){
+    return "?";
+  }
+
+  return parts
+    .slice(0,2)
+    .map(
+      part =>
+        part[0]
+          .toUpperCase()
+    )
+    .join("");
+
+}
+
+function starString(
+  rating
+){
+
+  const value =
+    Math.max(
+      0,
+      Math.min(
+        5,
+        Math.round(
+          Number(rating) || 0
+        )
+      )
+    );
+
+  return (
+    "★".repeat(value) +
+    "☆".repeat(5 - value)
+  );
+
+}
+
+function formatDate(
+  value
+){
+
+  if(!value){
+    return "";
+  }
+
+  const date =
+    new Date(value);
+
+  if(
+    Number.isNaN(
+      date.getTime()
+    )
+  ){
+    return "";
+  }
+
+  return new Intl.DateTimeFormat(
+    "en-US",
+    {
+      month:"short",
+      day:"numeric",
+      year:"numeric"
+    }
+  ).format(date);
+
+}
+
+function showMessage(
+  text
+){
+
+  message.textContent =
+    text;
+
+  message.classList.add(
+    "show"
+  );
+
+}
+
+/* =========================================================
+   SESSION
+========================================================= */
+
+async function requireSession(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+  if(error){
+    throw error;
+  }
+
+  if(
+    !data.session?.user
+  ){
+
+    window.location.href =
+      "auth.html#login";
+
+    return false;
+
+  }
+
+  currentUser =
+    data.session.user;
+
+  return true;
+
+}
+
+/* =========================================================
+   NAV PROFILE
+========================================================= */
+
+async function loadProfile(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("profiles")
+        .select(
+          "display_name,username,avatar_url"
+        )
+        .eq(
+          "id",
+          currentUser.id
+        )
+        .maybeSingle();
+
+    if(error){
+      throw error;
+    }
+
+    const name =
+      data?.display_name ||
+      data?.username ||
+      currentUser.email ||
+      "Reader";
+
+    navAvatar.innerHTML =
+      "";
+
+    if(data?.avatar_url){
+
+      const image =
+        document.createElement(
+          "img"
+        );
+
+      image.src =
+        data.avatar_url;
+
+      image.alt =
+        "";
+
+      image.onerror =
+        () => {
+
+          navAvatar.innerHTML =
+            "";
+
+          navAvatar.textContent =
+            initials(name);
+
+        };
+
+      navAvatar.appendChild(
+        image
+      );
+
+    }
+
+    else{
+
+      navAvatar.textContent =
+        initials(name);
+
+    }
+
+  }
+
+  catch(error){
+
+    console.warn(
+      "Profile:",
+      error
+    );
+
+  }
+
+}
+
+/* =========================================================
+   LOAD RATINGS
+========================================================= */
+
+async function loadRatings(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("book_reviews")
+      .select(`
+        id,
+        book_id,
+        rating,
+        review_text,
+        created_at,
+        updated_at
+      `)
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+      .order(
+        "updated_at",
+        {
+          ascending:false
+        }
+      );
+
+  if(error){
+    throw error;
+  }
+
+  const reviews =
+    data || [];
+
+  if(!reviews.length){
+
+    renderEmpty();
+
+    return;
+
+  }
+
+  const bookIds =
+    [
+      ...new Set(
+        reviews
+          .map(
+            review =>
+              review.book_id
+          )
+          .filter(Boolean)
+      )
+    ];
+
+  let books =
+    [];
+
+  if(bookIds.length){
+
+    const result =
+      await supabaseClient
+        .from("books")
+        .select("*")
+        .in(
+          "id",
+          bookIds
+        );
+
+    if(result.error){
+      throw result.error;
+    }
+
+    books =
+      result.data ||
+      [];
+
+  }
+
+  const bookMap =
+    new Map(
+      books.map(
+        book => [
+          String(book.id),
+          book
+        ]
+      )
+    );
+
+  renderSummary(
+    reviews
+  );
+
+  renderReviews(
+    reviews,
+    bookMap
+  );
+
+}
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+function renderSummary(
+  reviews
+){
+
+  ratedCount.textContent =
+    reviews.length;
+
+  const written =
+    reviews.filter(
+      review =>
+        String(
+          review.review_text ||
+          ""
+        ).trim()
+    );
+
+  writtenCount.textContent =
+    written.length;
+
+  const ratings =
+    reviews
+      .map(
+        review =>
+          Number(
+            review.rating
+          )
+      )
+      .filter(
+        rating =>
+          Number.isFinite(rating)
+      );
+
+  if(!ratings.length){
+
+    averageRating.textContent =
+      "—";
+
+    return;
+
+  }
+
+  const average =
+    ratings.reduce(
+      (
+        total,
+        rating
+      ) =>
+        total + rating,
+      0
+    ) /
+    ratings.length;
+
+  averageRating.textContent =
+    average.toFixed(1) +
+    " ★";
+
+}
+
+/* =========================================================
+   BOOK NORMALIZATION
+========================================================= */
+
+function bookTitle(
+  book
+){
+
+  return (
+    book?.title ||
+    "Unknown Book"
+  );
+
+}
+
+function bookAuthor(
+  book
+){
+
+  const authors =
+    book?.authors;
+
+  if(
+    Array.isArray(authors) &&
+    authors.length
+  ){
+
+    return authors.join(
+      ", "
+    );
+
+  }
+
+  return (
+    book?.author ||
+    "Unknown author"
+  );
+
+}
+
+function bookCover(
+  book
+){
+
+  return (
+    book?.cover_url ||
+    book?.thumbnail ||
+    book?.image_url ||
+    book?.image ||
+    ""
+  );
+
+}
+
+/* =========================================================
+   RENDER REVIEWS
+========================================================= */
+
+function renderReviews(
+  reviews,
+  bookMap
+){
+
+  reviewList.innerHTML =
+    "";
+
+  for(
+    const review
+    of reviews
+  ){
+
+    const book =
+      bookMap.get(
+        String(
+          review.book_id
+        )
+      ) || null;
+
+    const title =
+      bookTitle(book);
+
+    const author =
+      bookAuthor(book);
+
+    const cover =
+      bookCover(book);
+
+    const reviewText =
+      String(
+        review.review_text ||
+        ""
+      ).trim();
+
+    const date =
+      formatDate(
+        review.updated_at ||
+        review.created_at
+      );
+
+    const card =
+      document.createElement(
+        "article"
+      );
+
+    card.className =
+      "review-card";
+
+    card.innerHTML = `
+
+      <a
+        class="cover"
+        href="book-detail.html?id=${encodeURIComponent(
+          review.book_id
+        )}"
+      >
+
+        ${
+          cover
+            ? `
+                <img
+                  src="${escapeHtml(
+                    String(cover)
+                      .replace(
+                        /^http:/,
+                        "https:"
+                      )
+                  )}"
+                  alt="${escapeHtml(
+                    title
+                  )} cover"
+                  loading="lazy"
+                >
+              `
+            : escapeHtml(
+                title
+              )
+        }
+
+      </a>
+
+      <div class="review-content">
+
+        <div class="rating-stars">
+          ${escapeHtml(
+            starString(
+              review.rating
+            )
+          )}
+        </div>
+
+        <h2 class="book-title">
+          ${escapeHtml(
+            title
+          )}
+        </h2>
+
+        <div class="book-author">
+          ${escapeHtml(
+            author
+          )}
+        </div>
+
+        <div class="${
+          reviewText
+            ? "review-text"
+            : "review-text no-review"
+        }">
+
+          ${
+            reviewText
+              ? escapeHtml(
+                  reviewText
+                )
+              : "You rated this book without writing a review."
+          }
+
+        </div>
+
+        <div class="review-meta">
+          ${
+            date
+              ? `Last updated ${escapeHtml(date)}`
+              : ""
+          }
+        </div>
+
+        <div class="actions">
+
+          <a
+            class="button"
+            href="book-detail.html?id=${encodeURIComponent(
+              review.book_id
+            )}"
+          >
+            View Book
+          </a>
+
+          <a
+            class="button"
+            href="book-detail.html?id=${encodeURIComponent(
+              review.book_id
+            )}#review"
+          >
+            Edit Rating
+          </a>
+
+        </div>
+
+      </div>
+    `;
+
+    reviewList.appendChild(
+      card
+    );
+
+  }
+
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+function renderEmpty(){
+
+  ratedCount.textContent =
+    "0";
+
+  writtenCount.textContent =
+    "0";
+
+  averageRating.textContent =
+    "—";
+
+  reviewList.innerHTML = `
+
+    <div class="empty">
+
+      <div class="empty-symbol">
+        ★
+      </div>
+
+      <h2>
+        You haven't rated anything yet.
+      </h2>
+
+      <p>
+        When you rate a book on Paper Gremlin, it will
+        appear here automatically — whether or not you
+        write a full review.
+      </p>
+
+      <a href="marketplace.html">
+        Find a Book to Rate
+      </a>
+
+    </div>
+  `;
+
+}
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+async function initialize(){
+
+  try{
+
+    const authenticated =
+      await requireSession();
+
+    if(!authenticated){
+      return;
+    }
+
+    await Promise.all([
+      loadProfile(),
+      loadRatings()
+    ]);
+
+  }
+
+  catch(error){
+
+    console.error(
+      "Ratings page:",
+      error
+    );
+
+    showMessage(
+      error?.message ||
+      "Paper Gremlin couldn't load your ratings."
+    );
+
+    reviewList.innerHTML = `
+
+      <div class="empty">
+
+        <div class="empty-symbol">
+          !
+        </div>
+
+        <h2>
+          Your ratings couldn't load.
+        </h2>
+
+        <p>
+          Refresh the page and try again.
+        </p>
+
+      </div>
+    `;
+
+  }
+
+  finally{
+
+    loadingScreen.classList.add(
+      "hidden"
+    );
+
+  }
+
+}
+
+initialize();
+
+</script>
+
+</body>
+</html>
