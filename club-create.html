@@ -266,10 +266,6 @@ button{
   padding:45px 0 100px;
 }
 
-/* =========================================================
-   BACK LINK
-========================================================= */
-
 .back-link{
   display:inline-flex;
   align-items:center;
@@ -472,7 +468,7 @@ label,
 }
 
 /* =========================================================
-   VISIBILITY OPTIONS
+   VISIBILITY
 ========================================================= */
 
 .visibility-options{
@@ -539,7 +535,7 @@ label,
 }
 
 /* =========================================================
-   APPROVAL TOGGLE
+   TOGGLE
 ========================================================= */
 
 .toggle-row{
@@ -598,18 +594,16 @@ label,
   transition:.2s;
 }
 
-.switch input:checked +
-.slider{
+.switch input:checked + .slider{
   background:var(--accent-dark);
 }
 
-.switch input:checked +
-.slider::before{
+.switch input:checked + .slider::before{
   transform:translateX(21px);
 }
 
 /* =========================================================
-   FORM ACTIONS
+   ACTIONS
 ========================================================= */
 
 .form-actions{
@@ -738,10 +732,6 @@ label,
   color:var(--accent-dark);
 }
 
-/* =========================================================
-   TIPS
-========================================================= */
-
 .tip-card h3{
   margin:0;
   font-size:15px;
@@ -762,20 +752,11 @@ label,
   line-height:1.7;
 }
 
-/* =========================================================
-   MOBILE NAV
-========================================================= */
-
 .mobile-nav{
   display:none;
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
 @media(max-width:850px){
-
   .create-layout{
     grid-template-columns:1fr;
   }
@@ -783,11 +764,9 @@ label,
   .side-column{
     grid-template-columns:1fr 1fr;
   }
-
 }
 
 @media(max-width:720px){
-
   body{
     padding-bottom:72px;
   }
@@ -866,7 +845,6 @@ label,
   .mobile-icon{
     font-size:17px;
   }
-
 }
 
 </style>
@@ -874,73 +852,32 @@ label,
 
 <body class="loading-lock">
 
-<!-- =======================================================
-     LOADING
-======================================================== -->
-
-<div
-  class="loading-screen"
-  id="loadingScreen"
->
-
+<div class="loading-screen" id="loadingScreen">
   <div class="loading-inner">
-
     <div class="loading-mark"></div>
-
     <div class="loading-text">
       Preparing your new club...
     </div>
-
   </div>
-
 </div>
-
-<!-- =======================================================
-     TOPBAR
-======================================================== -->
 
 <header class="topbar">
 
-  <a
-    class="brand"
-    href="dashboard.html"
-  >
-
+  <a class="brand" href="dashboard.html">
     <span class="brand-mark"></span>
-
     Paper Gremlin
-
   </a>
 
   <nav class="nav">
-
-    <a href="dashboard.html">
-      Home
-    </a>
-
-    <a href="discover.html">
-      Discover
-    </a>
-
-    <a
-      class="active"
-      href="clubs.html"
-    >
-      Clubs
-    </a>
-
-    <a href="marketplace.html">
-      Books
-    </a>
-
+    <a href="dashboard.html">Home</a>
+    <a href="discover.html">Discover</a>
+    <a class="active" href="clubs.html">Clubs</a>
+    <a href="marketplace.html">Books</a>
   </nav>
 
   <div class="nav-right">
 
-    <a
-      class="search-link"
-      href="search.html"
-    >
+    <a class="search-link" href="search.html">
       ⌕ Search
     </a>
 
@@ -965,16 +902,9 @@ label,
 
 </header>
 
-<!-- =======================================================
-     PAGE
-======================================================== -->
-
 <main class="page">
 
-  <a
-    class="back-link"
-    href="clubs.html"
-  >
+  <a class="back-link" href="clubs.html">
     ← Back to Clubs
   </a>
 
@@ -1003,24 +933,14 @@ label,
 
   <div class="create-layout">
 
-    <!-- ===================================================
-         FORM
-    ==================================================== -->
-
     <form
       class="form-card"
       id="createClubForm"
     >
 
-      <!-- ===============================================
-           BASIC DETAILS
-      ================================================ -->
-
       <section class="form-section">
 
-        <div class="section-number">
-          1
-        </div>
+        <div class="section-number">1</div>
 
         <h2>
           Tell us about the club.
@@ -1098,59 +1018,19 @@ label,
               id="clubGenre"
               name="clubGenre"
             >
-
-              <option value="">
-                Anything goes
-              </option>
-
-              <option value="Fantasy">
-                Fantasy
-              </option>
-
-              <option value="Romance">
-                Romance
-              </option>
-
-              <option value="Science Fiction">
-                Science Fiction
-              </option>
-
-              <option value="Mystery & Thriller">
-                Mystery & Thriller
-              </option>
-
-              <option value="Horror">
-                Horror
-              </option>
-
-              <option value="Historical Fiction">
-                Historical Fiction
-              </option>
-
-              <option value="Literary Fiction">
-                Literary Fiction
-              </option>
-
-              <option value="Young Adult">
-                Young Adult
-              </option>
-
-              <option value="Nonfiction">
-                Nonfiction
-              </option>
-
-              <option value="Memoir & Biography">
-                Memoir & Biography
-              </option>
-
-              <option value="Classics">
-                Classics
-              </option>
-
-              <option value="Mixed">
-                Mixed
-              </option>
-
+              <option value="">Anything goes</option>
+              <option value="Fantasy">Fantasy</option>
+              <option value="Romance">Romance</option>
+              <option value="Science Fiction">Science Fiction</option>
+              <option value="Mystery & Thriller">Mystery & Thriller</option>
+              <option value="Horror">Horror</option>
+              <option value="Historical Fiction">Historical Fiction</option>
+              <option value="Literary Fiction">Literary Fiction</option>
+              <option value="Young Adult">Young Adult</option>
+              <option value="Nonfiction">Nonfiction</option>
+              <option value="Memoir & Biography">Memoir & Biography</option>
+              <option value="Classics">Classics</option>
+              <option value="Mixed">Mixed</option>
             </select>
 
           </div>
@@ -1166,19 +1046,9 @@ label,
               id="clubLocation"
               name="clubLocation"
             >
-
-              <option value="Online">
-                Online
-              </option>
-
-              <option value="Local">
-                Local / In Person
-              </option>
-
-              <option value="Hybrid">
-                Hybrid
-              </option>
-
+              <option value="Online">Online</option>
+              <option value="Local">Local / In Person</option>
+              <option value="Hybrid">Hybrid</option>
             </select>
 
           </div>
@@ -1187,15 +1057,9 @@ label,
 
       </section>
 
-      <!-- ===============================================
-           VISIBILITY
-      ================================================ -->
-
       <section class="form-section">
 
-        <div class="section-number">
-          2
-        </div>
+        <div class="section-number">2</div>
 
         <h2>
           Who can find your club?
@@ -1223,9 +1087,7 @@ label,
                 ◎
               </div>
 
-              <h3>
-                Public
-              </h3>
+              <h3>Public</h3>
 
               <p>
                 Readers can find your club through Paper Gremlin
@@ -1250,9 +1112,7 @@ label,
                 ◌
               </div>
 
-              <h3>
-                Private
-              </h3>
+              <h3>Private</h3>
 
               <p>
                 Your club won't appear in public discovery.
@@ -1268,15 +1128,9 @@ label,
 
       </section>
 
-      <!-- ===============================================
-           MEMBERSHIP
-      ================================================ -->
-
       <section class="form-section">
 
-        <div class="section-number">
-          3
-        </div>
+        <div class="section-number">3</div>
 
         <h2>
           Choose how readers join.
@@ -1319,10 +1173,6 @@ label,
 
       </section>
 
-      <!-- ===============================================
-           ACTIONS
-      ================================================ -->
-
       <div class="form-actions">
 
         <a
@@ -1343,10 +1193,6 @@ label,
       </div>
 
     </form>
-
-    <!-- ===================================================
-         SIDE COLUMN
-    ==================================================== -->
 
     <aside class="side-column">
 
@@ -1431,10 +1277,6 @@ label,
 
 </main>
 
-<!-- =======================================================
-     MOBILE NAV
-======================================================== -->
-
 <nav class="mobile-nav">
 
   <a href="dashboard.html">
@@ -1498,8 +1340,7 @@ let creatingClub =
 /* =========================================================
    ELEMENTS
 ========================================================= */
-
-const loadingScreen =
+  const loadingScreen =
   document.getElementById(
     "loadingScreen"
   );
@@ -1578,40 +1419,10 @@ const descriptionCount =
    HELPERS
 ========================================================= */
 
-function escapeHtml(value){
-
-  return String(
-    value ?? ""
-  )
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
-}
-
 function initials(name){
 
   const pieces =
-    String(
-      name || ""
-    )
+    String(name || "")
       .trim()
       .split(/\s+/)
       .filter(Boolean);
@@ -1656,11 +1467,9 @@ function showStatus(
     "status-message show";
 
   if(type){
-
     statusMessage.classList.add(
       type
     );
-
   }
 
   statusMessage.scrollIntoView({
@@ -1691,7 +1500,8 @@ function selectedVisibility(){
     "public";
 
 }
-  /* =========================================================
+
+/* =========================================================
    LIVE PREVIEW
 ========================================================= */
 
@@ -1734,11 +1544,6 @@ function updatePreview(){
 
 }
 
-
-/* =========================================================
-   PREVIEW EVENTS
-========================================================= */
-
 clubNameInput.addEventListener(
   "input",
   updatePreview
@@ -1769,7 +1574,6 @@ document
     }
   );
 
-
 /* =========================================================
    PUBLIC PROFILE
 ========================================================= */
@@ -1788,8 +1592,7 @@ async function loadPublicProfile(
         .rpc(
           "get_public_profile",
           {
-            check_user_id:
-              userId
+            check_user_id:userId
           }
         );
 
@@ -1799,21 +1602,14 @@ async function loadPublicProfile(
 
     const profile =
       Array.isArray(data)
-        ? (
-            data[0] ||
-            null
-          )
-        : (
-            data ||
-            null
-          );
+        ? data[0] || null
+        : data || null;
 
     if(!profile){
       return null;
     }
 
     return {
-
       ...profile,
 
       id:
@@ -1825,7 +1621,6 @@ async function loadPublicProfile(
         profile.user_id ||
         profile.id ||
         userId
-
     };
 
   }
@@ -1842,7 +1637,6 @@ async function loadPublicProfile(
   }
 
 }
-
 
 /* =========================================================
    NAV PROFILE
@@ -1926,7 +1720,6 @@ async function loadCurrentUserProfile(){
 
 }
 
-
 /* =========================================================
    ADMIN STATUS
 ========================================================= */
@@ -1985,7 +1778,6 @@ async function loadAdminStatus(){
 
 }
 
-
 /* =========================================================
    REQUIRE SESSION
 ========================================================= */
@@ -2008,9 +1800,7 @@ async function requireSession(){
     data?.session ||
     null;
 
-  if(
-    !session?.user
-  ){
+  if(!session?.user){
 
     const currentPage =
       location.pathname
@@ -2035,213 +1825,11 @@ async function requireSession(){
 
 }
 
-
 /* =========================================================
-   FIND EXISTING MEMBERSHIP
+   CREATE CLUB THROUGH SECURE DATABASE RPC
 ========================================================= */
 
-async function findExistingMembership(
-  clubId
-){
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("club_members")
-        .select("*")
-        .eq(
-          "club_id",
-          clubId
-        )
-        .eq(
-          "user_id",
-          currentUser.id
-        )
-        .maybeSingle();
-
-    if(error){
-      throw error;
-    }
-
-    return data ||
-      null;
-
-  }
-
-  catch(error){
-
-    console.warn(
-      "Existing membership check:",
-      error.message
-    );
-
-    return null;
-
-  }
-
-}
-
-
-/* =========================================================
-   CREATE PRESIDENT MEMBERSHIP
-========================================================= */
-
-async function createPresidentMembership(
-  clubId
-){
-
-  /*
-    Some Paper Gremlin club creation SQL may already create the
-    founder's membership automatically.
-
-    Check first so we don't create a duplicate row.
-  */
-
-  const existing =
-    await findExistingMembership(
-      clubId
-    );
-
-  if(existing){
-
-    /*
-      If the row already exists but does not say President,
-      attempt to update it.
-    */
-
-    const existingRole =
-      String(
-        existing.role ||
-        existing.member_role ||
-        ""
-      )
-        .trim()
-        .toLowerCase();
-
-    if(
-      existingRole === "president" ||
-      existingRole === "owner"
-    ){
-
-      return existing;
-
-    }
-
-    try{
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from("club_members")
-          .update({
-            role:"President"
-          })
-          .eq(
-            "club_id",
-            clubId
-          )
-          .eq(
-            "user_id",
-            currentUser.id
-          )
-          .select()
-          .maybeSingle();
-
-      if(!error){
-
-        return data ||
-          existing;
-
-      }
-
-      console.warn(
-        "President role update:",
-        error.message
-      );
-
-    }
-
-    catch(error){
-
-      console.warn(
-        "President role update:",
-        error.message
-      );
-
-    }
-
-    return existing;
-
-  }
-
-  /*
-    Normal/current schema.
-  */
-
-  const primaryInsert =
-    await supabaseClient
-      .from("club_members")
-      .insert({
-        club_id:clubId,
-        user_id:currentUser.id,
-        role:"President"
-      })
-      .select()
-      .single();
-
-  if(
-    !primaryInsert.error
-  ){
-
-    return primaryInsert.data;
-
-  }
-
-  console.warn(
-    "Primary President membership insert failed:",
-    primaryInsert.error.message
-  );
-
-  /*
-    Compatibility fallback for an older schema that used
-    member_role instead of role.
-  */
-
-  const fallbackInsert =
-    await supabaseClient
-      .from("club_members")
-      .insert({
-        club_id:clubId,
-        user_id:currentUser.id,
-        member_role:"President"
-      })
-      .select()
-      .single();
-
-  if(
-    fallbackInsert.error
-  ){
-
-    throw fallbackInsert.error;
-
-  }
-
-  return fallbackInsert.data;
-
-}
-
-
-/* =========================================================
-   CLUB CREATION PAYLOADS
-========================================================= */
-
-function clubCreationPayloads(){
+async function insertClub(){
 
   const name =
     clubNameInput.value.trim();
@@ -2249,258 +1837,102 @@ function clubCreationPayloads(){
   const description =
     clubDescriptionInput.value.trim();
 
-  const genre =
-    clubGenreInput.value.trim();
-
-  const clubType =
-    clubLocationInput.value.trim();
-
-  const visibility =
-    selectedVisibility();
-
-  const approvalRequired =
-    approvalRequiredInput.checked;
-
   /*
-    Paper Gremlin's club schema has changed during development.
-    We start with the richest current payload and then
-    gracefully fall back if optional columns aren't present.
+    IMPORTANT:
+    Do not insert directly into public.clubs here.
 
-    Important fields remain:
-      name
-      description
-      visibility / is_public
-      creator
+    The create_club database function handles:
+      - authentication
+      - club ownership limits
+      - active membership limits
+      - creating the club
+      - creating the founder's President membership
+
+    This avoids the RLS error that beta testing exposed.
   */
 
-  return [
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .rpc(
+        "create_club",
+        {
+          new_club_name:
+            name,
 
-    {
-      name:name,
-      description:
-        description || null,
-      genre:
-        genre || null,
-      club_type:
-        clubType || "Online",
-      visibility:visibility,
-      is_public:
-        visibility === "public",
-      approval_required:
-        approvalRequired,
-      created_by:
-        currentUser.id
-    },
+          new_club_description:
+            description ||
+            null
+        }
+      );
 
-    {
-      name:name,
-      description:
-        description || null,
-      genre:
-        genre || null,
-      visibility:visibility,
-      is_public:
-        visibility === "public",
-      created_by:
-        currentUser.id
-    },
+  if(error){
+    throw error;
+  }
 
-    {
-      name:name,
-      description:
-        description || null,
-      visibility:visibility,
-      created_by:
-        currentUser.id
-    },
+  /*
+    Depending on how PostgREST represents the RPC result,
+    data may be the UUID itself or a one-element array.
+  */
 
-    {
-      name:name,
-      description:
-        description || null,
-      is_public:
-        visibility === "public",
-      created_by:
-        currentUser.id
-    },
+  let clubId =
+    data;
 
-    {
-      name:name,
-      description:
-        description || null,
-      created_by:
-        currentUser.id
-    },
+  if(Array.isArray(data)){
 
-    {
-      name:name,
-      description:
-        description || null
+    const first =
+      data[0];
+
+    if(
+      first &&
+      typeof first === "object"
+    ){
+
+      clubId =
+        first.id ||
+        first.club_id ||
+        first.create_club ||
+        Object.values(first)[0];
+
     }
 
-  ];
+    else{
 
-}
+      clubId =
+        first;
 
+    }
 
-/* =========================================================
-   INSERT CLUB WITH SCHEMA FALLBACK
-========================================================= */
+  }
 
-async function insertClub(){
-
-  const payloads =
-    clubCreationPayloads();
-
-  let lastError =
-    null;
-
-  for(
-    const payload
-    of payloads
+  else if(
+    data &&
+    typeof data === "object"
   ){
 
-    try{
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from("clubs")
-          .insert(payload)
-          .select()
-          .single();
-
-      if(!error){
-
-        return data;
-
-      }
-
-      lastError =
-        error;
-
-      console.warn(
-        "Club creation payload failed:",
-        error.message
-      );
-
-      /*
-        Only continue trying alternate payloads for likely
-        schema/column compatibility problems.
-
-        Do NOT repeatedly retry if the problem is RLS,
-        authentication, or another permissions failure.
-      */
-
-      const message =
-        String(
-          error.message ||
-          ""
-        )
-          .toLowerCase();
-
-      const code =
-        String(
-          error.code ||
-          ""
-        )
-          .toLowerCase();
-
-      const schemaProblem =
-        message.includes(
-          "column"
-        ) ||
-        message.includes(
-          "schema cache"
-        ) ||
-        message.includes(
-          "could not find"
-        ) ||
-        code === "42703" ||
-        code === "pgrst204";
-
-      if(!schemaProblem){
-
-        throw error;
-
-      }
-
-    }
-
-    catch(error){
-
-      lastError =
-        error;
-
-      throw error;
-
-    }
+    clubId =
+      data.id ||
+      data.club_id ||
+      data.create_club ||
+      Object.values(data)[0];
 
   }
 
-  throw (
-    lastError ||
-    new Error(
-      "Paper Gremlin couldn't create the club."
-    )
-  );
+  if(!clubId){
 
-}
-
-
-/* =========================================================
-   CLEAN UP FAILED CLUB CREATION
-========================================================= */
-
-async function removeClubAfterMembershipFailure(
-  clubId
-){
-
-  /*
-    If the club row was created but the founder could not
-    become its President, try to remove the orphaned club.
-
-    This prevents a half-created club from being left
-    behind when RLS allows the cleanup.
-  */
-
-  try{
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("clubs")
-        .delete()
-        .eq(
-          "id",
-          clubId
-        );
-
-    if(error){
-
-      console.warn(
-        "Could not clean up incomplete club:",
-        error.message
-      );
-
-    }
-
-  }
-
-  catch(error){
-
-    console.warn(
-      "Club cleanup:",
-      error.message
+    throw new Error(
+      "Paper Gremlin created the club without returning a usable club ID."
     );
 
   }
 
-}
+  return {
+    id:clubId
+  };
 
+}
 
 /* =========================================================
    CREATE CLUB
@@ -2530,9 +1962,7 @@ async function createClub(){
 
   }
 
-  if(
-    name.length > 80
-  ){
+  if(name.length > 80){
 
     showStatus(
       "Club names can be no longer than 80 characters.",
@@ -2571,22 +2001,20 @@ async function createClub(){
   submitButton.textContent =
     "Creating Club...";
 
-  let createdClub =
-    null;
-
   try{
 
     /*
-      Step 1:
-      Create the actual club.
+      The database RPC creates BOTH the club and the
+      founder's President membership in one transaction.
+
+      There must NOT be a second client-side membership
+      insert here.
     */
 
-    createdClub =
+    const createdClub =
       await insertClub();
 
-    if(
-      !createdClub?.id
-    ){
+    if(!createdClub?.id){
 
       throw new Error(
         "The club was created without a usable club ID."
@@ -2594,25 +2022,18 @@ async function createClub(){
 
     }
 
-    /*
-      Step 2:
-      Guarantee that the creator is a club member and
-      President.
-    */
-
-    await createPresidentMembership(
-      createdClub.id
-    );
-
-    /*
-      Step 3:
-      Success. Go directly into the new club.
-    */
-
     showStatus(
       "Your club is ready. Opening it now...",
       "success"
     );
+
+    /*
+      Creation has completed successfully. Disable the
+      navigation warning before redirecting.
+    */
+
+    creatingClub =
+      false;
 
     setTimeout(
       () => {
@@ -2636,48 +2057,64 @@ async function createClub(){
       error
     );
 
-    /*
-      If we successfully inserted a club but failed to
-      establish its President membership, attempt to
-      remove the incomplete club.
-    */
-
-    if(
-      createdClub?.id
-    ){
-
-      await removeClubAfterMembershipFailure(
-        createdClub.id
-      );
-
-    }
-
     const message =
       String(
         error?.message ||
         ""
       );
 
+    const lowerMessage =
+      message.toLowerCase();
+
     if(
-      message
-        .toLowerCase()
-        .includes(
-          "row-level security"
-        ) ||
-      message
-        .toLowerCase()
-        .includes(
-          "permission"
-        ) ||
-      message
-        .toLowerCase()
-        .includes(
-          "policy"
-        )
+      lowerMessage.includes(
+        "row-level security"
+      ) ||
+      lowerMessage.includes(
+        "permission"
+      ) ||
+      lowerMessage.includes(
+        "policy"
+      )
     ){
 
       showStatus(
-        "Paper Gremlin couldn't create the club because the database permissions blocked the request. The club was not completed.",
+        "Paper Gremlin couldn't create the club because the database permissions blocked the request. Please refresh the page and try again.",
+        "error"
+      );
+
+    }
+
+    else if(
+      lowerMessage.includes(
+        "maximum"
+      ) ||
+      lowerMessage.includes(
+        "limit"
+      )
+    ){
+
+      showStatus(
+        message,
+        "error"
+      );
+
+    }
+
+    else if(
+      lowerMessage.includes(
+        "authentication"
+      ) ||
+      lowerMessage.includes(
+        "authenticated"
+      ) ||
+      lowerMessage.includes(
+        "signed"
+      )
+    ){
+
+      showStatus(
+        "Your Paper Gremlin session has expired. Sign in again and then create your club.",
         "error"
       );
 
@@ -2706,7 +2143,6 @@ async function createClub(){
 
 }
 
-
 /* =========================================================
    FORM SUBMIT
 ========================================================= */
@@ -2722,7 +2158,6 @@ createClubForm.addEventListener(
   }
 );
 
-
 /* =========================================================
    AUTH STATE
 ========================================================= */
@@ -2735,9 +2170,7 @@ supabaseClient
       session
     ) => {
 
-      if(
-        event === "SIGNED_OUT"
-      ){
+      if(event === "SIGNED_OUT"){
 
         location.href =
           "index.html";
@@ -2746,9 +2179,7 @@ supabaseClient
 
       }
 
-      if(
-        session?.user
-      ){
+      if(session?.user){
 
         currentUser =
           session.user;
@@ -2757,7 +2188,8 @@ supabaseClient
 
     }
   );
-  /* =========================================================
+
+/* =========================================================
    INITIAL PREVIEW
 ========================================================= */
 
@@ -2772,7 +2204,6 @@ function initializePreview(){
     `${clubDescriptionInput.value.length} / 500`;
 
 }
-
 
 /* =========================================================
    SUBMIT BUTTON SAFETY
@@ -2792,24 +2223,15 @@ function resetSubmitButton(){
 
 }
 
-
 /* =========================================================
-   RESTORE FORM AFTER BROWSER BACK
+   RESTORE AFTER BROWSER BACK
 ========================================================= */
-
-/*
-  Browsers can sometimes restore a page from their
-  back-forward cache. Make sure the Create Club button
-  doesn't remain visually disabled if that happens.
-*/
 
 window.addEventListener(
   "pageshow",
   event => {
 
-    if(
-      event.persisted
-    ){
+    if(event.persisted){
 
       creatingClub =
         false;
@@ -2823,27 +2245,15 @@ window.addEventListener(
   }
 );
 
-
 /* =========================================================
-   KEYBOARD / FORM QUALITY
+   KEYBOARD QUALITY
 ========================================================= */
-
-/*
-  Don't allow a description Enter key to accidentally
-  submit anything. Textareas naturally keep their
-  multiline behavior.
-
-  The form itself still submits normally when the user
-  presses Enter from a single-line field.
-*/
 
 clubNameInput.addEventListener(
   "keydown",
   event => {
 
-    if(
-      event.key === "Enter"
-    ){
+    if(event.key === "Enter"){
 
       event.preventDefault();
 
@@ -2854,26 +2264,15 @@ clubNameInput.addEventListener(
   }
 );
 
-
 /* =========================================================
-   NAVIGATION WARNING WHILE CREATING
+   NAVIGATION WARNING DURING CREATION
 ========================================================= */
 
 window.addEventListener(
   "beforeunload",
   event => {
 
-    /*
-      Once creation begins, discourage accidental page
-      navigation until Supabase finishes.
-
-      Modern browsers display their own standard warning
-      text rather than custom text.
-    */
-
-    if(
-      creatingClub
-    ){
+    if(creatingClub){
 
       event.preventDefault();
 
@@ -2884,7 +2283,6 @@ window.addEventListener(
 
   }
 );
-
 
 /* =========================================================
    START PAGE
@@ -2904,12 +2302,6 @@ async function startCreateClubPage(){
     if(!authenticated){
       return;
     }
-
-    /*
-      Profile and admin status are cosmetic/navigation
-      features, so neither should prevent the form from
-      becoming usable.
-    */
 
     await Promise.allSettled([
       loadCurrentUserProfile(),
@@ -2952,7 +2344,6 @@ async function startCreateClubPage(){
   }
 
 }
-
 
 /* =========================================================
    START PAPER GREMLIN CLUB CREATOR
