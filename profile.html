@@ -1,3335 +1,4699 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
-
-  <meta
-    name="description"
-    content="Your Paper Gremlin profile."
-  />
-
-  <title>Paper Gremlin — Profile</title>
-
-  <style>
-    :root {
-      --ink: #090b0a;
-      --ink-2: #101410;
-      --ink-3: #151b16;
-
-      --cream: #f1e7cf;
-      --paper: #e7dcc2;
-
-      --gold: #c79b59;
-      --gold-soft: #dfbd7e;
-
-      --green: #26362b;
-      --green-light: #34483a;
-
-      --muted: #aaa18f;
-
-      --line: rgba(199, 155, 89, 0.24);
-
-      --success: #b9d6b2;
-      --error: #e6a09a;
-
-      --shadow:
-        0 24px 80px rgba(0, 0, 0, 0.4);
-
-      --radius: 22px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      color: var(--cream);
-
-      background:
-        radial-gradient(
-          circle at 12% 6%,
-          rgba(52, 72, 58, 0.28),
-          transparent 30%
-        ),
-        radial-gradient(
-          circle at 90% 14%,
-          rgba(199, 155, 89, 0.10),
-          transparent 28%
-        ),
-        var(--ink);
-
-      font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-    }
-
-    button,
-    input,
-    textarea {
-      font: inherit;
-    }
-
-    a {
-      color: inherit;
-    }
-
-    /* =====================================================
-       TOP NAVIGATION
-       ===================================================== */
-
-    .topbar {
-      min-height: 76px;
-
-      padding:
-        0
-        clamp(20px, 5vw, 70px);
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      gap: 30px;
-
-      border-bottom:
-        1px
-        solid
-        var(--line);
-
-      background:
-        rgba(
-          9,
-          11,
-          10,
-          0.90
-        );
-
-      backdrop-filter:
-        blur(14px);
-
-      position: sticky;
-
-      top: 0;
-
-      z-index: 100;
-    }
-
-    .brand {
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 12px;
-
-      text-decoration: none;
-
-      color:
-        var(--gold-soft);
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size: 13px;
-
-      font-weight: 700;
-
-      letter-spacing: 0.18em;
-
-      text-transform: uppercase;
-    }
-
-    .brand-mark {
-      width: 34px;
-
-      height: 34px;
-
-      position: relative;
-
-      border:
-        1px
-        solid
-        var(--gold);
-
-      border-radius:
-        50%
-        50%
-        50%
-        12%;
-
-      transform:
-        rotate(-8deg);
-    }
-
-    .brand-mark::after {
-      content: "";
-
-      position: absolute;
-
-      width: 11px;
-
-      height: 11px;
-
-      right: 2px;
-
-      top: 2px;
-
-      border-left:
-        1px
-        solid
-        var(--gold);
-
-      border-bottom:
-        1px
-        solid
-        var(--gold);
-
-      background:
-        var(--ink);
-    }
-
-    .nav-right {
-      display: flex;
-
-      align-items: center;
-
-      gap: 22px;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size: 12px;
-
-      letter-spacing: 0.08em;
-
-      text-transform: uppercase;
-    }
-
-    .nav-link {
-      color:
-        var(--muted);
-
-      text-decoration: none;
-    }
-
-    .nav-link:hover {
-      color:
-        var(--gold-soft);
-    }
-
-    .logout-button {
-      border:
-        1px
-        solid
-        var(--line);
-
-      background:
-        transparent;
-
-      color:
-        var(--gold-soft);
-
-      border-radius:
-        999px;
-
-      padding:
-        10px
-        16px;
-
-      cursor: pointer;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size: 11px;
-
-      font-weight: 700;
-
-      letter-spacing: 0.1em;
-
-      text-transform: uppercase;
-    }
-
-    .logout-button:hover {
-      border-color:
-        var(--gold);
-    }
-
-    /* =====================================================
-       PAGE
-       ===================================================== */
-
-    .page {
-      width:
-        min(
-          1180px,
-          calc(100% - 36px)
-        );
-
-      margin:
-        0
-        auto;
-
-      padding:
-        64px
-        0
-        100px;
-    }
-
-    .intro {
-      max-width: 730px;
-
-      margin-bottom: 42px;
-    }
-
-    .eyebrow {
-      margin-bottom: 12px;
-
-      color:
-        var(--gold);
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size: 11px;
-
-      font-weight: 700;
-
-      letter-spacing: 0.2em;
-
-      text-transform: uppercase;
-    }
-
-    h1,
-    h2,
-    p {
-      margin-top: 0;
-    }
-
-    h1 {
-      margin-bottom: 16px;
-
-      font-size:
-        clamp(
-          42px,
-          6vw,
-          72px
-        );
-
-      line-height: 0.98;
-
-      font-weight: 400;
-
-      letter-spacing: -0.035em;
-    }
-
-    .intro p {
-      margin-bottom: 0;
-
-      max-width: 650px;
-
-      color:
-        var(--muted);
-
-      font-size: 18px;
-
-      line-height: 1.7;
-    }
-
-    /* =====================================================
-       PROFILE LAYOUT
-       ===================================================== */
-
-    .profile-layout {
-      display: grid;
-
-      grid-template-columns:
-        330px
-        minmax(0, 1fr);
-
-      gap: 28px;
-
-      align-items: start;
-    }
-
-    .card {
-      background:
-        rgba(
-          16,
-          20,
-          16,
-          0.85
-        );
-
-      border:
-        1px
-        solid
-        var(--line);
-
-      border-radius:
-        var(--radius);
-
-      box-shadow:
-        var(--shadow);
-    }
-
-    /* =====================================================
-       PROFILE PREVIEW
-       ===================================================== */
-
-    .preview-card {
-      padding: 28px;
-
-      position: sticky;
-
-      top: 108px;
-    }
-
-    .avatar-shell {
-      width: 150px;
-
-      height: 150px;
-
-      margin:
-        0
-        auto
-        24px;
-
-      border-radius: 50%;
-
-      padding: 5px;
-
-      border:
-        1px
-        solid
-        rgba(
-          199,
-          155,
-          89,
-          0.45
-        );
-
-      background:
-        #0c100d;
-    }
-
-    .avatar {
-      width: 100%;
-
-      height: 100%;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      overflow: hidden;
-
-      border-radius: 50%;
-
-      background:
-        radial-gradient(
-          circle at 35% 30%,
-          #34483a,
-          #172019
-        );
-
-      color:
-        var(--gold-soft);
-
-      font-size: 48px;
-    }
-
-    .avatar img {
-      width: 100%;
-
-      height: 100%;
-
-      object-fit: cover;
-    }
-
-    .preview-name {
-      margin-bottom: 5px;
-
-      text-align: center;
-
-      font-size: 28px;
-
-      font-weight: 400;
-    }
-
-    .preview-username {
-      margin-bottom: 22px;
-
-      color:
-        var(--gold);
-
-      text-align: center;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size: 13px;
-    }
-
-    .preview-divider {
-      width: 60px;
-
-      height: 1px;
-
-      margin:
-        0
-        auto
-        20px;
-
-      background:
-        var(--line);
-    }
-
-    .preview-bio {
-      margin-bottom: 0;
-
-      color:
-        #bab19f;
-
-      font-size: 15px;
-
-      line-height: 1.65;
-
-      text-align: center;
-
-      white-space: pre-wrap;
-    }
-
-    .preview-placeholder {
-      color:
-        #706b61;
-
-      font-style: italic;
-    }
-
-    /* =====================================================
-       PUBLIC PROFILE ACTIONS
-       ===================================================== */
-
-    .public-actions {
-      display: none;
-
-      margin-top: 24px;
-
-      padding-top: 22px;
-
-      border-top:
-        1px
-        solid
-        var(--line);
-
-      gap: 10px;
-
-      flex-direction: column;
-    }
-
-    .public-actions.show {
-      display: flex;
-    }
-
-    .public-button {
-      min-height: 42px;
-
-      padding:
-        0
-        16px;
-
-      border:
-        1px
-        solid
-        var(--line);
-
-      border-radius:
-        999px;
-
-      display: inline-flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      text-decoration: none;
-
-      background:
-        transparent;
-
-      color:
-        var(--gold-soft);
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size: 10px;
-
-      font-weight: 800;
-
-      letter-spacing:
-        0.09em;
-
-      text-transform:
-        uppercase;
-
-      cursor: pointer;
-    }
-
-    .public-button:hover {
-      border-color:
-        var(--gold);
-    }
-
-    .report-button {
-      color:
-        var(--error);
-    }
-
-    .report-button:hover {
-      border-color:
-        rgba(
-          230,
-          160,
-          154,
-          0.65
-        );
-    }
-
-    /* =====================================================
-       PUBLIC PROFILE DETAIL CARD
-       ===================================================== */
-
-    .public-profile-card {
-      display: none;
-
-      overflow: hidden;
-    }
-
-    .public-profile-card.show {
-      display: block;
-    }
-
-    .public-header {
-      padding:
-        28px
-        32px;
-
-      border-bottom:
-        1px
-        solid
-        var(--line);
-    }
-
-    .public-header h2 {
-      margin-bottom: 8px;
-
-      font-size: 32px;
-
-      font-weight: 400;
-    }
-
-    .public-header p {
-      margin-bottom: 0;
-
-      color:
-        var(--muted);
-
-      line-height:
-        1.6;
-    }
-
-    .public-body {
-      padding:
-        32px;
-    }
-
-    .public-section {
-      margin-bottom:
-        28px;
-    }
-
-    .public-section:last-child {
-      margin-bottom: 0;
-    }
-
-    .public-label {
-      margin-bottom:
-        9px;
-
-      color:
-        var(--gold);
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size: 10px;
-
-      font-weight: 700;
-
-      letter-spacing:
-        0.12em;
-
-      text-transform:
-        uppercase;
-    }
-
-    .public-value {
-      color:
-        #c9c0ae;
-
-      font-size:
-        16px;
-
-      line-height:
-        1.7;
-
-      white-space:
-        pre-wrap;
-    }
-
-    /* =====================================================
-       FORM CARD
-       ===================================================== */
-
-    .form-card {
-      overflow: hidden;
-    }
-
-    .form-card.hidden {
-      display: none;
-    }
-
-    .form-header {
-      padding:
-        28px
-        32px;
-
-      border-bottom:
-        1px
-        solid
-        var(--line);
-    }
-
-    .form-header h2 {
-      margin-bottom: 8px;
-
-      font-size: 32px;
-
-      font-weight: 400;
-    }
-
-    .form-header p {
-      margin-bottom: 0;
-
-      color:
-        var(--muted);
-
-      line-height: 1.6;
-    }
-
-    .form-body {
-      padding:
-        32px;
-    }
-
-    .field {
-      margin-bottom: 24px;
-    }
-
-    .field:last-child {
-      margin-bottom: 0;
-    }
-
-    .field-row {
-      display: grid;
-
-      grid-template-columns:
-        1fr
-        1fr;
-
-      gap: 20px;
-    }
-
-    label {
-      display: block;
-
-      margin-bottom: 8px;
-
-      color:
-        #d8cfbc;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size: 11px;
-
-      font-weight: 700;
-
-      letter-spacing: 0.09em;
-
-      text-transform: uppercase;
-    }
-
-    .help {
-      margin-top: 7px;
-
-      color:
-        #777166;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size: 11px;
-
-      line-height: 1.5;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-
-      border:
-        1px
-        solid
-        rgba(
-          199,
-          155,
-          89,
-          0.23
-        );
-
-      border-radius: 12px;
-
-      padding:
-        14px
-        15px;
-
-      background:
-        #0c100d;
-
-      color:
-        var(--cream);
-
-      outline: none;
-
-      transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-    }
-
-    input::placeholder,
-    textarea::placeholder {
-      color:
-        #625e56;
-    }
-
-    input:focus,
-    textarea:focus {
-      border-color:
-        var(--gold);
-
-      box-shadow:
-        0
-        0
-        0
-        3px
-        rgba(
-          199,
-          155,
-          89,
-          0.08
-        );
-    }
-
-    textarea {
-      min-height: 155px;
-
-      resize: vertical;
-
-      line-height: 1.6;
-    }
-
-    .character-count {
-      margin-top: 7px;
-
-      text-align: right;
-
-      color:
-        #777166;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size: 11px;
-    }
-
-    /* =====================================================
-       PAPER DOLL MAKER
-       ===================================================== */
-
-    .doll-maker {
-      border: 1px solid rgba(199, 155, 89, 0.22);
-      border-radius: 18px;
-      overflow: hidden;
-      background:
-        radial-gradient(circle at 50% 16%, rgba(199, 155, 89, 0.12), transparent 34%),
-        rgba(7, 10, 8, 0.58);
-    }
-
-    .doll-maker-head {
-      padding: 20px 22px 16px;
-      border-bottom: 1px solid rgba(199, 155, 89, 0.16);
-    }
-
-    .doll-maker-title {
-      margin: 0 0 6px;
-      color: var(--cream);
-      font-size: 24px;
-      font-weight: 400;
-    }
-
-    .doll-maker-copy {
-      margin: 0;
-      color: var(--muted);
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 12px;
-      line-height: 1.55;
-    }
-
-    .doll-workspace {
-      display: grid;
-      grid-template-columns: minmax(220px, 0.82fr) minmax(280px, 1.18fr);
-      gap: 0;
-    }
-
-    .doll-stage-wrap {
-      min-height: 410px;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      border-right: 1px solid rgba(199, 155, 89, 0.16);
-      background:
-        linear-gradient(rgba(231, 220, 194, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(231, 220, 194, 0.035) 1px, transparent 1px);
-      background-size: 24px 24px;
-    }
-
-    .doll-stage {
-      width: min(100%, 300px);
-      aspect-ratio: 1;
-      border: 1px solid rgba(199, 155, 89, 0.35);
-      border-radius: 50%;
-      overflow: hidden;
-      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.42);
-      background: #26362b;
-    }
-
-    .doll-stage svg {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    .doll-controls {
-      padding: 22px;
-      display: grid;
-      gap: 18px;
-      align-content: start;
-    }
-
-    .doll-control {
-      min-width: 0;
-    }
-
-    .doll-control-label {
-      margin-bottom: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      color: #d8cfbc;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 0.11em;
-      text-transform: uppercase;
-    }
-
-    .doll-control-value {
-      color: var(--gold-soft);
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: none;
-    }
-
-    .doll-slider {
-      display: grid;
-      grid-template-columns: 42px minmax(0, 1fr) 42px;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .doll-arrow,
-    .doll-action {
-      border: 1px solid rgba(199, 155, 89, 0.3);
-      background: #0c100d;
-      color: var(--gold-soft);
-      cursor: pointer;
-      font-family: Arial, Helvetica, sans-serif;
-      font-weight: 800;
-    }
-
-    .doll-arrow {
-      height: 38px;
-      border-radius: 10px;
-      font-size: 18px;
-    }
-
-    .doll-arrow:hover,
-    .doll-arrow:focus-visible,
-    .doll-action:hover,
-    .doll-action:focus-visible {
-      border-color: var(--gold);
-      outline: none;
-      background: rgba(199, 155, 89, 0.09);
-    }
-
-    .doll-track {
-      height: 38px;
-      border: 1px solid rgba(199, 155, 89, 0.18);
-      border-radius: 10px;
-      display: grid;
-      place-items: center;
-      overflow: hidden;
-      background: rgba(0, 0, 0, 0.18);
-      color: var(--paper);
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 12px;
-      text-align: center;
-      padding: 0 10px;
-    }
-
-    .swatches {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .swatch {
-      width: 30px;
-      height: 30px;
-      padding: 0;
-      border: 2px solid transparent;
-      border-radius: 50%;
-      background: var(--swatch);
-      box-shadow: 0 0 0 1px rgba(241, 231, 207, 0.18);
-      cursor: pointer;
-    }
-
-    .swatch[aria-pressed="true"] {
-      border-color: var(--cream);
-      box-shadow: 0 0 0 2px var(--gold);
-    }
-
-    .doll-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      padding-top: 2px;
-    }
-
-    .doll-action {
-      min-height: 40px;
-      border-radius: 999px;
-      font-size: 10px;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-    }
-
-    .doll-note {
-      margin: 0;
-      color: #777166;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 10px;
-      line-height: 1.5;
-    }
-
-    /* =====================================================
-       ACCOUNT INFO
-       ===================================================== */
-
-    .account-box {
-      margin-top: 10px;
-
-      padding: 18px;
-
-      border:
-        1px
-        solid
-        rgba(
-          199,
-          155,
-          89,
-          0.15
-        );
-
-      border-radius: 12px;
-
-      background:
-        rgba(
-          199,
-          155,
-          89,
-          0.035
-        );
-    }
-
-    .account-label {
-      margin-bottom: 5px;
-
-      color:
-        var(--gold);
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size: 10px;
-
-      font-weight: 700;
-
-      letter-spacing: 0.12em;
-
-      text-transform: uppercase;
-    }
-
-    .account-email {
-      color:
-        #beb5a3;
-
-      word-break:
-        break-word;
-    }
-
-    /* =====================================================
-       MESSAGES
-       ===================================================== */
-
-    .message {
-      display: none;
-
-      margin-bottom: 22px;
-
-      padding:
-        13px
-        15px;
-
-      border:
-        1px
-        solid
-        var(--line);
-
-      border-radius: 11px;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size: 13px;
-
-      line-height: 1.5;
-    }
-
-    .message.show {
-      display: block;
-    }
-
-    .message.success {
-      color:
-        var(--success);
-
-      border-color:
-        rgba(
-          185,
-          214,
-          178,
-          0.32
-        );
-
-      background:
-        rgba(
-          185,
-          214,
-          178,
-          0.06
-        );
-    }
-
-    .message.error {
-      color:
-        var(--error);
-
-      border-color:
-        rgba(
-          230,
-          160,
-          154,
-          0.32
-        );
-
-      background:
-        rgba(
-          230,
-          160,
-          154,
-          0.06
-        );
-    }
-
-    /* =====================================================
-       FORM FOOTER
-       ===================================================== */
-
-    .form-footer {
-      padding:
-        24px
-        32px;
-
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: center;
-
-      gap: 18px;
-
-      border-top:
-        1px
-        solid
-        var(--line);
-
-      background:
-        rgba(
-          0,
-          0,
-          0,
-          0.12
-        );
-    }
-
-    .save-note {
-      color:
-        #777166;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size: 11px;
-
-      line-height: 1.5;
-    }
-
-    .save-button {
-      min-width: 170px;
-
-      min-height: 48px;
-
-      padding:
-        0
-        24px;
-
-      border:
-        1px
-        solid
-        var(--gold);
-
-      border-radius:
-        999px;
-
-      background:
-        var(--gold);
-
-      color:
-        #17130e;
-
-      cursor: pointer;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size: 11px;
-
-      font-weight: 800;
-
-      letter-spacing: 0.12em;
-
-      text-transform: uppercase;
-    }
-
-    .save-button:hover {
-      background:
-        var(--gold-soft);
-    }
-
-    .save-button:disabled {
-      opacity: 0.5;
-
-      cursor: wait;
-    }
-
-    /* =====================================================
-       LOADING SCREEN
-       ===================================================== */
-
-    .loading-screen {
-      position: fixed;
-
-      inset: 0;
-
-      z-index: 1000;
-
-      display: flex;
-
-      flex-direction: column;
-
-      align-items: center;
-
-      justify-content: center;
-
-      gap: 16px;
-
-      background:
-        var(--ink);
-
-      color:
-        var(--gold-soft);
-    }
-
-    .loading-screen.hidden {
-      display: none;
-    }
-
-    .loading-mark {
-      width: 50px;
-
-      height: 50px;
-
-      border:
-        1px
-        solid
-        var(--gold);
-
-      border-radius:
-        50%
-        50%
-        50%
-        12%;
-
-      animation:
-        pulse
-        1.2s
-        infinite
-        alternate;
-    }
-
-    @keyframes pulse {
-      from {
-        opacity: 0.35;
-
-        transform:
-          rotate(-8deg)
-          scale(0.95);
-      }
-
-      to {
-        opacity: 1;
-
-        transform:
-          rotate(-8deg)
-          scale(1.05);
-      }
-    }
-
-    .loading-text {
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      font-size: 11px;
-
-      font-weight: 700;
-
-      letter-spacing: 0.18em;
-
-      text-transform: uppercase;
-    }
-
-    /* =====================================================
-       RESPONSIVE
-       ===================================================== */
-
-    @media (max-width: 850px) {
-
-      .profile-layout {
-        grid-template-columns:
-          1fr;
-      }
-
-      .preview-card {
-        position: static;
-      }
-
-      .field-row {
-        grid-template-columns:
-          1fr;
-      }
-
-      .doll-workspace {
-        grid-template-columns: 1fr;
-      }
-
-      .doll-stage-wrap {
-        min-height: 350px;
-        border-right: 0;
-        border-bottom: 1px solid rgba(199, 155, 89, 0.16);
-      }
-
-    }
-
-    @media (max-width: 650px) {
-
-      .topbar {
-        padding:
-          0
-          18px;
-      }
-
-      .nav-link {
-        display: none;
-      }
-
-      .page {
-        width:
-          min(
-            100% - 24px,
-            1180px
-          );
-
-        padding-top:
-          38px;
-      }
-
-      .form-header,
-      .form-body,
-      .form-footer,
-      .public-header,
-      .public-body {
-        padding:
-          24px
-          20px;
-      }
-
-      .form-footer {
-        align-items: stretch;
-
-        flex-direction: column;
-      }
-
-      .save-button {
-        width: 100%;
-      }
-
-      .doll-stage-wrap,
-      .doll-controls {
-        padding: 18px;
-      }
-
-      .doll-stage-wrap {
-        min-height: 300px;
-      }
-
-    }
-
-  </style>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+  name="description"
+  content="Your Paper Gremlin profile."
+>
+
+<title>Paper Gremlin — Profile</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+:root{
+  --ink:#090b0a;
+  --ink-2:#101410;
+  --ink-3:#151b16;
+  --cream:#f1e7cf;
+  --paper:#e7dcc2;
+  --gold:#c79b59;
+  --gold-soft:#dfbd7e;
+  --green:#26362b;
+  --green-light:#34483a;
+  --muted:#aaa18f;
+  --line:rgba(199,155,89,.24);
+  --success:#b9d6b2;
+  --error:#e6a09a;
+  --warning:#e6c27a;
+  --shadow:0 24px 80px rgba(0,0,0,.4);
+  --radius:22px;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--cream);
+  background:
+    radial-gradient(
+      circle at 12% 6%,
+      rgba(52,72,58,.28),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 14%,
+      rgba(199,155,89,.10),
+      transparent 28%
+    ),
+    var(--ink);
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+}
+
+button,
+input,
+textarea{
+  font:inherit;
+}
+
+a{
+  color:inherit;
+}
+
+/* =========================================================
+   NAV
+========================================================= */
+
+.topbar{
+  min-height:76px;
+  padding:0 clamp(20px,5vw,70px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:30px;
+  border-bottom:1px solid var(--line);
+  background:rgba(9,11,10,.90);
+  backdrop-filter:blur(14px);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.brand{
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  text-decoration:none;
+  color:var(--gold-soft);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  position:relative;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  transform:rotate(-8deg);
+}
+
+.brand-mark::after{
+  content:"";
+  position:absolute;
+  width:11px;
+  height:11px;
+  right:2px;
+  top:2px;
+  border-left:1px solid var(--gold);
+  border-bottom:1px solid var(--gold);
+  background:var(--ink);
+}
+
+.nav-right{
+  display:flex;
+  align-items:center;
+  gap:22px;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.nav-link{
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.nav-link:hover{
+  color:var(--gold-soft);
+}
+
+.logout-button{
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--gold-soft);
+  border-radius:999px;
+  padding:10px 16px;
+  cursor:pointer;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.page{
+  width:min(1180px,calc(100% - 36px));
+  margin:0 auto;
+  padding:64px 0 100px;
+}
+
+.intro{
+  max-width:730px;
+  margin-bottom:34px;
+}
+
+.eyebrow{
+  margin-bottom:12px;
+  color:var(--gold);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+
+h1,
+h2,
+h3,
+p{
+  margin-top:0;
+}
+
+h1{
+  margin-bottom:16px;
+  font-size:clamp(42px,6vw,72px);
+  line-height:.98;
+  font-weight:400;
+  letter-spacing:-.035em;
+}
+
+.intro p{
+  margin-bottom:0;
+  max-width:650px;
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.7;
+}
+
+/* =========================================================
+   USERNAME NOTICE
+========================================================= */
+
+.username-notice{
+  display:none;
+  max-width:850px;
+  margin:0 0 32px;
+  padding:20px 22px;
+  border:1px solid rgba(230,194,122,.42);
+  border-radius:16px;
+  background:rgba(230,194,122,.07);
+}
+
+.username-notice.show{
+  display:block;
+}
+
+.username-notice-title{
+  margin:0 0 6px;
+  color:var(--warning);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:13px;
+  font-weight:800;
+}
+
+.username-notice-copy{
+  margin:0;
+  color:#c8beaa;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:12px;
+  line-height:1.6;
+}
+
+.username-notice button{
+  margin-top:13px;
+  padding:9px 14px;
+  border:1px solid var(--gold);
+  border-radius:999px;
+  background:transparent;
+  color:var(--gold-soft);
+  cursor:pointer;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+
+.profile-layout{
+  display:grid;
+  grid-template-columns:330px minmax(0,1fr);
+  gap:28px;
+  align-items:start;
+}
+
+.card{
+  background:rgba(16,20,16,.85);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+
+.preview-card{
+  padding:28px;
+  position:sticky;
+  top:108px;
+}
+
+.avatar-shell{
+  width:150px;
+  height:150px;
+  margin:0 auto 24px;
+  border-radius:50%;
+  padding:5px;
+  border:1px solid rgba(199,155,89,.45);
+  background:#0c100d;
+}
+
+.avatar{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  border-radius:50%;
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      #34483a,
+      #172019
+    );
+  color:var(--gold-soft);
+  font-size:48px;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.preview-name{
+  margin-bottom:5px;
+  text-align:center;
+  font-size:28px;
+  font-weight:400;
+}
+
+.preview-username{
+  margin-bottom:22px;
+  color:var(--gold);
+  text-align:center;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:13px;
+}
+
+.preview-divider{
+  width:60px;
+  height:1px;
+  margin:0 auto 20px;
+  background:var(--line);
+}
+
+.preview-bio{
+  margin-bottom:0;
+  color:#bab19f;
+  font-size:15px;
+  line-height:1.65;
+  text-align:center;
+  white-space:pre-wrap;
+}
+
+.preview-placeholder{
+  color:#706b61;
+  font-style:italic;
+}
+
+/* =========================================================
+   PUBLIC PROFILE
+========================================================= */
+
+.public-actions{
+  display:none;
+  margin-top:24px;
+  padding-top:22px;
+  border-top:1px solid var(--line);
+  gap:10px;
+  flex-direction:column;
+}
+
+.public-actions.show{
+  display:flex;
+}
+
+.public-button{
+  min-height:42px;
+  padding:0 16px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  background:transparent;
+  color:var(--gold-soft);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+
+.report-button{
+  color:var(--error);
+}
+
+.public-profile-card{
+  display:none;
+  overflow:hidden;
+}
+
+.public-profile-card.show{
+  display:block;
+}
+
+.public-header{
+  padding:28px 32px;
+  border-bottom:1px solid var(--line);
+}
+
+.public-header h2{
+  margin-bottom:8px;
+  font-size:32px;
+  font-weight:400;
+}
+
+.public-header p{
+  margin-bottom:0;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.public-body{
+  padding:32px;
+}
+
+.public-section{
+  margin-bottom:28px;
+}
+
+.public-section:last-child{
+  margin-bottom:0;
+}
+
+.public-label{
+  margin-bottom:9px;
+  color:var(--gold);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.public-value{
+  color:#c9c0ae;
+  font-size:16px;
+  line-height:1.7;
+  white-space:pre-wrap;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-card{
+  overflow:hidden;
+}
+
+.form-card.hidden{
+  display:none;
+}
+
+.form-header{
+  padding:28px 32px;
+  border-bottom:1px solid var(--line);
+}
+
+.form-header h2{
+  margin-bottom:8px;
+  font-size:32px;
+  font-weight:400;
+}
+
+.form-header p{
+  margin-bottom:0;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.form-body{
+  padding:32px;
+}
+
+.field{
+  margin-bottom:24px;
+}
+
+.field:last-child{
+  margin-bottom:0;
+}
+
+.field-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+label{
+  display:block;
+  margin-bottom:8px;
+  color:#d8cfbc;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.help{
+  margin-top:7px;
+  color:#777166;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:11px;
+  line-height:1.5;
+}
+
+.username-help{
+  padding:10px 12px;
+  border-radius:10px;
+  background:rgba(199,155,89,.06);
+}
+
+.username-help strong{
+  color:var(--gold-soft);
+}
+
+input,
+textarea{
+  width:100%;
+  border:1px solid rgba(199,155,89,.23);
+  border-radius:12px;
+  padding:14px 15px;
+  background:#0c100d;
+  color:var(--cream);
+  outline:none;
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+input::placeholder,
+textarea::placeholder{
+  color:#625e56;
+}
+
+input:focus,
+textarea:focus{
+  border-color:var(--gold);
+  box-shadow:
+    0 0 0 3px rgba(199,155,89,.08);
+}
+
+input.needs-attention{
+  border-color:var(--warning);
+  box-shadow:
+    0 0 0 3px rgba(230,194,122,.08);
+}
+
+textarea{
+  min-height:155px;
+  resize:vertical;
+  line-height:1.6;
+}
+
+.character-count{
+  margin-top:7px;
+  text-align:right;
+  color:#777166;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:11px;
+}
+
+/* =========================================================
+   PAPER DOLL
+========================================================= */
+
+.doll-maker{
+  border:1px solid rgba(199,155,89,.22);
+  border-radius:18px;
+  overflow:hidden;
+  background:
+    radial-gradient(
+      circle at 50% 16%,
+      rgba(199,155,89,.12),
+      transparent 34%
+    ),
+    rgba(7,10,8,.58);
+}
+
+.doll-maker-head{
+  padding:20px 22px 16px;
+  border-bottom:1px solid rgba(199,155,89,.16);
+}
+
+.doll-maker-title{
+  margin:0 0 6px;
+  color:var(--cream);
+  font-size:24px;
+  font-weight:400;
+}
+
+.doll-maker-copy{
+  margin:0;
+  color:var(--muted);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:12px;
+  line-height:1.55;
+}
+
+.doll-workspace{
+  display:grid;
+  grid-template-columns:
+    minmax(220px,.82fr)
+    minmax(280px,1.18fr);
+}
+
+.doll-stage-wrap{
+  min-height:410px;
+  display:grid;
+  place-items:center;
+  padding:24px;
+  border-right:1px solid rgba(199,155,89,.16);
+  background:
+    linear-gradient(
+      rgba(231,220,194,.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(231,220,194,.035) 1px,
+      transparent 1px
+    );
+  background-size:24px 24px;
+}
+
+.doll-stage{
+  width:min(100%,300px);
+  aspect-ratio:1;
+  border:1px solid rgba(199,155,89,.35);
+  border-radius:50%;
+  overflow:hidden;
+  box-shadow:0 18px 48px rgba(0,0,0,.42);
+  background:#26362b;
+}
+
+.doll-stage svg{
+  display:block;
+  width:100%;
+  height:100%;
+}
+
+.doll-controls{
+  padding:22px;
+  display:grid;
+  gap:18px;
+  align-content:start;
+}
+
+.doll-control{
+  min-width:0;
+}
+
+.doll-control-label{
+  margin-bottom:7px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  color:#d8cfbc;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+
+.doll-control-value{
+  color:var(--gold-soft);
+  font-weight:700;
+  letter-spacing:.04em;
+  text-transform:none;
+}
+
+.doll-slider{
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr) 42px;
+  gap:8px;
+  align-items:center;
+}
+
+.doll-arrow,
+.doll-action{
+  border:1px solid rgba(199,155,89,.3);
+  background:#0c100d;
+  color:var(--gold-soft);
+  cursor:pointer;
+  font-family:Arial,Helvetica,sans-serif;
+  font-weight:800;
+}
+
+.doll-arrow{
+  height:38px;
+  border-radius:10px;
+  font-size:18px;
+}
+
+.doll-track{
+  height:38px;
+  border:1px solid rgba(199,155,89,.18);
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:rgba(0,0,0,.18);
+  color:var(--paper);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:12px;
+  text-align:center;
+  padding:0 10px;
+}
+
+.swatches{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.swatch{
+  width:30px;
+  height:30px;
+  padding:0;
+  border:2px solid transparent;
+  border-radius:50%;
+  background:var(--swatch);
+  box-shadow:
+    0 0 0 1px rgba(241,231,207,.18);
+  cursor:pointer;
+}
+
+.swatch[aria-pressed="true"]{
+  border-color:var(--cream);
+  box-shadow:
+    0 0 0 2px var(--gold);
+}
+
+.doll-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.doll-action{
+  min-height:40px;
+  border-radius:999px;
+  font-size:10px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.doll-note{
+  margin:0;
+  color:#777166;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:10px;
+  line-height:1.5;
+}
+
+/* =========================================================
+   ACCOUNT
+========================================================= */
+
+.account-box{
+  margin-top:10px;
+  padding:18px;
+  border:1px solid rgba(199,155,89,.15);
+  border-radius:12px;
+  background:rgba(199,155,89,.035);
+}
+
+.account-label{
+  margin-bottom:5px;
+  color:var(--gold);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.account-email{
+  color:#beb5a3;
+  word-break:break-word;
+}
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.message{
+  display:none;
+  margin-bottom:22px;
+  padding:13px 15px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.message.show{
+  display:block;
+}
+
+.message.success{
+  color:var(--success);
+  border-color:rgba(185,214,178,.32);
+  background:rgba(185,214,178,.06);
+}
+
+.message.error{
+  color:var(--error);
+  border-color:rgba(230,160,154,.32);
+  background:rgba(230,160,154,.06);
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.form-footer{
+  padding:24px 32px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:18px;
+  border-top:1px solid var(--line);
+  background:rgba(0,0,0,.12);
+}
+
+.save-note{
+  color:#777166;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:11px;
+  line-height:1.5;
+}
+
+.save-button{
+  min-width:170px;
+  min-height:48px;
+  padding:0 24px;
+  border:1px solid var(--gold);
+  border-radius:999px;
+  background:var(--gold);
+  color:#17130e;
+  cursor:pointer;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.save-button:disabled{
+  opacity:.5;
+  cursor:wait;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading-screen{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  background:var(--ink);
+  color:var(--gold-soft);
+}
+
+.loading-screen.hidden{
+  display:none;
+}
+
+.loading-mark{
+  width:50px;
+  height:50px;
+  border:1px solid var(--gold);
+  border-radius:50% 50% 50% 12%;
+  animation:pulse 1.2s infinite alternate;
+}
+
+@keyframes pulse{
+  from{
+    opacity:.35;
+    transform:rotate(-8deg) scale(.95);
+  }
+
+  to{
+    opacity:1;
+    transform:rotate(-8deg) scale(1.05);
+  }
+}
+
+.loading-text{
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+}
+
+@media(max-width:850px){
+
+  .profile-layout{
+    grid-template-columns:1fr;
+  }
+
+  .preview-card{
+    position:static;
+  }
+
+  .field-row{
+    grid-template-columns:1fr;
+  }
+
+  .doll-workspace{
+    grid-template-columns:1fr;
+  }
+
+  .doll-stage-wrap{
+    min-height:350px;
+    border-right:0;
+    border-bottom:
+      1px solid rgba(199,155,89,.16);
+  }
+
+}
+
+@media(max-width:650px){
+
+  .topbar{
+    padding:0 18px;
+  }
+
+  .nav-link{
+    display:none;
+  }
+
+  .page{
+    width:min(100% - 24px,1180px);
+    padding-top:38px;
+  }
+
+  .form-header,
+  .form-body,
+  .form-footer,
+  .public-header,
+  .public-body{
+    padding:24px 20px;
+  }
+
+  .form-footer{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .save-button{
+    width:100%;
+  }
+
+  .doll-stage-wrap,
+  .doll-controls{
+    padding:18px;
+  }
+
+}
+</style>
 </head>
 
 <body>
 
-  <!-- =====================================================
-       LOADING
-       ===================================================== -->
+<div
+  class="loading-screen"
+  id="loadingScreen"
+>
+  <div class="loading-mark"></div>
 
-  <div
-    class="loading-screen"
-    id="loadingScreen"
-  >
-
-    <div class="loading-mark"></div>
-
-    <div class="loading-text">
-      Opening Paper Gremlin profile...
-    </div>
-
+  <div class="loading-text">
+    Opening Paper Gremlin profile...
   </div>
+</div>
 
-  <!-- =====================================================
-       NAVIGATION
-       ===================================================== -->
+<header class="topbar">
 
-  <header class="topbar">
+  <a
+    class="brand"
+    href="dashboard.html"
+  >
+    <span class="brand-mark"></span>
+    Paper Gremlin
+  </a>
+
+  <nav class="nav-right">
 
     <a
-      class="brand"
+      class="nav-link"
       href="dashboard.html"
     >
-
-      <span class="brand-mark"></span>
-
-      Paper Gremlin
-
+      Home
     </a>
 
-    <nav class="nav-right">
+    <a
+      class="nav-link"
+      href="discover.html"
+    >
+      Discover
+    </a>
 
-      <a
-        class="nav-link"
-        href="dashboard.html"
-      >
-        Home
-      </a>
+    <a
+      class="nav-link"
+      href="clubs.html"
+    >
+      Clubs
+    </a>
 
-      <a
-        class="nav-link"
-        href="discover.html"
-      >
-        Discover
-      </a>
+    <a
+      class="nav-link"
+      href="marketplace.html"
+    >
+      Books
+    </a>
 
-      <a
-        class="nav-link"
-        href="clubs.html"
-      >
-        Clubs
-      </a>
+    <button
+      class="logout-button"
+      id="logoutButton"
+      type="button"
+    >
+      Log Out
+    </button>
 
-      <a
-        class="nav-link"
-        href="marketplace.html"
-      >
-        Books
-      </a>
+  </nav>
 
-      <button
-        class="logout-button"
-        id="logoutButton"
-        type="button"
-      >
-        Log Out
-      </button>
+</header>
 
-    </nav>
+<main class="page">
 
-  </header>
+  <section class="intro">
 
-  <!-- =====================================================
-       PAGE CONTENT
-       ===================================================== -->
+    <div
+      class="eyebrow"
+      id="profileEyebrow"
+    >
+      Your corner of Paper Gremlin
+    </div>
 
-  <main class="page">
+    <h1 id="pageHeading">
+      Make yourself recognizable.
+    </h1>
 
-    <section class="intro">
+    <p id="pageIntro">
+      Choose how other readers see you around Paper Gremlin.
+    </p>
 
-      <div
-        class="eyebrow"
-        id="profileEyebrow"
-      >
-        Your corner of Paper Gremlin
+  </section>
+
+  <section
+    class="username-notice"
+    id="usernameNotice"
+  >
+
+    <div class="username-notice-title">
+      Choose your Paper Gremlin username
+    </div>
+
+    <p class="username-notice-copy">
+      Paper Gremlin gave you a temporary username when your
+      account was created. You are not stuck with it. Choose
+      the username you actually want other readers to see.
+    </p>
+
+    <button
+      id="chooseUsernameButton"
+      type="button"
+    >
+      Choose My Username
+    </button>
+
+  </section>
+
+  <div class="profile-layout">
+
+    <aside class="card preview-card">
+
+      <div class="avatar-shell">
+        <div
+          class="avatar"
+          id="avatarPreview"
+        >
+          ?
+        </div>
       </div>
 
-      <h1 id="pageHeading">
-        Make yourself recognizable.
-      </h1>
+      <h2
+        class="preview-name"
+        id="displayNamePreview"
+      >
+        Your Name
+      </h2>
 
-      <p id="pageIntro">
-        This is how other readers, writers, book clubs,
-        agents, and publishing people will see you around Paper Gremlin.
+      <div
+        class="preview-username"
+        id="usernamePreview"
+      >
+        @username
+      </div>
+
+      <div class="preview-divider"></div>
+
+      <p
+        class="preview-bio preview-placeholder"
+        id="bioPreview"
+      >
+        Your bio will appear here.
       </p>
+
+      <div
+        class="public-actions"
+        id="publicActions"
+      >
+
+        <a
+          class="public-button"
+          id="backButton"
+          href="discover.html"
+        >
+          Back
+        </a>
+
+        <a
+          class="public-button report-button"
+          id="reportProfileButton"
+          href="report.html"
+        >
+          Report Profile
+        </a>
+
+      </div>
+
+    </aside>
+
+    <section
+      class="card form-card"
+      id="editProfileCard"
+    >
+
+      <div class="form-header">
+
+        <h2>
+          Edit profile
+        </h2>
+
+        <p>
+          Your username, display name, bio, and Paper Gremlin
+          avatar are the identity other readers will see.
+        </p>
+
+      </div>
+
+      <form id="profileForm">
+
+        <div class="form-body">
+
+          <div
+            class="message"
+            id="profileMessage"
+          ></div>
+
+          <div class="field-row">
+
+            <div class="field">
+
+              <label for="username">
+                Your Username
+              </label>
+
+              <input
+                id="username"
+                type="text"
+                maxlength="30"
+                autocomplete="username"
+                placeholder="Choose a username"
+              >
+
+              <div class="help username-help">
+                <strong>This is editable.</strong>
+                If Paper Gremlin generated a username for you
+                when you signed up, replace it here with the
+                username you want. Letters, numbers and
+                underscores only.
+              </div>
+
+            </div>
+
+            <div class="field">
+
+              <label for="displayName">
+                Display Name
+              </label>
+
+              <input
+                id="displayName"
+                type="text"
+                maxlength="80"
+                autocomplete="name"
+                placeholder="Your name"
+              >
+
+              <div class="help">
+                This can be your real name, pen name, nickname,
+                or whatever name you want readers to see.
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="field">
+
+            <div class="doll-maker">
+
+              <div class="doll-maker-head">
+
+                <h3 class="doll-maker-title">
+                  Make your Paper Gremlin
+                </h3>
+
+                <p class="doll-maker-copy">
+                  Build the little storybook version of yourself
+                  that appears with your profile.
+                </p>
+
+              </div>
+
+              <div class="doll-workspace">
+
+                <div class="doll-stage-wrap">
+
+                  <div
+                    class="doll-stage"
+                    id="dollStage"
+                    role="img"
+                    aria-label="Your customizable Paper Gremlin avatar"
+                  ></div>
+
+                </div>
+
+                <div class="doll-controls">
+
+                  <div class="doll-control">
+
+                    <div class="doll-control-label">
+                      Skin tone
+                      <span
+                        class="doll-control-value"
+                        id="skinValue"
+                      ></span>
+                    </div>
+
+                    <div
+                      class="swatches"
+                      id="skinSwatches"
+                    ></div>
+
+                  </div>
+
+                  <div class="doll-control">
+
+                    <div class="doll-control-label">
+                      Eyes
+                      <span
+                        class="doll-control-value"
+                        id="eyesValue"
+                      ></span>
+                    </div>
+
+                    <div class="doll-slider">
+
+                      <button
+                        class="doll-arrow"
+                        type="button"
+                        data-cycle="eyes"
+                        data-direction="-1"
+                      >
+                        ‹
+                      </button>
+
+                      <div
+                        class="doll-track"
+                        id="eyesTrack"
+                      ></div>
+
+                      <button
+                        class="doll-arrow"
+                        type="button"
+                        data-cycle="eyes"
+                        data-direction="1"
+                      >
+                        ›
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                  <div class="doll-control">
+
+                    <div class="doll-control-label">
+                      Eye color
+                      <span
+                        class="doll-control-value"
+                        id="eyeColorValue"
+                      ></span>
+                    </div>
+
+                    <div
+                      class="swatches"
+                      id="eyeColorSwatches"
+                    ></div>
+
+                  </div>
+
+                  <div class="doll-control">
+
+                    <div class="doll-control-label">
+                      Hair style
+                      <span
+                        class="doll-control-value"
+                        id="hairValue"
+                      ></span>
+                    </div>
+
+                    <div class="doll-slider">
+
+                      <button
+                        class="doll-arrow"
+                        type="button"
+                        data-cycle="hair"
+                        data-direction="-1"
+                      >
+                        ‹
+                      </button>
+
+                      <div
+                        class="doll-track"
+                        id="hairTrack"
+                      ></div>
+
+                      <button
+                        class="doll-arrow"
+                        type="button"
+                        data-cycle="hair"
+                        data-direction="1"
+                      >
+                        ›
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                  <div class="doll-control">
+
+                    <div class="doll-control-label">
+                      Hair color
+                      <span
+                        class="doll-control-value"
+                        id="hairColorValue"
+                      ></span>
+                    </div>
+
+                    <div
+                      class="swatches"
+                      id="hairColorSwatches"
+                    ></div>
+
+                  </div>
+
+                  <div class="doll-control">
+
+                    <div class="doll-control-label">
+                      Facial hair
+                      <span
+                        class="doll-control-value"
+                        id="facialHairValue"
+                      ></span>
+                    </div>
+
+                    <div class="doll-slider">
+
+                      <button
+                        class="doll-arrow"
+                        type="button"
+                        data-cycle="facialHair"
+                        data-direction="-1"
+                      >
+                        ‹
+                      </button>
+
+                      <div
+                        class="doll-track"
+                        id="facialHairTrack"
+                      ></div>
+
+                      <button
+                        class="doll-arrow"
+                        type="button"
+                        data-cycle="facialHair"
+                        data-direction="1"
+                      >
+                        ›
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                  <div class="doll-control">
+
+                    <div class="doll-control-label">
+                      Top
+                      <span
+                        class="doll-control-value"
+                        id="topValue"
+                      ></span>
+                    </div>
+
+                    <div class="doll-slider">
+
+                      <button
+                        class="doll-arrow"
+                        type="button"
+                        data-cycle="top"
+                        data-direction="-1"
+                      >
+                        ‹
+                      </button>
+
+                      <div
+                        class="doll-track"
+                        id="topTrack"
+                      ></div>
+
+                      <button
+                        class="doll-arrow"
+                        type="button"
+                        data-cycle="top"
+                        data-direction="1"
+                      >
+                        ›
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                  <div class="doll-control">
+
+                    <div class="doll-control-label">
+                      Top color
+                      <span
+                        class="doll-control-value"
+                        id="topColorValue"
+                      ></span>
+                    </div>
+
+                    <div
+                      class="swatches"
+                      id="topColorSwatches"
+                    ></div>
+
+                  </div>
+
+                  <div class="doll-control">
+
+                    <div class="doll-control-label">
+                      Accessory
+                      <span
+                        class="doll-control-value"
+                        id="accessoryValue"
+                      ></span>
+                    </div>
+
+                    <div class="doll-slider">
+
+                      <button
+                        class="doll-arrow"
+                        type="button"
+                        data-cycle="accessory"
+                        data-direction="-1"
+                      >
+                        ‹
+                      </button>
+
+                      <div
+                        class="doll-track"
+                        id="accessoryTrack"
+                      ></div>
+
+                      <button
+                        class="doll-arrow"
+                        type="button"
+                        data-cycle="accessory"
+                        data-direction="1"
+                      >
+                        ›
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                  <div class="doll-actions">
+
+                    <button
+                      class="doll-action"
+                      id="randomizeDoll"
+                      type="button"
+                    >
+                      Surprise Me
+                    </button>
+
+                    <button
+                      class="doll-action"
+                      id="resetDoll"
+                      type="button"
+                    >
+                      Start Over
+                    </button>
+
+                  </div>
+
+                  <p class="doll-note">
+                    Your Paper Gremlin is saved with your
+                    profile when you press Save Profile.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="field">
+
+            <label for="bio">
+              Bio
+            </label>
+
+            <textarea
+              id="bio"
+              maxlength="500"
+              placeholder="Tell Paper Gremlin a little about yourself. Favorite books, genres, what you write, what you read, or whatever belongs here."
+            ></textarea>
+
+            <div
+              class="character-count"
+              id="bioCount"
+            >
+              0 / 500
+            </div>
+
+          </div>
+
+          <div class="account-box">
+
+            <div class="account-label">
+              Account Email
+            </div>
+
+            <div
+              class="account-email"
+              id="accountEmail"
+            >
+              Loading...
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="form-footer">
+
+          <div class="save-note">
+            Your email is private. Your username, display name,
+            bio and Paper Gremlin avatar are public.
+          </div>
+
+          <button
+            class="save-button"
+            id="saveButton"
+            type="submit"
+          >
+            Save Profile
+          </button>
+
+        </div>
+
+      </form>
 
     </section>
 
-    <div class="profile-layout">
+    <section
+      class="card public-profile-card"
+      id="publicProfileCard"
+    >
 
-      <!-- =================================================
-           PROFILE PREVIEW
-           ================================================= -->
+      <div class="public-header">
 
-      <aside class="card preview-card">
-
-        <div class="avatar-shell">
-
-          <div
-            class="avatar"
-            id="avatarPreview"
-          >
-            ?
-          </div>
-
-        </div>
-
-        <h2
-          class="preview-name"
-          id="displayNamePreview"
-        >
-          Your Name
+        <h2>
+          About this reader
         </h2>
 
-        <div
-          class="preview-username"
-          id="usernamePreview"
-        >
-          @username
-        </div>
-
-        <div class="preview-divider"></div>
-
-        <p
-          class="preview-bio preview-placeholder"
-          id="bioPreview"
-        >
-          Your bio will appear here.
+        <p>
+          A member of the Paper Gremlin community.
         </p>
 
-        <div
-          class="public-actions"
-          id="publicActions"
-        >
+      </div>
 
-          <a
-            class="public-button"
-            id="backButton"
-            href="discover.html"
+      <div class="public-body">
+
+        <div class="public-section">
+
+          <div class="public-label">
+            Display Name
+          </div>
+
+          <div
+            class="public-value"
+            id="publicDisplayName"
           >
-            Back
-          </a>
+            —
+          </div>
 
-          <a
-            class="public-button report-button"
-            id="reportProfileButton"
-            href="report.html"
+        </div>
+
+        <div class="public-section">
+
+          <div class="public-label">
+            Username
+          </div>
+
+          <div
+            class="public-value"
+            id="publicUsername"
           >
-            Report Profile
-          </a>
-
-        </div>
-
-      </aside>
-
-      <!-- =================================================
-           EDIT PROFILE
-           ================================================= -->
-
-      <section
-        class="card form-card"
-        id="editProfileCard"
-      >
-
-        <div class="form-header">
-
-          <h2>
-            Edit profile
-          </h2>
-
-          <p>
-            You can change these details later.
-          </p>
-
-        </div>
-
-        <form id="profileForm">
-
-          <div class="form-body">
-
-            <div
-              class="message"
-              id="profileMessage"
-            ></div>
-
-            <div class="field-row">
-
-              <div class="field">
-
-                <label for="username">
-                  Username
-                </label>
-
-                <input
-                  id="username"
-                  type="text"
-                  maxlength="30"
-                  autocomplete="username"
-                  placeholder="bookdragon"
-                />
-
-                <div class="help">
-                  Letters, numbers and underscores only.
-                </div>
-
-              </div>
-
-              <div class="field">
-
-                <label for="displayName">
-                  Display Name
-                </label>
-
-                <input
-                  id="displayName"
-                  type="text"
-                  maxlength="80"
-                  autocomplete="name"
-                  placeholder="Your name"
-                />
-
-              </div>
-
-            </div>
-
-            <div class="field">
-
-              <div class="doll-maker">
-
-                <div class="doll-maker-head">
-                  <h3 class="doll-maker-title">Make your paper gremlin</h3>
-                  <p class="doll-maker-copy">
-                    Slide through the pieces and build a tiny storybook version of yourself.
-                  </p>
-                </div>
-
-                <div class="doll-workspace">
-
-                  <div class="doll-stage-wrap">
-                    <div
-                      class="doll-stage"
-                      id="dollStage"
-                      role="img"
-                      aria-label="Your customizable Paper Gremlin avatar"
-                    ></div>
-                  </div>
-
-                  <div class="doll-controls">
-
-                    <div class="doll-control">
-                      <div class="doll-control-label">
-                        Skin tone
-                        <span class="doll-control-value" id="skinValue"></span>
-                      </div>
-                      <div class="swatches" id="skinSwatches"></div>
-                    </div>
-
-                    <div class="doll-control">
-                      <div class="doll-control-label">
-                        Eyes
-                        <span class="doll-control-value" id="eyesValue"></span>
-                      </div>
-                      <div class="doll-slider">
-                        <button class="doll-arrow" type="button" data-cycle="eyes" data-direction="-1" aria-label="Previous eye style">‹</button>
-                        <div class="doll-track" id="eyesTrack"></div>
-                        <button class="doll-arrow" type="button" data-cycle="eyes" data-direction="1" aria-label="Next eye style">›</button>
-                      </div>
-                    </div>
-
-                    <div class="doll-control">
-                      <div class="doll-control-label">
-                        Eye color
-                        <span class="doll-control-value" id="eyeColorValue"></span>
-                      </div>
-                      <div class="swatches" id="eyeColorSwatches"></div>
-                    </div>
-
-                    <div class="doll-control">
-                      <div class="doll-control-label">
-                        Hair style
-                        <span class="doll-control-value" id="hairValue"></span>
-                      </div>
-                      <div class="doll-slider">
-                        <button class="doll-arrow" type="button" data-cycle="hair" data-direction="-1" aria-label="Previous hairstyle">‹</button>
-                        <div class="doll-track" id="hairTrack"></div>
-                        <button class="doll-arrow" type="button" data-cycle="hair" data-direction="1" aria-label="Next hairstyle">›</button>
-                      </div>
-                    </div>
-
-                    <div class="doll-control">
-                      <div class="doll-control-label">
-                        Hair color
-                        <span class="doll-control-value" id="hairColorValue"></span>
-                      </div>
-                      <div class="swatches" id="hairColorSwatches"></div>
-                    </div>
-
-                    <div class="doll-control">
-                      <div class="doll-control-label">
-                        Facial hair
-                        <span class="doll-control-value" id="facialHairValue"></span>
-                      </div>
-                      <div class="doll-slider">
-                        <button class="doll-arrow" type="button" data-cycle="facialHair" data-direction="-1" aria-label="Previous facial hair">‹</button>
-                        <div class="doll-track" id="facialHairTrack"></div>
-                        <button class="doll-arrow" type="button" data-cycle="facialHair" data-direction="1" aria-label="Next facial hair">›</button>
-                      </div>
-                    </div>
-
-                    <div class="doll-control">
-                      <div class="doll-control-label">
-                        Top
-                        <span class="doll-control-value" id="topValue"></span>
-                      </div>
-                      <div class="doll-slider">
-                        <button class="doll-arrow" type="button" data-cycle="top" data-direction="-1" aria-label="Previous top">‹</button>
-                        <div class="doll-track" id="topTrack"></div>
-                        <button class="doll-arrow" type="button" data-cycle="top" data-direction="1" aria-label="Next top">›</button>
-                      </div>
-                    </div>
-
-                    <div class="doll-control">
-                      <div class="doll-control-label">
-                        Top color
-                        <span class="doll-control-value" id="topColorValue"></span>
-                      </div>
-                      <div class="swatches" id="topColorSwatches"></div>
-                    </div>
-
-                    <div class="doll-control">
-                      <div class="doll-control-label">
-                        Accessory
-                        <span class="doll-control-value" id="accessoryValue"></span>
-                      </div>
-                      <div class="doll-slider">
-                        <button class="doll-arrow" type="button" data-cycle="accessory" data-direction="-1" aria-label="Previous accessory">‹</button>
-                        <div class="doll-track" id="accessoryTrack"></div>
-                        <button class="doll-arrow" type="button" data-cycle="accessory" data-direction="1" aria-label="Next accessory">›</button>
-                      </div>
-                    </div>
-
-                    <div class="doll-actions">
-                      <button class="doll-action" id="randomizeDoll" type="button">Surprise Me</button>
-                      <button class="doll-action" id="resetDoll" type="button">Start Over</button>
-                    </div>
-
-                    <p class="doll-note">
-                      Your gremlin is saved with your profile. No photo upload is needed.
-                    </p>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-            <div class="field">
-
-              <label for="bio">
-                Bio
-              </label>
-
-              <textarea
-                id="bio"
-                maxlength="500"
-                placeholder="Tell Paper Gremlin a little about yourself. Favorite books, genres, what you write, what you read, or whatever belongs here."
-              ></textarea>
-
-              <div
-                class="character-count"
-                id="bioCount"
-              >
-                0 / 500
-              </div>
-
-            </div>
-
-            <div class="account-box">
-
-              <div class="account-label">
-                Account Email
-              </div>
-
-              <div
-                class="account-email"
-                id="accountEmail"
-              >
-                Loading...
-              </div>
-
-            </div>
-
-          </div>
-
-          <div class="form-footer">
-
-            <div class="save-note">
-              Your email is private and will not appear
-              on your public Paper Gremlin profile.
-            </div>
-
-            <button
-              class="save-button"
-              id="saveButton"
-              type="submit"
-            >
-              Save Profile
-            </button>
-
-          </div>
-
-        </form>
-
-      </section>
-
-      <!-- =================================================
-           PUBLIC PROFILE DETAILS
-           ================================================= -->
-
-      <section
-        class="card public-profile-card"
-        id="publicProfileCard"
-      >
-
-        <div class="public-header">
-
-          <h2>
-            About this reader
-          </h2>
-
-          <p>
-            A member of the Paper Gremlin community.
-          </p>
-
-        </div>
-
-        <div class="public-body">
-
-          <div class="public-section">
-
-            <div class="public-label">
-              Display Name
-            </div>
-
-            <div
-              class="public-value"
-              id="publicDisplayName"
-            >
-              —
-            </div>
-
-          </div>
-
-          <div class="public-section">
-
-            <div class="public-label">
-              Username
-            </div>
-
-            <div
-              class="public-value"
-              id="publicUsername"
-            >
-              —
-            </div>
-
-          </div>
-
-          <div class="public-section">
-
-            <div class="public-label">
-              Bio
-            </div>
-
-            <div
-              class="public-value"
-              id="publicBio"
-            >
-              No bio yet.
-            </div>
-
+            —
           </div>
 
         </div>
 
-      </section>
+        <div class="public-section">
 
-    </div>
+          <div class="public-label">
+            Bio
+          </div>
 
-  </main>
+          <div
+            class="public-value"
+            id="publicBio"
+          >
+            No bio yet.
+          </div>
 
-  <!-- =====================================================
-       SUPABASE
-       ===================================================== -->
+        </div>
 
-  <script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-  ></script>
+      </div>
 
-  <script>
+    </section>
 
-    /* =====================================================
-       SUPABASE CONNECTION
-       ===================================================== */
+  </div>
 
-    const SUPABASE_URL =
-      "https://nrtutxjznkfvvbmaagum.supabase.co";
+</main>
 
-    const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+<script>
 
-    const supabaseClient =
-      supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-      );
+/* =========================================================
+   SUPABASE
+========================================================= */
 
-    /* =====================================================
-       ELEMENTS
-       ===================================================== */
+const SUPABASE_URL =
+  "https://nrtutxjznkfvvbmaagum.supabase.co";
 
-    const loadingScreen =
-      document.getElementById(
-        "loadingScreen"
-      );
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
 
-    const profileForm =
-      document.getElementById(
-        "profileForm"
-      );
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
 
-    const usernameInput =
-      document.getElementById(
-        "username"
-      );
+/* =========================================================
+   ELEMENTS
+========================================================= */
 
-    const displayNameInput =
-      document.getElementById(
-        "displayName"
-      );
+const loadingScreen =
+  document.getElementById(
+    "loadingScreen"
+  );
 
-    const dollStage =
-      document.getElementById(
-        "dollStage"
-      );
+const profileForm =
+  document.getElementById(
+    "profileForm"
+  );
 
-    const bioInput =
-      document.getElementById(
-        "bio"
-      );
+const usernameInput =
+  document.getElementById(
+    "username"
+  );
 
-    const bioCount =
-      document.getElementById(
-        "bioCount"
-      );
+const displayNameInput =
+  document.getElementById(
+    "displayName"
+  );
 
-    const profileMessage =
-      document.getElementById(
-        "profileMessage"
-      );
+const bioInput =
+  document.getElementById(
+    "bio"
+  );
 
-    const saveButton =
-      document.getElementById(
-        "saveButton"
-      );
+const bioCount =
+  document.getElementById(
+    "bioCount"
+  );
 
-    const logoutButton =
-      document.getElementById(
-        "logoutButton"
-      );
+const accountEmail =
+  document.getElementById(
+    "accountEmail"
+  );
 
-    const accountEmail =
-      document.getElementById(
-        "accountEmail"
-      );
+const saveButton =
+  document.getElementById(
+    "saveButton"
+  );
 
-    const avatarPreview =
-      document.getElementById(
-        "avatarPreview"
-      );
+const profileMessage =
+  document.getElementById(
+    "profileMessage"
+  );
 
-    const displayNamePreview =
-      document.getElementById(
-        "displayNamePreview"
-      );
+const usernameNotice =
+  document.getElementById(
+    "usernameNotice"
+  );
 
-    const usernamePreview =
-      document.getElementById(
-        "usernamePreview"
-      );
+const chooseUsernameButton =
+  document.getElementById(
+    "chooseUsernameButton"
+  );
 
-    const bioPreview =
-      document.getElementById(
-        "bioPreview"
-      );
+const avatarPreview =
+  document.getElementById(
+    "avatarPreview"
+  );
 
-    const editProfileCard =
-      document.getElementById(
-        "editProfileCard"
-      );
+const displayNamePreview =
+  document.getElementById(
+    "displayNamePreview"
+  );
 
-    const publicProfileCard =
-      document.getElementById(
-        "publicProfileCard"
-      );
+const usernamePreview =
+  document.getElementById(
+    "usernamePreview"
+  );
 
-    const publicActions =
-      document.getElementById(
-        "publicActions"
-      );
+const bioPreview =
+  document.getElementById(
+    "bioPreview"
+  );
 
-    const reportProfileButton =
-      document.getElementById(
-        "reportProfileButton"
-      );
+const editProfileCard =
+  document.getElementById(
+    "editProfileCard"
+  );
 
-    const backButton =
-      document.getElementById(
-        "backButton"
-      );
+const publicProfileCard =
+  document.getElementById(
+    "publicProfileCard"
+  );
 
-    const publicDisplayName =
-      document.getElementById(
-        "publicDisplayName"
-      );
+const publicActions =
+  document.getElementById(
+    "publicActions"
+  );
 
-    const publicUsername =
-      document.getElementById(
-        "publicUsername"
-      );
+const publicDisplayName =
+  document.getElementById(
+    "publicDisplayName"
+  );
 
-    const publicBio =
-      document.getElementById(
-        "publicBio"
-      );
+const publicUsername =
+  document.getElementById(
+    "publicUsername"
+  );
 
-    const profileEyebrow =
-      document.getElementById(
-        "profileEyebrow"
-      );
+const publicBio =
+  document.getElementById(
+    "publicBio"
+  );
 
-    const pageHeading =
-      document.getElementById(
-        "pageHeading"
-      );
+const profileEyebrow =
+  document.getElementById(
+    "profileEyebrow"
+  );
 
-    const pageIntro =
-      document.getElementById(
-        "pageIntro"
-      );
+const pageHeading =
+  document.getElementById(
+    "pageHeading"
+  );
 
-    let currentUser = null;
+const pageIntro =
+  document.getElementById(
+    "pageIntro"
+  );
 
-    let viewedUserId = null;
+const reportProfileButton =
+  document.getElementById(
+    "reportProfileButton"
+  );
 
-    let viewingOwnProfile = true;
+const dollStage =
+  document.getElementById(
+    "dollStage"
+  );
 
-    /* =====================================================
-       MESSAGE FUNCTIONS
-       ===================================================== */
+/* =========================================================
+   STATE
+========================================================= */
 
-    function showMessage(
-      text,
-      type
-    ) {
+let currentUser =
+  null;
 
-      profileMessage.textContent =
-        text;
+let viewedUserId =
+  null;
 
-      profileMessage.className =
-        "message show";
+let viewingOwnProfile =
+  true;
 
-      if (type) {
+/* =========================================================
+   USERNAME UX
+========================================================= */
 
-        profileMessage.classList.add(
-          type
-        );
+function normalizeUsername(
+  value
+){
 
-      }
+  return String(value || "")
+    .trim()
+    .replace(/^@+/,"")
+    .toLowerCase();
 
-    }
+}
 
-    function clearMessage() {
+function usernameLooksGenerated(
+  username
+){
 
-      profileMessage.textContent =
-        "";
+  const value =
+    normalizeUsername(
+      username
+    );
 
-      profileMessage.className =
-        "message";
+  if(!value){
+    return true;
+  }
 
-    }
+  /*
+    The beta account exposed the problem with names such as
+    "bookdragon". We do NOT assume every particular word is
+    generated. Instead the notice is also shown when the
+    account has never explicitly marked its profile complete.
+    This function catches obvious placeholder-style names.
+  */
 
-    /* =====================================================
-       CLEAN USERNAME
-       ===================================================== */
+  const placeholders = [
+    "bookdragon",
+    "reader",
+    "booklover",
+    "bookworm",
+    "gremlin",
+    "username"
+  ];
 
-    function cleanUsername(
-      value
-    ) {
+  return placeholders.includes(
+    value
+  );
 
-      return value
-        .toLowerCase()
+}
+
+function showUsernamePrompt(
+  shouldShow
+){
+
+  usernameNotice.classList.toggle(
+    "show",
+    Boolean(shouldShow)
+  );
+
+  usernameInput.classList.toggle(
+    "needs-attention",
+    Boolean(shouldShow)
+  );
+
+}
+
+chooseUsernameButton.addEventListener(
+  "click",
+  () => {
+
+    usernameInput.focus();
+
+    usernameInput.select();
+
+    usernameInput.scrollIntoView({
+      behavior:"smooth",
+      block:"center"
+    });
+
+  }
+);
+
+usernameInput.addEventListener(
+  "input",
+  () => {
+
+    usernameInput.value =
+      usernameInput.value
         .replace(
-          /[^a-z0-9_]/g,
+          /[^a-zA-Z0-9_]/g,
           ""
-        )
-        .slice(
-          0,
-          30
         );
 
-    }
-
-    usernameInput.addEventListener(
-      "input",
-      function () {
-
-        const cleaned =
-          cleanUsername(
-            usernameInput.value
-          );
-
-        if (
-          usernameInput.value !==
-          cleaned
-        ) {
-
-          usernameInput.value =
-            cleaned;
-
-        }
-
-        updatePreview();
-
-      }
+    showUsernamePrompt(
+      false
     );
 
-    /* =====================================================
-       PAPER DOLL MAKER
-       ===================================================== */
+    updatePreview();
 
-    const dollOptions = {
-      skin: [
-        { label: "Porcelain", value: "#f3d7c6" },
-        { label: "Peach", value: "#e8b895" },
-        { label: "Honey", value: "#c98f61" },
-        { label: "Caramel", value: "#a96f47" },
-        { label: "Chestnut", value: "#7b4b32" },
-        { label: "Espresso", value: "#4b2b22" },
-        { label: "Moss", value: "#87966b" },
-        { label: "Moonlit", value: "#a9a7bd" }
-      ],
-      eyes: ["Round", "Almond", "Soft", "Mischief", "Wide", "Sleepy"],
-      eyeColor: [
-        { label: "Brown", value: "#604329" },
-        { label: "Hazel", value: "#8a713c" },
-        { label: "Green", value: "#587358" },
-        { label: "Blue", value: "#577b9f" },
-        { label: "Gray", value: "#798087" },
-        { label: "Violet", value: "#725c8d" },
-        { label: "Amber", value: "#b26c24" },
-        { label: "Black", value: "#171614" }
-      ],
-      hair: ["Cropped", "Side Sweep", "Wavy", "Curly", "Bob", "Long", "Bun", "Mohawk", "Locs", "Bald"],
-      hairColor: [
-        { label: "Ink", value: "#171412" },
-        { label: "Espresso", value: "#3b271e" },
-        { label: "Chestnut", value: "#70452d" },
-        { label: "Copper", value: "#a65232" },
-        { label: "Honey", value: "#c38c43" },
-        { label: "Silver", value: "#aaa7a0" },
-        { label: "Rose", value: "#a95d6d" },
-        { label: "Violet", value: "#5f4a78" },
-        { label: "Teal", value: "#376f70" },
-        { label: "Forest", value: "#405d43" }
-      ],
-      facialHair: ["None", "Stubble", "Mustache", "Goatee", "Short Beard", "Full Beard"],
-      top: ["Tee", "Hoodie", "Sweater", "Collared", "Overalls", "Turtleneck", "Cape", "Tank"],
-      topColor: [
-        { label: "Forest", value: "#344c3a" },
-        { label: "Burgundy", value: "#713944" },
-        { label: "Midnight", value: "#29364d" },
-        { label: "Ochre", value: "#a27035" },
-        { label: "Plum", value: "#57405f" },
-        { label: "Rust", value: "#914e35" },
-        { label: "Cream", value: "#d7c9aa" },
-        { label: "Charcoal", value: "#343638" }
-      ],
-      accessory: ["None", "Round Glasses", "Square Glasses", "Leaf Earring", "Stars", "Bookish Monocle", "Tiny Crown", "Headphones"]
-    };
+  }
+);
 
-    const defaultDoll = {
-      skin: 2,
-      eyes: 3,
-      eyeColor: 2,
-      hair: 1,
-      hairColor: 2,
-      facialHair: 0,
-      top: 1,
-      topColor: 0,
-      accessory: 0
-    };
+/* =========================================================
+   PAPER DOLL DATA
+========================================================= */
 
-    let dollState = {
-      ...defaultDoll
-    };
+const dollOptions = {
 
-    function optionLabel(key) {
-      const option = dollOptions[key][dollState[key]];
-      return typeof option === "string" ? option : option.label;
+  skin:[
+    {
+      label:"Porcelain",
+      value:"#f4d6c6"
+    },
+    {
+      label:"Peach",
+      value:"#e7b995"
+    },
+    {
+      label:"Warm",
+      value:"#cc936d"
+    },
+    {
+      label:"Golden",
+      value:"#b87850"
+    },
+    {
+      label:"Brown",
+      value:"#8a563b"
+    },
+    {
+      label:"Deep",
+      value:"#573629"
     }
+  ],
 
-    function optionValue(key) {
-      const option = dollOptions[key][dollState[key]];
-      return typeof option === "string" ? option : option.value;
+  eyes:[
+    "Round",
+    "Almond",
+    "Soft",
+    "Mischief",
+    "Wide",
+    "Sleepy"
+  ],
+
+  eyeColor:[
+    {
+      label:"Brown",
+      value:"#694331"
+    },
+    {
+      label:"Hazel",
+      value:"#86733f"
+    },
+    {
+      label:"Green",
+      value:"#587059"
+    },
+    {
+      label:"Blue",
+      value:"#58758d"
+    },
+    {
+      label:"Gray",
+      value:"#747a7a"
+    },
+    {
+      label:"Violet",
+      value:"#75627d"
     }
+  ],
 
-    function cycleDollOption(key, direction) {
-      const length = dollOptions[key].length;
-      dollState[key] = (dollState[key] + direction + length) % length;
-      updatePreview();
+  hair:[
+    "Short",
+    "Messy",
+    "Wavy",
+    "Curly",
+    "Bob",
+    "Long",
+    "Bun",
+    "Mohawk",
+    "Locs",
+    "Bald"
+  ],
+
+  hairColor:[
+    {
+      label:"Black",
+      value:"#241d1a"
+    },
+    {
+      label:"Brown",
+      value:"#56392c"
+    },
+    {
+      label:"Chestnut",
+      value:"#77452f"
+    },
+    {
+      label:"Blonde",
+      value:"#c89e62"
+    },
+    {
+      label:"Copper",
+      value:"#a84f32"
+    },
+    {
+      label:"Silver",
+      value:"#aaa49b"
+    },
+    {
+      label:"Blue",
+      value:"#40566c"
+    },
+    {
+      label:"Purple",
+      value:"#5e456b"
     }
+  ],
 
-    function makeSwatches(key, containerId) {
-      const container = document.getElementById(containerId);
-      container.innerHTML = "";
+  facialHair:[
+    "None",
+    "Stubble",
+    "Mustache",
+    "Goatee",
+    "Short Beard",
+    "Full Beard"
+  ],
 
-      dollOptions[key].forEach(function (option, index) {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "swatch";
-        button.style.setProperty("--swatch", option.value);
-        button.setAttribute("aria-label", option.label);
-        button.setAttribute("title", option.label);
-        button.setAttribute("aria-pressed", String(index === dollState[key]));
-        button.addEventListener("click", function () {
-          dollState[key] = index;
-          updatePreview();
-        });
-        container.appendChild(button);
-      });
+  top:[
+    "Tee",
+    "Hoodie",
+    "Sweater",
+    "Collared",
+    "Overalls",
+    "Turtleneck",
+    "Cape",
+    "Tank"
+  ],
+
+  topColor:[
+    {
+      label:"Forest",
+      value:"#34483a"
+    },
+    {
+      label:"Rust",
+      value:"#884c38"
+    },
+    {
+      label:"Gold",
+      value:"#a57a43"
+    },
+    {
+      label:"Blue",
+      value:"#40566c"
+    },
+    {
+      label:"Plum",
+      value:"#68455f"
+    },
+    {
+      label:"Cream",
+      value:"#c9b994"
+    },
+    {
+      label:"Black",
+      value:"#272a27"
     }
+  ],
 
-    function updateDollControls() {
-      ["eyes", "hair", "facialHair", "top", "accessory"].forEach(function (key) {
-        const track = document.getElementById(key + "Track");
-        const value = document.getElementById(key + "Value");
-        if (track) track.textContent = optionLabel(key);
-        if (value) value.textContent = optionLabel(key);
-      });
+  accessory:[
+    "None",
+    "Round Glasses",
+    "Square Glasses",
+    "Leaf Earring",
+    "Stars",
+    "Bookish Monocle",
+    "Tiny Crown",
+    "Headphones"
+  ]
 
-      ["skin", "eyeColor", "hairColor", "topColor"].forEach(function (key) {
-        const value = document.getElementById(key + "Value");
-        if (value) value.textContent = optionLabel(key);
-      });
+};
 
-      makeSwatches("skin", "skinSwatches");
-      makeSwatches("eyeColor", "eyeColorSwatches");
-      makeSwatches("hairColor", "hairColorSwatches");
-      makeSwatches("topColor", "topColorSwatches");
-    }
+const defaultDoll = {
+  skin:1,
+  eyes:0,
+  eyeColor:0,
+  hair:1,
+  hairColor:1,
+  facialHair:0,
+  top:1,
+  topColor:0,
+  accessory:0
+};
 
-    function hairBackSvg(style, color) {
-      const common = `fill="${color}" stroke="#33251e" stroke-width="5" stroke-linejoin="round"`;
-      const styles = {
-        "Long": `<path d="M84 112 Q83 49 150 43 Q218 49 216 116 L225 243 Q196 260 176 239 L124 239 Q102 261 75 242 Z" ${common}/>` ,
-        "Bob": `<path d="M82 111 Q84 45 150 43 Q215 46 218 113 L211 189 Q192 205 172 192 L128 192 Q106 206 88 187 Z" ${common}/>` ,
-        "Bun": `<circle cx="150" cy="34" r="34" ${common}/><path d="M88 115 Q84 51 150 44 Q216 52 212 116 L199 151 L101 151 Z" ${common}/>` ,
-        "Locs": `<path d="M92 92 Q103 46 150 45 Q201 48 210 94" fill="none" stroke="${color}" stroke-width="31" stroke-linecap="round"/><g fill="none" stroke="${color}" stroke-width="12" stroke-linecap="round"><path d="M95 82 Q69 145 90 227"/><path d="M112 67 Q86 143 105 240"/><path d="M188 67 Q214 143 195 240"/><path d="M205 82 Q231 145 210 227"/></g>`
-      };
-      return styles[style] || "";
-    }
+let dollState = {
+  ...defaultDoll
+};
 
-    function hairFrontSvg(style, color) {
-      const common = `fill="${color}" stroke="#33251e" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"`;
-      const styles = {
-        "Cropped": `<path d="M93 103 Q88 54 130 45 Q185 31 209 84 L205 104 Q185 79 162 82 Q126 67 93 103 Z" ${common}/>` ,
-        "Side Sweep": `<path d="M89 105 Q87 48 145 43 Q206 40 214 96 Q168 83 119 114 Q106 123 91 120 Z" ${common}/><path d="M110 75 Q158 89 201 61" fill="none" stroke="${color}" stroke-width="19" stroke-linecap="round"/>` ,
-        "Wavy": `<path d="M87 110 Q80 60 111 49 Q127 31 147 45 Q171 29 185 50 Q214 55 215 103 Q199 91 188 103 Q174 86 159 101 Q140 82 124 100 Q106 86 87 110 Z" ${common}/>` ,
-        "Curly": `<g ${common}><circle cx="100" cy="91" r="27"/><circle cx="114" cy="62" r="25"/><circle cx="145" cy="53" r="27"/><circle cx="177" cy="60" r="26"/><circle cx="201" cy="87" r="27"/><circle cx="178" cy="91" r="25"/><circle cx="132" cy="87" r="26"/></g>` ,
-        "Bob": `<path d="M89 103 Q88 52 144 43 Q202 39 214 98 Q181 78 160 99 Q127 76 89 111 Z" ${common}/>` ,
-        "Long": `<path d="M88 110 Q83 54 143 43 Q205 38 215 103 Q185 82 161 101 Q128 76 88 112 Z" ${common}/>` ,
-        "Bun": `<path d="M91 105 Q88 53 145 45 Q204 43 211 105 Q184 82 160 99 Q128 78 91 105 Z" ${common}/>` ,
-        "Mohawk": `<path d="M126 71 L136 22 L151 52 L169 12 L177 63 Q195 66 205 93 Q164 74 126 71 Z" ${common}/>` ,
-        "Locs": `<path d="M91 101 Q90 54 145 44 Q204 43 211 100 Q182 80 160 98 Q127 77 91 101 Z" ${common}/>` ,
-        "Bald": ``
-      };
-      return styles[style] || "";
-    }
+/* =========================================================
+   PART 2 CONTINUES DIRECTLY HERE
+========================================================= */
+  /* =========================================================
+   PAPER DOLL HELPERS
+========================================================= */
 
-    function eyesSvg(style, color) {
-      const iris = (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${color}" stroke="#2d211c" stroke-width="2"/><circle cx="${x}" cy="${y}" r="${Math.max(3, r * 0.42)}" fill="#151311"/><circle cx="${x - 3}" cy="${y - 3}" r="2.5" fill="#fff" opacity=".85"/>`;
-      const styles = {
-        "Round": `<g fill="#fffaf0" stroke="#3a2921" stroke-width="4"><circle cx="124" cy="128" r="16"/><circle cx="176" cy="128" r="16"/></g>${iris(124,128,9)}${iris(176,128,9)}` ,
-        "Almond": `<path d="M105 128 Q124 109 143 128 Q124 146 105 128 Z M157 128 Q176 109 195 128 Q176 146 157 128 Z" fill="#fffaf0" stroke="#3a2921" stroke-width="4"/>${iris(124,128,8)}${iris(176,128,8)}` ,
-        "Soft": `<path d="M106 130 Q124 116 142 130 Q124 143 106 130 Z M158 130 Q176 116 194 130 Q176 143 158 130 Z" fill="#fffaf0" stroke="#3a2921" stroke-width="3"/>${iris(124,130,7)}${iris(176,130,7)}` ,
-        "Mischief": `<path d="M106 123 Q124 116 142 130 Q124 143 106 127 Z M158 130 Q176 116 194 123 L194 127 Q176 143 158 130 Z" fill="#fffaf0" stroke="#3a2921" stroke-width="4"/>${iris(125,129,7)}${iris(175,129,7)}` ,
-        "Wide": `<g fill="#fffaf0" stroke="#3a2921" stroke-width="4"><ellipse cx="123" cy="128" rx="18" ry="21"/><ellipse cx="177" cy="128" rx="18" ry="21"/></g>${iris(123,129,10)}${iris(177,129,10)}` ,
-        "Sleepy": `<path d="M105 132 Q124 116 143 132 M157 132 Q176 116 195 132" fill="none" stroke="#3a2921" stroke-width="5" stroke-linecap="round"/><path d="M109 135 Q124 143 139 135 M161 135 Q176 143 191 135" fill="none" stroke="${color}" stroke-width="5" stroke-linecap="round"/>`
-      };
-      return styles[style] || styles.Round;
-    }
+function optionItem(key){
 
-    function topSvg(style, color, skin) {
-      const outline = `stroke="#35271f" stroke-width="5" stroke-linejoin="round"`;
-      const base = `<path d="M75 300 L82 252 Q88 218 124 207 L176 207 Q212 218 218 252 L225 300 Z" fill="${color}" ${outline}/>`;
-      const styles = {
-        "Tee": `${base}<path d="M125 210 Q150 232 175 210" fill="none" stroke="#d7c9aa" stroke-width="5" opacity=".65"/>` ,
-        "Hoodie": `${base}<path d="M112 218 Q150 193 188 218 L176 247 Q150 229 124 247 Z" fill="none" stroke="#d7c9aa" stroke-width="6" opacity=".45"/><path d="M144 231 V270 M156 231 V270" stroke="#d7c9aa" stroke-width="3"/>` ,
-        "Sweater": `${base}<g stroke="#d7c9aa" stroke-width="3" opacity=".38"><path d="M100 245 L200 245"/><path d="M96 263 L204 263"/><path d="M93 281 L207 281"/></g>` ,
-        "Collared": `${base}<path d="M121 209 L150 239 L179 209 L166 252 L150 239 L134 252 Z" fill="#e3d8bf" ${outline}/><path d="M150 239 V300" stroke="#35271f" stroke-width="4"/>` ,
-        "Overalls": `<path d="M75 300 L82 252 Q88 218 124 207 L176 207 Q212 218 218 252 L225 300 Z" fill="#d7c9aa" ${outline}/><path d="M112 211 V251 H188 V211 M108 246 H192 V300 H108 Z" fill="${color}" ${outline}/><circle cx="121" cy="252" r="5" fill="#c79b59"/><circle cx="179" cy="252" r="5" fill="#c79b59"/>` ,
-        "Turtleneck": `${base}<path d="M125 201 H175 V236 Q150 247 125 236 Z" fill="${color}" ${outline}/>` ,
-        "Cape": `${base}<path d="M118 207 Q74 218 56 291 L105 300 L130 222 Z M182 207 Q226 218 244 291 L195 300 L170 222 Z" fill="#713944" ${outline}/><circle cx="150" cy="216" r="8" fill="#c79b59"/>` ,
-        "Tank": `<path d="M91 300 L94 247 Q99 220 126 209 L128 242 Q150 252 172 242 L174 209 Q201 220 206 247 L209 300 Z" fill="${color}" ${outline}/><path d="M128 211 Q150 234 172 211" fill="${skin}" stroke="#35271f" stroke-width="4"/>`
-      };
-      return styles[style] || base;
-    }
+  const list =
+    dollOptions[key];
 
-    function facialHairSvg(style, color) {
-      const common = `fill="${color}" stroke="#33251e" stroke-width="3" stroke-linejoin="round"`;
-      const styles = {
-        "None": "",
-        "Stubble": `<g fill="#33251e" opacity=".45"><circle cx="131" cy="176" r="1.8"/><circle cx="141" cy="183" r="1.8"/><circle cx="151" cy="177" r="1.8"/><circle cx="161" cy="183" r="1.8"/><circle cx="171" cy="176" r="1.8"/><circle cx="145" cy="193" r="1.8"/><circle cx="158" cy="193" r="1.8"/></g>` ,
-        "Mustache": `<path d="M150 173 Q137 161 122 175 Q138 181 150 175 Q162 181 178 175 Q163 161 150 173 Z" ${common}/>` ,
-        "Goatee": `<path d="M150 173 Q137 163 125 175 Q139 181 150 175 Q161 181 175 175 Q163 163 150 173 Z M137 187 Q150 205 163 187 L160 211 Q150 222 140 211 Z" ${common}/>` ,
-        "Short Beard": `<path d="M105 158 Q112 204 150 218 Q188 204 195 158 Q183 181 170 185 Q150 204 130 185 Q117 181 105 158 Z" ${common}/>` ,
-        "Full Beard": `<path d="M101 151 Q101 210 150 231 Q199 210 199 151 Q190 174 177 183 Q171 215 150 220 Q129 215 123 183 Q110 174 101 151 Z" ${common}/>`
-      };
-      return styles[style] || "";
-    }
+  const index =
+    dollState[key];
 
-    function accessorySvg(style) {
-      const styles = {
-        "None": "",
-        "Round Glasses": `<g fill="none" stroke="#33251e" stroke-width="5"><circle cx="123" cy="129" r="22"/><circle cx="177" cy="129" r="22"/><path d="M145 129 H155 M101 125 L88 119 M199 125 L212 119"/></g>` ,
-        "Square Glasses": `<g fill="none" stroke="#33251e" stroke-width="5" stroke-linejoin="round"><rect x="101" y="108" width="43" height="38" rx="7"/><rect x="156" y="108" width="43" height="38" rx="7"/><path d="M144 126 H156 M101 121 L88 116 M199 121 L212 116"/></g>` ,
-        "Leaf Earring": `<path d="M207 158 Q230 164 210 185 Q199 170 207 158 Z" fill="#c79b59" stroke="#33251e" stroke-width="3"/><path d="M207 161 L211 179" stroke="#33251e" stroke-width="2"/>` ,
-        "Stars": `<g fill="#dfbd7e" stroke="#33251e" stroke-width="2"><path d="M91 89 l5 10 11 2-8 8 2 11-10-5-10 5 2-11-8-8 11-2z"/><path d="M213 61 l4 8 9 1-7 7 2 9-8-4-8 4 2-9-7-7 9-1z"/></g>` ,
-        "Bookish Monocle": `<circle cx="177" cy="129" r="24" fill="none" stroke="#c79b59" stroke-width="5"/><path d="M195 145 Q218 174 205 211" fill="none" stroke="#c79b59" stroke-width="4"/>` ,
-        "Tiny Crown": `<path d="M118 56 L124 24 L145 45 L163 18 L178 46 L198 27 L194 62 Z" fill="#c79b59" stroke="#33251e" stroke-width="4" stroke-linejoin="round"/><circle cx="163" cy="43" r="5" fill="#713944"/>` ,
-        "Headphones": `<path d="M88 126 Q84 58 150 53 Q216 58 212 126" fill="none" stroke="#33251e" stroke-width="10"/><rect x="78" y="117" width="27" height="55" rx="12" fill="#c79b59" stroke="#33251e" stroke-width="5"/><rect x="195" y="117" width="27" height="55" rx="12" fill="#c79b59" stroke="#33251e" stroke-width="5"/>`
-      };
-      return styles[style] || "";
-    }
+  return list[index];
 
-    function getAvatarSvg() {
-      const skin = optionValue("skin");
-      const eyeColor = optionValue("eyeColor");
-      const hairColor = optionValue("hairColor");
-      const topColor = optionValue("topColor");
-      const hair = optionLabel("hair");
-      const paperLight = "#e9ddc4";
-      const paperDark = "#cbb98f";
+}
 
-      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" role="img" aria-label="Custom Paper Gremlin avatar">
-        <metadata data-kind="paper-gremlin-avatar">${JSON.stringify(dollState)}</metadata>
-        <defs>
-          <radialGradient id="paperBg" cx="35%" cy="24%" r="85%"><stop offset="0" stop-color="${paperLight}"/><stop offset="1" stop-color="${paperDark}"/></radialGradient>
-          <filter id="paperShadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="7" stdDeviation="6" flood-color="#15110d" flood-opacity=".32"/></filter>
-          <pattern id="speckles" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="4" cy="6" r="1" fill="#4c3829" opacity=".10"/><circle cx="21" cy="18" r=".8" fill="#4c3829" opacity=".08"/></pattern>
-        </defs>
-        <rect width="300" height="300" fill="url(#paperBg)"/>
-        <rect width="300" height="300" fill="url(#speckles)"/>
-        <path d="M25 250 Q62 231 99 250 T175 250 T275 250 V300 H25 Z" fill="#26362b" opacity=".22"/>
-        <g filter="url(#paperShadow)">
-          ${hairBackSvg(hair, hairColor)}
-          ${topSvg(optionLabel("top"), topColor, skin)}
-          <path d="M130 190 H170 L175 220 Q150 236 125 220 Z" fill="${skin}" stroke="#35271f" stroke-width="5"/>
-          <path d="M95 115 L62 91 Q54 85 58 105 L72 148 Q77 162 97 155 Z" fill="${skin}" stroke="#35271f" stroke-width="5" stroke-linejoin="round"/>
-          <path d="M205 115 L238 91 Q246 85 242 105 L228 148 Q223 162 203 155 Z" fill="${skin}" stroke="#35271f" stroke-width="5" stroke-linejoin="round"/>
-          <ellipse cx="150" cy="133" rx="61" ry="76" fill="${skin}" stroke="#35271f" stroke-width="5"/>
-          <path d="M70 105 L82 118 L67 122 Z M230 105 L218 118 L233 122 Z" fill="#dfbd7e" opacity=".55"/>
-          ${eyesSvg(optionLabel("eyes"), eyeColor)}
-          <path d="M150 137 Q143 154 151 158" fill="none" stroke="#6e4a39" stroke-width="3" stroke-linecap="round" opacity=".72"/>
-          <path d="M132 177 Q150 189 168 177" fill="none" stroke="#6e3f3d" stroke-width="4" stroke-linecap="round"/>
-          <circle cx="111" cy="160" r="9" fill="#bd6b68" opacity=".16"/><circle cx="189" cy="160" r="9" fill="#bd6b68" opacity=".16"/>
-          ${facialHairSvg(optionLabel("facialHair"), hairColor)}
-          ${hairFrontSvg(hair, hairColor)}
-          ${accessorySvg(optionLabel("accessory"))}
-        </g>
-      </svg>`;
-    }
+function optionLabel(key){
 
-    function getAvatarDataUri() {
-      const svg = getAvatarSvg();
-      return "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svg)));
-    }
+  const item =
+    optionItem(key);
 
-    function restoreDollFromAvatar(avatarUrl) {
-      if (!avatarUrl || !avatarUrl.startsWith("data:image/svg+xml;base64,")) return false;
+  return typeof item === "string"
+    ? item
+    : item.label;
 
-      try {
-        const encoded = avatarUrl.split(",")[1];
-        const svg = decodeURIComponent(escape(atob(encoded)));
-        const match = svg.match(/<metadata data-kind="paper-gremlin-avatar">([^<]+)<\/metadata>/);
-        if (!match) return false;
-        const saved = JSON.parse(match[1]);
+}
 
-        Object.keys(defaultDoll).forEach(function (key) {
-          const value = Number(saved[key]);
-          if (Number.isInteger(value) && value >= 0 && value < dollOptions[key].length) {
-            dollState[key] = value;
+function optionValue(key){
+
+  const item =
+    optionItem(key);
+
+  return typeof item === "string"
+    ? item
+    : item.value;
+
+}
+
+function cycleDollOption(
+  key,
+  direction
+){
+
+  const list =
+    dollOptions[key];
+
+  const current =
+    dollState[key];
+
+  dollState[key] =
+    (
+      current +
+      direction +
+      list.length
+    ) %
+    list.length;
+
+  updatePreview();
+
+}
+
+function setDollOption(
+  key,
+  index
+){
+
+  dollState[key] =
+    index;
+
+  updatePreview();
+
+}
+
+/* =========================================================
+   SWATCHES
+========================================================= */
+
+function createSwatches(
+  key,
+  holderId
+){
+
+  const holder =
+    document.getElementById(
+      holderId
+    );
+
+  holder.innerHTML =
+    "";
+
+  dollOptions[key]
+    .forEach(
+      (
+        option,
+        index
+      ) => {
+
+        const button =
+          document.createElement(
+            "button"
+          );
+
+        button.type =
+          "button";
+
+        button.className =
+          "swatch";
+
+        button.style.setProperty(
+          "--swatch",
+          option.value
+        );
+
+        button.title =
+          option.label;
+
+        button.setAttribute(
+          "aria-label",
+          option.label
+        );
+
+        button.setAttribute(
+          "aria-pressed",
+          String(
+            dollState[key] ===
+            index
+          )
+        );
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            setDollOption(
+              key,
+              index
+            );
+
           }
-        });
-        return true;
+        );
+
+        holder.appendChild(
+          button
+        );
+
       }
-      catch (error) {
-        console.warn("Could not restore Paper Gremlin avatar:", error);
-        return false;
+    );
+
+}
+
+function updateDollControls(){
+
+  const mappings = [
+    [
+      "skin",
+      "skinValue"
+    ],
+    [
+      "eyes",
+      "eyesValue"
+    ],
+    [
+      "eyeColor",
+      "eyeColorValue"
+    ],
+    [
+      "hair",
+      "hairValue"
+    ],
+    [
+      "hairColor",
+      "hairColorValue"
+    ],
+    [
+      "facialHair",
+      "facialHairValue"
+    ],
+    [
+      "top",
+      "topValue"
+    ],
+    [
+      "topColor",
+      "topColorValue"
+    ],
+    [
+      "accessory",
+      "accessoryValue"
+    ]
+  ];
+
+  mappings.forEach(
+    ([key,id]) => {
+
+      const element =
+        document.getElementById(
+          id
+        );
+
+      if(element){
+
+        element.textContent =
+          optionLabel(key);
+
       }
+
+    }
+  );
+
+  const tracks = [
+    [
+      "eyes",
+      "eyesTrack"
+    ],
+    [
+      "hair",
+      "hairTrack"
+    ],
+    [
+      "facialHair",
+      "facialHairTrack"
+    ],
+    [
+      "top",
+      "topTrack"
+    ],
+    [
+      "accessory",
+      "accessoryTrack"
+    ]
+  ];
+
+  tracks.forEach(
+    ([key,id]) => {
+
+      const element =
+        document.getElementById(
+          id
+        );
+
+      if(element){
+
+        element.textContent =
+          optionLabel(key);
+
+      }
+
+    }
+  );
+
+  createSwatches(
+    "skin",
+    "skinSwatches"
+  );
+
+  createSwatches(
+    "eyeColor",
+    "eyeColorSwatches"
+  );
+
+  createSwatches(
+    "hairColor",
+    "hairColorSwatches"
+  );
+
+  createSwatches(
+    "topColor",
+    "topColorSwatches"
+  );
+
+}
+
+/* =========================================================
+   PAPER DOLL SVG
+========================================================= */
+
+function hairBackSvg(
+  style,
+  color
+){
+
+  const common =
+    `fill="${color}" stroke="#33251e" stroke-width="5" stroke-linejoin="round"`;
+
+  const styles = {
+
+    "Short":
+      "",
+
+    "Messy":
+      `<path
+        d="M90 105
+           Q83 62 112 52
+           L105 33
+           L132 47
+           L146 23
+           L160 47
+           L187 30
+           L186 54
+           Q215 66 211 108
+           L205 158
+           Q193 180 185 186
+           L183 115
+           Q150 83 117 113
+           L114 186
+           Q101 176 95 158 Z"
+        ${common}
+      />`,
+
+    "Wavy":
+      `<path
+        d="M88 109
+           Q78 58 111 47
+           Q128 29 147 44
+           Q171 28 189 48
+           Q219 55 216 106
+           L218 191
+           Q203 206 188 190
+           Q176 206 162 190
+           Q148 207 133 190
+           Q117 207 101 190
+           L85 171 Z"
+        ${common}
+      />`,
+
+    "Curly":
+      `<g ${common}>
+        <circle cx="92" cy="103" r="29"/>
+        <circle cx="104" cy="72" r="28"/>
+        <circle cx="130" cy="51" r="28"/>
+        <circle cx="160" cy="48" r="29"/>
+        <circle cx="190" cy="65" r="29"/>
+        <circle cx="209" cy="94" r="28"/>
+        <circle cx="205" cy="130" r="25"/>
+        <circle cx="96" cy="133" r="25"/>
+      </g>`,
+
+    "Bob":
+      `<path
+        d="M88 105
+           Q86 52 143 42
+           Q204 39 215 101
+           L218 181
+           Q199 201 184 187
+           L184 111
+           Q150 83 116 110
+           L116 188
+           Q98 200 82 180 Z"
+        ${common}
+      />`,
+
+    "Long":
+      `<path
+        d="M87 110
+           Q81 53 143 42
+           Q208 38 216 106
+           L232 263
+           Q204 276 180 254
+           L181 112
+           Q150 83 117 112
+           L119 255
+           Q94 276 68 263 Z"
+        ${common}
+      />`,
+
+    "Bun":
+      `<circle
+        cx="150"
+        cy="38"
+        r="35"
+        ${common}
+      />
+      <path
+        d="M90 106
+           Q86 53 145 44
+           Q205 42 212 105
+           L202 165
+           L186 180
+           L182 111
+           Q150 84 117 111
+           L114 181
+           L98 166 Z"
+        ${common}
+      />`,
+
+    "Mohawk":
+      "",
+
+    "Locs":
+      `<path
+        d="M91 105
+           Q86 52 145 43
+           Q206 42 213 104"
+        fill="${color}"
+        stroke="#33251e"
+        stroke-width="24"
+        stroke-linecap="round"
+      />
+      <g
+        fill="none"
+        stroke="${color}"
+        stroke-width="12"
+        stroke-linecap="round"
+      >
+        <path d="M98 89 Q75 148 83 220"/>
+        <path d="M113 67 Q94 145 101 238"/>
+        <path d="M132 57 Q116 153 121 245"/>
+        <path d="M169 57 Q185 153 180 245"/>
+        <path d="M188 68 Q208 146 200 238"/>
+        <path d="M203 90 Q225 149 217 220"/>
+      </g>`,
+
+    "Bald":
+      ""
+
+  };
+
+  return styles[style] || "";
+
+}
+
+function hairFrontSvg(
+  style,
+  color
+){
+
+  const common =
+    `fill="${color}" stroke="#33251e" stroke-width="5" stroke-linejoin="round"`;
+
+  const styles = {
+
+    "Short":
+      `<path
+        d="M91 107
+           Q91 55 145 46
+           Q203 43 210 105
+           Q184 82 161 99
+           Q129 79 91 107 Z"
+        ${common}
+      />`,
+
+    "Messy":
+      `<path
+        d="M87 111
+           L94 72
+           L109 80
+           L115 49
+           L133 64
+           L147 34
+           L160 63
+           L185 43
+           L184 70
+           L209 62
+           L213 104
+           Q186 83 161 101
+           Q128 78 87 111 Z"
+        ${common}
+      />`,
+
+    "Wavy":
+      `<path
+        d="M87 110
+           Q80 60 111 49
+           Q127 31 147 45
+           Q171 29 185 50
+           Q214 55 215 103
+           Q199 91 188 103
+           Q174 86 159 101
+           Q140 82 124 100
+           Q106 86 87 110 Z"
+        ${common}
+      />`,
+
+    "Curly":
+      `<g ${common}>
+        <circle cx="100" cy="91" r="27"/>
+        <circle cx="114" cy="62" r="25"/>
+        <circle cx="145" cy="53" r="27"/>
+        <circle cx="177" cy="60" r="26"/>
+        <circle cx="201" cy="87" r="27"/>
+        <circle cx="178" cy="91" r="25"/>
+        <circle cx="132" cy="87" r="26"/>
+      </g>`,
+
+    "Bob":
+      `<path
+        d="M89 103
+           Q88 52 144 43
+           Q202 39 214 98
+           Q181 78 160 99
+           Q127 76 89 111 Z"
+        ${common}
+      />`,
+
+    "Long":
+      `<path
+        d="M88 110
+           Q83 54 143 43
+           Q205 38 215 103
+           Q185 82 161 101
+           Q128 76 88 112 Z"
+        ${common}
+      />`,
+
+    "Bun":
+      `<path
+        d="M91 105
+           Q88 53 145 45
+           Q204 43 211 105
+           Q184 82 160 99
+           Q128 78 91 105 Z"
+        ${common}
+      />`,
+
+    "Mohawk":
+      `<path
+        d="M126 71
+           L136 22
+           L151 52
+           L169 12
+           L177 63
+           Q195 66 205 93
+           Q164 74 126 71 Z"
+        ${common}
+      />`,
+
+    "Locs":
+      `<path
+        d="M91 101
+           Q90 54 145 44
+           Q204 43 211 100
+           Q182 80 160 98
+           Q127 77 91 101 Z"
+        ${common}
+      />`,
+
+    "Bald":
+      ""
+
+  };
+
+  return styles[style] || "";
+
+}
+
+function eyesSvg(
+  style,
+  color
+){
+
+  const iris =
+    (
+      x,
+      y,
+      r
+    ) =>
+      `<circle
+        cx="${x}"
+        cy="${y}"
+        r="${r}"
+        fill="${color}"
+        stroke="#2d211c"
+        stroke-width="2"
+      />
+      <circle
+        cx="${x}"
+        cy="${y}"
+        r="${Math.max(3,r * .42)}"
+        fill="#151311"
+      />
+      <circle
+        cx="${x - 3}"
+        cy="${y - 3}"
+        r="2.5"
+        fill="#fff"
+        opacity=".85"
+      />`;
+
+  const styles = {
+
+    "Round":
+      `<g
+        fill="#fffaf0"
+        stroke="#3a2921"
+        stroke-width="4"
+      >
+        <circle cx="124" cy="128" r="16"/>
+        <circle cx="176" cy="128" r="16"/>
+      </g>
+      ${iris(124,128,9)}
+      ${iris(176,128,9)}`,
+
+    "Almond":
+      `<path
+        d="M105 128
+           Q124 109 143 128
+           Q124 146 105 128 Z
+
+           M157 128
+           Q176 109 195 128
+           Q176 146 157 128 Z"
+        fill="#fffaf0"
+        stroke="#3a2921"
+        stroke-width="4"
+      />
+      ${iris(124,128,8)}
+      ${iris(176,128,8)}`,
+
+    "Soft":
+      `<path
+        d="M106 130
+           Q124 116 142 130
+           Q124 143 106 130 Z
+
+           M158 130
+           Q176 116 194 130
+           Q176 143 158 130 Z"
+        fill="#fffaf0"
+        stroke="#3a2921"
+        stroke-width="3"
+      />
+      ${iris(124,130,7)}
+      ${iris(176,130,7)}`,
+
+    "Mischief":
+      `<path
+        d="M106 123
+           Q124 116 142 130
+           Q124 143 106 127 Z
+
+           M158 130
+           Q176 116 194 123
+           L194 127
+           Q176 143 158 130 Z"
+        fill="#fffaf0"
+        stroke="#3a2921"
+        stroke-width="4"
+      />
+      ${iris(125,129,7)}
+      ${iris(175,129,7)}`,
+
+    "Wide":
+      `<g
+        fill="#fffaf0"
+        stroke="#3a2921"
+        stroke-width="4"
+      >
+        <ellipse
+          cx="123"
+          cy="128"
+          rx="18"
+          ry="21"
+        />
+        <ellipse
+          cx="177"
+          cy="128"
+          rx="18"
+          ry="21"
+        />
+      </g>
+      ${iris(123,129,10)}
+      ${iris(177,129,10)}`,
+
+    "Sleepy":
+      `<path
+        d="M105 132
+           Q124 116 143 132
+
+           M157 132
+           Q176 116 195 132"
+        fill="none"
+        stroke="#3a2921"
+        stroke-width="5"
+        stroke-linecap="round"
+      />
+      <path
+        d="M109 135
+           Q124 143 139 135
+
+           M161 135
+           Q176 143 191 135"
+        fill="none"
+        stroke="${color}"
+        stroke-width="5"
+        stroke-linecap="round"
+      />`
+
+  };
+
+  return styles[style] ||
+    styles.Round;
+
+}
+
+function topSvg(
+  style,
+  color,
+  skin
+){
+
+  const outline =
+    `stroke="#35271f"
+     stroke-width="5"
+     stroke-linejoin="round"`;
+
+  const base =
+    `<path
+      d="M75 300
+         L82 252
+         Q88 218 124 207
+         L176 207
+         Q212 218 218 252
+         L225 300 Z"
+      fill="${color}"
+      ${outline}
+    />`;
+
+  const styles = {
+
+    "Tee":
+      `${base}
+      <path
+        d="M125 210
+           Q150 232 175 210"
+        fill="none"
+        stroke="#d7c9aa"
+        stroke-width="5"
+        opacity=".65"
+      />`,
+
+    "Hoodie":
+      `${base}
+      <path
+        d="M112 218
+           Q150 193 188 218
+           L176 247
+           Q150 229 124 247 Z"
+        fill="none"
+        stroke="#d7c9aa"
+        stroke-width="6"
+        opacity=".45"
+      />
+      <path
+        d="M144 231 V270
+           M156 231 V270"
+        stroke="#d7c9aa"
+        stroke-width="3"
+      />`,
+
+    "Sweater":
+      `${base}
+      <g
+        stroke="#d7c9aa"
+        stroke-width="3"
+        opacity=".38"
+      >
+        <path d="M100 245 L200 245"/>
+        <path d="M96 263 L204 263"/>
+        <path d="M93 281 L207 281"/>
+      </g>`,
+
+    "Collared":
+      `${base}
+      <path
+        d="M121 209
+           L150 239
+           L179 209
+           L166 252
+           L150 239
+           L134 252 Z"
+        fill="#e3d8bf"
+        ${outline}
+      />
+      <path
+        d="M150 239 V300"
+        stroke="#35271f"
+        stroke-width="4"
+      />`,
+
+    "Overalls":
+      `<path
+        d="M75 300
+           L82 252
+           Q88 218 124 207
+           L176 207
+           Q212 218 218 252
+           L225 300 Z"
+        fill="#d7c9aa"
+        ${outline}
+      />
+      <path
+        d="M112 211
+           V251
+           H188
+           V211
+
+           M108 246
+           H192
+           V300
+           H108 Z"
+        fill="${color}"
+        ${outline}
+      />
+      <circle
+        cx="121"
+        cy="252"
+        r="5"
+        fill="#c79b59"
+      />
+      <circle
+        cx="179"
+        cy="252"
+        r="5"
+        fill="#c79b59"
+      />`,
+
+    "Turtleneck":
+      `${base}
+      <path
+        d="M125 201
+           H175
+           V236
+           Q150 247 125 236 Z"
+        fill="${color}"
+        ${outline}
+      />`,
+
+    "Cape":
+      `${base}
+      <path
+        d="M118 207
+           Q74 218 56 291
+           L105 300
+           L130 222 Z
+
+           M182 207
+           Q226 218 244 291
+           L195 300
+           L170 222 Z"
+        fill="#713944"
+        ${outline}
+      />
+      <circle
+        cx="150"
+        cy="216"
+        r="8"
+        fill="#c79b59"
+      />`,
+
+    "Tank":
+      `<path
+        d="M91 300
+           L94 247
+           Q99 220 126 209
+           L128 242
+           Q150 252 172 242
+           L174 209
+           Q201 220 206 247
+           L209 300 Z"
+        fill="${color}"
+        ${outline}
+      />
+      <path
+        d="M128 211
+           Q150 234 172 211"
+        fill="${skin}"
+        stroke="#35271f"
+        stroke-width="4"
+      />`
+
+  };
+
+  return styles[style] ||
+    base;
+
+}
+
+/* =========================================================
+   FACIAL HAIR
+========================================================= */
+
+function facialHairSvg(
+  style,
+  color
+){
+
+  const common =
+    `fill="${color}"
+     stroke="#33251e"
+     stroke-width="3"
+     stroke-linejoin="round"`;
+
+  const styles = {
+
+    "None":
+      "",
+
+    "Stubble":
+      `<g
+        fill="#33251e"
+        opacity=".45"
+      >
+        <circle cx="131" cy="176" r="1.8"/>
+        <circle cx="141" cy="183" r="1.8"/>
+        <circle cx="151" cy="177" r="1.8"/>
+        <circle cx="161" cy="183" r="1.8"/>
+        <circle cx="171" cy="176" r="1.8"/>
+        <circle cx="145" cy="193" r="1.8"/>
+        <circle cx="158" cy="193" r="1.8"/>
+      </g>`,
+
+    "Mustache":
+      `<path
+        d="M150 173
+           Q137 161 122 175
+           Q138 181 150 175
+           Q162 181 178 175
+           Q163 161 150 173 Z"
+        ${common}
+      />`,
+
+    "Goatee":
+      `<path
+        d="M150 173
+           Q137 163 125 175
+           Q139 181 150 175
+           Q161 181 175 175
+           Q163 163 150 173 Z
+
+           M137 187
+           Q150 205 163 187
+           L160 211
+           Q150 222 140 211 Z"
+        ${common}
+      />`,
+
+    "Short Beard":
+      `<path
+        d="M105 158
+           Q112 204 150 218
+           Q188 204 195 158
+           Q183 181 170 185
+           Q150 204 130 185
+           Q117 181 105 158 Z"
+        ${common}
+      />`,
+
+    "Full Beard":
+      `<path
+        d="M101 151
+           Q101 210 150 231
+           Q199 210 199 151
+           Q190 174 177 183
+           Q171 215 150 220
+           Q129 215 123 183
+           Q110 174 101 151 Z"
+        ${common}
+      />`
+
+  };
+
+  return styles[style] || "";
+
+}
+
+/* =========================================================
+   ACCESSORIES
+========================================================= */
+
+function accessorySvg(
+  style
+){
+
+  const styles = {
+
+    "None":
+      "",
+
+    "Round Glasses":
+      `<g
+        fill="none"
+        stroke="#33251e"
+        stroke-width="5"
+      >
+        <circle cx="123" cy="129" r="22"/>
+        <circle cx="177" cy="129" r="22"/>
+        <path
+          d="M145 129 H155
+             M101 125 L88 119
+             M199 125 L212 119"
+        />
+      </g>`,
+
+    "Square Glasses":
+      `<g
+        fill="none"
+        stroke="#33251e"
+        stroke-width="5"
+        stroke-linejoin="round"
+      >
+        <rect
+          x="101"
+          y="108"
+          width="43"
+          height="38"
+          rx="7"
+        />
+        <rect
+          x="156"
+          y="108"
+          width="43"
+          height="38"
+          rx="7"
+        />
+        <path
+          d="M144 126 H156
+             M101 121 L88 116
+             M199 121 L212 116"
+        />
+      </g>`,
+
+    "Leaf Earring":
+      `<path
+        d="M207 158
+           Q230 164 210 185
+           Q199 170 207 158 Z"
+        fill="#c79b59"
+        stroke="#33251e"
+        stroke-width="3"
+      />
+      <path
+        d="M207 161 L211 179"
+        stroke="#33251e"
+        stroke-width="2"
+      />`,
+
+    "Stars":
+      `<g
+        fill="#dfbd7e"
+        stroke="#33251e"
+        stroke-width="2"
+      >
+        <path
+          d="M91 89
+             l5 10
+             11 2
+             -8 8
+             2 11
+             -10-5
+             -10 5
+             2-11
+             -8-8
+             11-2z"
+        />
+        <path
+          d="M213 61
+             l4 8
+             9 1
+             -7 7
+             2 9
+             -8-4
+             -8 4
+             2-9
+             -7-7
+             9-1z"
+        />
+      </g>`,
+
+    "Bookish Monocle":
+      `<circle
+        cx="177"
+        cy="129"
+        r="24"
+        fill="none"
+        stroke="#c79b59"
+        stroke-width="5"
+      />
+      <path
+        d="M195 145
+           Q218 174 205 211"
+        fill="none"
+        stroke="#c79b59"
+        stroke-width="4"
+      />`,
+
+    "Tiny Crown":
+      `<path
+        d="M118 56
+           L124 24
+           L145 45
+           L163 18
+           L178 46
+           L198 27
+           L194 62 Z"
+        fill="#c79b59"
+        stroke="#33251e"
+        stroke-width="4"
+        stroke-linejoin="round"
+      />
+      <circle
+        cx="163"
+        cy="43"
+        r="5"
+        fill="#713944"
+      />`,
+
+    "Headphones":
+      `<path
+        d="M88 126
+           Q84 58 150 53
+           Q216 58 212 126"
+        fill="none"
+        stroke="#33251e"
+        stroke-width="10"
+      />
+      <rect
+        x="78"
+        y="117"
+        width="27"
+        height="55"
+        rx="12"
+        fill="#c79b59"
+        stroke="#33251e"
+        stroke-width="5"
+      />
+      <rect
+        x="195"
+        y="117"
+        width="27"
+        height="55"
+        rx="12"
+        fill="#c79b59"
+        stroke="#33251e"
+        stroke-width="5"
+      />`
+
+  };
+
+  return styles[style] || "";
+
+}
+
+/* =========================================================
+   BUILD AVATAR
+========================================================= */
+
+function getAvatarSvg(){
+
+  const skin =
+    optionValue("skin");
+
+  const eyeColor =
+    optionValue("eyeColor");
+
+  const hairColor =
+    optionValue("hairColor");
+
+  const topColor =
+    optionValue("topColor");
+
+  const hair =
+    optionLabel("hair");
+
+  return `
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 300 300"
+    role="img"
+    aria-label="Custom Paper Gremlin avatar"
+  >
+
+    <metadata data-kind="paper-gremlin-avatar">${
+      JSON.stringify(
+        dollState
+      )
+    }</metadata>
+
+    <defs>
+
+      <radialGradient
+        id="paperBg"
+        cx="35%"
+        cy="24%"
+        r="85%"
+      >
+        <stop
+          offset="0"
+          stop-color="#e9ddc4"
+        />
+        <stop
+          offset="1"
+          stop-color="#cbb98f"
+        />
+      </radialGradient>
+
+      <filter
+        id="paperShadow"
+        x="-30%"
+        y="-30%"
+        width="160%"
+        height="170%"
+      >
+        <feDropShadow
+          dx="0"
+          dy="7"
+          stdDeviation="6"
+          flood-color="#15110d"
+          flood-opacity=".32"
+        />
+      </filter>
+
+      <pattern
+        id="speckles"
+        width="28"
+        height="28"
+        patternUnits="userSpaceOnUse"
+      >
+        <circle
+          cx="4"
+          cy="6"
+          r="1"
+          fill="#4c3829"
+          opacity=".10"
+        />
+        <circle
+          cx="21"
+          cy="18"
+          r=".8"
+          fill="#4c3829"
+          opacity=".08"
+        />
+      </pattern>
+
+    </defs>
+
+    <rect
+      width="300"
+      height="300"
+      fill="url(#paperBg)"
+    />
+
+    <rect
+      width="300"
+      height="300"
+      fill="url(#speckles)"
+    />
+
+    <path
+      d="M25 250
+         Q62 231 99 250
+         T175 250
+         T275 250
+         V300
+         H25 Z"
+      fill="#26362b"
+      opacity=".22"
+    />
+
+    <g filter="url(#paperShadow)">
+
+      ${hairBackSvg(
+        hair,
+        hairColor
+      )}
+
+      ${topSvg(
+        optionLabel("top"),
+        topColor,
+        skin
+      )}
+
+      <path
+        d="M130 190
+           H170
+           L175 220
+           Q150 236 125 220 Z"
+        fill="${skin}"
+        stroke="#35271f"
+        stroke-width="5"
+      />
+
+      <path
+        d="M95 115
+           L62 91
+           Q54 85 58 105
+           L72 148
+           Q77 162 97 155 Z"
+        fill="${skin}"
+        stroke="#35271f"
+        stroke-width="5"
+        stroke-linejoin="round"
+      />
+
+      <path
+        d="M205 115
+           L238 91
+           Q246 85 242 105
+           L228 148
+           Q223 162 203 155 Z"
+        fill="${skin}"
+        stroke="#35271f"
+        stroke-width="5"
+        stroke-linejoin="round"
+      />
+
+      <ellipse
+        cx="150"
+        cy="133"
+        rx="61"
+        ry="76"
+        fill="${skin}"
+        stroke="#35271f"
+        stroke-width="5"
+      />
+
+      <path
+        d="M70 105
+           L82 118
+           L67 122 Z
+
+           M230 105
+           L218 118
+           L233 122 Z"
+        fill="#dfbd7e"
+        opacity=".55"
+      />
+
+      ${eyesSvg(
+        optionLabel("eyes"),
+        eyeColor
+      )}
+
+      <path
+        d="M150 137
+           Q143 154 151 158"
+        fill="none"
+        stroke="#6e4a39"
+        stroke-width="3"
+        stroke-linecap="round"
+        opacity=".72"
+      />
+
+      <path
+        d="M132 177
+           Q150 189 168 177"
+        fill="none"
+        stroke="#6e3f3d"
+        stroke-width="4"
+        stroke-linecap="round"
+      />
+
+      <circle
+        cx="111"
+        cy="160"
+        r="9"
+        fill="#bd6b68"
+        opacity=".16"
+      />
+
+      <circle
+        cx="189"
+        cy="160"
+        r="9"
+        fill="#bd6b68"
+        opacity=".16"
+      />
+
+      ${facialHairSvg(
+        optionLabel("facialHair"),
+        hairColor
+      )}
+
+      ${hairFrontSvg(
+        hair,
+        hairColor
+      )}
+
+      ${accessorySvg(
+        optionLabel("accessory")
+      )}
+
+    </g>
+
+  </svg>`;
+
+}
+
+function getAvatarDataUri(){
+
+  const svg =
+    getAvatarSvg();
+
+  return (
+    "data:image/svg+xml;base64," +
+    btoa(
+      unescape(
+        encodeURIComponent(
+          svg
+        )
+      )
+    )
+  );
+
+}
+
+/* =========================================================
+   RESTORE PAPER DOLL
+========================================================= */
+
+function restoreDollFromAvatar(
+  avatarUrl
+){
+
+  if(
+    !avatarUrl ||
+    !avatarUrl.startsWith(
+      "data:image/svg+xml;base64,"
+    )
+  ){
+    return false;
+  }
+
+  try{
+
+    const encoded =
+      avatarUrl.split(",")[1];
+
+    const svg =
+      decodeURIComponent(
+        escape(
+          atob(encoded)
+        )
+      );
+
+    const match =
+      svg.match(
+        /<metadata data-kind="paper-gremlin-avatar">([^<]+)<\/metadata>/
+      );
+
+    if(!match){
+      return false;
     }
 
-    function restoreDollFromConfig(saved) {
-      if (!saved || typeof saved !== "object" || Array.isArray(saved)) return false;
+    const saved =
+      JSON.parse(
+        match[1]
+      );
 
-      let restored = false;
+    Object
+      .keys(defaultDoll)
+      .forEach(
+        key => {
 
-      Object.keys(defaultDoll).forEach(function (key) {
-        const value = Number(saved[key]);
-        if (Number.isInteger(value) && value >= 0 && value < dollOptions[key].length) {
-          dollState[key] = value;
-          restored = true;
+          const value =
+            Number(
+              saved[key]
+            );
+
+          if(
+            Number.isInteger(value) &&
+            value >= 0 &&
+            value <
+              dollOptions[key].length
+          ){
+
+            dollState[key] =
+              value;
+
+          }
+
         }
-      });
+      );
 
-      return restored;
-    }
+    return true;
 
-    function renderDoll() {
-      const svg = getAvatarSvg();
-      dollStage.innerHTML = svg;
-      updateDollControls();
-      setAvatar(getAvatarDataUri(), displayNameInput.value.trim());
-    }
+  }
 
-    document.querySelectorAll("[data-cycle]").forEach(function (button) {
-      button.addEventListener("click", function () {
-        cycleDollOption(button.dataset.cycle, Number(button.dataset.direction));
-      });
-    });
+  catch(error){
 
-    document.getElementById("randomizeDoll").addEventListener("click", function () {
-      Object.keys(dollState).forEach(function (key) {
-        dollState[key] = Math.floor(Math.random() * dollOptions[key].length);
-      });
-      updatePreview();
-    });
+    console.warn(
+      "Could not restore Paper Gremlin avatar:",
+      error
+    );
 
-    document.getElementById("resetDoll").addEventListener("click", function () {
-      dollState = { ...defaultDoll };
-      updatePreview();
-    });
+    return false;
 
-    /* =====================================================
-       PROFILE PREVIEW
-       ===================================================== */
+  }
 
-    function updatePreview() {
+}
 
-      const displayName =
-        displayNameInput
-          .value
-          .trim();
+function restoreDollFromConfig(
+  saved
+){
 
-      const username =
-        usernameInput
-          .value
-          .trim();
+  if(
+    !saved ||
+    typeof saved !== "object" ||
+    Array.isArray(saved)
+  ){
+    return false;
+  }
 
-      const bio =
-        bioInput
-          .value
-          .trim();
+  let restored =
+    false;
 
-      displayNamePreview.textContent =
-        displayName ||
-        "Your Name";
+  Object
+    .keys(defaultDoll)
+    .forEach(
+      key => {
 
-      usernamePreview.textContent =
-        username
-          ? "@" + username
-          : "@username";
-
-      if (bio) {
-
-        bioPreview.textContent =
-          bio;
-
-        bioPreview.classList.remove(
-          "preview-placeholder"
-        );
-
-      }
-
-      else {
-
-        bioPreview.textContent =
-          "Your bio will appear here.";
-
-        bioPreview.classList.add(
-          "preview-placeholder"
-        );
-
-      }
-
-      bioCount.textContent =
-        bioInput.value.length +
-        " / 500";
-
-      renderDoll();
-
-    }
-
-    function setAvatar(
-      url,
-      displayName
-    ) {
-
-      avatarPreview.innerHTML =
-        "";
-
-      const image =
-        document.createElement(
-          "img"
-        );
-
-      image.src =
-        url;
-
-      image.alt =
-        "Profile image";
-
-      image.onerror =
-        function () {
-
-          showAvatarInitial(
-            displayName
+        const value =
+          Number(
+            saved[key]
           );
 
-        };
+        if(
+          Number.isInteger(value) &&
+          value >= 0 &&
+          value <
+            dollOptions[key].length
+        ){
 
-      avatarPreview.appendChild(
-        image
+          dollState[key] =
+            value;
+
+          restored =
+            true;
+
+        }
+
+      }
+    );
+
+  return restored;
+
+}
+
+/* =========================================================
+   RENDER PAPER DOLL
+========================================================= */
+
+function renderDoll(){
+
+  dollStage.innerHTML =
+    getAvatarSvg();
+
+  updateDollControls();
+
+  setAvatar(
+    getAvatarDataUri(),
+    displayNameInput.value.trim()
+  );
+
+}
+
+document
+  .querySelectorAll(
+    "[data-cycle]"
+  )
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          cycleDollOption(
+            button.dataset.cycle,
+            Number(
+              button.dataset.direction
+            )
+          );
+
+        }
       );
 
     }
+  );
 
-    function showAvatarInitial(
-      displayName = ""
-    ) {
+document
+  .getElementById(
+    "randomizeDoll"
+  )
+  .addEventListener(
+    "click",
+    () => {
 
-      avatarPreview.innerHTML =
-        "";
+      Object
+        .keys(dollState)
+        .forEach(
+          key => {
 
-      avatarPreview.textContent =
+            dollState[key] =
+              Math.floor(
+                Math.random() *
+                dollOptions[key].length
+              );
+
+          }
+        );
+
+      updatePreview();
+
+    }
+  );
+
+document
+  .getElementById(
+    "resetDoll"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      dollState = {
+        ...defaultDoll
+      };
+
+      updatePreview();
+
+    }
+  );
+
+/* =========================================================
+   PREVIEW
+========================================================= */
+
+function updatePreview(){
+
+  const displayName =
+    displayNameInput
+      .value
+      .trim();
+
+  const username =
+    usernameInput
+      .value
+      .trim();
+
+  const bio =
+    bioInput
+      .value
+      .trim();
+
+  displayNamePreview.textContent =
+    displayName ||
+    "Your Name";
+
+  usernamePreview.textContent =
+    username
+      ? "@" + username
+      : "@username";
+
+  if(bio){
+
+    bioPreview.textContent =
+      bio;
+
+    bioPreview.classList.remove(
+      "preview-placeholder"
+    );
+
+  }
+
+  else{
+
+    bioPreview.textContent =
+      "Your bio will appear here.";
+
+    bioPreview.classList.add(
+      "preview-placeholder"
+    );
+
+  }
+
+  bioCount.textContent =
+    bioInput.value.length +
+    " / 500";
+
+  renderDoll();
+
+}
+
+function setAvatar(
+  url,
+  displayName
+){
+
+  avatarPreview.innerHTML =
+    "";
+
+  const image =
+    document.createElement(
+      "img"
+    );
+
+  image.src =
+    url;
+
+  image.alt =
+    "Paper Gremlin avatar";
+
+  image.onerror =
+    () => {
+
+      showAvatarInitial(
         displayName
-          ? displayName
-              .charAt(0)
-              .toUpperCase()
-          : "?";
+      );
+
+    };
+
+  avatarPreview.appendChild(
+    image
+  );
+
+}
+
+function showAvatarInitial(
+  displayName = ""
+){
+
+  avatarPreview.innerHTML =
+    "";
+
+  avatarPreview.textContent =
+    displayName
+      ? displayName
+          .charAt(0)
+          .toUpperCase()
+      : "?";
+
+}
+
+displayNameInput.addEventListener(
+  "input",
+  updatePreview
+);
+
+bioInput.addEventListener(
+  "input",
+  updatePreview
+);
+
+/* =========================================================
+   PUBLIC PROFILE
+========================================================= */
+
+function showPublicProfile(
+  profile
+){
+
+  editProfileCard.classList.add(
+    "hidden"
+  );
+
+  publicProfileCard.classList.add(
+    "show"
+  );
+
+  publicActions.classList.add(
+    "show"
+  );
+
+  usernameNotice.classList.remove(
+    "show"
+  );
+
+  const displayName =
+    profile?.display_name ||
+    "Paper Gremlin Member";
+
+  const username =
+    profile?.username ||
+    "";
+
+  const bio =
+    profile?.bio ||
+    "";
+
+  const avatar =
+    profile?.avatar_url ||
+    "";
+
+  displayNamePreview.textContent =
+    displayName;
+
+  usernamePreview.textContent =
+    username
+      ? "@" + username
+      : "@reader";
+
+  if(bio){
+
+    bioPreview.textContent =
+      bio;
+
+    bioPreview.classList.remove(
+      "preview-placeholder"
+    );
+
+  }
+
+  else{
+
+    bioPreview.textContent =
+      "This reader hasn't written a bio yet.";
+
+    bioPreview.classList.add(
+      "preview-placeholder"
+    );
+
+  }
+
+  if(avatar){
+
+    setAvatar(
+      avatar,
+      displayName
+    );
+
+  }
+
+  else{
+
+    showAvatarInitial(
+      displayName
+    );
+
+  }
+
+  publicDisplayName.textContent =
+    displayName;
+
+  publicUsername.textContent =
+    username
+      ? "@" + username
+      : "Not set";
+
+  publicBio.textContent =
+    bio ||
+    "This reader hasn't written a bio yet.";
+
+  profileEyebrow.textContent =
+    "Paper Gremlin member";
+
+  pageHeading.textContent =
+    displayName;
+
+  pageIntro.textContent =
+    "See what this reader shares with the Paper Gremlin community.";
+
+  const returnUrl =
+    "profile.html?id=" +
+    encodeURIComponent(
+      viewedUserId
+    );
+
+  reportProfileButton.href =
+    "report.html?" +
+    new URLSearchParams({
+      type:"user",
+      target:viewedUserId,
+      user:viewedUserId,
+      return:returnUrl
+    }).toString();
+
+}
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+function showMessage(
+  message,
+  type
+){
+
+  profileMessage.textContent =
+    message;
+
+  profileMessage.className =
+    "message show " +
+    type;
+
+}
+
+function clearMessage(){
+
+  profileMessage.textContent =
+    "";
+
+  profileMessage.className =
+    "message";
+
+}
+
+/* =========================================================
+   LOAD USER
+========================================================= */
+
+async function loadUser(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+  if(
+    error ||
+    !data.user
+  ){
+
+    window.location.href =
+      "auth.html#login";
+
+    return;
+
+  }
+
+  currentUser =
+    data.user;
+
+  accountEmail.textContent =
+    currentUser.email ||
+    "No email available";
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  viewedUserId =
+    params.get("id");
+
+  if(
+    !viewedUserId ||
+    viewedUserId ===
+      currentUser.id
+  ){
+
+    viewedUserId =
+      currentUser.id;
+
+    viewingOwnProfile =
+      true;
+
+    await loadOwnProfile();
+
+  }
+
+  else{
+
+    viewingOwnProfile =
+      false;
+
+    await loadPublicProfile();
+
+  }
+
+  loadingScreen.classList.add(
+    "hidden"
+  );
+
+}
+
+/* =========================================================
+   LOAD OWN PROFILE
+========================================================= */
+
+async function loadOwnProfile(){
+
+  try{
+
+    const [
+      profileResult,
+      dollResult
+    ] =
+      await Promise.all([
+
+        supabaseClient.rpc(
+          "get_public_profile",
+          {
+            check_user_id:
+              currentUser.id
+          }
+        ),
+
+        supabaseClient.rpc(
+          "get_my_paper_doll_config"
+        )
+
+      ]);
+
+    if(profileResult.error){
+      throw profileResult.error;
+    }
+
+    const data =
+      profileResult.data;
+
+    const profile =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+    if(profile){
+
+      usernameInput.value =
+        profile.username ||
+        "";
+
+      displayNameInput.value =
+        profile.display_name ||
+        currentUser
+          .user_metadata
+          ?.display_name ||
+        "";
+
+      bioInput.value =
+        profile.bio ||
+        "";
+
+      if(
+        dollResult.error ||
+        !restoreDollFromConfig(
+          dollResult.data
+        )
+      ){
+
+        restoreDollFromAvatar(
+          profile.avatar_url ||
+          ""
+        );
+
+      }
+
+      /*
+        Heather's beta test exposed that the generated
+        username looked permanent. If it resembles one of
+        Paper Gremlin's placeholder names, explicitly tell
+        the reader to choose their own.
+      */
+
+      showUsernamePrompt(
+        usernameLooksGenerated(
+          profile.username
+        )
+      );
 
     }
 
-    displayNameInput.addEventListener(
-      "input",
-      updatePreview
+    else{
+
+      displayNameInput.value =
+        currentUser
+          .user_metadata
+          ?.display_name ||
+        "";
+
+      showUsernamePrompt(
+        true
+      );
+
+    }
+
+    updatePreview();
+
+  }
+
+  catch(error){
+
+    console.error(
+      "Profile loading error:",
+      error
     );
 
-    bioInput.addEventListener(
-      "input",
-      updatePreview
+    displayNameInput.value =
+      currentUser
+        .user_metadata
+        ?.display_name ||
+      "";
+
+    showUsernamePrompt(
+      true
     );
 
-    /* =====================================================
-       PUBLIC PROFILE DISPLAY
-       ===================================================== */
+    updatePreview();
 
-    function showPublicProfile(
+    showMessage(
+      "Paper Gremlin couldn't load your existing profile details.",
+      "error"
+    );
+
+  }
+
+}
+
+/* =========================================================
+   LOAD PUBLIC PROFILE
+========================================================= */
+
+async function loadPublicProfile(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "get_public_profile",
+          {
+            check_user_id:
+              viewedUserId
+          }
+        );
+
+    if(error){
+      throw error;
+    }
+
+    const profile =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+    if(!profile){
+
+      throw new Error(
+        "Profile not found."
+      );
+
+    }
+
+    showPublicProfile(
       profile
-    ) {
+    );
 
-      editProfileCard.classList.add(
-        "hidden"
-      );
+  }
 
-      publicProfileCard.classList.add(
-        "show"
-      );
+  catch(error){
 
-      publicActions.classList.add(
-        "show"
-      );
+    console.error(
+      "Public profile error:",
+      error
+    );
 
-      const displayName =
-        profile?.display_name ||
-        "Paper Gremlin Member";
+    showMessage(
+      "Paper Gremlin couldn't load this profile.",
+      "error"
+    );
 
-      const username =
-        profile?.username ||
-        "";
+  }
 
-      const bio =
-        profile?.bio ||
-        "";
+}
 
-      const avatar =
-        profile?.avatar_url ||
-        "";
+/* =========================================================
+   VALIDATE
+========================================================= */
 
-      displayNamePreview.textContent =
-        displayName;
+function validateProfile(){
 
-      usernamePreview.textContent =
+  const username =
+    normalizeUsername(
+      usernameInput.value
+    );
+
+  if(!username){
+
+    showUsernamePrompt(
+      true
+    );
+
+    usernameInput.focus();
+
+    showMessage(
+      "Choose the username you want to use on Paper Gremlin.",
+      "error"
+    );
+
+    return null;
+
+  }
+
+  if(
+    username.length < 3
+  ){
+
+    usernameInput.focus();
+
+    showMessage(
+      "Your username must be at least 3 characters.",
+      "error"
+    );
+
+    return null;
+
+  }
+
+  if(
+    !/^[a-z0-9_]+$/.test(
+      username
+    )
+  ){
+
+    usernameInput.focus();
+
+    showMessage(
+      "Usernames can contain only letters, numbers and underscores.",
+      "error"
+    );
+
+    return null;
+
+  }
+
+  const displayName =
+    displayNameInput
+      .value
+      .trim();
+
+  if(!displayName){
+
+    displayNameInput.focus();
+
+    showMessage(
+      "Add the display name you want other readers to see.",
+      "error"
+    );
+
+    return null;
+
+  }
+
+  return {
+    username,
+    displayName,
+    bio:
+      bioInput
+        .value
+        .trim()
+  };
+
+}
+
+/* =========================================================
+   CHECK USERNAME AVAILABILITY
+========================================================= */
+
+async function usernameAvailable(
+  username
+){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select("id")
+      .eq(
+        "username",
         username
-          ? "@" + username
-          : "@reader";
+      )
+      .neq(
+        "id",
+        currentUser.id
+      )
+      .limit(1);
 
-      if (bio) {
+  if(error){
+    throw error;
+  }
 
-        bioPreview.textContent =
-          bio;
+  return !data?.length;
 
-        bioPreview.classList.remove(
-          "preview-placeholder"
-        );
+}
 
-      }
+/* =========================================================
+   SAVE PROFILE
+========================================================= */
 
-      else {
+profileForm.addEventListener(
+  "submit",
+  async event => {
 
-        bioPreview.textContent =
-          "This reader hasn't written a bio yet.";
+    event.preventDefault();
 
-        bioPreview.classList.add(
-          "preview-placeholder"
-        );
+    clearMessage();
 
-      }
+    const validated =
+      validateProfile();
 
-      if (avatar) {
-
-        setAvatar(
-          avatar,
-          displayName
-        );
-
-      }
-
-      else {
-
-        showAvatarInitial(
-          displayName
-        );
-
-      }
-
-      publicDisplayName.textContent =
-        displayName;
-
-      publicUsername.textContent =
-        username
-          ? "@" + username
-          : "Not set";
-
-      publicBio.textContent =
-        bio ||
-        "This reader hasn't written a bio yet.";
-
-      profileEyebrow.textContent =
-        "Paper Gremlin member";
-
-      pageHeading.textContent =
-        displayName;
-
-      pageIntro.textContent =
-        "See what this reader shares with the Paper Gremlin community.";
-
-      const returnUrl =
-        "profile.html?id=" +
-        encodeURIComponent(
-          viewedUserId
-        );
-
-      reportProfileButton.href =
-        "report.html?" +
-        new URLSearchParams({
-          type: "user",
-          target: viewedUserId,
-          user: viewedUserId,
-          return: returnUrl
-        }).toString();
-
+    if(!validated){
+      return;
     }
 
-    /* =====================================================
-       CHECK LOGIN
-       ===================================================== */
+    saveButton.disabled =
+      true;
 
-    async function loadUser() {
+    saveButton.textContent =
+      "Saving...";
+
+    try{
+
+      const available =
+        await usernameAvailable(
+          validated.username
+        );
+
+      if(!available){
+
+        usernameInput.focus();
+
+        throw new Error(
+          "That username is already taken. Choose another one."
+        );
+
+      }
+
+      const avatarData =
+        getAvatarDataUri();
+
+      /*
+        Save the profile itself.
+      */
 
       const {
-        data,
-        error
+        error:profileError
+      } =
+        await supabaseClient
+          .from("profiles")
+          .update({
+            username:
+              validated.username,
+
+            display_name:
+              validated.displayName,
+
+            bio:
+              validated.bio ||
+              null,
+
+            avatar_url:
+              avatarData
+          })
+          .eq(
+            "id",
+            currentUser.id
+          );
+
+      if(profileError){
+        throw profileError;
+      }
+
+      /*
+        Save the small doll configuration separately when
+        the RPC exists. The avatar itself is also saved above,
+        so the profile still works if the config RPC is
+        temporarily unavailable.
+      */
+
+      const {
+        error:dollError
+      } =
+        await supabaseClient
+          .rpc(
+            "save_my_paper_doll_config",
+            {
+              new_config:
+                dollState
+            }
+          );
+
+      if(dollError){
+
+        console.warn(
+          "Paper doll config save:",
+          dollError
+        );
+
+      }
+
+      /*
+        Keep auth metadata synchronized with the reader's
+        chosen display name.
+      */
+
+      const {
+        error:metadataError
       } =
         await supabaseClient
           .auth
-          .getUser();
+          .updateUser({
+            data:{
+              display_name:
+                validated.displayName
+            }
+          });
 
-      if (
-        error ||
-        !data.user
-      ) {
+      if(metadataError){
 
-        window.location.href =
-          "auth.html#login";
-
-        return;
-
-      }
-
-      currentUser =
-        data.user;
-
-      accountEmail.textContent =
-        currentUser.email ||
-        "No email available";
-
-      const params =
-        new URLSearchParams(
-          window.location.search
+        console.warn(
+          "Auth metadata update:",
+          metadataError
         );
 
-      viewedUserId =
-        params.get(
-          "id"
-        );
-
-      if (
-        !viewedUserId ||
-        viewedUserId ===
-          currentUser.id
-      ) {
-
-        viewedUserId =
-          currentUser.id;
-
-        viewingOwnProfile =
-          true;
-
-        await loadOwnProfile();
-
       }
 
-      else {
+      usernameInput.value =
+        validated.username;
 
-        viewingOwnProfile =
-          false;
+      showUsernamePrompt(
+        false
+      );
 
-        await loadPublicProfile();
+      updatePreview();
 
-      }
-
-      loadingScreen.classList.add(
-        "hidden"
+      showMessage(
+        "Profile saved. Your username and Paper Gremlin are ready.",
+        "success"
       );
 
     }
 
-    /* =====================================================
-       LOAD OWN PROFILE
-       ===================================================== */
+    catch(error){
 
-    async function loadOwnProfile() {
+      console.error(
+        "Profile save error:",
+        error
+      );
 
-      try {
-
-        const [
-          profileResult,
-          dollResult
-        ] = await Promise.all([
-          supabaseClient.rpc(
-            "get_public_profile",
-            {
-              check_user_id:
-                currentUser.id
-            }
-          ),
-          supabaseClient.rpc(
-            "get_my_paper_doll_config"
-          )
-        ]);
-
-        const {
-          data,
-          error
-        } = profileResult;
-
-        if (error) {
-
-          throw error;
-
-        }
-
-        let profile =
-          null;
-
-        if (
-          Array.isArray(data)
-        ) {
-
-          profile =
-            data[0];
-
-        }
-
-        else {
-
-          profile =
-            data;
-
-        }
-
-        if (profile) {
-
-          usernameInput.value =
-            profile.username ||
-            "";
-
-          displayNameInput.value =
-            profile.display_name ||
-            currentUser
-              .user_metadata
-              ?.display_name ||
-            "";
-
-          if (
-            dollResult.error ||
-            !restoreDollFromConfig(dollResult.data)
-          ) {
-            restoreDollFromAvatar(
-              profile.avatar_url ||
-              ""
-            );
-          }
-
-          bioInput.value =
-            profile.bio ||
-            "";
-
-        }
-
-        else {
-
-          displayNameInput.value =
-            currentUser
-              .user_metadata
-              ?.display_name ||
-            "";
-
-        }
-
-        updatePreview();
-
-      }
-
-      catch (error) {
-
-        console.error(
-          "Profile loading error:",
-          error
-        );
-
-        displayNameInput.value =
-          currentUser
-            .user_metadata
-            ?.display_name ||
-          "";
-
-        updatePreview();
-
-        showMessage(
-          "Paper Gremlin couldn't load your existing profile details.",
-          "error"
-        );
-
-      }
+      showMessage(
+        error?.message ||
+        "Paper Gremlin couldn't save your profile.",
+        "error"
+      );
 
     }
 
-    /* =====================================================
-       LOAD PUBLIC PROFILE
-       ===================================================== */
+    finally{
 
-    async function loadPublicProfile() {
+      saveButton.disabled =
+        false;
 
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient
-            .rpc(
-              "get_public_profile",
-              {
-                check_user_id:
-                  viewedUserId
-              }
-            );
-
-        if (error) {
-
-          throw error;
-
-        }
-
-        let profile =
-          null;
-
-        if (
-          Array.isArray(data)
-        ) {
-
-          profile =
-            data[0];
-
-        }
-
-        else {
-
-          profile =
-            data;
-
-        }
-
-        if (!profile) {
-
-          throw new Error(
-            "This Paper Gremlin profile could not be found."
-          );
-
-        }
-
-        showPublicProfile(
-          profile
-        );
-
-      }
-
-      catch (error) {
-
-        console.error(
-          "Public profile loading error:",
-          error
-        );
-
-        editProfileCard.classList.add(
-          "hidden"
-        );
-
-        publicProfileCard.classList.add(
-          "show"
-        );
-
-        publicActions.classList.add(
-          "show"
-        );
-
-        profileEyebrow.textContent =
-          "Profile unavailable";
-
-        pageHeading.textContent =
-          "We couldn't find that reader.";
-
-        pageIntro.textContent =
-          error.message ||
-          "This profile may no longer be available.";
-
-        displayNamePreview.textContent =
-          "Unknown Reader";
-
-        usernamePreview.textContent =
-          "";
-
-        bioPreview.textContent =
-          "This profile could not be loaded.";
-
-        bioPreview.classList.add(
-          "preview-placeholder"
-        );
-
-        showAvatarInitial(
-          "Unknown Reader"
-        );
-
-        publicDisplayName.textContent =
-          "Unavailable";
-
-        publicUsername.textContent =
-          "Unavailable";
-
-        publicBio.textContent =
-          "This profile could not be loaded.";
-
-        reportProfileButton.style.display =
-          "none";
-
-      }
+      saveButton.textContent =
+        "Save Profile";
 
     }
 
-    /* =====================================================
-       SAVE PROFILE
-       ===================================================== */
+  }
+);
 
-    profileForm.addEventListener(
-      "submit",
-      async function (event) {
+/* =========================================================
+   LOG OUT
+========================================================= */
 
-        event.preventDefault();
+document
+  .getElementById(
+    "logoutButton"
+  )
+  .addEventListener(
+    "click",
+    async () => {
 
-        if (
-          !viewingOwnProfile
-        ) {
+      await supabaseClient
+        .auth
+        .signOut();
 
-          return;
+      window.location.href =
+        "index.html";
 
-        }
+    }
+  );
 
-        clearMessage();
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
-        const username =
-          cleanUsername(
-            usernameInput.value.trim()
-          );
+async function initialize(){
 
-        const displayName =
-          displayNameInput
-            .value
-            .trim();
+  try{
 
-        const avatarUrl =
-          getAvatarDataUri();
-
-        const bio =
-          bioInput
-            .value
-            .trim();
-
-        if (
-          username.length < 3
-        ) {
-
-          showMessage(
-            "Your username must contain at least 3 characters.",
-            "error"
-          );
-
-          return;
-
-        }
-
-        if (
-          displayName.length < 1
-        ) {
-
-          showMessage(
-            "Please enter a display name.",
-            "error"
-          );
-
-          return;
-
-        }
-
-        if (
-          bio.length > 500
-        ) {
-
-          showMessage(
-            "Your bio must be 500 characters or fewer.",
-            "error"
-          );
-
-          return;
-
-        }
-
-        saveButton.disabled =
-          true;
-
-        saveButton.textContent =
-          "Saving...";
-
-        try {
-
-          const {
-            data,
-            error
-          } =
-            await supabaseClient
-              .rpc(
-                "update_my_profile_v2",
-                {
-
-                  new_username:
-                    username,
-
-                  new_display_name:
-                    displayName,
-
-                  new_avatar_url:
-                    avatarUrl ||
-                    null,
-
-                  new_bio:
-                    bio ||
-                    null,
-
-                  new_paper_doll_config:
-                    { ...dollState }
-
-                }
-              );
-
-          if (error) {
-
-            throw error;
-
-          }
-
-          updatePreview();
-
-          showMessage(
-            "Your Paper Gremlin profile has been saved.",
-            "success"
-          );
-
-        }
-
-        catch (error) {
-
-          console.error(
-            "Profile save error:",
-            error
-          );
-
-          let message =
-            error.message ||
-            "Paper Gremlin couldn't save your profile.";
-
-          if (
-            message
-              .toLowerCase()
-              .includes(
-                "duplicate"
-              )
-          ) {
-
-            message =
-              "That username is already being used. Try another one.";
-
-          }
-
-          showMessage(
-            message,
-            "error"
-          );
-
-        }
-
-        finally {
-
-          saveButton.disabled =
-            false;
-
-          saveButton.textContent =
-            "Save Profile";
-
-        }
-
-      }
+    createSwatches(
+      "skin",
+      "skinSwatches"
     );
 
-    /* =====================================================
-       LOG OUT
-       ===================================================== */
-
-    logoutButton.addEventListener(
-      "click",
-      async function () {
-
-        logoutButton.disabled =
-          true;
-
-        logoutButton.textContent =
-          "Logging Out...";
-
-        await supabaseClient
-          .auth
-          .signOut();
-
-        window.location.href =
-          "auth.html#login";
-
-      }
+    createSwatches(
+      "eyeColor",
+      "eyeColorSwatches"
     );
 
-    /* =====================================================
-       START PAGE
-       ===================================================== */
+    createSwatches(
+      "hairColor",
+      "hairColorSwatches"
+    );
 
-    loadUser();
+    createSwatches(
+      "topColor",
+      "topColorSwatches"
+    );
 
-  </script>
+    renderDoll();
+
+    await loadUser();
+
+  }
+
+  catch(error){
+
+    console.error(
+      "Profile initialization:",
+      error
+    );
+
+    showMessage(
+      "Paper Gremlin couldn't open the profile page.",
+      "error"
+    );
+
+    loadingScreen.classList.add(
+      "hidden"
+    );
+
+  }
+
+}
+
+initialize();
+
+</script>
 
 </body>
 </html>
