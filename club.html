@@ -10,7 +10,7 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>DogEar — Book Club</title>
+  <title>Paper Gremlin — Book Club</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -1867,7 +1867,7 @@
 
       <span class="brand-mark"></span>
 
-      DogEar
+      Paper Gremlin
 
     </a>
 
@@ -1934,7 +1934,7 @@
       <div class="hero-copy">
 
         <div class="eyebrow">
-          DogEar Book Club
+          Paper Gremlin Book Club
         </div>
 
 
@@ -3037,7 +3037,7 @@
 
     /*
       This is the important connection to the new
-      canonical DogEar book page.
+      canonical Paper Gremlin book page.
 
       Any book shown on club.html now opens:
 
@@ -3272,6 +3272,7 @@
 
       const role =
         String(
+          membershipData?.club_role ||
           membershipData?.role ||
           ""
         )
@@ -3534,11 +3535,11 @@
 
       $("clubDescription").textContent =
         clubData.description ||
-        "A DogEar book club.";
+        "A Paper Gremlin book club.";
 
 
       document.title =
-        "DogEar — " +
+        "Paper Gremlin — " +
         (
           clubData.name ||
           "Book Club"
@@ -3786,31 +3787,18 @@
           try {
 
 
-            /*
-              Keep this compatible with the existing
-              join_requests table used by DogEar.
-            */
-
-
             const {
+              data,
               error
             } =
               await supabaseClient
-                .from(
-                  "join_requests"
-                )
-                .insert({
-
-                  club_id:
-                    clubId,
-
-                  user_id:
-                    currentUser.id,
-
-                  status:
-                    "pending"
-
-                });
+                .rpc(
+                  "request_club_membership",
+                  {
+                    p_club_id:
+                      clubId
+                  }
+                );
 
 
             if (error) {
@@ -3828,8 +3816,11 @@
               user_id:
                 currentUser.id,
 
-              role:
-                "pending"
+              club_role:
+                "member",
+
+              membership_status:
+                String(data || "pending")
 
             };
 
@@ -3898,7 +3889,7 @@
 
               showStatus(
                 message ||
-                "DogEar couldn't send your join request.",
+                "Paper Gremlin couldn't send your join request.",
                 "error"
               );
 
@@ -4190,7 +4181,7 @@
       const name =
         profile.display_name ||
         profile.username ||
-        "DogEar Reader";
+        "Paper Gremlin Reader";
 
 
       const avatar =
@@ -4312,7 +4303,7 @@
           } =
             await supabaseClient
               .from(
-                "vote_rounds"
+                "voting_rounds"
               )
               .select(
                 "*"
@@ -4653,7 +4644,7 @@
         } =
           await supabaseClient
             .from(
-              "vote_rounds"
+              "voting_rounds"
             )
             .select(
               "*"
@@ -4821,13 +4812,13 @@
       } =
         await supabaseClient
           .from(
-            "vote_options"
+            "voting_options"
           )
           .select(
             "*"
           )
           .eq(
-            "round_id",
+            "voting_round_id",
             currentVoteRound.id
           )
           .order(
@@ -5766,7 +5757,7 @@
 
         showStatus(
           error?.message ||
-          "DogEar couldn't completely load this club.",
+          "Paper Gremlin couldn't completely load this club.",
           "error"
         );
 

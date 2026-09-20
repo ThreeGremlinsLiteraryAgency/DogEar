@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DogEar — Report</title>
+<title>Paper Gremlin — Report</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -401,7 +401,7 @@ h1{
 
   <a class="brand" href="dashboard.html">
     <span class="brand-mark"></span>
-    DogEar
+    Paper Gremlin
   </a>
 
   <nav class="nav">
@@ -424,7 +424,7 @@ h1{
   <section class="hero">
 
     <div class="eyebrow">
-      DogEar Safety
+      Paper Gremlin Safety
     </div>
 
     <h1>
@@ -432,7 +432,7 @@ h1{
     </h1>
 
     <div class="subtitle">
-      Tell DogEar about behavior or content that may violate community rules.
+      Tell Paper Gremlin about behavior or content that may violate community rules.
       Reports are sent to the moderation queue for review.
     </div>
 
@@ -558,7 +558,7 @@ h1{
       </div>
 
       <div class="note">
-        Reports are not public. DogEar may use the report, the referenced
+        Reports are not public. Paper Gremlin may use the report, the referenced
         content, and relevant account activity to investigate. A report does
         not automatically suspend another member or remove content.
       </div>
@@ -594,7 +594,7 @@ h1{
     </h2>
 
     <p>
-      It has been added to DogEar's moderation queue. You do not need to submit
+      It has been added to Paper Gremlin's moderation queue. You do not need to submit
       the same issue repeatedly unless something materially changes.
     </p>
 
@@ -708,7 +708,7 @@ function clearMessage(){
 function safeReturnUrl(){
 
   /*
-    Only permit local DogEar HTML navigation.
+    Only permit local Paper Gremlin HTML navigation.
     This avoids turning ?return= into an open redirect.
   */
 
@@ -1005,9 +1005,9 @@ async function captureTargetContent(){
         error
       } =
         await supabaseClient
-          .from("club_discussions")
+          .from("forum_threads")
           .select(
-            "title,body,author_id"
+            "title,author_id"
           )
           .eq(
             "id",
@@ -1024,12 +1024,23 @@ async function captureTargetContent(){
           reported_user_id:null
         };
 
+      const {
+        data:openingPost
+      } =
+        await supabaseClient
+          .from("forum_posts")
+          .select("body")
+          .eq("thread_id", targetId)
+          .order("created_at", { ascending:true })
+          .limit(1)
+          .maybeSingle();
+
       return {
 
         captured_content:
           [
             data.title,
-            data.body
+            openingPost?.body
           ]
           .filter(Boolean)
           .join("\n\n"),
@@ -1052,7 +1063,7 @@ async function captureTargetContent(){
         error
       } =
         await supabaseClient
-          .from("discussion_replies")
+          .from("forum_posts")
           .select(
             "body,author_id"
           )
@@ -1274,7 +1285,7 @@ $("submitBtn")
         console.error(error);
 
         showMessage(
-          "DogEar couldn't send this report: " +
+          "Paper Gremlin couldn't send this report: " +
           (
             error.message ||
             "Unknown error"

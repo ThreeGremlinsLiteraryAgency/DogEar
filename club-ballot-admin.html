@@ -10,7 +10,7 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>DogEar — Build Monthly Ballot</title>
+<title>Paper Gremlin — Build Monthly Ballot</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -1606,7 +1606,7 @@ h1{
 
     <span class="brand-mark"></span>
 
-    DogEar
+    Paper Gremlin
 
   </a>
 
@@ -1779,7 +1779,7 @@ h1{
             </h3>
 
             <p id="resultsSubtitle">
-              DogEar counts votes directly from the canonical club ballot.
+              Paper Gremlin counts votes directly from the canonical club ballot.
             </p>
 
           </div>
@@ -1935,7 +1935,7 @@ h1{
           </h3>
 
           <p>
-            DogEar stores the Google Books volume ID,
+            Paper Gremlin stores the Google Books volume ID,
             ISBN-13, ISBN-10, publisher, publication date,
             and cover so members know exactly which edition
             they are voting on.
@@ -1951,7 +1951,7 @@ h1{
           </h3>
 
           <p>
-            Once voting is closed, DogEar counts the votes
+            Once voting is closed, Paper Gremlin counts the votes
             on the server. A clear first-place book can be
             finalized automatically. If first place is tied,
             only the Club President can choose among the
@@ -2098,7 +2098,7 @@ h1{
 
       <div class="search-help">
         For the most precise result, search by ISBN.
-        DogEar recognizes ISBN-10 and ISBN-13 searches automatically.
+        Paper Gremlin recognizes ISBN-10 and ISBN-13 searches automatically.
       </div>
 
     </div>
@@ -2137,7 +2137,7 @@ const SUPABASE_PUBLISHABLE_KEY =
 
 
 /*
-  DogEar's website-restricted Google Books key can be placed
+  Paper Gremlin's website-restricted Google Books key can be placed
   here in the deployed file. Google Books search also works
   without it at lower unauthenticated quota.
 */
@@ -3217,7 +3217,7 @@ async function loadClub(){
 
 
   document.title =
-    "DogEar — " +
+    "Paper Gremlin — " +
     (
       data.name ||
       "Club"
@@ -5273,7 +5273,7 @@ async function searchBooks(){
     $("results").innerHTML = `
 
       <div class="no-results">
-        DogEar couldn't search Google Books right now.
+        Paper Gremlin couldn't search Google Books right now.
         Please try again.
       </div>
 
@@ -5566,7 +5566,7 @@ $("bookSearch")
 
 
 /* =========================================================
-   MATCH GOOGLE EDITION TO CENTRAL DOGEAR BOOK
+   MATCH GOOGLE EDITION TO CENTRAL PAPER GREMLIN BOOK
    ========================================================= */
 
 async function findCentralBook(
@@ -5575,7 +5575,7 @@ async function findCentralBook(
 
   /*
     Ballot options preserve the exact Google Books edition
-    even when DogEar does not yet have a matching central
+    even when Paper Gremlin does not yet have a matching central
     catalog row.
 
     When possible, connect the ballot option to books.id.
@@ -5823,7 +5823,7 @@ async function chooseEdition(
 
 
       showMessage(
-        "DogEar couldn't create this month's ballot: " +
+        "Paper Gremlin couldn't create this month's ballot: " +
         (
           error.message ||
           "Unknown error"
@@ -5994,7 +5994,7 @@ async function chooseEdition(
 
 
     showMessage(
-      "DogEar couldn't save this edition: " +
+      "Paper Gremlin couldn't save this edition: " +
       (
         error.message ||
         "Unknown error"
@@ -6146,7 +6146,7 @@ async function removeBook(
 
 
     showMessage(
-      "DogEar couldn't remove this book: " +
+      "Paper Gremlin couldn't remove this book: " +
       (
         error.message ||
         "Unknown error"
@@ -6330,7 +6330,7 @@ async function openVoting(){
     showMessage(
       friendlyBallotError(
         error,
-        "DogEar couldn't open voting."
+        "Paper Gremlin couldn't open voting."
       ),
       "error"
     );
@@ -6515,7 +6515,7 @@ async function closeVoting(){
     showMessage(
       friendlyBallotError(
         error,
-        "DogEar couldn't close voting."
+        "Paper Gremlin couldn't close voting."
       ),
       "error"
     );
@@ -6748,7 +6748,7 @@ async function finalizeBallot(
       For a tie, the selected option is sent to PostgreSQL,
       which independently verifies that the option is truly
       tied for first and that the caller is the President or
-      a DogEar system administrator.
+      a Paper Gremlin system administrator.
     */
 
     const {
@@ -6829,7 +6829,7 @@ async function finalizeBallot(
     showMessage(
       friendlyBallotError(
         error,
-        "DogEar couldn't finalize this ballot."
+        "Paper Gremlin couldn't finalize this ballot."
       ),
       "error"
     );
@@ -6961,7 +6961,7 @@ function friendlyBallotError(
     )
   ){
 
-    return "DogEar couldn't find this ballot. Refresh the page and try again.";
+    return "Paper Gremlin couldn't find this ballot. Refresh the page and try again.";
 
   }
 
@@ -7133,7 +7133,7 @@ async function handleIncomingBook(){
 
 
     /*
-      If the central DogEar book already has enough exact
+      If the central Paper Gremlin book already has enough exact
       edition metadata, prefill the Google Books search with
       the most precise identifier available.
 
@@ -7373,7 +7373,7 @@ async function start(){
 
 
     showMessage(
-      "DogEar couldn't load the ballot builder: " +
+      "Paper Gremlin couldn't load the ballot builder: " +
       (
         error.message ||
         "Unknown error"
@@ -7417,7 +7417,7 @@ async function start(){
 
 
 /* =========================================================
-   START DOGEAR BALLOT DESK
+   START PAPER GREMLIN BALLOT DESK
    ========================================================= */
 
 start();

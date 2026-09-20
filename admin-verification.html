@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DogEar — Verification Queue</title>
+<title>Paper Gremlin — Verification Queue</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -830,7 +830,7 @@ h1{
     href="dashboard.html"
   >
     <span class="brand-mark"></span>
-    DogEar
+    Paper Gremlin
   </a>
 
   <nav class="nav">
@@ -887,7 +887,7 @@ h1{
   <section class="hero">
 
     <div class="eyebrow">
-      DogEar Administration
+      Paper Gremlin Administration
     </div>
 
     <h1>
@@ -895,7 +895,7 @@ h1{
     </h1>
 
     <div class="subtitle">
-      Review professional DogEar applications. Agent, Editor,
+      Review professional Paper Gremlin applications. Agent, Editor,
       and Publisher access remains locked until the appropriate
       verification is approved.
     </div>
@@ -1123,7 +1123,7 @@ h1{
               Loading applications...
             </strong>
 
-            DogEar is checking the verification queue.
+            Paper Gremlin is checking the verification queue.
 
           </div>
 
@@ -1185,7 +1185,7 @@ h1{
     </strong>
 
     Professional verification applications can only be reviewed
-    by an active DogEar system administrator.
+    by an active Paper Gremlin system administrator.
 
   </section>
 
@@ -1705,7 +1705,7 @@ async function getApplicantProfile(
   let profile = {
     id:userId,
     display_name:
-      "DogEar Member",
+      "Paper Gremlin Member",
     username:
       "",
     avatar_url:
@@ -1785,7 +1785,7 @@ async function loadApplications(){
           <strong>
             Loading applications...
           </strong>
-          DogEar is checking the verification queue.
+          Paper Gremlin is checking the verification queue.
         </div>
       `;
 
@@ -1855,7 +1855,7 @@ async function loadApplications(){
             </strong>
             ${escapeHtml(
               error.message ||
-              "DogEar could not load verification applications."
+              "Paper Gremlin could not load verification applications."
             )}
           </div>
         `;
@@ -1892,7 +1892,7 @@ async function loadProfilesForApplications(){
     ];
 
   /*
-    This intentionally uses DogEar's existing public-profile RPC
+    This intentionally uses Paper Gremlin's existing public-profile RPC
     instead of directly selecting private profile/account fields.
   */
 
@@ -2292,7 +2292,7 @@ function renderApplicationList(){
       application.professional_name ||
       profile.display_name ||
       application.legal_name ||
-      "DogEar Member";
+      "Paper Gremlin Member";
 
     button.innerHTML =
       `
@@ -2453,7 +2453,7 @@ function renderApplicationDetail(
     application.professional_name ||
     profile.display_name ||
     application.legal_name ||
-    "DogEar Member";
+    "Paper Gremlin Member";
 
   const username =
     profile.username
@@ -2555,7 +2555,7 @@ function renderApplicationDetail(
       <div class="info-grid">
 
         ${detailBox(
-          "DogEar Account",
+          "Paper Gremlin Account",
           profile.display_name ||
           displayName
         )}
@@ -3065,7 +3065,7 @@ async function approveApplication(){
     );
 
     showReviewMessage(
-      "DogEar couldn't approve this verification: " +
+      "Paper Gremlin couldn't approve this verification: " +
       (
         error.message ||
         "Unknown error"
@@ -3191,7 +3191,7 @@ async function rejectApplication(){
     );
 
     showReviewMessage(
-      "DogEar couldn't reject this verification: " +
+      "Paper Gremlin couldn't reject this verification: " +
       (
         error.message ||
         "Unknown error"
@@ -3518,7 +3518,7 @@ async function refreshAfterReview(
     );
 
     showReviewMessage(
-      "The decision was submitted, but DogEar couldn't refresh the queue. Refresh the page to see the latest state.",
+      "The decision was submitted, but Paper Gremlin couldn't refresh the queue. Refresh the page to see the latest state.",
       "error"
     );
 
@@ -3707,7 +3707,7 @@ async function start(){
             "
           >
             <strong>
-              DogEar couldn't open the verification queue.
+              Paper Gremlin couldn't open the verification queue.
             </strong>
 
             ${escapeHtml(

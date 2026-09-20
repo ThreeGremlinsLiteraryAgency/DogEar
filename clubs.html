@@ -8,7 +8,7 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>Clubs | DogEar</title>
+<title>Clubs | Paper Gremlin</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -825,7 +825,7 @@ button{
 
     <span class="brand-mark"></span>
 
-    DogEar
+    Paper Gremlin
 
   </a>
 
@@ -897,7 +897,7 @@ button{
     <div>
 
       <div class="eyebrow">
-        DogEar Clubs
+        Paper Gremlin Clubs
       </div>
 
       <h1>
@@ -907,7 +907,7 @@ button{
 
       <p class="hero-copy">
         Keep up with your clubs, find another corner of
-        DogEar to settle into, or start a book club of
+        Paper Gremlin to settle into, or start a book club of
         your own.
       </p>
 
@@ -1439,7 +1439,7 @@ function clubDescription(club){
       "summary"
     ]
   ) ||
-    "A book club on DogEar.";
+    "A book club on Paper Gremlin.";
 
 }
 
@@ -2024,6 +2024,7 @@ async function loadMemberships(){
 
             const status =
               normalize(
+                row.membership_status ||
                 row.status
               );
 
@@ -2075,7 +2076,7 @@ async function loadPendingRequests(){
       error
     } =
       await supabaseClient
-        .from("join_requests")
+        .from("club_members")
         .select("*")
         .eq(
           "user_id",
@@ -2093,6 +2094,7 @@ async function loadPendingRequests(){
 
             const status =
               normalize(
+                row.membership_status ||
                 row.status
               );
 
@@ -2925,7 +2927,7 @@ function showLoadingStates(){
       </div>
 
       <h3>
-        Looking around DogEar...
+        Looking around Paper Gremlin...
       </h3>
 
       <p>
@@ -3018,7 +3020,7 @@ function renderPageError(){
       </div>
 
       <h3>
-        DogEar couldn't load your clubs.
+        Paper Gremlin couldn't load your clubs.
       </h3>
 
       <p>
@@ -3084,7 +3086,7 @@ async function startClubsPage(){
     );
 
     showStatus(
-      "DogEar couldn't load all of your club information.",
+      "Paper Gremlin couldn't load all of your club information.",
       "error"
     );
 
@@ -3102,7 +3104,7 @@ async function startClubsPage(){
 
 
 /* =========================================================
-   START DOGEAR CLUBS
+   START PAPER GREMLIN CLUBS
 ========================================================= */
 
 startClubsPage();

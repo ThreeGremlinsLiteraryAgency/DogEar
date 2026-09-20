@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DogEar — Admin Dashboard</title>
+<title>Paper Gremlin — Admin Dashboard</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -768,14 +768,14 @@ h1{
 <body>
 
 <div class="loading" id="loading">
-  <span>Opening DogEar administration...</span>
+  <span>Opening Paper Gremlin administration...</span>
 </div>
 
 <header class="topbar">
 
   <a class="brand" href="dashboard.html">
     <span class="brand-mark"></span>
-    DogEar
+    Paper Gremlin
   </a>
 
   <nav class="nav">
@@ -803,7 +803,7 @@ h1{
     <div>
 
       <div class="eyebrow">
-        DogEar Administration
+        Paper Gremlin Administration
       </div>
 
       <h1>Control Room</h1>
@@ -811,7 +811,7 @@ h1{
       <div class="subtitle">
         Manage members, clubs, marketplace activity, moderation,
         verification, platform rollout, and the machinery behind
-        DogEar without cluttering the reader-facing site.
+        Paper Gremlin without cluttering the reader-facing site.
       </div>
 
     </div>
@@ -883,7 +883,7 @@ h1{
         </div>
 
         <div class="stat-note">
-          Registered DogEar accounts
+          Registered Paper Gremlin accounts
         </div>
 
       </article>
@@ -921,7 +921,7 @@ h1{
         </div>
 
         <div class="stat-note">
-          Books in DogEar's catalog
+          Books in Paper Gremlin's catalog
         </div>
 
       </article>
@@ -1078,7 +1078,7 @@ h1{
           <p>
             System administrators can preview experiences that are
             available for admin testing without changing their real
-            DogEar account distinctions.
+            Paper Gremlin account distinctions.
           </p>
 
         </div>
@@ -1133,7 +1133,8 @@ h1{
           <a
             class="experience-link"
             id="authorExperienceLink"
-            href="author-dashboard.html?admin_preview=1"
+            href="#"
+            aria-disabled="true"
           >
             Preview Author Experience →
           </a>
@@ -1163,7 +1164,8 @@ h1{
           <a
             class="experience-link"
             id="agentExperienceLink"
-            href="agent-dashboard.html?admin_preview=1"
+            href="#"
+            aria-disabled="true"
           >
             Preview Agent Experience →
           </a>
@@ -1193,7 +1195,8 @@ h1{
           <a
             class="experience-link"
             id="publisherExperienceLink"
-            href="publisher-dashboard.html?admin_preview=1"
+            href="#"
+            aria-disabled="true"
           >
             Preview Publisher Experience →
           </a>
@@ -1235,7 +1238,7 @@ h1{
         </h2>
 
         <p>
-          Curate DogEar's book marketplace, manage featured books,
+          Curate Paper Gremlin's book marketplace, manage featured books,
           control coin availability, and maintain reward inventory.
         </p>
 
@@ -1386,7 +1389,7 @@ h1{
         </h2>
 
         <p>
-          Monitor DogEar's internal data collections and the systems
+          Monitor Paper Gremlin's internal data collections and the systems
           that will eventually power analytics and recommendations.
         </p>
 
@@ -1410,7 +1413,7 @@ h1{
         </h2>
 
         <p>
-          Review and manage files uploaded to DogEar and monitor
+          Review and manage files uploaded to Paper Gremlin and monitor
           their processing or moderation status.
         </p>
 
@@ -1459,7 +1462,7 @@ h1{
         </h2>
 
         <p>
-          Promote trusted DogEar members to system administrator,
+          Promote trusted Paper Gremlin members to system administrator,
           deactivate administrator access, and review who has
           control-room privileges.
         </p>
@@ -1515,7 +1518,7 @@ h1{
     </strong>
 
     Your account does not currently have permission to open
-    DogEar's system administration dashboard.
+    Paper Gremlin's system administration dashboard.
 
   </section>
 
@@ -2292,6 +2295,20 @@ function setExperienceState(
 
   disabled.style.display =
     "block";
+
+  if(
+    experience !== "reader"
+  ){
+
+    status.textContent =
+      "This experience has not been built yet.";
+
+    disabled.textContent =
+      "Coming later";
+
+    return;
+
+  }
 
   if(
     state === "off"

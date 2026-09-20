@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DogEar — Admin Management</title>
+<title>Paper Gremlin — Admin Management</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -427,7 +427,7 @@ h1{
 
   <a class="brand" href="dashboard.html">
     <span class="brand-mark"></span>
-    DogEar
+    Paper Gremlin
   </a>
 
   <nav class="nav">
@@ -483,7 +483,7 @@ h1{
   <section class="hero">
 
     <div class="eyebrow">
-      DogEar Administration
+      Paper Gremlin Administration
     </div>
 
     <h1>
@@ -491,8 +491,8 @@ h1{
     </h1>
 
     <div class="subtitle">
-      Decide who can enter DogEar's Control Room.
-      Administrator access is attached to a normal DogEar account;
+      Decide who can enter Paper Gremlin's Control Room.
+      Administrator access is attached to a normal Paper Gremlin account;
       no separate administrator account is required.
     </div>
 
@@ -513,7 +513,7 @@ h1{
         class="search-label"
         for="userSearch"
       >
-        Find a DogEar Member
+        Find a Paper Gremlin Member
       </label>
 
       <input
@@ -534,7 +534,7 @@ h1{
     <div class="section-head">
 
       <h2>
-        DogEar Accounts
+        Paper Gremlin Accounts
       </h2>
 
       <div
@@ -552,7 +552,7 @@ h1{
     >
 
       <div class="empty">
-        Loading DogEar accounts...
+        Loading Paper Gremlin accounts...
       </div>
 
     </section>
@@ -569,7 +569,7 @@ h1{
     </strong>
 
     Your account does not have permission to manage
-    DogEar administrators.
+    Paper Gremlin administrators.
 
   </section>
 
@@ -778,7 +778,7 @@ function renderAccounts(){
     holder.innerHTML =
       `
         <div class="empty">
-          No DogEar accounts match that search.
+          No Paper Gremlin accounts match that search.
         </div>
       `;
 
@@ -800,7 +800,7 @@ function renderAccounts(){
       account.display_name ||
       account.username ||
       account.email ||
-      "DogEar Member";
+      "Paper Gremlin Member";
 
     const isOwner =
       account.admin_role === "owner";
@@ -978,8 +978,8 @@ async function promoteAdmin(
     confirm(
       "Make " +
       name +
-      " a DogEar administrator?\n\n" +
-      "They will gain access to DogEar's administrative tools."
+      " a Paper Gremlin administrator?\n\n" +
+      "They will gain access to Paper Gremlin's administrative tools."
     );
 
   if(!confirmed)
@@ -1006,12 +1006,12 @@ async function promoteAdmin(
 
   await logEvent(
     "Administrator promoted",
-    name + " was granted DogEar administrator access.",
+    name + " was granted Paper Gremlin administrator access.",
     userId
   );
 
   setMessage(
-    name + " is now a DogEar administrator.",
+    name + " is now a Paper Gremlin administrator.",
     "success"
   );
 
@@ -1029,7 +1029,7 @@ async function deactivateAdmin(
       "Remove administrator access from " +
       name +
       "?\n\n" +
-      "Their normal DogEar account will remain active."
+      "Their normal Paper Gremlin account will remain active."
     );
 
   if(!confirmed)
@@ -1056,13 +1056,13 @@ async function deactivateAdmin(
 
   await logEvent(
     "Administrator deactivated",
-    name + "'s DogEar administrator access was disabled.",
+    name + "'s Paper Gremlin administrator access was disabled.",
     userId
   );
 
   setMessage(
     name +
-    " is no longer an active DogEar administrator.",
+    " is no longer an active Paper Gremlin administrator.",
     "success"
   );
 
@@ -1106,13 +1106,13 @@ async function reactivateAdmin(
 
   await logEvent(
     "Administrator reactivated",
-    name + "'s DogEar administrator access was restored.",
+    name + "'s Paper Gremlin administrator access was restored.",
     userId
   );
 
   setMessage(
     name +
-    " is an active DogEar administrator again.",
+    " is an active Paper Gremlin administrator again.",
     "success"
   );
 
@@ -1357,7 +1357,7 @@ async function start(){
 
     setMessage(
       error.message ||
-      "DogEar could not load administrator management.",
+      "Paper Gremlin could not load administrator management.",
       "error"
     );
 

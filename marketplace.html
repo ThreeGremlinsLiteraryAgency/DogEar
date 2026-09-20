@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DogEar — Book Marketplace</title>
+<title>Paper Gremlin — Book Marketplace</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -1006,7 +1006,7 @@ h1{
     <span class="brand-mark"></span>
 
     <span>
-      DogEar
+      Paper Gremlin
     </span>
 
   </a>
@@ -1074,7 +1074,7 @@ h1{
     <div class="hero-copy">
 
       <div class="eyebrow">
-        The DogEar Marketplace
+        The Paper Gremlin Marketplace
       </div>
 
       <h1>
@@ -1083,10 +1083,10 @@ h1{
       </h1>
 
       <p class="hero-description">
-        Browse books discovered by the DogEar community,
+        Browse books discovered by the Paper Gremlin community,
         explore staff picks and featured reads, and support
         independent bookstores when you purchase through
-        DogEar's Bookshop.org links.
+        Paper Gremlin's Bookshop.org links.
       </p>
 
       <div class="hero-actions">
@@ -1117,7 +1117,7 @@ h1{
       <div class="hero-book">
 
         <div class="hero-book-small">
-          DogEar
+          Paper Gremlin
         </div>
 
         <div class="hero-book-title">
@@ -1231,7 +1231,7 @@ h1{
       <div>
 
         <div class="section-kicker">
-          From DogEar
+          From Paper Gremlin
         </div>
 
         <h2 class="section-title">
@@ -1239,7 +1239,7 @@ h1{
         </h2>
 
         <div class="section-description">
-          Books currently highlighted across the DogEar
+          Books currently highlighted across the Paper Gremlin
           Marketplace.
         </div>
 
@@ -1284,7 +1284,7 @@ h1{
         </h2>
 
         <div class="section-description">
-          Books the DogEar team thinks deserve another
+          Books the Paper Gremlin team thinks deserve another
           dog-ear, another chapter, or an irresponsibly
           late night.
         </div>
@@ -1330,7 +1330,7 @@ h1{
         </h2>
 
         <div class="section-description">
-          Books DogEar is currently highlighting as new,
+          Books Paper Gremlin is currently highlighting as new,
           interesting, or worth keeping an eye on.
         </div>
 
@@ -1369,7 +1369,7 @@ h1{
         <div>
 
           <div class="section-kicker">
-            DogEar Coins
+            Paper Gremlin Coins
           </div>
 
           <h2 class="section-title">
@@ -1377,9 +1377,9 @@ h1{
           </h2>
 
           <div class="section-description">
-            When DogEar Coins are enabled, eligible readers
+            When Paper Gremlin Coins are enabled, eligible readers
             can use their balance for rewards available in
-            the DogEar Marketplace.
+            the Paper Gremlin Marketplace.
           </div>
 
         </div>
@@ -1426,7 +1426,7 @@ h1{
 
         <div class="section-description">
           Browse every book currently available on
-          DogEar's shelves.
+          Paper Gremlin's shelves.
         </div>
 
       </div>
@@ -1484,7 +1484,7 @@ h1{
 
     <div>
       <strong>
-        DogEar
+        Paper Gremlin
       </strong>
       <br>
       Books are better when somebody else is
@@ -1492,7 +1492,7 @@ h1{
     </div>
 
     <div>
-      DogEar may earn a commission from qualifying
+      Paper Gremlin may earn a commission from qualifying
       purchases made through Bookshop.org affiliate links.
     </div>
 
@@ -1516,7 +1516,7 @@ h1{
 <script>
 
 /* =========================================================
-   DOGEAR CONFIGURATION
+   PAPER GREMLIN CONFIGURATION
    ========================================================= */
 
 const SUPABASE_URL =
@@ -1731,7 +1731,7 @@ function initials(value){
   const words =
     String(
       value ||
-      "DogEar"
+      "Paper Gremlin"
     )
       .trim()
       .split(/\s+/)
@@ -1997,7 +1997,7 @@ function renderNavigation(){
     currentProfile?.display_name ||
     currentProfile?.username ||
     currentUser.email ||
-    "DogEar";
+    "Paper Gremlin";
 
   const avatarUrl =
     currentProfile?.avatar_url ||
@@ -2090,17 +2090,12 @@ async function loadMarketplaceSettings(){
       error
     } =
       await supabaseClient
-        .from("site_settings")
+        .from("marketplace_settings")
         .select(
-          "key,value"
+          "coins_enabled,coin_marketplace_enabled"
         )
-        .in(
-          "key",
-          [
-            "coins_enabled",
-            "coin_marketplace_enabled"
-          ]
-        );
+        .eq("id", 1)
+        .maybeSingle();
 
     if(
       error
@@ -2108,37 +2103,15 @@ async function loadMarketplaceSettings(){
       throw error;
     }
 
-    (
-      data ||
-      []
-    ).forEach(
-      row => {
+    coinSettings.coins_enabled =
+      normalizeBoolean(
+        data?.coins_enabled
+      );
 
-        if(
-          row.key === "coins_enabled"
-        ){
-
-          coinSettings.coins_enabled =
-            normalizeBoolean(
-              row.value
-            );
-
-        }
-
-        if(
-          row.key ===
-          "coin_marketplace_enabled"
-        ){
-
-          coinSettings.coin_marketplace_enabled =
-            normalizeBoolean(
-              row.value
-            );
-
-        }
-
-      }
-    );
+    coinSettings.coin_marketplace_enabled =
+      normalizeBoolean(
+        data?.coin_marketplace_enabled
+      );
 
   }
   catch(error){
@@ -2346,56 +2319,20 @@ async function loadMarketplaceBooks(){
 
   try{
 
-    let data =
-      null;
-
-    let error =
-      null;
-
-    const marketplaceQuery =
+    const {
+      data,
+      error
+    } =
       await supabaseClient
-        .from("marketplace_items")
-        .select("*")
+        .from("marketplace_curated_books")
+        .select("*, book:books(*)")
+        .eq("active", true)
         .order(
-          "created_at",
+          "sort_order",
           {
-            ascending:false
+            ascending:true
           }
         );
-
-    data =
-      marketplaceQuery.data;
-
-    error =
-      marketplaceQuery.error;
-
-    if(
-      error
-    ){
-
-      console.warn(
-        "marketplace_items load failed; trying books table:",
-        error
-      );
-
-      const fallbackQuery =
-        await supabaseClient
-          .from("books")
-          .select("*")
-          .order(
-            "created_at",
-            {
-              ascending:false
-            }
-          );
-
-      data =
-        fallbackQuery.data;
-
-      error =
-        fallbackQuery.error;
-
-    }
 
     if(
       error
@@ -2409,7 +2346,11 @@ async function loadMarketplaceBooks(){
         []
       )
         .map(
-          normalizeBook
+          row =>
+            normalizeBook({
+              ...(row.book || {}),
+              ...row
+            })
         )
         .filter(
           book =>
@@ -2429,7 +2370,7 @@ async function loadMarketplaceBooks(){
       [];
 
     showToast(
-      "DogEar couldn't load the marketplace books.",
+      "Paper Gremlin couldn't load the marketplace books.",
       "error"
     );
 
@@ -2635,7 +2576,7 @@ function createBookCard(book){
         <div class="cover-placeholder">
 
           <div class="placeholder-brand">
-            DogEar
+            Paper Gremlin
           </div>
 
           <div class="placeholder-title">
@@ -3068,7 +3009,7 @@ function renderStaffPicks(
     holder,
     books,
     "No staff picks yet",
-    "DogEar staff picks will appear here."
+    "Paper Gremlin staff picks will appear here."
   );
 
 }
@@ -3287,7 +3228,7 @@ async function loadCoinBalance(){
       error
     } =
       await supabaseClient
-        .from("coins_wallets")
+        .from("coin_wallets")
         .select(
           "balance"
         )
@@ -3352,52 +3293,26 @@ async function loadRewardItems(){
 
   try{
 
-    let data =
-      null;
-
-    let error =
-      null;
-
-    const primaryQuery =
+    const {
+      data,
+      error
+    } =
       await supabaseClient
-        .from("marketplace_items")
+        .from("coin_rewards")
         .select("*")
-        .eq(
-          "item_type",
-          "reward"
-        )
         .eq(
           "active",
           true
         )
         .order(
-          "created_at",
+          "sort_order",
           {
-            ascending:false
+            ascending:true
           }
         );
 
-    data =
-      primaryQuery.data;
-
-    error =
-      primaryQuery.error;
-
-    if(
-      error
-    ){
-
-      console.warn(
-        "Reward query failed:",
-        error
-      );
-
-      data =
-        [];
-
-      error =
-        null;
-
+    if(error){
+      throw error;
     }
 
     rewards =
@@ -3414,7 +3329,7 @@ async function loadRewardItems(){
             String(
               row.title ||
               row.name ||
-              "DogEar Reward"
+              "Paper Gremlin Reward"
             ).trim(),
 
           description:
@@ -3496,7 +3411,7 @@ function renderRewardItems(){
           </strong>
 
           <span>
-            DogEar Coin rewards will appear here when
+            Paper Gremlin Coin rewards will appear here when
             they are available.
           </span>
 
@@ -3573,7 +3488,7 @@ function renderRewardItems(){
             <div class="reward-description">
               ${escapeHtml(
                 reward.description ||
-                "A DogEar reader reward."
+                "A Paper Gremlin reader reward."
               )}
             </div>
 
@@ -3852,7 +3767,7 @@ async function initializeMarketplace(){
     );
 
     showToast(
-      "DogEar couldn't finish loading the marketplace.",
+      "Paper Gremlin couldn't finish loading the marketplace.",
       "error"
     );
 

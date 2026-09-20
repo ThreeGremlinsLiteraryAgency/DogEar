@@ -1,5 +1,5 @@
 /*
-  DogEar
+  Paper Gremlin
   report-buttons.js
 
   Reusable reporting controls for:

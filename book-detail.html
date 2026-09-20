@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DogEar — Book Details</title>
+<title>Paper Gremlin — Book Details</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -975,7 +975,7 @@ h1{
     href="index.html"
   >
     <span class="brand-mark"></span>
-    DogEar
+    Paper Gremlin
   </a>
 
   <nav class="nav">
@@ -1145,7 +1145,7 @@ h1{
           </h2>
 
           <p>
-            Ratings and reviews from the DogEar community.
+            Ratings and reviews from the Paper Gremlin community.
           </p>
 
         </div>
@@ -1459,7 +1459,7 @@ h1{
             </a>
 
             <div class="disclosure">
-              DogEar may earn an affiliate commission from
+              Paper Gremlin may earn an affiliate commission from
               qualifying Bookshop.org purchases.
             </div>
 
@@ -1707,7 +1707,7 @@ function initials(
 
   const words =
     String(
-      value || "DogEar"
+      value || "Paper Gremlin"
     )
       .trim()
       .split(/\s+/)
@@ -2105,7 +2105,7 @@ function renderProfileAvatar(){
     currentProfile?.display_name ||
     currentProfile?.username ||
     currentUser.email ||
-    "DogEar";
+    "Paper Gremlin";
 
   const avatarUrl =
     currentProfile?.avatar_url ||
@@ -2431,7 +2431,7 @@ function renderBook(){
     currentBook;
 
   document.title =
-    `${book.title} | DogEar`;
+    `${book.title} | Paper Gremlin`;
 
   $("bookTitle")
     .textContent =
@@ -2718,7 +2718,7 @@ async function loadSavedBookState(){
       error
     } =
       await supabaseClient
-        .from("saved_books")
+        .from("user_books")
         .select("id")
         .eq(
           "user_id",
@@ -2775,7 +2775,7 @@ async function toggleSavedBook(){
 
     setMessage(
       "heroMessage",
-      "This book must be added to DogEar before it can be saved.",
+      "This book must be added to Paper Gremlin before it can be saved.",
       "error"
     );
 
@@ -2807,7 +2807,7 @@ async function toggleSavedBook(){
         error
       } =
         await supabaseClient
-          .from("saved_books")
+          .from("user_books")
           .delete()
           .eq(
             "user_id",
@@ -2841,13 +2841,16 @@ async function toggleSavedBook(){
         error
       } =
         await supabaseClient
-          .from("saved_books")
+          .from("user_books")
           .insert({
             user_id:
               currentUser.id,
 
             book_id:
-              currentBookId
+              currentBookId,
+
+            status:
+              "saved"
           });
 
       if(error){
@@ -2879,7 +2882,7 @@ async function toggleSavedBook(){
     setMessage(
       "heroMessage",
       error?.message ||
-      "DogEar couldn't update your saved books.",
+      "Paper Gremlin couldn't update your saved books.",
       "error"
     );
 
@@ -2987,7 +2990,7 @@ async function loadReviews(){
 
     setMessage(
       "reviewMessage",
-      "DogEar couldn't load reader ratings.",
+      "Paper Gremlin couldn't load reader ratings.",
       "error"
     );
 
@@ -3270,7 +3273,7 @@ async function saveReview(){
 
     setMessage(
       "reviewMessage",
-      "This book must exist in DogEar before it can be reviewed.",
+      "This book must exist in Paper Gremlin before it can be reviewed.",
       "error"
     );
 
@@ -3396,7 +3399,7 @@ async function saveReview(){
     setMessage(
       "reviewMessage",
       error?.message ||
-      "DogEar couldn't save your review.",
+      "Paper Gremlin couldn't save your review.",
       "error"
     );
 
@@ -3490,7 +3493,7 @@ async function deleteReview(){
     setMessage(
       "reviewMessage",
       error?.message ||
-      "DogEar couldn't delete your review.",
+      "Paper Gremlin couldn't delete your review.",
       "error"
     );
 
@@ -3621,7 +3624,7 @@ async function renderCommunityReviews(
     const displayName =
       profile?.display_name ||
       profile?.username ||
-      "DogEar Reader";
+      "Paper Gremlin Reader";
 
     const avatarUrl =
       profile?.avatar_url ||
@@ -3926,7 +3929,7 @@ function renderFatalError(
   $("bookDescription")
     .textContent =
       message ||
-      "DogEar couldn't load this book.";
+      "Paper Gremlin couldn't load this book.";
 
   $("bookCover")
     .textContent =
@@ -3990,7 +3993,7 @@ async function initialize(){
 
     renderFatalError(
       error?.message ||
-      "DogEar couldn't load this book."
+      "Paper Gremlin couldn't load this book."
     );
 
   }
