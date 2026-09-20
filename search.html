@@ -8,7 +8,7 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>Search | DogEar</title>
+<title>Search | Paper Gremlin</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -912,7 +912,7 @@ button{
     <div class="loading-mark"></div>
 
     <div class="loading-text">
-      Opening DogEar search...
+      Opening Paper Gremlin search...
     </div>
 
   </div>
@@ -932,7 +932,7 @@ button{
 
     <span class="brand-mark"></span>
 
-    DogEar
+    Paper Gremlin
 
   </a>
 
@@ -999,7 +999,7 @@ button{
   <section class="search-hero">
 
     <div class="eyebrow">
-      Search DogEar
+      Search Paper Gremlin
     </div>
 
     <h1>
@@ -1008,7 +1008,7 @@ button{
     </h1>
 
     <p>
-      Search DogEar for books, authors, book clubs,
+      Search Paper Gremlin for books, authors, book clubs,
       and readers.
     </p>
 
@@ -1035,7 +1035,7 @@ button{
         type="search"
         autocomplete="off"
         placeholder="Title, author, ISBN, club, or reader..."
-        aria-label="Search DogEar"
+        aria-label="Search Paper Gremlin"
       >
 
     </div>
@@ -1729,7 +1729,7 @@ function clubDescription(club){
       "summary"
     ]
   ) ||
-    "A community of readers on DogEar.";
+    "A community of readers on Paper Gremlin.";
 
 }
 
@@ -1765,7 +1765,7 @@ function personName(person){
       "name",
       "username"
     ]
-  ) || "DogEar Reader";
+  ) || "Paper Gremlin Reader";
 
 }
 
@@ -1801,7 +1801,7 @@ function personBio(person){
       "description"
     ]
   ) ||
-    "A reader on DogEar.";
+    "A reader on Paper Gremlin.";
 
 }
 
@@ -1831,7 +1831,7 @@ async function searchBooks(query){
     produced here already has the correct canonical ID.
 
     Search is performed client-side after retrieval because
-    DogEar's books table has evolved and some rows may use
+    Paper Gremlin's books table has evolved and some rows may use
     slightly different metadata fields.
   */
 
@@ -2291,7 +2291,7 @@ async function hydrateSearchClubCounts(){
 async function searchPeople(query){
 
   /*
-    Reader profiles are fetched through DogEar's
+    Reader profiles are fetched through Paper Gremlin's
     get_public_profile RPC rather than directly exposing
     the entire profiles table.
 
@@ -2883,7 +2883,7 @@ function renderBookResults(){
         </h2>
 
         <p>
-          No books in DogEar's catalog matched this search.
+          No books in Paper Gremlin's catalog matched this search.
         </p>
 
       </div>
@@ -2952,7 +2952,7 @@ function renderClubResults(){
         </h2>
 
         <p>
-          No public DogEar clubs matched this search.
+          No public Paper Gremlin clubs matched this search.
         </p>
 
       </div>
@@ -3021,7 +3021,7 @@ function renderPeopleResults(){
         </h2>
 
         <p>
-          No public DogEar reader profiles matched
+          No public Paper Gremlin reader profiles matched
           this search.
         </p>
 
@@ -3194,7 +3194,7 @@ async function executeSearch(
     false;
 
   searchSummary.textContent =
-    `Searching DogEar for “${cleanQuery}”...`;
+    `Searching Paper Gremlin for “${cleanQuery}”...`;
 
   bookResults.innerHTML = `
     <div class="search-empty">
@@ -3270,12 +3270,12 @@ async function executeSearch(
   catch(error){
 
     console.error(
-      "DogEar search:",
+      "Paper Gremlin search:",
       error
     );
 
     searchSummary.textContent =
-      "Something went wrong while searching DogEar.";
+      "Something went wrong while searching Paper Gremlin.";
 
   }
 
@@ -3763,7 +3763,7 @@ supabaseClient
 
 /*
   Press "/" anywhere on the page to jump directly
-  into DogEar search.
+  into Paper Gremlin search.
 */
 
 document.addEventListener(
@@ -3881,7 +3881,7 @@ async function startSearchPage(){
       </div>
 
       <h2>
-        DogEar search couldn't open.
+        Paper Gremlin search couldn't open.
       </h2>
 
       <p>
@@ -3902,14 +3902,14 @@ async function startSearchPage(){
 
 
 /* =========================================================
-   START DOGEAR SEARCH
+   START PAPER GREMLIN SEARCH
 ========================================================= */
 
 startSearchPage();
+
+}
 
 </script>
 
 </body>
 </html>
-
-}

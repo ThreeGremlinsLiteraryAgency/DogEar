@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DogEar — Marketplace Manager</title>
+<title>Paper Gremlin — Marketplace Manager</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -992,7 +992,7 @@ h1{
 
   <a class="brand" href="dashboard.html">
     <span class="brand-mark"></span>
-    DogEar
+    Paper Gremlin
   </a>
 
   <nav class="nav">
@@ -1019,7 +1019,7 @@ h1{
 
     <div class="locked">
       <strong>Administrator access required.</strong>
-      This page is available only to active DogEar administrators.
+      This page is available only to active Paper Gremlin administrators.
     </div>
 
   </div>
@@ -1031,7 +1031,7 @@ h1{
       <div>
 
         <div class="eyebrow">
-          DogEar Administration
+          Paper Gremlin Administration
         </div>
 
         <h1>
@@ -1040,7 +1040,7 @@ h1{
 
         <div class="subtitle">
           Curate the normal Bookshop marketplace, import books from
-          Google Books, and manage DogEar's separate coin reward
+          Google Books, and manage Paper Gremlin's separate coin reward
           inventory.
         </div>
 
@@ -1074,7 +1074,7 @@ h1{
 
           <p>
             The master switch controls whether coins exist anywhere
-            in the member-facing DogEar experience.
+            in the member-facing Paper Gremlin experience.
           </p>
         </div>
 
@@ -1189,7 +1189,7 @@ h1{
 
           <p>
             These are normal books purchased with real money through
-            Bookshop.org. DogEar coins cannot be used for these books.
+            Bookshop.org. Paper Gremlin coins cannot be used for these books.
           </p>
 
         </div>
@@ -1269,7 +1269,7 @@ h1{
           </h2>
 
           <p>
-            Inventory DogEar controls directly: signed books,
+            Inventory Paper Gremlin controls directly: signed books,
             special editions, merchandise, digital rewards, gifts,
             and other rewards.
           </p>
@@ -1375,7 +1375,7 @@ h1{
       <div class="field">
 
         <label for="bookPickerSearch">
-          Search DogEar Books
+          Search Paper Gremlin Books
         </label>
 
         <input
@@ -1403,7 +1403,7 @@ h1{
         </button>
 
         <div class="google-search-note">
-          Can't find the book in DogEar? Search Google Books and
+          Can't find the book in Paper Gremlin? Search Google Books and
           import the exact edition.
         </div>
 
@@ -1524,7 +1524,7 @@ h1{
           >
           <span>
             <strong>Staff Pick</strong><br>
-            Mark this book as a DogEar staff pick.
+            Mark this book as a Paper Gremlin staff pick.
           </span>
         </label>
 
@@ -1647,7 +1647,7 @@ h1{
           id="rewardTitle"
           type="text"
           required
-          placeholder="Signed hardcover, DogEar mug, etc."
+          placeholder="Signed hardcover, Paper Gremlin mug, etc."
         >
 
       </div>
@@ -1829,7 +1829,7 @@ h1{
 
           <span>
             <strong>Shipping Required</strong><br>
-            DogEar must collect fulfillment information.
+            Paper Gremlin must collect fulfillment information.
           </span>
 
         </label>
@@ -1941,7 +1941,7 @@ const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
 
 /*
-  DogEar's website-restricted Google Books API key belongs here.
+  Paper Gremlin's website-restricted Google Books API key belongs here.
   This is the key you created in Google Cloud for the Books API.
 */
 const GOOGLE_BOOKS_API_KEY =
@@ -2315,7 +2315,7 @@ $("confirmButton")
 
         alert(
           error.message ||
-          "DogEar could not complete that action."
+          "Paper Gremlin could not complete that action."
         );
 
       }
@@ -2641,7 +2641,7 @@ function renderSettings(){
       "status-banner off";
 
     banner.textContent =
-      "Coins are completely disabled. Member-facing coin UI should not appear anywhere in DogEar.";
+      "Coins are completely disabled. Member-facing coin UI should not appear anywhere in Paper Gremlin.";
 
   }
 
@@ -2689,10 +2689,10 @@ $("coinSystemSwitch")
 
           html:
             `
-              This turns on DogEar's master coin system.
+              This turns on Paper Gremlin's master coin system.
               <br><br>
               <strong>
-                Do not enable this until DogEar is ready for members
+                Do not enable this until Paper Gremlin is ready for members
                 to begin earning or seeing coins.
               </strong>
             `,
@@ -2803,7 +2803,7 @@ $("coinMarketplaceSwitch")
     }
   );
   /* =========================================================
-   DOGEAR BOOK DATA
+   PAPER GREMLIN BOOK DATA
    ========================================================= */
 
 async function loadBooks(){
@@ -2974,7 +2974,7 @@ function renderMarketplaceBooks(){
             No marketplace books yet.
           </strong>
 
-          Add an existing DogEar book, or search Google Books
+          Add an existing Paper Gremlin book, or search Google Books
           to import the first title.
         </div>
       `;
@@ -3102,7 +3102,7 @@ function marketplaceBookRow(
             ? `
                 <a
                   class="btn secondary"
-                  href="book.html?id=${encodeURIComponent(book.id)}"
+                  href="book-detail.html?id=${encodeURIComponent(book.id)}"
                   target="_blank"
                   rel="noopener"
                 >
@@ -3298,7 +3298,7 @@ function renderBookPicker(){
         `
           <div class="empty">
             <strong>
-              DogEar's book table is empty.
+              Paper Gremlin's book table is empty.
             </strong>
 
             Search Google Books below to import the first book.
@@ -3312,7 +3312,7 @@ function renderBookPicker(){
         `
           <div class="empty">
             <strong>
-              No DogEar books found.
+              No Paper Gremlin books found.
             </strong>
 
             Try another search or search Google Books below.
@@ -3407,7 +3407,7 @@ function pickerBookRow(book){
 
 
 /* =========================================================
-   ADD EXISTING DOGEAR BOOK
+   ADD EXISTING PAPER GREMLIN BOOK
    ========================================================= */
 
 async function addExistingBookToMarketplace(
@@ -3482,7 +3482,7 @@ async function addExistingBookToMarketplace(
 
     await logAdminEvent(
       "marketplace_book_added",
-      "Added a DogEar book to the Marketplace.",
+      "Added a Paper Gremlin book to the Marketplace.",
       String(book.id),
       {
         title:
@@ -3514,7 +3514,7 @@ async function addExistingBookToMarketplace(
     setMessage(
       "bookPickerMessage",
       error.message ||
-      "DogEar could not add that book.",
+      "Paper Gremlin could not add that book.",
       "error"
     );
 
@@ -4082,7 +4082,7 @@ async function importGoogleBook(
       Browser users do NOT insert directly into books.
 
       The protected SECURITY DEFINER RPC checks that the
-      caller is an active DogEar administrator before it
+      caller is an active Paper Gremlin administrator before it
       creates the canonical book record.
     */
 
@@ -4152,7 +4152,7 @@ async function importGoogleBook(
     ){
 
       throw new Error(
-        "DogEar imported the book but did not return a book ID."
+        "Paper Gremlin imported the book but did not return a book ID."
       );
 
     }
@@ -4160,7 +4160,7 @@ async function importGoogleBook(
     /*
       Reload books because the RPC may have:
       1. inserted a new record, OR
-      2. returned an existing DogEar book with matching
+      2. returned an existing Paper Gremlin book with matching
          Google Books ID / ISBN.
     */
 
@@ -4172,7 +4172,7 @@ async function importGoogleBook(
     if(!importedBook){
 
       throw new Error(
-        "The book was imported, but DogEar could not reload its record."
+        "The book was imported, but Paper Gremlin could not reload its record."
       );
 
     }
@@ -4285,7 +4285,7 @@ async function importGoogleBook(
     setMessage(
       "bookPickerMessage",
       error.message ||
-      "DogEar could not import that Google Books edition.",
+      "Paper Gremlin could not import that Google Books edition.",
       "error"
     );
 
@@ -4442,7 +4442,7 @@ function editCuratedBook(
     summary.innerHTML =
       `
         <div class="empty">
-          The underlying DogEar book record could not be loaded.
+          The underlying Paper Gremlin book record could not be loaded.
         </div>
       `;
 
@@ -4619,7 +4619,7 @@ $("bookEditorForm")
         setMessage(
           "bookEditorMessage",
           error.message ||
-          "DogEar could not save this marketplace book.",
+          "Paper Gremlin could not save this marketplace book.",
           "error"
         );
 
@@ -4675,10 +4675,10 @@ function removeCuratedBook(
         <strong>
           ${escapeHtml(title)}
         </strong>
-        from the DogEar Marketplace?
+        from the Paper Gremlin Marketplace?
         <br><br>
         This removes the curated Marketplace listing.
-        The underlying DogEar book record will remain in
+        The underlying Paper Gremlin book record will remain in
         the books database.
       `,
 
@@ -4853,7 +4853,7 @@ function renderRewards(){
 
           ${
             marketplaceSettings.coins_enabled
-              ? "Add DogEar-controlled rewards when you are ready."
+              ? "Add Paper Gremlin-controlled rewards when you are ready."
               : "The Coin System is currently disabled. You can build reward inventory now without exposing coins to members."
           }
 
@@ -5367,7 +5367,7 @@ $("rewardForm")
 
           await logAdminEvent(
             "coin_reward_updated",
-            "Updated a DogEar coin reward.",
+            "Updated a Paper Gremlin coin reward.",
             String(savedReward.id),
             {
               title:
@@ -5416,7 +5416,7 @@ $("rewardForm")
 
           await logAdminEvent(
             "coin_reward_added",
-            "Added a DogEar coin reward.",
+            "Added a Paper Gremlin coin reward.",
             String(savedReward.id),
             {
               title:
@@ -5464,7 +5464,7 @@ $("rewardForm")
         setMessage(
           "rewardMessage",
           error.message ||
-          "DogEar could not save this reward.",
+          "Paper Gremlin could not save this reward.",
           "error"
         );
 
@@ -5513,7 +5513,7 @@ $("deleteRewardBtn")
             <strong>
               ${escapeHtml(reward.title)}
             </strong>
-            from DogEar's reward inventory?
+            from Paper Gremlin's reward inventory?
             <br><br>
             This deletes the reward record itself.
             If members have already redeemed this reward in the
@@ -5554,7 +5554,7 @@ $("deleteRewardBtn")
 
             await logAdminEvent(
               "coin_reward_deleted",
-              "Deleted a DogEar coin reward.",
+              "Deleted a Paper Gremlin coin reward.",
               String(rewardId),
               {
                 title:
@@ -5797,7 +5797,7 @@ async function initialize(){
           <div class="locked">
 
             <strong>
-              DogEar couldn't open the Marketplace Manager.
+              Paper Gremlin couldn't open the Marketplace Manager.
             </strong>
 
             ${escapeHtml(
@@ -5843,7 +5843,7 @@ window.editReward =
 
 
 /* =========================================================
-   START DOGEAR
+   START PAPER GREMLIN
    ========================================================= */
 
 initialize();

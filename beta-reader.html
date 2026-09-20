@@ -9,7 +9,7 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>DogEar — Beta Reader</title>
+<title>Paper Gremlin — Beta Reader</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -1062,7 +1062,7 @@ a{
     href="beta-reading.html"
   >
     <span class="brand-mark"></span>
-    DogEar
+    Paper Gremlin
   </a>
 
   <div class="reader-title-nav">
@@ -1124,7 +1124,7 @@ a{
     </h1>
 
     <p>
-      DogEar is checking your beta-reading assignment
+      Paper Gremlin is checking your beta-reading assignment
       and restoring your place.
     </p>
 
@@ -1334,7 +1334,7 @@ a{
       </div>
 
       <div class="sidebar-title">
-        Your DogEars
+        Your Gremlin Marks
       </div>
 
     </div>
@@ -1568,7 +1568,7 @@ a{
       <div>
 
         <div class="modal-kicker">
-          DogEar
+          Paper Gremlin
         </div>
 
         <h2 class="modal-title">
@@ -2805,7 +2805,7 @@ function renderStaticReader(){
       title;
 
   document.title =
-    `${title} — DogEar Beta Reader`;
+    `${title} — Paper Gremlin Beta Reader`;
 
   renderTableOfContents();
 
@@ -4012,7 +4012,7 @@ async function toggleBookmark(){
     );
 
     showToast(
-      "DogEar couldn't update that bookmark."
+      "Paper Gremlin couldn't update that bookmark."
     );
 
   }finally{
@@ -4299,7 +4299,7 @@ function captureTextSelection(){
     );
 
   /*
-    DogEar annotations intentionally stay within one
+    Paper Gremlin annotations intentionally stay within one
     paragraph. This keeps offsets stable and makes the
     highlights reconstructable after the manuscript is
     rendered again.
@@ -4315,7 +4315,7 @@ function captureTextSelection(){
     clearSelectedPassage();
 
     showToast(
-      "Select text within a single paragraph to create a DogEar."
+      "Select text within a single paragraph to create a Paper Gremlin."
     );
 
     return;
@@ -4553,7 +4553,7 @@ async function createHighlight(){
     );
 
     showToast(
-      "DogEar couldn't save that highlight."
+      "Paper Gremlin couldn't save that highlight."
     );
 
   }
@@ -4624,9 +4624,9 @@ function closeNoteModal(){
 ========================================================= */
 
 /*
-  DogEars are notes, not link posts.
+  Gremlin Marks are notes, not link posts.
 
-  URLs are intentionally blocked so a shared DogEar cannot
+  URLs are intentionally blocked so a shared Paper Gremlin cannot
   be used as a spam, phishing, or off-platform promotion
   surface.
 */
@@ -4682,7 +4682,7 @@ async function saveNote(){
   ){
 
     showToast(
-      "DogEars cannot contain URLs."
+      "Gremlin Marks cannot contain URLs."
     );
 
     $("noteText").focus();
@@ -4761,8 +4761,8 @@ async function saveNote(){
 
     showToast(
       visibility === "author"
-        ? "DogEar shared with the author."
-        : "Private DogEar saved."
+        ? "Paper Gremlin shared with the author."
+        : "Private Paper Gremlin saved."
     );
 
     await logAnalyticsEvent(
@@ -4789,7 +4789,7 @@ async function saveNote(){
     );
 
     showToast(
-      "DogEar couldn't save that note."
+      "Paper Gremlin couldn't save that note."
     );
 
   }finally{
@@ -5078,7 +5078,7 @@ function renderAnnotations(){
     container.innerHTML =
       `
       <div class="sidebar-empty">
-        No DogEars here yet.
+        No Gremlin Marks here yet.
         <br>
         Highlight text or add a note while you read.
       </div>
@@ -5400,7 +5400,7 @@ async function toggleAnnotationSharing(
   ){
 
     showToast(
-      "DogEars containing URLs cannot be shared."
+      "Gremlin Marks containing URLs cannot be shared."
     );
 
     return;
@@ -5461,8 +5461,8 @@ async function toggleAnnotationSharing(
 
     showToast(
       nextVisibility === "author"
-        ? "DogEar shared with the author."
-        : "DogEar is private again."
+        ? "Paper Gremlin shared with the author."
+        : "Paper Gremlin is private again."
     );
 
     await logAnalyticsEvent(
@@ -5480,12 +5480,12 @@ async function toggleAnnotationSharing(
   }catch(error){
 
     console.error(
-      "Could not update DogEar sharing:",
+      "Could not update Paper Gremlin sharing:",
       error
     );
 
     showToast(
-      "DogEar couldn't update that note."
+      "Paper Gremlin couldn't update that note."
     );
 
   }
@@ -5505,7 +5505,7 @@ async function deleteAnnotation(
     window.confirm(
       annotation.annotation_type ===
         "note"
-        ? "Delete this DogEar note?"
+        ? "Delete this Paper Gremlin note?"
         : "Delete this highlight?"
     );
 
@@ -5546,7 +5546,7 @@ async function deleteAnnotation(
     showToast(
       annotation.annotation_type ===
         "note"
-        ? "DogEar deleted."
+        ? "Paper Gremlin deleted."
         : "Highlight deleted."
     );
 
@@ -5573,7 +5573,7 @@ async function deleteAnnotation(
     );
 
     showToast(
-      "DogEar couldn't delete that annotation."
+      "Paper Gremlin couldn't delete that annotation."
     );
 
   }
@@ -6968,7 +6968,7 @@ async function saveFeedback(
     );
 
     showToast(
-      "DogEar couldn't save your feedback."
+      "Paper Gremlin couldn't save your feedback."
     );
 
   }finally{
@@ -7474,7 +7474,7 @@ async function initialize(){
     showError(
       "We couldn't open this manuscript.",
       error?.message ||
-      "DogEar ran into an unexpected problem while loading your beta-reading assignment."
+      "Paper Gremlin ran into an unexpected problem while loading your beta-reading assignment."
     );
 
   }

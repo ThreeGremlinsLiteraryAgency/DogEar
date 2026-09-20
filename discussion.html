@@ -10,10 +10,10 @@
 
   <meta
     name="description"
-    content="DogEar club discussion."
+    content="Paper Gremlin club discussion."
   >
 
-  <title>DogEar — Discussion</title>
+  <title>Paper Gremlin — Discussion</title>
 
   <style>
     :root {
@@ -1026,7 +1026,7 @@
       href="dashboard.html"
     >
       <span class="brand-mark"></span>
-      DogEar
+      Paper Gremlin
     </a>
 
     <nav class="nav-links">
@@ -1163,7 +1163,7 @@
               id="authorName"
               href="profile.html"
             >
-              DogEar Reader
+              Paper Gremlin Reader
             </a>
 
             <div
@@ -1324,6 +1324,7 @@
     let discussionId = null;
     let clubId = null;
     let discussion = null;
+    let openingPostId = null;
     let replies = [];
     let membership = null;
 
@@ -1637,7 +1638,7 @@
           error
         } =
           await supabaseClient
-            .from("club_discussions")
+            .from("forum_threads")
             .select("*")
             .eq(
               "id",
@@ -1662,9 +1663,36 @@
           becoming executable/clickable content.
         */
 
+        const {
+          data:openingPost,
+          error:openingPostError
+        } =
+          await supabaseClient
+            .from("forum_posts")
+            .select("id, body")
+            .eq(
+              "thread_id",
+              discussionId
+            )
+            .order(
+              "created_at",
+              {
+                ascending:true
+              }
+            )
+            .limit(1)
+            .maybeSingle();
+
+        if (openingPostError) {
+          throw openingPostError;
+        }
+
+        openingPostId =
+          openingPost?.id ||
+          null;
+
         discussionBody.textContent =
-          data.body ||
-          data.content ||
+          openingPost?.body ||
           "";
 
         discussionDate.textContent =
@@ -1673,7 +1701,7 @@
           );
 
         document.title =
-          "DogEar — " +
+          "Paper Gremlin — " +
           (
             data.title ||
             "Discussion"
@@ -1699,7 +1727,7 @@
         );
 
         showMessage(
-          "DogEar couldn't load this discussion.",
+          "Paper Gremlin couldn't load this discussion.",
           "error"
         );
 
@@ -1742,7 +1770,7 @@
         const displayName =
           profile?.display_name ||
           profile?.username ||
-          "DogEar Reader";
+          "Paper Gremlin Reader";
 
         authorName.textContent =
           displayName;
@@ -1784,7 +1812,7 @@
           await supabaseClient
             .from("club_members")
             .select(
-              "role, status"
+              "club_role, membership_status"
             )
             .eq(
               "club_id",
@@ -1817,7 +1845,7 @@
     function isActiveMember() {
 
       return (
-        membership?.status ===
+        membership?.membership_status ===
         "active"
       );
     }
@@ -1844,10 +1872,10 @@
           error
         } =
           await supabaseClient
-            .from("discussion_replies")
+            .from("forum_posts")
             .select("*")
             .eq(
-              "discussion_id",
+              "thread_id",
               discussionId
             )
             .order(
@@ -1862,7 +1890,12 @@
         }
 
         replies =
-          data || [];
+          (data || [])
+            .filter(
+              reply =>
+                String(reply.id) !==
+                String(openingPostId)
+            );
 
         await attachReplyProfiles();
 
@@ -1883,7 +1916,7 @@
                 Replies couldn't be loaded.
               </strong>
 
-              DogEar wasn't able to retrieve this
+              Paper Gremlin wasn't able to retrieve this
               discussion's replies.
             </div>
           `;
@@ -2007,7 +2040,7 @@
       const displayName =
         reply.profile?.display_name ||
         reply.profile?.username ||
-        "DogEar Reader";
+        "Paper Gremlin Reader";
 
       setAvatar(
         avatar,
@@ -2283,9 +2316,9 @@
           error
         } =
           await supabaseClient
-            .from("discussion_replies")
+            .from("forum_posts")
             .insert({
-              discussion_id:
+              thread_id:
                 discussionId,
 
               author_id:
@@ -2317,7 +2350,7 @@
         );
 
         showMessage(
-          "DogEar couldn't post that reply. The reply table permissions or schema may still need to be connected.",
+          "Paper Gremlin couldn't post that reply. The reply table permissions or schema may still need to be connected.",
           "error"
         );
       }

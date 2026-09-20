@@ -12,7 +12,7 @@
 >
 
 <title>
-  DogEar — Beta Project
+  Paper Gremlin — Beta Project
 </title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -705,7 +705,7 @@ textarea{
       </span>
 
       <span>
-        DogEar
+        Paper Gremlin
       </span>
 
     </a>
@@ -800,7 +800,9 @@ textarea{
           <a
             id="analyticsLink"
             class="button secondary"
-            href="beta-analytics.html"
+            href="#"
+            aria-disabled="true"
+            hidden
           >
             Analytics
           </a>
@@ -1060,7 +1062,7 @@ textarea{
                     >
 
                     <div class="help">
-                      Supported formats: Microsoft Word (.docx), Notepad/plain text (.txt), and Markdown (.md/.markdown). The original manuscript stays private; beta readers receive only DogEar's processed reading copy.
+                      Supported formats: Microsoft Word (.docx), Notepad/plain text (.txt), and Markdown (.md/.markdown). The original manuscript stays private; beta readers receive only Paper Gremlin's processed reading copy.
                     </div>
 
                   </div>
@@ -1161,7 +1163,7 @@ textarea{
               <div>
 
                 <h2 class="card-title">
-                  Reader DogEars
+                  Reader Gremlin Marks
                 </h2>
 
                 <div class="card-subtitle">
@@ -1229,7 +1231,7 @@ textarea{
                 </h2>
 
                 <div class="card-subtitle">
-                  Configure the DogEar coin reward offered for this beta round.
+                  Configure the Paper Gremlin coin reward offered for this beta round.
                 </div>
 
               </div>
@@ -1255,7 +1257,7 @@ textarea{
                   >
 
                   <div class="help">
-                    This records the round's reward offer. Coin movement remains controlled by DogEar's audited coin system.
+                    This records the round's reward offer. Coin movement remains controlled by Paper Gremlin's audited coin system.
                   </div>
 
                 </div>
@@ -1345,7 +1347,9 @@ textarea{
                 <a
                   id="sideAnalyticsLink"
                   class="button secondary"
-                  href="beta-analytics.html"
+                  href="#"
+                  aria-disabled="true"
+                  hidden
                 >
                   View Analytics
                 </a>
@@ -1623,7 +1627,7 @@ function showToast(
 
 function profileName(
   profile,
-  fallback = "DogEar reader"
+  fallback = "Paper Gremlin reader"
 ){
 
   if(!profile){
@@ -1900,17 +1904,14 @@ async function loadCurrentRound(){
 async function loadAssignments(){
 
   const {
-    data,
-    error
+    data:assignmentRows,
+    error:assignmentError
   } =
     await supabaseClient
       .from(
-        "beta_reader_assignments"
+        "beta_assignments"
       )
-      .select(`
-        *,
-        reader:profiles!beta_reader_assignments_reader_id_fkey(*)
-      `)
+      .select("*")
       .eq(
         "project_id",
         projectId
@@ -1923,134 +1924,90 @@ async function loadAssignments(){
       );
 
 
-  if(error){
-
-    /*
-      Some Supabase schemas do not expose the relationship
-      name to PostgREST. Fall back to loading assignments
-      and reader profiles separately.
-    */
-
-    const {
-      data:fallbackAssignments,
-      error:fallbackError
-    } =
-      await supabaseClient
-        .from(
-          "beta_reader_assignments"
-        )
-        .select("*")
-        .eq(
-          "project_id",
-          projectId
-        )
-        .order(
-          "created_at",
-          {
-            ascending:false
-          }
-        );
-
-
-    if(fallbackError){
-      throw fallbackError;
-    }
-
-
-    const readerIds =
-      [
-        ...new Set(
-          (
-            fallbackAssignments ||
-            []
-          )
-            .map(
-              assignment =>
-                assignment.reader_id
-            )
-            .filter(Boolean)
-        )
-      ];
-
-
-    let profileMap =
-      new Map();
-
-
-    if(
-      readerIds.length
-    ){
-
-      const {
-        data:profiles,
-        error:profileError
-      } =
-        await supabaseClient
-          .from(
-            "profiles"
-          )
-          .select("*")
-          .in(
-            "id",
-            readerIds
-          );
-
-
-      if(profileError){
-
-        console.warn(
-          "Load assignment profiles:",
-          profileError
-        );
-
-      }
-      else{
-
-        profileMap =
-          new Map(
-            (
-              profiles ||
-              []
-            )
-              .map(
-                profile => [
-                  profile.id,
-                  profile
-                ]
-              )
-          );
-
-      }
-
-    }
-
-
-    assignments =
-      (
-        fallbackAssignments ||
-        []
-      )
-        .map(
-          assignment => ({
-            ...assignment,
-
-            reader:
-              profileMap.get(
-                assignment.reader_id
-              ) ||
-              null
-          })
-        );
-
-
-    return;
-
+  if(assignmentError){
+    throw assignmentError;
   }
 
 
-  assignments =
-    data ||
-    [];
+  const {
+    data:interestRows,
+    error:interestError
+  } =
+    await supabaseClient
+      .from("beta_interests")
+      .select("*")
+      .eq("project_id", projectId)
+      .eq("status", "pending")
+      .order("created_at", { ascending:false });
+
+
+  if(interestError){
+    throw interestError;
+  }
+
+
+  const combined = [
+    ...(assignmentRows || []).map(
+      row => ({
+        ...row,
+        record_type:"assignment"
+      })
+    ),
+    ...(interestRows || []).map(
+      row => ({
+        ...row,
+        record_type:"interest"
+      })
+    )
+  ];
+
+
+  const readerIds = [
+    ...new Set(
+      combined
+        .map(row => row.reader_id)
+        .filter(Boolean)
+    )
+  ];
+
+
+  let profileMap = new Map();
+
+
+  if(readerIds.length){
+    const {
+      data:profiles,
+      error:profileError
+    } =
+      await supabaseClient
+        .from("profiles")
+        .select("*")
+        .in("id", readerIds);
+
+    if(profileError){
+      console.warn(
+        "Load assignment profiles:",
+        profileError
+      );
+    }
+    else{
+      profileMap = new Map(
+        (profiles || []).map(
+          profile => [profile.id, profile]
+        )
+      );
+    }
+  }
+
+
+  assignments = combined.map(
+    row => ({
+      ...row,
+      reader:
+        profileMap.get(row.reader_id) ||
+        null
+    })
+  );
 
 }
 
@@ -2117,7 +2074,7 @@ async function loadSharedDogEars(){
   if(error){
 
     console.warn(
-      "Load shared DogEars:",
+      "Load shared Gremlin Marks:",
       error
     );
 
@@ -2809,7 +2766,7 @@ function renderManuscripts(){
 
                 showToast(
                   error.message ||
-                  "DogEar couldn't retry this manuscript.",
+                  "Paper Gremlin couldn't retry this manuscript.",
                   "error"
                 );
 
@@ -2842,7 +2799,7 @@ function readerDisplayName(
     assignment.reader,
     assignment.reader_name ||
     assignment.reader_email ||
-    "DogEar reader"
+    "Paper Gremlin reader"
   );
 
 }
@@ -3198,7 +3155,7 @@ function renderSharedDogEars(){
     container.innerHTML =
       `
         <div class="empty">
-          Readers haven't shared any DogEars with you yet.
+          Readers haven't shared any Gremlin Marks with you yet.
         </div>
       `;
 
@@ -3217,7 +3174,7 @@ function renderSharedDogEars(){
             dogear.reader_name ||
             dogear.display_name ||
             dogear.username ||
-            "DogEar reader";
+            "Paper Gremlin reader";
 
 
           const section =
@@ -3272,7 +3229,7 @@ function renderSharedDogEars(){
                 </div>
 
                 <span class="badge gold">
-                  Shared DogEar
+                  Shared Paper Gremlin
                 </span>
 
               </div>
@@ -3388,7 +3345,7 @@ function renderSubmittedFeedback(){
             feedback.reader_name ||
             feedback.display_name ||
             feedback.username ||
-            "DogEar reader";
+            "Paper Gremlin reader";
 
 
           const ratings =
@@ -3803,7 +3760,7 @@ async function saveRound(){
 
     showToast(
       error.message ||
-      "DogEar couldn't save this beta round.",
+      "Paper Gremlin couldn't save this beta round.",
       "error"
     );
 
@@ -3843,53 +3800,18 @@ async function updateAssignmentStatus(
 
   try{
 
-    const payload =
-      {
-        status
-      };
-
-
-    if(
-      status ===
-      "accepted"
-    ){
-
-      payload.accepted_at =
-        new Date()
-          .toISOString();
-
-    }
-
-
-    if(
-      status ===
-      "declined"
-    ){
-
-      payload.declined_at =
-        new Date()
-          .toISOString();
-
-    }
-
-
     const {
       error
     } =
       await supabaseClient
-        .from(
-          "beta_reader_assignments"
-        )
-        .update(
-          payload
-        )
-        .eq(
-          "id",
-          assignmentId
-        )
-        .eq(
-          "project_id",
-          projectId
+        .rpc(
+          status === "accepted"
+            ? "accept_beta_reader"
+            : "decline_beta_reader",
+          {
+            p_interest_id:
+              assignmentId
+          }
         );
 
 
@@ -3926,7 +3848,7 @@ async function updateAssignmentStatus(
 
     showToast(
       error.message ||
-      "DogEar couldn't update this reader.",
+      "Paper Gremlin couldn't update this reader.",
       "error"
     );
 
@@ -3986,7 +3908,7 @@ async function processManuscript(
     TXT and Markdown are read as text.
 
     DOCX files are opened by the Edge Function and the
-    Word document XML is converted into DogEar reader
+    Word document XML is converted into Paper Gremlin reader
     sections.
 
     The original uploaded file is never exposed to
@@ -4016,7 +3938,7 @@ async function processManuscript(
   if(!accessToken){
 
     throw new Error(
-      "Your DogEar session expired. Please sign in again."
+      "Your Paper Gremlin session expired. Please sign in again."
     );
 
   }
@@ -4152,7 +4074,7 @@ function isSupportedManuscriptFile(
     TXT/Markdown files.
 
     Old binary .doc files are intentionally NOT accepted.
-    DogEar supports modern .docx Word documents.
+    Paper Gremlin supports modern .docx Word documents.
   */
 
   return (
@@ -4230,7 +4152,7 @@ async function uploadManuscript(){
   ){
 
     showToast(
-      "DogEar supports Microsoft Word (.docx), plain text (.txt), and Markdown (.md/.markdown) manuscripts.",
+      "Paper Gremlin supports Microsoft Word (.docx), plain text (.txt), and Markdown (.md/.markdown) manuscripts.",
       "error"
     );
 
@@ -4490,7 +4412,7 @@ async function uploadManuscript(){
     */
 
     showToast(
-      "Manuscript uploaded. DogEar is processing it."
+      "Manuscript uploaded. Paper Gremlin is processing it."
     );
 
 
@@ -4564,7 +4486,7 @@ async function uploadManuscript(){
 
     showToast(
       error.message ||
-      "DogEar couldn't upload this manuscript.",
+      "Paper Gremlin couldn't upload this manuscript.",
       "error"
     );
 
@@ -4625,7 +4547,7 @@ async function saveReward(){
       beta_round_rewards stores the beta-round offer.
 
       It does NOT directly move coins. Actual coin movement
-      remains connected to DogEar's audited coin ledger.
+      remains connected to Paper Gremlin's audited coin ledger.
     */
 
     if(rewardRecord){
@@ -4753,7 +4675,7 @@ async function saveReward(){
 
     showToast(
       error.message ||
-      "DogEar couldn't save the reader reward.",
+      "Paper Gremlin couldn't save the reader reward.",
       "error"
     );
 
@@ -4831,7 +4753,7 @@ function bindEvents(){
     Refresh author-visible reader data whenever this tab
     becomes active again.
 
-    This includes both shared DogEars and submitted
+    This includes both shared Gremlin Marks and submitted
     structured reader feedback.
   */
 
@@ -4935,7 +4857,7 @@ function showLoadError(
               margin-bottom:10px;
             "
           >
-            DogEar couldn't open this beta project.
+            Paper Gremlin couldn't open this beta project.
           </div>
 
           <div
@@ -4981,7 +4903,7 @@ async function initialize(){
     if(!projectId){
 
       throw new Error(
-        "This DogEar link does not contain a project ID."
+        "This Paper Gremlin link does not contain a project ID."
       );
 
     }
@@ -4989,7 +4911,7 @@ async function initialize(){
 
     $("loading")
       .textContent =
-        "Checking your DogEar account…";
+        "Checking your Paper Gremlin account…";
 
 
     const loggedIn =

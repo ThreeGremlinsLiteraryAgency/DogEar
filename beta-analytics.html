@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Paper Gremlin — Beta Analytics</title>
+  <style>
+    :root{--ink:#231b18;--muted:#766b65;--paper:#fffaf0;--card:#fff;--line:#ded4c7;--gold:#c28b2c;--green:#275c47;--shadow:0 14px 34px rgba(48,34,25,.1)}
+    *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#f5ead7,#fffaf0 34%);color:var(--ink);font:16px/1.5 Georgia,serif;min-height:100vh}
+    a{color:inherit}.topbar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px clamp(18px,4vw,48px);background:rgba(255,250,240,.94);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:2}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-weight:800}.brand img{width:44px;height:44px}.nav{display:flex;gap:14px;flex-wrap:wrap}.nav a{text-decoration:none;font-weight:700}
+    main{width:min(1180px,calc(100% - 32px));margin:36px auto 70px}.eyebrow{color:var(--green);font:800 12px/1.2 Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase}h1{font-size:clamp(32px,5vw,58px);line-height:1.04;margin:8px 0}p{color:var(--muted)}
+    .message{display:none;padding:13px 16px;border-radius:12px;margin:18px 0;background:#f7dfdd;color:#7d2925}.message.show{display:block}.toolbar{display:flex;justify-content:space-between;align-items:end;gap:18px;margin:28px 0}.toolbar a{font:700 14px Arial,sans-serif;text-decoration:none;border:1px solid var(--line);padding:10px 14px;border-radius:999px;background:var(--card)}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.stat,.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.stat{padding:20px}.stat strong{display:block;font-size:32px}.stat span{color:var(--muted)}
+    .panel{padding:22px;margin-top:20px;overflow:auto}.panel h2{margin:0 0 14px;font-size:22px}table{width:100%;border-collapse:collapse;min-width:700px}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line)}th{font:800 12px Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.bar{height:9px;background:#eee5d8;border-radius:99px;overflow:hidden;min-width:120px}.bar span{display:block;height:100%;background:linear-gradient(90deg,var(--green),#5f987d)}
+    .empty{text-align:center;padding:32px;color:var(--muted)}.loading{position:fixed;inset:0;display:grid;place-items:center;background:var(--paper);z-index:5;font-size:18px}.loading.hidden{display:none}
+    @media(max-width:780px){.stats{grid-template-columns:repeat(2,1fr)}.nav{display:none}.toolbar{align-items:stretch;flex-direction:column}.toolbar a{text-align:center}}
+  </style>
+</head>
+<body>
+  <div class="loading" id="loading">Counting suspiciously organized gremlins…</div>
+  <header class="topbar">
+    <a class="brand" href="dashboard.html"><img src="paper-gremlin-logo.svg" alt=""><span>Paper Gremlin</span></a>
+    <nav class="nav"><a href="dashboard.html">Home</a><a href="beta-reading.html">Beta Reading</a><a href="profile.html">Profile</a></nav>
+  </header>
+  <main>
+    <div class="eyebrow">Author dashboard</div>
+    <div class="toolbar">
+      <div><h1 id="title">Beta Analytics</h1><p id="subtitle">Reader progress across every round and manuscript section.</p></div>
+      <a id="backLink" href="beta-reading.html">← Back to project</a>
+    </div>
+    <div class="message" id="message"></div>
+    <section class="stats" aria-label="Project totals">
+      <div class="stat"><strong id="accepted">0</strong><span>Accepted readers</span></div>
+      <div class="stat"><strong id="active">0</strong><span>Active readers</span></div>
+      <div class="stat"><strong id="completed">0</strong><span>Completed readers</span></div>
+      <div class="stat"><strong id="completion">0%</strong><span>Completion rate</span></div>
+    </section>
+    <section class="panel"><h2>Round performance</h2><div id="rounds"></div></section>
+    <section class="panel"><h2>Section progress</h2><div id="sections"></div></section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL="https://nrtutxjznkfvvbmaagum.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY="sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
+    const client=supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+    const $=id=>document.getElementById(id);
+    const projectId=new URLSearchParams(location.search).get("project");
+    const escapeHtml=value=>String(value??"").replace(/[&<>'"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"})[char]);
+    const number=value=>Number.isFinite(Number(value))?Number(value):0;
+    const percent=value=>`${Math.max(0,Math.min(100,number(value))).toFixed(0)}%`;
+    function showError(text){$("message").textContent=text;$("message").classList.add("show")}
+    function roundTable(rows){
+      if(!rows.length)return '<div class="empty">No beta-round activity yet.</div>';
+      return `<table><thead><tr><th>Round</th><th>Accepted</th><th>Active</th><th>Completed</th><th>Average progress</th><th>Completion</th></tr></thead><tbody>${rows.map(row=>`<tr><td><strong>${escapeHtml(row.round_name||`Round ${row.round_number||1}`)}</strong></td><td>${number(row.accepted_readers)}</td><td>${number(row.active_readers)}</td><td>${number(row.completed_readers)}</td><td><div class="bar"><span style="width:${percent(row.average_progress)}"></span></div> ${percent(row.average_progress)}</td><td>${percent(row.completion_rate)}</td></tr>`).join("")}</tbody></table>`;
+    }
+    function sectionTable(rows){
+      if(!rows.length)return '<div class="empty">Section analytics will appear after readers begin the manuscript.</div>';
+      return `<table><thead><tr><th>Section</th><th>Started</th><th>Completed</th><th>Reading</th><th>Listening</th><th>Overall</th></tr></thead><tbody>${rows.map(row=>`<tr><td><strong>${escapeHtml(row.title||`Section ${row.section_number||""}`)}</strong></td><td>${number(row.readers_started)}</td><td>${number(row.readers_completed)}</td><td>${percent(row.average_reading_progress)}</td><td>${percent(row.average_listening_progress)}</td><td><div class="bar"><span style="width:${percent(row.average_overall_progress)}"></span></div> ${percent(row.average_overall_progress)}</td></tr>`).join("")}</tbody></table>`;
+    }
+    async function init(){
+      try{
+        if(!projectId)throw new Error("Choose a beta project first.");
+        const {data:{user},error:userError}=await client.auth.getUser();
+        if(userError||!user){location.href="auth.html#login";return}
+        const {data:project,error:projectError}=await client.from("beta_projects").select("id,owner_id,title").eq("id",projectId).maybeSingle();
+        if(projectError)throw projectError;
+        if(!project||project.owner_id!==user.id)throw new Error("Only the project owner can view these analytics.");
+        $("title").textContent=`${project.title||"Beta Project"} Analytics`;
+        $("backLink").href=`beta-project.html?id=${encodeURIComponent(projectId)}`;
+        const [{data:rounds,error:roundError},{data:manuscripts,error:manuscriptError}]=await Promise.all([
+          client.from("beta_round_analytics").select("*").eq("project_id",projectId).order("round_number",{ascending:false}),
+          client.from("beta_manuscripts").select("id").eq("project_id",projectId)
+        ]);
+        if(roundError)throw roundError;if(manuscriptError)throw manuscriptError;
+        const manuscriptIds=(manuscripts||[]).map(row=>row.id);
+        let sections=[];
+        if(manuscriptIds.length){const result=await client.from("beta_section_analytics").select("*").in("manuscript_id",manuscriptIds).order("section_number",{ascending:true});if(result.error)throw result.error;sections=result.data||[]}
+        const newest=(rounds||[])[0]||{};
+        $("accepted").textContent=number(newest.accepted_readers);
+        $("active").textContent=number(newest.active_readers);
+        $("completed").textContent=number(newest.completed_readers);
+        $("completion").textContent=percent(newest.completion_rate);
+        $("rounds").innerHTML=roundTable(rounds||[]);
+        $("sections").innerHTML=sectionTable(sections);
+      }catch(error){console.error("Beta analytics:",error);showError(error.message||"Paper Gremlin couldn't load these analytics.")}
+      finally{$("loading").classList.add("hidden")}
+    }
+    init();
+  </script>
+</body>
+</html>

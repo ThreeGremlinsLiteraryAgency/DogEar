@@ -10,10 +10,10 @@
 
   <meta
     name="description"
-    content="DogEar club discussions."
+    content="Paper Gremlin club discussions."
   >
 
-  <title>DogEar — Club Discussions</title>
+  <title>Paper Gremlin — Club Discussions</title>
 
   <style>
     :root {
@@ -1155,7 +1155,7 @@
       href="dashboard.html"
     >
       <span class="brand-mark"></span>
-      DogEar
+      Paper Gremlin
     </a>
 
     <nav class="nav-links">
@@ -1786,7 +1786,7 @@
           ".";
 
         document.title =
-          "DogEar — " +
+          "Paper Gremlin — " +
           (
             data.name ||
             "Club"
@@ -1802,7 +1802,7 @@
         );
 
         showMessage(
-          "DogEar couldn't load this club.",
+          "Paper Gremlin couldn't load this club.",
           "error"
         );
       }
@@ -1823,7 +1823,7 @@
           await supabaseClient
             .from("club_members")
             .select(
-              "user_id, role, status"
+              "user_id, club_role, membership_status"
             )
             .eq(
               "club_id",
@@ -1856,7 +1856,7 @@
     function isActiveMember() {
 
       return (
-        myMembership?.status ===
+        myMembership?.membership_status ===
         "active"
       );
     }
@@ -1892,7 +1892,7 @@
           error
         } =
           await supabaseClient
-            .from("club_discussions")
+            .from("forum_threads")
             .select("*")
             .eq(
               "club_id",
@@ -1931,7 +1931,7 @@
                 Discussions couldn't be loaded.
               </strong>
 
-              DogEar wasn't able to retrieve
+              Paper Gremlin wasn't able to retrieve
               this club's conversations.
             </div>
           `;
@@ -2028,9 +2028,7 @@
 
               const body =
                 (
-                  discussion.body ||
-                  discussion.content ||
-                  ""
+          ""
                 ).toLowerCase();
 
               const author =
@@ -2113,7 +2111,7 @@
         discussion
           .authorProfile
           ?.username ||
-        "DogEar Reader";
+        "Paper Gremlin Reader";
 
       setAvatar(
         avatar,
@@ -2480,26 +2478,23 @@
       try {
 
         const {
-          data,
+          data:threadId,
           error
         } =
           await supabaseClient
-            .from("club_discussions")
-            .insert({
-              club_id:
-                clubId,
+            .rpc(
+              "create_forum_thread",
+              {
+                p_club_id:
+                  clubId,
 
-              author_id:
-                currentUser.id,
+                p_title:
+                  title,
 
-              title:
-                title,
-
-              body:
-                body
-            })
-            .select()
-            .single();
+                p_body:
+                  body
+              }
+            );
 
         if (error) {
           throw error;
@@ -2511,13 +2506,13 @@
         closeDiscussionModal();
 
         if (
-          data?.id
+          threadId
         ) {
 
           window.location.href =
             "discussion.html?id=" +
             encodeURIComponent(
-              data.id
+              threadId
             ) +
             "&club=" +
             encodeURIComponent(
@@ -2543,7 +2538,7 @@
         );
 
         showMessage(
-          "DogEar couldn't publish that discussion. The database permissions or discussion schema may still need to be connected.",
+          "Paper Gremlin couldn't publish that discussion. The database permissions or discussion schema may still need to be connected.",
           "error"
         );
       }

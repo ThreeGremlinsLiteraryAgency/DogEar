@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DogEar — Member Administration</title>
+<title>Paper Gremlin — Member Administration</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -663,7 +663,7 @@ h1{
 
     <span class="brand-mark"></span>
 
-    DogEar
+    Paper Gremlin
 
   </a>
 
@@ -719,7 +719,7 @@ h1{
     <div>
 
       <div class="eyebrow">
-        DogEar Administration
+        Paper Gremlin Administration
       </div>
 
       <h1>
@@ -728,7 +728,7 @@ h1{
 
       <div class="subtitle">
 
-        Review DogEar accounts, inspect verification,
+        Review Paper Gremlin accounts, inspect verification,
         and manage account access.
 
       </div>
@@ -872,7 +872,7 @@ h1{
     </strong>
 
     Your account does not currently have permission
-    to manage DogEar members.
+    to manage Paper Gremlin members.
 
   </section>
 
@@ -1156,7 +1156,7 @@ function memberName(member){
     member.display_name ||
     member.name ||
     member.username ||
-    "DogEar Member"
+    "Paper Gremlin Member"
   );
 
 }
@@ -1414,7 +1414,7 @@ async function loadMembers(){
 
     memberLoadError =
       error?.message ||
-      "DogEar could not load member accounts.";
+      "Paper Gremlin could not load member accounts.";
 
   }
 
@@ -2081,7 +2081,7 @@ $("saveStatusBtn")
                 "Member status changed",
 
               description:
-                "An administrator changed a DogEar member account status.",
+                "An administrator changed a Paper Gremlin member account status.",
 
               severity:
                 newStatus === "suspended"
@@ -2126,7 +2126,7 @@ $("saveStatusBtn")
 
 
             auditWarning =
-              " The account was updated, but DogEar could not record the audit event.";
+              " The account was updated, but Paper Gremlin could not record the audit event.";
 
           }
 
@@ -2165,7 +2165,7 @@ $("saveStatusBtn")
 
 
         showModalMessage(
-          "DogEar couldn't update this account: " +
+          "Paper Gremlin couldn't update this account: " +
           error.message,
           "error"
         );
@@ -2191,7 +2191,7 @@ $("saveStatusBtn")
 
    First tries profiles.verified.
 
-   If that field does not exist, DogEar automatically
+   If that field does not exist, Paper Gremlin automatically
    tries profiles.is_verified.
 ========================================================= */
 
@@ -2336,8 +2336,8 @@ $("verificationBtn")
 
             description:
               newValue
-                ? "An administrator verified a DogEar member account."
-                : "An administrator removed verification from a DogEar member account.",
+                ? "An administrator verified a Paper Gremlin member account."
+                : "An administrator removed verification from a Paper Gremlin member account.",
 
             severity:
               newValue
@@ -2380,7 +2380,7 @@ $("verificationBtn")
 
 
           auditWarning =
-            " The verification change succeeded, but DogEar could not record the audit event.";
+            " The verification change succeeded, but Paper Gremlin could not record the audit event.";
 
         }
 
@@ -2425,7 +2425,7 @@ $("verificationBtn")
 
 
         showModalMessage(
-          "DogEar couldn't change verification: " +
+          "Paper Gremlin couldn't change verification: " +
           error.message,
           "error"
         );
@@ -2549,7 +2549,7 @@ async function start(){
 
     memberLoadError =
       error?.message ||
-      "DogEar could not open member administration.";
+      "Paper Gremlin could not open member administration.";
 
 
     renderMembers();

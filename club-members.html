@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Club Members | DogEar</title>
+<title>Club Members | Paper Gremlin</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -741,7 +741,7 @@ button:disabled{
     href="dashboard.html"
   >
     <span class="brand-mark"></span>
-    DogEar
+    Paper Gremlin
   </a>
 
   <nav class="nav">
@@ -1286,7 +1286,7 @@ function profileName(
         ? currentUser?.email
         : ""
     ) ||
-    "DogEar Reader"
+    "Paper Gremlin Reader"
   );
 
 }
@@ -1730,7 +1730,7 @@ async function loadClub(){
     `See who belongs to ${clubName} and manage the club community.`;
 
   document.title =
-    `${clubName} Members | DogEar`;
+    `${clubName} Members | Paper Gremlin`;
 
 }
 
@@ -1804,7 +1804,11 @@ async function loadMembers(){
 
   memberRows =
     Array.isArray(data)
-      ? data
+      ? data.filter(
+          row =>
+            normalizedStatus(row) !==
+            "pending"
+        )
       : [];
 
 }
@@ -1829,11 +1833,15 @@ async function loadJoinRequests(){
     error
   } =
     await supabaseClient
-      .from("join_requests")
+      .from("club_members")
       .select("*")
       .eq(
         "club_id",
         clubId
+      )
+      .eq(
+        "membership_status",
+        "pending"
       );
 
   if(error){
@@ -2037,7 +2045,7 @@ async function runRpc(
 
     showStatus(
       error.message ||
-      "DogEar couldn't complete that action.",
+      "Paper Gremlin couldn't complete that action.",
       "error"
     );
 
@@ -2479,7 +2487,7 @@ function memberActionsMarkup(row){
   /*
     Administrators may manage ordinary members.
 
-    Only the President or a DogEar site administrator may
+    Only the President or a Paper Gremlin site administrator may
     manage another Administrator.
   */
 
@@ -3171,7 +3179,7 @@ async function handleAction(
 
       showStatus(
         error?.message ||
-        "DogEar couldn't complete that member action.",
+        "Paper Gremlin couldn't complete that member action.",
         "error"
       );
 
@@ -3347,7 +3355,7 @@ async function startPage(){
     await loadMembership();
 
     /*
-      The member roster is visible according to DogEar's
+      The member roster is visible according to Paper Gremlin's
       club-member RLS rules.
 
       Join requests are only requested for club leadership.
@@ -3376,7 +3384,7 @@ async function startPage(){
 
     showStatus(
       error?.message ||
-      "DogEar couldn't load this club's members.",
+      "Paper Gremlin couldn't load this club's members.",
       "error"
     );
 
@@ -3405,7 +3413,7 @@ async function startPage(){
 
 
 /* =========================================================
-   START DOGEAR
+   START PAPER GREMLIN
    ========================================================= */
 
 startPage();
