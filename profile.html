@@ -2527,6 +2527,22 @@
       }
     }
 
+    function restoreDollFromConfig(saved) {
+      if (!saved || typeof saved !== "object" || Array.isArray(saved)) return false;
+
+      let restored = false;
+
+      Object.keys(defaultDoll).forEach(function (key) {
+        const value = Number(saved[key]);
+        if (Number.isInteger(value) && value >= 0 && value < dollOptions[key].length) {
+          dollState[key] = value;
+          restored = true;
+        }
+      });
+
+      return restored;
+    }
+
     function renderDoll() {
       const svg = getAvatarSvg();
       dollStage.innerHTML = svg;
@@ -2875,18 +2891,26 @@
 
       try {
 
+        const [
+          profileResult,
+          dollResult
+        ] = await Promise.all([
+          supabaseClient.rpc(
+            "get_public_profile",
+            {
+              check_user_id:
+                currentUser.id
+            }
+          ),
+          supabaseClient.rpc(
+            "get_my_paper_doll_config"
+          )
+        ]);
+
         const {
           data,
           error
-        } =
-          await supabaseClient
-            .rpc(
-              "get_public_profile",
-              {
-                check_user_id:
-                  currentUser.id
-              }
-            );
+        } = profileResult;
 
         if (error) {
 
@@ -2926,10 +2950,15 @@
               ?.display_name ||
             "";
 
-          restoreDollFromAvatar(
-            profile.avatar_url ||
-            ""
-          );
+          if (
+            dollResult.error ||
+            !restoreDollFromConfig(dollResult.data)
+          ) {
+            restoreDollFromAvatar(
+              profile.avatar_url ||
+              ""
+            );
+          }
 
           bioInput.value =
             profile.bio ||
@@ -3188,7 +3217,7 @@
           } =
             await supabaseClient
               .rpc(
-                "update_my_profile",
+                "update_my_profile_v2",
                 {
 
                   new_username:
@@ -3203,7 +3232,10 @@
 
                   new_bio:
                     bio ||
-                    null
+                    null,
+
+                  new_paper_doll_config:
+                    { ...dollState }
 
                 }
               );
