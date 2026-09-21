@@ -889,8 +889,7 @@ h1{
             </div>
 
           </div>
-
-          <div
+                    <div
             class="review-editor"
             id="reviewEditor"
           >
@@ -1147,10 +1146,6 @@ h1{
 
 <script>
 
-/* =========================================================
-   SUPABASE
-========================================================= */
-
 const SUPABASE_URL =
   "https://nrtutxjznkfvvbmaagum.supabase.co";
 
@@ -1166,9 +1161,8 @@ const supabaseClient =
 const BOOKSHOP_AFFILIATE_ID =
   "128186";
 
-/* =========================================================
-   STATE
-========================================================= */
+const GOOGLE_BOOKS_API_KEY =
+  window.GOOGLE_BOOKS_API_KEY || "";
 
 let currentUser =
   null;
@@ -1191,10 +1185,6 @@ let currentRating =
 let hoveredRating =
   0;
 
-/* =========================================================
-   BASIC HELPERS
-========================================================= */
-
 function $(
   id
 ){
@@ -1204,7 +1194,6 @@ function $(
 function escapeHtml(
   value
 ){
-
   return String(
     value ?? ""
   )
@@ -1213,13 +1202,11 @@ function escapeHtml(
     .replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#039;");
-
 }
 
 function initials(
   value
 ){
-
   const words =
     String(
       value || "P"
@@ -1239,7 +1226,6 @@ function initials(
         word.charAt(0).toUpperCase()
     )
     .join("");
-
 }
 
 function setMessage(
@@ -1247,7 +1233,6 @@ function setMessage(
   text = "",
   type = ""
 ){
-
   const element =
     $(id);
 
@@ -1265,13 +1250,11 @@ function setMessage(
         ? ` ${type}`
         : ""
     );
-
 }
 
 function starString(
   rating
 ){
-
   const rounded =
     Math.max(
       0,
@@ -1287,13 +1270,11 @@ function starString(
     "★".repeat(rounded) +
     "☆".repeat(5 - rounded)
   );
-
 }
 
 function normalizeHttps(
   value
 ){
-
   if(!value){
     return "";
   }
@@ -1303,31 +1284,26 @@ function normalizeHttps(
       /^http:\/\//i,
       "https://"
     );
-
 }
 
 function normalizeAuthors(
   value
 ){
-
   if(
     Array.isArray(value)
   ){
-
     return value
       .map(
         author =>
           String(author).trim()
       )
       .filter(Boolean);
-
   }
 
   if(
     typeof value ===
     "string"
   ){
-
     return value
       .split(/\s*,\s*/)
       .map(
@@ -1335,21 +1311,14 @@ function normalizeAuthors(
           author.trim()
       )
       .filter(Boolean);
-
   }
 
   return [];
-
 }
-
-/* =========================================================
-   NORMALIZE LOCAL BOOK
-========================================================= */
 
 function normalizeLocalBook(
   row
 ){
-
   const authors =
     normalizeAuthors(
       row.authors ||
@@ -1357,7 +1326,6 @@ function normalizeLocalBook(
     );
 
   return {
-
     id:
       row.id,
 
@@ -1420,19 +1388,12 @@ function normalizeLocalBook(
             )
           )
         : ""
-
   };
-
 }
-
-/* =========================================================
-   NORMALIZE GOOGLE BOOK
-========================================================= */
 
 function normalizeGoogleBook(
   item
 ){
-
   const volume =
     item?.volumeInfo ||
     {};
@@ -1446,20 +1407,30 @@ function normalizeGoogleBook(
 
   const isbn13 =
     identifiers.find(
-      item =>
-        item.type ===
+      identifier =>
+        identifier.type ===
         "ISBN_13"
     )?.identifier || "";
 
   const isbn10 =
     identifiers.find(
-      item =>
-        item.type ===
+      identifier =>
+        identifier.type ===
         "ISBN_10"
     )?.identifier || "";
 
-  return {
+  const thumbnail =
+    normalizeHttps(
+      volume.imageLinks?.extraLarge ||
+      volume.imageLinks?.large ||
+      volume.imageLinks?.medium ||
+      volume.imageLinks?.small ||
+      volume.imageLinks?.thumbnail ||
+      volume.imageLinks?.smallThumbnail ||
+      ""
+    );
 
+  return {
     id:null,
 
     googleId:
@@ -1496,12 +1467,7 @@ function normalizeGoogleBook(
     isbn13,
     isbn10,
 
-    thumbnail:
-      normalizeHttps(
-        volume.imageLinks?.thumbnail ||
-        volume.imageLinks?.smallThumbnail ||
-        ""
-      ),
+    thumbnail,
 
     categories:
       Array.isArray(
@@ -1522,26 +1488,18 @@ function normalizeGoogleBook(
             )
           : ""
       )
-
   };
-
 }
-
-/* =========================================================
-   BOOKSHOP
-========================================================= */
 
 function bookshopSearchUrl(
   book
 ){
-
   let searchTerm =
     book?.isbn13 ||
     book?.isbn10 ||
     "";
 
   if(!searchTerm){
-
     searchTerm =
       [
         book?.title || "",
@@ -1549,7 +1507,6 @@ function bookshopSearchUrl(
       ]
         .filter(Boolean)
         .join(" ");
-
   }
 
   return (
@@ -1562,15 +1519,9 @@ function bookshopSearchUrl(
       BOOKSHOP_AFFILIATE_ID
     )
   );
-
 }
 
-/* =========================================================
-   SESSION
-========================================================= */
-
 async function loadSession(){
-
   const {
     data,
     error
@@ -1580,14 +1531,12 @@ async function loadSession(){
       .getSession();
 
   if(error){
-
     console.warn(
       "Session lookup:",
       error
     );
 
     return;
-
   }
 
   currentUser =
@@ -1595,25 +1544,16 @@ async function loadSession(){
     null;
 
   if(currentUser){
-
     await loadProfileAvatar();
-
   }
-
 }
 
-/* =========================================================
-   PROFILE AVATAR
-========================================================= */
-
 async function loadProfileAvatar(){
-
   if(!currentUser){
     return;
   }
 
   try{
-
     const {
       data,
       error
@@ -1649,7 +1589,6 @@ async function loadProfileAvatar(){
       "P";
 
     if(profile.avatar_url){
-
       holder.innerHTML =
         "";
 
@@ -1666,7 +1605,6 @@ async function loadProfileAvatar(){
 
       image.onerror =
         () => {
-
           holder.innerHTML =
             "";
 
@@ -1674,107 +1612,113 @@ async function loadProfileAvatar(){
             initials(
               displayName
             );
-
         };
 
       holder.appendChild(
         image
       );
-
     }
-
     else{
-
       holder.textContent =
         initials(
           displayName
         );
-
     }
-
   }
-
   catch(error){
-
     console.warn(
       "Profile avatar:",
       error
     );
-
   }
-
 }
-
-/* =========================================================
-   FETCH GOOGLE BOOK
-========================================================= */
 
 async function fetchGoogleBook(
   googleId
 ){
+  const params =
+    new URLSearchParams();
+
+  if(GOOGLE_BOOKS_API_KEY){
+    params.set(
+      "key",
+      GOOGLE_BOOKS_API_KEY
+    );
+  }
+
+  const queryString =
+    params.toString();
+
+  const url =
+    "https://www.googleapis.com/books/v1/volumes/" +
+    encodeURIComponent(
+      googleId
+    ) +
+    (
+      queryString
+        ? "?" + queryString
+        : ""
+    );
 
   const response =
     await fetch(
-      "https://www.googleapis.com/books/v1/volumes/" +
-      encodeURIComponent(
-        googleId
-      )
+      url
     );
 
   if(!response.ok){
+    let details =
+      "";
+
+    try{
+      const payload =
+        await response.json();
+
+      details =
+        payload?.error?.message ||
+        "";
+    }
+    catch{
+      details =
+        "";
+    }
 
     throw new Error(
-      "Google Books could not load this title."
+      details ||
+      `Google Books could not load this title (${response.status}).`
     );
-
   }
 
   const item =
     await response.json();
 
+  if(
+    !item ||
+    !item.id ||
+    !item.volumeInfo
+  ){
+    throw new Error(
+      "Google Books returned an incomplete book record."
+    );
+  }
+
   return normalizeGoogleBook(
     item
   );
-
 }
-
-/* =========================================================
-   IMPORT GOOGLE BOOK INTO PAPER GREMLIN
-
-   IMPORTANT:
-   These parameter names match the LIVE Supabase RPC:
-   get_or_create_book(
-     new_isbn_13,
-     new_isbn_10,
-     new_google_books_id,
-     new_title,
-     new_subtitle,
-     new_authors,
-     new_publisher,
-     new_published_date,
-     new_description,
-     new_cover_url
-   )
-========================================================= */
 
 async function importGoogleBook(
   book
 ){
-
   if(!currentUser){
-
     throw new Error(
       "Sign in to add this book to Paper Gremlin."
     );
-
   }
 
   if(!book?.googleId){
-
     throw new Error(
       "This Google Books result is missing its Google Books ID."
     );
-
   }
 
   const {
@@ -1840,25 +1784,17 @@ async function importGoogleBook(
     !Number.isFinite(id) ||
     id <= 0
   ){
-
     throw new Error(
       "Paper Gremlin created the book but did not return a valid book ID."
     );
-
   }
 
   return id;
-
 }
-
-/* =========================================================
-   LOAD LOCAL BOOK
-========================================================= */
 
 async function loadBookByLocalId(
   id
 ){
-
   const {
     data,
     error
@@ -1877,11 +1813,9 @@ async function loadBookByLocalId(
   }
 
   if(!data){
-
     throw new Error(
       "Paper Gremlin could not find this book."
     );
-
   }
 
   currentBookId =
@@ -1891,32 +1825,11 @@ async function loadBookByLocalId(
     normalizeLocalBook(
       data
     );
-
 }
-
-/* =========================================================
-   LOAD GOOGLE BOOK
-
-   If signed in:
-   - fetch Google metadata
-   - create/reuse local Paper Gremlin record
-   - obtain local book ID
-   - replace URL with permanent local route
-
-   If signed out:
-   - display Google metadata
-   - import happens after login when user tries to interact
-========================================================= */
 
 async function loadBookByGoogleId(
   googleId
 ){
-
-  /*
-    First see whether this Google Books title already exists
-    locally.
-  */
-
   const {
     data:existing,
     error:existingError
@@ -1931,16 +1844,13 @@ async function loadBookByGoogleId(
       .maybeSingle();
 
   if(existingError){
-
     console.warn(
       "Existing book lookup:",
       existingError
     );
-
   }
 
   if(existing){
-
     currentBookId =
       existing.id;
 
@@ -1954,37 +1864,18 @@ async function loadBookByGoogleId(
     );
 
     return;
-
   }
-
-  /*
-    Not in Paper Gremlin yet. Fetch the actual Google Books
-    record.
-  */
 
   currentBook =
     await fetchGoogleBook(
       googleId
     );
 
-  /*
-    Signed-in readers can immediately create/reuse the local
-    Paper Gremlin record. This is the part that fixes Heather's
-    "book must exist before it can be reviewed" failure.
-  */
-
   if(currentUser){
-
     currentBookId =
       await importGoogleBook(
         currentBook
       );
-
-    /*
-      Read the newly-created local record back so the page is
-      using the database copy rather than assuming the import
-      succeeded correctly.
-    */
 
     const {
       data:localBook,
@@ -2004,11 +1895,9 @@ async function loadBookByGoogleId(
     }
 
     if(!localBook){
-
       throw new Error(
         "The book was imported but could not be read back from Paper Gremlin."
       );
-
     }
 
     currentBook =
@@ -2019,39 +1908,48 @@ async function loadBookByGoogleId(
     replaceWithLocalBookUrl(
       currentBookId
     );
-
   }
-
 }
 
 function replaceWithLocalBookUrl(
   bookId
 ){
-
   if(!bookId){
     return;
   }
 
-  const nextUrl =
-    "book-detail.html?id=" +
-    encodeURIComponent(
-      bookId
+  const existingParams =
+    new URLSearchParams(
+      window.location.search
     );
+
+  const returnPage =
+    existingParams.get("return");
+
+  const nextParams =
+    new URLSearchParams({
+      id:String(bookId)
+    });
+
+  if(returnPage){
+    nextParams.set(
+      "return",
+      returnPage
+    );
+  }
+
+  const nextUrl =
+    "book-detail.html?" +
+    nextParams.toString();
 
   window.history.replaceState(
     {},
     "",
     nextUrl
   );
-
 }
 
-/* =========================================================
-   ROUTE
-========================================================= */
-
 async function loadBook(){
-
   const params =
     new URLSearchParams(
       window.location.search
@@ -2067,37 +1965,27 @@ async function loadBook(){
     params.get("googleId");
 
   if(googleId){
-
     await loadBookByGoogleId(
       googleId
     );
 
     return;
-
   }
 
   if(localId){
-
     await loadBookByLocalId(
       localId
     );
 
     return;
-
   }
 
   throw new Error(
     "No book was selected."
   );
-
 }
 
-/* =========================================================
-   RENDER BOOK
-========================================================= */
-
 function renderBook(){
-
   if(!currentBook){
     return;
   }
@@ -2125,8 +2013,6 @@ function renderBook(){
     book.categories?.[0] ||
     "Book";
 
-  /* COVER */
-
   const cover =
     $("bookCover");
 
@@ -2134,7 +2020,6 @@ function renderBook(){
     "";
 
   if(book.thumbnail){
-
     const image =
       document.createElement(
         "img"
@@ -2148,29 +2033,21 @@ function renderBook(){
 
     image.onerror =
       () => {
-
         cover.innerHTML =
           "";
 
         cover.textContent =
           "No cover";
-
       };
 
     cover.appendChild(
       image
     );
-
   }
-
   else{
-
     cover.textContent =
       "No cover";
-
   }
-
-  /* EDITION PILLS */
 
   const pills =
     $("editionPills");
@@ -2182,44 +2059,35 @@ function renderBook(){
     [];
 
   if(book.publishedDate){
-
     pillValues.push(
       book.publishedDate
     );
-
   }
 
   if(book.publisher){
-
     pillValues.push(
       book.publisher
     );
-
   }
 
   if(book.isbn13){
-
     pillValues.push(
       "ISBN-13 " +
       book.isbn13
     );
-
   }
 
   if(!book.isbn13 && book.isbn10){
-
     pillValues.push(
       "ISBN-10 " +
       book.isbn10
     );
-
   }
 
   pillValues
     .slice(0,3)
     .forEach(
       value => {
-
         const pill =
           document.createElement(
             "span"
@@ -2234,11 +2102,8 @@ function renderBook(){
         pills.appendChild(
           pill
         );
-
       }
     );
-
-  /* DETAILS */
 
   $("detailPublisher").textContent =
     book.publisher ||
@@ -2261,79 +2126,80 @@ function renderBook(){
       ? book.categories.join(", ")
       : "—";
 
-  /* GOOGLE BOOKS */
-
   const googleButton =
     $("googleBooksBtn");
 
   if(book.infoLink){
-
     googleButton.href =
       book.infoLink;
 
     googleButton.hidden =
       false;
-
   }
-
   else{
-
     googleButton.hidden =
       true;
-
   }
-
-  /* BOOKSHOP */
 
   $("bookshopBtn").href =
     bookshopSearchUrl(
       book
     );
-
 }
-
-/* =========================================================
-   SAVED BOOK STATE
-========================================================= */
-
-async function loadSavedBookState(){
-
-  const button =
-    $("saveBookBtn");
-
-  if(!currentUser){
-
-    button.dataset.saved =
-      "false";
-
-    button.textContent =
-      "Sign In to Save";
-
-    return;
-
+  async function ensureLocalBook(){
+  if(currentBookId){
+    return currentBookId;
   }
 
-  if(!currentBookId){
+  if(!currentBook){
+    throw new Error(
+      "No book is loaded."
+    );
+  }
 
-    button.dataset.saved =
-      "false";
+  if(!currentUser){
+    throw new Error(
+      "Sign in to rate or save this book."
+    );
+  }
 
-    button.textContent =
+  if(!currentBook.googleId){
+    throw new Error(
+      "This book does not have a Google Books ID."
+    );
+  }
+
+  currentBookId =
+    await importGoogleBook(
+      currentBook
+    );
+
+  replaceWithLocalBookUrl(
+    currentBookId
+  );
+
+  return currentBookId;
+}
+
+async function loadSavedState(){
+  if(
+    !currentUser ||
+    !currentBookId
+  ){
+    $("saveBookBtn").textContent =
       "Save Book";
 
     return;
-
   }
 
   try{
-
     const {
       data,
       error
     } =
       await supabaseClient
         .from("user_books")
-        .select("book_id")
+        .select("*")
         .eq(
           "user_id",
           currentUser.id
@@ -2348,132 +2214,28 @@ async function loadSavedBookState(){
       throw error;
     }
 
-    button.dataset.saved =
+    $("saveBookBtn").textContent =
       data
-        ? "true"
-        : "false";
-
-    button.textContent =
-      data
-        ? "Saved"
+        ? "Saved ✓"
         : "Save Book";
-
   }
-
   catch(error){
-
     console.warn(
-      "Saved book lookup:",
+      "Saved-book state:",
       error
     );
-
   }
-
 }
-
-/* =========================================================
-   ENSURE LOCAL BOOK
-
-   Any action that requires a Paper Gremlin book ID calls
-   this first.
-
-   Normally Google results are imported during page load.
-   This is an additional safety net.
-========================================================= */
-
-async function ensureLocalBook(){
-
-  if(currentBookId){
-
-    return currentBookId;
-
-  }
-
-  if(!currentUser){
-
-    throw new Error(
-      "Sign in to save, rate, or review this book."
-    );
-
-  }
-
-  if(
-    !currentBook ||
-    !currentBook.googleId
-  ){
-
-    throw new Error(
-      "Paper Gremlin couldn't identify this book."
-    );
-
-  }
-
-  const id =
-    await importGoogleBook(
-      currentBook
-    );
-
-  /*
-    Verify that the ID returned by the RPC actually points
-    to a readable local book.
-  */
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("books")
-      .select("*")
-      .eq(
-        "id",
-        id
-      )
-      .maybeSingle();
-
-  if(error){
-    throw error;
-  }
-
-  if(!data){
-
-    throw new Error(
-      "Paper Gremlin imported this book, but could not read it back."
-    );
-
-  }
-
-  currentBookId =
-    data.id;
-
-  currentBook =
-    normalizeLocalBook(
-      data
-    );
-
-  replaceWithLocalBookUrl(
-    currentBookId
-  );
-
-  renderBook();
-
-  return currentBookId;
-
-}
-
-/* =========================================================
-   SAVE / UNSAVE BOOK
-========================================================= */
 
 async function toggleSavedBook(){
-
   if(!currentUser){
-
-    window.location.href =
-      "auth.html#login";
+    setMessage(
+      "heroMessage",
+      "Sign in to save books.",
+      "error"
+    );
 
     return;
-
   }
 
   const button =
@@ -2483,19 +2245,36 @@ async function toggleSavedBook(){
     true;
 
   setMessage(
-    "heroMessage"
+    "heroMessage",
+    ""
   );
 
   try{
+    const bookId =
+      await ensureLocalBook();
 
-    await ensureLocalBook();
+    const {
+      data:existing,
+      error:existingError
+    } =
+      await supabaseClient
+        .from("user_books")
+        .select("*")
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .eq(
+          "book_id",
+          bookId
+        )
+        .maybeSingle();
 
-    const isSaved =
-      button.dataset.saved ===
-      "true";
+    if(existingError){
+      throw existingError;
+    }
 
-    if(isSaved){
-
+    if(existing){
       const {
         error
       } =
@@ -2508,48 +2287,12 @@ async function toggleSavedBook(){
           )
           .eq(
             "book_id",
-            currentBookId
+            bookId
           );
 
       if(error){
         throw error;
       }
-
-      /*
-        Verify removal.
-      */
-
-      const {
-        data:verifyRemoved,
-        error:verifyRemovedError
-      } =
-        await supabaseClient
-          .from("user_books")
-          .select("book_id")
-          .eq(
-            "user_id",
-            currentUser.id
-          )
-          .eq(
-            "book_id",
-            currentBookId
-          )
-          .maybeSingle();
-
-      if(verifyRemovedError){
-        throw verifyRemovedError;
-      }
-
-      if(verifyRemoved){
-
-        throw new Error(
-          "Paper Gremlin could not verify that the book was removed."
-        );
-
-      }
-
-      button.dataset.saved =
-        "false";
 
       button.textContent =
         "Save Book";
@@ -2559,11 +2302,8 @@ async function toggleSavedBook(){
         "Removed from your saved books.",
         "success"
       );
-
     }
-
     else{
-
       const {
         error
       } =
@@ -2574,37 +2314,16 @@ async function toggleSavedBook(){
               currentUser.id,
 
             book_id:
-              currentBookId,
-
-            status:
-              "saved"
+              bookId
           });
 
       if(error){
-
-        /*
-          If a duplicate saved-book row already exists,
-          reload the actual state rather than treating it as
-          a destructive failure.
-        */
-
-        if(
-          !/duplicate|unique/i.test(
-            error.message || ""
-          )
-        ){
-          throw error;
-        }
-
+        throw error;
       }
 
-      /*
-        Verify persistence.
-      */
-
       const {
-        data:verifySaved,
-        error:verifySavedError
+        data:verify,
+        error:verifyError
       } =
         await supabaseClient
           .from("user_books")
@@ -2615,40 +2334,31 @@ async function toggleSavedBook(){
           )
           .eq(
             "book_id",
-            currentBookId
+            bookId
           )
           .maybeSingle();
 
-      if(verifySavedError){
-        throw verifySavedError;
+      if(verifyError){
+        throw verifyError;
       }
 
-      if(!verifySaved){
-
+      if(!verify){
         throw new Error(
-          "Paper Gremlin could not verify that the book stayed saved."
+          "Paper Gremlin could not verify that the book was saved."
         );
-
       }
-
-      button.dataset.saved =
-        "true";
 
       button.textContent =
-        "Saved";
+        "Saved ✓";
 
       setMessage(
         "heroMessage",
-        "Book saved.",
+        "Saved to your books.",
         "success"
       );
-
     }
-
   }
-
   catch(error){
-
     console.error(
       "Save book:",
       error
@@ -2657,60 +2367,41 @@ async function toggleSavedBook(){
     setMessage(
       "heroMessage",
       error?.message ||
-      "Paper Gremlin couldn't update your saved books.",
+      "This book could not be saved.",
       "error"
     );
-
   }
-
   finally{
-
     button.disabled =
       false;
-
   }
-
 }
 
-/* =========================================================
-   LOAD REVIEWS
-========================================================= */
-
 async function loadReviews(){
+  communityReviews =
+    [];
+
+  currentUserReview =
+    null;
 
   if(!currentBookId){
-
-    renderRatings(
-      []
-    );
-
-    renderCommunityReviews(
-      []
-    );
-
-    renderCurrentUserReview();
+    renderRatings();
+    renderReviewEditor();
+    renderReviews();
 
     return;
-
   }
 
   try{
-
     const {
       data,
       error
     } =
       await supabaseClient
         .from("book_reviews")
-        .select(`
-          id,
-          user_id,
-          book_id,
-          rating,
-          review_text,
-          created_at,
-          updated_at
-        `)
+        .select(
+          "id,user_id,book_id,rating,review_text,created_at,updated_at"
+        )
         .eq(
           "book_id",
           currentBookId
@@ -2726,102 +2417,159 @@ async function loadReviews(){
       throw error;
     }
 
-    const reviews =
+    communityReviews =
       data || [];
 
-    currentUserReview =
-      currentUser
-        ? reviews.find(
-            review =>
-              review.user_id ===
-              currentUser.id
-          ) || null
-        : null;
+    if(currentUser){
+      currentUserReview =
+        communityReviews.find(
+          review =>
+            review.user_id ===
+            currentUser.id
+        ) || null;
+    }
 
-    communityReviews =
-      reviews.filter(
-        review =>
-          review.review_text &&
-          review.review_text.trim()
-      );
+    await hydrateReviewProfiles();
 
-    renderRatings(
-      reviews
-    );
-
-    await renderCommunityReviews(
-      communityReviews
-    );
-
-    renderCurrentUserReview();
-
+    renderRatings();
+    renderReviewEditor();
+    renderReviews();
   }
-
   catch(error){
-
     console.error(
-      "Reviews load:",
+      "Load reviews:",
       error
     );
 
     setMessage(
       "reviewMessage",
-      error?.message ||
-      "Paper Gremlin couldn't load reader ratings.",
+      "Ratings could not be loaded.",
       "error"
     );
 
+    renderRatings();
+    renderReviewEditor();
+    renderReviews();
   }
-
 }
 
-/* =========================================================
-   RATING SUMMARY
-========================================================= */
+async function hydrateReviewProfiles(){
+  const userIds =
+    [
+      ...new Set(
+        communityReviews
+          .map(
+            review =>
+              review.user_id
+          )
+          .filter(Boolean)
+      )
+    ];
 
-function renderRatings(
-  reviews
-){
+  if(!userIds.length){
+    return;
+  }
 
-  const valid =
-    reviews.filter(
-      review => {
-
-        const rating =
-          Number(
-            review.rating
-          );
-
-        return (
-          Number.isFinite(
-            rating
-          ) &&
-          rating >= 1 &&
-          rating <= 5
+  try{
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("profiles")
+        .select(
+          "id,display_name,username,avatar_url"
+        )
+        .in(
+          "id",
+          userIds
         );
 
-      }
+    if(error){
+      throw error;
+    }
+
+    const profileMap =
+      new Map(
+        (data || []).map(
+          profile => [
+            profile.id,
+            profile
+          ]
+        )
+      );
+
+    communityReviews =
+      communityReviews.map(
+        review => ({
+          ...review,
+          profile:
+            profileMap.get(
+              review.user_id
+            ) || null
+        })
+      );
+
+    if(currentUserReview){
+      currentUserReview =
+        communityReviews.find(
+          review =>
+            review.id ===
+            currentUserReview.id
+        ) ||
+        currentUserReview;
+    }
+  }
+  catch(error){
+    console.warn(
+      "Review profiles:",
+      error
     );
+  }
+}
+
+function renderRatings(){
+  const reviews =
+    communityReviews || [];
 
   const total =
-    valid.length;
+    reviews.length;
+
+  const counts = {
+    1:0,
+    2:0,
+    3:0,
+    4:0,
+    5:0
+  };
+
+  let sum =
+    0;
+
+  for(const review of reviews){
+    const rating =
+      Math.max(
+        1,
+        Math.min(
+          5,
+          Number(
+            review.rating
+          ) || 0
+        )
+      );
+
+    if(
+      rating >= 1 &&
+      rating <= 5
+    ){
+      counts[rating] += 1;
+      sum += rating;
+    }
+  }
 
   const average =
     total
-      ? (
-          valid.reduce(
-            (
-              sum,
-              review
-            ) =>
-              sum +
-              Number(
-                review.rating
-              ),
-            0
-          ) /
-          total
-        )
+      ? sum / total
       : 0;
 
   $("averageRating").textContent =
@@ -2839,8 +2587,7 @@ function renderRatings(
   $("ratingCount").textContent =
     total
       ? (
-          total +
-          " rating" +
+          `${total} rating` +
           (
             total === 1
               ? ""
@@ -2864,8 +2611,7 @@ function renderRatings(
   $("heroRatingCount").textContent =
     total
       ? (
-          total +
-          " reader rating" +
+          `${total} rating` +
           (
             total === 1
               ? ""
@@ -2875,18 +2621,12 @@ function renderRatings(
       : "No ratings yet";
 
   for(
-    let star = 1;
-    star <= 5;
-    star += 1
+    let rating = 5;
+    rating >= 1;
+    rating--
   ){
-
     const count =
-      valid.filter(
-        review =>
-          Number(
-            review.rating
-          ) === star
-      ).length;
+      counts[rating];
 
     const percentage =
       total
@@ -2897,108 +2637,19 @@ function renderRatings(
         : 0;
 
     $(
-      `ratingCount${star}`
+      `ratingCount${rating}`
     ).textContent =
-      count;
+      String(count);
 
     $(
-      `ratingBar${star}`
+      `ratingBar${rating}`
     ).style.width =
       `${percentage}%`;
-
   }
-
 }
-
-/* =========================================================
-   CURRENT USER REVIEW
-========================================================= */
-
-function renderCurrentUserReview(){
-
-  const copy =
-    $("reviewEditorCopy");
-
-  const deleteButton =
-    $("deleteReviewBtn");
-
-  const saveButton =
-    $("saveReviewBtn");
-
-  if(!currentUser){
-
-    copy.textContent =
-      "Sign in to rate or review this book.";
-
-    saveButton.textContent =
-      "Sign In to Review";
-
-    deleteButton.hidden =
-      true;
-
-    currentRating =
-      0;
-
-    $("reviewText").value =
-      "";
-
-    updateCharacterCount();
-    renderStarPicker();
-
-    return;
-
-  }
-
-  saveButton.textContent =
-    "Save Review";
-
-  if(currentUserReview){
-
-    currentRating =
-      Number(
-        currentUserReview.rating
-      ) || 0;
-
-    $("reviewText").value =
-      currentUserReview.review_text ||
-      "";
-
-    copy.textContent =
-      "Update your rating or review.";
-
-    deleteButton.hidden =
-      false;
-
-  }
-
-  else{
-
-    currentRating =
-      0;
-
-    $("reviewText").value =
-      "";
-
-    copy.textContent =
-      "Rate this book and optionally leave a review.";
-
-    deleteButton.hidden =
-      true;
-
-  }
-
-  updateCharacterCount();
-  renderStarPicker();
-
-}
-
-/* =========================================================
-   STAR PICKER
-========================================================= */
 
 function renderStarPicker(){
-
-  const displayRating =
+  const activeRating =
     hoveredRating ||
     currentRating;
 
@@ -3008,7 +2659,6 @@ function renderStarPicker(){
     )
     .forEach(
       button => {
-
         const rating =
           Number(
             button.dataset.rating
@@ -3016,73 +2666,283 @@ function renderStarPicker(){
 
         button.classList.toggle(
           "selected",
-          !hoveredRating &&
           rating <= currentRating
         );
 
         button.classList.toggle(
           "preview",
-          Boolean(
-            hoveredRating
-          ) &&
-          rating <= hoveredRating
+          hoveredRating > 0 &&
+          rating <= activeRating
         );
-
       }
     );
 
-  $("reviewRatingLabel").textContent =
-    displayRating
-      ? (
-          displayRating +
-          " star" +
-          (
-            displayRating === 1
-              ? ""
-              : "s"
-          )
-        )
-      : "Choose a rating";
+  const labels = {
+    0:"",
+    1:"1 star",
+    2:"2 stars",
+    3:"3 stars",
+    4:"4 stars",
+    5:"5 stars"
+  };
 
+  $("reviewRatingLabel").textContent =
+    labels[
+      activeRating
+    ] || "";
 }
 
-/* =========================================================
-   CHARACTER COUNT
-========================================================= */
+function renderReviewEditor(){
+  if(!currentUser){
+    $("reviewEditorCopy").textContent =
+      "Sign in to rate and review this book.";
 
-function updateCharacterCount(){
+    $("starPicker").hidden =
+      true;
 
+    $("reviewText").hidden =
+      true;
+
+    $("saveReviewBtn").hidden =
+      true;
+
+    $("deleteReviewBtn").hidden =
+      true;
+
+    $("reviewCharacterCount").hidden =
+      true;
+
+    return;
+  }
+
+  $("starPicker").hidden =
+    false;
+
+  $("reviewText").hidden =
+    false;
+
+  $("saveReviewBtn").hidden =
+    false;
+
+  $("reviewCharacterCount").hidden =
+    false;
+
+  if(currentUserReview){
+    currentRating =
+      Number(
+        currentUserReview.rating
+      ) || 0;
+
+    $("reviewText").value =
+      currentUserReview.review_text ||
+      "";
+
+    $("reviewEditorCopy").textContent =
+      "Update your rating or review.";
+
+    $("deleteReviewBtn").hidden =
+      false;
+  }
+  else{
+    currentRating =
+      0;
+
+    $("reviewText").value =
+      "";
+
+    $("reviewEditorCopy").textContent =
+      "Rate this book and optionally leave a review.";
+
+    $("deleteReviewBtn").hidden =
+      true;
+  }
+
+  updateReviewCharacterCount();
+  renderStarPicker();
+}
+
+function updateReviewCharacterCount(){
   const length =
     $("reviewText")
       .value
       .length;
 
-  $("reviewCharacterCount")
-    .textContent =
-      `${length} / 4000`;
-
+  $("reviewCharacterCount").textContent =
+    `${length} / 4000`;
 }
 
-/* =========================================================
-   SAVE REVIEW
-========================================================= */
+function renderReviews(){
+  const written =
+    communityReviews.filter(
+      review =>
+        String(
+          review.review_text ||
+          ""
+        ).trim()
+    );
 
-async function saveReview(){
+  const list =
+    $("reviewList");
 
-  if(!currentUser){
+  const empty =
+    $("reviewEmpty");
 
-    window.location.href =
-      "auth.html#login";
+  if(!written.length){
+    list.innerHTML =
+      "";
+
+    empty.hidden =
+      false;
 
     return;
+  }
 
+  empty.hidden =
+    true;
+
+  list.innerHTML =
+    written
+      .map(
+        review => {
+          const profile =
+            review.profile ||
+            {};
+
+          const displayName =
+            profile.display_name ||
+            profile.username ||
+            "Paper Gremlin Reader";
+
+          const username =
+            profile.username
+              ? (
+                  "@" +
+                  String(
+                    profile.username
+                  ).replace(
+                    /^@/,
+                    ""
+                  )
+                )
+              : "";
+
+          const avatar =
+            profile.avatar_url ||
+            "";
+
+          const profileUrl =
+            "profile.html?id=" +
+            encodeURIComponent(
+              review.user_id
+            );
+
+          const dateValue =
+            review.updated_at ||
+            review.created_at;
+
+          const dateText =
+            dateValue
+              ? new Date(
+                  dateValue
+                ).toLocaleDateString(
+                  undefined,
+                  {
+                    year:"numeric",
+                    month:"short",
+                    day:"numeric"
+                  }
+                )
+              : "";
+
+          return `
+            <article class="review-item">
+
+              <div class="review-head">
+
+                <a
+                  class="reviewer"
+                  href="${escapeHtml(profileUrl)}"
+                >
+
+                  <span class="reviewer-avatar">
+
+                    ${
+                      avatar
+                        ? `
+                          <img
+                            src="${escapeHtml(avatar)}"
+                            alt=""
+                            loading="lazy"
+                          >
+                        `
+                        : escapeHtml(
+                            initials(
+                              displayName
+                            )
+                          )
+                    }
+
+                  </span>
+
+                  <span>
+
+                    <span class="reviewer-name">
+                      ${escapeHtml(displayName)}
+                    </span>
+
+                    <span class="review-date">
+                      ${
+                        username
+                          ? escapeHtml(
+                              username
+                            ) + " · "
+                          : ""
+                      }
+                      ${escapeHtml(dateText)}
+                    </span>
+
+                  </span>
+
+                </a>
+
+                <span class="review-stars">
+                  ${escapeHtml(
+                    starString(
+                      review.rating
+                    )
+                  )}
+                </span>
+
+              </div>
+
+              <div class="review-text">
+                ${escapeHtml(
+                  review.review_text
+                )}
+              </div>
+
+            </article>
+          `;
+        }
+      )
+      .join("");
+}
+
+async function saveReview(){
+  if(!currentUser){
+    setMessage(
+      "reviewMessage",
+      "Sign in to leave a review.",
+      "error"
+    );
+
+    return;
   }
 
   if(
     currentRating < 1 ||
     currentRating > 5
   ){
-
     setMessage(
       "reviewMessage",
       "Choose a star rating first.",
@@ -3090,7 +2950,6 @@ async function saveReview(){
     );
 
     return;
-
   }
 
   const button =
@@ -3105,15 +2964,8 @@ async function saveReview(){
   );
 
   try{
-
-    /*
-      This is the key protection for Heather's beta issue.
-
-      A Google Books result is converted to a real local
-      Paper Gremlin book before the review insert occurs.
-    */
-
-    await ensureLocalBook();
+    const bookId =
+      await ensureLocalBook();
 
     const reviewText =
       $("reviewText")
@@ -3121,7 +2973,6 @@ async function saveReview(){
         .trim();
 
     if(currentUserReview){
-
       const {
         error
       } =
@@ -3133,7 +2984,11 @@ async function saveReview(){
 
             review_text:
               reviewText ||
-              null
+              null,
+
+            updated_at:
+              new Date()
+                .toISOString()
           })
           .eq(
             "id",
@@ -3147,11 +3002,8 @@ async function saveReview(){
       if(error){
         throw error;
       }
-
     }
-
     else{
-
       const {
         error
       } =
@@ -3162,7 +3014,7 @@ async function saveReview(){
               currentUser.id,
 
             book_id:
-              currentBookId,
+              bookId,
 
             rating:
               currentRating,
@@ -3175,35 +3027,24 @@ async function saveReview(){
       if(error){
         throw error;
       }
-
     }
 
-    /*
-      Read the review back before claiming success.
-    */
-
     const {
-      data:verifiedReview,
+      data:verify,
       error:verifyError
     } =
       await supabaseClient
         .from("book_reviews")
-        .select(`
-          id,
-          user_id,
-          book_id,
-          rating,
-          review_text,
-          created_at,
-          updated_at
-        `)
+        .select(
+          "id,user_id,book_id,rating,review_text,created_at,updated_at"
+        )
         .eq(
           "user_id",
           currentUser.id
         )
         .eq(
           "book_id",
-          currentBookId
+          bookId
         )
         .maybeSingle();
 
@@ -3211,87 +3052,40 @@ async function saveReview(){
       throw verifyError;
     }
 
-    if(!verifiedReview){
-
+    if(!verify){
       throw new Error(
-        "The rating was submitted but could not be verified."
+        "Paper Gremlin could not verify that your review was saved."
       );
-
     }
-
-    if(
-      Number(
-        verifiedReview.rating
-      ) !==
-      Number(
-        currentRating
-      )
-    ){
-
-      throw new Error(
-        "The saved rating did not match the rating you selected."
-      );
-
-    }
-
-    currentUserReview =
-      verifiedReview;
 
     setMessage(
       "reviewMessage",
-      "Your rating has been saved and verified.",
+      "Your rating was saved.",
       "success"
     );
 
     await loadReviews();
-
   }
-
   catch(error){
-
     console.error(
       "Save review:",
       error
     );
 
-    let message =
-      error?.message ||
-      "Paper Gremlin couldn't save your review.";
-
-    if(
-      /not authenticated|jwt/i.test(
-        message
-      )
-    ){
-
-      message =
-        "Your login session expired. Sign in again and then save your rating.";
-
-    }
-
     setMessage(
       "reviewMessage",
-      message,
+      error?.message ||
+      "Your review could not be saved.",
       "error"
     );
-
   }
-
   finally{
-
     button.disabled =
       false;
-
   }
-
 }
 
-/* =========================================================
-   DELETE REVIEW
-========================================================= */
-
 async function deleteReview(){
-
   if(
     !currentUser ||
     !currentUserReview
@@ -3314,8 +3108,12 @@ async function deleteReview(){
   button.disabled =
     true;
 
-  try{
+  setMessage(
+    "reviewMessage",
+    "Deleting..."
+  );
 
+  try{
     const {
       error
     } =
@@ -3335,24 +3133,16 @@ async function deleteReview(){
       throw error;
     }
 
-    /*
-      Verify deletion.
-    */
-
     const {
-      data:remainingReview,
+      data:verify,
       error:verifyError
     } =
       await supabaseClient
         .from("book_reviews")
         .select("id")
         .eq(
-          "user_id",
-          currentUser.id
-        )
-        .eq(
-          "book_id",
-          currentBookId
+          "id",
+          currentUserReview.id
         )
         .maybeSingle();
 
@@ -3360,12 +3150,10 @@ async function deleteReview(){
       throw verifyError;
     }
 
-    if(remainingReview){
-
+    if(verify){
       throw new Error(
         "Paper Gremlin could not verify that the review was deleted."
       );
-
     }
 
     currentUserReview =
@@ -3374,9 +3162,6 @@ async function deleteReview(){
     currentRating =
       0;
 
-    $("reviewText").value =
-      "";
-
     setMessage(
       "reviewMessage",
       "Your review was deleted.",
@@ -3384,11 +3169,8 @@ async function deleteReview(){
     );
 
     await loadReviews();
-
   }
-
   catch(error){
-
     console.error(
       "Delete review:",
       error
@@ -3397,271 +3179,96 @@ async function deleteReview(){
     setMessage(
       "reviewMessage",
       error?.message ||
-      "Paper Gremlin couldn't delete your review.",
+      "Your review could not be deleted.",
       "error"
     );
-
   }
-
   finally{
-
     button.disabled =
       false;
-
   }
-
 }
-
-/* =========================================================
-   REVIEWER PROFILES
-========================================================= */
-
-async function loadReviewerProfiles(
-  userIds
-){
-
-  const uniqueIds =
-    [
-      ...new Set(
-        userIds.filter(Boolean)
-      )
-    ];
-
-  if(!uniqueIds.length){
-
-    return new Map();
-
-  }
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("profiles")
-        .select(
-          "id,display_name,username,avatar_url"
-        )
-        .in(
-          "id",
-          uniqueIds
-        );
-
-    if(error){
-      throw error;
-    }
-
-    return new Map(
-      (data || [])
-        .map(
-          profile => [
-            profile.id,
-            profile
-          ]
-        )
-    );
-
-  }
-
-  catch(error){
-
-    console.warn(
-      "Reviewer profiles:",
-      error
-    );
-
-    return new Map();
-
-  }
-
-}
-
-/* =========================================================
-   COMMUNITY REVIEWS
-========================================================= */
-
-async function renderCommunityReviews(
-  reviews
-){
-
-  const holder =
-    $("reviewList");
-
-  const empty =
-    $("reviewEmpty");
-
-  holder.innerHTML =
-    "";
-
-  if(!reviews.length){
-
-    empty.hidden =
-      false;
-
-    return;
-
-  }
-
-  empty.hidden =
-    true;
-
-  const profiles =
-    await loadReviewerProfiles(
-      reviews.map(
-        review =>
-          review.user_id
-      )
-    );
-
-  for(
-    const review
-    of reviews
-  ){
-
-    const profile =
-      profiles.get(
-        review.user_id
-      );
-
-    const displayName =
-      profile?.display_name ||
-      profile?.username ||
-      "Paper Gremlin Reader";
-
-    const avatarUrl =
-      profile?.avatar_url ||
-      "";
-
-    const item =
-      document.createElement(
-        "article"
-      );
-
-    item.className =
-      "review-item";
-
-    const avatarMarkup =
-      avatarUrl
-        ? `
-            <span class="reviewer-avatar">
-              <img
-                src="${escapeHtml(avatarUrl)}"
-                alt=""
-              >
-            </span>
-          `
-        : `
-            <span class="reviewer-avatar">
-              ${escapeHtml(
-                initials(
-                  displayName
-                )
-              )}
-            </span>
-          `;
-
-    item.innerHTML =
-      `
-        <div class="review-head">
-
-          <a
-            class="reviewer"
-            href="profile.html?id=${encodeURIComponent(
-              review.user_id
-            )}"
-          >
-
-            ${avatarMarkup}
-
-            <span>
-
-              <span class="reviewer-name">
-                ${escapeHtml(
-                  displayName
-                )}
-              </span>
-
-              <span class="review-date">
-                ${escapeHtml(
-                  formatReviewDate(
-                    review.updated_at ||
-                    review.created_at
-                  )
-                )}
-              </span>
-
-            </span>
-
-          </a>
-
-          <span class="review-stars">
-            ${escapeHtml(
-              starString(
-                review.rating
-              )
-            )}
-          </span>
-
-        </div>
-
-        <div class="review-text">
-          ${escapeHtml(
-            review.review_text
-          )}
-        </div>
-      `;
-
-    holder.appendChild(
-      item
-    );
-
-  }
-
-}
-
-/* =========================================================
-   DATE FORMAT
-========================================================= */
-
-function formatReviewDate(
-  value
-){
-
-  if(!value){
-    return "";
-  }
-
-  const date =
-    new Date(
-      value
-    );
-
-  if(
-    Number.isNaN(
-      date.getTime()
-    )
-  ){
-    return "";
-  }
-
-  return new Intl.DateTimeFormat(
-    "en-US",
-    {
-      month:"short",
-      day:"numeric",
-      year:"numeric"
-    }
-  ).format(
-    date
+  function showBookLoadError(error){
+  console.error(
+    "Book load:",
+    error
   );
 
-}
+  currentBook =
+    null;
 
-/* =========================================================
-   STAR EVENTS
-========================================================= */
+  currentBookId =
+    null;
+
+  $("bookTitle").textContent =
+    "Book not found";
+
+  $("bookAuthor").textContent =
+    "";
+
+  $("bookEyebrow").textContent =
+    "Book";
+
+  $("bookDescription").textContent =
+    error?.message ||
+    "Paper Gremlin could not load this book.";
+
+  $("bookCover").innerHTML =
+    "No cover";
+
+  $("editionPills").innerHTML =
+    "";
+
+  $("heroRatingStars").textContent =
+    "☆☆☆☆☆";
+
+  $("heroRatingNumber").textContent =
+    "—";
+
+  $("heroRatingCount").textContent =
+    "No ratings yet";
+
+  $("saveBookBtn").disabled =
+    true;
+
+  $("googleBooksBtn").hidden =
+    true;
+
+  $("bookshopBtn").removeAttribute(
+    "href"
+  );
+
+  $("bookshopBtn").style.pointerEvents =
+    "none";
+
+  $("bookshopBtn").style.opacity =
+    ".45";
+
+  $("detailPublisher").textContent =
+    "—";
+
+  $("detailPublished").textContent =
+    "—";
+
+  $("detailIsbn13").textContent =
+    "—";
+
+  $("detailIsbn10").textContent =
+    "—";
+
+  $("detailCategories").textContent =
+    "—";
+
+  setMessage(
+    "heroMessage",
+    "Try returning to Discover and selecting the book again.",
+    "error"
+  );
+
+  renderRatings();
+  renderReviewEditor();
+  renderReviews();
+}
 
 document
   .querySelectorAll(
@@ -3671,35 +3278,8 @@ document
     button => {
 
       button.addEventListener(
-        "mouseenter",
-        () => {
-
-          hoveredRating =
-            Number(
-              button.dataset.rating
-            );
-
-          renderStarPicker();
-
-        }
-      );
-
-      button.addEventListener(
-        "mouseleave",
-        () => {
-
-          hoveredRating =
-            0;
-
-          renderStarPicker();
-
-        }
-      );
-
-      button.addEventListener(
         "click",
         () => {
-
           currentRating =
             Number(
               button.dataset.rating
@@ -3709,189 +3289,139 @@ document
             0;
 
           renderStarPicker();
+        }
+      );
 
-          setMessage(
-            "reviewMessage"
-          );
+      button.addEventListener(
+        "mouseenter",
+        () => {
+          hoveredRating =
+            Number(
+              button.dataset.rating
+            );
 
+          renderStarPicker();
         }
       );
 
     }
   );
 
-/* =========================================================
-   BUTTON EVENTS
-========================================================= */
+$("starPicker").addEventListener(
+  "mouseleave",
+  () => {
+    hoveredRating =
+      0;
 
-$("saveBookBtn")
-  .addEventListener(
-    "click",
-    toggleSavedBook
-  );
+    renderStarPicker();
+  }
+);
 
-$("saveReviewBtn")
-  .addEventListener(
-    "click",
-    saveReview
-  );
+$("reviewText").addEventListener(
+  "input",
+  updateReviewCharacterCount
+);
 
-$("deleteReviewBtn")
-  .addEventListener(
-    "click",
-    deleteReview
-  );
+$("saveReviewBtn").addEventListener(
+  "click",
+  saveReview
+);
 
-$("reviewText")
-  .addEventListener(
-    "input",
-    updateCharacterCount
-  );
+$("deleteReviewBtn").addEventListener(
+  "click",
+  deleteReview
+);
 
-/* =========================================================
-   AUTH STATE
-========================================================= */
+$("saveBookBtn").addEventListener(
+  "click",
+  toggleSavedBook
+);
 
-supabaseClient
-  .auth
-  .onAuthStateChange(
-    async (
-      event,
-      session
-    ) => {
+supabaseClient.auth.onAuthStateChange(
+  async (
+    event,
+    session
+  ) => {
+    const previousUserId =
+      currentUser?.id ||
+      null;
 
-      const previousUserId =
-        currentUser?.id ||
-        null;
+    currentUser =
+      session?.user ||
+      null;
 
-      currentUser =
-        session?.user ||
-        null;
-
-      const nextUserId =
-        currentUser?.id ||
-        null;
-
-      /*
-        Ignore token refreshes that do not actually change
-        the signed-in user.
-      */
-
-      if(
-        previousUserId ===
-        nextUserId
-      ){
-        return;
-      }
-
-      if(currentUser){
-
-        await loadProfileAvatar();
-
-      }
+    if(
+      currentUser &&
+      currentUser.id !==
+        previousUserId
+    ){
+      await loadProfileAvatar();
 
       if(
         currentBook &&
         !currentBookId &&
-        currentBook.googleId &&
-        currentUser
+        currentBook.googleId
       ){
-
         try{
+          currentBookId =
+            await importGoogleBook(
+              currentBook
+            );
 
-          await ensureLocalBook();
-
+          replaceWithLocalBookUrl(
+            currentBookId
+          );
         }
-
         catch(error){
-
           console.warn(
-            "Book import after sign in:",
+            "Book import after sign-in:",
             error
           );
-
         }
-
       }
 
-      await loadSavedBookState();
+      await loadSavedState();
       await loadReviews();
-
     }
-  );
 
-/* =========================================================
-   INITIALIZE
-========================================================= */
+    if(
+      event ===
+      "SIGNED_OUT"
+    ){
+      currentUser =
+        null;
+
+      currentUserReview =
+        null;
+
+      renderReviewEditor();
+    }
+  }
+);
 
 async function initialize(){
-
   try{
-
-    /*
-      Session MUST load before the book.
-
-      That matters because Google Books results are imported
-      into the local Paper Gremlin database for signed-in
-      readers during loadBook().
-    */
-
     await loadSession();
 
     await loadBook();
 
-    if(!currentBook){
-
-      throw new Error(
-        "Paper Gremlin couldn't load this book."
-      );
-
-    }
-
     renderBook();
 
     await Promise.all([
-      loadSavedBookState(),
+      loadSavedState(),
       loadReviews()
     ]);
-
   }
-
   catch(error){
-
-    console.error(
-      "Book detail initialization:",
+    showBookLoadError(
       error
     );
-
-    $("bookTitle").textContent =
-      "Book not found";
-
-    $("bookAuthor").textContent =
-      "";
-
-    $("bookDescription").textContent =
-      error?.message ||
-      "Paper Gremlin couldn't load this book.";
-
-    setMessage(
-      "heroMessage",
-      "Try returning to Search and selecting the book again.",
-      "error"
-    );
-
   }
-
   finally{
-
-    $("loading")
-      .classList
-      .add(
-        "hidden"
-      );
-
+    $("loading").classList.add(
+      "hidden"
+    );
   }
-
 }
 
 initialize();
