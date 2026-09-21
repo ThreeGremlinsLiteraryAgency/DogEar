@@ -485,7 +485,9 @@ button{cursor:pointer}
   letter-spacing:.04em;
 }
 
-.book-info{padding:16px 15px 17px}
+.book-info{
+  padding:16px 15px 17px;
+}
 
 .book-title{
   margin:0;
@@ -527,6 +529,39 @@ button{cursor:pointer}
   color:var(--accent-dark);
   font-size:12px;
   font-weight:700;
+}
+
+.load-more-wrap{
+  display:none;
+  justify-content:center;
+  margin-top:24px;
+}
+
+.load-more-wrap.visible{
+  display:flex;
+}
+
+.load-more-button{
+  min-width:190px;
+  min-height:48px;
+  border:1px solid var(--accent-dark);
+  border-radius:999px;
+  background:var(--paper);
+  color:var(--accent-dark);
+  padding:0 24px;
+  font-weight:700;
+  transition:background .18s ease,color .18s ease,transform .18s ease;
+}
+
+.load-more-button:hover:not(:disabled){
+  background:var(--accent-dark);
+  color:white;
+  transform:translateY(-2px);
+}
+
+.load-more-button:disabled{
+  opacity:.55;
+  cursor:default;
 }
 
 .club-grid{
@@ -751,6 +786,7 @@ button{cursor:pointer}
   .book-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
   .club-grid{grid-template-columns:1fr}
   .people-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+
   .mobile-nav{
     position:fixed;
     left:0;
@@ -764,6 +800,7 @@ button{cursor:pointer}
     background:rgba(255,250,242,.96);
     backdrop-filter:blur(16px);
   }
+
   .mobile-nav a{
     display:flex;
     flex-direction:column;
@@ -774,6 +811,7 @@ button{cursor:pointer}
     font-size:9px;
     text-transform:uppercase;
   }
+
   .mobile-nav a.active{color:var(--accent-dark)}
   .mobile-icon{font-size:17px}
 }
@@ -878,6 +916,12 @@ button{cursor:pointer}
   </div>
 
   <div class="book-grid" id="bookGrid"></div>
+
+  <div class="load-more-wrap" id="loadMoreWrap">
+    <button class="load-more-button" id="loadMoreButton" type="button">
+      Load More Books
+    </button>
+  </div>
 </section>
 
 <section class="section" id="clubsSection">
@@ -922,6 +966,7 @@ button{cursor:pointer}
 const SUPABASE_URL="https://nrtutxjznkfvvbmaagum.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
 const GOOGLE_BOOKS_API_KEY="AIzaSyDoOi5oVWrsqZppnTp8Lii8DYKOOq0o9dk";
+const GOOGLE_PAGE_SIZE=40;
 
 const supabaseClient=window.supabase.createClient(
   SUPABASE_URL,
@@ -936,6 +981,10 @@ let allPeople=[];
 let currentTab="all";
 let currentSearch="";
 let searchSequence=0;
+let googleNextStartIndex=0;
+let googleTotalItems=0;
+let googleHasMore=false;
+let googleLoadingMore=false;
 
 const loadingScreen=document.getElementById("loadingScreen");
 const discoverSearchForm=document.getElementById("discoverSearchForm");
@@ -951,6 +1000,8 @@ const peopleSection=document.getElementById("peopleSection");
 const bookResultCount=document.getElementById("bookResultCount");
 const clubResultCount=document.getElementById("clubResultCount");
 const peopleResultCount=document.getElementById("peopleResultCount");
+const loadMoreWrap=document.getElementById("loadMoreWrap");
+const loadMoreButton=document.getElementById("loadMoreButton");
 
 function escapeHtml(value){
   return String(value??"")
@@ -1053,24 +1104,27 @@ function bookDetailsUrl(book){
   return "";
 }
 
-function bookIdentity(book){
-  if(book?.google_books_id){
-    return "google:"+String(book.google_books_id);
-  }
-
-  const isbn13=String(book?.isbn_13||"")
-    .replace(/\D/g,"");
-
-  if(isbn13){
-    return "isbn:"+isbn13;
-  }
-
-  const isbn10=String(book?.isbn_10||"")
+function cleanIsbn(value){
+  return String(value||"")
     .replace(/[^0-9Xx]/g,"")
     .toUpperCase();
+}
+
+function bookIdentity(book){
+  const isbn13=cleanIsbn(book?.isbn_13);
+
+  if(isbn13){
+    return "isbn13:"+isbn13;
+  }
+
+  const isbn10=cleanIsbn(book?.isbn_10);
 
   if(isbn10){
-    return "isbn:"+isbn10;
+    return "isbn10:"+isbn10;
+  }
+
+  if(book?.google_books_id){
+    return "google:"+String(book.google_books_id);
   }
 
   return "title:"+
@@ -1133,8 +1187,7 @@ function personMatchesSearch(person,query){
     .toLowerCase()
     .includes(query);
 }
-
-function combinedBooks(){
+  function combinedBooks(){
   const map=new Map();
 
   for(const book of localBooks){
@@ -1158,15 +1211,67 @@ function combinedBooks(){
   return [...map.values()];
 }
 
+function updateLoadMoreButton(){
+  const shouldShow=
+    Boolean(currentSearch) &&
+    googleHasMore &&
+    (
+      currentTab==="all" ||
+      currentTab==="books"
+    );
+
+  loadMoreWrap.classList.toggle(
+    "visible",
+    shouldShow
+  );
+
+  loadMoreButton.disabled=googleLoadingMore;
+
+  loadMoreButton.textContent=
+    googleLoadingMore
+      ? "Loading More…"
+      : "Load More Books";
+}
+
+function updateBookResultCount(displayedBooks){
+  const displayed=
+    Array.isArray(displayedBooks)
+      ? displayedBooks.length
+      : 0;
+
+  if(!currentSearch){
+    bookResultCount.textContent=
+      displayed===1
+        ? "1 book"
+        : `${displayed} books`;
+
+    return;
+  }
+
+  if(googleTotalItems>0){
+    const approximate=
+      Number(googleTotalItems)
+        .toLocaleString();
+
+    bookResultCount.textContent=
+      `${displayed.toLocaleString()} shown · about ${approximate} Google matches`;
+
+    return;
+  }
+
+  bookResultCount.textContent=
+    displayed===1
+      ? "1 book"
+      : `${displayed} books`;
+}
+
 function renderBooks(books){
   const list=Array.isArray(books)
     ? books
     : [];
 
-  bookResultCount.textContent=
-    list.length===1
-      ? "1 book"
-      : `${list.length} books`;
+  updateBookResultCount(list);
+  updateLoadMoreButton();
 
   if(!list.length){
     bookGrid.innerHTML=`
@@ -1492,6 +1597,8 @@ function updateVisibleSections(){
       currentTab==="people"
     )
   );
+
+  updateLoadMoreButton();
 }
 
 function applyDiscoveryFilters(){
@@ -1499,12 +1606,40 @@ function applyDiscoveryFilters(){
     currentSearch
   );
 
-  const books=
-    query
-      ? combinedBooks().filter(
-          book=>bookMatchesSearch(book,query)
-        )
-      : localBooks;
+  let books;
+
+  if(query){
+    const localMatches=
+      localBooks.filter(
+        book=>bookMatchesSearch(book,query)
+      );
+
+    const localMap=
+      new Map();
+
+    for(const book of localMatches){
+      localMap.set(
+        bookIdentity(book),
+        book
+      );
+    }
+
+    for(const book of googleBooks){
+      const key=bookIdentity(book);
+
+      if(!localMap.has(key)){
+        localMap.set(
+          key,
+          book
+        );
+      }
+    }
+
+    books=[...localMap.values()];
+  }
+  else{
+    books=localBooks;
+  }
 
   const clubs=
     allClubs.filter(
@@ -1558,18 +1693,183 @@ async function loadBooks(){
   }
 }
 
+function googleItemToBook(item){
+  const info=
+    item?.volumeInfo||
+    {};
+
+  const identifiers=
+    Array.isArray(info.industryIdentifiers)
+      ? info.industryIdentifiers
+      : [];
+
+  const isbn13=
+    identifiers.find(
+      identifier=>
+        identifier.type==="ISBN_13"
+    )?.identifier||
+    "";
+
+  const isbn10=
+    identifiers.find(
+      identifier=>
+        identifier.type==="ISBN_10"
+    )?.identifier||
+    "";
+
+  let cover=
+    info.imageLinks?.extraLarge||
+    info.imageLinks?.large||
+    info.imageLinks?.medium||
+    info.imageLinks?.small||
+    info.imageLinks?.thumbnail||
+    info.imageLinks?.smallThumbnail||
+    "";
+
+  if(cover.startsWith("http://")){
+    cover=
+      "https://"+
+      cover.slice(7);
+  }
+
+  return {
+    _source:"google",
+    google_books_id:item?.id||"",
+    title:info.title||"Untitled Book",
+    subtitle:info.subtitle||"",
+    authors:Array.isArray(info.authors)
+      ? info.authors
+      : [],
+    publisher:info.publisher||"",
+    published_date:info.publishedDate||"",
+    description:info.description||"",
+    cover_url:cover,
+    isbn_13:isbn13,
+    isbn_10:isbn10,
+    categories:Array.isArray(info.categories)
+      ? info.categories
+      : [],
+    page_count:info.pageCount||null,
+    average_rating:info.averageRating||null
+  };
+}
+
+function appendGoogleBooks(newBooks){
+  const map=new Map();
+
+  for(const book of googleBooks){
+    map.set(
+      bookIdentity(book),
+      book
+    );
+  }
+
+  for(const book of newBooks){
+    const key=bookIdentity(book);
+
+    if(!map.has(key)){
+      map.set(
+        key,
+        book
+      );
+    }
+  }
+
+  googleBooks=[...map.values()];
+}
+
+function resetGoogleSearch(){
+  googleBooks=[];
+  googleNextStartIndex=0;
+  googleTotalItems=0;
+  googleHasMore=false;
+  googleLoadingMore=false;
+  updateLoadMoreButton();
+}
+
+async function fetchGoogleBooksPage(
+  query,
+  startIndex,
+  sequence
+){
+  const clean=
+    String(query||"")
+      .trim();
+
+  const url=
+    "https://www.googleapis.com/books/v1/volumes?"+
+    new URLSearchParams({
+      q:clean,
+      startIndex:String(startIndex),
+      maxResults:String(GOOGLE_PAGE_SIZE),
+      printType:"books",
+      key:GOOGLE_BOOKS_API_KEY
+    }).toString();
+
+  const response=
+    await fetch(url);
+
+  if(!response.ok){
+    let details="";
+
+    try{
+      const errorPayload=
+        await response.json();
+
+      details=
+        errorPayload?.error?.message||
+        "";
+    }
+    catch{
+      details="";
+    }
+
+    throw new Error(
+      details||
+      `Google Books returned ${response.status}.`
+    );
+  }
+
+  const payload=
+    await response.json();
+
+  if(sequence!==searchSequence){
+    return null;
+  }
+
+  const rawItems=
+    Array.isArray(payload.items)
+      ? payload.items
+      : [];
+
+  const mappedItems=
+    rawItems.map(
+      googleItemToBook
+    );
+
+  return {
+    items:mappedItems,
+    rawCount:rawItems.length,
+    totalItems:Number(payload.totalItems||0)
+  };
+}
+
 async function searchGoogleBooks(query){
-  const clean=String(query||"")
-    .trim();
+  const clean=
+    String(query||"")
+      .trim();
 
   if(clean.length<2){
-    googleBooks=[];
+    ++searchSequence;
+    resetGoogleSearch();
     searchStatus.textContent="";
     return;
   }
 
   const sequence=
     ++searchSequence;
+
+  resetGoogleSearch();
 
   searchStatus.textContent=
     "Searching Google Books…";
@@ -1578,108 +1878,41 @@ async function searchGoogleBooks(query){
   searchButton.textContent="Searching…";
 
   try{
-    const url=
-      "https://www.googleapis.com/books/v1/volumes?"+
-      new URLSearchParams({
-        q:clean,
-        maxResults:"30",
-        printType:"books",
-        key:GOOGLE_BOOKS_API_KEY
-      }).toString();
-
-    const response=
-      await fetch(url);
-
-    if(!response.ok){
-      let details="";
-
-      try{
-        const errorPayload=
-          await response.json();
-
-        details=
-          errorPayload?.error?.message||
-          "";
-      }
-      catch{
-        details="";
-      }
-
-      throw new Error(
-        details||
-        `Google Books returned ${response.status}.`
+    const result=
+      await fetchGoogleBooksPage(
+        clean,
+        0,
+        sequence
       );
-    }
 
-    const payload=
-      await response.json();
-
-    if(sequence!==searchSequence){
+    if(!result){
       return;
     }
 
-    googleBooks=(payload.items||[])
-      .map(item=>{
-        const info=
-          item.volumeInfo||
-          {};
+    googleTotalItems=
+      result.totalItems;
 
-        const identifiers=
-          Array.isArray(info.industryIdentifiers)
-            ? info.industryIdentifiers
-            : [];
+    appendGoogleBooks(
+      result.items
+    );
 
-        const isbn13=
-          identifiers.find(
-            identifier=>
-              identifier.type==="ISBN_13"
-          )?.identifier||
-          "";
+    googleNextStartIndex=
+      result.rawCount;
 
-        const isbn10=
-          identifiers.find(
-            identifier=>
-              identifier.type==="ISBN_10"
-          )?.identifier||
-          "";
+    googleHasMore=
+      result.rawCount>0 &&
+      googleNextStartIndex<googleTotalItems;
 
-        let cover=
-          info.imageLinks?.thumbnail||
-          info.imageLinks?.smallThumbnail||
-          "";
-
-        if(cover.startsWith("http://")){
-          cover=
-            "https://"+
-            cover.slice(7);
-        }
-
-        return {
-          _source:"google",
-          google_books_id:item.id,
-          title:info.title||"Untitled Book",
-          subtitle:info.subtitle||"",
-          authors:Array.isArray(info.authors)
-            ? info.authors
-            : [],
-          publisher:info.publisher||"",
-          published_date:info.publishedDate||"",
-          description:info.description||"",
-          cover_url:cover,
-          isbn_13:isbn13,
-          isbn_10:isbn10,
-          categories:Array.isArray(info.categories)
-            ? info.categories
-            : [],
-          page_count:info.pageCount||null,
-          average_rating:info.averageRating||null
-        };
-      });
-
-    searchStatus.textContent=
-      googleBooks.length
-        ? `Found ${googleBooks.length} Google Books result${googleBooks.length===1?"":"s"}.`
-        : "Google Books didn't return any matches.";
+    if(googleBooks.length){
+      searchStatus.textContent=
+        googleHasMore
+          ? `Loaded ${googleBooks.length.toLocaleString()} Google Books results. More are available.`
+          : `Loaded ${googleBooks.length.toLocaleString()} Google Books result${googleBooks.length===1?"":"s"}.`;
+    }
+    else{
+      searchStatus.textContent=
+        "Google Books didn't return any matches.";
+    }
   }
   catch(error){
     if(sequence!==searchSequence){
@@ -1691,7 +1924,7 @@ async function searchGoogleBooks(query){
       error
     );
 
-    googleBooks=[];
+    resetGoogleSearch();
 
     searchStatus.textContent=
       "Google Books couldn't be reached. "+
@@ -1705,6 +1938,93 @@ async function searchGoogleBooks(query){
     if(sequence===searchSequence){
       searchButton.disabled=false;
       searchButton.textContent="Search";
+      updateLoadMoreButton();
+    }
+  }
+}
+
+async function loadMoreGoogleBooks(){
+  const clean=
+    String(currentSearch||"")
+      .trim();
+
+  if(
+    !clean ||
+    !googleHasMore ||
+    googleLoadingMore
+  ){
+    return;
+  }
+
+  const sequence=
+    searchSequence;
+
+  googleLoadingMore=true;
+  updateLoadMoreButton();
+
+  searchStatus.textContent=
+    `Loading more Google Books results…`;
+
+  try{
+    const result=
+      await fetchGoogleBooksPage(
+        clean,
+        googleNextStartIndex,
+        sequence
+      );
+
+    if(!result){
+      return;
+    }
+
+    if(result.totalItems>0){
+      googleTotalItems=
+        result.totalItems;
+    }
+
+    appendGoogleBooks(
+      result.items
+    );
+
+    googleNextStartIndex+=
+      result.rawCount;
+
+    googleHasMore=
+      result.rawCount>0 &&
+      googleNextStartIndex<googleTotalItems;
+
+    applyDiscoveryFilters();
+
+    if(googleHasMore){
+      searchStatus.textContent=
+        `Loaded ${googleBooks.length.toLocaleString()} Google Books results. More are available.`;
+    }
+    else{
+      searchStatus.textContent=
+        `Loaded all Google Books results returned for this search.`;
+    }
+  }
+  catch(error){
+    if(sequence!==searchSequence){
+      return;
+    }
+
+    console.error(
+      "Load more Google Books:",
+      error
+    );
+
+    searchStatus.textContent=
+      "Couldn't load the next batch of Google Books. "+
+      (
+        error?.message||
+        "Try again."
+      );
+  }
+  finally{
+    if(sequence===searchSequence){
+      googleLoadingMore=false;
+      updateLoadMoreButton();
     }
   }
 }
@@ -1740,7 +2060,7 @@ async function runSearch(){
   if(!currentSearch){
     ++searchSequence;
 
-    googleBooks=[];
+    resetGoogleSearch();
     searchStatus.textContent="";
 
     applyDiscoveryFilters();
@@ -1756,8 +2076,7 @@ async function runSearch(){
 
   applyDiscoveryFilters();
 }
-
-async function loadClubs(){
+  async function loadClubs(){
   try{
     const {
       data,
@@ -2158,6 +2477,13 @@ discoverSearchForm.addEventListener(
   }
 );
 
+loadMoreButton.addEventListener(
+  "click",
+  async ()=>{
+    await loadMoreGoogleBooks();
+  }
+);
+
 let typingTimer=null;
 
 discoverSearch.addEventListener(
@@ -2173,7 +2499,10 @@ discoverSearch.addEventListener(
 
     if(!value){
       currentSearch="";
-      googleBooks=[];
+
+      ++searchSequence;
+      resetGoogleSearch();
+
       searchStatus.textContent="";
 
       applyDiscoveryFilters();
@@ -2198,6 +2527,7 @@ discoverSearch.addEventListener(
 
     currentSearch=value;
 
+    resetGoogleSearch();
     applyDiscoveryFilters();
 
     typingTimer=
@@ -2264,45 +2594,33 @@ document
 supabaseClient
   .auth
   .onAuthStateChange(
-    (
-      event,
-      session
-    )=>{
-      if(event==="SIGNED_OUT"){
-        location.href=
-          "index.html";
-
-        return;
-      }
-
-      if(session?.user){
-        currentUser=
-          session.user;
+    (event,session)=>{
+      if(
+        event==="SIGNED_OUT" ||
+        !session
+      ){
+        location.href="index.html";
       }
     }
   );
 
-async function startDiscover(){
+async function initialize(){
   try{
-    restoreUrlState();
-
-    const authenticated=
+    const signedIn=
       await requireSession();
 
-    if(!authenticated){
+    if(!signedIn){
       return;
     }
 
-    const navPromise=
-      Promise.allSettled([
-        loadCurrentUserProfile(),
-        loadAdminStatus()
-      ]);
+    restoreUrlState();
 
-    await Promise.all([
+    await Promise.allSettled([
       loadBooks(),
       loadClubs(),
-      loadPeople()
+      loadPeople(),
+      loadCurrentUserProfile(),
+      loadAdminStatus()
     ]);
 
     applyDiscoveryFilters();
@@ -2314,45 +2632,29 @@ async function startDiscover(){
 
       applyDiscoveryFilters();
     }
-
-    await navPromise;
   }
   catch(error){
     console.error(
-      "Discover startup:",
+      "Discover initialization:",
       error
     );
 
     bookGrid.innerHTML=`
       <div class="empty-state">
         <div class="empty-symbol">!</div>
-
-        <h3>
-          Paper Gremlin couldn't load Discover.
-        </h3>
-
+        <h3>Discover couldn't finish loading.</h3>
         <p>
           Refresh the page and try again.
         </p>
       </div>
     `;
-
-    clubGrid.innerHTML="";
-    peopleGrid.innerHTML="";
-
-    bookResultCount.textContent=
-      "Unavailable";
-
-    clubResultCount.textContent="";
-    peopleResultCount.textContent="";
   }
   finally{
     hideLoading();
   }
 }
 
-startDiscover();
+initialize();
 </script>
-
 </body>
 </html>
