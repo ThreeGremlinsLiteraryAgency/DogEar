@@ -13,9 +13,7 @@
   content="Paper Gremlin — A home for every kind of story and every kind of reader."
 >
 
-<title>
-  Paper Gremlin — Different Readers. Same Campfire.
-</title>
+<title>Paper Gremlin — Different Readers. Same Campfire.</title>
 
 <style>
 
@@ -55,6 +53,7 @@
   --paper:#e4cea1;
   --paper-light:#f1dfb9;
   --paper-dark:#9d7c51;
+
   --ink:#33271c;
 
   --max:1220px;
@@ -72,11 +71,8 @@ body{
   margin:0;
   overflow-x:hidden;
 
-  background:
-    var(--night-0);
-
-  color:
-    var(--cream);
+  background:var(--night-0);
+  color:var(--cream);
 
   font-family:
     Georgia,
@@ -105,11 +101,10 @@ img{
 }
 
 .wrap{
-  width:
-    min(
-      calc(100% - 40px),
-      var(--max)
-    );
+  width:min(
+    calc(100% - 40px),
+    var(--max)
+  );
 
   margin:auto;
 }
@@ -134,11 +129,8 @@ img{
   background:
     rgba(2,12,15,.94);
 
-  backdrop-filter:
-    blur(18px);
-
-  -webkit-backdrop-filter:
-    blur(18px);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
 }
 
 .nav{
@@ -157,8 +149,7 @@ img{
 
   gap:12px;
 
-  color:
-    var(--gold-light);
+  color:var(--gold-light);
 
   font-weight:bold;
 
@@ -178,8 +169,7 @@ img{
     1px solid
     rgba(240,204,130,.55);
 
-  border-radius:
-    56% 44% 52% 48%;
+  border-radius:56% 44% 52% 48%;
 
   background:
     radial-gradient(
@@ -213,8 +203,7 @@ img{
   border-radius:
     90% 20% 0 0;
 
-  transform:
-    rotate(28deg);
+  transform:rotate(28deg);
 }
 
 .navlinks{
@@ -223,8 +212,7 @@ img{
 
   gap:22px;
 
-  color:
-    var(--cream-muted);
+  color:var(--cream-muted);
 
   font-family:
     Arial,
@@ -244,26 +232,22 @@ img{
 }
 
 .navlinks a:hover{
-  color:
-    var(--fire-light);
+  color:var(--fire-light);
 
   transform:
     translateY(-1px);
 }
 
 .nav-join{
-  padding:
-    9px 16px;
+  padding:9px 16px;
 
   border:
     1px solid
     rgba(240,204,130,.62);
 
-  border-radius:
-    999px;
+  border-radius:999px;
 
-  color:
-    var(--gold-light);
+  color:var(--gold-light);
 }
 
 
@@ -279,8 +263,15 @@ img{
 
   overflow:hidden;
 
+  /*
+     IMPORTANT:
+     This is deliberately larger than the old 76px.
+     It prevents the headline from disappearing beneath
+     the sticky navigation.
+  */
+
   padding:
-    76px 0 0;
+    125px 0 0;
 
   isolation:isolate;
 
@@ -290,11 +281,13 @@ img{
       rgba(237,118,51,.18),
       transparent 25%
     ),
+
     radial-gradient(
       ellipse at 50% 36%,
       rgba(47,111,119,.20),
       transparent 43%
     ),
+
     linear-gradient(
       180deg,
       #04151b 0%,
@@ -433,6 +426,7 @@ img{
       rgba(116,183,189,.20),
       transparent 26%
     ),
+
     radial-gradient(
       ellipse at 72% 18%,
       rgba(111,155,187,.14),
@@ -546,6 +540,7 @@ img{
   content:"";
 
   position:absolute;
+
   inset:auto 0 0;
 
   height:100%;
@@ -557,24 +552,28 @@ img{
       #0b3436 11.3% 21%,
       transparent 21.3%
     ),
+
     linear-gradient(
       220deg,
       transparent 0 16%,
       #0b3436 16.3% 29%,
       transparent 29.3%
     ),
+
     linear-gradient(
       135deg,
       transparent 0 37%,
       #0a3032 37.3% 51%,
       transparent 51.3%
     ),
+
     linear-gradient(
       225deg,
       transparent 0 55%,
       #0b3435 55.3% 68%,
       transparent 68.3%
     ),
+
     linear-gradient(
       140deg,
       transparent 0 72%,
@@ -655,7 +654,7 @@ img{
 
 
 /* =========================================================
-   MIST LAYERS
+   MIST
 ========================================================= */
 
 .mist{
@@ -667,8 +666,7 @@ img{
 
   border-radius:50%;
 
-  filter:
-    blur(28px);
+  filter:blur(28px);
 
   opacity:.14;
 }
@@ -680,8 +678,7 @@ img{
   left:-15%;
   bottom:25%;
 
-  background:
-    #9dc5b5;
+  background:#9dc5b5;
 
   animation:
     mistOne
@@ -696,8 +693,7 @@ img{
   right:-17%;
   bottom:31%;
 
-  background:
-    #8fbab1;
+  background:#8fbab1;
 
   animation:
     mistTwo
@@ -708,13 +704,11 @@ img{
 @keyframes mistOne{
 
   from{
-    transform:
-      translateX(-2%);
+    transform:translateX(-2%);
   }
 
   to{
-    transform:
-      translateX(10%);
+    transform:translateX(10%);
   }
 
 }
@@ -722,13 +716,11 @@ img{
 @keyframes mistTwo{
 
   from{
-    transform:
-      translateX(5%);
+    transform:translateX(5%);
   }
 
   to{
-    transform:
-      translateX(-8%);
+    transform:translateX(-8%);
   }
 
 }
@@ -736,9 +728,6 @@ img{
 
 /* =========================================================
    HERO COPY
-
-   More vertical clearance fixes the headline clipping
-   visible in the previous deployment.
 ========================================================= */
 
 .hero-copy{
@@ -750,16 +739,13 @@ img{
 
   margin:auto;
 
-  padding-top:4px;
-
   text-align:center;
 }
 
 .hero-kicker{
   margin-bottom:11px;
 
-  color:
-    var(--gold);
+  color:var(--gold);
 
   font-family:
     Arial,
@@ -778,8 +764,7 @@ img{
   margin:
     0 auto 15px;
 
-  color:
-    var(--cream);
+  color:var(--cream);
 
   font-size:
     clamp(
@@ -803,12 +788,13 @@ img{
 }
 
 .hero h1 span{
-  color:
-    var(--fire-gold);
+  display:block;
+
+  color:var(--fire-gold);
 
   text-shadow:
     0 0 26px
-      rgba(240,142,59,.12);
+    rgba(240,142,59,.12);
 }
 
 .hero-subtitle{
@@ -816,8 +802,7 @@ img{
 
   margin:auto;
 
-  color:
-    var(--cream-muted);
+  color:var(--cream-muted);
 
   font-size:
     clamp(
@@ -938,8 +923,7 @@ img{
     4px solid
     rgba(82,119,90,.23);
 
-  transform:
-    rotate(4deg);
+  transform:rotate(4deg);
 }
 
 .tree-trunk::after{
@@ -959,8 +943,7 @@ img{
     5px solid
     rgba(0,0,0,.24);
 
-  transform:
-    rotate(-5deg);
+  transform:rotate(-5deg);
 }
 
 .tree-branch{
@@ -982,7 +965,7 @@ img{
 
   box-shadow:
     inset 0 8px 8px
-      rgba(59,94,72,.10);
+    rgba(59,94,72,.10);
 }
 
 .tree-branch.one{
@@ -991,8 +974,7 @@ img{
   left:114px;
   top:74px;
 
-  transform:
-    rotate(-23deg);
+  transform:rotate(-23deg);
 }
 
 .tree-branch.two{
@@ -1001,8 +983,7 @@ img{
   left:103px;
   top:157px;
 
-  transform:
-    rotate(14deg);
+  transform:rotate(14deg);
 }
 
 .tree-branch.three{
@@ -1011,8 +992,7 @@ img{
   left:68px;
   top:235px;
 
-  transform:
-    rotate(-36deg);
+  transform:rotate(-36deg);
 }
 
 .tree-canopy{
@@ -1020,8 +1000,7 @@ img{
 
   z-index:3;
 
-  border-radius:
-    50%;
+  border-radius:50%;
 
   background:
     radial-gradient(
@@ -1096,13 +1075,11 @@ img{
 @keyframes mossSway{
 
   from{
-    transform:
-      rotate(-3deg);
+    transform:rotate(-3deg);
   }
 
   to{
-    transform:
-      rotate(4deg);
+    transform:rotate(4deg);
   }
 
 }
@@ -1110,34 +1087,27 @@ img{
 .moss.m1{
   left:117px;
   top:102px;
-
   height:75px;
 }
 
 .moss.m2{
   left:155px;
   top:79px;
-
   height:105px;
-
   animation-delay:-2s;
 }
 
 .moss.m3{
   left:211px;
   top:67px;
-
   height:82px;
-
   animation-delay:-3.5s;
 }
 
 .moss.m4{
   left:270px;
   top:97px;
-
   height:67px;
-
   animation-delay:-1s;
 }
 
@@ -1166,16 +1136,19 @@ img{
       rgba(241,123,50,.16),
       transparent 24%
     ),
+
     radial-gradient(
       ellipse at 25% 30%,
       rgba(44,97,69,.40),
       transparent 30%
     ),
+
     radial-gradient(
       ellipse at 77% 33%,
       rgba(43,93,68,.36),
       transparent 31%
     ),
+
     linear-gradient(
       180deg,
       #163c2e,
@@ -1185,7 +1158,7 @@ img{
 
   box-shadow:
     inset 0 25px 60px
-      rgba(69,111,81,.08);
+    rgba(69,111,81,.08);
 }
 
 
@@ -1218,8 +1191,7 @@ img{
       transparent 72%
     );
 
-  filter:
-    blur(4px);
+  filter:blur(4px);
 
   animation:
     campGlow
@@ -1250,9 +1222,6 @@ img{
 
 /* =========================================================
    STORYBOOK SVG
-
-   The detailed characters, camp objects, water,
-   fire, lanterns and spectral story are drawn here.
 ========================================================= */
 
 .camp-art{
@@ -1263,11 +1232,10 @@ img{
   left:50%;
   bottom:0;
 
-  width:
-    min(
-      1260px,
-      94vw
-    );
+  width:min(
+    1260px,
+    94vw
+  );
 
   height:auto;
 
@@ -1286,6 +1254,7 @@ img{
 .ink{
   stroke:#1a241f;
   stroke-width:3;
+
   stroke-linecap:round;
   stroke-linejoin:round;
 }
@@ -1293,6 +1262,7 @@ img{
 .ink-soft{
   stroke:#26372f;
   stroke-width:2;
+
   stroke-linecap:round;
   stroke-linejoin:round;
 }
@@ -1324,8 +1294,7 @@ img{
 
   border-radius:50%;
 
-  background:
-    #ffe58b;
+  background:#ffe58b;
 
   box-shadow:
     0 0 5px #ffe58b,
@@ -1376,7 +1345,7 @@ img{
 
 
 /* =========================================================
-   FLOATING EMBERS
+   EMBERS
 ========================================================= */
 
 .ember{
@@ -1389,8 +1358,7 @@ img{
 
   border-radius:50%;
 
-  background:
-    var(--fire-gold);
+  background:var(--fire-gold);
 
   box-shadow:
     0 0 7px
@@ -1499,8 +1467,7 @@ img{
 }
 
 .path:hover{
-  color:
-    var(--fire-light);
+  color:var(--fire-light);
 
   background:
     radial-gradient(
@@ -1541,8 +1508,7 @@ img{
 .eyebrow{
   margin-bottom:12px;
 
-  color:
-    var(--gold);
+  color:var(--gold);
 
   font-family:
     Arial,
@@ -1587,8 +1553,7 @@ img{
 .section-header p{
   margin:0;
 
-  color:
-    var(--cream-muted);
+  color:var(--cream-muted);
 
   font-size:18px;
 }
@@ -1599,8 +1564,7 @@ img{
 ========================================================= */
 
 .parchment-section{
-  color:
-    var(--ink);
+  color:var(--ink);
 
   background:
     linear-gradient(
@@ -1658,8 +1622,7 @@ img{
 .parchment-section::after{
   bottom:-10px;
 
-  transform:
-    rotate(180deg);
+  transform:rotate(180deg);
 
   background:
     linear-gradient(
@@ -1680,26 +1643,25 @@ img{
   color:#675746;
 }
   /* =========================================================
-   FEATURED CLUBS
+   CLUBS SECTION
 ========================================================= */
 
 .clubs-section{
   background:
     radial-gradient(
       ellipse at 50% 0%,
-      rgba(58,106,83,.20),
-      transparent 40%
+      rgba(49,105,83,.18),
+      transparent 44%
     ),
     linear-gradient(
       180deg,
-      #071d18,
-      #0a261f
+      #08221c,
+      #061713
     );
 }
 
 .club-grid{
   display:grid;
-
   grid-template-columns:
     repeat(4,1fr);
 
@@ -1708,37 +1670,24 @@ img{
 
 .club-card{
   position:relative;
-
-  min-height:315px;
-
   overflow:hidden;
 
-  padding:25px;
-
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
+  min-height:350px;
 
   border:
     1px solid
-    rgba(221,188,124,.24);
+    rgba(224,188,119,.20);
 
-  border-radius:8px;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(19,55,44,.35),
-      rgba(3,18,15,.92)
-    );
+  background:#0a211b;
 
   box-shadow:
     0 20px 45px
-    rgba(0,0,0,.25);
+    rgba(0,0,0,.23);
 
   transition:
     transform .25s ease,
-    border-color .25s ease;
+    border-color .25s ease,
+    box-shadow .25s ease;
 }
 
 .club-card:hover{
@@ -1746,49 +1695,319 @@ img{
     translateY(-6px);
 
   border-color:
-    rgba(240,204,130,.55);
+    rgba(240,204,130,.52);
+
+  box-shadow:
+    0 27px 55px
+    rgba(0,0,0,.34);
 }
 
 .club-art{
-  position:absolute;
+  position:relative;
 
-  inset:0;
+  height:165px;
 
-  opacity:.78;
+  overflow:hidden;
 
-  transition:
-    transform .5s ease,
-    opacity .5s ease;
+  border-bottom:
+    1px solid
+    rgba(224,188,119,.16);
 }
 
-.club-card:hover
-.club-art{
-  transform:
-    scale(1.04);
-
-  opacity:.95;
-}
-
-.club-card::after{
+.club-art::before,
+.club-art::after{
   content:"";
 
   position:absolute;
+}
 
-  inset:0;
 
+/* FANTASY CLUB */
+
+.club-fantasy{
   background:
+    radial-gradient(
+      circle at 66% 30%,
+      rgba(255,217,122,.75) 0 2px,
+      transparent 3px
+    ),
+
+    linear-gradient(
+      135deg,
+      transparent 0 47%,
+      rgba(123,163,145,.18) 48% 50%,
+      transparent 51%
+    ),
+
     linear-gradient(
       180deg,
-      transparent 20%,
-      rgba(3,15,13,.25) 53%,
-      rgba(3,15,13,.97) 100%
+      #163b42,
+      #102d2c 55%,
+      #0a1c17
     );
 }
 
-.club-content{
-  position:relative;
+.club-fantasy::before{
+  width:95px;
+  height:110px;
 
-  z-index:4;
+  left:38px;
+  bottom:-18px;
+
+  background:#14231f;
+
+  clip-path:
+    polygon(
+      0 100%,
+      8% 40%,
+      22% 40%,
+      22% 21%,
+      34% 21%,
+      34% 42%,
+      50% 42%,
+      50% 0,
+      63% 0,
+      63% 41%,
+      79% 41%,
+      79% 22%,
+      91% 22%,
+      91% 42%,
+      100% 42%,
+      100% 100%
+    );
+}
+
+.club-fantasy::after{
+  width:105px;
+  height:60px;
+
+  right:20px;
+  top:27px;
+
+  border:
+    2px solid
+    rgba(160,201,211,.58);
+
+  border-left-color:
+    transparent;
+
+  border-bottom-color:
+    transparent;
+
+  border-radius:
+    55% 40% 50% 30%;
+
+  transform:
+    rotate(-14deg);
+
+  opacity:.75;
+}
+
+
+/* QUEER READS */
+
+.club-queer{
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(231,170,196,.17),
+      transparent 32%
+    ),
+
+    linear-gradient(
+      180deg,
+      #42314e,
+      #28273e 57%,
+      #151d24
+    );
+}
+
+.club-queer::before{
+  width:94px;
+  height:94px;
+
+  left:50%;
+  top:37px;
+
+  transform:
+    translateX(-50%)
+    rotate(-45deg);
+
+  border-radius:
+    55% 45% 55% 45%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #c56f7c 0 17%,
+      #d89867 17% 34%,
+      #d7bf70 34% 51%,
+      #6e9f83 51% 68%,
+      #6386a3 68% 84%,
+      #8d6d9e 84%
+    );
+
+  opacity:.66;
+}
+
+.club-queer::after{
+  width:130px;
+  height:2px;
+
+  left:50%;
+  bottom:27px;
+
+  transform:
+    translateX(-50%);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(242,215,174,.68),
+      transparent
+    );
+}
+
+
+/* SCI-FI */
+
+.club-scifi{
+  background:
+    radial-gradient(
+      circle at 71% 27%,
+      #d8e8f1 0 2px,
+      transparent 3px
+    ),
+
+    radial-gradient(
+      circle at 29% 31%,
+      #d8e8f1 0 1px,
+      transparent 2px
+    ),
+
+    radial-gradient(
+      circle at 53% 18%,
+      #d8e8f1 0 1.5px,
+      transparent 2.5px
+    ),
+
+    linear-gradient(
+      180deg,
+      #122d42,
+      #102635 58%,
+      #0b1922
+    );
+}
+
+.club-scifi::before{
+  width:115px;
+  height:115px;
+
+  right:32px;
+  top:25px;
+
+  border:
+    2px solid
+    rgba(148,204,215,.40);
+
+  border-radius:50%;
+
+  box-shadow:
+    inset 0 0 25px
+    rgba(80,165,182,.15);
+
+  background:
+    radial-gradient(
+      circle at 38% 34%,
+      #659aa2 0 4%,
+      transparent 5%
+    ),
+
+    radial-gradient(
+      circle at 60% 60%,
+      #456f7a 0 7%,
+      transparent 8%
+    ),
+
+    #294c5a;
+}
+
+.club-scifi::after{
+  width:145px;
+  height:38px;
+
+  right:17px;
+  top:64px;
+
+  border:
+    2px solid
+    rgba(184,218,224,.52);
+
+  border-radius:50%;
+
+  transform:
+    rotate(-18deg);
+}
+
+
+/* COZY */
+
+.club-cozy{
+  background:
+    radial-gradient(
+      ellipse at 50% 75%,
+      rgba(239,164,82,.22),
+      transparent 45%
+    ),
+
+    linear-gradient(
+      180deg,
+      #4b342b,
+      #302821 57%,
+      #1a1d19
+    );
+}
+
+.club-cozy::before{
+  width:72px;
+  height:58px;
+
+  left:50%;
+  bottom:24px;
+
+  transform:
+    translateX(-50%);
+
+  border-radius:
+    5px 5px 25px 25px;
+
+  background:#9b7250;
+
+  box-shadow:
+    0 0 30px
+    rgba(238,157,78,.16);
+}
+
+.club-cozy::after{
+  width:38px;
+  height:46px;
+
+  left:calc(50% + 27px);
+  bottom:30px;
+
+  border:
+    7px solid
+    #9b7250;
+
+  border-left:0;
+
+  border-radius:
+    0 25px 25px 0;
+}
+
+.club-content{
+  padding:23px 22px 25px;
 }
 
 .club-content small{
@@ -1796,8 +2015,7 @@ img{
 
   margin-bottom:8px;
 
-  color:
-    var(--gold);
+  color:var(--gold);
 
   font-family:
     Arial,
@@ -1807,17 +2025,14 @@ img{
 
   text-transform:uppercase;
 
-  letter-spacing:.17em;
+  letter-spacing:.13em;
 }
 
 .club-content h3{
   margin:
-    0 0 7px;
+    0 0 8px;
 
-  color:
-    var(--cream);
-
-  font-size:25px;
+  font-size:24px;
 
   font-weight:400;
 }
@@ -1825,185 +2040,88 @@ img{
 .club-content p{
   margin:0;
 
-  color:
-    var(--cream-muted);
+  color:var(--cream-muted);
 
   font-size:14px;
-}
 
-.club-fantasy{
-  background:
-    radial-gradient(
-      circle at 50% 28%,
-      rgba(159,179,218,.24),
-      transparent 14%
-    ),
-    linear-gradient(
-      153deg,
-      transparent 0 43%,
-      rgba(23,69,52,.86) 43.5% 57%,
-      transparent 57.5%
-    ),
-    linear-gradient(
-      207deg,
-      transparent 0 40%,
-      rgba(12,50,39,.85) 40.5% 58%,
-      transparent 58.5%
-    ),
-    linear-gradient(
-      #0c2c28,
-      #071b18
-    );
-}
-
-.club-queer{
-  background:
-    radial-gradient(
-      circle at 65% 24%,
-      rgba(231,170,202,.34),
-      transparent 18%
-    ),
-    radial-gradient(
-      circle at 34% 38%,
-      rgba(121,181,190,.25),
-      transparent 22%
-    ),
-    linear-gradient(
-      135deg,
-      #193d3b,
-      #132b2d 50%,
-      #251e2b
-    );
-}
-
-.club-scifi{
-  background:
-    radial-gradient(
-      circle at 55% 25%,
-      #9dd7dc 0 2px,
-      transparent 3px
-    ),
-    radial-gradient(
-      circle at 23% 34%,
-      #e8d9a5 0 1px,
-      transparent 2px
-    ),
-    radial-gradient(
-      circle at 76% 43%,
-      #fff 0 1px,
-      transparent 2px
-    ),
-    radial-gradient(
-      circle at 50% 42%,
-      rgba(85,153,169,.42),
-      transparent 22%
-    ),
-    linear-gradient(
-      #081c29,
-      #07161c
-    );
-}
-
-.club-cozy{
-  background:
-    radial-gradient(
-      ellipse at 50% 65%,
-      rgba(235,137,61,.34),
-      transparent 23%
-    ),
-    linear-gradient(
-      160deg,
-      #253e31,
-      #13291f 50%,
-      #0c1c17
-    );
+  line-height:1.6;
 }
 
 
 /* =========================================================
-   STORY PATH SECTION
+   STORY CARDS
 ========================================================= */
 
 .story-grid{
   display:grid;
 
   grid-template-columns:
-    1.1fr .9fr .9fr;
+    repeat(3,1fr);
 
-  gap:24px;
+  gap:25px;
 }
 
 .story-card{
   position:relative;
 
-  min-height:380px;
+  min-height:330px;
 
-  overflow:hidden;
-
-  padding:30px;
+  padding:
+    34px 31px;
 
   border:
     1px solid
-    rgba(87,59,32,.24);
-
-  border-radius:6px;
+    rgba(90,63,35,.28);
 
   background:
-    rgba(255,248,223,.21);
+    rgba(255,246,218,.27);
 
   box-shadow:
-    0 14px 32px
-    rgba(86,58,30,.11);
+    0 17px 30px
+    rgba(82,58,35,.08);
 }
 
-.story-card:first-child{
-  min-height:440px;
+.story-card::before{
+  content:"";
+
+  position:absolute;
+
+  inset:9px;
+
+  border:
+    1px solid
+    rgba(103,74,41,.14);
+
+  pointer-events:none;
 }
 
 .story-number{
   position:absolute;
 
-  right:20px;
-  top:8px;
+  top:15px;
+  right:22px;
 
   color:
-    rgba(91,64,38,.09);
+    rgba(104,73,42,.25);
 
-  font-size:105px;
-
-  line-height:1;
+  font-size:48px;
 
   font-style:italic;
 }
 
 .story-icon{
-  width:76px;
-  height:76px;
+  margin-bottom:20px;
 
-  margin-bottom:25px;
-
-  display:grid;
-  place-items:center;
-
-  border:
-    1px solid
-    rgba(103,74,42,.32);
-
-  border-radius:50%;
-
-  background:
-    rgba(255,247,218,.26);
-
-  font-size:31px;
+  font-size:29px;
 }
 
 .story-card h3{
   position:relative;
 
   margin:
-    0 0 13px;
+    0 0 14px;
 
-  font-size:31px;
+  font-size:27px;
 
   font-weight:400;
 }
@@ -2011,18 +2129,19 @@ img{
 .story-card p{
   position:relative;
 
-  margin:0;
+  color:#5d4e40;
 
-  color:#675746;
+  font-size:15px;
 }
 
 .story-link{
-  position:absolute;
+  position:relative;
 
-  left:30px;
-  bottom:28px;
+  display:inline-block;
 
-  color:#704b2c;
+  margin-top:11px;
+
+  color:#70491f;
 
   font-family:
     Arial,
@@ -2034,43 +2153,68 @@ img{
 
   text-transform:uppercase;
 
-  letter-spacing:.14em;
+  letter-spacing:.12em;
 }
 
 
 /* =========================================================
-   BOOK DISCOVERY
+   BOOK SEARCH SECTION
 ========================================================= */
 
 .book-section{
+  overflow:hidden;
+
   background:
     radial-gradient(
-      circle at 78% 42%,
-      rgba(229,150,67,.12),
+      ellipse at 17% 50%,
+      rgba(230,145,66,.11),
       transparent 28%
     ),
+
     linear-gradient(
       180deg,
-      #061a17,
-      #0a2821
+      #071b18,
+      #061512
     );
+}
+
+.book-section::before{
+  content:"";
+
+  position:absolute;
+
+  width:620px;
+  height:620px;
+
+  left:-250px;
+  top:50%;
+
+  transform:
+    translateY(-50%);
+
+  border-radius:50%;
+
+  border:
+    1px solid
+    rgba(212,178,111,.08);
 }
 
 .book-shell{
   display:grid;
 
   grid-template-columns:
-    .78fr 1.22fr;
-
-  gap:70px;
+    minmax(300px,.8fr)
+    minmax(0,1.2fr);
 
   align-items:center;
+
+  gap:70px;
 }
 
 .book-stack{
   position:relative;
 
-  min-height:420px;
+  min-height:430px;
 
   display:grid;
   place-items:center;
@@ -2079,17 +2223,19 @@ img{
 .book-glow{
   position:absolute;
 
-  width:390px;
-  height:390px;
+  width:320px;
+  height:320px;
 
   border-radius:50%;
 
   background:
     radial-gradient(
       circle,
-      rgba(234,137,55,.18),
-      transparent 66%
+      rgba(239,160,72,.21),
+      transparent 67%
     );
+
+  filter:blur(10px);
 }
 
 .book-cover{
@@ -2098,133 +2244,146 @@ img{
   z-index:3;
 
   width:230px;
-  height:340px;
+  height:335px;
 
   overflow:hidden;
 
-  display:grid;
-  place-items:center;
-
   border:
     7px solid
-    rgba(226,196,139,.12);
+    #7b5736;
 
-  border-radius:
-    4px 12px 12px 4px;
+  border-left-width:13px;
 
   background:
     linear-gradient(
       135deg,
-      #173d32,
-      #071b18
+      #4d3127,
+      #2e2821
     );
 
   box-shadow:
-    -13px 15px 0
-      rgba(86,58,32,.25),
+    -17px 17px 0
+      #34261c,
 
-    -25px 29px 0
-      rgba(37,29,19,.24),
+    -25px 27px 38px
+      rgba(0,0,0,.39);
+}
 
-    0 38px 60px
-      rgba(0,0,0,.40);
+.book-cover::before{
+  content:"";
+
+  position:absolute;
+
+  z-index:10;
+
+  inset:7px;
+
+  border:
+    1px solid
+    rgba(226,187,112,.37);
+
+  pointer-events:none;
 }
 
 .book-cover img{
   width:100%;
   height:100%;
 
-  object-fit:cover;
-
   display:none;
+
+  object-fit:cover;
 }
 
 .book-placeholder{
+  width:100%;
+  height:100%;
+
+  display:grid;
+  place-items:center;
+
   padding:30px;
 
-  color:
-    var(--gold-light);
+  color:#d7b779;
 
   text-align:center;
 
-  font-size:23px;
+  font-size:18px;
+
+  line-height:1.8;
 }
 
 .book-copy h2{
   margin:
-    0 0 15px;
+    0 0 17px;
 
   font-size:
     clamp(
-      38px,
+      39px,
       5vw,
-      60px
+      61px
     );
 
-  line-height:1.05;
+  line-height:1.03;
 
   font-weight:400;
 }
 
-.book-copy p{
-  color:
-    var(--cream-muted);
+.book-copy > p{
+  max-width:620px;
+
+  color:var(--cream-muted);
+
+  font-size:17px;
 }
 
 .book-search{
-  max-width:580px;
-
-  margin-top:27px;
+  max-width:680px;
 
   display:flex;
 
-  overflow:hidden;
+  margin:
+    29px 0 28px;
 
   border:
     1px solid
-    rgba(226,190,123,.42);
-
-  border-radius:4px;
+    rgba(225,188,117,.38);
 
   background:
-    rgba(0,0,0,.18);
+    rgba(2,12,12,.55);
 }
 
 .book-search input{
-  flex:1;
-
   min-width:0;
 
+  flex:1;
+
   padding:
-    14px 16px;
+    15px 17px;
 
   border:0;
-
   outline:0;
 
-  color:
-    var(--cream);
+  color:var(--cream);
 
-  background:
-    transparent;
+  background:transparent;
 }
 
 .book-search input::placeholder{
-  color:
-    rgba(238,226,200,.45);
+  color:#7f8f84;
 }
 
 .book-search button{
   padding:
-    13px 20px;
+    0 23px;
 
   border:0;
+  border-left:
+    1px solid
+    rgba(225,188,117,.28);
 
-  color:
-    #1c1a13;
+  color:#17120c;
 
-  background:
-    var(--gold-light);
+  background:var(--gold-light);
 
   font-family:
     Arial,
@@ -2236,21 +2395,20 @@ img{
 
   text-transform:uppercase;
 
-  letter-spacing:.1em;
+  letter-spacing:.12em;
 }
 
 .book-result{
-  max-width:620px;
+  max-width:660px;
 
-  margin-top:24px;
+  padding-top:4px;
 }
 
 .book-result h3{
   margin:
-    0 0 4px;
+    0 0 3px;
 
-  color:
-    var(--gold-light);
+  color:var(--fire-light);
 
   font-size:25px;
 
@@ -2258,88 +2416,79 @@ img{
 }
 
 .book-result .author{
-  color:
-    var(--gold);
+  margin-bottom:11px;
 
-  font-style:italic;
+  color:var(--gold);
+
+  font-family:
+    Arial,
+    sans-serif;
+
+  font-size:10px;
+
+  text-transform:uppercase;
+
+  letter-spacing:.12em;
 }
 
 .book-result .description{
-  display:-webkit-box;
+  max-height:135px;
 
-  overflow:hidden;
+  overflow:auto;
 
-  -webkit-box-orient:vertical;
-  -webkit-line-clamp:5;
+  margin:0;
+
+  padding-right:8px;
+
+  color:var(--cream-muted);
+
+  font-size:14px;
 }
 
 
 /* =========================================================
-   COMMUNITY QUOTE
+   QUOTE
 ========================================================= */
 
 .quote-section{
   position:relative;
 
-  overflow:hidden;
-
   padding:
-    130px 0;
+    115px 0;
 
   text-align:center;
 
   background:
-    linear-gradient(
-      180deg,
-      #0a2821,
-      #081b19
-    );
-}
+    radial-gradient(
+      ellipse at center,
+      rgba(75,121,94,.20),
+      transparent 53%
+    ),
 
-.quote-section::before{
-  content:"“";
-
-  position:absolute;
-
-  left:50%;
-  top:5px;
-
-  transform:
-    translateX(-50%);
-
-  color:
-    rgba(238,202,130,.07);
-
-  font-size:260px;
-
-  line-height:1;
+    #09221c;
 }
 
 .quote{
-  position:relative;
-
-  max-width:900px;
+  max-width:920px;
 
   margin:auto;
 
-  color:
-    var(--cream);
-
   font-size:
     clamp(
-      29px,
-      4vw,
-      48px
+      34px,
+      5.4vw,
+      66px
     );
 
-  line-height:1.28;
+  line-height:1.14;
 
   font-style:italic;
+
+  color:#e6d9bb;
 }
 
 .quote span{
-  color:
-    var(--fire-gold);
+  color:var(--fire-gold);
 }
 
 
@@ -2350,26 +2499,34 @@ img{
 .dawn{
   position:relative;
 
-  min-height:470px;
-
-  overflow:hidden;
+  min-height:520px;
 
   display:flex;
   align-items:center;
 
-  text-align:center;
+  overflow:hidden;
 
-  color:
-    #31271e;
+  text-align:center;
 
   background:
     radial-gradient(
-      circle at 50% 94%,
-      #f8d49b 0%,
-      #d9a575 20%,
-      #9a7d79 41%,
-      #405d68 68%,
-      #193a43 100%
+      ellipse at 50% 100%,
+      rgba(255,202,117,.70),
+      transparent 26%
+    ),
+
+    radial-gradient(
+      ellipse at 50% 92%,
+      rgba(218,130,86,.52),
+      transparent 44%
+    ),
+
+    linear-gradient(
+      180deg,
+      #172f37 0%,
+      #465d63 35%,
+      #a47869 72%,
+      #dca674 100%
     );
 }
 
@@ -2378,64 +2535,27 @@ img{
 
   position:absolute;
 
-  left:50%;
-  bottom:-118px;
-
-  width:260px;
-  height:260px;
-
-  transform:
-    translateX(-50%);
-
-  border-radius:50%;
-
-  background:
-    #ffe6ad;
-
-  box-shadow:
-    0 0 80px
-    rgba(255,220,158,.66);
-}
-
-.dawn::after{
-  content:"";
-
-  position:absolute;
-
   left:-5%;
   right:-5%;
-  bottom:-20px;
+  bottom:-30px;
 
-  height:200px;
+  height:180px;
 
-  background:
-    linear-gradient(
-      160deg,
-      transparent 0 18%,
-      #183d35 18.5% 37%,
-      transparent 37.5%
-    ),
-    linear-gradient(
-      200deg,
-      transparent 0 47%,
-      #12352e 47.5% 66%,
-      transparent 66.5%
-    ),
-    linear-gradient(
-      #214d3d,
-      #0d2b24
-    );
+  background:#173126;
 
   clip-path:
     polygon(
-      0 40%,
-      14% 26%,
-      28% 42%,
-      43% 21%,
-      58% 38%,
-      75% 18%,
-      89% 34%,
-      100% 23%,
+      0 63%,
+      9% 45%,
+      18% 57%,
+      28% 31%,
+      38% 56%,
+      50% 25%,
+      61% 53%,
+      72% 36%,
+      82% 58%,
+      91% 39%,
+      100% 59%,
       100% 100%,
       0 100%
     );
@@ -2444,43 +2564,46 @@ img{
 .dawn-copy{
   position:relative;
 
-  z-index:5;
+  z-index:4;
 
-  max-width:780px;
+  max-width:720px;
 
   margin:auto;
 
-  padding-bottom:80px;
-
-  color:
-    #f4e6c7;
-
   text-shadow:
-    0 3px 18px
-    rgba(0,0,0,.35);
+    0 3px 15px
+    rgba(0,0,0,.24);
+}
+
+.dawn-copy .eyebrow{
+  color:#f7d99a;
 }
 
 .dawn-copy h2{
   margin:
-    0 0 12px;
+    0 0 15px;
 
   font-size:
     clamp(
-      39px,
-      5vw,
-      64px
+      43px,
+      6vw,
+      70px
     );
+
+  line-height:1;
 
   font-weight:400;
 }
 
 .dawn-copy p{
+  max-width:600px;
+
   margin:
     0 auto 27px;
 
-  max-width:630px;
-
   font-size:18px;
+
+  color:#f1e5d1;
 }
 
 .dawn-button{
@@ -2491,12 +2614,14 @@ img{
 
   border:
     1px solid
-    rgba(255,232,185,.67);
+    rgba(255,238,199,.74);
 
   border-radius:999px;
 
+  color:#fff4d9;
+
   background:
-    rgba(8,28,27,.24);
+    rgba(35,43,38,.25);
 
   font-family:
     Arial,
@@ -2504,9 +2629,13 @@ img{
 
   font-size:10px;
 
+  font-weight:bold;
+
   text-transform:uppercase;
 
   letter-spacing:.13em;
+
+  backdrop-filter:blur(8px);
 }
 
 
@@ -2516,52 +2645,50 @@ img{
 
 footer{
   padding:
-    44px 0;
+    37px 0;
 
   border-top:
     1px solid
-    rgba(226,190,123,.17);
+    rgba(220,186,117,.17);
 
-  background:
-    #030e0d;
+  background:#020b0a;
 }
 
 .footer-grid{
   display:flex;
-
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
 
-  gap:30px;
+  gap:35px;
 }
 
 .footer-brand{
-  color:
-    var(--gold-light);
+  color:var(--gold-light);
 
-  font-size:20px;
+  font-size:19px;
+
+  font-weight:bold;
+
+  letter-spacing:.05em;
 }
 
 .footer-tag{
-  margin-top:4px;
+  margin-top:5px;
 
-  color:
-    #857c6d;
+  color:#718179;
 
-  font-size:13px;
+  font-size:12px;
 }
 
 .footer-links{
   display:flex;
-
   flex-wrap:wrap;
 
   justify-content:flex-end;
 
-  gap:17px;
+  gap:18px;
 
-  color:
-    #a99e8b;
+  color:#9d9e8d;
 
   font-family:
     Arial,
@@ -2576,28 +2703,81 @@ footer{
 
 
 /* =========================================================
+   SVG ANIMATION
+========================================================= */
+
+.magic-story{
+  transform-origin:center;
+
+  animation:
+    magicFloat
+    6s ease-in-out
+    infinite alternate;
+}
+
+@keyframes magicFloat{
+
+  from{
+    transform:
+      translateY(2px);
+  }
+
+  to{
+    transform:
+      translateY(-8px);
+  }
+
+}
+
+.water-line{
+  animation:
+    waterShift
+    4s ease-in-out
+    infinite alternate;
+}
+
+@keyframes waterShift{
+
+  from{
+    transform:
+      translateX(-4px);
+  }
+
+  to{
+    transform:
+      translateX(5px);
+  }
+
+}
+
+.owl-blink{
+  transform-origin:center;
+
+  animation:
+    owlBlink
+    5.5s infinite;
+}
+
+@keyframes owlBlink{
+
+  0%,
+  92%,
+  100%{
+    transform:scaleY(1);
+  }
+
+  95%{
+    transform:scaleY(.12);
+  }
+
+}
+
+
+/* =========================================================
    RESPONSIVE
 ========================================================= */
 
-@media(max-width:1000px){
-
-  .story-stage{
-    width:1320px;
-
-    height:620px;
-  }
-
-  .camp-art{
-    width:1100px;
-  }
-
-  .tree-left{
-    left:40px;
-  }
-
-  .tree-right{
-    right:40px;
-  }
+@media(max-width:1050px){
 
   .club-grid{
     grid-template-columns:
@@ -2613,184 +2793,79 @@ footer{
     border-right:0;
   }
 
-  .path:nth-child(4),
-  .path:nth-child(5){
+  .path:nth-child(n+4){
     border-top:
       1px solid
       rgba(226,190,123,.17);
   }
 
-  .story-grid{
-    grid-template-columns:
-      1fr 1fr;
-  }
-
-  .story-card:first-child{
-    grid-column:
-      1 / -1;
-  }
-
   .book-shell{
-    gap:35px;
+    gap:30px;
+  }
+
+  .story-stage{
+    width:1280px;
   }
 
 }
 
 
-@media(max-width:760px){
-
-  .wrap{
-    width:
-      min(
-        calc(100% - 28px),
-        var(--max)
-      );
-  }
-
-  .nav{
-    min-height:62px;
-  }
-
-  .topbar{
-    min-height:62px;
-  }
+@media(max-width:820px){
 
   .navlinks a:not(
-    .nav-login
-  ):not(
     .nav-join
   ){
     display:none;
   }
 
-  .brand{
-    font-size:13px;
-  }
-
   .hero{
-    min-height:auto;
-
-    padding-top:58px;
-  }
-
-  .hero h1{
-    font-size:
-      clamp(
-        42px,
-        13vw,
-        67px
-      );
-  }
-
-  .hero h1 span{
-    display:block;
-  }
-
-  .hero-subtitle{
-    max-width:92%;
-
-    font-size:16px;
+    padding-top:90px;
   }
 
   .moon{
-    width:92px;
-    height:92px;
+    width:100px;
+    height:100px;
 
-    right:-15px;
-    top:92px;
-
-    opacity:.8;
+    right:4%;
   }
 
   .story-stage{
-    width:1100px;
+    width:1200px;
+    height:590px;
 
-    height:520px;
+    margin-top:20px;
 
-    margin-top:5px;
-  }
-
-  .camp-art{
-    width:890px;
-  }
-
-  .tree{
     transform:
-      scale(.78);
+      translateX(-50%)
+      scale(.86);
 
     transform-origin:
-      bottom center;
+      center top;
   }
 
-  .tree-right{
-    transform:
-      scaleX(-1)
-      scale(.78);
-  }
-
-  .tree-left{
-    left:115px;
-  }
-
-  .tree-right{
-    right:115px;
-  }
-
-  .quick-paths{
-    padding-bottom:60px;
-  }
-
-  .path-grid{
-    grid-template-columns:
-      1fr 1fr;
-  }
-
-  .path{
-    border-right:
-      1px solid
-      rgba(226,190,123,.17);
-
-    border-top:
-      1px solid
-      rgba(226,190,123,.17);
-  }
-
-  .path:nth-child(1),
-  .path:nth-child(2){
-    border-top:0;
-  }
-
-  .path:nth-child(even){
-    border-right:0;
-  }
-
-  .path:last-child{
-    grid-column:
-      1 / -1;
-  }
-
-  .club-grid,
   .story-grid{
-    grid-template-columns:
-      1fr;
-  }
-
-  .story-card:first-child{
-    grid-column:auto;
+    grid-template-columns:1fr;
   }
 
   .book-shell{
-    grid-template-columns:
-      1fr;
+    grid-template-columns:1fr;
+
+    text-align:center;
   }
 
   .book-stack{
-    min-height:350px;
+    min-height:380px;
   }
 
-  .content-section{
-    padding:
-      75px 0;
+  .book-copy > p,
+  .book-result{
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .book-search{
+    margin-left:auto;
+    margin-right:auto;
   }
 
   .footer-grid{
@@ -2806,75 +2881,110 @@ footer{
 }
 
 
-@media(max-width:520px){
+@media(max-width:620px){
 
-  .navlinks{
-    gap:9px;
-  }
-
-  .nav-login{
-    display:none;
-  }
-
-  .nav-join{
-    padding:
-      7px 12px;
+  .wrap{
+    width:min(
+      calc(100% - 26px),
+      var(--max)
+    );
   }
 
   .hero{
-    padding-top:46px;
+    min-height:800px;
+
+    padding-top:70px;
   }
 
-  .hero-kicker{
-    font-size:8px;
+  .hero h1{
+    font-size:
+      clamp(
+        42px,
+        13vw,
+        65px
+      );
+  }
 
-    letter-spacing:.22em;
+  .hero-subtitle{
+    font-size:16px;
   }
 
   .story-stage{
-    width:970px;
+    width:1200px;
+    height:560px;
 
-    height:465px;
-  }
+    margin-top:28px;
 
-  .camp-art{
-    width:770px;
-  }
+    transform:
+      translateX(-50%)
+      scale(.67);
 
-  .tree-left{
-    left:160px;
-  }
-
-  .tree-right{
-    right:160px;
+    transform-origin:
+      center top;
   }
 
   .path-grid{
     grid-template-columns:
-      1fr;
+      repeat(2,1fr);
   }
 
-  .path,
+  .path{
+    border-top:
+      1px solid
+      rgba(226,190,123,.17);
+  }
+
+  .path:nth-child(odd){
+    border-right:
+      1px solid
+      rgba(226,190,123,.17);
+  }
+
   .path:nth-child(even){
     border-right:0;
   }
 
+  .path:first-child,
   .path:nth-child(2){
+    border-top:0;
+  }
+
+  .club-grid{
+    grid-template-columns:1fr;
+  }
+
+  .content-section{
+    padding:
+      75px 0;
+  }
+
+  .section-header p{
+    font-size:16px;
+  }
+
+  .book-search{
+    flex-direction:column;
+  }
+
+  .book-search button{
+    min-height:48px;
+
+    border-left:0;
+
     border-top:
       1px solid
-      rgba(226,190,123,.17);
+      rgba(225,188,117,.28);
   }
 
 }
 
 
 /* =========================================================
-   ACCESSIBILITY / REDUCED MOTION
+   REDUCED MOTION
 ========================================================= */
 
 @media(
-  prefers-reduced-motion:
-  reduce
+  prefers-reduced-motion:reduce
 ){
 
   *,
@@ -2894,11 +3004,18 @@ footer{
 
 }
 
+
+/* =========================================================
+   END CSS
+========================================================= */
+
 </style>
+
 </head>
 
 
 <body>
+
 
 <!-- ======================================================
      NAVIGATION
@@ -2922,7 +3039,7 @@ footer{
       </span>
 
       <span>
-        PAPER GREMLIN
+        Paper Gremlin
       </span>
 
     </a>
@@ -2950,7 +3067,6 @@ footer{
       </a>
 
       <a
-        class="nav-login"
         id="navLogin"
         href="auth.html#login"
       >
@@ -3012,7 +3128,7 @@ footer{
   ></div>
 
 
-  <!-- HERO WORDING -->
+  <!-- HERO WORDS -->
 
   <div class="wrap hero-copy">
 
@@ -3028,49 +3144,28 @@ footer{
     </h1>
 
     <p class="hero-subtitle">
-      A home for every kind of story
-      and every kind of reader.
+      A home for every kind of story and every kind of reader.
     </p>
 
   </div>
 
 
   <!-- ====================================================
-       ULTRA-DETAILED ILLUSTRATION STAGE
+       ILLUSTRATED STORY STAGE
   ===================================================== -->
 
   <div
     class="story-stage"
     id="storyStage"
-    aria-hidden="true"
   >
 
 
-    <!-- LEFT ANCIENT TREE -->
+    <!-- LEFT TREE -->
 
-    <div class="tree tree-left">
-
-      <div class="tree-trunk"></div>
-
-      <div class="tree-branch one"></div>
-      <div class="tree-branch two"></div>
-      <div class="tree-branch three"></div>
-
-      <div class="tree-canopy a"></div>
-      <div class="tree-canopy b"></div>
-      <div class="tree-canopy c"></div>
-
-      <div class="moss m1"></div>
-      <div class="moss m2"></div>
-      <div class="moss m3"></div>
-      <div class="moss m4"></div>
-
-    </div>
-
-
-    <!-- RIGHT ANCIENT TREE -->
-
-    <div class="tree tree-right">
+    <div
+      class="tree tree-left"
+      aria-hidden="true"
+    >
 
       <div class="tree-trunk"></div>
 
@@ -3082,73 +3177,97 @@ footer{
       <div class="tree-canopy b"></div>
       <div class="tree-canopy c"></div>
 
-      <div class="moss m1"></div>
-      <div class="moss m2"></div>
-      <div class="moss m3"></div>
-      <div class="moss m4"></div>
+      <span class="moss m1"></span>
+      <span class="moss m2"></span>
+      <span class="moss m3"></span>
+      <span class="moss m4"></span>
 
     </div>
 
 
-    <div class="forest-floor"></div>
+    <!-- RIGHT TREE -->
 
-    <div class="camp-light"></div>
+    <div
+      class="tree tree-right"
+      aria-hidden="true"
+    >
+
+      <div class="tree-trunk"></div>
+
+      <div class="tree-branch one"></div>
+      <div class="tree-branch two"></div>
+      <div class="tree-branch three"></div>
+
+      <div class="tree-canopy a"></div>
+      <div class="tree-canopy b"></div>
+      <div class="tree-canopy c"></div>
+
+      <span class="moss m1"></span>
+      <span class="moss m2"></span>
+      <span class="moss m3"></span>
+      <span class="moss m4"></span>
+
+    </div>
 
 
-    <!-- FIREFLIES -->
+    <div
+      class="forest-floor"
+      aria-hidden="true"
+    ></div>
+
+    <div
+      class="camp-light"
+      aria-hidden="true"
+    ></div>
+
+
+    <!-- ==================================================
+         FIREFLIES
+    =================================================== -->
 
     <span
       class="firefly"
-      style="
-        left:25%;
-        top:37%;
-        animation-delay:-1s;
-      "
+      style="left:18%;top:38%;"
     ></span>
 
     <span
       class="firefly"
-      style="
-        left:31%;
-        top:49%;
-        animation-delay:-4s;
-      "
+      style="left:24%;top:53%;animation-delay:-2s;"
     ></span>
 
     <span
       class="firefly"
-      style="
-        left:39%;
-        top:30%;
-        animation-delay:-2.3s;
-      "
+      style="left:31%;top:29%;animation-delay:-4s;"
     ></span>
 
     <span
       class="firefly"
-      style="
-        left:68%;
-        top:36%;
-        animation-delay:-3.2s;
-      "
+      style="left:42%;top:41%;animation-delay:-1s;"
     ></span>
 
     <span
       class="firefly"
-      style="
-        left:75%;
-        top:45%;
-        animation-delay:-.5s;
-      "
+      style="left:53%;top:27%;animation-delay:-3s;"
     ></span>
 
     <span
       class="firefly"
-      style="
-        left:82%;
-        top:31%;
-        animation-delay:-4.7s;
-      "
+      style="left:67%;top:37%;animation-delay:-1.5s;"
+    ></span>
+
+    <span
+      class="firefly"
+      style="left:76%;top:29%;animation-delay:-4.5s;"
+    ></span>
+
+    <span
+      class="firefly"
+      style="left:84%;top:48%;animation-delay:-2.5s;"
+    ></span>
+
+    <span
+      class="firefly"
+      style="left:89%;top:33%;animation-delay:-.7s;"
     ></span>
 
 
@@ -3156,123 +3275,46 @@ footer{
 
     <span
       class="ember"
-      style="
-        left:48.8%;
-        bottom:24%;
-        animation-delay:-.4s;
-      "
+      style="left:48%;bottom:23%;"
     ></span>
 
     <span
       class="ember"
-      style="
-        left:50%;
-        bottom:24%;
-        animation-delay:-2.1s;
-      "
+      style="left:50%;bottom:22%;animation-delay:-1s;"
     ></span>
 
     <span
       class="ember"
-      style="
-        left:51.3%;
-        bottom:24%;
-        animation-delay:-3.1s;
-      "
+      style="left:52%;bottom:24%;animation-delay:-2s;"
     ></span>
 
     <span
       class="ember"
-      style="
-        left:49.6%;
-        bottom:24%;
-        animation-delay:-1.4s;
-      "
+      style="left:49%;bottom:24%;animation-delay:-2.7s;"
     ></span>
 
 
     <!-- ==================================================
-         MAIN STORYBOOK SVG
-
-         Part 3 contains the actual detailed characters:
-         rogue, astronaut, wizard, spectral dragon,
-         princess, mermaid, campfire, books, lanterns,
-         pool, animals and campsite objects.
+         MAIN SVG ILLUSTRATION
     =================================================== -->
 
     <svg
       class="camp-art"
       viewBox="0 0 1260 620"
       role="img"
-      aria-label="A richly detailed gathering of fantasy and science fiction readers sharing stories around a magical campfire."
+      aria-label="A rogue, astronaut, wizard, princess and mermaid sharing stories around a glowing campfire in an enchanted forest."
+      xmlns="http://www.w3.org/2000/svg"
     >
+
+
+      <!-- =================================================
+           SVG DEFINITIONS
+      ================================================== -->
 
       <defs>
 
 
-        <!-- FIRELIGHT -->
-
-        <radialGradient
-          id="svgFireGlow"
-          cx="50%"
-          cy="50%"
-          r="50%"
-        >
-
-          <stop
-            offset="0%"
-            stop-color="#ffe9a4"
-            stop-opacity=".72"
-          />
-
-          <stop
-            offset="32%"
-            stop-color="#f6a34c"
-            stop-opacity=".36"
-          />
-
-          <stop
-            offset="70%"
-            stop-color="#d86232"
-            stop-opacity=".10"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#d86232"
-            stop-opacity="0"
-          />
-
-        </radialGradient>
-
-
         <!-- SKIN -->
-
-        <linearGradient
-          id="skinWarm"
-          x1="0"
-          y1="0"
-          x2="1"
-          y2="1"
-        >
-
-          <stop
-            offset="0%"
-            stop-color="#d99c70"
-          />
-
-          <stop
-            offset="55%"
-            stop-color="#b66f50"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#764838"
-          />
-
-        </linearGradient>
-
 
         <linearGradient
           id="skinLight"
@@ -3284,26 +3326,19 @@ footer{
 
           <stop
             offset="0%"
-            stop-color="#f0c7a1"
-          />
-
-          <stop
-            offset="65%"
-            stop-color="#c88e70"
+            stop-color="#e0b28f"
           />
 
           <stop
             offset="100%"
-            stop-color="#805846"
+            stop-color="#b9795d"
           />
 
         </linearGradient>
 
 
-        <!-- ROGUE LEATHER -->
-
         <linearGradient
-          id="rogueLeather"
+          id="skinWarm"
           x1="0"
           y1="0"
           x2="1"
@@ -3312,49 +3347,44 @@ footer{
 
           <stop
             offset="0%"
-            stop-color="#36584a"
-          />
-
-          <stop
-            offset="45%"
-            stop-color="#1b392f"
+            stop-color="#c58b6b"
           />
 
           <stop
             offset="100%"
-            stop-color="#0b211b"
+            stop-color="#945c49"
           />
 
         </linearGradient>
 
 
+        <!-- CLOTHING -->
+
         <linearGradient
-          id="rogueCloak"
+          id="rogueGreen"
           x1="0"
           y1="0"
-          x2="0"
+          x2="1"
           y2="1"
         >
 
           <stop
             offset="0%"
-            stop-color="#496b56"
+            stop-color="#496657"
           />
 
           <stop
-            offset="50%"
-            stop-color="#263f34"
+            offset="55%"
+            stop-color="#314b41"
           />
 
           <stop
             offset="100%"
-            stop-color="#11261f"
+            stop-color="#20362f"
           />
 
         </linearGradient>
 
-
-        <!-- ASTRONAUT SUIT -->
 
         <linearGradient
           id="spaceSuit"
@@ -3366,54 +3396,21 @@ footer{
 
           <stop
             offset="0%"
-            stop-color="#eee5c9"
+            stop-color="#ecece2"
           />
 
           <stop
-            offset="52%"
-            stop-color="#bcb9a9"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#737d78"
-          />
-
-        </linearGradient>
-
-
-        <linearGradient
-          id="visor"
-          x1="0"
-          y1="0"
-          x2="1"
-          y2="1"
-        >
-
-          <stop
-            offset="0%"
-            stop-color="#6bc0c3"
-          />
-
-          <stop
-            offset="34%"
-            stop-color="#174a51"
-          />
-
-          <stop
-            offset="68%"
-            stop-color="#092b32"
+            offset="58%"
+            stop-color="#cfd4ca"
           />
 
           <stop
             offset="100%"
-            stop-color="#e88646"
+            stop-color="#9ea9a4"
           />
 
         </linearGradient>
 
-
-        <!-- WIZARD -->
 
         <linearGradient
           id="wizardBlue"
@@ -3425,23 +3422,21 @@ footer{
 
           <stop
             offset="0%"
-            stop-color="#486a8c"
+            stop-color="#445f98"
           />
 
           <stop
-            offset="45%"
-            stop-color="#253f61"
+            offset="55%"
+            stop-color="#303f78"
           />
 
           <stop
             offset="100%"
-            stop-color="#13283e"
+            stop-color="#202b5b"
           />
 
         </linearGradient>
 
-
-        <!-- PRINCESS -->
 
         <linearGradient
           id="princessRose"
@@ -3453,23 +3448,21 @@ footer{
 
           <stop
             offset="0%"
-            stop-color="#c67f8c"
+            stop-color="#c67b8f"
           />
 
           <stop
-            offset="47%"
-            stop-color="#91576d"
+            offset="52%"
+            stop-color="#9f617d"
           />
 
           <stop
             offset="100%"
-            stop-color="#4b344e"
+            stop-color="#704e6d"
           />
 
         </linearGradient>
 
-
-        <!-- MERMAID -->
 
         <linearGradient
           id="mermaidTeal"
@@ -3481,17 +3474,17 @@ footer{
 
           <stop
             offset="0%"
-            stop-color="#72c1ad"
+            stop-color="#70b5a5"
           />
 
           <stop
-            offset="48%"
-            stop-color="#347c77"
+            offset="55%"
+            stop-color="#3f8b83"
           />
 
           <stop
             offset="100%"
-            stop-color="#174b52"
+            stop-color="#24645f"
           />
 
         </linearGradient>
@@ -3500,59 +3493,63 @@ footer{
         <!-- WATER -->
 
         <radialGradient
-          id="waterGlow"
-          cx="48%"
-          cy="43%"
-          r="65%"
+          id="poolWater"
+          cx="50%"
+          cy="35%"
+          r="75%"
         >
 
           <stop
             offset="0%"
-            stop-color="#4e9a91"
-            stop-opacity=".75"
-          />
-
-          <stop
-            offset="48%"
-            stop-color="#225f5d"
+            stop-color="#4f9e98"
             stop-opacity=".72"
           />
 
           <stop
+            offset="58%"
+            stop-color="#236f70"
+            stop-opacity=".84"
+          />
+
+          <stop
             offset="100%"
-            stop-color="#092f34"
-            stop-opacity=".16"
+            stop-color="#103f43"
+            stop-opacity=".92"
           />
 
         </radialGradient>
 
 
-        <!-- MAGIC -->
+        <!-- ASTRONAUT VISOR -->
 
-        <linearGradient
-          id="magicStroke"
-          x1="0"
-          y1="1"
-          x2="1"
-          y2="0"
+        <radialGradient
+          id="visorGlass"
+          cx="40%"
+          cy="30%"
+          r="75%"
         >
 
           <stop
             offset="0%"
-            stop-color="#74b9d2"
+            stop-color="#9bd3cf"
           />
 
           <stop
-            offset="48%"
-            stop-color="#b9c9ff"
+            offset="38%"
+            stop-color="#447c80"
+          />
+
+          <stop
+            offset="78%"
+            stop-color="#1b4c58"
           />
 
           <stop
             offset="100%"
-            stop-color="#e4b7ef"
+            stop-color="#0c2833"
           />
 
-        </linearGradient>
+        </radialGradient>
 
 
         <!-- FIRE -->
@@ -3561,23 +3558,23 @@ footer{
           id="flameOuter"
           x1="0"
           y1="1"
-          x2="0"
+          x2=".5"
           y2="0"
         >
 
           <stop
             offset="0%"
-            stop-color="#bd4027"
+            stop-color="#d85027"
           />
 
           <stop
-            offset="55%"
-            stop-color="#ef7830"
+            offset="58%"
+            stop-color="#f68a36"
           />
 
           <stop
             offset="100%"
-            stop-color="#ffc55c"
+            stop-color="#ffc75e"
           />
 
         </linearGradient>
@@ -3587,29 +3584,84 @@ footer{
           id="flameInner"
           x1="0"
           y1="1"
-          x2="0"
+          x2=".5"
           y2="0"
         >
 
           <stop
             offset="0%"
-            stop-color="#ef7131"
+            stop-color="#ff9b3f"
           />
 
           <stop
-            offset="60%"
-            stop-color="#ffd263"
+            offset="70%"
+            stop-color="#ffd667"
           />
 
           <stop
             offset="100%"
-            stop-color="#fff3ad"
+            stop-color="#fff4b0"
           />
 
         </linearGradient>
 
 
-        <!-- MAGIC GLOW -->
+        <!-- MAGIC -->
+
+        <linearGradient
+          id="magicStroke"
+          x1="0"
+          y1="0"
+          x2="1"
+          y2="1"
+        >
+
+          <stop
+            offset="0%"
+            stop-color="#92dbea"
+          />
+
+          <stop
+            offset="48%"
+            stop-color="#c3c2ff"
+          />
+
+          <stop
+            offset="100%"
+            stop-color="#e0aede"
+          />
+
+        </linearGradient>
+
+
+        <!-- FIRE LIGHT -->
+
+        <radialGradient
+          id="svgFireGlow"
+        >
+
+          <stop
+            offset="0%"
+            stop-color="#ffca68"
+            stop-opacity=".72"
+          />
+
+          <stop
+            offset="35%"
+            stop-color="#ed7c36"
+            stop-opacity=".31"
+          />
+
+          <stop
+            offset="100%"
+            stop-color="#d64d28"
+            stop-opacity="0"
+          />
+
+        </radialGradient>
+
+
+        <!-- FILTERS -->
 
         <filter
           id="magicGlow"
@@ -3626,20 +3678,14 @@ footer{
 
           <feMerge>
 
-            <feMergeNode
-              in="blur"
-            />
+            <feMergeNode in="blur"/>
 
-            <feMergeNode
-              in="SourceGraphic"
-            />
+            <feMergeNode in="SourceGraphic"/>
 
           </feMerge>
 
         </filter>
 
-
-        <!-- FIRE GLOW -->
 
         <filter
           id="flameGlow"
@@ -3650,49 +3696,39 @@ footer{
         >
 
           <feGaussianBlur
-            stdDeviation="7"
-            result="blur"
+            stdDeviation="3"
+            result="fireblur"
           />
 
           <feMerge>
 
-            <feMergeNode
-              in="blur"
-            />
+            <feMergeNode in="fireblur"/>
 
-            <feMergeNode
-              in="SourceGraphic"
-            />
+            <feMergeNode in="SourceGraphic"/>
 
           </feMerge>
 
         </filter>
 
 
-        <!-- LANTERN GLOW -->
-
         <filter
           id="lanternGlow"
-          x="-100%"
-          y="-100%"
-          width="300%"
-          height="300%"
+          x="-150%"
+          y="-150%"
+          width="400%"
+          height="400%"
         >
 
           <feGaussianBlur
-            stdDeviation="3"
-            result="blur"
+            stdDeviation="5"
+            result="lanternblur"
           />
 
           <feMerge>
 
-            <feMergeNode
-              in="blur"
-            />
+            <feMergeNode in="lanternblur"/>
 
-            <feMergeNode
-              in="SourceGraphic"
-            />
+            <feMergeNode in="SourceGraphic"/>
 
           </feMerge>
 
@@ -3702,189 +3738,209 @@ footer{
       </defs>
 
 
-      <!-- LARGE FIRELIGHT BEHIND CHARACTERS -->
+      <!-- =================================================
+           GROUND SHADOWS
+      ================================================== -->
 
       <ellipse
         cx="625"
-        cy="438"
-        rx="360"
-        ry="215"
+        cy="544"
+        rx="520"
+        ry="67"
+        fill="#020b08"
+        opacity=".25"
+      />
+
+      <ellipse
+        cx="625"
+        cy="490"
+        rx="340"
+        ry="175"
         fill="url(#svgFireGlow)"
-        opacity=".78"
+        opacity=".24"
       />
 
 
       <!-- =================================================
-           DISTANT SHRUBS AND SILHOUETTES
+           MERMAID POOL — BEHIND CHARACTERS
+      ================================================== -->
+
+      <path
+        d="
+          M964 448
+          C1010 414 1122 412 1191 446
+          C1223 462 1223 494 1191 515
+          C1137 550 1021 548 971 514
+          C945 496 940 467 964 448 Z
+        "
+        fill="url(#poolWater)"
+        stroke="#5da6a1"
+        stroke-width="3"
+        opacity=".92"
+      />
+
+      <path
+        class="water-line"
+        d="
+          M978 465
+          C1034 441 1132 442 1182 467
+        "
+        fill="none"
+        stroke="#8bc8bd"
+        stroke-width="3"
+        opacity=".54"
+      />
+
+      <path
+        class="water-line"
+        d="
+          M990 492
+          C1043 474 1129 474 1171 494
+        "
+        fill="none"
+        stroke="#73b5ad"
+        stroke-width="2"
+        opacity=".42"
+      />
+
+
+      <!-- =================================================
+           OWL
       ================================================== -->
 
       <g
-        opacity=".84"
-        fill="#0a271e"
+        transform="translate(82 173)"
       >
 
-        <path
-          d="
-            M40 490
-            C57 448 78 449 90 482
-            C98 444 125 436 136 480
-            C151 441 177 448 186 486
-            L186 555
-            L35 555 Z
-          "
+        <ellipse
+          cx="31"
+          cy="39"
+          rx="24"
+          ry="31"
+          fill="#6d604a"
+          class="ink-soft"
         />
 
         <path
           d="
-            M1050 480
-            C1060 443 1086 441 1097 477
-            C1111 432 1141 436 1152 480
-            C1168 446 1197 452 1207 491
-            L1210 555
-            L1043 555 Z
+            M12 20
+            L17 2
+            L29 15
+            L41 2
+            L49 22
           "
+          fill="#5a503f"
+          class="ink-soft"
+        />
+
+        <g class="owl-blink">
+
+          <circle
+            cx="23"
+            cy="35"
+            r="7"
+            fill="#f1cb69"
+          />
+
+          <circle
+            cx="40"
+            cy="35"
+            r="7"
+            fill="#f1cb69"
+          />
+
+          <circle
+            cx="23"
+            cy="35"
+            r="3"
+            fill="#161912"
+          />
+
+          <circle
+            cx="40"
+            cy="35"
+            r="3"
+            fill="#161912"
+          />
+
+        </g>
+
+        <path
+          d="
+            M28 43
+            L34 43
+            L31 49 Z
+          "
+          fill="#d48b42"
         />
 
       </g>
 
 
       <!-- =================================================
-           MERMAID POOL
+           LEFT FOREST DETAILS
       ================================================== -->
 
-      <g>
+      <g
+        transform="translate(17 435)"
+      >
 
         <path
           d="
-            M922 449
-            C977 418 1094 420 1167 456
-            C1198 472 1196 503 1162 520
-            C1092 554 969 550 916 512
-            C889 492 890 468 922 449 Z
-          "
-          fill="url(#waterGlow)"
-          opacity=".92"
-        />
-
-        <path
-          d="
-            M934 463
-            C1000 441 1091 445 1149 468
+            M22 95
+            C21 63 14 34 0 9
+            M24 65
+            L4 51
+            M23 50
+            L40 33
+            M19 37
+            L5 25
           "
           fill="none"
-          stroke="#85c5b5"
-          stroke-width="2"
-          opacity=".38"
+          stroke="#3f755a"
+          stroke-width="5"
+          stroke-linecap="round"
         />
 
         <path
           d="
-            M921 489
-            C982 510 1092 512 1167 486
+            M74 103
+            C76 67 85 39 99 15
+            M80 72
+            L62 55
+            M84 57
+            L103 44
+            M89 40
+            L77 25
           "
           fill="none"
-          stroke="#6baaa2"
-          stroke-width="2"
-          opacity=".26"
-        />
-
-        <ellipse
-          cx="1088"
-          cy="470"
-          rx="32"
-          ry="6"
-          fill="#9ac4a1"
-          opacity=".38"
-        />
-
-        <ellipse
-          cx="1040"
-          cy="510"
-          rx="22"
-          ry="5"
-          fill="#8eb596"
-          opacity=".31"
-        />
-
-        <path
-          d="
-            M1087 468
-            C1092 454 1102 451 1108 464
-            C1100 460 1095 462 1087 468 Z
-          "
-          fill="#d3a4ba"
-          opacity=".72"
+          stroke="#315e49"
+          stroke-width="5"
+          stroke-linecap="round"
         />
 
       </g>
 
 
       <!-- =================================================
-           CAMPSITE RUGS / BLANKETS
-      ================================================== -->
-
-      <path
-        d="
-          M319 485
-          C405 462 497 468 553 508
-          L523 560
-          C445 570 357 556 301 520 Z
-        "
-        fill="#6d4a3c"
-        opacity=".58"
-        class="ink-soft"
-      />
-
-      <path
-        d="
-          M790 491
-          C850 462 938 464 1002 500
-          L972 555
-          C890 565 823 554 772 523 Z
-        "
-        fill="#624452"
-        opacity=".62"
-        class="ink-soft"
-      />
-
-      <path
-        d="
-          M335 507
-          L514 529
-        "
-        class="detail-line"
-      />
-
-      <path
-        d="
-          M805 510
-          L968 529
-        "
-        class="detail-line"
-      />
-
-
-      <!-- =================================================
-           ROGUE / TRAVELER
-
-           More facial structure, layered leather,
-           buckles, cloak folds, boots and gear.
+           ROGUE
       ================================================== -->
 
       <g
-        transform="translate(150 180)"
+        transform="translate(130 220)"
       >
 
-        <!-- cloak behind body -->
+        <!-- cloak behind -->
 
         <path
           d="
-            M74 105
-            C41 130 22 193 24 267
-            C48 290 90 296 130 274
-            C135 212 126 148 108 116 Z
+            M45 86
+            C20 112 12 171 19 222
+            C35 246 63 256 93 247
+            C117 230 125 194 116 151
+            C110 118 91 94 73 85 Z
           "
-          fill="url(#rogueCloak)"
+          fill="#243b33"
           class="ink"
         />
 
@@ -3892,190 +3948,156 @@ footer{
 
         <path
           d="
-            M57 54
-            C65 14 113 5 137 35
-            C154 57 144 93 126 108
-            C102 126 64 108 50 84 Z
+            M40 79
+            C36 40 56 18 83 21
+            C108 24 122 48 112 85
+            C93 73 66 71 40 79 Z
           "
-          fill="#263f34"
+          fill="#263c34"
           class="ink"
-        />
-
-        <!-- hood rim -->
-
-        <path
-          d="
-            M65 54
-            C79 31 113 27 129 48
-            C138 60 135 80 124 91
-          "
-          fill="none"
-          stroke="#59715f"
-          stroke-width="5"
-          opacity=".72"
         />
 
         <!-- face -->
 
-        <path
-          d="
-            M77 52
-            C87 37 113 37 124 52
-            C134 68 126 94 108 102
-            C90 107 74 91 72 72
-            C72 63 74 57 77 52 Z
-          "
+        <ellipse
+          cx="78"
+          cy="77"
+          rx="31"
+          ry="35"
           fill="url(#skinWarm)"
           class="ink-soft"
         />
 
-        <!-- nose -->
+        <!-- hood front -->
 
         <path
           d="
-            M101 65
-            L97 76
-            L104 77
+            M42 70
+            C50 39 68 30 84 31
+            C102 32 113 48 113 71
+            C98 58 62 57 42 70 Z
           "
-          fill="none"
-          stroke="#754b3a"
-          stroke-width="2"
+          fill="#31483d"
         />
 
         <!-- eyes -->
 
         <path
           d="
-            M84 62
-            C89 59 94 60 97 63
+            M61 75
+            C65 72 70 72 74 75
+            M84 75
+            C89 72 94 72 98 75
           "
           fill="none"
-          stroke="#2b211b"
-          stroke-width="2.5"
+          stroke="#30221d"
+          stroke-width="2"
         />
+
+        <!-- nose -->
 
         <path
           d="
-            M108 62
-            C113 59 118 61 121 64
+            M80 78
+            L77 88
+            L82 89
           "
           fill="none"
-          stroke="#2b211b"
-          stroke-width="2.5"
-        />
-
-        <!-- eyebrow -->
-
-        <path
-          d="
-            M82 56
-            C88 52 94 53 98 55
-          "
-          fill="none"
-          stroke="#38251f"
-          stroke-width="3"
+          stroke="#6e4538"
+          stroke-width="1.7"
         />
 
         <!-- smile -->
 
         <path
           d="
-            M92 87
-            C101 93 110 91 115 86
+            M66 96
+            C75 102 87 101 94 95
           "
           fill="none"
-          stroke="#623d32"
+          stroke="#623e34"
           stroke-width="2"
         />
 
-        <!-- shirt -->
+        <!-- torso -->
 
         <path
           d="
-            M65 109
-            C83 96 111 96 129 111
-            L145 221
-            C123 241 72 240 50 218 Z
+            M43 108
+            C64 95 95 95 115 110
+            L119 192
+            C94 207 59 206 34 190 Z
           "
-          fill="url(#rogueLeather)"
+          fill="url(#rogueGreen)"
           class="ink"
         />
 
-        <!-- shirt stitching -->
+        <!-- scarf -->
 
         <path
           d="
-            M96 108
-            L98 204
+            M47 105
+            C65 119 95 121 111 107
+            L105 130
+            C87 141 64 138 50 128 Z
           "
-          stroke="#879079"
-          stroke-width="2"
-          stroke-dasharray="5 6"
-          opacity=".45"
-        />
-
-        <!-- chest straps -->
-
-        <path
-          d="
-            M68 118
-            L127 194
-          "
-          fill="none"
-          stroke="#6d4d36"
-          stroke-width="10"
+          fill="#182d27"
           class="ink-soft"
         />
 
+        <!-- belt -->
+
         <path
           d="
-            M128 118
-            L77 192
+            M37 169
+            C59 178 96 180 117 169
           "
           fill="none"
-          stroke="#73523b"
-          stroke-width="8"
-          class="ink-soft"
+          stroke="#805838"
+          stroke-width="9"
         />
-
-        <!-- buckle -->
 
         <rect
-          x="91"
-          y="153"
-          width="18"
-          height="15"
-          rx="3"
-          fill="#c49b55"
-          stroke="#33281d"
+          x="73"
+          y="170"
+          width="15"
+          height="12"
+          rx="2"
+          fill="#c69d51"
+          stroke="#4e3b28"
           stroke-width="2"
         />
 
-        <!-- storytelling arm -->
+        <!-- gesturing arm -->
 
         <path
           d="
-            M63 124
-            C34 115 19 91 6 65
+            M109 119
+            C133 131 149 119 166 104
           "
           fill="none"
-          stroke="url(#skinWarm)"
-          stroke-width="19"
+          stroke="#405f50"
+          stroke-width="22"
           stroke-linecap="round"
           class="ink-soft"
         />
 
+        <!-- hand -->
+
+        <circle
+          cx="168"
+          cy="103"
+          r="10"
+          fill="#ad7158"
+          class="ink-soft"
+        />
+
         <path
           d="
-            M9 67
-            C-1 55 -4 42 0 29
-            M8 65
-            C10 49 17 39 24 32
-            M8 64
-            C18 54 28 50 37 49
+            M172 99
+            L186 89
           "
-          fill="none"
-          stroke="#bc7956"
+          stroke="#ad7158"
           stroke-width="6"
           stroke-linecap="round"
         />
@@ -4084,98 +4106,51 @@ footer{
 
         <path
           d="
-            M131 126
-            C157 153 160 186 148 213
+            M39 120
+            C19 143 16 170 21 191
           "
           fill="none"
-          stroke="#264337"
-          stroke-width="22"
+          stroke="#405f50"
+          stroke-width="21"
           stroke-linecap="round"
           class="ink-soft"
         />
 
-        <!-- belt -->
+        <!-- seated legs -->
 
         <path
           d="
-            M53 201
-            C79 212 121 212 145 201
+            M55 194
+            C39 213 28 228 16 239
           "
           fill="none"
-          stroke="#765138"
-          stroke-width="12"
-          class="ink-soft"
-        />
-
-        <rect
-          x="91"
-          y="199"
-          width="19"
-          height="15"
-          rx="2"
-          fill="#c79d58"
-          stroke="#30271e"
-          stroke-width="2"
-        />
-
-        <!-- pouch -->
-
-        <path
-          d="
-            M119 211
-            L145 216
-            L142 247
-            C132 254 118 249 115 240 Z
-          "
-          fill="#7c583d"
-          class="ink-soft"
-        />
-
-        <!-- legs -->
-
-        <path
-          d="
-            M70 222
-            C59 248 56 275 59 302
-          "
-          fill="none"
-          stroke="#182d27"
-          stroke-width="26"
+          stroke="#263c33"
+          stroke-width="25"
           stroke-linecap="round"
           class="ink-soft"
         />
 
         <path
           d="
-            M120 223
-            C132 248 136 274 132 302
+            M96 195
+            C114 212 129 225 145 233
           "
           fill="none"
-          stroke="#182d27"
-          stroke-width="26"
+          stroke="#263c33"
+          stroke-width="25"
           stroke-linecap="round"
           class="ink-soft"
         />
 
-        <!-- boots -->
+        <!-- boot -->
 
         <path
           d="
-            M48 295
-            C62 290 74 294 82 305
-            C70 317 49 317 38 308 Z
+            M9 231
+            C21 228 34 230 42 239
+            C31 247 15 249 2 244 Z
           "
-          fill="#382b24"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M118 300
-            C133 291 147 294 156 306
-            C144 319 121 318 111 310 Z
-          "
-          fill="#382b24"
+          fill="#2b2924"
           class="ink-soft"
         />
 
@@ -4183,291 +4158,286 @@ footer{
 
         <path
           d="
-            M143 190
-            L171 234
+            M114 178
+            L149 216
           "
-          stroke="#9da39a"
+          stroke="#d0c8ac"
           stroke-width="5"
           stroke-linecap="round"
         />
 
         <path
           d="
-            M137 191
-            L151 184
+            M108 172
+            L121 185
           "
-          stroke="#c69a55"
-          stroke-width="5"
+          stroke="#a8783e"
+          stroke-width="7"
           stroke-linecap="round"
         />
 
       </g>
 
 
-      <!-- =================================================
-           ROGUE'S MAP + TRAVEL GEAR
-      ================================================== -->
+      <!-- ROGUE BAG -->
 
       <g
-        transform="translate(115 476)"
+        transform="translate(177 490)"
       >
 
         <path
           d="
-            M0 17
-            L84 4
-            L102 52
-            L18 67 Z
+            M9 30
+            C13 7 58 7 64 30
           "
-          fill="#c6ad7b"
-          stroke="#59442d"
+          fill="none"
+          stroke="#8a6544"
+          stroke-width="6"
+        />
+
+        <path
+          d="
+            M0 28
+            L72 28
+            L68 72
+            L6 72 Z
+          "
+          fill="#806044"
+          class="ink-soft"
+        />
+
+        <path
+          d="
+            M8 41
+            L64 41
+          "
+          stroke="#aa7e50"
+          stroke-width="3"
+        />
+
+      </g>
+
+
+      <!-- ROGUE MAP -->
+
+      <g
+        transform="translate(268 486) rotate(-6)"
+      >
+
+        <path
+          d="
+            M0 5
+            C17 0 35 3 52 0
+            C68 4 82 2 97 7
+            L94 61
+            C78 56 65 59 49 55
+            C34 59 17 54 3 59 Z
+          "
+          fill="#d6bd8b"
+          stroke="#66523b"
           stroke-width="2"
         />
 
         <path
           d="
-            M22 25
-            C35 16 46 35 57 24
-            C70 14 74 30 86 28
+            M14 22
+            C27 13 37 27 49 19
+            C62 11 68 23 78 18
           "
           fill="none"
-          stroke="#725b3e"
+          stroke="#876b47"
           stroke-width="2"
           stroke-dasharray="4 4"
         />
 
         <path
           d="
-            M63 17
-            l8 8
-            m-8 0
-            l8 -8
+            M73 41
+            L84 51
+            M84 41
+            L73 51
           "
-          stroke="#7b493a"
-          stroke-width="2"
-        />
-
-        <path
-          d="
-            M110 19
-            C125 4 151 8 160 24
-            L164 72
-            L105 74 Z
-          "
-          fill="#514032"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M118 21
-            C130 32 146 32 157 21
-          "
-          fill="none"
-          stroke="#a27a4d"
-          stroke-width="4"
-        />
-
-        <circle
-          cx="136"
-          cy="52"
-          r="6"
-          fill="#c39b58"
+          stroke="#a14e3d"
+          stroke-width="3"
         />
 
       </g>
-
-
-      <!-- =================================================
+            <!-- =================================================
            ASTRONAUT
-
-           Detailed suit panels, hoses, gloves,
-           helmet reflection and firefly interaction.
       ================================================== -->
 
       <g
-        transform="translate(370 190)"
+        transform="translate(375 205)"
       >
 
         <!-- backpack -->
 
         <rect
-          x="30"
-          y="106"
-          width="65"
-          height="120"
-          rx="22"
-          fill="#737d75"
+          x="18"
+          y="105"
+          width="38"
+          height="105"
+          rx="15"
+          fill="#899792"
           class="ink"
         />
 
-        <rect
-          x="39"
-          y="124"
-          width="40"
-          height="25"
-          rx="5"
-          fill="#5a6864"
+        <path
+          d="M26 121 L26 190"
+          stroke="#b9c1b9"
+          stroke-width="4"
+          opacity=".6"
+        />
+
+
+        <!-- helmet outer -->
+
+        <circle
+          cx="100"
+          cy="79"
+          r="67"
+          fill="#e7e7dc"
+          class="ink"
+        />
+
+        <circle
+          cx="100"
+          cy="79"
+          r="51"
+          fill="#839a99"
           class="ink-soft"
         />
 
-        <!-- helmet -->
+        <!-- visor -->
 
-        <circle
-          cx="108"
-          cy="77"
-          r="64"
-          fill="#d4d2c2"
-          class="ink"
+        <ellipse
+          cx="100"
+          cy="79"
+          rx="43"
+          ry="39"
+          fill="url(#visorGlass)"
+          stroke="#274a4d"
+          stroke-width="3"
         />
 
-        <circle
-          cx="108"
-          cy="77"
-          r="50"
-          fill="url(#visor)"
-          stroke="#243d3d"
-          stroke-width="5"
-        />
-
-        <!-- visor highlights -->
+        <!-- visor reflection -->
 
         <path
           d="
-            M73 53
-            C87 35 109 31 126 38
+            M72 65
+            C83 49 99 44 116 47
           "
           fill="none"
-          stroke="#b9e6dd"
+          stroke="#b9ebe2"
           stroke-width="6"
           stroke-linecap="round"
-          opacity=".46"
-        />
-
-        <path
-          d="
-            M132 92
-            C143 85 150 79 155 67
-          "
-          fill="none"
-          stroke="#f4a55b"
-          stroke-width="5"
-          opacity=".45"
-        />
-
-        <!-- reflected campfire -->
-
-        <path
-          d="
-            M127 102
-            C130 92 136 89 139 78
-            C146 90 145 99 141 106
-            C137 112 130 110 127 102 Z
-          "
-          fill="#f5a14b"
           opacity=".62"
         />
 
-        <!-- neck ring -->
-
-        <ellipse
-          cx="108"
-          cy="137"
-          rx="49"
-          ry="18"
-          fill="#92978e"
-          class="ink-soft"
+        <circle
+          cx="119"
+          cy="61"
+          r="5"
+          fill="#ffe478"
+          opacity=".88"
         />
+
+        <!-- visor smile reflection -->
+
+        <path
+          d="
+            M89 94
+            C98 100 108 100 116 94
+          "
+          fill="none"
+          stroke="#c89559"
+          stroke-width="4"
+          stroke-linecap="round"
+          opacity=".8"
+        />
+
 
         <!-- torso -->
 
         <path
           d="
-            M62 130
-            C85 116 134 117 157 134
-            C172 175 173 223 160 262
-            C134 278 84 278 57 260
-            C45 216 46 168 62 130 Z
+            M58 141
+            C75 127 126 127 143 143
+            L151 251
+            C127 267 76 268 51 250 Z
           "
           fill="url(#spaceSuit)"
           class="ink"
         />
 
-        <!-- chest plate -->
 
-        <rect
-          x="77"
-          y="157"
-          width="66"
-          height="48"
-          rx="8"
-          fill="#727f79"
-          class="ink-soft"
-        />
-
-        <rect
-          x="87"
-          y="167"
-          width="20"
-          height="8"
-          rx="2"
-          fill="#4f8b87"
-        />
-
-        <circle
-          cx="123"
-          cy="172"
-          r="4"
-          fill="#d96b4a"
-        />
-
-        <circle
-          cx="134"
-          cy="172"
-          r="4"
-          fill="#d5bd69"
-        />
+        <!-- neck ring -->
 
         <path
           d="
-            M89 187
-            L132 187
-          "
-          stroke="#c7c8bb"
-          stroke-width="3"
-        />
-
-        <!-- seams -->
-
-        <path
-          d="
-            M72 216
-            C93 227 128 227 151 215
+            M64 127
+            C82 140 119 141 138 127
           "
           fill="none"
-          stroke="#6e7771"
+          stroke="#9ca9a5"
+          stroke-width="10"
+        />
+
+
+        <!-- chest control panel -->
+
+        <rect
+          x="78"
+          y="165"
+          width="48"
+          height="43"
+          rx="4"
+          fill="#526563"
+          stroke="#33413e"
           stroke-width="3"
+        />
+
+        <circle
+          cx="90"
+          cy="178"
+          r="4"
+          fill="#e5b95d"
+        />
+
+        <circle
+          cx="102"
+          cy="178"
+          r="4"
+          fill="#70b4a9"
+        />
+
+        <circle
+          cx="114"
+          cy="178"
+          r="4"
+          fill="#d17b5f"
         />
 
         <path
           d="
-            M110 207
-            L110 260
+            M88 191
+            L116 191
           "
-          stroke="#6e7771"
+          stroke="#cad3c9"
           stroke-width="3"
         />
+
 
         <!-- left arm -->
 
         <path
           d="
-            M64 149
-            C34 158 18 181 13 211
+            M59 151
+            C40 172 38 207 44 230
           "
           fill="none"
-          stroke="url(#spaceSuit)"
-          stroke-width="28"
+          stroke="#cbd1c8"
+          stroke-width="24"
           stroke-linecap="round"
           class="ink-soft"
         />
@@ -4476,55 +4446,82 @@ footer{
 
         <path
           d="
-            M155 151
-            C185 145 209 126 227 102
+            M142 154
+            C163 167 179 162 195 145
           "
           fill="none"
-          stroke="url(#spaceSuit)"
-          stroke-width="28"
+          stroke="#cbd1c8"
+          stroke-width="24"
           stroke-linecap="round"
           class="ink-soft"
         />
 
         <!-- glove -->
 
+        <circle
+          cx="199"
+          cy="141"
+          r="13"
+          fill="#c9d0c8"
+          class="ink-soft"
+        />
+
+        <!-- little glove fingers -->
+
         <path
           d="
-            M221 105
-            C228 91 236 83 244 81
-            M224 106
-            C236 101 247 100 255 104
-            M224 109
-            C236 111 244 116 249 122
+            M207 138
+            L219 132
+            M208 143
+            L221 143
+          "
+          stroke="#c9d0c8"
+          stroke-width="5"
+          stroke-linecap="round"
+        />
+
+
+        <!-- firefly astronaut is watching -->
+
+        <circle
+          cx="229"
+          cy="126"
+          r="5"
+          fill="#ffe781"
+          filter="url(#lanternGlow)"
+        />
+
+        <circle
+          cx="229"
+          cy="126"
+          r="13"
+          fill="#ffe781"
+          opacity=".08"
+        />
+
+
+        <!-- waist -->
+
+        <path
+          d="
+            M57 224
+            C80 235 125 236 147 224
           "
           fill="none"
-          stroke="#c9c8ba"
+          stroke="#98a5a0"
           stroke-width="7"
-          stroke-linecap="round"
         />
 
-        <!-- hose -->
-
-        <path
-          d="
-            M55 171
-            C20 190 30 237 57 247
-          "
-          fill="none"
-          stroke="#4f6662"
-          stroke-width="8"
-          stroke-linecap="round"
-        />
 
         <!-- legs -->
 
         <path
           d="
-            M84 260
-            C72 283 69 307 71 333
+            M76 247
+            C62 268 51 283 34 297
           "
           fill="none"
-          stroke="url(#spaceSuit)"
+          stroke="#c8cec5"
           stroke-width="32"
           stroke-linecap="round"
           class="ink-soft"
@@ -4532,59 +4529,44 @@ footer{
 
         <path
           d="
-            M136 260
-            C149 283 153 306 151 332
+            M126 247
+            C143 267 157 281 177 292
           "
           fill="none"
-          stroke="url(#spaceSuit)"
+          stroke="#c8cec5"
           stroke-width="32"
           stroke-linecap="round"
           class="ink-soft"
         />
+
 
         <!-- boots -->
 
         <path
           d="
-            M56 326
-            C72 320 91 324 99 338
-            C83 348 58 349 46 338 Z
+            M17 289
+            C36 283 51 287 61 298
+            C46 312 23 314 5 306 Z
           "
-          fill="#59655f"
+          fill="#697775"
           class="ink-soft"
         />
 
         <path
           d="
-            M137 329
-            C153 319 173 324 181 338
-            C166 349 141 349 130 340 Z
+            M165 283
+            C183 279 201 284 212 296
+            C197 308 174 311 157 303 Z
           "
-          fill="#59655f"
+          fill="#697775"
           class="ink-soft"
         />
 
-        <!-- tiny firefly -->
-
-        <circle
-          cx="263"
-          cy="95"
-          r="4"
-          fill="#ffe58b"
-          filter="url(#lanternGlow)"
-        />
-
-        <circle
-          cx="263"
-          cy="95"
-          r="13"
-          fill="#ffe58b"
-          opacity=".10"
-        />
-
       </g>
-            <!-- =================================================
-           WIZARD / STORYTELLER
+
+
+      <!-- =================================================
+           WIZARD
       ================================================== -->
 
       <g
@@ -4605,7 +4587,7 @@ footer{
           class="ink"
         />
 
-        <!-- flowing robe -->
+        <!-- robe -->
 
         <path
           d="
@@ -4625,8 +4607,10 @@ footer{
           d="
             M82 151
             C71 198 72 249 78 291
+
             M111 145
             C105 198 107 249 106 300
+
             M137 151
             C148 205 144 252 138 290
           "
@@ -4634,7 +4618,7 @@ footer{
           opacity=".65"
         />
 
-        <!-- gold robe trim -->
+        <!-- gold trim -->
 
         <path
           d="
@@ -4647,6 +4631,7 @@ footer{
           opacity=".66"
         />
 
+
         <!-- face -->
 
         <ellipse
@@ -4657,8 +4642,6 @@ footer{
           fill="url(#skinLight)"
           class="ink-soft"
         />
-
-        <!-- ears -->
 
         <ellipse
           cx="72"
@@ -4676,6 +4659,39 @@ footer{
           fill="#c48c6d"
         />
 
+
+        <!-- eyes -->
+
+        <path
+          d="
+            M87 81
+            C93 77 99 78 102 82
+
+            M116 82
+            C122 77 129 79 132 83
+          "
+          fill="none"
+          stroke="#2d2925"
+          stroke-width="2.5"
+        />
+
+
+        <!-- eyebrows -->
+
+        <path
+          d="
+            M84 72
+            C91 67 99 67 104 70
+
+            M115 70
+            C123 66 131 68 135 72
+          "
+          fill="none"
+          stroke="#6d6c69"
+          stroke-width="3"
+        />
+
+
         <!-- nose -->
 
         <path
@@ -4689,43 +4705,8 @@ footer{
           stroke-width="2"
         />
 
-        <!-- expressive eyes -->
 
-        <path
-          d="
-            M87 81
-            C93 77 99 78 102 82
-          "
-          fill="none"
-          stroke="#2d2925"
-          stroke-width="2.5"
-        />
-
-        <path
-          d="
-            M116 82
-            C122 77 129 79 132 83
-          "
-          fill="none"
-          stroke="#2d2925"
-          stroke-width="2.5"
-        />
-
-        <!-- eyebrows -->
-
-        <path
-          d="
-            M84 72
-            C91 67 99 67 104 70
-            M115 70
-            C123 66 131 68 135 72
-          "
-          fill="none"
-          stroke="#6d6c69"
-          stroke-width="3"
-        />
-
-        <!-- beard mass -->
+        <!-- beard -->
 
         <path
           d="
@@ -4739,14 +4720,14 @@ footer{
           class="ink-soft"
         />
 
-        <!-- beard strands -->
-
         <path
           d="
             M91 113
             C94 131 98 145 107 158
+
             M105 115
             C106 133 108 147 108 160
+
             M121 113
             C119 133 115 147 110 158
           "
@@ -4762,6 +4743,7 @@ footer{
           d="
             M105 103
             C96 98 88 101 84 107
+
             M110 103
             C120 98 130 101 134 107
           "
@@ -4770,6 +4752,7 @@ footer{
           stroke-width="5"
           stroke-linecap="round"
         />
+
 
         <!-- hat brim -->
 
@@ -4783,7 +4766,7 @@ footer{
           class="ink"
         />
 
-        <!-- crooked hat -->
+        <!-- hat -->
 
         <path
           d="
@@ -4798,12 +4781,11 @@ footer{
           class="ink"
         />
 
-        <!-- hat folds -->
-
         <path
           d="
             M99 31
             C108 25 119 24 129 27
+
             M112 2
             C118 6 123 11 125 17
           "
@@ -4825,7 +4807,7 @@ footer{
           stroke-width="6"
         />
 
-        <!-- tiny star pin -->
+        <!-- star pin -->
 
         <path
           d="
@@ -4841,6 +4823,7 @@ footer{
           fill="#f0ce7b"
         />
 
+
         <!-- left arm -->
 
         <path
@@ -4855,7 +4838,8 @@ footer{
           class="ink-soft"
         />
 
-        <!-- casting right arm -->
+
+        <!-- casting arm -->
 
         <path
           d="
@@ -4869,8 +4853,6 @@ footer{
           class="ink-soft"
         />
 
-        <!-- hand -->
-
         <circle
           cx="204"
           cy="79"
@@ -4879,14 +4861,16 @@ footer{
           class="ink-soft"
         />
 
-        <!-- casting fingers -->
+        <!-- fingers -->
 
         <path
           d="
             M204 76
             C210 62 214 54 221 46
+
             M207 78
             C220 68 228 63 237 61
+
             M207 82
             C221 81 231 84 239 89
           "
@@ -4910,6 +4894,7 @@ footer{
           filter="url(#magicGlow)"
         />
 
+
         <!-- belt -->
 
         <path
@@ -4932,7 +4917,8 @@ footer{
           stroke-width="2"
         />
 
-        <!-- seated legs -->
+
+        <!-- legs -->
 
         <path
           d="
@@ -4962,11 +4948,7 @@ footer{
 
 
       <!-- =================================================
-           THE WIZARD'S STORY COMES ALIVE
-
-           This is deliberately LARGE. The magic now sweeps
-           above the entire group instead of being a tiny
-           decoration beside the wizard.
+           WIZARD'S STORY COMES ALIVE
       ================================================== -->
 
       <g
@@ -4974,7 +4956,7 @@ footer{
         filter="url(#magicGlow)"
       >
 
-        <!-- spell stream from wizard -->
+        <!-- spell trail -->
 
         <path
           d="
@@ -5007,50 +4989,7 @@ footer{
         />
 
 
-        <!-- magical stars -->
-
-        <g fill="#dce7ff">
-
-          <circle
-            cx="879"
-            cy="99"
-            r="4"
-          />
-
-          <circle
-            cx="932"
-            cy="91"
-            r="3"
-          />
-
-          <circle
-            cx="1003"
-            cy="73"
-            r="4"
-          />
-
-          <circle
-            cx="1068"
-            cy="45"
-            r="3"
-          />
-
-          <circle
-            cx="826"
-            cy="132"
-            r="3"
-          />
-
-          <circle
-            cx="977"
-            cy="132"
-            r="2.5"
-          />
-
-        </g>
-
-
-        <!-- constellation lines -->
+        <!-- constellation -->
 
         <path
           d="
@@ -5067,8 +5006,19 @@ footer{
           opacity=".43"
         />
 
+        <g fill="#e4edff">
 
-        <!-- spectral mountain -->
+          <circle cx="826" cy="132" r="3"/>
+          <circle cx="879" cy="99" r="4"/>
+          <circle cx="932" cy="91" r="3"/>
+          <circle cx="977" cy="132" r="2.5"/>
+          <circle cx="1003" cy="73" r="4"/>
+          <circle cx="1068" cy="45" r="3"/>
+
+        </g>
+
+
+        <!-- spectral mountains -->
 
         <path
           d="
@@ -5083,16 +5033,6 @@ footer{
           stroke="#9ac9db"
           stroke-width="2"
           opacity=".72"
-        />
-
-        <path
-          d="
-            M892 112
-            L907 93
-            L918 108
-          "
-          fill="#d8e7f0"
-          fill-opacity=".24"
         />
 
 
@@ -5128,42 +5068,16 @@ footer{
             stroke-width="2"
           />
 
-          <!-- towers -->
-
           <path
             d="
-              M7 34
-              L17 22
-              L27 34
+              M7 34 L17 22 L27 34
+              M37 6 L48 -8 L59 6
+              M67 35 L77 23 L87 35
             "
             fill="none"
             stroke="#c1e2e8"
             stroke-width="2"
           />
-
-          <path
-            d="
-              M37 6
-              L48 -8
-              L59 6
-            "
-            fill="none"
-            stroke="#c1e2e8"
-            stroke-width="2"
-          />
-
-          <path
-            d="
-              M67 35
-              L77 23
-              L87 35
-            "
-            fill="none"
-            stroke="#c1e2e8"
-            stroke-width="2"
-          />
-
-          <!-- castle windows -->
 
           <rect
             x="45"
@@ -5195,8 +5109,6 @@ footer{
             opacity=".62"
           />
 
-          <!-- flag -->
-
           <path
             d="
               M48 -8
@@ -5214,7 +5126,7 @@ footer{
 
 
         <!-- =================================================
-             HUGE SPECTRAL DRAGON
+             LARGE SPECTRAL DRAGON
         ================================================== -->
 
         <g
@@ -5222,7 +5134,7 @@ footer{
           opacity=".83"
         >
 
-          <!-- far wing -->
+          <!-- left wing -->
 
           <path
             d="
@@ -5239,7 +5151,7 @@ footer{
             stroke-width="2"
           />
 
-          <!-- near wing -->
+          <!-- right wing -->
 
           <path
             d="
@@ -5260,14 +5172,10 @@ footer{
 
           <path
             d="
-              M177 118
-              L73 75
-              M174 126
-              L64 127
-              M197 116
-              L311 59
-              M205 124
-              L327 103
+              M177 118 L73 75
+              M174 126 L64 127
+              M197 116 L311 59
+              M205 124 L327 103
             "
             fill="none"
             stroke="#c6d7f4"
@@ -5275,7 +5183,8 @@ footer{
             opacity=".55"
           />
 
-          <!-- dragon body -->
+
+          <!-- body -->
 
           <path
             d="
@@ -5296,7 +5205,8 @@ footer{
             stroke-width="3"
           />
 
-          <!-- dragon neck/head -->
+
+          <!-- head -->
 
           <path
             d="
@@ -5316,6 +5226,7 @@ footer{
             stroke-width="3"
           />
 
+
           <!-- horns -->
 
           <path
@@ -5333,8 +5244,6 @@ footer{
             stroke-width="2"
           />
 
-          <!-- dragon eye -->
-
           <circle
             cx="316"
             cy="106"
@@ -5342,19 +5251,7 @@ footer{
             fill="#fff0a7"
           />
 
-          <!-- snout -->
-
-          <path
-            d="
-              M325 116
-              C336 120 344 118 350 111
-            "
-            fill="none"
-            stroke="#d2e1ef"
-            stroke-width="2"
-          />
-
-          <!-- long tail -->
+          <!-- tail -->
 
           <path
             d="
@@ -5370,33 +5267,7 @@ footer{
             stroke-linecap="round"
           />
 
-          <!-- scales -->
-
-          <path
-            d="
-              M172 157
-              l9 7
-              l-10 6
-
-              M193 145
-              l9 7
-              l-10 6
-
-              M218 135
-              l8 6
-              l-8 6
-
-              M170 206
-              l9 6
-              l-9 7
-            "
-            fill="none"
-            stroke="#d3e2ef"
-            stroke-width="1.5"
-            opacity=".65"
-          />
-
-          <!-- magical breath -->
+          <!-- breath -->
 
           <path
             d="
@@ -5413,70 +5284,18 @@ footer{
 
         </g>
 
-
-        <!-- drifting magical fragments -->
-
-        <g
-          fill="#d4e3ff"
-          opacity=".75"
-        >
-
-          <path
-            d="
-              M747 103
-              l4 -9
-              l4 9
-              l9 4
-              l-9 4
-              l-4 9
-              l-4 -9
-              l-9 -4 Z
-            "
-          />
-
-          <path
-            d="
-              M816 69
-              l3 -7
-              l3 7
-              l7 3
-              l-7 3
-              l-3 7
-              l-3 -7
-              l-7 -3 Z
-            "
-          />
-
-          <path
-            d="
-              M1093 98
-              l4 -8
-              l4 8
-              l8 4
-              l-8 4
-              l-4 8
-              l-4 -8
-              l-8 -4 Z
-            "
-          />
-
-        </g>
-
       </g>
 
 
       <!-- =================================================
            PRINCESS
-
-           Leaned naturally toward the mermaid rather than
-           simply overlapping her.
       ================================================== -->
 
       <g
-        transform="translate(955 211) rotate(5)"
+        transform="translate(945 215) rotate(4)"
       >
 
-        <!-- dress skirt behind -->
+        <!-- skirt -->
 
         <path
           d="
@@ -5489,14 +5308,16 @@ footer{
           class="ink"
         />
 
-        <!-- skirt panels -->
+        <!-- skirt folds -->
 
         <path
           d="
             M58 164
             C49 209 49 251 54 290
+
             M83 158
             C78 207 80 251 82 297
+
             M107 162
             C120 210 124 251 120 289
           "
@@ -5505,6 +5326,7 @@ footer{
           stroke-width="2"
           opacity=".35"
         />
+
 
         <!-- torso -->
 
@@ -5519,8 +5341,6 @@ footer{
           class="ink"
         />
 
-        <!-- neckline -->
-
         <path
           d="
             M66 105
@@ -5530,6 +5350,7 @@ footer{
           stroke="#e0b2b3"
           stroke-width="4"
         />
+
 
         <!-- face -->
 
@@ -5541,6 +5362,7 @@ footer{
           fill="url(#skinLight)"
           class="ink-soft"
         />
+
 
         <!-- hair -->
 
@@ -5560,6 +5382,7 @@ footer{
           d="
             M56 58
             C47 84 50 112 63 127
+
             M110 55
             C124 79 122 107 111 126
           "
@@ -5568,6 +5391,7 @@ footer{
           stroke-width="11"
           stroke-linecap="round"
         />
+
 
         <!-- crown -->
 
@@ -5593,12 +5417,14 @@ footer{
           fill="#b95f72"
         />
 
-        <!-- face detail -->
+
+        <!-- face -->
 
         <path
           d="
             M68 65
             C73 62 78 63 81 66
+
             M91 66
             C96 62 101 63 104 67
           "
@@ -5616,6 +5442,7 @@ footer{
           stroke="#955e59"
           stroke-width="2"
         />
+
 
         <!-- necklace -->
 
@@ -5636,12 +5463,14 @@ footer{
           fill="#74b9b5"
         />
 
-        <!-- arm toward mermaid -->
+
+        <!-- arm around mermaid -->
 
         <path
           d="
             M111 118
-            C137 124 153 137 164 157
+            C133 123 150 134 165 149
+            C176 160 184 163 192 158
           "
           fill="none"
           stroke="#c88e70"
@@ -5650,16 +5479,15 @@ footer{
           class="ink-soft"
         />
 
-        <!-- hand resting -->
-
         <ellipse
-          cx="166"
+          cx="192"
           cy="158"
-          rx="12"
-          ry="9"
+          rx="11"
+          ry="8"
           fill="#d3a07e"
           class="ink-soft"
         />
+
 
         <!-- other arm -->
 
@@ -5675,7 +5503,8 @@ footer{
           class="ink-soft"
         />
 
-        <!-- jeweled belt -->
+
+        <!-- belt -->
 
         <path
           d="
@@ -5700,186 +5529,457 @@ footer{
 
 
       <!-- =================================================
-           MERMAID
+           MERMAID — REBUILT
+
+           Visible face, softer hair, natural shoulders,
+           leaning into princess, body visibly emerging
+           from the pool, curved scaled tail.
       ================================================== -->
 
       <g
-        transform="translate(1081 240) rotate(-7)"
+        transform="translate(1072 246) rotate(-4)"
       >
 
-        <!-- tail behind body -->
+
+        <!-- =================================================
+             TAIL BEHIND BODY
+        ================================================== -->
 
         <path
           d="
-            M75 178
-            C107 210 117 249 103 281
-            C90 311 58 326 30 314
-            C61 302 70 281 61 261
-            C48 233 40 208 47 179 Z
+            M72 176
+            C94 192 111 214 118 238
+            C125 263 119 286 101 303
+            C87 317 69 324 51 317
+            C69 304 77 287 71 269
+            C65 248 49 234 46 214
+            C43 196 52 182 72 176 Z
           "
           fill="url(#mermaidTeal)"
           class="ink"
         />
 
-        <!-- tail fin -->
+
+        <!-- tail highlight -->
 
         <path
           d="
-            M31 309
-            C7 296 -13 299 -29 317
-            C-5 322 10 333 18 348
-            C33 335 43 324 51 310 Z
+            M80 190
+            C95 211 105 232 105 253
+            C105 274 95 291 79 302
           "
-          fill="#4b9c91"
-          class="ink-soft"
+          fill="none"
+          stroke="#91d0bc"
+          stroke-width="5"
+          opacity=".35"
         />
+
 
         <!-- scales -->
 
         <g
           fill="none"
-          stroke="#9bd1bd"
+          stroke="#a9ddc7"
           stroke-width="1.5"
-          opacity=".38"
+          opacity=".52"
         >
 
-          <path d="M57 209 q10 10 20 0"/>
-          <path d="M69 221 q10 10 20 0"/>
-          <path d="M57 233 q10 10 20 0"/>
-          <path d="M70 245 q10 10 20 0"/>
-          <path d="M62 257 q10 10 20 0"/>
-          <path d="M71 269 q10 10 20 0"/>
+          <path d="M57 204 q9 10 18 0"/>
+          <path d="M75 204 q9 10 18 0"/>
+
+          <path d="M64 216 q9 10 18 0"/>
+          <path d="M82 216 q9 10 18 0"/>
+
+          <path d="M68 228 q9 10 18 0"/>
+          <path d="M87 228 q9 10 18 0"/>
+
+          <path d="M70 240 q9 10 18 0"/>
+          <path d="M89 240 q9 10 18 0"/>
+
+          <path d="M72 252 q9 10 18 0"/>
+          <path d="M89 252 q9 10 18 0"/>
+
+          <path d="M72 264 q9 10 18 0"/>
+          <path d="M69 276 q9 10 18 0"/>
 
         </g>
 
-        <!-- torso -->
+
+        <!-- large tail fin -->
 
         <path
           d="
-            M49 98
-            C65 87 89 87 104 99
-            C113 125 112 153 102 179
-            C86 188 62 188 46 177
-            C39 149 40 121 49 98 Z
+            M53 310
+            C30 300 7 302 -13 318
+            C10 323 27 335 35 351
+            C49 338 60 326 68 311 Z
           "
-          fill="#3e8179"
-          class="ink"
-        />
-
-        <!-- shell-style bodice -->
-
-        <path
-          d="
-            M48 111
-            C57 99 69 101 76 115
-            C83 101 97 100 105 112
-            L101 136
-            C84 143 66 143 48 136 Z
-          "
-          fill="#6aa79b"
+          fill="#54a698"
           class="ink-soft"
         />
 
-        <!-- neck -->
+        <path
+          d="
+            M-13 318
+            C10 314 30 316 53 310
+
+            M35 351
+            C40 333 49 321 68 311
+          "
+          fill="none"
+          stroke="#9bd7c1"
+          stroke-width="2"
+          opacity=".48"
+        />
+
+
+        <!-- =================================================
+             HAIR BEHIND BODY
+        ================================================== -->
 
         <path
           d="
-            M68 93
-            L68 80
-            L87 80
-            L88 95
+            M44 62
+            C37 37 44 17 61 6
+            C78 -5 101 0 114 18
+            C126 35 124 59 112 77
+
+            C123 95 121 119 110 142
+
+            C101 128 96 113 94 97
+
+            C81 104 66 103 55 95
+
+            C54 113 57 128 64 142
+
+            C45 127 37 102 46 78 Z
           "
-          fill="#ad765d"
+          fill="#173739"
+          class="ink"
         />
 
-        <!-- face -->
+
+        <!-- flowing hair behind shoulder -->
+
+        <path
+          d="
+            M47 72
+            C32 101 39 133 54 155
+
+            M109 68
+            C127 96 122 127 108 151
+          "
+          fill="none"
+          stroke="#173739"
+          stroke-width="16"
+          stroke-linecap="round"
+        />
+
+
+        <!-- teal highlights -->
+
+        <path
+          d="
+            M54 48
+            C63 23 84 14 101 27
+
+            M48 75
+            C44 97 49 116 58 130
+
+            M107 55
+            C117 80 113 105 105 124
+          "
+          fill="none"
+          stroke="#4d7772"
+          stroke-width="4"
+          stroke-linecap="round"
+          opacity=".75"
+        />
+
+
+        <!-- =================================================
+             NECK
+        ================================================== -->
+
+        <path
+          d="
+            M68 97
+            L68 80
+            L90 80
+            L91 99
+          "
+          fill="#b77d62"
+          stroke="#53382f"
+          stroke-width="2"
+        />
+
+
+        <!-- =================================================
+             FACE
+        ================================================== -->
 
         <ellipse
-          cx="78"
+          cx="79"
           cy="59"
-          rx="30"
+          rx="31"
           ry="37"
           fill="url(#skinWarm)"
           class="ink-soft"
         />
 
-        <!-- hair mass -->
+
+        <!-- hairline -->
 
         <path
           d="
-            M48 57
-            C43 25 66 5 91 18
-            C113 29 115 58 103 77
-            C99 58 93 43 78 39
-            C66 36 57 45 48 57 Z
+            M49 55
+            C55 29 74 19 93 25
+            C105 29 112 39 113 52
+
+            C103 45 96 39 88 37
+            C76 34 64 40 56 50 Z
           "
-          fill="#172b2c"
-          class="ink-soft"
+          fill="#173739"
         />
 
-        <!-- long hair -->
+
+        <!-- side locks -->
 
         <path
           d="
-            M50 57
-            C37 87 42 118 54 139
-            M102 54
-            C119 80 116 113 103 139
+            M50 53
+            C43 71 45 91 54 107
+
+            M108 50
+            C118 69 117 90 107 108
           "
           fill="none"
-          stroke="#173334"
-          stroke-width="13"
+          stroke="#173739"
+          stroke-width="10"
           stroke-linecap="round"
         />
 
-        <!-- hair highlights -->
+
+        <!-- brows -->
 
         <path
           d="
-            M53 47
-            C64 26 85 24 98 40
-            M48 81
-            C47 101 52 116 59 126
+            M61 51
+            C67 47 73 47 77 50
+
+            M84 50
+            C90 47 97 48 101 52
           "
           fill="none"
-          stroke="#3d6461"
-          stroke-width="3"
+          stroke="#3c2925"
+          stroke-width="2.5"
+          stroke-linecap="round"
+        />
+
+
+        <!-- closed happy eyes -->
+
+        <path
+          d="
+            M62 59
+            C67 63 72 63 76 59
+
+            M85 59
+            C90 63 96 63 100 59
+          "
+          fill="none"
+          stroke="#332520"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+
+
+        <!-- eyelashes -->
+
+        <path
+          d="
+            M63 59 L59 56
+            M99 59 L103 56
+          "
+          stroke="#332520"
+          stroke-width="1.5"
+          stroke-linecap="round"
+        />
+
+
+        <!-- nose -->
+
+        <path
+          d="
+            M80 61
+            L77 70
+            L82 71
+          "
+          fill="none"
+          stroke="#74493d"
+          stroke-width="1.7"
+          stroke-linecap="round"
+        />
+
+
+        <!-- smile -->
+
+        <path
+          d="
+            M69 78
+            C76 84 85 84 92 77
+          "
+          fill="none"
+          stroke="#6f413b"
+          stroke-width="2.5"
+          stroke-linecap="round"
+        />
+
+
+        <!-- cheeks -->
+
+        <ellipse
+          cx="61"
+          cy="72"
+          rx="7"
+          ry="4"
+          fill="#d78372"
+          opacity=".25"
+        />
+
+        <ellipse
+          cx="99"
+          cy="72"
+          rx="7"
+          ry="4"
+          fill="#d78372"
+          opacity=".25"
+        />
+
+
+        <!-- tiny sea jewelry -->
+
+        <circle
+          cx="55"
+          cy="69"
+          r="3"
+          fill="#d5b85f"
+        />
+
+        <circle
+          cx="103"
+          cy="69"
+          r="3"
+          fill="#d5b85f"
+        />
+
+
+        <!-- =================================================
+             TORSO
+        ================================================== -->
+
+        <path
+          d="
+            M49 102
+            C59 94 69 90 80 90
+            C92 90 102 94 109 102
+            C115 122 115 145 108 170
+            C99 181 59 182 46 170
+            C41 145 42 121 49 102 Z
+          "
+          fill="#aa705a"
+          class="ink"
+        />
+
+
+        <!-- sea-shell bodice -->
+
+        <path
+          d="
+            M47 111
+            C55 99 69 100 77 114
+            C84 100 99 100 108 111
+            L105 136
+            C88 143 66 143 47 136 Z
+          "
+          fill="#80557c"
+          class="ink-soft"
+        />
+
+        <path
+          d="
+            M52 115
+            C59 108 68 108 76 116
+
+            M80 116
+            C88 108 98 108 104 115
+          "
+          fill="none"
+          stroke="#d0a2c5"
+          stroke-width="2.5"
           opacity=".7"
         />
 
-        <!-- face -->
+
+        <!-- waist to tail -->
 
         <path
           d="
-            M62 58
-            C67 55 72 56 75 59
-            M83 59
-            C88 55 94 56 97 60
+            M47 165
+            C62 176 94 178 108 165
+            L106 188
+            C90 198 63 198 48 187 Z
           "
-          fill="none"
-          stroke="#302421"
-          stroke-width="2"
+          fill="#397d76"
+          class="ink-soft"
         />
 
+
+        <!-- =================================================
+             ARM AROUND PRINCESS
+        ================================================== -->
+
         <path
           d="
-            M69 75
-            C77 80 85 79 90 74
+            M51 111
+            C33 103 19 91 7 79
+            C-2 70 -11 66 -20 69
           "
           fill="none"
-          stroke="#70463e"
-          stroke-width="2"
+          stroke="#ad735b"
+          stroke-width="17"
+          stroke-linecap="round"
+          class="ink-soft"
         />
 
-        <!-- arm around princess -->
+        <!-- hand -->
 
         <path
           d="
-            M50 108
-            C27 100 8 91 -9 78
+            M-18 69
+            C-27 67 -34 70 -39 76
+
+            M-18 70
+            C-27 73 -31 79 -33 85
           "
           fill="none"
-          stroke="#aa7159"
+          stroke="#bc8065"
+          stroke-width="7"
+          stroke-linecap="round"
+        />
+
+
+        <!-- =================================================
+             OTHER ARM RESTING IN POOL
+        ================================================== -->
+
+        <path
+          d="
+            M107 113
+            C123 132 132 150 133 170
+          "
+          fill="none"
+          stroke="#ac725a"
           stroke-width="17"
           stroke-linecap="round"
           class="ink-soft"
@@ -5887,76 +5987,92 @@ footer{
 
         <path
           d="
-            M-8 78
-            C-18 75 -25 77 -31 83
+            M133 169
+            C136 179 132 185 123 187
           "
           fill="none"
-          stroke="#b57b60"
+          stroke="#b97c61"
           stroke-width="8"
           stroke-linecap="round"
-        />
-
-        <!-- other arm resting in water -->
-
-        <path
-          d="
-            M103 113
-            C121 135 128 154 127 174
-          "
-          fill="none"
-          stroke="#a86f57"
-          stroke-width="17"
-          stroke-linecap="round"
-          class="ink-soft"
         />
 
         <!-- bracelet -->
 
         <circle
-          cx="126"
-          cy="169"
+          cx="131"
+          cy="165"
           r="10"
           fill="none"
-          stroke="#d4b55f"
+          stroke="#d6b55f"
           stroke-width="3"
+        />
+
+
+        <!-- =================================================
+             WATER OVER BODY
+
+             These lines are intentionally drawn AFTER the
+             torso/tail so she reads as sitting in the pool.
+        ================================================== -->
+
+        <path
+          d="
+            M31 184
+            C58 176 89 177 117 185
+          "
+          fill="none"
+          stroke="#9bd1c4"
+          stroke-width="3"
+          opacity=".78"
+        />
+
+        <path
+          d="
+            M20 194
+            C54 185 99 187 129 197
+          "
+          fill="none"
+          stroke="#68aaa1"
+          stroke-width="2"
+          opacity=".48"
         />
 
       </g>
 
 
       <!-- =================================================
-           PRINCESS / MERMAID SHARED BLANKET
+           SHARED BLANKET
       ================================================== -->
 
       <path
         d="
-          M969 465
-          C1005 445 1061 449 1090 469
-          C1063 489 1013 497 977 484 Z
+          M958 487
+          C1000 462 1064 464 1100 487
+          C1070 512 1014 520 970 506 Z
         "
         fill="#79576b"
-        opacity=".77"
+        opacity=".72"
         class="ink-soft"
       />
 
       <path
         d="
-          M985 469
-          C1010 461 1042 462 1069 472
+          M978 490
+          C1012 479 1053 480 1082 491
         "
         fill="none"
         stroke="#c592a5"
         stroke-width="2"
-        opacity=".45"
+        opacity=".48"
       />
 
 
       <!-- =================================================
-           LANTERN NEAR WATER
+           LANTERN
       ================================================== -->
 
       <g
-        transform="translate(1158 423)"
+        transform="translate(1162 427)"
       >
 
         <path
@@ -5990,25 +6106,15 @@ footer{
           filter="url(#lanternGlow)"
         />
 
-        <circle
-          cx="19"
-          cy="39"
-          r="29"
-          fill="#ffbd5b"
-          opacity=".08"
-        />
-
       </g>
 
 
       <!-- =================================================
-           SMALL CAMPSITE DETAILS
+           BEDROLL
       ================================================== -->
 
-      <!-- bedroll -->
-
       <g
-        transform="translate(315 510)"
+        transform="translate(315 525)"
       >
 
         <path
@@ -6024,10 +6130,8 @@ footer{
 
         <path
           d="
-            M16 12
-            L16 44
-            M66 12
-            L66 45
+            M16 12 L16 44
+            M66 12 L66 45
           "
           stroke="#bd8e5c"
           stroke-width="4"
@@ -6037,10 +6141,12 @@ footer{
       </g>
 
 
-      <!-- closed books -->
+      <!-- =================================================
+           STACKED BOOKS
+      ================================================== -->
 
       <g
-        transform="translate(430 526)"
+        transform="translate(430 540)"
       >
 
         <path
@@ -6077,10 +6183,12 @@ footer{
       </g>
 
 
-      <!-- open book -->
+      <!-- =================================================
+           OPEN BOOK
+      ================================================== -->
 
       <g
-        transform="translate(738 505)"
+        transform="translate(748 522)"
       >
 
         <path
@@ -6116,8 +6224,6 @@ footer{
           stroke-width="2"
         />
 
-        <!-- writing -->
-
         <g
           stroke="#927a58"
           stroke-width="1"
@@ -6137,10 +6243,12 @@ footer{
       </g>
 
 
-      <!-- mugs -->
+      <!-- =================================================
+           MUG
+      ================================================== -->
 
       <g
-        transform="translate(650 525)"
+        transform="translate(664 541)"
       >
 
         <path
@@ -6164,12 +6272,11 @@ footer{
           stroke-width="5"
         />
 
-        <!-- steam -->
-
         <path
           d="
             M9 1
             C3 -10 17 -13 10 -25
+
             M18 0
             C12 -9 24 -14 18 -23
           "
@@ -6182,10 +6289,12 @@ footer{
       </g>
 
 
-      <!-- kettle -->
+      <!-- =================================================
+           KETTLE
+      ================================================== -->
 
       <g
-        transform="translate(551 499)"
+        transform="translate(548 518)"
       >
 
         <ellipse
@@ -6220,10 +6329,12 @@ footer{
       </g>
 
 
-      <!-- tiny sleeping forest animal -->
+      <!-- =================================================
+           SLEEPING FOREST CREATURE
+      ================================================== -->
 
       <g
-        transform="translate(873 520)"
+        transform="translate(880 536)"
       >
 
         <path
@@ -6261,16 +6372,6 @@ footer{
 
         <path
           d="
-            M60 25
-            C64 28 68 28 71 25
-          "
-          fill="none"
-          stroke="#372820"
-          stroke-width="2"
-        />
-
-        <path
-          d="
             M53 20
             q4 3 8 0
           "
@@ -6281,146 +6382,26 @@ footer{
 
         <path
           d="
-            M8 31
-            C-8 23 -13 12 -8 3
-            C2 15 10 16 20 16
+            M60 25
+            C64 28 68 28 71 25
           "
           fill="none"
-          stroke="#8a684d"
-          stroke-width="10"
-          stroke-linecap="round"
+          stroke="#372820"
+          stroke-width="2"
         />
 
       </g>
 
 
       <!-- =================================================
-           FLOWERS, FERNS, MUSHROOMS
+           CAMPFIRE
       ================================================== -->
 
       <g
-        transform="translate(66 521)"
+        transform="translate(553 520)"
       >
 
-        <!-- fern -->
-
-        <path
-          d="
-            M28 72
-            C30 42 36 19 48 0
-          "
-          fill="none"
-          stroke="#4c7655"
-          stroke-width="4"
-        />
-
-        <path
-          d="
-            M43 11
-            L24 4
-            M41 19
-            L60 9
-            M38 29
-            L17 20
-            M36 39
-            L57 29
-            M33 49
-            L13 42
-          "
-          stroke="#4f805a"
-          stroke-width="5"
-          stroke-linecap="round"
-        />
-
-        <!-- mushrooms -->
-
-        <path
-          d="
-            M75 54
-            L75 72
-          "
-          stroke="#c7b494"
-          stroke-width="5"
-        />
-
-        <path
-          d="
-            M62 55
-            C67 40 83 39 90 54
-            C81 60 70 60 62 55 Z
-          "
-          fill="#b66850"
-          class="ink-soft"
-        />
-
-        <circle
-          cx="71"
-          cy="51"
-          r="2"
-          fill="#e6d1aa"
-        />
-
-        <circle
-          cx="80"
-          cy="48"
-          r="2"
-          fill="#e6d1aa"
-        />
-
-      </g>
-
-
-      <g
-        transform="translate(1181 528)"
-      >
-
-        <path
-          d="
-            M0 59
-            C7 35 11 17 9 0
-            M14 61
-            C20 37 29 19 41 6
-          "
-          fill="none"
-          stroke="#4d7957"
-          stroke-width="4"
-        />
-
-        <path
-          d="
-            M9 18
-            L-3 10
-            M10 29
-            L22 18
-            M20 38
-            L34 28
-            M26 27
-            L17 17
-          "
-          stroke="#58845f"
-          stroke-width="5"
-          stroke-linecap="round"
-        />
-
-      </g>
-
-
-      <!-- =================================================
-           CAMPFIRE STONES
-      ================================================== -->
-
-      <g
-        transform="translate(553 509)"
-      >
-
-        <ellipse
-          cx="72"
-          cy="64"
-          rx="102"
-          ry="31"
-          fill="#06120f"
-          opacity=".38"
-        />
+        <!-- stones -->
 
         <g
           fill="#6d6758"
@@ -6428,54 +6409,13 @@ footer{
           stroke-width="3"
         >
 
-          <ellipse
-            cx="8"
-            cy="56"
-            rx="24"
-            ry="15"
-          />
-
-          <ellipse
-            cx="43"
-            cy="69"
-            rx="24"
-            ry="15"
-          />
-
-          <ellipse
-            cx="83"
-            cy="72"
-            rx="25"
-            ry="15"
-          />
-
-          <ellipse
-            cx="123"
-            cy="66"
-            rx="24"
-            ry="15"
-          />
-
-          <ellipse
-            cx="151"
-            cy="48"
-            rx="23"
-            ry="14"
-          />
-
-          <ellipse
-            cx="127"
-            cy="29"
-            rx="22"
-            ry="13"
-          />
-
-          <ellipse
-            cx="31"
-            cy="30"
-            rx="23"
-            ry="14"
-          />
+          <ellipse cx="8" cy="56" rx="24" ry="15"/>
+          <ellipse cx="43" cy="69" rx="24" ry="15"/>
+          <ellipse cx="83" cy="72" rx="25" ry="15"/>
+          <ellipse cx="123" cy="66" rx="24" ry="15"/>
+          <ellipse cx="151" cy="48" rx="23" ry="14"/>
+          <ellipse cx="127" cy="29" rx="22" ry="13"/>
+          <ellipse cx="31" cy="30" rx="23" ry="14"/>
 
         </g>
 
@@ -6483,10 +6423,7 @@ footer{
         <!-- logs -->
 
         <path
-          d="
-            M35 52
-            L126 25
-          "
+          d="M35 52 L126 25"
           stroke="#65432e"
           stroke-width="18"
           stroke-linecap="round"
@@ -6494,10 +6431,7 @@ footer{
         />
 
         <path
-          d="
-            M41 24
-            L126 56
-          "
+          d="M41 24 L126 56"
           stroke="#74503a"
           stroke-width="18"
           stroke-linecap="round"
@@ -6561,7 +6495,8 @@ footer{
 
         </path>
 
-        <!-- white-hot center -->
+
+        <!-- hot center -->
 
         <path
           d="
@@ -6577,9 +6512,7 @@ footer{
       </g>
 
 
-      <!-- =================================================
-           SMOKE
-      ================================================== -->
+      <!-- smoke -->
 
       <g
         fill="none"
@@ -6590,27 +6523,18 @@ footer{
 
         <path
           d="
-            M641 474
-            C620 449 649 432 638 406
-            C628 382 652 369 645 347
+            M641 485
+            C620 460 649 443 638 417
+            C628 393 652 380 645 358
           "
           stroke-width="10"
-        >
-
-          <animate
-            attributeName="opacity"
-            values=".08;.22;.08"
-            dur="4s"
-            repeatCount="indefinite"
-          />
-
-        </path>
+        />
 
         <path
           d="
-            M623 472
-            C643 449 620 431 630 414
-            C642 394 629 379 637 362
+            M623 483
+            C643 460 620 442 630 425
+            C642 405 629 390 637 373
           "
           stroke-width="6"
         />
@@ -6618,76 +6542,20 @@ footer{
       </g>
 
 
-      <!-- =================================================
-           FOREGROUND FLOWERS + STONES
-      ================================================== -->
-
-      <g opacity=".88">
-
-        <circle
-          cx="274"
-          cy="578"
-          r="4"
-          fill="#d8a8bb"
-        />
-
-        <circle
-          cx="288"
-          cy="584"
-          r="3"
-          fill="#d9c16e"
-        />
-
-        <circle
-          cx="960"
-          cy="574"
-          r="4"
-          fill="#bfa4d3"
-        />
-
-        <circle
-          cx="978"
-          cy="581"
-          r="3"
-          fill="#d6bd67"
-        />
-
-        <ellipse
-          cx="220"
-          cy="586"
-          rx="25"
-          ry="10"
-          fill="#314438"
-        />
-
-        <ellipse
-          cx="1042"
-          cy="586"
-          rx="29"
-          ry="11"
-          fill="#314438"
-        />
-
-      </g>
-
-
-      <!-- =================================================
-           WARM FOREGROUND LIGHT OVERLAY
-      ================================================== -->
+      <!-- foreground fire glow -->
 
       <ellipse
         cx="625"
-        cy="485"
+        cy="500"
         rx="385"
         ry="155"
         fill="url(#svgFireGlow)"
-        opacity=".17"
+        opacity=".16"
         style="mix-blend-mode:screen"
       />
 
 
     </svg>
-
 
   </div>
 
@@ -6754,7 +6622,7 @@ footer{
 
       <a
         class="path"
-        href="ratings.html"
+        href="#stories"
       >
 
         <span class="path-icon">
@@ -6943,7 +6811,7 @@ footer{
 
 </section>
 <!-- ======================================================
-     STORY / PARCHMENT SECTION
+     THE CAMPFIRE EXPERIENCE
 ======================================================= -->
 
 <section
@@ -6956,20 +6824,18 @@ footer{
     <div class="section-header center">
 
       <div class="eyebrow">
-        Every reader arrives differently
+        However you read
       </div>
 
       <h2>
-        But every story gives us
-        somewhere to meet.
+        There is a place for you here.
       </h2>
 
       <p>
-        Paper Gremlin is built for the people who
-        underline sentences, argue about fictional
-        characters, stay up until three in the morning
-        for one more chapter, and need somebody to
-        talk to when the book is over.
+        Some readers devour a book overnight.
+        Some take a month. Some annotate every page.
+        Some just want somebody to scream about the ending with.
+        Paper Gremlin was made for all of them.
       </p>
 
     </div>
@@ -6978,12 +6844,12 @@ footer{
     <div class="story-grid">
 
 
-      <!-- STORY CARD 1 -->
+      <!-- CARD 1 -->
 
       <article class="story-card">
 
         <span class="story-number">
-          I
+          01
         </span>
 
         <div
@@ -6994,34 +6860,32 @@ footer{
         </div>
 
         <h3>
-          Find your campfire.
+          Pull up a log.
         </h3>
 
         <p>
-          Discover book clubs built around the stories
-          you already love—or wander into something
-          completely unfamiliar. Fantasy, romance,
-          science fiction, horror, cozy reads and the
-          wonderfully strange things that refuse to fit
-          neatly onto a shelf.
+          Find book clubs built around the stories,
+          genres, moods, and strange little obsessions
+          that keep you reading long after you meant
+          to go to bed.
         </p>
 
         <a
           class="story-link"
           href="clubs.html"
         >
-          Explore Clubs →
+          Find a club →
         </a>
 
       </article>
 
 
-      <!-- STORY CARD 2 -->
+      <!-- CARD 2 -->
 
       <article class="story-card">
 
         <span class="story-number">
-          II
+          02
         </span>
 
         <div
@@ -7037,57 +6901,54 @@ footer{
 
         <p>
           Save the moments that made you laugh,
-          ache, gasp or stare at the wall for ten
-          minutes. Keep them for yourself or bring
-          them back to your club when everyone is
-          ready to talk.
+          stare at the ceiling, throw the book down,
+          or immediately text somebody
+          “YOU NEED TO READ THIS.”
         </p>
 
         <a
           class="story-link"
-          href="ratings.html"
+          href="profile.html"
         >
-          Share Your Thoughts →
+          Visit your profile →
         </a>
 
       </article>
 
 
-      <!-- STORY CARD 3 -->
+      <!-- CARD 3 -->
 
       <article class="story-card">
 
         <span class="story-number">
-          III
+          03
         </span>
 
         <div
           class="story-icon"
           aria-hidden="true"
         >
-          📖
+          🗺️
         </div>
 
         <h3>
-          Discover the next one.
+          Wander somewhere new.
         </h3>
 
         <p>
-          Follow recommendations, club picks and
-          conversations until the book you never
-          expected to read somehow becomes the one
-          you cannot stop talking about.
+          Follow recommendations, club conversations,
+          curious readers, and unexpected rabbit holes
+          until your next favorite story finds you.
         </p>
 
         <a
           class="story-link"
           href="discover.html"
         >
-          Find a Book →
+          Start wandering →
         </a>
 
       </article>
-
 
     </div>
 
@@ -7102,7 +6963,7 @@ footer{
 
 <section
   class="content-section book-section"
-  id="bookDiscovery"
+  id="books"
 >
 
   <div class="wrap book-shell">
@@ -7110,17 +6971,18 @@ footer{
 
     <!-- BOOK ART -->
 
-    <div class="book-stack">
+    <div
+      class="book-stack"
+      aria-hidden="true"
+    >
 
-      <div
-        class="book-glow"
-        aria-hidden="true"
-      ></div>
+      <div class="book-glow"></div>
 
       <div class="book-cover">
 
         <img
           id="bookCover"
+          src=""
           alt=""
         >
 
@@ -7130,9 +6992,11 @@ footer{
         >
           ✦
           <br>
-          What story are
+          Find your next
           <br>
-          you looking for?
+          favorite story
+          <br>
+          ✦
         </div>
 
       </div>
@@ -7145,18 +7009,17 @@ footer{
     <div class="book-copy">
 
       <div class="eyebrow">
-        Wander through the shelves
+        The path keeps going
       </div>
 
       <h2>
-        There is always
-        another story.
+        What are you reading next?
       </h2>
 
       <p>
-        Search for a title, author or strange little
-        idea that has been living in your head.
-        We will see what the shelves have waiting.
+        Search for a book, an author, or the title
+        somebody mentioned three conversations ago
+        that you absolutely meant to write down.
       </p>
 
 
@@ -7168,9 +7031,9 @@ footer{
         <input
           id="bookSearchInput"
           type="search"
-          placeholder="Try: dragons, found family, space opera..."
+          placeholder="Search books or authors..."
+          aria-label="Search books or authors"
           autocomplete="off"
-          aria-label="Search for books"
         >
 
         <button type="submit">
@@ -7187,22 +7050,25 @@ footer{
       >
 
         <h3 id="bookTitle">
-          Find something unexpected.
+          Wander the shelves.
         </h3>
 
         <div
           class="author"
           id="bookAuthor"
         >
-          Search the shelves above.
+          Search for whatever calls to you
         </div>
 
         <p
           class="description"
           id="bookDescription"
         >
-          A book does not have to look like the books
-          you already love to belong beside them.
+          The best reading lists rarely stay lists
+          for very long. One book leads to another,
+          somebody recommends something strange,
+          and suddenly your nightstand has become
+          structurally questionable.
         </p>
 
       </div>
@@ -7224,11 +7090,10 @@ footer{
 
     <div class="quote">
 
-      In a world full of different paths,
-      we still end up around the
-      <span>
-        same fire.
-      </span>
+      “In a world full of
+      <span>different paths,</span>
+      we still end up around
+      <span>the same fire.</span>”
 
     </div>
 
@@ -7243,33 +7108,29 @@ footer{
 
 <section class="dawn">
 
-  <div class="wrap">
+  <div class="wrap dawn-copy">
 
-    <div class="dawn-copy">
-
-      <div class="eyebrow">
-        The stories kept going until morning
-      </div>
-
-      <h2>
-        Stay for one more chapter.
-      </h2>
-
-      <p>
-        Somewhere out there is another reader who
-        finished the same chapter and desperately
-        needs to talk about it too.
-      </p>
-
-      <a
-        class="dawn-button"
-        id="dawnAction"
-        href="auth.html#signup"
-      >
-        Find Your Campfire
-      </a>
-
+    <div class="eyebrow">
+      Somehow it is morning already
     </div>
+
+    <h2>
+      Stay for one more story.
+    </h2>
+
+    <p>
+      The fire is getting low, the sky is getting
+      brighter, and somebody has just said,
+      “Okay, but you have to hear this one.”
+    </p>
+
+    <a
+      class="dawn-button"
+      id="dawnAction"
+      href="auth.html#signup"
+    >
+      Find Your Place at the Fire
+    </a>
 
   </div>
 
@@ -7294,8 +7155,7 @@ footer{
       </div>
 
       <div class="footer-tag">
-        Good books · Kind people · Weird ideas ·
-        Brighter tomorrows
+        Good books · Kind people · Weird ideas · Brighter tomorrows
       </div>
 
     </div>
@@ -7327,7 +7187,7 @@ footer{
       </a>
 
       <a
-        id="footerSignup"
+        id="footerJoin"
         href="auth.html#signup"
       >
         Join
@@ -7352,10 +7212,14 @@ footer{
 <script>
 
 /* =========================================================
+   PAPER GREMLIN HOMEPAGE
+========================================================= */
+
+
+/* =========================================================
    SUPABASE CONFIG
 
-   Same project and publishable key used by the existing
-   Paper Gremlin dashboard.
+   This is the same project/config used by the dashboard.
 ========================================================= */
 
 const SUPABASE_URL =
@@ -7367,6 +7231,10 @@ const SUPABASE_KEY =
 
 let supabaseClient = null;
 
+
+/* =========================================================
+   INITIALIZE SUPABASE SAFELY
+========================================================= */
 
 if(
   window.supabase &&
@@ -7383,13 +7251,173 @@ if(
 
 
 /* =========================================================
-   AUTH-AWARE HOMEPAGE
+   AUTH ELEMENTS
+========================================================= */
+
+const navLogin =
+  document.getElementById(
+    "navLogin"
+  );
+
+const navJoin =
+  document.getElementById(
+    "navJoin"
+  );
+
+const footerLogin =
+  document.getElementById(
+    "footerLogin"
+  );
+
+const footerJoin =
+  document.getElementById(
+    "footerJoin"
+  );
+
+const dawnAction =
+  document.getElementById(
+    "dawnAction"
+  );
+
+
+/* =========================================================
+   LOGGED OUT STATE
+========================================================= */
+
+function showLoggedOutHomepage(){
+
+  if(navLogin){
+
+    navLogin.textContent =
+      "Log In";
+
+    navLogin.href =
+      "auth.html#login";
+
+  }
+
+
+  if(navJoin){
+
+    navJoin.textContent =
+      "Join";
+
+    navJoin.href =
+      "auth.html#signup";
+
+  }
+
+
+  if(footerLogin){
+
+    footerLogin.textContent =
+      "Log In";
+
+    footerLogin.href =
+      "auth.html#login";
+
+  }
+
+
+  if(footerJoin){
+
+    footerJoin.textContent =
+      "Join";
+
+    footerJoin.href =
+      "auth.html#signup";
+
+  }
+
+
+  if(dawnAction){
+
+    dawnAction.textContent =
+      "Find Your Place at the Fire";
+
+    dawnAction.href =
+      "auth.html#signup";
+
+  }
+
+}
+
+
+/* =========================================================
+   LOGGED IN STATE
+========================================================= */
+
+function showLoggedInHomepage(){
+
+  if(navLogin){
+
+    navLogin.textContent =
+      "Home";
+
+    navLogin.href =
+      "dashboard.html";
+
+  }
+
+
+  if(navJoin){
+
+    navJoin.textContent =
+      "Profile";
+
+    navJoin.href =
+      "profile.html";
+
+  }
+
+
+  if(footerLogin){
+
+    footerLogin.textContent =
+      "Home";
+
+    footerLogin.href =
+      "dashboard.html";
+
+  }
+
+
+  if(footerJoin){
+
+    footerJoin.textContent =
+      "Profile";
+
+    footerJoin.href =
+      "profile.html";
+
+  }
+
+
+  if(dawnAction){
+
+    dawnAction.textContent =
+      "Return to Your Campfire";
+
+    dawnAction.href =
+      "dashboard.html";
+
+  }
+
+}
+
+
+/* =========================================================
+   CHECK EXISTING SESSION
 ========================================================= */
 
 async function syncHomepageAuth(){
 
   if(!supabaseClient){
+
+    showLoggedOutHomepage();
+
     return;
+
   }
 
 
@@ -7399,147 +7427,79 @@ async function syncHomepageAuth(){
       data,
       error
     } =
-      await supabaseClient.auth.getSession();
+      await supabaseClient
+        .auth
+        .getSession();
 
 
     if(error){
-      throw error;
+
+      console.warn(
+        "Unable to read session:",
+        error
+      );
+
+      showLoggedOutHomepage();
+
+      return;
+
     }
-
-
-    const session =
-      data?.session;
 
 
     if(
-      !session ||
-      !session.user
+      data &&
+      data.session &&
+      data.session.user
     ){
-      return;
-    }
 
+      showLoggedInHomepage();
 
-    const navLogin =
-      document.getElementById(
-        "navLogin"
-      );
+    }else{
 
-    const navJoin =
-      document.getElementById(
-        "navJoin"
-      );
-
-    const footerLogin =
-      document.getElementById(
-        "footerLogin"
-      );
-
-    const footerSignup =
-      document.getElementById(
-        "footerSignup"
-      );
-
-    const dawnAction =
-      document.getElementById(
-        "dawnAction"
-      );
-
-
-    if(navLogin){
-
-      navLogin.textContent =
-        "Home";
-
-      navLogin.href =
-        "dashboard.html";
+      showLoggedOutHomepage();
 
     }
 
-
-    if(navJoin){
-
-      navJoin.textContent =
-        "Profile";
-
-      navJoin.href =
-        "profile.html";
-
-    }
-
-
-    if(footerLogin){
-
-      footerLogin.textContent =
-        "Home";
-
-      footerLogin.href =
-        "dashboard.html";
-
-    }
-
-
-    if(footerSignup){
-
-      footerSignup.textContent =
-        "Profile";
-
-      footerSignup.href =
-        "profile.html";
-
-    }
-
-
-    if(dawnAction){
-
-      dawnAction.textContent =
-        "Return to Your Campfire";
-
-      dawnAction.href =
-        "dashboard.html";
-
-    }
-
-  }
-  catch(error){
+  }catch(error){
 
     console.warn(
-      "Homepage session check failed:",
+      "Homepage authentication check failed:",
       error
     );
+
+    showLoggedOutHomepage();
 
   }
 
 }
 
 
-syncHomepageAuth();
-
+/* =========================================================
+   LISTEN FOR AUTH CHANGES
+========================================================= */
 
 if(supabaseClient){
 
-  supabaseClient.auth.onAuthStateChange(
-    (event,session) => {
+  supabaseClient
+    .auth
+    .onAuthStateChange(
+      (
+        event,
+        session
+      ) => {
 
-      if(
-        event === "SIGNED_IN" &&
-        session?.user
-      ){
+        if(session?.user){
 
-        syncHomepageAuth();
+          showLoggedInHomepage();
+
+        }else{
+
+          showLoggedOutHomepage();
+
+        }
 
       }
-
-
-      if(
-        event === "SIGNED_OUT"
-      ){
-
-        window.location.reload();
-
-      }
-
-    }
-  );
+    );
 
 }
 
@@ -7584,62 +7544,108 @@ const bookPlaceholder =
   );
 
 
-function cleanBookDescription(
-  value
+/* =========================================================
+   CLEAN GOOGLE BOOKS DESCRIPTION
+========================================================= */
+
+function cleanDescription(
+  description
 ){
 
-  if(!value){
-    return "";
+  if(!description){
+
+    return (
+      "No description was provided for this title."
+    );
+
   }
 
 
-  const temp =
+  const temporaryElement =
     document.createElement(
       "div"
     );
 
-  temp.innerHTML =
-    value;
+  temporaryElement.innerHTML =
+    description;
 
 
   return (
-    temp.textContent ||
-    temp.innerText ||
-    ""
+    temporaryElement.textContent ||
+    temporaryElement.innerText ||
+    "No description was provided for this title."
   );
 
 }
 
 
-async function searchBooks(
-  query
+/* =========================================================
+   DISPLAY SEARCH STATUS
+========================================================= */
+
+function setBookSearchStatus(
+  title,
+  author,
+  description
 ){
 
-  const trimmed =
-    String(
-      query || ""
-    ).trim();
+  if(bookTitle){
 
+    bookTitle.textContent =
+      title;
 
-  if(!trimmed){
-    return;
   }
 
 
-  bookTitle.textContent =
-    "Searching the shelves...";
+  if(bookAuthor){
 
-  bookAuthor.textContent =
-    "";
+    bookAuthor.textContent =
+      author;
 
-  bookDescription.textContent =
-    "The gremlins are looking.";
+  }
 
-  bookCover.style.display =
-    "none";
 
-  bookPlaceholder.style.display =
-    "grid";
+  if(bookDescription){
+
+    bookDescription.textContent =
+      description;
+
+  }
+
+}
+
+
+/* =========================================================
+   SEARCH GOOGLE BOOKS
+========================================================= */
+
+async function searchGoogleBooks(
+  query
+){
+
+  const trimmedQuery =
+    String(query || "")
+      .trim();
+
+
+  if(!trimmedQuery){
+
+    setBookSearchStatus(
+      "Tell the gremlin what you are looking for.",
+      "A title or author will do.",
+      "Type something into the search box and we will go wandering through the shelves."
+    );
+
+    return;
+
+  }
+
+
+  setBookSearchStatus(
+    "Searching the shelves...",
+    "One moment",
+    "The gremlin is rummaging around."
+  );
 
 
   try{
@@ -7648,7 +7654,7 @@ async function searchBooks(
       "https://www.googleapis.com/books/v1/volumes" +
       "?q=" +
       encodeURIComponent(
-        trimmed
+        trimmedQuery
       ) +
       "&maxResults=1";
 
@@ -7662,7 +7668,8 @@ async function searchBooks(
     if(!response.ok){
 
       throw new Error(
-        "Book search failed."
+        "Google Books returned " +
+        response.status
       );
 
     }
@@ -7672,148 +7679,167 @@ async function searchBooks(
       await response.json();
 
 
-    const item =
-      payload?.items?.[0];
+    if(
+      !payload.items ||
+      !payload.items.length
+    ){
+
+      setBookSearchStatus(
+        "Nothing turned up.",
+        "Try another trail.",
+        "We could not find a matching book. Try a different title, author, ISBN, or spelling."
+      );
 
 
-    if(!item){
+      if(bookCover){
 
-      bookTitle.textContent =
-        "Nothing appeared on that shelf.";
+        bookCover.style.display =
+          "none";
 
-      bookAuthor.textContent =
-        "Try another title, author or idea.";
+        bookCover.removeAttribute(
+          "src"
+        );
 
-      bookDescription.textContent =
-        "Sometimes the right book is hiding one shelf over.";
+        bookCover.alt =
+          "";
+
+      }
+
+
+      if(bookPlaceholder){
+
+        bookPlaceholder.style.display =
+          "grid";
+
+      }
+
 
       return;
 
     }
 
 
-    const info =
-      item.volumeInfo || {};
+    const volume =
+      payload.items[0]
+        .volumeInfo || {};
 
 
     const title =
-      info.title ||
+      volume.title ||
       "Untitled";
 
 
     const authors =
       Array.isArray(
-        info.authors
-      )
-        ? info.authors.join(", ")
+        volume.authors
+      ) &&
+      volume.authors.length
+        ? volume.authors.join(", ")
         : "Unknown author";
 
 
     const description =
-      cleanBookDescription(
-        info.description
-      ) ||
-      "This book does not have a description available yet.";
+      cleanDescription(
+        volume.description
+      );
+
+
+    setBookSearchStatus(
+      title,
+      authors,
+      description
+    );
 
 
     const imageLinks =
-      info.imageLinks || {};
+      volume.imageLinks || {};
 
 
-    let cover =
-      imageLinks.extraLarge ||
-      imageLinks.large ||
-      imageLinks.medium ||
+    let coverUrl =
       imageLinks.thumbnail ||
       imageLinks.smallThumbnail ||
       "";
 
 
-    if(cover){
+    if(coverUrl){
 
-      cover =
-        cover.replace(
+      coverUrl =
+        coverUrl.replace(
           /^http:/,
           "https:"
         );
 
-    }
+
+      if(bookCover){
+
+        bookCover.src =
+          coverUrl;
+
+        bookCover.alt =
+          "Cover of " +
+          title;
+
+        bookCover.style.display =
+          "block";
+
+      }
 
 
-    bookTitle.textContent =
-      title;
+      if(bookPlaceholder){
 
-    bookAuthor.textContent =
-      authors;
+        bookPlaceholder.style.display =
+          "none";
 
-    bookDescription.textContent =
-      description;
+      }
 
+    }else{
 
-    if(cover){
+      if(bookCover){
 
-      bookCover.onload =
-        () => {
+        bookCover.style.display =
+          "none";
 
-          bookPlaceholder.style.display =
-            "none";
+        bookCover.removeAttribute(
+          "src"
+        );
 
-          bookCover.style.display =
-            "block";
+        bookCover.alt =
+          "";
 
-        };
-
-
-      bookCover.onerror =
-        () => {
-
-          bookCover.style.display =
-            "none";
-
-          bookPlaceholder.style.display =
-            "grid";
-
-        };
+      }
 
 
-      bookCover.src =
-        cover;
+      if(bookPlaceholder){
 
-      bookCover.alt =
-        "Cover of " + title;
+        bookPlaceholder.style.display =
+          "grid";
 
-    }
-    else{
-
-      bookCover.style.display =
-        "none";
-
-      bookPlaceholder.style.display =
-        "grid";
+      }
 
     }
 
-  }
-  catch(error){
+  }catch(error){
 
     console.error(
+      "Book search failed:",
       error
     );
 
 
-    bookTitle.textContent =
-      "The shelves are being difficult.";
-
-    bookAuthor.textContent =
-      "Try again in a moment.";
-
-    bookDescription.textContent =
-      "The book search could not be completed.";
+    setBookSearchStatus(
+      "The trail went cold.",
+      "Search temporarily unavailable",
+      "Something interrupted the book search. Give it another try in a moment."
+    );
 
   }
 
 }
 
+
+/* =========================================================
+   BOOK SEARCH FORM
+========================================================= */
 
 if(bookSearchForm){
 
@@ -7823,8 +7849,11 @@ if(bookSearchForm){
 
       event.preventDefault();
 
-      searchBooks(
-        bookSearchInput.value
+
+      searchGoogleBooks(
+        bookSearchInput
+          ? bookSearchInput.value
+          : ""
       );
 
     }
@@ -7835,9 +7864,6 @@ if(bookSearchForm){
 
 /* =========================================================
    SUBTLE HERO PARALLAX
-
-   The illustration moves at different rates to give the
-   scene a little depth without interfering with clicks.
 ========================================================= */
 
 const storyStage =
@@ -7846,83 +7872,199 @@ const storyStage =
   );
 
 
-let ticking =
-  false;
+function updateHeroParallax(){
 
+  if(!storyStage){
 
-function updateStoryParallax(){
+    return;
 
-  ticking =
-    false;
+  }
 
 
   if(
-    !storyStage ||
     window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches
   ){
+
     return;
+
   }
 
 
-  const hero =
-    document.querySelector(
-      ".hero"
-    );
+  if(window.innerWidth < 821){
 
+    storyStage.style.marginTop =
+      "";
 
-  if(!hero){
     return;
+
   }
 
 
-  const rect =
-    hero.getBoundingClientRect();
+  const scrollY =
+    window.scrollY || 0;
 
 
-  const progress =
-    Math.max(
-      -1,
-      Math.min(
-        1,
-        -rect.top /
-        Math.max(
-          rect.height,
-          1
-        )
-      )
+  const movement =
+    Math.min(
+      scrollY * .055,
+      24
     );
 
 
-  storyStage.style.transform =
-    "translateX(-50%) translateY(" +
-    (
-      progress * 17
-    ) +
-    "px)";
+  storyStage.style.marginTop =
+    (-4 + movement) +
+    "px";
 
 }
 
 
-window.addEventListener(
-  "scroll",
-  () => {
+/* =========================================================
+   RANDOM STAR TWINKLES
+========================================================= */
 
-    if(ticking){
-      return;
-    }
+function createTwinkles(){
 
-
-    ticking =
-      true;
-
-
-    window.requestAnimationFrame(
-      updateStoryParallax
+  const sky =
+    document.querySelector(
+      ".night-sky"
     );
 
-  },
+
+  if(!sky){
+
+    return;
+
+  }
+
+
+  const count =
+    window.innerWidth < 700
+      ? 10
+      : 20;
+
+
+  for(
+    let i = 0;
+    i < count;
+    i++
+  ){
+
+    const star =
+      document.createElement(
+        "span"
+      );
+
+
+    star.style.position =
+      "absolute";
+
+    star.style.left =
+      (
+        3 +
+        Math.random() * 94
+      ) +
+      "%";
+
+    star.style.top =
+      (
+        5 +
+        Math.random() * 47
+      ) +
+      "%";
+
+    star.style.width =
+      (
+        1 +
+        Math.random() * 2
+      ) +
+      "px";
+
+    star.style.height =
+      star.style.width;
+
+    star.style.borderRadius =
+      "50%";
+
+    star.style.background =
+      "#fff2c2";
+
+    star.style.boxShadow =
+      "0 0 7px rgba(255,240,178,.8)";
+
+    star.style.opacity =
+      (
+        .2 +
+        Math.random() * .7
+      );
+
+
+    star.animate(
+      [
+        {
+          opacity:.15,
+          transform:"scale(.7)"
+        },
+
+        {
+          opacity:.95,
+          transform:"scale(1.35)"
+        },
+
+        {
+          opacity:.15,
+          transform:"scale(.7)"
+        }
+      ],
+      {
+        duration:
+          2800 +
+          Math.random() * 4200,
+
+        iterations:
+          Infinity,
+
+        delay:
+          Math.random() * -5000
+      }
+    );
+
+
+    sky.appendChild(
+      star
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   INITIALIZE HOMEPAGE
+========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  async () => {
+
+    createTwinkles();
+
+    updateHeroParallax();
+
+    await syncHomepageAuth();
+
+  }
+);
+
+
+/* =========================================================
+   SCROLL EFFECT
+========================================================= */
+
+window.addEventListener(
+  "scroll",
+  updateHeroParallax,
   {
     passive:true
   }
@@ -7930,161 +8072,13 @@ window.addEventListener(
 
 
 /* =========================================================
-   RANDOMIZED FIREFLY DRIFT
-
-   The base CSS handles the animation. This gives the
-   individual lights slightly different rhythms.
+   RESIZE
 ========================================================= */
 
-document
-  .querySelectorAll(
-    ".firefly"
-  )
-  .forEach(
-    (firefly,index) => {
-
-      const duration =
-        4.8 +
-        (
-          index % 4
-        ) *
-        .9;
-
-
-      firefly.style.animationDuration =
-        duration +
-        "s";
-
-    }
-  );
-
-
-/* =========================================================
-   RANDOMIZED EMBERS
-========================================================= */
-
-document
-  .querySelectorAll(
-    ".ember"
-  )
-  .forEach(
-    (ember,index) => {
-
-      ember.style.animationDuration =
-        (
-          3.1 +
-          index * .47
-        ) +
-        "s";
-
-    }
-  );
-
-
-/* =========================================================
-   VERY SUBTLE POINTER DEPTH
-
-   Desktop only. The campsite shifts by just a few pixels.
-========================================================= */
-
-const canUsePointerDepth =
-  window.matchMedia(
-    "(pointer:fine)"
-  ).matches &&
-  !window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches;
-
-
-if(
-  storyStage &&
-  canUsePointerDepth
-){
-
-  const hero =
-    document.querySelector(
-      ".hero"
-    );
-
-
-  hero?.addEventListener(
-    "mousemove",
-    event => {
-
-      const bounds =
-        hero.getBoundingClientRect();
-
-
-      const x =
-        (
-          event.clientX -
-          bounds.left
-        ) /
-        bounds.width -
-        .5;
-
-
-      const y =
-        (
-          event.clientY -
-          bounds.top
-        ) /
-        bounds.height -
-        .5;
-
-
-      const scrollShift =
-        Math.max(
-          -17,
-          Math.min(
-            17,
-            (
-              -bounds.top /
-              Math.max(
-                bounds.height,
-                1
-              )
-            ) *
-            17
-          )
-        );
-
-
-      storyStage.style.transform =
-        "translateX(-50%) " +
-        "translate(" +
-        (
-          x * 7
-        ) +
-        "px," +
-        (
-          y * 4 +
-          scrollShift
-        ) +
-        "px)";
-
-    }
-  );
-
-
-  hero?.addEventListener(
-    "mouseleave",
-    () => {
-
-      storyStage.style.transform =
-        "translateX(-50%)";
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   INITIALIZE PARALLAX POSITION
-========================================================= */
-
-updateStoryParallax();
+window.addEventListener(
+  "resize",
+  updateHeroParallax
+);
 
 </script>
 
