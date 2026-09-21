@@ -25,9 +25,7 @@
   --accent-dark:#684838;
   --accent-soft:#ead9ca;
   --red:#8a554c;
-  --red-soft:#f3e1dd;
   --shadow:0 16px 40px rgba(59,43,32,.08);
-  --radius:22px;
 }
 
 *{
@@ -71,10 +69,6 @@ input{
 button{
   cursor:pointer;
 }
-
-/* =========================================================
-   LOADING
-========================================================= */
 
 .loading-screen{
   position:fixed;
@@ -136,10 +130,6 @@ button{
     transform:translateY(-5px);
   }
 }
-
-/* =========================================================
-   TOPBAR
-========================================================= */
 
 .topbar{
   height:72px;
@@ -246,12 +236,8 @@ button{
   object-fit:cover;
 }
 
-/* =========================================================
-   PAGE
-========================================================= */
-
 .page{
-  width:min(1180px, calc(100% - 48px));
+  width:min(1180px,calc(100% - 48px));
   margin:0 auto;
   padding:48px 0 100px;
 }
@@ -286,10 +272,6 @@ button{
   font-size:16px;
   line-height:1.7;
 }
-
-/* =========================================================
-   SEARCH
-========================================================= */
 
 .search-shell{
   margin:0 auto;
@@ -363,10 +345,6 @@ button{
   color:var(--red);
 }
 
-/* =========================================================
-   FILTER TABS
-========================================================= */
-
 .tabs{
   margin:35px 0 25px;
   display:flex;
@@ -400,10 +378,6 @@ button{
   margin-left:5px;
   opacity:.7;
 }
-
-/* =========================================================
-   RESULTS
-========================================================= */
 
 .results{
   margin-top:10px;
@@ -444,10 +418,6 @@ button{
   color:var(--muted);
   font-size:12px;
 }
-
-/* =========================================================
-   BOOK RESULTS
-========================================================= */
 
 .book-results{
   display:grid;
@@ -543,10 +513,6 @@ button{
   white-space:nowrap;
 }
 
-/* =========================================================
-   CLUB RESULTS
-========================================================= */
-
 .club-results{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
@@ -618,10 +584,6 @@ button{
   font-weight:700;
 }
 
-/* =========================================================
-   READER RESULTS
-========================================================= */
-
 .people-results{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
@@ -682,10 +644,6 @@ button{
   font-size:11px;
   font-weight:700;
 }
-
-/* =========================================================
-   EMPTY
-========================================================= */
 
 .search-empty{
   padding:62px 25px;
@@ -749,7 +707,7 @@ button{
 
   .search-nav-button,
   .admin-link{
-    display:none !important;
+    display:none!important;
   }
 
   .page{
@@ -900,9 +858,8 @@ button{
     </h1>
 
     <p>
-      Search for books, book clubs, and other readers.
-      Book searches include the wider Google Books catalog,
-      so a title does not have to already exist in Paper Gremlin.
+      Search books, book clubs, and other readers.
+      Book searches include the wider Google Books catalog.
     </p>
 
   </section>
@@ -1151,10 +1108,6 @@ button{
 
 <script>
 
-/* =========================================================
-   SUPABASE
-========================================================= */
-
 const SUPABASE_URL =
   "https://nrtutxjznkfvvbmaagum.supabase.co";
 
@@ -1167,35 +1120,17 @@ const supabaseClient =
     SUPABASE_PUBLISHABLE_KEY
   );
 
-/* =========================================================
-   GOOGLE BOOKS
-========================================================= */
+let currentUser =
+  null;
 
-/*
-  Paper Gremlin already has a browser-restricted
-  Google Books API key in the existing project.
-
-  Part 2 keeps the existing project key handling and
-  performs the actual Google Books + Paper Gremlin search.
-*/
-
-/* =========================================================
-   STATE
-========================================================= */
-
-let currentUser = null;
-
-let activeFilter = "all";
+let activeFilter =
+  "all";
 
 let searchResults = {
   books:[],
   clubs:[],
   people:[]
 };
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
 
 const loadingScreen =
   document.getElementById(
@@ -1292,48 +1227,6 @@ const peopleSectionCount =
     "peopleSectionCount"
   );
 
-/* =========================================================
-   PART 2 CONTINUES DIRECTLY HERE
-========================================================= */
-  /* =========================================================
-   BASIC HELPERS
-========================================================= */
-
-function escapeHtml(value){
-
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-}
-
-function initials(name){
-
-  const pieces =
-    String(name || "")
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean);
-
-  if(!pieces.length){
-    return "?";
-  }
-
-  return pieces
-    .slice(0,2)
-    .map(
-      piece =>
-        piece
-          .charAt(0)
-          .toUpperCase()
-    )
-    .join("");
-
-}
-
 function hideLoading(){
 
   document.body.classList.remove(
@@ -1347,149 +1240,353 @@ function hideLoading(){
 }
 
 function setSummary(
-  message,
-  error = false
+  text,
+  isError = false
 ){
 
   searchSummary.textContent =
-    message;
+    text || "";
 
   searchSummary.classList.toggle(
     "error",
-    error
+    Boolean(isError)
   );
+
+}
+
+function escapeHtml(
+  value
+){
+
+  return String(
+    value ?? ""
+  )
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+function normalizeImage(
+  value
+){
+
+  if(!value){
+    return "";
+  }
+
+  return String(value)
+    .replace(
+      /^http:\/\//i,
+      "https://"
+    );
+
+}
+
+function initials(
+  value
+){
+
+  const pieces =
+    String(
+      value || "Reader"
+    )
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+  return pieces
+    .slice(0,2)
+    .map(
+      item =>
+        item.charAt(0).toUpperCase()
+    )
+    .join("") ||
+    "?";
 
 }
 
 function truncate(
   value,
-  length = 220
+  maximum = 220
 ){
 
   const text =
-    String(value || "")
-      .replace(/<[^>]*>/g,"")
+    String(
+      value || ""
+    )
+      .replace(/\s+/g," ")
       .trim();
 
-  if(text.length <= length){
+  if(
+    text.length <=
+    maximum
+  ){
     return text;
   }
 
   return (
     text.slice(
       0,
-      length
+      maximum - 1
     ) +
     "…"
   );
 
 }
 
-function normalizeImage(url){
+/* =========================================================
+   NORMALIZE LOCAL BOOK
+========================================================= */
 
-  if(!url){
-    return "";
-  }
+function normalizeLocalBook(
+  row
+){
 
-  return String(url)
-    .replace(
-      /^http:/,
-      "https:"
-    );
+  const authors =
+    Array.isArray(
+      row.authors
+    )
+      ? row.authors
+      : [];
+
+  return {
+    source:"local",
+
+    id:
+      row.id,
+
+    googleId:
+      row.google_books_id ||
+      null,
+
+    title:
+      row.title ||
+      "Untitled",
+
+    subtitle:
+      row.subtitle ||
+      "",
+
+    authors,
+
+    publisher:
+      row.publisher ||
+      "",
+
+    publishedDate:
+      row.published_date ||
+      "",
+
+    description:
+      row.description ||
+      "",
+
+    cover:
+      normalizeImage(
+        row.cover_url ||
+        ""
+      ),
+
+    isbn13:
+      row.isbn_13 ||
+      "",
+
+    isbn10:
+      row.isbn_10 ||
+      "",
+
+    categories:
+      Array.isArray(
+        row.categories
+      )
+        ? row.categories
+        : []
+  };
 
 }
 
 /* =========================================================
-   GOOGLE BOOK HELPERS
+   NORMALIZE GOOGLE BOOK
 ========================================================= */
 
-function googleBookToResult(item){
+function normalizeGoogleBook(
+  item
+){
 
-  const info =
+  const volume =
     item?.volumeInfo ||
     {};
 
   const identifiers =
     Array.isArray(
-      info.industryIdentifiers
+      volume.industryIdentifiers
     )
-      ? info.industryIdentifiers
+      ? volume.industryIdentifiers
       : [];
 
   const isbn13 =
     identifiers.find(
-      item =>
-        item.type === "ISBN_13"
-    )?.identifier ||
-    "";
+      identifier =>
+        identifier.type ===
+        "ISBN_13"
+    )?.identifier || "";
 
   const isbn10 =
     identifiers.find(
-      item =>
-        item.type === "ISBN_10"
-    )?.identifier ||
-    "";
+      identifier =>
+        identifier.type ===
+        "ISBN_10"
+    )?.identifier || "";
 
   return {
-
     source:"google",
 
-    google_books_id:
-      item.id,
+    id:null,
+
+    googleId:
+      item?.id ||
+      null,
 
     title:
-      info.title ||
-      "Untitled Book",
+      volume.title ||
+      "Untitled",
 
     subtitle:
-      info.subtitle ||
+      volume.subtitle ||
       "",
 
     authors:
-      Array.isArray(info.authors)
-        ? info.authors
+      Array.isArray(
+        volume.authors
+      )
+        ? volume.authors
         : [],
-
-    author:
-      Array.isArray(info.authors)
-        ? info.authors.join(", ")
-        : "Unknown author",
-
-    description:
-      info.description ||
-      "",
 
     publisher:
-      info.publisher ||
+      volume.publisher ||
       "",
 
-    published_date:
-      info.publishedDate ||
+    publishedDate:
+      volume.publishedDate ||
       "",
+
+    description:
+      volume.description ||
+      "",
+
+    cover:
+      normalizeImage(
+        volume.imageLinks?.thumbnail ||
+        volume.imageLinks?.smallThumbnail ||
+        ""
+      ),
+
+    isbn13,
+    isbn10,
 
     categories:
-      Array.isArray(info.categories)
-        ? info.categories
-        : [],
-
-    page_count:
-      info.pageCount ||
-      null,
-
-    isbn_13:
-      isbn13,
-
-    isbn_10:
-      isbn10,
-
-    cover_url:
-      normalizeImage(
-        info.imageLinks?.thumbnail ||
-        info.imageLinks?.smallThumbnail ||
-        ""
+      Array.isArray(
+        volume.categories
       )
-
+        ? volume.categories
+        : []
   };
+
+}
+
+/* =========================================================
+   BOOK MATCHING
+========================================================= */
+
+function bookMatchesQuery(
+  book,
+  query
+){
+
+  const haystack =
+    [
+      book.title,
+      book.subtitle,
+      ...(book.authors || []),
+      book.publisher,
+      book.isbn13,
+      book.isbn10,
+      ...(book.categories || [])
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+
+  return haystack.includes(
+    query.toLowerCase()
+  );
+
+}
+
+/* =========================================================
+   SEARCH LOCAL BOOKS
+
+   We intentionally fetch confirmed columns and filter the
+   small local result set in JavaScript. This avoids fragile
+   PostgREST .or() searches against columns that do not exist.
+========================================================= */
+
+async function searchLocalBooks(
+  query
+){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("books")
+      .select(`
+        id,
+        isbn_13,
+        isbn_10,
+        google_books_id,
+        title,
+        subtitle,
+        authors,
+        publisher,
+        published_date,
+        description,
+        cover_url,
+        categories
+      `)
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      )
+      .limit(250);
+
+  if(error){
+    throw error;
+  }
+
+  return (
+    data || []
+  )
+    .map(
+      normalizeLocalBook
+    )
+    .filter(
+      book =>
+        bookMatchesQuery(
+          book,
+          query
+        )
+    )
+    .slice(
+      0,
+      30
+    );
 
 }
 
@@ -1501,23 +1598,24 @@ async function searchGoogleBooks(
   query
 ){
 
-  const endpoint =
-    "https://www.googleapis.com/books/v1/volumes?" +
-    new URLSearchParams({
-      q:query,
-      maxResults:"30",
-      printType:"books"
-    }).toString();
+  const url =
+    "https://www.googleapis.com/books/v1/volumes" +
+    "?q=" +
+    encodeURIComponent(
+      query
+    ) +
+    "&maxResults=30" +
+    "&printType=books";
 
   const response =
     await fetch(
-      endpoint
+      url
     );
 
   if(!response.ok){
 
     throw new Error(
-      "Google Books search failed."
+      "Google Books search is temporarily unavailable."
     );
 
   }
@@ -1525,80 +1623,27 @@ async function searchGoogleBooks(
   const payload =
     await response.json();
 
-  const items =
-    Array.isArray(payload.items)
-      ? payload.items
-      : [];
-
-  return items.map(
-    googleBookToResult
-  );
-
-}
-
-/* =========================================================
-   SEARCH LOCAL BOOKS
-========================================================= */
-
-async function searchLocalBooks(
-  query
-){
-
-  try{
-
-    const safeQuery =
-      query
-        .replaceAll("%","")
-        .replaceAll(","," ");
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("books")
-        .select("*")
-        .or(
-          `title.ilike.%${safeQuery}%,author.ilike.%${safeQuery}%,isbn_13.ilike.%${safeQuery}%,isbn_10.ilike.%${safeQuery}%`
-        )
-        .limit(30);
-
-    if(error){
-      throw error;
-    }
-
-    return (
-      Array.isArray(data)
-        ? data
-        : []
+  return (
+    payload.items || []
+  )
+    .map(
+      normalizeGoogleBook
     )
-      .map(
-        book => ({
-          ...book,
-          source:"local"
-        })
-      );
-
-  }
-
-  catch(error){
-
-    console.warn(
-      "Local book search:",
-      error.message
+    .filter(
+      book =>
+        book.googleId
     );
 
-    return [];
-
-  }
-
 }
 
 /* =========================================================
-   MERGE BOOK RESULTS
+   DEDUPLICATE BOOKS
+
+   Local Paper Gremlin records take priority over matching
+   Google Books results.
 ========================================================= */
 
-function mergeBookResults(
+function mergeBooks(
   localBooks,
   googleBooks
 ){
@@ -1606,87 +1651,192 @@ function mergeBookResults(
   const merged =
     [];
 
-  const seen =
+  const seenGoogleIds =
     new Set();
 
-  function identity(book){
+  const seenIsbns =
+    new Set();
 
-    if(book.google_books_id){
+  const seenTitleAuthors =
+    new Set();
 
-      return (
-        "google:" +
-        String(
-          book.google_books_id
-        )
-      );
-
-    }
-
-    if(book.isbn_13){
-
-      return (
-        "isbn13:" +
-        String(
-          book.isbn_13
-        )
-      );
-
-    }
-
-    if(book.isbn_10){
-
-      return (
-        "isbn10:" +
-        String(
-          book.isbn_10
-        )
-      );
-
-    }
+  function titleAuthorKey(
+    book
+  ){
 
     return (
-      "title:" +
       String(
-        book.title ||
-        ""
+        book.title || ""
       )
-        .toLowerCase()
-        .trim() +
-      ":" +
-      String(
-        book.author ||
-        ""
-      )
-        .toLowerCase()
         .trim()
+        .toLowerCase() +
+      "|" +
+      String(
+        book.authors?.[0] || ""
+      )
+        .trim()
+        .toLowerCase()
     );
 
   }
 
-  [
-    ...localBooks,
-    ...googleBooks
-  ]
-    .forEach(
-      book => {
+  function remember(
+    book
+  ){
 
-        const key =
-          identity(book);
+    if(book.googleId){
 
-        if(
-          seen.has(key)
-        ){
-          return;
-        }
+      seenGoogleIds.add(
+        String(
+          book.googleId
+        )
+      );
 
-        seen.add(key);
+    }
 
-        merged.push(book);
+    if(book.isbn13){
 
-      }
+      seenIsbns.add(
+        String(
+          book.isbn13
+        )
+      );
+
+    }
+
+    if(book.isbn10){
+
+      seenIsbns.add(
+        String(
+          book.isbn10
+        )
+      );
+
+    }
+
+    const key =
+      titleAuthorKey(
+        book
+      );
+
+    if(
+      key !==
+      "|"
+    ){
+
+      seenTitleAuthors.add(
+        key
+      );
+
+    }
+
+  }
+
+  function alreadySeen(
+    book
+  ){
+
+    if(
+      book.googleId &&
+      seenGoogleIds.has(
+        String(
+          book.googleId
+        )
+      )
+    ){
+      return true;
+    }
+
+    if(
+      book.isbn13 &&
+      seenIsbns.has(
+        String(
+          book.isbn13
+        )
+      )
+    ){
+      return true;
+    }
+
+    if(
+      book.isbn10 &&
+      seenIsbns.has(
+        String(
+          book.isbn10
+        )
+      )
+    ){
+      return true;
+    }
+
+    const key =
+      titleAuthorKey(
+        book
+      );
+
+    if(
+      key !== "|" &&
+      seenTitleAuthors.has(
+        key
+      )
+    ){
+      return true;
+    }
+
+    return false;
+
+  }
+
+  for(
+    const book
+    of localBooks
+  ){
+
+    if(
+      alreadySeen(
+        book
+      )
+    ){
+      continue;
+    }
+
+    merged.push(
+      book
     );
 
-  return merged;
+    remember(
+      book
+    );
+
+  }
+
+  for(
+    const book
+    of googleBooks
+  ){
+
+    if(
+      alreadySeen(
+        book
+      )
+    ){
+      continue;
+    }
+
+    merged.push(
+      book
+    );
+
+    remember(
+      book
+    );
+
+  }
+
+  return merged.slice(
+    0,
+    40
+  );
 
 }
 
@@ -1698,179 +1848,175 @@ async function searchClubs(
   query
 ){
 
-  try{
-
-    const safeQuery =
-      query
-        .replaceAll("%","")
-        .replaceAll(","," ");
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("clubs")
-        .select("*")
-        .or(
-          `name.ilike.%${safeQuery}%,description.ilike.%${safeQuery}%`
-        )
-        .limit(30);
-
-    if(error){
-      throw error;
-    }
-
-    return (
-      Array.isArray(data)
-        ? data
-        : []
-    )
-      .filter(
-        club => {
-
-          if(
-            club.is_public === false
-          ){
-            return false;
-          }
-
-          if(
-            String(
-              club.visibility ||
-              ""
-            )
-              .toLowerCase() ===
-            "private"
-          ){
-            return false;
-          }
-
-          return true;
-
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("clubs")
+      .select(`
+        id,
+        name,
+        description,
+        genre,
+        is_public,
+        status
+      `)
+      .eq(
+        "is_public",
+        true
+      )
+      .eq(
+        "status",
+        "active"
+      )
+      .order(
+        "name",
+        {
+          ascending:true
         }
-      );
+      )
+      .limit(200);
 
+  if(error){
+    throw error;
   }
 
-  catch(error){
+  const normalizedQuery =
+    query.toLowerCase();
 
-    console.warn(
-      "Club search:",
-      error.message
+  return (
+    data || []
+  )
+    .filter(
+      club => {
+
+        const haystack =
+          [
+            club.name,
+            club.description,
+            club.genre
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+        return haystack.includes(
+          normalizedQuery
+        );
+
+      }
+    )
+    .slice(
+      0,
+      30
     );
-
-    return [];
-
-  }
 
 }
 
 /* =========================================================
    SEARCH READERS
+
+   IMPORTANT:
+   profiles.id is the user's UUID.
+   There is no profiles.user_id column.
 ========================================================= */
 
 async function searchPeople(
   query
 ){
 
-  try{
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(`
+        id,
+        username,
+        display_name,
+        bio,
+        avatar_url
+      `)
+      .order(
+        "display_name",
+        {
+          ascending:true
+        }
+      )
+      .limit(250);
 
-    const safeQuery =
-      query
-        .replaceAll("%","")
-        .replaceAll(","," ");
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("profiles")
-        .select(
-          "id,user_id,username,display_name,bio,avatar_url"
-        )
-        .or(
-          `username.ilike.%${safeQuery}%,display_name.ilike.%${safeQuery}%`
-        )
-        .limit(30);
-
-    if(error){
-      throw error;
-    }
-
-    return (
-      Array.isArray(data)
-        ? data
-        : []
-    );
-
+  if(error){
+    throw error;
   }
 
-  catch(error){
+  const normalizedQuery =
+    query.toLowerCase();
 
-    console.warn(
-      "Reader search:",
-      error.message
+  return (
+    data || []
+  )
+    .filter(
+      profile => {
+
+        const haystack =
+          [
+            profile.username,
+            profile.display_name,
+            profile.bio
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+        return haystack.includes(
+          normalizedQuery
+        );
+
+      }
+    )
+    .slice(
+      0,
+      30
     );
-
-    return [];
-
-  }
 
 }
 
 /* =========================================================
-   OPEN A BOOK
+   BOOK RESULT URL
 ========================================================= */
 
-function openBook(
+function bookUrl(
   book
 ){
-
-  /*
-    Existing Paper Gremlin books already have a local UUID,
-    so they can open directly.
-
-    Google Books results go to book-detail.html with the
-    Google volume ID. That page is the NEXT page we'll fix
-    so it automatically creates the local Paper Gremlin
-    record before a reader rates or saves it.
-  */
 
   if(
     book.source === "local" &&
     book.id
   ){
 
-    location.href =
+    return (
       "book-detail.html?id=" +
       encodeURIComponent(
         book.id
-      );
-
-    return;
+      )
+    );
 
   }
 
-  if(
-    book.google_books_id
-  ){
+  if(book.googleId){
 
-    location.href =
+    return (
       "book-detail.html?google_id=" +
       encodeURIComponent(
-        book.google_books_id
-      );
-
-    return;
+        book.googleId
+      )
+    );
 
   }
 
-  setSummary(
-    "Paper Gremlin couldn't open that book.",
-    true
-  );
+  return "marketplace.html";
 
 }
 
@@ -1883,172 +2029,126 @@ function renderBooks(){
   bookResults.innerHTML =
     "";
 
-  searchResults.books
-    .forEach(
-      book => {
+  const books =
+    searchResults.books;
 
-        const row =
-          document.createElement(
-            "article"
-          );
+  bookSectionCount.textContent =
+    books.length === 1
+      ? "1 result"
+      : `${books.length} results`;
 
-        row.className =
-          "book-result";
+  if(!books.length){
 
-        row.tabIndex =
-          0;
+    bookResults.innerHTML =
+      `
+        <div class="search-empty">
+          <div class="empty-symbol">▱</div>
+          <h2>No books found.</h2>
+          <p>
+            Try another title, author, or ISBN.
+          </p>
+        </div>
+      `;
 
-        const cover =
-          document.createElement(
-            "div"
-          );
+    return;
 
-        cover.className =
-          "book-result-cover";
+  }
 
-        if(book.cover_url){
+  for(
+    const book
+    of books
+  ){
 
-          const image =
-            document.createElement(
-              "img"
-            );
+    const link =
+      document.createElement(
+        "a"
+      );
 
-          image.src =
-            normalizeImage(
-              book.cover_url
-            );
+    link.className =
+      "book-result";
 
-          image.alt =
-            "";
+    link.href =
+      bookUrl(
+        book
+      );
 
-          image.loading =
-            "lazy";
-
-          image.onerror =
-            () => {
-
-              cover.innerHTML =
-                `<div class="cover-placeholder">${escapeHtml(book.title)}</div>`;
-
-            };
-
-          cover.appendChild(
-            image
-          );
-
-        }
-
-        else{
-
-          cover.innerHTML =
-            `<div class="cover-placeholder">${escapeHtml(book.title)}</div>`;
-
-        }
-
-        const copy =
-          document.createElement(
-            "div"
-          );
-
-        copy.innerHTML =
+    const coverMarkup =
+      book.cover
+        ? `
+            <img
+              src="${escapeHtml(book.cover)}"
+              alt=""
+              loading="lazy"
+            >
           `
-            <h3 class="result-title">
-              ${escapeHtml(book.title || "Untitled Book")}
-            </h3>
-
-            <div class="result-subtitle">
+        : `
+            <div class="cover-placeholder">
               ${escapeHtml(
-                book.author ||
-                (
-                  Array.isArray(book.authors)
-                    ? book.authors.join(", ")
-                    : ""
-                ) ||
-                "Unknown author"
-              )}
-            </div>
-
-            <div class="result-description">
-              ${escapeHtml(
-                truncate(
-                  book.description ||
-                  book.subtitle ||
-                  ""
-                )
+                book.title
               )}
             </div>
           `;
 
-        const action =
-          document.createElement(
-            "button"
-          );
+    const authorText =
+      book.authors?.length
+        ? book.authors.join(", ")
+        : "Unknown author";
 
-        action.type =
-          "button";
+    const sourceText =
+      book.source === "local"
+        ? "Paper Gremlin"
+        : "Google Books";
 
-        action.className =
-          "result-action";
+    link.innerHTML =
+      `
+        <div class="book-result-cover">
+          ${coverMarkup}
+        </div>
 
-        action.textContent =
-          "View Book →";
+        <div>
 
-        action.addEventListener(
-          "click",
-          event => {
+          <h3 class="result-title">
+            ${escapeHtml(
+              book.title
+            )}
+          </h3>
 
-            event.stopPropagation();
+          <div class="result-subtitle">
+            ${escapeHtml(
+              authorText
+            )}
+            ·
+            ${escapeHtml(
+              sourceText
+            )}
+          </div>
 
-            openBook(book);
-
+          ${
+            book.description
+              ? `
+                  <div class="result-description">
+                    ${escapeHtml(
+                      truncate(
+                        book.description
+                      )
+                    )}
+                  </div>
+                `
+              : ""
           }
-        );
 
-        row.addEventListener(
-          "click",
-          () => {
+        </div>
 
-            openBook(book);
+        <span class="result-action">
+          View Book →
+        </span>
+      `;
 
-          }
-        );
-
-        row.addEventListener(
-          "keydown",
-          event => {
-
-            if(
-              event.key === "Enter" ||
-              event.key === " "
-            ){
-
-              event.preventDefault();
-
-              openBook(book);
-
-            }
-
-          }
-        );
-
-        row.appendChild(
-          cover
-        );
-
-        row.appendChild(
-          copy
-        );
-
-        row.appendChild(
-          action
-        );
-
-        bookResults.appendChild(
-          row
-        );
-
-      }
+    bookResults.appendChild(
+      link
     );
+
+  }
 
 }
 
@@ -2061,85 +2161,119 @@ function renderClubs(){
   clubResults.innerHTML =
     "";
 
-  searchResults.clubs
-    .forEach(
-      club => {
+  const clubs =
+    searchResults.clubs;
 
-        const card =
-          document.createElement(
-            "article"
-          );
+  clubSectionCount.textContent =
+    clubs.length === 1
+      ? "1 result"
+      : `${clubs.length} results`;
 
-        card.className =
-          "club-result";
+  if(!clubs.length){
 
-        const name =
-          club.name ||
-          club.club_name ||
-          "Book Club";
+    clubResults.innerHTML =
+      `
+        <div
+          class="search-empty"
+          style="grid-column:1/-1"
+        >
+          <div class="empty-symbol">◉</div>
+          <h2>No clubs found.</h2>
+          <p>
+            Try another club name or genre.
+          </p>
+        </div>
+      `;
 
-        const description =
-          club.description ||
-          "A Paper Gremlin book club.";
+    return;
 
-        card.innerHTML =
-          `
-            <div class="club-result-top">
+  }
 
-              <div class="club-symbol">
-                ◉
-              </div>
+  for(
+    const club
+    of clubs
+  ){
 
-              <div>
+    const card =
+      document.createElement(
+        "article"
+      );
 
-                <h3>
-                  ${escapeHtml(name)}
-                </h3>
+    card.className =
+      "club-result";
 
-                <div class="club-meta">
-                  Paper Gremlin Book Club
-                </div>
+    card.innerHTML =
+      `
+        <div class="club-result-top">
 
-              </div>
+          <div class="club-symbol">
+            ◉
+          </div>
 
-            </div>
+          <div>
 
-            <div class="club-description">
+            <h3>
               ${escapeHtml(
-                truncate(
-                  description,
-                  180
-                )
+                club.name ||
+                "Unnamed Club"
               )}
+            </h3>
+
+            <div class="club-meta">
+              ${
+                club.genre
+                  ? escapeHtml(
+                      club.genre
+                    )
+                  : "Book Club"
+              }
             </div>
 
-            <div class="club-result-bottom">
+          </div>
 
-              <span class="club-member-count">
-                Readers welcome
-              </span>
+        </div>
 
-              <a
-                class="club-link"
-                href="club.html?id=${encodeURIComponent(club.id)}"
-              >
-                View Club →
-              </a>
+        <div class="club-description">
+          ${
+            club.description
+              ? escapeHtml(
+                  truncate(
+                    club.description,
+                    180
+                  )
+                )
+              : "This club has not added a description yet."
+          }
+        </div>
 
-            </div>
-          `;
+        <div class="club-result-bottom">
 
-        clubResults.appendChild(
-          card
-        );
+          <span class="club-member-count">
+            Public club
+          </span>
 
-      }
+          <a
+            class="club-link"
+            href="club-detail.html?id=${encodeURIComponent(
+              club.id
+            )}"
+          >
+            View Club →
+          </a>
+
+        </div>
+      `;
+
+    clubResults.appendChild(
+      card
     );
+
+  }
 
 }
 
 /* =========================================================
-   RENDER READERS
+   RENDER PEOPLE
 ========================================================= */
 
 function renderPeople(){
@@ -2147,92 +2281,120 @@ function renderPeople(){
   peopleResults.innerHTML =
     "";
 
-  searchResults.people
-    .forEach(
-      person => {
+  const people =
+    searchResults.people;
 
-        const card =
-          document.createElement(
-            "article"
+  peopleSectionCount.textContent =
+    people.length === 1
+      ? "1 result"
+      : `${people.length} results`;
+
+  if(!people.length){
+
+    peopleResults.innerHTML =
+      `
+        <div
+          class="search-empty"
+          style="grid-column:1/-1"
+        >
+          <div class="empty-symbol">☺</div>
+          <h2>No readers found.</h2>
+          <p>
+            Try another display name or username.
+          </p>
+        </div>
+      `;
+
+    return;
+
+  }
+
+  for(
+    const person
+    of people
+  ){
+
+    const card =
+      document.createElement(
+        "article"
+      );
+
+    card.className =
+      "person-result";
+
+    const displayName =
+      person.display_name ||
+      person.username ||
+      "Reader";
+
+    const avatarMarkup =
+      person.avatar_url
+        ? `
+            <img
+              src="${escapeHtml(
+                person.avatar_url
+              )}"
+              alt=""
+              loading="lazy"
+            >
+          `
+        : escapeHtml(
+            initials(
+              displayName
+            )
           );
 
-        card.className =
-          "person-result";
+    card.innerHTML =
+      `
+        <div class="person-avatar">
+          ${avatarMarkup}
+        </div>
 
-        const name =
-          person.display_name ||
-          person.username ||
-          "Paper Gremlin Reader";
+        <h3>
+          ${escapeHtml(
+            displayName
+          )}
+        </h3>
 
-        const username =
-          person.username
-            ? "@" +
-              String(
-                person.username
-              )
-                .replace(/^@/,"")
-            : "";
-
-        const userId =
-          person.user_id ||
-          person.id;
-
-        const avatar =
-          person.avatar_url ||
-          "";
-
-        const avatarMarkup =
-          avatar
-            ? `
-                <div class="person-avatar">
-                  <img
-                    src="${escapeHtml(normalizeImage(avatar))}"
-                    alt=""
-                  >
-                </div>
-              `
-            : `
-                <div class="person-avatar">
-                  ${escapeHtml(initials(name))}
-                </div>
-              `;
-
-        card.innerHTML =
-          `
-            ${avatarMarkup}
-
-            <h3>
-              ${escapeHtml(name)}
-            </h3>
-
-            <div class="person-handle">
-              ${escapeHtml(username)}
-            </div>
-
-            <div class="person-bio">
-              ${escapeHtml(
-                truncate(
-                  person.bio ||
-                  "A reader on Paper Gremlin.",
-                  120
+        <div class="person-handle">
+          ${
+            person.username
+              ? "@" +
+                escapeHtml(
+                  person.username
                 )
-              )}
-            </div>
+              : "Paper Gremlin reader"
+          }
+        </div>
 
-            <a
-              class="person-link"
-              href="profile.html?id=${encodeURIComponent(userId)}"
-            >
-              View Profile →
-            </a>
-          `;
+        <div class="person-bio">
+          ${
+            person.bio
+              ? escapeHtml(
+                  truncate(
+                    person.bio,
+                    130
+                  )
+                )
+              : "No bio yet."
+          }
+        </div>
 
-        peopleResults.appendChild(
-          card
-        );
+        <a
+          class="person-link"
+          href="profile.html?id=${encodeURIComponent(
+            person.id
+          )}"
+        >
+          View Profile →
+        </a>
+      `;
 
-      }
+    peopleResults.appendChild(
+      card
     );
+
+  }
 
 }
 
@@ -2242,19 +2404,19 @@ function renderPeople(){
 
 function updateCounts(){
 
-  const books =
+  const bookTotal =
     searchResults.books.length;
 
-  const clubs =
+  const clubTotal =
     searchResults.clubs.length;
 
-  const people =
+  const peopleTotal =
     searchResults.people.length;
 
   const total =
-    books +
-    clubs +
-    people;
+    bookTotal +
+    clubTotal +
+    peopleTotal;
 
   allCount.textContent =
     total
@@ -2262,85 +2424,109 @@ function updateCounts(){
       : "";
 
   booksCount.textContent =
-    books
-      ? `(${books})`
+    bookTotal
+      ? `(${bookTotal})`
       : "";
 
   clubsCount.textContent =
-    clubs
-      ? `(${clubs})`
+    clubTotal
+      ? `(${clubTotal})`
       : "";
 
   peopleCount.textContent =
-    people
-      ? `(${people})`
+    peopleTotal
+      ? `(${peopleTotal})`
       : "";
-
-  bookSectionCount.textContent =
-    `${books} result${books === 1 ? "" : "s"}`;
-
-  clubSectionCount.textContent =
-    `${clubs} result${clubs === 1 ? "" : "s"}`;
-
-  peopleSectionCount.textContent =
-    `${people} result${people === 1 ? "" : "s"}`;
 
 }
 
 /* =========================================================
-   FILTER DISPLAY
+   APPLY FILTER
 ========================================================= */
 
 function applyFilter(){
 
-  const booksVisible =
-    activeFilter === "all" ||
-    activeFilter === "books";
+  document
+    .querySelectorAll(
+      ".tab"
+    )
+    .forEach(
+      tab => {
 
-  const clubsVisible =
-    activeFilter === "all" ||
-    activeFilter === "clubs";
+        tab.classList.toggle(
+          "active",
+          tab.dataset.filter ===
+          activeFilter
+        );
 
-  const peopleVisible =
-    activeFilter === "all" ||
-    activeFilter === "people";
+      }
+    );
 
-  bookSection.classList.toggle(
-    "hidden",
-    !booksVisible ||
-    !searchResults.books.length
-  );
+  const sectionMap = {
+    books:bookSection,
+    clubs:clubSection,
+    people:peopleSection
+  };
 
-  clubSection.classList.toggle(
-    "hidden",
-    !clubsVisible ||
-    !searchResults.clubs.length
-  );
+  for(
+    const [
+      key,
+      section
+    ]
+    of Object.entries(
+      sectionMap
+    )
+  ){
 
-  peopleSection.classList.toggle(
-    "hidden",
-    !peopleVisible ||
-    !searchResults.people.length
-  );
+    const shouldShow =
+      activeFilter === "all" ||
+      activeFilter === key;
+
+    section.classList.toggle(
+      "hidden",
+      !shouldShow
+    );
+
+  }
 
 }
 
 /* =========================================================
-   SEARCH
+   RENDER EVERYTHING
 ========================================================= */
 
-async function performSearch(
-  query
+function renderResults(){
+
+  initialState.style.display =
+    "none";
+
+  renderBooks();
+  renderClubs();
+  renderPeople();
+
+  updateCounts();
+  applyFilter();
+
+}
+
+/* =========================================================
+   RUN SEARCH
+========================================================= */
+
+async function runSearch(
+  rawQuery
 ){
 
-  const cleanQuery =
-    String(query || "")
+  const query =
+    String(
+      rawQuery || ""
+    )
       .trim();
 
-  if(!cleanQuery){
+  if(!query){
 
     setSummary(
-      "Type something to search for."
+      "Type something to search."
     );
 
     searchInput.focus();
@@ -2356,19 +2542,36 @@ async function performSearch(
     "Searching...";
 
   setSummary(
-    `Searching for “${cleanQuery}”...`
+    `Searching for “${query}”...`
   );
 
-  initialState.style.display =
-    "none";
+  /*
+    Keep the URL useful/bookmarkable without reloading.
+  */
+
+  const nextUrl =
+    new URL(
+      window.location.href
+    );
+
+  nextUrl.searchParams.set(
+    "q",
+    query
+  );
+
+  window.history.replaceState(
+    {},
+    "",
+    nextUrl
+  );
 
   try{
 
     /*
-      Search Paper Gremlin and Google Books at the same time.
+      Search all Paper Gremlin areas independently.
 
-      A failure in one source does not destroy the entire
-      search page.
+      Google Books failure should NOT destroy local book,
+      club, or reader search.
     */
 
     const [
@@ -2379,16 +2582,19 @@ async function performSearch(
     ] =
       await Promise.allSettled([
         searchLocalBooks(
-          cleanQuery
+          query
         ),
+
         searchGoogleBooks(
-          cleanQuery
+          query
         ),
+
         searchClubs(
-          cleanQuery
+          query
         ),
+
         searchPeople(
-          cleanQuery
+          query
         )
       ]);
 
@@ -2404,30 +2610,79 @@ async function performSearch(
         ? googleBooksResult.value
         : [];
 
-    searchResults.books =
-      mergeBookResults(
-        localBooks,
-        googleBooks
-      );
-
-    searchResults.clubs =
+    const clubs =
       clubsResult.status ===
       "fulfilled"
         ? clubsResult.value
         : [];
 
-    searchResults.people =
+    const people =
       peopleResult.status ===
       "fulfilled"
         ? peopleResult.value
         : [];
 
-    renderBooks();
-    renderClubs();
-    renderPeople();
+    if(
+      localBooksResult.status ===
+      "rejected"
+    ){
 
-    updateCounts();
-    applyFilter();
+      console.error(
+        "Local book search:",
+        localBooksResult.reason
+      );
+
+    }
+
+    if(
+      googleBooksResult.status ===
+      "rejected"
+    ){
+
+      console.warn(
+        "Google Books search:",
+        googleBooksResult.reason
+      );
+
+    }
+
+    if(
+      clubsResult.status ===
+      "rejected"
+    ){
+
+      console.error(
+        "Club search:",
+        clubsResult.reason
+      );
+
+    }
+
+    if(
+      peopleResult.status ===
+      "rejected"
+    ){
+
+      console.error(
+        "Reader search:",
+        peopleResult.reason
+      );
+
+    }
+
+    searchResults = {
+      books:
+        mergeBooks(
+          localBooks,
+          googleBooks
+        ),
+
+      clubs,
+
+      people
+    };
+
+    renderResults();
 
     const total =
       searchResults.books.length +
@@ -2436,35 +2691,54 @@ async function performSearch(
 
     if(total){
 
+      let summary =
+        `${total} result${
+          total === 1
+            ? ""
+            : "s"
+        } for “${query}”`;
+
+      if(
+        googleBooksResult.status ===
+        "rejected"
+      ){
+
+        summary +=
+          " — Google Books is temporarily unavailable, so book results may be limited.";
+
+      }
+
       setSummary(
-        `Found ${total} result${total === 1 ? "" : "s"} for “${cleanQuery}”.`
+        summary
       );
 
     }
 
     else{
 
-      setSummary(
-        `No results found for “${cleanQuery}”.`
-      );
+      if(
+        localBooksResult.status === "rejected" &&
+        googleBooksResult.status === "rejected" &&
+        clubsResult.status === "rejected" &&
+        peopleResult.status === "rejected"
+      ){
+
+        setSummary(
+          "Search could not connect to Paper Gremlin right now. Please try again.",
+          true
+        );
+
+      }
+
+      else{
+
+        setSummary(
+          `No results found for “${query}”.`
+        );
+
+      }
 
     }
-
-    const url =
-      new URL(
-        location.href
-      );
-
-    url.searchParams.set(
-      "q",
-      cleanQuery
-    );
-
-    history.replaceState(
-      {},
-      "",
-      url
-    );
 
   }
 
@@ -2476,7 +2750,8 @@ async function performSearch(
     );
 
     setSummary(
-      "Paper Gremlin couldn't complete that search. Please try again.",
+      error?.message ||
+      "Paper Gremlin couldn't complete that search.",
       true
     );
 
@@ -2495,7 +2770,7 @@ async function performSearch(
 }
 
 /* =========================================================
-   FORM
+   SEARCH FORM
 ========================================================= */
 
 searchForm.addEventListener(
@@ -2504,7 +2779,7 @@ searchForm.addEventListener(
 
     event.preventDefault();
 
-    await performSearch(
+    await runSearch(
       searchInput.value
     );
 
@@ -2530,21 +2805,6 @@ document
             tab.dataset.filter ||
             "all";
 
-          document
-            .querySelectorAll(
-              ".tab"
-            )
-            .forEach(
-              item =>
-                item.classList.remove(
-                  "active"
-                )
-            );
-
-          tab.classList.add(
-            "active"
-          );
-
           applyFilter();
 
         }
@@ -2554,12 +2814,27 @@ document
   );
 
 /* =========================================================
-   PUBLIC PROFILE
+   PROFILE NAV
 ========================================================= */
 
-async function loadPublicProfile(
-  userId
-){
+async function loadNavProfile(){
+
+  const avatar =
+    document.getElementById(
+      "navAvatar"
+    );
+
+  if(!currentUser){
+
+    avatar.textContent =
+      "→";
+
+    avatar.href =
+      "auth.html#login";
+
+    return;
+
+  }
 
   try{
 
@@ -2568,131 +2843,115 @@ async function loadPublicProfile(
       error
     } =
       await supabaseClient
-        .rpc(
-          "get_public_profile",
-          {
-            check_user_id:
-              userId
-          }
-        );
+        .from("profiles")
+        .select(`
+          id,
+          username,
+          display_name,
+          avatar_url
+        `)
+        .eq(
+          "id",
+          currentUser.id
+        )
+        .maybeSingle();
 
     if(error){
       throw error;
     }
 
-    return Array.isArray(data)
-      ? data[0] || null
-      : data || null;
+    const displayName =
+      data?.display_name ||
+      data?.username ||
+      currentUser.email ||
+      "Reader";
+
+    if(data?.avatar_url){
+
+      avatar.innerHTML =
+        "";
+
+      const image =
+        document.createElement(
+          "img"
+        );
+
+      image.src =
+        data.avatar_url;
+
+      image.alt =
+        "";
+
+      image.onerror =
+        () => {
+
+          avatar.innerHTML =
+            "";
+
+          avatar.textContent =
+            initials(
+              displayName
+            );
+
+        };
+
+      avatar.appendChild(
+        image
+      );
+
+    }
+
+    else{
+
+      avatar.textContent =
+        initials(
+          displayName
+        );
+
+    }
 
   }
 
   catch(error){
 
     console.warn(
-      "Public profile:",
-      error.message
+      "Navigation profile:",
+      error
     );
 
-    return null;
+    avatar.textContent =
+      initials(
+        currentUser.email ||
+        "Reader"
+      );
 
   }
 
 }
 
 /* =========================================================
-   NAV PROFILE
-========================================================= */
+   ADMIN NAV
 
-async function loadCurrentUserProfile(){
-
-  if(!currentUser){
-    return;
-  }
-
-  const navAvatar =
-    document.getElementById(
-      "navAvatar"
-    );
-
-  const profile =
-    await loadPublicProfile(
-      currentUser.id
-    );
-
-  const name =
-    profile?.display_name ||
-    profile?.username ||
-    currentUser
-      ?.user_metadata
-      ?.display_name ||
-    currentUser.email ||
-    "Reader";
-
-  const avatar =
-    profile?.avatar_url ||
-    currentUser
-      ?.user_metadata
-      ?.avatar_url ||
-    "";
-
-  navAvatar.innerHTML =
-    "";
-
-  if(avatar){
-
-    const image =
-      document.createElement(
-        "img"
-      );
-
-    image.src =
-      normalizeImage(
-        avatar
-      );
-
-    image.alt =
-      name;
-
-    image.onerror =
-      () => {
-
-        navAvatar.innerHTML =
-          "";
-
-        navAvatar.textContent =
-          initials(name);
-
-      };
-
-    navAvatar.appendChild(
-      image
-    );
-
-  }
-
-  else{
-
-    navAvatar.textContent =
-      initials(name);
-
-  }
-
-}
-
-/* =========================================================
-   ADMIN
+   Confirmed live schema:
+   admin_users.user_id
+   admin_users.active
 ========================================================= */
 
 async function loadAdminStatus(){
-
-  if(!currentUser){
-    return;
-  }
 
   const adminLink =
     document.getElementById(
       "adminLink"
     );
+
+  if(!currentUser){
+
+    adminLink.style.display =
+      "none";
+
+    return;
+
+  }
 
   try{
 
@@ -2702,23 +2961,44 @@ async function loadAdminStatus(){
     } =
       await supabaseClient
         .from("admin_users")
-        .select("*")
+        .select(`
+          user_id,
+          active
+        `)
         .eq(
           "user_id",
           currentUser.id
         )
+        .eq(
+          "active",
+          true
+        )
         .maybeSingle();
 
     if(error){
-      throw error;
-    }
 
-    if(data){
+      /*
+        Admin status is not required for search to function.
+        RLS may intentionally hide this table from ordinary
+        readers, so treat lookup failure as "not visible."
+      */
+
+      console.warn(
+        "Admin status:",
+        error
+      );
 
       adminLink.style.display =
-        "inline-flex";
+        "none";
+
+      return;
 
     }
+
+    adminLink.style.display =
+      data
+        ? "inline-block"
+        : "none";
 
   }
 
@@ -2726,8 +3006,11 @@ async function loadAdminStatus(){
 
     console.warn(
       "Admin status:",
-      error.message
+      error
     );
+
+    adminLink.style.display =
+      "none";
 
   }
 
@@ -2742,24 +3025,20 @@ async function loadSession(){
   try{
 
     const {
-      data
+      data,
+      error
     } =
       await supabaseClient
         .auth
         .getSession();
 
+    if(error){
+      throw error;
+    }
+
     currentUser =
       data?.session?.user ||
       null;
-
-    if(currentUser){
-
-      await Promise.allSettled([
-        loadCurrentUserProfile(),
-        loadAdminStatus()
-      ]);
-
-    }
 
   }
 
@@ -2767,54 +3046,117 @@ async function loadSession(){
 
     console.warn(
       "Session:",
-      error.message
+      error
     );
+
+    currentUser =
+      null;
 
   }
 
 }
 
 /* =========================================================
-   START
+   INITIAL QUERY FROM URL
 ========================================================= */
 
-async function startSearchPage(){
+async function loadRequestedSearch(){
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const query =
+    String(
+      params.get("q") ||
+      ""
+    )
+      .trim();
+
+  if(!query){
+    return;
+  }
+
+  searchInput.value =
+    query;
+
+  await runSearch(
+    query
+  );
+
+}
+
+/* =========================================================
+   AUTH CHANGES
+========================================================= */
+
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    async (
+      event,
+      session
+    ) => {
+
+      const previousId =
+        currentUser?.id ||
+        null;
+
+      const nextUser =
+        session?.user ||
+        null;
+
+      const nextId =
+        nextUser?.id ||
+        null;
+
+      currentUser =
+        nextUser;
+
+      if(
+        previousId ===
+        nextId
+      ){
+        return;
+      }
+
+      await Promise.all([
+        loadNavProfile(),
+        loadAdminStatus()
+      ]);
+
+    }
+  );
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+async function initialize(){
 
   try{
 
     await loadSession();
 
-    const params =
-      new URLSearchParams(
-        location.search
-      );
+    await Promise.all([
+      loadNavProfile(),
+      loadAdminStatus()
+    ]);
 
-    const query =
-      params.get("q") ||
-      "";
-
-    if(query){
-
-      searchInput.value =
-        query;
-
-      await performSearch(
-        query
-      );
-
-    }
+    await loadRequestedSearch();
 
   }
 
   catch(error){
 
     console.error(
-      "Search startup:",
+      "Search initialization:",
       error
     );
 
     setSummary(
-      "Paper Gremlin couldn't finish loading search.",
+      "Paper Gremlin had trouble opening search. You can still try searching below.",
       true
     );
 
@@ -2828,7 +3170,7 @@ async function startSearchPage(){
 
 }
 
-startSearchPage();
+initialize();
 
 </script>
 
