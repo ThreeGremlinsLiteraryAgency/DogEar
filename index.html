@@ -12,62 +12,60 @@
 
   <meta
     name="description"
-    content="Paper Gremlin is a gathering place for readers, writers, book clubs, beta readers, and everyone who loves stories."
+    content="Paper Gremlin is a gathering place for every kind of reader and every kind of story."
   >
 
   <style>
     :root {
-      --night: #07131a;
-      --night-soft: #0d2025;
-      --forest: #102d2a;
-      --forest-light: #1c4540;
+      --night: #06151b;
+      --night-deep: #031014;
+      --night-blue: #0b2730;
+      --forest: #0c2926;
+      --forest-mid: #143b32;
+      --forest-light: #235346;
 
-      --fire: #e98a3b;
-      --fire-light: #ffc875;
-      --ember: #b9512b;
+      --fire-red: #d9582e;
+      --fire: #ef8738;
+      --fire-gold: #ffb957;
+      --fire-light: #ffe39a;
 
-      --moon: #e7e2cb;
+      --parchment: #e7d2a6;
+      --parchment-light: #f3e2bd;
+      --parchment-dark: #a88457;
 
-      --parchment: #ead7ae;
-      --parchment-light: #f4e6c5;
-      --parchment-dark: #b99a6c;
+      --cream: #f7e8c8;
+      --cream-muted: #cdbfa2;
 
-      --ink: #30261e;
-      --cream: #fff0cf;
-      --cream-muted: #d6c9ac;
+      --gold: #cda45f;
+      --gold-light: #efca82;
 
-      --gold: #d4aa63;
-      --gold-light: #f0ce89;
+      --ink: #30241a;
 
-      --line: rgba(232, 194, 122, .30);
-
-      --max-width: 1180px;
+      --max: 1180px;
     }
+
 
     * {
       box-sizing: border-box;
     }
 
+
     html {
       scroll-behavior: smooth;
     }
+
 
     body {
       margin: 0;
       overflow-x: hidden;
 
       background:
-        radial-gradient(
-          circle at 50% 4%,
-          rgba(74, 119, 117, .23),
-          transparent 32rem
-        ),
         linear-gradient(
           180deg,
-          #07131a 0%,
-          #0b2023 35%,
-          #102923 70%,
-          #071512 100%
+          var(--night-deep),
+          var(--night) 38%,
+          #0a211d 72%,
+          #071713
         );
 
       color: var(--cream);
@@ -80,191 +78,37 @@
       line-height: 1.6;
     }
 
-    body::before {
-      content: "";
-
-      position: fixed;
-      inset: 0;
-
-      pointer-events: none;
-      z-index: -10;
-
-      background:
-        radial-gradient(
-          circle at 50% 58%,
-          rgba(234, 126, 48, .12),
-          transparent 24rem
-        ),
-        radial-gradient(
-          circle at 12% 20%,
-          rgba(43, 102, 92, .16),
-          transparent 20rem
-        ),
-        radial-gradient(
-          circle at 88% 28%,
-          rgba(43, 102, 92, .13),
-          transparent 22rem
-        );
-    }
 
     a {
       color: inherit;
       text-decoration: none;
     }
 
+
     button,
     input {
       font: inherit;
     }
 
+
     button {
       cursor: pointer;
     }
+
 
     img {
       max-width: 100%;
     }
 
+
     .wrap {
-      width: min(
-        calc(100% - 40px),
-        var(--max-width)
-      );
-
-      margin: auto;
-    }
-
-
-    /* =====================================================
-       NIGHT SKY
-    ===================================================== */
-
-    .sky {
-      position: absolute;
-      inset: 0 0 auto 0;
-
-      height: 900px;
-
-      overflow: hidden;
-      pointer-events: none;
-
-      z-index: -5;
-    }
-
-    .moon {
-      position: absolute;
-
-      top: 110px;
-      right: 8vw;
-
-      width: 145px;
-      height: 145px;
-
-      border-radius: 50%;
-
-      background:
-        radial-gradient(
-          circle at 38% 35%,
-          #fffbe9,
-          #ded9bf 65%,
-          #c2bea9
+      width:
+        min(
+          calc(100% - 40px),
+          var(--max)
         );
 
-      box-shadow:
-        0 0 35px rgba(236, 236, 207, .25),
-        0 0 95px rgba(201, 220, 210, .13);
-    }
-
-    .moon::after {
-      content: "";
-
-      position: absolute;
-
-      width: 27px;
-      height: 27px;
-
-      left: 31px;
-      top: 38px;
-
-      border-radius: 50%;
-
-      background: rgba(150, 151, 135, .16);
-
-      box-shadow:
-        49px 20px 0 8px rgba(150, 151, 135, .10),
-        25px 65px 0 4px rgba(150, 151, 135, .10);
-    }
-
-    .star {
-      position: absolute;
-
-      width: 2px;
-      height: 2px;
-
-      border-radius: 50%;
-
-      background: #fff4ca;
-
-      box-shadow:
-        0 0 7px #fff4ca;
-
-      opacity: .75;
-
-      animation:
-        twinkle 3.8s ease-in-out infinite;
-    }
-
-    .star:nth-child(2) {
-      top: 145px;
-      left: 13%;
-    }
-
-    .star:nth-child(3) {
-      top: 220px;
-      left: 27%;
-
-      animation-delay: .7s;
-    }
-
-    .star:nth-child(4) {
-      top: 95px;
-      left: 42%;
-
-      animation-delay: 1.3s;
-    }
-
-    .star:nth-child(5) {
-      top: 180px;
-      left: 63%;
-
-      animation-delay: 2s;
-    }
-
-    .star:nth-child(6) {
-      top: 275px;
-      left: 79%;
-
-      animation-delay: .4s;
-    }
-
-    .star:nth-child(7) {
-      top: 340px;
-      left: 18%;
-
-      animation-delay: 1.8s;
-    }
-
-    @keyframes twinkle {
-      0%,
-      100% {
-        opacity: .25;
-        transform: scale(.8);
-      }
-
-      50% {
-        opacity: 1;
-        transform: scale(1.6);
-      }
+      margin: auto;
     }
 
 
@@ -276,21 +120,18 @@
       position: sticky;
       top: 0;
 
-      z-index: 100;
+      z-index: 1000;
 
       border-bottom:
-        1px solid rgba(226, 186, 113, .22);
+        1px solid rgba(223, 184, 110, .22);
 
       background:
-        linear-gradient(
-          180deg,
-          rgba(5, 16, 21, .97),
-          rgba(7, 21, 25, .91)
-        );
+        rgba(3, 14, 18, .93);
 
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
     }
+
 
     .nav {
       min-height: 68px;
@@ -299,76 +140,76 @@
       align-items: center;
       justify-content: space-between;
 
-      gap: 24px;
+      gap: 25px;
     }
+
 
     .brand {
       display: flex;
       align-items: center;
 
-      gap: 10px;
+      gap: 11px;
 
       color: var(--gold-light);
 
-      font-size: 17px;
       font-weight: bold;
 
       letter-spacing: .08em;
     }
 
+
     .brand-mark {
-      width: 30px;
-      height: 30px;
+      width: 32px;
+      height: 32px;
 
       position: relative;
 
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      display: grid;
+      place-items: center;
 
       border:
-        1px solid rgba(232, 194, 122, .48);
+        1px solid rgba(239, 202, 130, .52);
 
       border-radius:
-        50% 50% 45% 55%;
+        55% 45% 50% 50%;
 
       background:
         radial-gradient(
           circle at 50% 70%,
-          rgba(233, 138, 59, .25),
-          rgba(14, 49, 45, .8)
+          rgba(239, 135, 56, .25),
+          rgba(17, 51, 45, .65)
         );
-
-      font-size: 16px;
     }
+
 
     .brand-mark::after {
       content: "";
 
       position: absolute;
 
-      width: 7px;
-      height: 10px;
+      width: 8px;
+      height: 12px;
 
-      right: 1px;
-      top: -4px;
+      right: -1px;
+      top: -5px;
 
       border:
-        1px solid rgba(232, 194, 122, .48);
+        1px solid rgba(239, 202, 130, .52);
 
       border-bottom: 0;
 
-      transform: rotate(24deg);
-
       border-radius:
         80% 20% 0 0;
+
+      transform: rotate(27deg);
     }
+
 
     .navlinks {
       display: flex;
       align-items: center;
 
-      gap: 21px;
+      gap: 22px;
 
       font-family:
         Arial,
@@ -383,201 +224,470 @@
       color: var(--cream-muted);
     }
 
+
     .navlinks a {
       transition:
         color .2s ease,
         transform .2s ease;
     }
 
+
     .navlinks a:hover {
       color: var(--fire-light);
       transform: translateY(-1px);
     }
 
-    .nav-signup {
+
+    .nav-join {
       padding: 9px 15px;
 
       border:
-        1px solid rgba(240, 206, 137, .65);
+        1px solid rgba(239, 202, 130, .62);
 
       border-radius: 999px;
 
       color: var(--gold-light);
     }
 
-    .nav-signup:hover {
-      background:
-        rgba(233, 138, 59, .10);
-    }
-
 
     /* =====================================================
-       HERO / CAMPSITE
+       HERO WORLD
     ===================================================== */
 
     .hero {
-      min-height:
-        calc(100vh - 68px);
-
       position: relative;
 
-      display: flex;
-      align-items: center;
+      min-height:
+        calc(100vh - 68px);
 
       overflow: hidden;
 
       padding:
-        90px 0
-        125px;
+        76px 0
+        70px;
+
+      isolation: isolate;
+
+      background:
+        radial-gradient(
+          ellipse at 50% 72%,
+          rgba(240, 123, 48, .11),
+          transparent 28%
+        ),
+        radial-gradient(
+          ellipse at 50% 25%,
+          rgba(52, 103, 108, .18),
+          transparent 50%
+        ),
+        linear-gradient(
+          180deg,
+          #071820,
+          #082127 47%,
+          #071b1c
+        );
     }
 
-    .hero::before {
+
+    /* stars */
+
+    .stars,
+    .stars::before,
+    .stars::after {
+      position: absolute;
+      inset: 0;
+
+      pointer-events: none;
+    }
+
+
+    .stars {
+      z-index: -8;
+
+      background-image:
+        radial-gradient(
+          circle at 8% 18%,
+          #ffe8a6 0 1px,
+          transparent 2px
+        ),
+        radial-gradient(
+          circle at 18% 36%,
+          #fff2c4 0 1px,
+          transparent 2px
+        ),
+        radial-gradient(
+          circle at 31% 13%,
+          #fff2c4 0 1px,
+          transparent 2px
+        ),
+        radial-gradient(
+          circle at 43% 28%,
+          #ffe8a6 0 1px,
+          transparent 2px
+        ),
+        radial-gradient(
+          circle at 57% 16%,
+          #fff2c4 0 1px,
+          transparent 2px
+        ),
+        radial-gradient(
+          circle at 69% 34%,
+          #ffe8a6 0 1px,
+          transparent 2px
+        ),
+        radial-gradient(
+          circle at 79% 12%,
+          #fff2c4 0 1px,
+          transparent 2px
+        ),
+        radial-gradient(
+          circle at 91% 29%,
+          #ffe8a6 0 1px,
+          transparent 2px
+        );
+    }
+
+
+    .stars::before {
+      content: "";
+
+      opacity: .55;
+
+      background-image:
+        radial-gradient(
+          circle at 15% 12%,
+          #fff 0 1px,
+          transparent 1.5px
+        ),
+        radial-gradient(
+          circle at 25% 25%,
+          #fff 0 1px,
+          transparent 1.5px
+        ),
+        radial-gradient(
+          circle at 37% 8%,
+          #fff 0 1px,
+          transparent 1.5px
+        ),
+        radial-gradient(
+          circle at 62% 24%,
+          #fff 0 1px,
+          transparent 1.5px
+        ),
+        radial-gradient(
+          circle at 73% 18%,
+          #fff 0 1px,
+          transparent 1.5px
+        ),
+        radial-gradient(
+          circle at 86% 8%,
+          #fff 0 1px,
+          transparent 1.5px
+        );
+
+      animation:
+        starPulse 5s ease-in-out infinite alternate;
+    }
+
+
+    @keyframes starPulse {
+      from {
+        opacity: .25;
+      }
+
+      to {
+        opacity: .8;
+      }
+    }
+
+
+    /* moon */
+
+    .moon {
+      position: absolute;
+
+      top: 58px;
+      right: 7%;
+
+      z-index: -7;
+
+      width: 140px;
+      height: 140px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle at 38% 35%,
+          #fff9df,
+          #ddd8bd 66%,
+          #aaa992
+        );
+
+      box-shadow:
+        0 0 38px rgba(230, 234, 211, .22),
+        0 0 100px rgba(181, 216, 213, .11);
+    }
+
+
+    .moon::before {
+      content: "";
+
+      position: absolute;
+
+      width: 25px;
+      height: 25px;
+
+      left: 28px;
+      top: 37px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(129, 134, 120, .12);
+
+      box-shadow:
+        50px 20px 0 8px rgba(129, 134, 120, .09),
+        24px 64px 0 3px rgba(129, 134, 120, .10);
+    }
+
+
+    /* distant mountains */
+
+    .mountains {
+      position: absolute;
+
+      left: -5%;
+      right: -5%;
+      bottom: 210px;
+
+      height: 260px;
+
+      z-index: -6;
+
+      opacity: .5;
+
+      background:
+        linear-gradient(
+          135deg,
+          transparent 0 28%,
+          #183934 28.2% 45%,
+          transparent 45.2%
+        ),
+        linear-gradient(
+          45deg,
+          transparent 0 43%,
+          #15332f 43.2% 62%,
+          transparent 62.2%
+        );
+    }
+
+
+    /* forest silhouette */
+
+    .forest-back {
+      position: absolute;
+
+      left: -3%;
+      right: -3%;
+      bottom: 115px;
+
+      height: 260px;
+
+      z-index: -5;
+
+      opacity: .75;
+
+      background:
+        repeating-linear-gradient(
+          76deg,
+          transparent 0 35px,
+          #0b2924 36px 44px,
+          transparent 45px 72px
+        );
+    }
+
+
+    .forest-back::before {
       content: "";
 
       position: absolute;
       inset: 0;
 
-      pointer-events: none;
-
       background:
-        linear-gradient(
-          180deg,
-          rgba(3, 11, 16, .05),
-          rgba(5, 19, 20, .20) 50%,
-          rgba(5, 18, 17, .86) 100%
+        radial-gradient(
+          ellipse at 5% 55%,
+          #12372e 0 9%,
+          transparent 10%
+        ),
+        radial-gradient(
+          ellipse at 18% 42%,
+          #12372e 0 12%,
+          transparent 13%
+        ),
+        radial-gradient(
+          ellipse at 35% 55%,
+          #12372e 0 10%,
+          transparent 11%
+        ),
+        radial-gradient(
+          ellipse at 66% 45%,
+          #12372e 0 12%,
+          transparent 13%
+        ),
+        radial-gradient(
+          ellipse at 83% 50%,
+          #12372e 0 11%,
+          transparent 12%
+        ),
+        radial-gradient(
+          ellipse at 96% 40%,
+          #12372e 0 12%,
+          transparent 13%
         );
     }
 
-    .hero::after {
-      content: "";
 
+    /* foreground ground */
+
+    .ground {
       position: absolute;
 
       left: -10%;
       right: -10%;
-      bottom: -155px;
+      bottom: -170px;
 
-      height: 350px;
+      height: 430px;
 
-      border-radius: 50% 50% 0 0;
-
-      background:
-        radial-gradient(
-          ellipse at center,
-          #17392f 0%,
-          #0a201d 55%,
-          #061412 100%
-        );
-
-      z-index: -1;
-    }
-
-    .tree {
-      position: absolute;
-
-      bottom: 0;
-
-      width: 310px;
-      height: 790px;
-
-      pointer-events: none;
-
-      opacity: .85;
-
-      z-index: -2;
-    }
-
-    .tree-left {
-      left: -105px;
-
-      background:
-        radial-gradient(
-          ellipse at 80% 35%,
-          rgba(26, 67, 55, .8),
-          transparent 46%
-        );
-    }
-
-    .tree-right {
-      right: -120px;
-
-      transform: scaleX(-1);
-
-      background:
-        radial-gradient(
-          ellipse at 80% 35%,
-          rgba(26, 67, 55, .75),
-          transparent 46%
-        );
-    }
-
-    .tree::before {
-      content: "";
-
-      position: absolute;
-
-      left: 95px;
-      bottom: -70px;
-
-      width: 95px;
-      height: 790px;
+      z-index: -3;
 
       border-radius:
-        70% 30% 20% 15%;
+        50% 50% 0 0;
 
-      transform:
-        rotate(-6deg);
+      background:
+        radial-gradient(
+          ellipse at 50% 12%,
+          #17382e,
+          #0b241f 45%,
+          #061612 75%
+        );
+    }
+
+
+    /* foreground trees */
+
+    .big-tree {
+      position: absolute;
+
+      bottom: -20px;
+
+      width: 300px;
+      height: 720px;
+
+      z-index: -2;
+
+      pointer-events: none;
+    }
+
+
+    .big-tree.left {
+      left: -85px;
+    }
+
+
+    .big-tree.right {
+      right: -85px;
+
+      transform: scaleX(-1);
+    }
+
+
+    .trunk {
+      position: absolute;
+
+      left: 80px;
+      bottom: 0;
+
+      width: 90px;
+      height: 690px;
+
+      border-radius:
+        60% 35% 20% 20%;
+
+      transform: rotate(-5deg);
 
       background:
         linear-gradient(
           90deg,
-          #071411,
-          #14281e 40%,
-          #091814
+          #061411,
+          #142a20 42%,
+          #071612
         );
-
-      box-shadow:
-        inset -12px 0 0 rgba(0, 0, 0, .15);
     }
 
-    .tree::after {
-      content: "";
 
+    .branch {
       position: absolute;
 
-      left: 55px;
-      top: 40px;
+      width: 170px;
+      height: 40px;
 
-      width: 270px;
+      left: 110px;
+      top: 165px;
+
+      border-radius: 50%;
+
+      transform: rotate(-24deg);
+
+      background: #0b1d17;
+    }
+
+
+    .canopy {
+      position: absolute;
+
+      width: 250px;
       height: 240px;
+
+      left: 10px;
+      top: 25px;
 
       border-radius: 50%;
 
       background:
         radial-gradient(
           ellipse,
-          #112c24 0 45%,
+          #113329 0 45%,
           transparent 68%
         );
 
       box-shadow:
-        75px 50px 0 -10px #10271f,
-        -40px 80px 0 -15px #0c231c,
-        45px -50px 0 -20px #122f26;
+        80px 45px 0 -15px #102d25,
+        -45px 80px 0 -25px #0c2820,
+        50px -35px 0 -25px #15392e;
     }
 
-    .hero-content {
+
+    /* =====================================================
+       HERO COPY
+    ===================================================== */
+
+    .hero-copy {
       position: relative;
 
-      z-index: 10;
+      z-index: 20;
 
-      width: 100%;
+      max-width: 1040px;
+
+      margin: auto;
 
       text-align: center;
     }
 
+
     .hero-kicker {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
+
+      color: var(--gold);
 
       font-family:
         Arial,
@@ -588,114 +698,111 @@
       letter-spacing: .30em;
 
       font-size: 10px;
-
-      color: var(--gold);
     }
 
-    .hero h1 {
-      max-width: 980px;
 
+    .hero h1 {
       margin:
         0 auto
-        22px;
+        18px;
+
+      max-width: 1000px;
 
       font-size:
         clamp(
           48px,
-          7.4vw,
-          94px
+          7vw,
+          92px
         );
 
-      font-weight: 400;
-
       line-height: .98;
+
+      font-weight: 400;
 
       letter-spacing: -.035em;
 
       text-shadow:
-        0 5px 24px rgba(0, 0, 0, .6);
+        0 6px 25px rgba(0, 0, 0, .58);
     }
+
 
     .hero h1 span {
-      color: var(--fire-light);
-
-      text-shadow:
-        0 0 25px rgba(233, 138, 59, .20);
+      color: var(--fire-gold);
     }
 
+
     .hero-subtitle {
-      max-width: 720px;
+      max-width: 700px;
 
-      margin:
-        0 auto;
-
-      font-size:
-        clamp(
-          18px,
-          2vw,
-          23px
-        );
+      margin: auto;
 
       color: var(--cream-muted);
 
-      text-shadow:
-        0 2px 12px rgba(0, 0, 0, .7);
+      font-size:
+        clamp(
+          17px,
+          2vw,
+          22px
+        );
     }
 
 
     /* =====================================================
-       CAMPFIRE
+       CAMPFIRE GATHERING
     ===================================================== */
 
-    .campfire-scene {
+    .gathering {
       position: relative;
 
-      width: min(
-        720px,
-        90vw
-      );
+      z-index: 25;
 
-      height: 250px;
+      width:
+        min(
+          1000px,
+          96vw
+        );
+
+      height: 430px;
 
       margin:
-        45px auto
-        0;
-
-      pointer-events: none;
+        20px auto
+        -15px;
     }
 
-    .fire-glow {
+
+    .firelight {
       position: absolute;
 
       left: 50%;
-      bottom: 2px;
+      bottom: 5px;
 
-      width: 390px;
-      height: 180px;
+      width: 620px;
+      height: 310px;
 
-      transform:
-        translateX(-50%);
+      transform: translateX(-50%);
 
       border-radius: 50%;
 
       background:
         radial-gradient(
           ellipse,
-          rgba(255, 160, 60, .27),
-          rgba(230, 99, 40, .10) 48%,
-          transparent 72%
+          rgba(255, 173, 70, .23),
+          rgba(235, 101, 41, .09) 42%,
+          transparent 70%
         );
 
-      filter: blur(5px);
+      filter: blur(7px);
 
       animation:
         glowPulse 2.2s ease-in-out infinite;
     }
 
+
     @keyframes glowPulse {
       0%,
       100% {
-        opacity: .70;
+        opacity: .75;
+
         transform:
           translateX(-50%)
           scale(.96);
@@ -703,105 +810,912 @@
 
       50% {
         opacity: 1;
+
         transform:
           translateX(-50%)
-          scale(1.06);
+          scale(1.05);
       }
     }
 
-    .fire {
+
+    /* =====================================================
+       CHARACTER BASE
+    ===================================================== */
+
+    .character {
       position: absolute;
 
-      left: 50%;
-      bottom: 45px;
+      bottom: 35px;
 
-      width: 100px;
-      height: 120px;
+      width: 150px;
+      height: 230px;
 
-      transform:
-        translateX(-50%);
+      filter:
+        drop-shadow(
+          0 10px 12px rgba(0, 0, 0, .5)
+        );
     }
 
-    .flame {
+
+    .character .head {
       position: absolute;
 
-      left: 50%;
-      bottom: 0;
+      width: 49px;
+      height: 55px;
 
-      transform-origin:
-        50% 100%;
+      left: 50%;
+      top: 18px;
+
+      transform: translateX(-50%);
 
       border-radius:
-        50% 50% 48% 52%;
+        48% 48% 45% 45%;
 
-      animation:
-        flameDance 1.25s ease-in-out infinite alternate;
+      background: #b87954;
+
+      z-index: 4;
     }
 
-    .flame-outer {
-      width: 78px;
-      height: 112px;
 
-      margin-left: -39px;
+    .character .body {
+      position: absolute;
+
+      left: 50%;
+      top: 66px;
+
+      width: 88px;
+      height: 116px;
+
+      transform: translateX(-50%);
+
+      border-radius:
+        45% 45% 25% 25%;
+
+      z-index: 3;
+    }
+
+
+    .character .leg {
+      position: absolute;
+
+      bottom: 7px;
+
+      width: 72px;
+      height: 28px;
+
+      border-radius: 999px;
+
+      z-index: 2;
+    }
+
+
+    /* =====================================================
+       ROGUE
+    ===================================================== */
+
+    .rogue {
+      left: 8%;
+
+      transform: rotate(-3deg);
+    }
+
+
+    .rogue .head {
+      background: #a86e4f;
+    }
+
+
+    .rogue .hood {
+      position: absolute;
+
+      left: 50%;
+      top: 6px;
+
+      width: 70px;
+      height: 82px;
+
+      transform: translateX(-50%);
+
+      border-radius:
+        55% 55% 40% 40%;
+
+      background: #26392f;
+
+      z-index: 3;
+    }
+
+
+    .rogue .body {
+      background:
+        linear-gradient(
+          90deg,
+          #26372d,
+          #405044
+        );
+    }
+
+
+    .rogue .belt {
+      position: absolute;
+
+      left: 31px;
+      top: 126px;
+
+      width: 88px;
+      height: 10px;
+
+      border-radius: 999px;
+
+      background: #684a32;
+
+      z-index: 5;
+    }
+
+
+    .rogue .leg.one {
+      left: 10px;
+
+      transform: rotate(-13deg);
+
+      background: #202b26;
+    }
+
+
+    .rogue .leg.two {
+      right: 7px;
+
+      transform: rotate(17deg);
+
+      background: #202b26;
+    }
+
+
+    .rogue .dagger {
+      position: absolute;
+
+      right: 12px;
+      top: 110px;
+
+      width: 7px;
+      height: 65px;
+
+      transform: rotate(18deg);
 
       background:
         linear-gradient(
-          180deg,
-          rgba(255, 210, 91, .15),
-          #e8662f 52%,
-          #9d321e
+          90deg,
+          #777,
+          #e3d7b5,
+          #777
         );
 
       clip-path:
         polygon(
           50% 0,
-          72% 30%,
-          88% 57%,
+          100% 75%,
+          55% 100%,
+          0 75%
+        );
+
+      z-index: 1;
+    }
+
+
+    /* =====================================================
+       ASTRONAUT
+    ===================================================== */
+
+    .astronaut {
+      left: 25%;
+
+      bottom: 28px;
+
+      transform: rotate(2deg);
+    }
+
+
+    .astronaut .helmet {
+      position: absolute;
+
+      left: 50%;
+      top: 5px;
+
+      width: 72px;
+      height: 72px;
+
+      transform: translateX(-50%);
+
+      border:
+        7px solid #c8c6b8;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle at 60% 35%,
+          #305b62,
+          #102a32 65%
+        );
+
+      box-shadow:
+        inset 7px 7px 10px rgba(255, 255, 255, .08);
+
+      z-index: 5;
+    }
+
+
+    .astronaut .helmet::after {
+      content: "";
+
+      position: absolute;
+
+      width: 18px;
+      height: 7px;
+
+      right: 8px;
+      top: 15px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(255, 228, 155, .35);
+
+      transform: rotate(-25deg);
+    }
+
+
+    .astronaut .body {
+      top: 69px;
+
+      background:
+        linear-gradient(
+          90deg,
+          #b9b8ad,
+          #e0ddd0 50%,
+          #aaa99f
+        );
+    }
+
+
+    .astronaut .body::after {
+      content: "";
+
+      position: absolute;
+
+      left: 27px;
+      top: 27px;
+
+      width: 34px;
+      height: 26px;
+
+      border:
+        2px solid #7b817b;
+
+      background:
+        linear-gradient(
+          90deg,
+          #d36d3e 0 25%,
+          #5b8580 25% 55%,
+          #d8c16c 55%
+        );
+    }
+
+
+    .astronaut .leg.one {
+      left: 8px;
+
+      background: #b6b5aa;
+
+      transform: rotate(-14deg);
+    }
+
+
+    .astronaut .leg.two {
+      right: 8px;
+
+      background: #b6b5aa;
+
+      transform: rotate(14deg);
+    }
+
+
+    /* =====================================================
+       WIZARD
+    ===================================================== */
+
+    .wizard {
+      right: 25%;
+
+      bottom: 30px;
+
+      transform: rotate(-2deg);
+    }
+
+
+    .wizard .head {
+      background: #8e624b;
+    }
+
+
+    .wizard .hat {
+      position: absolute;
+
+      left: 50%;
+      top: -36px;
+
+      width: 90px;
+      height: 95px;
+
+      transform: translateX(-50%);
+
+      z-index: 7;
+    }
+
+
+    .wizard .hat::before {
+      content: "";
+
+      position: absolute;
+
+      left: 18px;
+      top: 0;
+
+      width: 55px;
+      height: 75px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #27345e,
+          #485184
+        );
+
+      clip-path:
+        polygon(
+          55% 0,
+          100% 100%,
+          0 100%
+        );
+
+      transform: rotate(7deg);
+    }
+
+
+    .wizard .hat::after {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      bottom: 3px;
+
+      width: 90px;
+      height: 18px;
+
+      border-radius: 50%;
+
+      background: #343d70;
+    }
+
+
+    .wizard .body {
+      background:
+        linear-gradient(
+          90deg,
+          #29315d,
+          #454d7e
+        );
+    }
+
+
+    .wizard .body::after {
+      content: "✦";
+
+      position: absolute;
+
+      left: 35px;
+      top: 35px;
+
+      color: #e9cf82;
+
+      font-size: 20px;
+    }
+
+
+    .wizard .leg.one {
+      left: 8px;
+
+      background: #252b4f;
+
+      transform: rotate(-14deg);
+    }
+
+
+    .wizard .leg.two {
+      right: 8px;
+
+      background: #252b4f;
+
+      transform: rotate(14deg);
+    }
+
+
+    /* magic above wizard */
+
+    .magic {
+      position: absolute;
+
+      right: 20%;
+      top: 40px;
+
+      width: 180px;
+      height: 150px;
+
+      pointer-events: none;
+    }
+
+
+    .magic-star {
+      position: absolute;
+
+      color: #d7bcff;
+
+      text-shadow:
+        0 0 8px #886dff,
+        0 0 18px rgba(143, 108, 255, .7);
+
+      animation:
+        magicFloat 3s ease-in-out infinite;
+    }
+
+
+    .magic-star.one {
+      left: 25px;
+      top: 75px;
+
+      font-size: 14px;
+    }
+
+
+    .magic-star.two {
+      left: 80px;
+      top: 22px;
+
+      font-size: 23px;
+
+      animation-delay: -.7s;
+    }
+
+
+    .magic-star.three {
+      right: 10px;
+      top: 65px;
+
+      font-size: 12px;
+
+      animation-delay: -1.4s;
+    }
+
+
+    .magic-star.four {
+      right: 45px;
+      top: 105px;
+
+      font-size: 18px;
+
+      animation-delay: -2s;
+    }
+
+
+    @keyframes magicFloat {
+      0%,
+      100% {
+        opacity: .4;
+
+        transform:
+          translateY(0)
+          rotate(0deg)
+          scale(.8);
+      }
+
+      50% {
+        opacity: 1;
+
+        transform:
+          translateY(-15px)
+          rotate(30deg)
+          scale(1.15);
+      }
+    }
+
+
+    /* =====================================================
+       PRINCESS
+    ===================================================== */
+
+    .princess {
+      right: 8%;
+
+      bottom: 27px;
+
+      transform: rotate(4deg);
+    }
+
+
+    .princess .head {
+      background: #8f5b43;
+    }
+
+
+    .princess .hair {
+      position: absolute;
+
+      left: 50%;
+      top: 9px;
+
+      width: 64px;
+      height: 75px;
+
+      transform: translateX(-50%);
+
+      border-radius:
+        48% 48% 40% 40%;
+
+      background: #412d26;
+
+      z-index: 3;
+    }
+
+
+    .princess .crown {
+      position: absolute;
+
+      left: 50%;
+      top: 1px;
+
+      width: 43px;
+      height: 30px;
+
+      transform: translateX(-50%);
+
+      clip-path:
+        polygon(
+          0 100%,
+          0 30%,
+          22% 62%,
+          40% 5%,
+          60% 62%,
+          80% 15%,
+          100% 100%
+        );
+
+      background: #e7c36c;
+
+      z-index: 8;
+    }
+
+
+    .princess .body {
+      background:
+        linear-gradient(
+          90deg,
+          #7d4869,
+          #b16b8f
+        );
+    }
+
+
+    .princess .leg.one {
+      left: 9px;
+
+      width: 83px;
+
+      background: #70425f;
+
+      transform: rotate(-9deg);
+    }
+
+
+    .princess .leg.two {
+      right: 0;
+
+      width: 83px;
+
+      background: #70425f;
+
+      transform: rotate(12deg);
+    }
+
+
+    /* =====================================================
+       MERMAID POOL
+    ===================================================== */
+
+    .pool {
+      position: absolute;
+
+      right: -5px;
+      bottom: 0;
+
+      width: 235px;
+      height: 65px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          ellipse,
+          #2e7b7c,
+          #174d54 55%,
+          #0c3037 72%
+        );
+
+      box-shadow:
+        inset 0 5px 13px rgba(176, 255, 239, .17),
+        0 0 25px rgba(46, 123, 124, .16);
+
+      opacity: .92;
+    }
+
+
+    .mermaid {
+      position: absolute;
+
+      right: 65px;
+      bottom: 19px;
+
+      width: 110px;
+      height: 155px;
+    }
+
+
+    .mermaid .head {
+      position: absolute;
+
+      left: 35px;
+      top: 3px;
+
+      width: 44px;
+      height: 49px;
+
+      border-radius: 50%;
+
+      background: #8b5d49;
+
+      z-index: 4;
+    }
+
+
+    .mermaid .hair {
+      position: absolute;
+
+      left: 25px;
+      top: -5px;
+
+      width: 64px;
+      height: 75px;
+
+      border-radius: 50%;
+
+      background: #202a34;
+
+      z-index: 3;
+    }
+
+
+    .mermaid .torso {
+      position: absolute;
+
+      left: 35px;
+      top: 47px;
+
+      width: 48px;
+      height: 55px;
+
+      border-radius:
+        35% 35% 20% 20%;
+
+      background: #376d68;
+
+      z-index: 3;
+    }
+
+
+    .mermaid .tail {
+      position: absolute;
+
+      left: 40px;
+      top: 90px;
+
+      width: 82px;
+      height: 40px;
+
+      border-radius:
+        999px 20px 20px 999px;
+
+      transform: rotate(12deg);
+
+      background:
+        linear-gradient(
+          90deg,
+          #317b72,
+          #58a692
+        );
+    }
+
+
+    .mermaid .tail::after {
+      content: "";
+
+      position: absolute;
+
+      right: -27px;
+      top: -15px;
+
+      width: 38px;
+      height: 60px;
+
+      background: #58a692;
+
+      clip-path:
+        polygon(
+          0 50%,
+          100% 0,
+          75% 50%,
+          100% 100%
+        );
+    }
+
+
+    /* =====================================================
+       CAMPFIRE
+    ===================================================== */
+
+    .campfire {
+      position: absolute;
+
+      left: 50%;
+      bottom: 24px;
+
+      width: 150px;
+      height: 165px;
+
+      transform: translateX(-50%);
+
+      z-index: 30;
+    }
+
+
+    .stone-ring {
+      position: absolute;
+
+      left: 50%;
+      bottom: 0;
+
+      width: 165px;
+      height: 42px;
+
+      transform: translateX(-50%);
+
+      border:
+        10px dotted #706957;
+
+      border-radius: 50%;
+    }
+
+
+    .log {
+      position: absolute;
+
+      left: 50%;
+      bottom: 22px;
+
+      width: 112px;
+      height: 18px;
+
+      border-radius: 999px;
+
+      background:
+        linear-gradient(
+          #653b27,
+          #2c1a12
+        );
+
+      box-shadow:
+        0 4px 8px rgba(0, 0, 0, .55);
+    }
+
+
+    .log.one {
+      transform:
+        translateX(-50%)
+        rotate(16deg);
+    }
+
+
+    .log.two {
+      transform:
+        translateX(-50%)
+        rotate(-16deg);
+    }
+
+
+    .flame {
+      position: absolute;
+
+      left: 50%;
+      bottom: 35px;
+
+      transform-origin:
+        50% 100%;
+
+      animation:
+        flameDance 1.15s ease-in-out infinite alternate;
+    }
+
+
+    .flame.outer {
+      width: 82px;
+      height: 118px;
+
+      margin-left: -41px;
+
+      background:
+        linear-gradient(
+          #ffd36d,
+          #ed702f 52%,
+          #a83922
+        );
+
+      clip-path:
+        polygon(
+          50% 0,
+          75% 35%,
+          91% 62%,
           72% 100%,
-          28% 100%,
-          10% 59%,
+          27% 100%,
+          9% 61%,
           30% 34%
         );
     }
 
-    .flame-middle {
-      width: 52px;
-      height: 83px;
 
-      margin-left: -26px;
+    .flame.middle {
+      width: 54px;
+      height: 87px;
+
+      margin-left: -27px;
 
       background:
         linear-gradient(
-          180deg,
-          #ffe78b,
-          #f79a3d 55%,
-          #e45129
+          #fff0a0,
+          #ffae45 55%,
+          #e34f27
         );
 
       clip-path:
         polygon(
           52% 0,
-          82% 42%,
-          72% 100%,
-          27% 100%,
-          17% 48%
+          82% 43%,
+          71% 100%,
+          28% 100%,
+          16% 50%
         );
 
-      animation-delay:
-        -.45s;
+      animation-delay: -.4s;
     }
 
-    .flame-inner {
-      width: 27px;
-      height: 53px;
 
-      margin-left: -13px;
+    .flame.inner {
+      width: 28px;
+      height: 55px;
+
+      margin-left: -14px;
 
       background:
         linear-gradient(
-          180deg,
-          #fff8c7,
-          #ffd269
+          #fffbd2,
+          #ffd66f
         );
 
       clip-path:
@@ -809,20 +1723,20 @@
           52% 0,
           87% 55%,
           66% 100%,
-          29% 100%,
-          12% 59%
+          28% 100%,
+          12% 58%
         );
 
-      animation-delay:
-        -.75s;
+      animation-delay: -.8s;
     }
+
 
     @keyframes flameDance {
       from {
         transform:
           rotate(-3deg)
           scaleX(.94)
-          scaleY(.98);
+          scaleY(.97);
       }
 
       to {
@@ -833,63 +1747,129 @@
       }
     }
 
-    .log {
+
+    /* =====================================================
+       CAMP CLUTTER
+    ===================================================== */
+
+    .book-stack {
       position: absolute;
 
-      left: 50%;
-      bottom: 38px;
+      left: 18%;
+      bottom: 8px;
 
-      width: 112px;
-      height: 17px;
+      width: 100px;
+      height: 48px;
+
+      transform: rotate(-5deg);
+    }
+
+
+    .book-stack span {
+      position: absolute;
+
+      left: 0;
+
+      width: 90px;
+      height: 13px;
+
+      border-radius: 2px;
+
+      box-shadow:
+        0 3px 5px rgba(0, 0, 0, .25);
+    }
+
+
+    .book-stack span:nth-child(1) {
+      bottom: 0;
+
+      background: #8d4f42;
+    }
+
+
+    .book-stack span:nth-child(2) {
+      bottom: 13px;
+      left: 7px;
+
+      background: #a8884d;
+    }
+
+
+    .book-stack span:nth-child(3) {
+      bottom: 26px;
+      left: 2px;
+
+      background: #3f6760;
+    }
+
+
+    .mug {
+      position: absolute;
+
+      left: 33%;
+      bottom: 10px;
+
+      width: 29px;
+      height: 31px;
+
+      border-radius:
+        3px 3px 8px 8px;
+
+      background: #aa7953;
+
+      box-shadow:
+        inset 0 4px 0 #3c261b;
+    }
+
+
+    .mug::after {
+      content: "";
+
+      position: absolute;
+
+      right: -13px;
+      top: 7px;
+
+      width: 16px;
+      height: 15px;
+
+      border:
+        4px solid #aa7953;
+
+      border-left: 0;
+
+      border-radius:
+        0 50% 50% 0;
+    }
+
+
+    .bedroll {
+      position: absolute;
+
+      right: 28%;
+      bottom: 3px;
+
+      width: 95px;
+      height: 28px;
 
       border-radius: 999px;
 
+      transform: rotate(6deg);
+
       background:
-        linear-gradient(
-          180deg,
-          #5b3522,
-          #29180f
+        repeating-linear-gradient(
+          90deg,
+          #795747 0 13px,
+          #68493c 13px 26px
         );
 
       box-shadow:
-        0 4px 8px rgba(0, 0, 0, .5);
-    }
-
-    .log-one {
-      transform:
-        translateX(-50%)
-        rotate(15deg);
-    }
-
-    .log-two {
-      transform:
-        translateX(-50%)
-        rotate(-15deg);
-    }
-
-    .stone-ring {
-      position: absolute;
-
-      left: 50%;
-      bottom: 20px;
-
-      width: 185px;
-      height: 44px;
-
-      transform:
-        translateX(-50%);
-
-      border:
-        11px dotted #726854;
-
-      border-radius: 50%;
-
-      opacity: .9;
+        0 7px 10px rgba(0, 0, 0, .25);
     }
 
 
     /* =====================================================
-       EMBERS + FIREFLIES
+       EMBERS / FIREFLIES
     ===================================================== */
 
     .ember,
@@ -901,7 +1881,10 @@
       pointer-events: none;
     }
 
+
     .ember {
+      z-index: 40;
+
       width: 4px;
       height: 4px;
 
@@ -914,12 +1897,13 @@
         emberRise 4s linear infinite;
     }
 
+
     @keyframes emberRise {
       0% {
         opacity: 0;
+
         transform:
-          translateY(0)
-          translateX(0)
+          translate(0, 0)
           scale(.5);
       }
 
@@ -933,31 +1917,35 @@
 
       100% {
         opacity: 0;
+
         transform:
-          translateY(-180px)
-          translateX(35px)
+          translate(35px, -180px)
           scale(.1);
       }
     }
 
+
     .firefly {
+      z-index: 35;
+
       width: 5px;
       height: 5px;
 
-      background: #ffe894;
+      background: #ffe88f;
 
       box-shadow:
-        0 0 10px #ffe894,
-        0 0 20px rgba(255, 232, 148, .35);
+        0 0 9px #ffe88f,
+        0 0 20px rgba(255, 232, 143, .42);
 
       animation:
         fireflyFloat 7s ease-in-out infinite;
     }
 
+
     @keyframes fireflyFloat {
       0%,
       100% {
-        opacity: .15;
+        opacity: .2;
 
         transform:
           translate(0, 0);
@@ -984,49 +1972,26 @@
           translate(-28px, -12px);
       }
     }
-
-    .fly-one {
-      left: 12%;
-      bottom: 90px;
-    }
-
-    .fly-two {
-      left: 24%;
-      bottom: 150px;
-
-      animation-delay: -2s;
-    }
-
-    .fly-three {
-      right: 17%;
-      bottom: 130px;
-
-      animation-delay: -4s;
-    }
-
-    .fly-four {
-      right: 29%;
-      bottom: 75px;
-
-      animation-delay: -1s;
-    }
-
-
-    /* =====================================================
+        /* =====================================================
        QUICK PATHS
     ===================================================== */
 
     .quick-paths {
       position: relative;
+      z-index: 50;
 
-      z-index: 15;
+      padding:
+        0 0
+        75px;
 
-      margin-top:
-        -68px;
-
-      padding-bottom:
-        70px;
+      background:
+        linear-gradient(
+          180deg,
+          #071b18,
+          #09231e
+        );
     }
+
 
     .path-grid {
       display: grid;
@@ -1038,20 +2003,17 @@
         1px solid rgba(226, 190, 123, .32);
 
       background:
-        rgba(5, 18, 18, .82);
+        rgba(4, 18, 17, .86);
 
       box-shadow:
-        0 25px 55px rgba(0, 0, 0, .28);
-
-      backdrop-filter:
-        blur(12px);
+        0 24px 55px rgba(0, 0, 0, .28);
     }
+
 
     .path {
       min-height: 105px;
 
-      padding:
-        20px 15px;
+      padding: 20px 14px;
 
       display: flex;
       flex-direction: column;
@@ -1063,31 +2025,36 @@
       text-align: center;
 
       border-right:
-        1px solid rgba(226, 190, 123, .18);
+        1px solid rgba(226, 190, 123, .17);
 
       transition:
         background .2s ease,
-        color .2s ease;
+        color .2s ease,
+        transform .2s ease;
     }
+
 
     .path:last-child {
       border-right: 0;
     }
 
+
     .path:hover {
+      color: var(--fire-light);
+
       background:
         radial-gradient(
           circle at center,
-          rgba(233, 138, 59, .15),
-          rgba(19, 55, 48, .25)
+          rgba(239, 135, 56, .15),
+          rgba(19, 55, 48, .24)
         );
-
-      color: var(--fire-light);
     }
+
 
     .path-icon {
       font-size: 21px;
     }
+
 
     .path-label {
       font-family:
@@ -1106,16 +2073,18 @@
        GENERAL SECTIONS
     ===================================================== */
 
-    section {
+    section.content-section {
       position: relative;
 
       padding:
-        90px 0;
+        95px 0;
     }
 
+
     .eyebrow {
-      margin-bottom:
-        12px;
+      margin-bottom: 12px;
+
+      color: var(--gold);
 
       font-family:
         Arial,
@@ -1126,16 +2095,15 @@
       letter-spacing: .23em;
 
       font-size: 10px;
-
-      color: var(--gold);
     }
+
 
     .section-header {
       max-width: 760px;
 
-      margin-bottom:
-        42px;
+      margin-bottom: 42px;
     }
+
 
     .section-header.center {
       margin-left: auto;
@@ -1143,6 +2111,7 @@
 
       text-align: center;
     }
+
 
     .section-header h2 {
       margin:
@@ -1161,6 +2130,7 @@
       font-weight: 400;
     }
 
+
     .section-header p {
       margin: 0;
 
@@ -1171,7 +2141,7 @@
 
 
     /* =====================================================
-       PARCHMENT SECTION
+       PARCHMENT
     ===================================================== */
 
     .parchment-section {
@@ -1180,10 +2150,10 @@
       background:
         linear-gradient(
           90deg,
-          rgba(97, 66, 37, .10),
+          rgba(94, 64, 35, .10),
           transparent 12%,
           transparent 88%,
-          rgba(97, 66, 37, .10)
+          rgba(94, 64, 35, .10)
         ),
         repeating-linear-gradient(
           0deg,
@@ -1194,6 +2164,7 @@
         ),
         var(--parchment);
     }
+
 
     .parchment-section::before,
     .parchment-section::after {
@@ -1209,6 +2180,7 @@
       pointer-events: none;
     }
 
+
     .parchment-section::before {
       top: -10px;
 
@@ -1220,6 +2192,7 @@
         )
         0 0 / 20px 20px repeat-x;
     }
+
 
     .parchment-section::after {
       bottom: -10px;
@@ -1235,9 +2208,11 @@
         0 0 / 20px 20px repeat-x;
     }
 
+
     .parchment-section .eyebrow {
-      color: #815b32;
+      color: #805a32;
     }
+
 
     .parchment-section .section-header p {
       color: #675746;
@@ -1245,7 +2220,7 @@
 
 
     /* =====================================================
-       FEATURED CLUBS
+       CLUBS
     ===================================================== */
 
     .club-grid {
@@ -1257,15 +2232,15 @@
       gap: 18px;
     }
 
-    .club-card {
-      min-height: 290px;
 
+    .club-card {
       position: relative;
+
+      min-height: 295px;
 
       overflow: hidden;
 
-      padding:
-        26px;
+      padding: 26px;
 
       display: flex;
       flex-direction: column;
@@ -1275,7 +2250,7 @@
         1px solid rgba(82, 58, 35, .32);
 
       background:
-        rgba(255, 248, 225, .25);
+        rgba(255, 248, 225, .23);
 
       box-shadow:
         0 8px 20px rgba(76, 51, 28, .10);
@@ -1284,6 +2259,7 @@
         transform .25s ease,
         box-shadow .25s ease;
     }
+
 
     .club-card:hover {
       transform:
@@ -1294,63 +2270,45 @@
         0 15px 30px rgba(76, 51, 28, .18);
     }
 
-    .club-art {
-      position: absolute;
 
-      inset: 0;
-
-      opacity: .85;
-    }
-
-    .club-art::before {
+    .club-card::before {
       content: "";
 
       position: absolute;
 
-      width: 180px;
-      height: 180px;
+      width: 190px;
+      height: 190px;
 
-      border-radius: 50%;
-
-      top: -60px;
-      right: -55px;
+      top: -70px;
+      right: -65px;
 
       border:
-        1px solid rgba(68, 50, 33, .23);
+        1px solid rgba(68, 50, 33, .22);
+
+      border-radius: 50%;
     }
 
-    .club-art::after {
-      content: "✦";
 
+    .club-art {
       position: absolute;
 
-      top: 34px;
-      right: 38px;
+      top: 27px;
+      right: 32px;
 
-      font-size: 38px;
+      color: rgba(89, 59, 32, .33);
 
-      color: rgba(88, 57, 31, .30);
+      font-size: 45px;
     }
 
-    .club-card:nth-child(2) .club-art::after {
-      content: "☾";
-    }
-
-    .club-card:nth-child(3) .club-art::after {
-      content: "✧";
-    }
-
-    .club-card:nth-child(4) .club-art::after {
-      content: "☕";
-    }
 
     .club-card-content {
       position: relative;
 
       z-index: 2;
 
-      padding-top: 100px;
+      padding-top: 95px;
     }
+
 
     .club-card h3 {
       margin:
@@ -1362,6 +2320,7 @@
       font-weight: 400;
     }
 
+
     .club-card p {
       margin:
         0 0
@@ -1372,7 +2331,10 @@
       font-size: 14px;
     }
 
+
     .club-link {
+      color: #75502d;
+
       font-family:
         Arial,
         sans-serif;
@@ -1382,26 +2344,23 @@
       letter-spacing: .12em;
 
       font-size: 9px;
-
-      color: #75502d;
     }
 
 
     /* =====================================================
-       STORY PATHS
+       STORY CARDS
     ===================================================== */
 
     .story-section {
-      padding-top:
-        115px;
-
       background:
         radial-gradient(
           circle at 50% 20%,
           rgba(40, 91, 77, .20),
           transparent 33rem
-        );
+        ),
+        #09211d;
     }
+
 
     .story-grid {
       display: grid;
@@ -1412,15 +2371,15 @@
       gap: 20px;
     }
 
+
     .story-card {
       min-height: 330px;
-
-      padding:
-        30px;
 
       position: relative;
 
       overflow: hidden;
+
+      padding: 30px;
 
       border:
         1px solid rgba(230, 193, 122, .27);
@@ -1437,13 +2396,14 @@
         border-color .25s ease;
     }
 
+
     .story-card:hover {
-      transform:
-        translateY(-5px);
+      transform: translateY(-5px);
 
       border-color:
         rgba(240, 206, 137, .62);
     }
+
 
     .story-symbol {
       height: 120px;
@@ -1451,13 +2411,14 @@
       display: flex;
       align-items: center;
 
-      font-size: 58px;
-
       color: var(--gold-light);
+
+      font-size: 58px;
 
       text-shadow:
         0 0 25px rgba(234, 138, 59, .18);
     }
+
 
     .story-card h3 {
       margin:
@@ -1469,6 +2430,7 @@
       font-weight: 400;
     }
 
+
     .story-card p {
       margin:
         0 0
@@ -1477,7 +2439,10 @@
       color: var(--cream-muted);
     }
 
+
     .story-link {
+      color: var(--fire-light);
+
       font-family:
         Arial,
         sans-serif;
@@ -1487,21 +2452,22 @@
       letter-spacing: .13em;
 
       font-size: 9px;
-
-      color: var(--fire-light);
     }
-        /* =====================================================
-       BOOK DISCOVERY
+
+
+    /* =====================================================
+       BOOK SEARCH
     ===================================================== */
 
     .book-section {
       background:
         linear-gradient(
           180deg,
-          rgba(4, 16, 18, .15),
-          rgba(4, 15, 15, .72)
+          #071a19,
+          #061514
         );
     }
+
 
     .book-layout {
       display: grid;
@@ -1514,10 +2480,11 @@
       align-items: center;
     }
 
-    .book-cover-area {
-      min-height: 470px;
 
+    .book-cover-area {
       position: relative;
+
+      min-height: 470px;
 
       display: flex;
       align-items: center;
@@ -1543,36 +2510,19 @@
         0 20px 50px rgba(0, 0, 0, .18);
     }
 
+
     .book-cover-area::before {
       content: "";
 
       position: absolute;
       inset: 18px;
 
-      pointer-events: none;
-
       border:
         1px solid rgba(233, 197, 128, .11);
+
+      pointer-events: none;
     }
 
-    .book-cover-area::after {
-      content: "✦  ☾  ✦";
-
-      position: absolute;
-
-      bottom: 20px;
-      left: 50%;
-
-      transform: translateX(-50%);
-
-      white-space: nowrap;
-
-      color: rgba(240, 206, 137, .32);
-
-      letter-spacing: .8em;
-
-      font-size: 11px;
-    }
 
     .book-cover {
       position: relative;
@@ -1586,18 +2536,18 @@
       border-radius: 2px;
 
       box-shadow:
-        0 28px 50px rgba(0, 0, 0, .62),
-        0 0 35px rgba(233, 138, 59, .08);
+        0 28px 50px rgba(0, 0, 0, .62);
     }
+
 
     .book-placeholder {
       position: relative;
 
       z-index: 3;
 
-      text-align: center;
-
       color: rgba(214, 201, 172, .65);
+
+      text-align: center;
 
       font-family:
         Arial,
@@ -1611,6 +2561,7 @@
 
       line-height: 2;
     }
+
 
     .book-info h2 {
       margin:
@@ -1629,9 +2580,9 @@
       line-height: 1.05;
     }
 
+
     .book-author {
-      margin-bottom:
-        22px;
+      margin-bottom: 22px;
 
       color: var(--fire-light);
 
@@ -1639,6 +2590,7 @@
 
       font-style: italic;
     }
+
 
     .book-description {
       max-height: 190px;
@@ -1652,13 +2604,6 @@
       font-size: 16px;
     }
 
-    .book-description::-webkit-scrollbar {
-      width: 5px;
-    }
-
-    .book-description::-webkit-scrollbar-thumb {
-      background: rgba(233, 197, 128, .28);
-    }
 
     .book-search {
       display: flex;
@@ -1668,13 +2613,13 @@
       margin-top: 28px;
     }
 
+
     .book-search input {
       flex: 1;
 
       min-width: 0;
 
-      padding:
-        14px 15px;
+      padding: 14px 15px;
 
       border:
         1px solid rgba(233, 197, 128, .30);
@@ -1689,9 +2634,6 @@
       color: var(--cream);
     }
 
-    .book-search input::placeholder {
-      color: rgba(214, 201, 172, .47);
-    }
 
     .book-search input:focus {
       border-color: var(--fire-light);
@@ -1699,6 +2641,7 @@
       box-shadow:
         0 0 0 2px rgba(233, 138, 59, .08);
     }
+
 
     .book-actions {
       display: flex;
@@ -1718,13 +2661,14 @@
     .button {
       display: inline-block;
 
-      padding:
-        13px 20px;
+      padding: 13px 20px;
 
       border:
         1px solid var(--gold);
 
       border-radius: 2px;
+
+      background: transparent;
 
       font-family:
         Arial,
@@ -1738,25 +2682,20 @@
 
       transition:
         transform .2s ease,
-        background .2s ease,
-        border-color .2s ease,
-        color .2s ease;
-
-      cursor: pointer;
+        background .2s ease;
     }
+
 
     .button:hover {
-      transform:
-        translateY(-2px);
+      transform: translateY(-2px);
     }
 
+
     .button-primary {
-      border-color:
-        var(--fire-light);
+      border-color: var(--fire-light);
 
       background:
         linear-gradient(
-          180deg,
           #f0b65f,
           #cf7a35
         );
@@ -1764,19 +2703,8 @@
       color: #27170e;
 
       font-weight: bold;
-
-      box-shadow:
-        0 8px 22px rgba(220, 112, 44, .14);
     }
 
-    .button-primary:hover {
-      background:
-        linear-gradient(
-          180deg,
-          #ffd17f,
-          #e28d42
-        );
-    }
 
     .button-secondary {
       color: var(--gold-light);
@@ -1785,27 +2713,24 @@
         rgba(10, 31, 30, .4);
     }
 
-    .button-secondary:hover {
-      background:
-        rgba(233, 138, 59, .10);
-
-      border-color:
-        var(--fire-light);
-    }
-
 
     /* =====================================================
-       CAMPFIRE QUOTE
+       QUOTE
     ===================================================== */
 
     .quote-section {
-      overflow: hidden;
+      position: relative;
 
-      text-align: center;
+      overflow: hidden;
 
       padding:
         125px 0;
+
+      text-align: center;
+
+      background: #061614;
     }
+
 
     .quote-section::before {
       content: "";
@@ -1829,9 +2754,8 @@
           rgba(231, 123, 49, .10),
           transparent 68%
         );
-
-      pointer-events: none;
     }
+
 
     .quote {
       position: relative;
@@ -1848,15 +2772,15 @@
         );
 
       line-height: 1.12;
-
-      font-weight: 400;
     }
+
 
     .quote em {
       color: var(--fire-light);
 
       font-style: normal;
     }
+
 
     .quote-small {
       position: relative;
@@ -1868,8 +2792,6 @@
         0;
 
       color: var(--cream-muted);
-
-      font-size: 16px;
     }
 
 
@@ -1878,6 +2800,8 @@
     ===================================================== */
 
     .dawn-section {
+      position: relative;
+
       min-height: 590px;
 
       display: flex;
@@ -1887,13 +2811,13 @@
 
       background:
         linear-gradient(
-          180deg,
           #071615 0%,
           #132d2b 38%,
           #765849 76%,
           #c58b62 100%
         );
     }
+
 
     .dawn-section::before {
       content: "";
@@ -1906,8 +2830,7 @@
       width: 680px;
       height: 420px;
 
-      transform:
-        translateX(-50%);
+      transform: translateX(-50%);
 
       border-radius: 50%;
 
@@ -1918,9 +2841,8 @@
           rgba(236, 145, 88, .22) 38%,
           transparent 68%
         );
-
-      filter: blur(3px);
     }
+
 
     .dawn-section::after {
       content: "";
@@ -1936,11 +2858,9 @@
       border-radius:
         50% 50% 0 0;
 
-      background:
-        #0b211c;
-
-      opacity: .96;
+      background: #0b211c;
     }
+
 
     .dawn-content {
       position: relative;
@@ -1953,6 +2873,7 @@
 
       text-align: center;
     }
+
 
     .dawn-content h2 {
       margin:
@@ -1971,17 +2892,15 @@
       line-height: 1;
     }
 
-    .dawn-content p {
-      margin: auto;
 
+    .dawn-content p {
       max-width: 710px;
+
+      margin: auto;
 
       color: #f3dfc4;
 
       font-size: 18px;
-
-      text-shadow:
-        0 2px 12px rgba(0, 0, 0, .32);
     }
 
 
@@ -1992,7 +2911,7 @@
     footer {
       position: relative;
 
-      z-index: 4;
+      z-index: 5;
 
       padding:
         42px 0
@@ -2004,9 +2923,9 @@
       background: #061210;
     }
 
+
     .footer {
       display: flex;
-
       align-items: center;
       justify-content: space-between;
 
@@ -2015,13 +2934,13 @@
       flex-wrap: wrap;
     }
 
+
     .footer-brand {
       color: var(--gold-light);
 
       font-size: 14px;
-
-      letter-spacing: .05em;
     }
+
 
     .footer-motto {
       color: #9f937c;
@@ -2037,12 +2956,15 @@
       font-size: 8px;
     }
 
+
     .footer-links {
       display: flex;
 
       gap: 17px;
 
       flex-wrap: wrap;
+
+      color: #aa9d83;
 
       font-family:
         Arial,
@@ -2053,12 +2975,6 @@
       letter-spacing: .1em;
 
       font-size: 9px;
-
-      color: #aa9d83;
-    }
-
-    .footer-links a:hover {
-      color: var(--fire-light);
     }
 
 
@@ -2066,178 +2982,189 @@
        RESPONSIVE
     ===================================================== */
 
-    @media (max-width: 950px) {
+    @media (max-width: 1000px) {
+
+      .character {
+        transform:
+          scale(.86);
+      }
+
+
+      .rogue {
+        left: 4%;
+      }
+
+
+      .astronaut {
+        left: 21%;
+      }
+
+
+      .wizard {
+        right: 21%;
+      }
+
+
+      .princess {
+        right: 4%;
+      }
+
+
+      .pool {
+        right: -30px;
+
+        transform: scale(.85);
+      }
+
+
+      .mermaid {
+        right: 25px;
+
+        transform: scale(.85);
+      }
+
 
       .club-grid {
         grid-template-columns:
           repeat(2, 1fr);
       }
 
+
       .story-grid {
-        grid-template-columns:
-          1fr;
+        grid-template-columns: 1fr;
       }
 
-      .story-card {
-        min-height: 260px;
-      }
 
       .book-layout {
-        grid-template-columns:
-          1fr;
+        grid-template-columns: 1fr;
 
         gap: 45px;
       }
+
 
       .path-grid {
         grid-template-columns:
           repeat(3, 1fr);
       }
 
-      .path:nth-child(3) {
-        border-right: 0;
-      }
-
-      .path:nth-child(n+4) {
-        border-top:
-          1px solid rgba(226, 190, 123, .18);
-      }
     }
+
 
     @media (max-width: 760px) {
 
-      .navlinks a:not(
-        .nav-signup
-      ) {
+      .navlinks a:not(.nav-join) {
         display: none;
       }
 
-      .hero {
-        min-height: 760px;
 
-        padding-top: 75px;
+      .hero {
+        min-height: 900px;
       }
+
 
       .moon {
         width: 95px;
         height: 95px;
 
-        right: 7vw;
-        top: 105px;
+        right: 4%;
       }
 
-      .tree {
-        opacity: .52;
+
+      .big-tree {
+        opacity: .55;
       }
 
-      .quick-paths {
-        margin-top: -35px;
+
+      .gathering {
+        height: 500px;
+
+        transform:
+          scale(.82);
+
+        transform-origin:
+          center top;
+
+        margin-bottom: -80px;
       }
+
 
       .path-grid {
         grid-template-columns:
           1fr 1fr;
       }
 
-      .path,
-      .path:nth-child(3) {
-        border-right:
-          1px solid rgba(226, 190, 123, .18);
-
-        border-top:
-          1px solid rgba(226, 190, 123, .18);
-      }
-
-      .path:nth-child(odd) {
-        border-left: 0;
-      }
-
-      .path:nth-child(even) {
-        border-right: 0;
-      }
-
-      .path:first-child,
-      .path:nth-child(2) {
-        border-top: 0;
-      }
 
       .path:last-child {
         grid-column:
           1 / -1;
       }
 
-      .book-cover-area {
-        min-height: 390px;
-      }
     }
 
-    @media (max-width: 570px) {
+
+    @media (max-width: 560px) {
 
       .wrap {
         width:
           min(
             calc(100% - 28px),
-            var(--max-width)
+            var(--max)
           );
       }
+
 
       .brand {
         font-size: 13px;
       }
 
-      .brand-mark {
-        width: 26px;
-        height: 26px;
-      }
 
       .hero {
-        min-height: 700px;
+        min-height: 850px;
 
-        padding:
-          65px 0
-          110px;
+        padding-top: 55px;
       }
 
-      .hero-kicker {
-        letter-spacing: .20em;
+
+      .gathering {
+        width: 1120px;
+
+        left: 50%;
+
+        transform:
+          translateX(-50%)
+          scale(.52);
+
+        transform-origin:
+          center top;
+
+        margin-bottom: -175px;
       }
 
-      .campfire-scene {
-        height: 220px;
-
-        margin-top: 25px;
-      }
 
       .club-grid {
-        grid-template-columns:
-          1fr;
+        grid-template-columns: 1fr;
       }
 
-      section {
+
+      section.content-section {
         padding:
           70px 0;
       }
 
-      .book-search {
-        flex-direction:
-          column;
-      }
 
+      .book-search,
       .book-actions {
-        flex-direction:
-          column;
+        flex-direction: column;
       }
 
-      .book-actions .button,
-      .book-search .button {
+
+      .book-search .button,
+      .book-actions .button {
         width: 100%;
 
         text-align: center;
       }
 
-      .dawn-section {
-        min-height: 520px;
-      }
 
       .footer {
         flex-direction: column;
@@ -2245,10 +3172,13 @@
         text-align: center;
       }
 
+
       .footer-links {
         justify-content: center;
       }
+
     }
+
 
     @media (
       prefers-reduced-motion:
@@ -2258,7 +3188,8 @@
       *,
       *::before,
       *::after {
-        scroll-behavior: auto !important;
+        scroll-behavior:
+          auto !important;
 
         animation-duration:
           .01ms !important;
@@ -2266,6 +3197,7 @@
         animation-iteration-count:
           1 !important;
       }
+
     }
 
   </style>
@@ -2273,24 +3205,6 @@
 
 
 <body>
-
-  <!-- =====================================================
-       SKY
-  ====================================================== -->
-
-  <div
-    class="sky"
-    aria-hidden="true"
-  >
-    <div class="moon"></div>
-
-    <span class="star"></span>
-    <span class="star"></span>
-    <span class="star"></span>
-    <span class="star"></span>
-    <span class="star"></span>
-    <span class="star"></span>
-  </div>
 
 
   <!-- =====================================================
@@ -2305,6 +3219,7 @@
         href="index.html"
         class="brand"
       >
+
         <span
           class="brand-mark"
           aria-hidden="true"
@@ -2315,6 +3230,7 @@
         <span>
           Paper Gremlin
         </span>
+
       </a>
 
 
@@ -2348,7 +3264,7 @@
 
         <a
           href="auth.html#signup"
-          class="nav-signup"
+          class="nav-join"
           id="navSignup"
         >
           Join
@@ -2371,60 +3287,295 @@
     <section class="hero">
 
       <div
-        class="tree tree-left"
+        class="stars"
         aria-hidden="true"
       ></div>
 
       <div
-        class="tree tree-right"
+        class="moon"
+        aria-hidden="true"
+      ></div>
+
+      <div
+        class="mountains"
+        aria-hidden="true"
+      ></div>
+
+      <div
+        class="forest-back"
+        aria-hidden="true"
+      ></div>
+
+      <div
+        class="ground"
         aria-hidden="true"
       ></div>
 
 
-      <div class="wrap hero-content">
+      <div
+        class="big-tree left"
+        aria-hidden="true"
+      >
+        <div class="trunk"></div>
+        <div class="branch"></div>
+        <div class="canopy"></div>
+      </div>
 
-        <div class="hero-kicker">
-          Stories bring us home
+
+      <div
+        class="big-tree right"
+        aria-hidden="true"
+      >
+        <div class="trunk"></div>
+        <div class="branch"></div>
+        <div class="canopy"></div>
+      </div>
+
+
+      <div class="wrap">
+
+        <div class="hero-copy">
+
+          <div class="hero-kicker">
+            Stories bring us home
+          </div>
+
+          <h1>
+            Different Readers.
+            <span>
+              Same Campfire.
+            </span>
+          </h1>
+
+          <p class="hero-subtitle">
+            A home for every kind of story
+            and every kind of reader.
+          </p>
+
         </div>
 
-        <h1>
-          Different Readers.
-          <span>
-            Same Campfire.
-          </span>
-        </h1>
 
-        <p class="hero-subtitle">
-          A home for every kind of story
-          and every kind of reader.
-        </p>
-
-
-        <!--
-          No giant signup button here on purpose.
-          The campfire is the invitation.
-        -->
-
+        <!-- =================================================
+             THE GATHERING
+        ================================================== -->
 
         <div
-          class="campfire-scene"
-          aria-hidden="true"
+          class="gathering"
+          aria-label="A fantasy gathering of readers around a campfire"
         >
 
-          <div class="fire-glow"></div>
+          <div
+            class="firelight"
+            aria-hidden="true"
+          ></div>
 
-          <span class="firefly fly-one"></span>
-          <span class="firefly fly-two"></span>
-          <span class="firefly fly-three"></span>
-          <span class="firefly fly-four"></span>
 
+          <!-- ROGUE -->
+
+          <div
+            class="character rogue"
+            aria-hidden="true"
+          >
+
+            <div class="hood"></div>
+            <div class="head"></div>
+            <div class="body"></div>
+            <div class="belt"></div>
+
+            <div class="leg one"></div>
+            <div class="leg two"></div>
+
+            <div class="dagger"></div>
+
+          </div>
+
+
+          <!-- ASTRONAUT -->
+
+          <div
+            class="character astronaut"
+            aria-hidden="true"
+          >
+
+            <div class="helmet"></div>
+            <div class="body"></div>
+
+            <div class="leg one"></div>
+            <div class="leg two"></div>
+
+          </div>
+
+
+          <!-- WIZARD -->
+
+          <div
+            class="character wizard"
+            aria-hidden="true"
+          >
+
+            <div class="hat"></div>
+            <div class="head"></div>
+            <div class="body"></div>
+
+            <div class="leg one"></div>
+            <div class="leg two"></div>
+
+          </div>
+
+
+          <!-- WIZARD MAGIC -->
+
+          <div
+            class="magic"
+            aria-hidden="true"
+          >
+
+            <span class="magic-star one">
+              ✦
+            </span>
+
+            <span class="magic-star two">
+              ✧
+            </span>
+
+            <span class="magic-star three">
+              ✦
+            </span>
+
+            <span class="magic-star four">
+              ✵
+            </span>
+
+          </div>
+
+
+          <!-- PRINCESS -->
+
+          <div
+            class="character princess"
+            aria-hidden="true"
+          >
+
+            <div class="hair"></div>
+            <div class="crown"></div>
+            <div class="head"></div>
+            <div class="body"></div>
+
+            <div class="leg one"></div>
+            <div class="leg two"></div>
+
+          </div>
+
+
+          <!-- MERMAID -->
+
+          <div
+            class="pool"
+            aria-hidden="true"
+          ></div>
+
+          <div
+            class="mermaid"
+            aria-hidden="true"
+          >
+
+            <div class="hair"></div>
+            <div class="head"></div>
+            <div class="torso"></div>
+            <div class="tail"></div>
+
+          </div>
+
+
+          <!-- CAMP CLUTTER -->
+
+          <div
+            class="book-stack"
+            aria-hidden="true"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+
+          <div
+            class="mug"
+            aria-hidden="true"
+          ></div>
+
+
+          <div
+            class="bedroll"
+            aria-hidden="true"
+          ></div>
+
+
+          <!-- CAMPFIRE -->
+
+          <div
+            class="campfire"
+            aria-hidden="true"
+          >
+
+            <div class="stone-ring"></div>
+
+            <div class="log one"></div>
+            <div class="log two"></div>
+
+            <div class="flame outer"></div>
+            <div class="flame middle"></div>
+            <div class="flame inner"></div>
+
+          </div>
+
+
+          <!-- FIREFLIES AROUND THE ASTRONAUT -->
+
+          <span
+            class="firefly"
+            style="
+              left:27%;
+              bottom:205px;
+            "
+          ></span>
+
+          <span
+            class="firefly"
+            style="
+              left:31%;
+              bottom:165px;
+              animation-delay:-2s;
+            "
+          ></span>
+
+          <span
+            class="firefly"
+            style="
+              left:22%;
+              bottom:135px;
+              animation-delay:-4s;
+            "
+          ></span>
+
+          <span
+            class="firefly"
+            style="
+              left:36%;
+              bottom:115px;
+              animation-delay:-1s;
+            "
+          ></span>
+
+
+          <!-- STATIC EMBERS -->
 
           <span
             class="ember"
             style="
-              left:47%;
-              bottom:115px;
-              animation-delay:-.4s;
+              left:48%;
+              bottom:145px;
+              animation-delay:-.5s;
             "
           ></span>
 
@@ -2432,7 +3583,7 @@
             class="ember"
             style="
               left:51%;
-              bottom:105px;
+              bottom:135px;
               animation-delay:-1.5s;
             "
           ></span>
@@ -2440,9 +3591,9 @@
           <span
             class="ember"
             style="
-              left:49%;
-              bottom:125px;
-              animation-delay:-2.4s;
+              left:50%;
+              bottom:160px;
+              animation-delay:-2.6s;
             "
           ></span>
 
@@ -2450,41 +3601,10 @@
             class="ember"
             style="
               left:53%;
-              bottom:115px;
-              animation-delay:-3.1s;
+              bottom:145px;
+              animation-delay:-3.2s;
             "
           ></span>
-
-          <span
-            class="ember"
-            style="
-              left:46%;
-              bottom:100px;
-              animation-delay:-3.7s;
-            "
-          ></span>
-
-
-          <div class="stone-ring"></div>
-
-          <div class="log log-one"></div>
-          <div class="log log-two"></div>
-
-          <div class="fire">
-
-            <div
-              class="flame flame-outer"
-            ></div>
-
-            <div
-              class="flame flame-middle"
-            ></div>
-
-            <div
-              class="flame flame-inner"
-            ></div>
-
-          </div>
 
         </div>
 
@@ -2507,6 +3627,7 @@
             href="discover.html"
             class="path"
           >
+
             <span class="path-icon">
               📖
             </span>
@@ -2514,6 +3635,7 @@
             <span class="path-label">
               Explore Books
             </span>
+
           </a>
 
 
@@ -2521,6 +3643,7 @@
             href="clubs.html"
             class="path"
           >
+
             <span class="path-icon">
               🔥
             </span>
@@ -2528,6 +3651,7 @@
             <span class="path-label">
               Join a Club
             </span>
+
           </a>
 
 
@@ -2535,6 +3659,7 @@
             href="profile.html"
             class="path"
           >
+
             <span class="path-icon">
               ✦
             </span>
@@ -2542,6 +3667,7 @@
             <span class="path-label">
               Create Your Avatar
             </span>
+
           </a>
 
 
@@ -2549,6 +3675,7 @@
             href="dashboard.html"
             class="path"
           >
+
             <span class="path-icon">
               📝
             </span>
@@ -2556,6 +3683,7 @@
             <span class="path-label">
               Share Your DogEars
             </span>
+
           </a>
 
 
@@ -2563,6 +3691,7 @@
             href="discover.html"
             class="path"
           >
+
             <span class="path-icon">
               ☾
             </span>
@@ -2570,6 +3699,7 @@
             <span class="path-label">
               Explore More
             </span>
+
           </a>
 
         </div>
@@ -2583,7 +3713,9 @@
          FEATURED CLUBS
     ====================================================== -->
 
-    <section class="parchment-section">
+    <section
+      class="content-section parchment-section"
+    >
 
       <div class="wrap">
 
@@ -2596,7 +3728,8 @@
           </div>
 
           <h2>
-            Find your corner of the campfire.
+            Find your corner
+            of the campfire.
           </h2>
 
           <p>
@@ -2618,7 +3751,9 @@
             class="club-card"
           >
 
-            <div class="club-art"></div>
+            <div class="club-art">
+              ⚔
+            </div>
 
             <div class="club-card-content">
 
@@ -2646,7 +3781,9 @@
             class="club-card"
           >
 
-            <div class="club-art"></div>
+            <div class="club-art">
+              ☾
+            </div>
 
             <div class="club-card-content">
 
@@ -2674,7 +3811,9 @@
             class="club-card"
           >
 
-            <div class="club-art"></div>
+            <div class="club-art">
+              ✧
+            </div>
 
             <div class="club-card-content">
 
@@ -2703,7 +3842,9 @@
             class="club-card"
           >
 
-            <div class="club-art"></div>
+            <div class="club-art">
+              ☕
+            </div>
 
             <div class="club-card-content">
 
@@ -2731,10 +3872,12 @@
 
     </section>
         <!-- =====================================================
-         WAYS TO GATHER
+         STORY PATHS
     ====================================================== -->
 
-    <section class="story-section">
+    <section
+      class="content-section story-section"
+    >
 
       <div class="wrap">
 
@@ -2853,7 +3996,9 @@
          BOOK DISCOVERY
     ====================================================== -->
 
-    <section class="book-section">
+    <section
+      class="content-section book-section"
+    >
 
       <div class="wrap book-layout">
 
@@ -2866,14 +4011,22 @@
             class="book-placeholder"
             id="featuredBookPlaceholder"
           >
-            <div style="font-size:46px;">
+
+            <div
+              style="
+                font-size:46px;
+                margin-bottom:8px;
+              "
+            >
               📚
             </div>
 
             Search for a story
             <br>
             to bring it to the fire
+
           </div>
+
 
           <img
             id="featuredBookCover"
@@ -2906,10 +4059,11 @@
             class="book-description"
             id="featuredBookDescription"
           >
-            Search the shelves without leaving the
-            campfire. We'll pull in book information
-            so you can find something new to read,
-            talk about, or bring back to your club.
+            Search the shelves without leaving
+            the campfire. We'll pull in book
+            information so you can find something
+            new to read, talk about, or bring back
+            to your club.
           </div>
 
 
@@ -2935,12 +4089,14 @@
               Search for a book
             </label>
 
+
             <input
               type="search"
               id="bookSearchInput"
               placeholder="Title, author, or ISBN..."
               autocomplete="off"
             >
+
 
             <button
               type="submit"
@@ -2961,6 +4117,7 @@
             >
               Explore Books
             </a>
+
 
             <a
               href="clubs.html"
@@ -3042,6 +4199,7 @@
 
     </section>
 
+
   </main>
 
 
@@ -3088,8 +4246,18 @@
           Beta Reading
         </a>
 
-        <a href="profile.html">
-          Profile
+        <a
+          href="auth.html#login"
+          id="footerLogin"
+        >
+          Log In
+        </a>
+
+        <a
+          href="auth.html#signup"
+          id="footerSignup"
+        >
+          Join
         </a>
 
       </nav>
@@ -3100,100 +4268,258 @@
 
 
   <!-- =====================================================
-       JAVASCRIPT
+       SUPABASE
   ====================================================== -->
 
-  <script type="module">
-
-    /*
-      ========================================================
-      PAPER GREMLIN HOMEPAGE
-
-      This script handles:
-      1. Existing Supabase session detection.
-      2. Logged-in navigation.
-      3. Homepage Google Books lookup.
-      4. Small ambient visual effects.
-
-      The site remains usable even if either external
-      service is temporarily unavailable.
-      ========================================================
-    */
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
 
 
-    /* -------------------------------------------------------
+  <script>
+
+    /* =====================================================
+       PAPER GREMLIN HOMEPAGE
+    ====================================================== */
+
+
+    /* -----------------------------------------------------
        SUPABASE
-    -------------------------------------------------------- */
+
+       This restores the actual Supabase client instead
+       of trying to guess login state from localStorage.
+    ------------------------------------------------------ */
 
     const SUPABASE_URL =
-      "https://iiyxkkqbmheunmivvsex.supabase.co";
-
-    const SUPABASE_ANON_KEY =
-      "YOUR_EXISTING_SUPABASE_ANON_KEY";
+      "https://nrtutxjznkfvvbmaagum.supabase.co";
 
 
-    /*
-      IMPORTANT:
-
-      In Part 4 we will finish this block using the
-      Supabase configuration already present in your
-      current Paper Gremlin index.html.
-
-      Do NOT commit this placeholder.
-    */
+    const SUPABASE_KEY =
+      "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
 
 
-    /* -------------------------------------------------------
+    let supabaseClient =
+      null;
+
+
+    try {
+
+      if (
+        window.supabase &&
+        window.supabase.createClient
+      ) {
+
+        supabaseClient =
+          window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+          );
+
+      }
+
+    } catch (error) {
+
+      console.warn(
+        "Supabase could not initialize:",
+        error
+      );
+
+    }
+
+
+    /* -----------------------------------------------------
+       AUTH-AWARE NAVIGATION
+    ------------------------------------------------------ */
+
+    const navLogin =
+      document.getElementById(
+        "navLogin"
+      );
+
+
+    const navSignup =
+      document.getElementById(
+        "navSignup"
+      );
+
+
+    const footerLogin =
+      document.getElementById(
+        "footerLogin"
+      );
+
+
+    const footerSignup =
+      document.getElementById(
+        "footerSignup"
+      );
+
+
+    function showLoggedInNavigation() {
+
+      if (navLogin) {
+
+        navLogin.textContent =
+          "Home";
+
+        navLogin.href =
+          "dashboard.html";
+
+      }
+
+
+      if (navSignup) {
+
+        navSignup.textContent =
+          "Profile";
+
+        navSignup.href =
+          "profile.html";
+
+      }
+
+
+      if (footerLogin) {
+
+        footerLogin.textContent =
+          "Home";
+
+        footerLogin.href =
+          "dashboard.html";
+
+      }
+
+
+      if (footerSignup) {
+
+        footerSignup.textContent =
+          "Profile";
+
+        footerSignup.href =
+          "profile.html";
+
+      }
+
+    }
+
+
+    async function checkSession() {
+
+      if (!supabaseClient) {
+        return;
+      }
+
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.auth.getSession();
+
+
+        if (error) {
+
+          console.warn(
+            "Could not read session:",
+            error
+          );
+
+          return;
+
+        }
+
+
+        if (
+          data &&
+          data.session
+        ) {
+
+          showLoggedInNavigation();
+
+        }
+
+      } catch (error) {
+
+        console.warn(
+          "Session check failed:",
+          error
+        );
+
+      }
+
+    }
+
+
+    checkSession();
+
+
+    if (supabaseClient) {
+
+      supabaseClient.auth.onAuthStateChange(
+        function (
+          event,
+          session
+        ) {
+
+          if (session) {
+
+            showLoggedInNavigation();
+
+          }
+
+        }
+      );
+
+    }
+
+
+    /* -----------------------------------------------------
        GOOGLE BOOKS
-    -------------------------------------------------------- */
-
-    const GOOGLE_BOOKS_API_KEY =
-      "YOUR_EXISTING_GOOGLE_BOOKS_API_KEY";
-
-
-    /*
-      Same rule here:
-
-      Do NOT type a new API key into this placeholder.
-      Part 4 finishes the integration without asking you
-      to expose your key in chat.
-    */
-
+    ------------------------------------------------------ */
 
     const bookSearchForm =
       document.getElementById(
         "bookSearchForm"
       );
 
+
     const bookSearchInput =
       document.getElementById(
         "bookSearchInput"
       );
+
 
     const featuredBookTitle =
       document.getElementById(
         "featuredBookTitle"
       );
 
+
     const featuredBookAuthor =
       document.getElementById(
         "featuredBookAuthor"
       );
+
 
     const featuredBookDescription =
       document.getElementById(
         "featuredBookDescription"
       );
 
+
     const featuredBookCover =
       document.getElementById(
         "featuredBookCover"
       );
 
+
     const featuredBookPlaceholder =
       document.getElementById(
         "featuredBookPlaceholder"
       );
+
 
     const exploreBookButton =
       document.getElementById(
@@ -3206,20 +4532,24 @@
     ) {
 
       if (!html) {
+
         return (
-          "No description was provided for this book, " +
-          "which feels suspiciously like the beginning " +
-          "of a mystery."
+          "No description was provided for this book. " +
+          "Apparently the gremlins ate it."
         );
+
       }
+
 
       const temporary =
         document.createElement(
           "div"
         );
 
+
       temporary.innerHTML =
         html;
+
 
       return (
         temporary.textContent ||
@@ -3235,8 +4565,10 @@
       featuredBookTitle.textContent =
         "Searching the shelves…";
 
+
       featuredBookAuthor.textContent =
         "The gremlins are looking.";
+
 
       featuredBookDescription.textContent =
         "One of them wandered off. " +
@@ -3252,15 +4584,19 @@
       featuredBookTitle.textContent =
         "That story slipped away.";
 
+
       featuredBookAuthor.textContent =
         "Try another title, author, or ISBN.";
+
 
       featuredBookDescription.textContent =
         message ||
         "We couldn't find a matching book.";
 
+
       featuredBookCover.hidden =
         true;
+
 
       featuredBookPlaceholder.hidden =
         false;
@@ -3275,9 +4611,11 @@
       const info =
         book.volumeInfo || {};
 
+
       const title =
         info.title ||
         "Untitled Story";
+
 
       const authors =
         Array.isArray(
@@ -3286,21 +4624,26 @@
           ? info.authors.join(", ")
           : "Unknown author";
 
+
       const description =
         cleanBookDescription(
           info.description
         );
+
 
       const image =
         info.imageLinks?.thumbnail ||
         info.imageLinks?.smallThumbnail ||
         "";
 
+
       featuredBookTitle.textContent =
         title;
 
+
       featuredBookAuthor.textContent =
         "by " + authors;
+
 
       featuredBookDescription.textContent =
         description;
@@ -3314,11 +4657,14 @@
             "https://"
           );
 
+
         featuredBookCover.alt =
           "Cover of " + title;
 
+
         featuredBookCover.hidden =
           false;
+
 
         featuredBookPlaceholder.hidden =
           true;
@@ -3328,20 +4674,18 @@
         featuredBookCover.hidden =
           true;
 
+
         featuredBookPlaceholder.hidden =
           false;
 
       }
 
 
-      const encodedTitle =
+      exploreBookButton.href =
+        "discover.html?q=" +
         encodeURIComponent(
           title
         );
-
-      exploreBookButton.href =
-        "discover.html?q=" +
-        encodedTitle;
 
     }
 
@@ -3352,6 +4696,7 @@
 
       const trimmed =
         query.trim();
+
 
       if (!trimmed) {
         return;
@@ -3370,13 +4715,6 @@
             trimmed
           ) +
           "&maxResults=1";
-
-
-        /*
-          The website-restricted Google Books key is
-          appended in Part 4 using the existing project
-          configuration.
-        */
 
 
         const response =
@@ -3418,12 +4756,14 @@
           data.items[0]
         );
 
+
       } catch (error) {
 
         console.error(
           "Book search failed:",
           error
         );
+
 
         showBookError(
           "The shelves aren't cooperating right now. " +
@@ -3435,179 +4775,102 @@
     }
 
 
-    bookSearchForm.addEventListener(
-      "submit",
-      function (
-        event
-      ) {
+    if (bookSearchForm) {
 
-        event.preventDefault();
-
-        searchGoogleBooks(
-          bookSearchInput.value
-        );
-
-      }
-    );
-        /* -------------------------------------------------------
-       SESSION / NAVIGATION
-    -------------------------------------------------------- */
-
-    const navLogin =
-      document.getElementById(
-        "navLogin"
-      );
-
-    const navSignup =
-      document.getElementById(
-        "navSignup"
-      );
-
-
-    /*
-      Paper Gremlin stores the Supabase browser session
-      in localStorage. We only need to detect whether a
-      valid-looking session exists here so the homepage
-      navigation can react appropriately.
-
-      Actual authentication remains on auth.html.
-    */
-
-    function findSupabaseSession() {
-
-      try {
-
-        const keys =
-          Object.keys(
-            localStorage
-          );
-
-
-        const authKey =
-          keys.find(
-            function (
-              key
-            ) {
-
-              return (
-                key.startsWith(
-                  "sb-"
-                ) &&
-                key.endsWith(
-                  "-auth-token"
-                )
-              );
-
-            }
-          );
-
-
-        if (!authKey) {
-          return null;
-        }
-
-
-        const raw =
-          localStorage.getItem(
-            authKey
-          );
-
-
-        if (!raw) {
-          return null;
-        }
-
-
-        const parsed =
-          JSON.parse(
-            raw
-          );
-
-
-        /*
-          Supabase storage formats can differ slightly
-          between client versions, so accept either the
-          direct session object or an object containing
-          currentSession/session.
-        */
-
-        const session =
-          parsed?.currentSession ||
-          parsed?.session ||
-          parsed;
-
-
-        if (
-          session?.access_token ||
-          session?.user
+      bookSearchForm.addEventListener(
+        "submit",
+        function (
+          event
         ) {
 
-          return session;
+          event.preventDefault();
+
+
+          searchGoogleBooks(
+            bookSearchInput.value
+          );
 
         }
-
-
-        return null;
-
-      } catch (
-        error
-      ) {
-
-        console.warn(
-          "Could not inspect login session:",
-          error
-        );
-
-        return null;
-
-      }
-
-    }
-
-
-    function updateNavigationForSession() {
-
-      const session =
-        findSupabaseSession();
-
-
-      if (!session) {
-        return;
-      }
-
-
-      navLogin.textContent =
-        "My Campfire";
-
-      navLogin.href =
-        "dashboard.html";
-
-
-      navSignup.textContent =
-        "Profile";
-
-      navSignup.href =
-        "profile.html";
-
-    }
-
-
-    updateNavigationForSession();
-
-
-    /* -------------------------------------------------------
-       AMBIENT CAMPFIRE EFFECTS
-    -------------------------------------------------------- */
-
-    const campfireScene =
-      document.querySelector(
-        ".campfire-scene"
       );
+
+    }
+        /* -----------------------------------------------------
+       BOOK SEARCH FROM URL
+
+       Example:
+       index.html?q=Fourth%20Wing
+    ------------------------------------------------------ */
+
+    const pageParameters =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    const initialBookQuery =
+      pageParameters.get(
+        "q"
+      );
+
+
+    if (
+      initialBookQuery &&
+      bookSearchInput
+    ) {
+
+      bookSearchInput.value =
+        initialBookQuery;
+
+
+      searchGoogleBooks(
+        initialBookQuery
+      );
+
+    }
+
+
+    /* -----------------------------------------------------
+       BROKEN COVER FALLBACK
+    ------------------------------------------------------ */
+
+    if (featuredBookCover) {
+
+      featuredBookCover.addEventListener(
+        "error",
+        function () {
+
+          featuredBookCover.hidden =
+            true;
+
+
+          featuredBookPlaceholder.hidden =
+            false;
+
+        }
+      );
+
+    }
+
+
+    /* -----------------------------------------------------
+       AMBIENT EMBERS
+    ------------------------------------------------------ */
+
+    const gathering =
+      document.querySelector(
+        ".gathering"
+      );
+
+
+    const reducedMotion =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
 
 
     function createEmber() {
 
-      if (!campfireScene) {
+      if (!gathering) {
         return;
       }
 
@@ -3622,24 +4885,18 @@
         "ember";
 
 
-      const center =
-        50 +
-        (
-          Math.random() *
-          8 -
-          4
-        );
-
-
       ember.style.left =
-        center + "%";
+        (
+          47 +
+          Math.random() * 6
+        ) +
+        "%";
 
 
       ember.style.bottom =
         (
-          95 +
-          Math.random() *
-          35
+          135 +
+          Math.random() * 35
         ) +
         "px";
 
@@ -3647,13 +4904,12 @@
       ember.style.animationDuration =
         (
           2.8 +
-          Math.random() *
-          2.4
+          Math.random() * 2.2
         ) +
         "s";
 
 
-      campfireScene.appendChild(
+      gathering.appendChild(
         ember
       );
 
@@ -3664,16 +4920,10 @@
           ember.remove();
 
         },
-        5400
+        5200
       );
 
     }
-
-
-    const reducedMotion =
-      window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
 
 
     if (!reducedMotion) {
@@ -3686,34 +4936,26 @@
     }
 
 
-    /* -------------------------------------------------------
-       FIREFLY GENERATOR
-    -------------------------------------------------------- */
+    /* -----------------------------------------------------
+       EXTRA FIREFLIES
 
-    function addRandomFireflies() {
+       These stay mostly around the astronaut but wander
+       far enough to make the campsite feel alive.
+    ------------------------------------------------------ */
+
+    function createFireflies() {
 
       if (
-        reducedMotion ||
-        window.innerWidth < 500
+        !gathering ||
+        reducedMotion
       ) {
-        return;
-      }
-
-
-      const hero =
-        document.querySelector(
-          ".hero"
-        );
-
-
-      if (!hero) {
         return;
       }
 
 
       for (
         let index = 0;
-        index < 8;
+        index < 7;
         index++
       ) {
 
@@ -3729,26 +4971,23 @@
 
         fly.style.left =
           (
-            8 +
-            Math.random() *
-            84
+            15 +
+            Math.random() * 28
           ) +
           "%";
 
 
         fly.style.bottom =
           (
-            90 +
-            Math.random() *
-            250
+            85 +
+            Math.random() * 210
           ) +
           "px";
 
 
         fly.style.animationDelay =
           (
-            Math.random() *
-            -7
+            Math.random() * -7
           ) +
           "s";
 
@@ -3756,13 +4995,12 @@
         fly.style.animationDuration =
           (
             5 +
-            Math.random() *
-            5
+            Math.random() * 5
           ) +
           "s";
 
 
-        hero.appendChild(
+        gathering.appendChild(
           fly
         );
 
@@ -3771,93 +5009,204 @@
     }
 
 
-    addRandomFireflies();
+    createFireflies();
 
 
-    /* -------------------------------------------------------
-       SEARCH URL SUPPORT
+    /* -----------------------------------------------------
+       FIRELIGHT FLICKER
 
-       If someone arrives at the homepage with:
-       index.html?q=Fourth%20Wing
+       Tiny randomized changes make the characters appear
+       to be sitting in uneven firelight rather than under
+       a static orange circle.
+    ------------------------------------------------------ */
 
-       the homepage automatically performs that search.
-    -------------------------------------------------------- */
-
-    const pageParameters =
-      new URLSearchParams(
-        window.location.search
+    const firelight =
+      document.querySelector(
+        ".firelight"
       );
 
 
-    const initialBookQuery =
-      pageParameters.get(
-        "q"
-      );
+    if (
+      firelight &&
+      !reducedMotion
+    ) {
+
+      window.setInterval(
+        function () {
+
+          const opacity =
+            .82 +
+            Math.random() * .18;
 
 
-    if (initialBookQuery) {
+          firelight.style.opacity =
+            opacity;
 
-      bookSearchInput.value =
-        initialBookQuery;
-
-      searchGoogleBooks(
-        initialBookQuery
+        },
+        240
       );
 
     }
 
 
-    /* -------------------------------------------------------
-       PARALLAX-LITE
+    /* -----------------------------------------------------
+       MAGIC SPARKS
 
-       Very small movement only. This gives the forest a
-       little depth without turning the page into a video
-       game interface.
-    -------------------------------------------------------- */
+       Add a few tiny sparks around the wizard's story.
+    ------------------------------------------------------ */
+
+    const magic =
+      document.querySelector(
+        ".magic"
+      );
+
+
+    function createMagicSpark() {
+
+      if (
+        !magic ||
+        reducedMotion
+      ) {
+        return;
+      }
+
+
+      const spark =
+        document.createElement(
+          "span"
+        );
+
+
+      spark.className =
+        "magic-star";
+
+
+      const symbols =
+        [
+          "✦",
+          "✧",
+          "·",
+          "✵"
+        ];
+
+
+      spark.textContent =
+        symbols[
+          Math.floor(
+            Math.random() *
+            symbols.length
+          )
+        ];
+
+
+      spark.style.left =
+        (
+          Math.random() * 150
+        ) +
+        "px";
+
+
+      spark.style.top =
+        (
+          20 +
+          Math.random() * 110
+        ) +
+        "px";
+
+
+      spark.style.fontSize =
+        (
+          8 +
+          Math.random() * 12
+        ) +
+        "px";
+
+
+      spark.style.animationDuration =
+        (
+          2 +
+          Math.random() * 2
+        ) +
+        "s";
+
+
+      magic.appendChild(
+        spark
+      );
+
+
+      window.setTimeout(
+        function () {
+
+          spark.remove();
+
+        },
+        4100
+      );
+
+    }
+
+
+    if (!reducedMotion) {
+
+      window.setInterval(
+        createMagicSpark,
+        1200
+      );
+
+    }
+
+
+    /* -----------------------------------------------------
+       VERY LIGHT FOREST PARALLAX
+    ------------------------------------------------------ */
+
+    const mountains =
+      document.querySelector(
+        ".mountains"
+      );
+
+
+    const forestBack =
+      document.querySelector(
+        ".forest-back"
+      );
+
 
     if (
       !reducedMotion &&
       window.innerWidth > 760
     ) {
 
-      const leftTree =
-        document.querySelector(
-          ".tree-left"
-        );
-
-      const rightTree =
-        document.querySelector(
-          ".tree-right"
-        );
-
-
       window.addEventListener(
         "scroll",
         function () {
 
-          const amount =
-            Math.min(
-              window.scrollY *
-              .035,
-              24
-            );
+          const scroll =
+            window.scrollY;
 
 
-          if (leftTree) {
+          if (mountains) {
 
-            leftTree.style.transform =
+            mountains.style.transform =
               "translateY(" +
-              amount +
+              Math.min(
+                scroll * .025,
+                18
+              ) +
               "px)";
 
           }
 
 
-          if (rightTree) {
+          if (forestBack) {
 
-            rightTree.style.transform =
-              "scaleX(-1) translateY(" +
-              amount +
+            forestBack.style.transform =
+              "translateY(" +
+              Math.min(
+                scroll * .04,
+                28
+              ) +
               "px)";
 
           }
@@ -3871,27 +5220,9 @@
     }
 
 
-    /* -------------------------------------------------------
-       SAFETY NET FOR BROKEN BOOK COVERS
-    -------------------------------------------------------- */
-
-    featuredBookCover.addEventListener(
-      "error",
-      function () {
-
-        featuredBookCover.hidden =
-          true;
-
-        featuredBookPlaceholder.hidden =
-          false;
-
-      }
-    );
-
-
-    /* -------------------------------------------------------
+    /* -----------------------------------------------------
        HOMEPAGE READY
-    -------------------------------------------------------- */
+    ------------------------------------------------------ */
 
     document.documentElement.classList.add(
       "paper-gremlin-ready"
