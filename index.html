@@ -16,26 +16,41 @@
   <title>Paper Gremlin — Different Readers. Same Campfire.</title>
 
   <style>
-    :root{
-      --night:#06171c;
-      --night-deep:#031014;
-      --night-soft:#0c2930;
-      --forest:#0d2a25;
-      --forest-light:#1c4538;
 
-      --cream:#f5e7c8;
+    /* =====================================================
+       PAPER GREMLIN
+       STORYBOOK HOMEPAGE — DETAIL PASS
+    ===================================================== */
+
+    :root{
+      --night:#041317;
+      --night-blue:#082329;
+      --night-teal:#0b3031;
+
+      --forest-dark:#071c18;
+      --forest:#0c3028;
+      --forest-mid:#17483a;
+      --forest-light:#2c6250;
+
+      --cream:#f4e5c6;
       --cream-muted:#cbbda1;
 
       --gold:#cda45f;
-      --gold-light:#f1cc83;
+      --gold-light:#f2cf85;
 
-      --fire:#ed7d35;
-      --fire-gold:#ffb654;
-      --fire-light:#ffe49b;
+      --fire:#ef7835;
+      --fire-orange:#ff9c42;
+      --fire-gold:#ffc35d;
+      --fire-light:#fff0ad;
 
       --paper:#e5d0a5;
-      --paper-light:#f2dfb7;
+      --paper-light:#f1deb8;
+      --paper-dark:#b99b6e;
       --paper-ink:#33271c;
+
+      --magic:#b9d8ff;
+      --magic-purple:#c5a9ff;
+      --magic-gold:#ffe19b;
 
       --max:1180px;
     }
@@ -55,7 +70,7 @@
       margin:0;
       overflow-x:hidden;
 
-      background:var(--night-deep);
+      background:var(--night);
       color:var(--cream);
 
       font-family:
@@ -106,6 +121,7 @@
     .topbar{
       position:sticky;
       top:0;
+
       z-index:1000;
 
       min-height:68px;
@@ -114,7 +130,7 @@
         1px solid rgba(229,189,112,.22);
 
       background:
-        rgba(3,14,18,.94);
+        rgba(3,14,18,.95);
 
       backdrop-filter:blur(15px);
       -webkit-backdrop-filter:blur(15px);
@@ -135,6 +151,7 @@
     .brand{
       display:flex;
       align-items:center;
+
       gap:11px;
 
       color:var(--gold-light);
@@ -145,10 +162,10 @@
 
 
     .brand-mark{
+      position:relative;
+
       width:33px;
       height:33px;
-
-      position:relative;
 
       display:grid;
       place-items:center;
@@ -194,18 +211,19 @@
     .navlinks{
       display:flex;
       align-items:center;
+
       gap:22px;
+
+      color:var(--cream-muted);
 
       font-family:
         Arial,
         sans-serif;
 
-      text-transform:uppercase;
-      letter-spacing:.11em;
-
       font-size:10px;
 
-      color:var(--cream-muted);
+      text-transform:uppercase;
+      letter-spacing:.11em;
     }
 
 
@@ -218,7 +236,9 @@
 
     .navlinks a:hover{
       color:var(--fire-light);
-      transform:translateY(-1px);
+
+      transform:
+        translateY(-1px);
     }
 
 
@@ -247,86 +267,101 @@
       overflow:hidden;
 
       padding:
-        62px 0 20px;
+        55px 0 18px;
 
       isolation:isolate;
 
       background:
         radial-gradient(
-          ellipse at 50% 72%,
-          rgba(238,125,53,.12),
-          transparent 31%
+          ellipse at 50% 69%,
+          rgba(244,129,50,.15),
+          transparent 27%
         ),
         radial-gradient(
-          ellipse at 50% 22%,
-          rgba(65,115,120,.17),
-          transparent 48%
+          ellipse at 51% 30%,
+          rgba(50,116,119,.18),
+          transparent 46%
         ),
         linear-gradient(
           180deg,
-          #071920 0%,
-          #09252a 49%,
-          #071b19 100%
+          #06191f 0%,
+          #08282d 46%,
+          #071b18 100%
         );
     }
 
 
     /* =====================================================
-       NIGHT SKY
+       STARS
     ===================================================== */
 
     .stars{
       position:absolute;
       inset:0;
 
-      z-index:-9;
+      z-index:-20;
 
       pointer-events:none;
 
       background-image:
         radial-gradient(
-          circle at 7% 18%,
-          #fff0b8 0 1px,
+          circle at 7% 17%,
+          #fff2bb 0 1px,
           transparent 1.7px
         ),
         radial-gradient(
-          circle at 14% 36%,
-          #fff0b8 0 1px,
+          circle at 14% 34%,
+          #fff2bb 0 1px,
           transparent 1.7px
         ),
         radial-gradient(
-          circle at 25% 12%,
-          #fff8d7 0 1px,
+          circle at 22% 8%,
+          #fffbe1 0 1px,
           transparent 1.7px
         ),
         radial-gradient(
-          circle at 34% 27%,
-          #fff0b8 0 1px,
+          circle at 30% 24%,
+          #fff2bb 0 1px,
           transparent 1.7px
         ),
         radial-gradient(
-          circle at 47% 10%,
-          #fff8d7 0 1px,
+          circle at 38% 11%,
+          #fffbe1 0 1px,
           transparent 1.7px
         ),
         radial-gradient(
-          circle at 58% 29%,
-          #fff0b8 0 1px,
+          circle at 47% 31%,
+          #fff2bb 0 1px,
           transparent 1.7px
         ),
         radial-gradient(
-          circle at 69% 13%,
-          #fff8d7 0 1px,
+          circle at 55% 12%,
+          #fffbe1 0 1px,
           transparent 1.7px
         ),
         radial-gradient(
-          circle at 78% 32%,
-          #fff0b8 0 1px,
+          circle at 63% 25%,
+          #fff2bb 0 1px,
           transparent 1.7px
         ),
         radial-gradient(
-          circle at 91% 18%,
-          #fff8d7 0 1px,
+          circle at 71% 8%,
+          #fffbe1 0 1px,
+          transparent 1.7px
+        ),
+        radial-gradient(
+          circle at 79% 29%,
+          #fff2bb 0 1px,
+          transparent 1.7px
+        ),
+        radial-gradient(
+          circle at 89% 15%,
+          #fffbe1 0 1px,
+          transparent 1.7px
+        ),
+        radial-gradient(
+          circle at 96% 36%,
+          #fff2bb 0 1px,
           transparent 1.7px
         );
     }
@@ -338,45 +373,47 @@
       position:absolute;
       inset:0;
 
-      opacity:.5;
+      opacity:.55;
 
       background-image:
         radial-gradient(
-          circle at 18% 8%,
+          circle at 18% 14%,
           white 0 1px,
           transparent 1.5px
         ),
         radial-gradient(
-          circle at 39% 17%,
+          circle at 42% 18%,
           white 0 1px,
           transparent 1.5px
         ),
         radial-gradient(
-          circle at 64% 8%,
+          circle at 65% 7%,
           white 0 1px,
           transparent 1.5px
         ),
         radial-gradient(
-          circle at 84% 25%,
+          circle at 84% 22%,
           white 0 1px,
           transparent 1.5px
         );
 
       animation:
-        starsTwinkle 5s
-        ease-in-out
+        starsTwinkle
+        5s ease-in-out
         infinite alternate;
     }
 
 
     @keyframes starsTwinkle{
+
       from{
         opacity:.2;
       }
 
       to{
-        opacity:.75;
+        opacity:.8;
       }
+
     }
 
 
@@ -387,10 +424,10 @@
     .moon{
       position:absolute;
 
-      top:60px;
+      top:55px;
       right:7%;
 
-      z-index:-7;
+      z-index:-15;
 
       width:125px;
       height:125px;
@@ -407,7 +444,7 @@
 
       box-shadow:
         0 0 38px rgba(232,236,216,.20),
-        0 0 110px rgba(167,214,211,.10);
+        0 0 110px rgba(167,214,211,.12);
     }
 
 
@@ -436,102 +473,6 @@
 
 
     /* =====================================================
-       DISTANT FOREST
-    ===================================================== */
-
-    .distant-forest{
-      position:absolute;
-
-      left:0;
-      right:0;
-      bottom:0;
-
-      height:58%;
-
-      z-index:-6;
-
-      opacity:.7;
-
-      background:
-        linear-gradient(
-          150deg,
-          transparent 0 20%,
-          rgba(17,52,47,.7) 20.2% 31%,
-          transparent 31.2%
-        ),
-        linear-gradient(
-          35deg,
-          transparent 0 37%,
-          rgba(14,47,42,.72) 37.2% 51%,
-          transparent 51.2%
-        );
-    }
-
-
-    .tree-line{
-      position:absolute;
-
-      left:-3%;
-      right:-3%;
-      bottom:0;
-
-      height:49%;
-
-      z-index:-5;
-
-      opacity:.92;
-
-      background:
-        repeating-linear-gradient(
-          77deg,
-          transparent 0 46px,
-          #0a2823 47px 55px,
-          transparent 56px 83px
-        );
-    }
-
-
-    .tree-line::after{
-      content:"";
-
-      position:absolute;
-      inset:0;
-
-      background:
-        radial-gradient(
-          ellipse at 4% 48%,
-          #10342c 0 10%,
-          transparent 10.5%
-        ),
-        radial-gradient(
-          ellipse at 17% 38%,
-          #10342c 0 12%,
-          transparent 12.5%
-        ),
-        radial-gradient(
-          ellipse at 33% 55%,
-          #10342c 0 10%,
-          transparent 10.5%
-        ),
-        radial-gradient(
-          ellipse at 67% 47%,
-          #10342c 0 12%,
-          transparent 12.5%
-        ),
-        radial-gradient(
-          ellipse at 83% 43%,
-          #10342c 0 11%,
-          transparent 11.5%
-        ),
-        radial-gradient(
-          ellipse at 97% 37%,
-          #10342c 0 12%,
-          transparent 12.5%
-        );
-    }
-
-
-    /* =====================================================
        HERO COPY
     ===================================================== */
 
@@ -548,7 +489,7 @@
 
 
     .hero-kicker{
-      margin-bottom:12px;
+      margin-bottom:10px;
 
       color:var(--gold);
 
@@ -556,11 +497,10 @@
         Arial,
         sans-serif;
 
-      text-transform:uppercase;
-
-      letter-spacing:.3em;
-
       font-size:10px;
+
+      text-transform:uppercase;
+      letter-spacing:.3em;
     }
 
 
@@ -568,7 +508,7 @@
       max-width:1050px;
 
       margin:
-        0 auto 17px;
+        0 auto 14px;
 
       font-size:
         clamp(
@@ -611,7 +551,93 @@
 
 
     /* =====================================================
-       ILLUSTRATED CAMPSITE
+       HERO FOREST
+
+       More depth than the previous geometric tree line.
+       The detailed foreground forest itself will also be
+       drawn inside the SVG.
+    ===================================================== */
+
+    .forest-haze{
+      position:absolute;
+
+      left:0;
+      right:0;
+      bottom:0;
+
+      height:59%;
+
+      z-index:-12;
+
+      pointer-events:none;
+
+      background:
+        radial-gradient(
+          ellipse at 20% 70%,
+          rgba(32,83,68,.42),
+          transparent 28%
+        ),
+        radial-gradient(
+          ellipse at 77% 69%,
+          rgba(31,79,68,.40),
+          transparent 29%
+        ),
+        linear-gradient(
+          transparent,
+          rgba(4,20,18,.48)
+        );
+    }
+
+
+    .mist{
+      position:absolute;
+
+      left:-15%;
+      bottom:16%;
+
+      width:130%;
+      height:120px;
+
+      z-index:-11;
+
+      opacity:.14;
+
+      filter:blur(18px);
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          #92c2b1 23%,
+          transparent 47%,
+          #9dc9b9 70%,
+          transparent
+        );
+
+      animation:
+        mistMove
+        20s ease-in-out
+        infinite alternate;
+    }
+
+
+    @keyframes mistMove{
+
+      from{
+        transform:
+          translateX(-2%);
+      }
+
+      to{
+        transform:
+          translateX(4%);
+      }
+
+    }
+
+
+    /* =====================================================
+       CAMPSITE SVG
     ===================================================== */
 
     .camp-scene-wrap{
@@ -620,12 +646,12 @@
       z-index:30;
 
       width:min(
-        1180px,
+        1240px,
         100%
       );
 
       margin:
-        -5px auto -5px;
+        -2px auto -8px;
     }
 
 
@@ -639,106 +665,177 @@
 
       filter:
         drop-shadow(
-          0 20px 30px
-          rgba(0,0,0,.30)
+          0 22px 34px
+          rgba(0,0,0,.28)
         );
     }
 
 
-    /* fire glow */
+    /* Important:
+       This replaces the browser-visible SVG tooltip box.
+       Accessibility remains on the SVG via aria-label.
+    */
 
-    .svg-fire-glow{
-      animation:
-        svgGlow 2.1s
-        ease-in-out
-        infinite alternate;
-
-      transform-origin:
-        600px 425px;
+    .camp-scene title,
+    .camp-scene desc{
+      display:none;
     }
 
 
-    @keyframes svgGlow{
+    /* =====================================================
+       SVG LINEWORK
+    ===================================================== */
+
+    .ink{
+      stroke:#17251f;
+      stroke-width:3;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+
+    .ink-heavy{
+      stroke:#111d19;
+      stroke-width:4;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+
+    .ink-fine{
+      fill:none;
+
+      stroke:#34453a;
+      stroke-width:1.8;
+
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+
+    .warm-line{
+      stroke:#68432e;
+      stroke-width:2.5;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+
+    .cloth-line{
+      fill:none;
+
+      stroke:rgba(240,220,180,.26);
+      stroke-width:2;
+
+      stroke-linecap:round;
+    }
+
+
+    /* =====================================================
+       FIRE
+    ===================================================== */
+
+    .fire-glow{
+      transform-origin:
+        600px 438px;
+
+      animation:
+        fireGlow
+        2s ease-in-out
+        infinite alternate;
+    }
+
+
+    @keyframes fireGlow{
+
       from{
-        opacity:.66;
-        transform:scale(.94);
+        opacity:.68;
+
+        transform:
+          scale(.95);
       }
 
       to{
         opacity:1;
-        transform:scale(1.06);
+
+        transform:
+          scale(1.07);
       }
+
     }
 
 
-    /* flames */
-
-    .svg-flame-outer{
+    .flame-outer{
       transform-origin:
-        600px 435px;
+        600px 440px;
 
       animation:
-        flameOuter .82s
-        ease-in-out
+        flameOuter
+        .78s ease-in-out
         infinite alternate;
     }
 
 
-    .svg-flame-mid{
+    .flame-middle{
       transform-origin:
-        600px 435px;
+        600px 440px;
 
       animation:
-        flameMid .68s
-        ease-in-out
+        flameMiddle
+        .64s ease-in-out
         infinite alternate;
     }
 
 
-    .svg-flame-inner{
+    .flame-inner{
       transform-origin:
-        600px 435px;
+        600px 440px;
 
       animation:
-        flameInner .55s
-        ease-in-out
+        flameInner
+        .51s ease-in-out
         infinite alternate;
     }
 
 
     @keyframes flameOuter{
+
       from{
         transform:
           rotate(-2deg)
           scaleX(.94)
-          scaleY(.98);
+          scaleY(.97);
       }
 
       to{
         transform:
           rotate(3deg)
-          scaleX(1.04)
-          scaleY(1.05);
+          scaleX(1.05)
+          scaleY(1.07);
       }
+
     }
 
 
-    @keyframes flameMid{
+    @keyframes flameMiddle{
+
       from{
         transform:
-          rotate(3deg)
-          scale(.94);
+          rotate(2deg)
+          scale(.95);
       }
 
       to{
         transform:
           rotate(-3deg)
-          scale(1.04);
+          scale(1.05);
       }
+
     }
 
 
     @keyframes flameInner{
+
       from{
         transform:
           translateY(2px)
@@ -747,78 +844,49 @@
 
       to{
         transform:
-          translateY(-2px)
-          scaleY(1.06);
-      }
-    }
-
-
-    /* wizard magic */
-
-    .magic-orbit{
-      transform-origin:
-        775px 214px;
-
-      animation:
-        orbitMagic 9s
-        linear
-        infinite;
-    }
-
-
-    @keyframes orbitMagic{
-      to{
-        transform:rotate(360deg);
-      }
-    }
-
-
-    .magic-pulse{
-      animation:
-        magicPulse 2.3s
-        ease-in-out
-        infinite alternate;
-    }
-
-
-    @keyframes magicPulse{
-      from{
-        opacity:.38;
+          translateY(-3px)
+          scaleY(1.08);
       }
 
-      to{
-        opacity:1;
-      }
     }
 
 
-    /* fireflies */
+    /* =====================================================
+       FIREFLIES
+    ===================================================== */
 
-    .svg-firefly{
+    .firefly{
       transform-box:fill-box;
       transform-origin:center;
 
       animation:
-        svgFirefly 5.5s
-        ease-in-out
+        fireflyFloat
+        5.5s ease-in-out
         infinite;
     }
 
 
-    .svg-firefly:nth-of-type(2n){
-      animation-delay:-1.8s;
+    .firefly.delay-one{
+      animation-delay:-1.2s;
     }
 
 
-    .svg-firefly:nth-of-type(3n){
-      animation-delay:-3.4s;
+    .firefly.delay-two{
+      animation-delay:-2.8s;
     }
 
 
-    @keyframes svgFirefly{
+    .firefly.delay-three{
+      animation-delay:-4.1s;
+    }
+
+
+    @keyframes fireflyFloat{
+
       0%,
       100%{
-        opacity:.25;
+        opacity:.28;
+
         transform:
           translate(0,0)
           scale(.8);
@@ -826,107 +894,226 @@
 
       30%{
         opacity:1;
+
         transform:
-          translate(12px,-9px)
-          scale(1.15);
+          translate(9px,-11px)
+          scale(1.18);
       }
 
-      60%{
-        opacity:.45;
+      62%{
+        opacity:.48;
+
         transform:
-          translate(-7px,-18px)
-          scale(.9);
+          translate(-8px,-20px)
+          scale(.88);
       }
 
       82%{
         opacity:1;
+
         transform:
-          translate(-14px,-5px)
-          scale(1.1);
-      }
-    }
-
-
-    /* magic sparks */
-
-    .wizard-spark{
-      transform-box:fill-box;
-      transform-origin:center;
-
-      animation:
-        sparkFloat 3s
-        ease-in-out
-        infinite;
-    }
-
-
-    .wizard-spark.two{
-      animation-delay:-1s;
-    }
-
-
-    .wizard-spark.three{
-      animation-delay:-2s;
-    }
-
-
-    @keyframes sparkFloat{
-      0%,
-      100%{
-        opacity:.25;
-        transform:
-          translateY(5px)
-          rotate(0deg);
+          translate(-13px,-6px)
+          scale(1.12);
       }
 
-      50%{
-        opacity:1;
-        transform:
-          translateY(-10px)
-          rotate(25deg);
-      }
-    }
-
-
-    /* smoke */
-
-    .smoke{
-      animation:
-        smokeRise 5s
-        ease-in-out
-        infinite;
-    }
-
-
-    .smoke.second{
-      animation-delay:-2.4s;
-    }
-
-
-    @keyframes smokeRise{
-      0%{
-        opacity:0;
-        transform:
-          translateY(5px)
-          scale(.8);
-      }
-
-      30%{
-        opacity:.13;
-      }
-
-      100%{
-        opacity:0;
-        transform:
-          translateY(-55px)
-          translateX(18px)
-          scale(1.3);
-      }
     }
 
 
     /* =====================================================
-       QUICK PATHS
+       WIZARD MAGIC STORY
+    ===================================================== */
+
+    .magic-story{
+      transform-origin:
+        670px 285px;
+
+      animation:
+        magicBreathe
+        3.8s ease-in-out
+        infinite alternate;
+    }
+
+
+    @keyframes magicBreathe{
+
+      from{
+        opacity:.62;
+
+        transform:
+          translateY(3px)
+          scale(.985);
+      }
+
+      to{
+        opacity:1;
+
+        transform:
+          translateY(-4px)
+          scale(1.015);
+      }
+
+    }
+
+
+    .magic-star{
+      transform-box:fill-box;
+      transform-origin:center;
+
+      animation:
+        magicStar
+        2.5s ease-in-out
+        infinite alternate;
+    }
+
+
+    .magic-star.delay{
+      animation-delay:-1.2s;
+    }
+
+
+    @keyframes magicStar{
+
+      from{
+        opacity:.25;
+        transform:scale(.65);
+      }
+
+      to{
+        opacity:1;
+        transform:scale(1.2);
+      }
+
+    }
+
+
+    .magic-dragon{
+      stroke-dasharray:9 7;
+
+      animation:
+        dragonFlow
+        7s linear
+        infinite;
+    }
+
+
+    @keyframes dragonFlow{
+
+      to{
+        stroke-dashoffset:-64;
+      }
+
+    }
+
+
+    /* =====================================================
+       SMOKE
+    ===================================================== */
+
+    .smoke{
+      opacity:0;
+
+      animation:
+        smokeRise
+        6s ease-out
+        infinite;
+    }
+
+
+    .smoke.two{
+      animation-delay:-2s;
+    }
+
+
+    .smoke.three{
+      animation-delay:-4s;
+    }
+
+
+    @keyframes smokeRise{
+
+      0%{
+        opacity:0;
+
+        transform:
+          translateY(7px)
+          translateX(0)
+          scale(.75);
+      }
+
+      24%{
+        opacity:.14;
+      }
+
+      100%{
+        opacity:0;
+
+        transform:
+          translateY(-70px)
+          translateX(20px)
+          scale(1.35);
+      }
+
+    }
+
+
+    /* =====================================================
+       WATER
+    ===================================================== */
+
+    .water-shimmer{
+      animation:
+        waterShimmer
+        3.4s ease-in-out
+        infinite alternate;
+    }
+
+
+    @keyframes waterShimmer{
+
+      from{
+        opacity:.2;
+        transform:translateX(-3px);
+      }
+
+      to{
+        opacity:.65;
+        transform:translateX(4px);
+      }
+
+    }
+
+
+    /* =====================================================
+       LITTLE OWL
+    ===================================================== */
+
+    .owl-blink{
+      transform-origin:center;
+
+      animation:
+        owlBlink
+        6s infinite;
+    }
+
+
+    @keyframes owlBlink{
+
+      0%,
+      44%,
+      48%,
+      100%{
+        transform:scaleY(1);
+      }
+
+      46%{
+        transform:scaleY(.08);
+      }
+
+    }
+
+
+    /* =====================================================
+       QUICK NAV
     ===================================================== */
 
     .quick-paths{
@@ -1016,7 +1203,6 @@
         sans-serif;
 
       text-transform:uppercase;
-
       letter-spacing:.12em;
 
       font-size:9px;
@@ -1024,7 +1210,7 @@
 
 
     /* =====================================================
-       COMMON CONTENT
+       CONTENT
     ===================================================== */
 
     .content-section{
@@ -1045,7 +1231,6 @@
         sans-serif;
 
       text-transform:uppercase;
-
       letter-spacing:.23em;
 
       font-size:10px;
@@ -1183,20 +1368,17 @@
       gap:18px;
     }
 
-
     .club-card{
       position:relative;
       min-height:295px;
       overflow:hidden;
-
       padding:26px;
 
       display:flex;
       flex-direction:column;
       justify-content:flex-end;
 
-      border:
-        1px solid rgba(82,58,35,.32);
+      border:1px solid rgba(82,58,35,.32);
 
       background:
         rgba(255,248,225,.23);
@@ -1209,7 +1391,6 @@
         box-shadow .25s ease;
     }
 
-
     .club-card:hover{
       transform:
         translateY(-5px)
@@ -1219,24 +1400,19 @@
         0 15px 30px rgba(76,51,28,.18);
     }
 
-
     .club-card::before{
       content:"";
 
       position:absolute;
-
       width:190px;
       height:190px;
 
       top:-70px;
       right:-65px;
 
-      border:
-        1px solid rgba(68,50,33,.22);
-
+      border:1px solid rgba(68,50,33,.22);
       border-radius:50%;
     }
-
 
     .club-art{
       position:absolute;
@@ -1244,51 +1420,34 @@
       top:27px;
       right:32px;
 
-      color:
-        rgba(89,59,32,.33);
-
+      color:rgba(89,59,32,.33);
       font-size:45px;
     }
-
 
     .club-card-content{
       position:relative;
       z-index:2;
-
       padding-top:95px;
     }
 
-
     .club-card h3{
-      margin:
-        0 0 7px;
-
+      margin:0 0 7px;
       font-size:25px;
       font-weight:400;
     }
 
-
     .club-card p{
-      margin:
-        0 0 16px;
-
+      margin:0 0 16px;
       color:#685745;
-
       font-size:14px;
     }
-
 
     .club-link{
       color:#75502d;
 
-      font-family:
-        Arial,
-        sans-serif;
-
+      font-family:Arial,sans-serif;
       text-transform:uppercase;
-
       letter-spacing:.12em;
-
       font-size:9px;
     }
 
@@ -1307,13 +1466,11 @@
         #09211d;
     }
 
-
     .story-grid{
       display:grid;
       grid-template-columns:repeat(3,1fr);
       gap:20px;
     }
-
 
     .story-card{
       min-height:330px;
@@ -1338,14 +1495,12 @@
         border-color .25s ease;
     }
 
-
     .story-card:hover{
       transform:translateY(-5px);
 
       border-color:
         rgba(240,206,137,.62);
     }
-
 
     .story-symbol{
       height:120px;
@@ -1358,45 +1513,32 @@
       font-size:58px;
 
       text-shadow:
-        0 0 25px
-        rgba(234,138,59,.18);
+        0 0 25px rgba(234,138,59,.18);
     }
 
-
     .story-card h3{
-      margin:
-        0 0 10px;
-
+      margin:0 0 10px;
       font-size:28px;
       font-weight:400;
     }
 
-
     .story-card p{
-      margin:
-        0 0 24px;
-
+      margin:0 0 24px;
       color:var(--cream-muted);
     }
-
 
     .story-link{
       color:var(--fire-light);
 
-      font-family:
-        Arial,
-        sans-serif;
-
+      font-family:Arial,sans-serif;
       text-transform:uppercase;
-
       letter-spacing:.13em;
-
       font-size:9px;
     }
 
 
     /* =====================================================
-       BOOK SEARCH
+       BOOK DISCOVERY
     ===================================================== */
 
     .book-section{
@@ -1408,7 +1550,6 @@
         );
     }
 
-
     .book-layout{
       display:grid;
 
@@ -1416,10 +1557,8 @@
         .9fr 1.1fr;
 
       gap:70px;
-
       align-items:center;
     }
-
 
     .book-cover-area{
       position:relative;
@@ -1450,7 +1589,6 @@
         0 20px 50px rgba(0,0,0,.18);
     }
 
-
     .book-cover-area::before{
       content:"";
 
@@ -1462,7 +1600,6 @@
 
       pointer-events:none;
     }
-
 
     .book-cover{
       position:relative;
@@ -1478,33 +1615,23 @@
         0 28px 50px rgba(0,0,0,.62);
     }
 
-
     .book-placeholder{
       position:relative;
       z-index:3;
 
-      color:
-        rgba(214,201,172,.65);
+      color:rgba(214,201,172,.65);
 
       text-align:center;
 
-      font-family:
-        Arial,
-        sans-serif;
-
+      font-family:Arial,sans-serif;
       text-transform:uppercase;
-
       letter-spacing:.17em;
-
       font-size:10px;
-
       line-height:2;
     }
 
-
     .book-info h2{
-      margin:
-        5px 0 8px;
+      margin:5px 0 8px;
 
       font-size:
         clamp(
@@ -1517,7 +1644,6 @@
       line-height:1.05;
     }
 
-
     .book-author{
       margin-bottom:22px;
 
@@ -1527,27 +1653,21 @@
       font-style:italic;
     }
 
-
     .book-description{
       max-height:190px;
-
       overflow:auto;
 
       padding-right:10px;
 
       color:var(--cream-muted);
-
       font-size:16px;
     }
-
 
     .book-search{
       display:flex;
       gap:10px;
-
       margin-top:28px;
     }
-
 
     .book-search input{
       flex:1;
@@ -1568,19 +1688,17 @@
       color:var(--cream);
     }
 
-
     .book-search input:focus{
       border-color:var(--fire-light);
 
       box-shadow:
-        0 0 0 2px
-        rgba(233,138,59,.08);
+        0 0 0 2px rgba(233,138,59,.08);
     }
-
 
     .book-actions{
       display:flex;
       flex-wrap:wrap;
+
       gap:10px;
 
       margin-top:18px;
@@ -1596,21 +1714,14 @@
 
       padding:13px 20px;
 
-      border:
-        1px solid var(--gold);
-
+      border:1px solid var(--gold);
       border-radius:2px;
 
       background:transparent;
 
-      font-family:
-        Arial,
-        sans-serif;
-
+      font-family:Arial,sans-serif;
       text-transform:uppercase;
-
       letter-spacing:.14em;
-
       font-size:9px;
 
       transition:
@@ -1618,11 +1729,9 @@
         background .2s ease;
     }
 
-
     .button:hover{
       transform:translateY(-2px);
     }
-
 
     .button-primary{
       border-color:var(--fire-light);
@@ -1634,10 +1743,8 @@
         );
 
       color:#27170e;
-
       font-weight:bold;
     }
-
 
     .button-secondary{
       color:var(--gold-light);
@@ -1653,17 +1760,14 @@
 
     .quote-section{
       position:relative;
-
       overflow:hidden;
 
-      padding:
-        125px 0;
+      padding:125px 0;
 
       text-align:center;
 
       background:#061614;
     }
-
 
     .quote-section::before{
       content:"";
@@ -1689,7 +1793,6 @@
         );
     }
 
-
     .quote{
       position:relative;
 
@@ -1707,20 +1810,17 @@
       line-height:1.12;
     }
 
-
     .quote em{
       color:var(--fire-light);
       font-style:normal;
     }
-
 
     .quote-small{
       position:relative;
 
       max-width:650px;
 
-      margin:
-        28px auto 0;
+      margin:28px auto 0;
 
       color:var(--cream-muted);
     }
@@ -1749,7 +1849,6 @@
         );
     }
 
-
     .dawn-section::before{
       content:"";
 
@@ -1775,7 +1874,6 @@
         );
     }
 
-
     .dawn-section::after{
       content:"";
 
@@ -1793,7 +1891,6 @@
       background:#0b211c;
     }
 
-
     .dawn-content{
       position:relative;
       z-index:3;
@@ -1805,10 +1902,8 @@
       text-align:center;
     }
 
-
     .dawn-content h2{
-      margin:
-        0 0 20px;
+      margin:0 0 20px;
 
       font-size:
         clamp(
@@ -1818,10 +1913,8 @@
         );
 
       font-weight:400;
-
       line-height:1;
     }
-
 
     .dawn-content p{
       max-width:710px;
@@ -1829,7 +1922,6 @@
       margin:auto;
 
       color:#f3dfc4;
-
       font-size:18px;
     }
 
@@ -1842,15 +1934,13 @@
       position:relative;
       z-index:5;
 
-      padding:
-        42px 0 55px;
+      padding:42px 0 55px;
 
       border-top:
         1px solid rgba(232,194,122,.20);
 
       background:#061210;
     }
-
 
     .footer{
       display:flex;
@@ -1862,27 +1952,19 @@
       flex-wrap:wrap;
     }
 
-
     .footer-brand{
       color:var(--gold-light);
       font-size:14px;
     }
 
-
     .footer-motto{
       color:#9f937c;
 
-      font-family:
-        Arial,
-        sans-serif;
-
+      font-family:Arial,sans-serif;
       text-transform:uppercase;
-
       letter-spacing:.12em;
-
       font-size:8px;
     }
-
 
     .footer-links{
       display:flex;
@@ -1891,66 +1973,10 @@
 
       color:#aa9d83;
 
-      font-family:
-        Arial,
-        sans-serif;
-
+      font-family:Arial,sans-serif;
       text-transform:uppercase;
-
       letter-spacing:.1em;
-
       font-size:9px;
-    }
-
-
-    /* =====================================================
-       SVG DETAIL STYLES
-    ===================================================== */
-
-    .scene-outline{
-      stroke:#14241f;
-      stroke-width:3;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-    }
-
-
-    .scene-fine{
-      stroke:#29372e;
-      stroke-width:2;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-      fill:none;
-    }
-
-
-    .warm-outline{
-      stroke:#5c3c29;
-      stroke-width:2.5;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-    }
-
-
-    .astronaut-line{
-      stroke:#677879;
-      stroke-width:2.5;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-    }
-
-
-    .water-line{
-      fill:none;
-      stroke:#78c2bb;
-      stroke-width:2;
-      stroke-linecap:round;
-      opacity:.5;
-    }
-
-
-    .camp-detail{
-      opacity:.94;
     }
 
 
@@ -1965,26 +1991,22 @@
           repeat(2,1fr);
       }
 
-
       .story-grid{
         grid-template-columns:1fr;
       }
-
 
       .book-layout{
         grid-template-columns:1fr;
         gap:45px;
       }
 
-
       .path-grid{
         grid-template-columns:
           repeat(3,1fr);
       }
 
-
       .camp-scene-wrap{
-        width:1100px;
+        width:1160px;
         max-width:none;
 
         left:50%;
@@ -2008,22 +2030,18 @@
         display:none;
       }
 
-
       .hero{
-        padding-top:50px;
+        padding-top:48px;
       }
-
 
       .moon{
         width:90px;
         height:90px;
-
         right:4%;
       }
 
-
       .camp-scene-wrap{
-        width:1100px;
+        width:1160px;
 
         transform:
           translateX(-50%)
@@ -2032,12 +2050,10 @@
         margin-bottom:-150px;
       }
 
-
       .path-grid{
         grid-template-columns:
           1fr 1fr;
       }
-
 
       .path:last-child{
         grid-column:
@@ -2056,11 +2072,9 @@
         );
       }
 
-
       .brand{
         font-size:13px;
       }
-
 
       .hero h1{
         font-size:
@@ -2071,9 +2085,8 @@
           );
       }
 
-
       .camp-scene-wrap{
-        width:1120px;
+        width:1160px;
 
         transform:
           translateX(-50%)
@@ -2083,23 +2096,18 @@
         margin-bottom:-230px;
       }
 
-
       .club-grid{
         grid-template-columns:1fr;
       }
 
-
       .content-section{
-        padding:
-          70px 0;
+        padding:70px 0;
       }
-
 
       .book-search,
       .book-actions{
         flex-direction:column;
       }
-
 
       .book-search .button,
       .book-actions .button{
@@ -2107,12 +2115,10 @@
         text-align:center;
       }
 
-
       .footer{
         flex-direction:column;
         text-align:center;
       }
-
 
       .footer-links{
         justify-content:center;
@@ -2129,14 +2135,9 @@
       *,
       *::before,
       *::after{
-        scroll-behavior:
-          auto !important;
-
-        animation-duration:
-          .01ms !important;
-
-        animation-iteration-count:
-          1 !important;
+        scroll-behavior:auto !important;
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
       }
 
     }
@@ -2238,12 +2239,12 @@
       ></div>
 
       <div
-        class="distant-forest"
+        class="forest-haze"
         aria-hidden="true"
       ></div>
 
       <div
-        class="tree-line"
+        class="mist"
         aria-hidden="true"
       ></div>
 
@@ -2272,30 +2273,30 @@
 
 
         <!-- =================================================
-             ILLUSTRATED CAMPSITE STARTS HERE
+             STORYBOOK CAMPSITE
+
+             No SVG title/desc elements here.
+             Accessibility is supplied directly on the SVG,
+             preventing the visible gray description box
+             we saw in Safari.
         ================================================== -->
 
         <div class="camp-scene-wrap">
 
           <svg
             class="camp-scene"
-            viewBox="0 0 1200 540"
+            viewBox="0 0 1200 560"
             role="img"
-            aria-labelledby="campSceneTitle campSceneDescription"
+            aria-label="A rogue, astronaut, wizard, princess and mermaid sharing stories beside a campfire in an enchanted forest."
           >
 
-            <title id="campSceneTitle">
-              Readers gathered around a campfire
-            </title>
 
-            <desc id="campSceneDescription">
-              A rogue, astronaut, wizard, princess,
-              and mermaid share stories around a
-              glowing campfire beneath the stars.
-            </desc>
-
+            <!-- =============================================
+                 DEFINITIONS
+            ============================================== -->
 
             <defs>
+
 
               <!-- FIRELIGHT -->
 
@@ -2308,19 +2309,25 @@
 
                 <stop
                   offset="0%"
-                  stop-color="#ffca69"
-                  stop-opacity=".55"
+                  stop-color="#ffd06f"
+                  stop-opacity=".70"
                 />
 
                 <stop
-                  offset="42%"
-                  stop-color="#e87b35"
-                  stop-opacity=".20"
+                  offset="35%"
+                  stop-color="#ee873c"
+                  stop-opacity=".30"
+                />
+
+                <stop
+                  offset="72%"
+                  stop-color="#e26b30"
+                  stop-opacity=".09"
                 />
 
                 <stop
                   offset="100%"
-                  stop-color="#e87b35"
+                  stop-color="#e26b30"
                   stop-opacity="0"
                 />
 
@@ -2332,45 +2339,45 @@
               <radialGradient
                 id="groundGradient"
                 cx="50%"
-                cy="20%"
-                r="80%"
+                cy="25%"
+                r="78%"
               >
 
                 <stop
                   offset="0%"
-                  stop-color="#234638"
+                  stop-color="#315341"
                 />
 
                 <stop
-                  offset="52%"
-                  stop-color="#102d26"
+                  offset="42%"
+                  stop-color="#18382d"
                 />
 
                 <stop
                   offset="100%"
-                  stop-color="#071914"
+                  stop-color="#071a15"
                 />
 
               </radialGradient>
 
 
-              <!-- WATER -->
+              <!-- POOL -->
 
               <radialGradient
                 id="poolGradient"
                 cx="50%"
-                cy="40%"
+                cy="32%"
                 r="70%"
               >
 
                 <stop
                   offset="0%"
-                  stop-color="#4f9d96"
+                  stop-color="#68b8ae"
                 />
 
                 <stop
-                  offset="48%"
-                  stop-color="#256d70"
+                  offset="35%"
+                  stop-color="#347f7c"
                 />
 
                 <stop
@@ -2393,23 +2400,28 @@
 
                 <stop
                   offset="0%"
-                  stop-color="#7eb0ad"
+                  stop-color="#a8d8cf"
                 />
 
                 <stop
-                  offset="35%"
-                  stop-color="#315d65"
+                  offset="28%"
+                  stop-color="#4d8585"
+                />
+
+                <stop
+                  offset="62%"
+                  stop-color="#244d58"
                 />
 
                 <stop
                   offset="100%"
-                  stop-color="#102c35"
+                  stop-color="#0d2731"
                 />
 
               </linearGradient>
 
 
-              <!-- WIZARD ROBE -->
+              <!-- WIZARD -->
 
               <linearGradient
                 id="wizardRobe"
@@ -2421,23 +2433,23 @@
 
                 <stop
                   offset="0%"
-                  stop-color="#252b57"
+                  stop-color="#242950"
                 />
 
                 <stop
                   offset="50%"
-                  stop-color="#4b5187"
+                  stop-color="#515a96"
                 />
 
                 <stop
                   offset="100%"
-                  stop-color="#24294d"
+                  stop-color="#24294e"
                 />
 
               </linearGradient>
 
 
-              <!-- PRINCESS DRESS -->
+              <!-- PRINCESS -->
 
               <linearGradient
                 id="princessDress"
@@ -2449,18 +2461,23 @@
 
                 <stop
                   offset="0%"
-                  stop-color="#b26f8d"
+                  stop-color="#c17d98"
+                />
+
+                <stop
+                  offset="52%"
+                  stop-color="#985a79"
                 />
 
                 <stop
                   offset="100%"
-                  stop-color="#6f405e"
+                  stop-color="#633c5b"
                 />
 
               </linearGradient>
 
 
-              <!-- MERMAID TAIL -->
+              <!-- MERMAID -->
 
               <linearGradient
                 id="mermaidTail"
@@ -2472,17 +2489,17 @@
 
                 <stop
                   offset="0%"
-                  stop-color="#2d716d"
+                  stop-color="#286d6c"
                 />
 
                 <stop
-                  offset="60%"
-                  stop-color="#58aa94"
+                  offset="48%"
+                  stop-color="#50a491"
                 />
 
                 <stop
                   offset="100%"
-                  stop-color="#86c8a7"
+                  stop-color="#91d0ae"
                 />
 
               </linearGradient>
@@ -2500,24 +2517,24 @@
 
                 <stop
                   offset="0%"
-                  stop-color="#ffd46d"
+                  stop-color="#ffe27b"
                 />
 
                 <stop
-                  offset="48%"
-                  stop-color="#ed7834"
+                  offset="46%"
+                  stop-color="#f18a39"
                 />
 
                 <stop
                   offset="100%"
-                  stop-color="#a53b24"
+                  stop-color="#a73c24"
                 />
 
               </linearGradient>
 
 
               <linearGradient
-                id="flameMidGradient"
+                id="flameMiddleGradient"
                 x1="0"
                 y1="0"
                 x2="0"
@@ -2526,17 +2543,17 @@
 
                 <stop
                   offset="0%"
-                  stop-color="#fff2a8"
+                  stop-color="#fff5b2"
                 />
 
                 <stop
-                  offset="55%"
-                  stop-color="#ffac45"
+                  offset="54%"
+                  stop-color="#ffb64d"
                 />
 
                 <stop
                   offset="100%"
-                  stop-color="#e34f27"
+                  stop-color="#e75227"
                 />
 
               </linearGradient>
@@ -2552,18 +2569,46 @@
 
                 <stop
                   offset="0%"
-                  stop-color="#fffde2"
+                  stop-color="#fffde5"
                 />
 
                 <stop
                   offset="100%"
-                  stop-color="#ffd66d"
+                  stop-color="#ffd96e"
                 />
 
               </linearGradient>
 
 
-              <!-- SOFT GLOW -->
+              <!-- MAGIC -->
+
+              <linearGradient
+                id="magicGradient"
+                x1="0"
+                y1="1"
+                x2="1"
+                y2="0"
+              >
+
+                <stop
+                  offset="0%"
+                  stop-color="#87cfd7"
+                />
+
+                <stop
+                  offset="48%"
+                  stop-color="#b8cfff"
+                />
+
+                <stop
+                  offset="100%"
+                  stop-color="#d6b9ff"
+                />
+
+              </linearGradient>
+
+
+              <!-- GLOWS -->
 
               <filter
                 id="softGlow"
@@ -2579,13 +2624,8 @@
                 />
 
                 <feMerge>
-
                   <feMergeNode in="blur"/>
-
-                  <feMergeNode
-                    in="SourceGraphic"
-                  />
-
+                  <feMergeNode in="SourceGraphic"/>
                 </feMerge>
 
               </filter>
@@ -2600,133 +2640,670 @@
               >
 
                 <feGaussianBlur
-                  stdDeviation="2.5"
+                  stdDeviation="2.6"
                   result="blur"
                 />
 
                 <feMerge>
-
                   <feMergeNode in="blur"/>
-
-                  <feMergeNode
-                    in="SourceGraphic"
-                  />
-
+                  <feMergeNode in="SourceGraphic"/>
                 </feMerge>
 
               </filter>
 
+
+              <filter
+                id="magicGlow"
+                x="-100%"
+                y="-100%"
+                width="300%"
+                height="300%"
+              >
+
+                <feGaussianBlur
+                  stdDeviation="3.4"
+                  result="blur"
+                />
+
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+
+              </filter>
+
+
             </defs>
                         <!-- =============================================
-                 CAMPSITE GROUND
+                 FOREST FLOOR
             ============================================== -->
 
             <ellipse
               cx="600"
-              cy="474"
-              rx="555"
+              cy="475"
+              rx="575"
               ry="105"
               fill="url(#groundGradient)"
-              opacity=".96"
             />
 
+
+            <!-- =============================================
+                 FIRELIGHT ACROSS THE WHOLE GATHERING
+            ============================================== -->
+
             <ellipse
-              class="svg-fire-glow"
+              class="fire-glow"
               cx="600"
-              cy="425"
-              rx="270"
-              ry="155"
+              cy="420"
+              rx="325"
+              ry="185"
               fill="url(#fireGlow)"
             />
 
 
             <!-- =============================================
-                 DISTANT GRASS / PLANTS
+                 BACKGROUND TREES
             ============================================== -->
 
             <g
-              opacity=".65"
-              class="scene-fine"
-              stroke="#31594a"
+              opacity=".75"
+              fill="#0a2923"
+              stroke="#071c18"
+              stroke-width="4"
             >
 
-              <path d="M90 458 Q80 425 65 411"/>
-              <path d="M91 458 Q100 427 119 415"/>
-              <path d="M107 459 Q108 433 126 423"/>
+              <path
+                d="
+                  M42 445
+                  C54 365 42 270 72 171
+                  C82 137 88 104 87 71
+                  L117 71
+                  C114 115 123 151 136 189
+                  C156 249 145 342 158 446
+                  Z
+                "
+              />
 
-              <path d="M184 465 Q173 430 156 420"/>
-              <path d="M185 465 Q194 430 210 416"/>
+              <path
+                d="
+                  M155 448
+                  C170 360 165 288 185 208
+                  C194 170 198 126 195 91
+                  L222 91
+                  C219 135 228 174 238 215
+                  C255 285 246 359 261 448
+                  Z
+                "
+              />
 
-              <path d="M1015 458 Q1003 424 984 412"/>
-              <path d="M1018 458 Q1028 426 1048 411"/>
-              <path d="M1040 461 Q1045 438 1063 425"/>
+              <path
+                d="
+                  M1008 446
+                  C1023 362 1012 277 1038 190
+                  C1048 155 1052 113 1048 75
+                  L1077 75
+                  C1074 116 1084 159 1096 198
+                  C1114 264 1103 357 1121 446
+                  Z
+                "
+              />
 
-              <path d="M1110 469 Q1097 435 1080 424"/>
-              <path d="M1111 469 Q1121 435 1140 424"/>
+              <path
+                d="
+                  M1100 448
+                  C1118 366 1112 298 1130 220
+                  C1139 180 1144 137 1141 104
+                  L1168 104
+                  C1165 147 1173 185 1183 224
+                  C1197 283 1192 368 1200 448
+                  Z
+                "
+              />
 
             </g>
 
 
             <!-- =============================================
-                 LITTLE MUSHROOMS
+                 GNARLED LEFT TREE
             ============================================== -->
 
-            <g class="camp-detail">
+            <g>
 
               <path
-                d="M126 456
-                   Q132 444 143 456
-                   Z"
-                fill="#c98c5c"
-                class="warm-outline"
+                d="
+                  M0 469
+                  C42 436 55 386 49 332
+                  C44 278 61 238 82 204
+                  C105 166 111 121 103 69
+                  L141 0
+                  L202 0
+                  C173 49 166 92 177 129
+                  C187 164 178 197 158 227
+                  C136 261 129 303 138 349
+                  C147 394 140 434 116 471
+                  Z
+                "
+                fill="#09231e"
+                class="ink-heavy"
+              />
+
+
+              <!-- branches -->
+
+              <path
+                d="
+                  M124 171
+                  C87 138 49 125 0 132
+                "
+                fill="none"
+                stroke="#09231e"
+                stroke-width="30"
+                stroke-linecap="round"
               />
 
               <path
-                d="M134 455 L134 469"
-                class="scene-fine"
-                stroke="#c6b48d"
+                d="
+                  M145 103
+                  C183 70 220 55 273 62
+                "
+                fill="none"
+                stroke="#09231e"
+                stroke-width="27"
+                stroke-linecap="round"
               />
 
               <path
-                d="M1080 457
-                   Q1087 445 1098 457
-                   Z"
-                fill="#b76e55"
-                class="warm-outline"
+                d="
+                  M111 222
+                  C79 206 43 203 13 214
+                "
+                fill="none"
+                stroke="#09231e"
+                stroke-width="18"
+                stroke-linecap="round"
+              />
+
+
+              <!-- bark -->
+
+              <path
+                d="
+                  M117 83
+                  C132 126 115 160 126 196
+                  C138 237 113 276 118 319
+                  C123 359 107 399 91 432
+                "
+                class="ink-fine"
+                stroke="#285044"
+                opacity=".65"
               />
 
               <path
-                d="M1089 456 L1089 470"
-                class="scene-fine"
-                stroke="#c6b48d"
+                d="
+                  M147 40
+                  C154 77 143 119 153 154
+                "
+                class="ink-fine"
+                stroke="#285044"
+                opacity=".5"
+              />
+
+
+              <!-- moss -->
+
+              <g
+                fill="none"
+                stroke="#456d52"
+                stroke-width="3"
+                stroke-linecap="round"
+                opacity=".7"
+              >
+
+                <path d="M61 136 Q62 166 52 183"/>
+                <path d="M81 134 Q83 159 75 174"/>
+                <path d="M207 62 Q207 92 196 108"/>
+                <path d="M231 61 Q229 84 219 99"/>
+
+              </g>
+
+            </g>
+
+
+            <!-- =============================================
+                 GNARLED RIGHT TREE
+            ============================================== -->
+
+            <g>
+
+              <path
+                d="
+                  M1200 468
+                  C1160 434 1148 387 1155 335
+                  C1162 281 1145 241 1125 206
+                  C1103 168 1098 124 1106 72
+                  L1072 0
+                  L1014 0
+                  C1041 47 1047 91 1037 128
+                  C1028 165 1037 198 1057 229
+                  C1078 262 1084 305 1075 349
+                  C1066 397 1075 435 1096 471
+                  Z
+                "
+                fill="#09231e"
+                class="ink-heavy"
+              />
+
+              <path
+                d="
+                  M1082 171
+                  C1117 140 1156 126 1200 134
+                "
+                fill="none"
+                stroke="#09231e"
+                stroke-width="30"
+                stroke-linecap="round"
+              />
+
+              <path
+                d="
+                  M1054 103
+                  C1017 72 977 57 930 64
+                "
+                fill="none"
+                stroke="#09231e"
+                stroke-width="27"
+                stroke-linecap="round"
+              />
+
+              <path
+                d="
+                  M1090 221
+                  C1123 204 1156 203 1190 215
+                "
+                fill="none"
+                stroke="#09231e"
+                stroke-width="18"
+                stroke-linecap="round"
+              />
+
+              <path
+                d="
+                  M1081 82
+                  C1068 124 1083 162 1071 198
+                  C1060 236 1084 276 1078 318
+                  C1072 359 1089 399 1107 431
+                "
+                class="ink-fine"
+                stroke="#285044"
+                opacity=".65"
+              />
+
+              <g
+                fill="none"
+                stroke="#456d52"
+                stroke-width="3"
+                stroke-linecap="round"
+                opacity=".7"
+              >
+
+                <path d="M1141 136 Q1139 165 1149 183"/>
+                <path d="M1121 135 Q1118 160 1126 176"/>
+                <path d="M994 64 Q994 93 1004 109"/>
+                <path d="M968 64 Q971 87 980 101"/>
+
+              </g>
+
+            </g>
+
+
+            <!-- =============================================
+                 CANOPY
+            ============================================== -->
+
+            <g
+              fill="#0b2922"
+              opacity=".97"
+            >
+
+              <ellipse
+                cx="68"
+                cy="43"
+                rx="105"
+                ry="63"
+              />
+
+              <ellipse
+                cx="180"
+                cy="22"
+                rx="118"
+                ry="68"
+              />
+
+              <ellipse
+                cx="300"
+                cy="19"
+                rx="94"
+                ry="55"
+              />
+
+              <ellipse
+                cx="912"
+                cy="17"
+                rx="105"
+                ry="58"
+              />
+
+              <ellipse
+                cx="1034"
+                cy="26"
+                rx="122"
+                ry="67"
+              />
+
+              <ellipse
+                cx="1150"
+                cy="44"
+                rx="110"
+                ry="64"
               />
 
             </g>
 
 
             <!-- =============================================
-                 ROGUE — LEFT SIDE
+                 OWL
+            ============================================== -->
+
+            <g
+              transform="translate(173 103)"
+            >
+
+              <ellipse
+                cx="0"
+                cy="14"
+                rx="18"
+                ry="23"
+                fill="#665d4d"
+                class="ink"
+              />
+
+              <path
+                d="
+                  M-15 0
+                  L-10 -14
+                  L-2 -3
+                "
+                fill="#665d4d"
+                class="ink"
+              />
+
+              <path
+                d="
+                  M15 0
+                  L10 -14
+                  L2 -3
+                "
+                fill="#665d4d"
+                class="ink"
+              />
+
+              <g class="owl-blink">
+
+                <circle
+                  cx="-7"
+                  cy="8"
+                  r="5"
+                  fill="#f4d478"
+                />
+
+                <circle
+                  cx="7"
+                  cy="8"
+                  r="5"
+                  fill="#f4d478"
+                />
+
+                <circle
+                  cx="-7"
+                  cy="8"
+                  r="2"
+                  fill="#111"
+                />
+
+                <circle
+                  cx="7"
+                  cy="8"
+                  r="2"
+                  fill="#111"
+                />
+
+              </g>
+
+              <path
+                d="M-3 15 L0 19 L3 15"
+                fill="#c99048"
+              />
+
+            </g>
+
+
+            <!-- =============================================
+                 FERNS / FOREST PLANTS
+            ============================================== -->
+
+            <g
+              fill="none"
+              stroke="#32644e"
+              stroke-width="3"
+              stroke-linecap="round"
+              opacity=".9"
+            >
+
+              <path d="M75 465 Q65 425 36 403"/>
+              <path d="M67 448 L43 435"/>
+              <path d="M64 438 L83 422"/>
+              <path d="M59 426 L38 416"/>
+
+              <path d="M153 474 Q143 435 116 413"/>
+              <path d="M144 454 L120 444"/>
+              <path d="M141 443 L160 429"/>
+              <path d="M136 432 L116 424"/>
+
+              <path d="M1054 472 Q1064 430 1092 409"/>
+              <path d="M1064 451 L1088 440"/>
+              <path d="M1067 440 L1048 426"/>
+              <path d="M1073 428 L1094 419"/>
+
+              <path d="M1140 470 Q1151 432 1176 414"/>
+              <path d="M1150 453 L1172 443"/>
+              <path d="M1153 442 L1135 429"/>
+
+            </g>
+
+
+            <!-- =============================================
+                 MUSHROOM CLUSTERS
+            ============================================== -->
+
+            <g>
+
+              <g transform="translate(111 444)">
+
+                <path
+                  d="M0 10 Q8 -6 18 10 Z"
+                  fill="#b96c4f"
+                  class="warm-line"
+              />
+
+                <path
+                  d="M8 10 L8 28"
+                  stroke="#cdbb94"
+                  stroke-width="4"
+              />
+
+                <path
+                  d="M20 18 Q27 5 35 18 Z"
+                  fill="#d1945b"
+                  class="warm-line"
+              />
+
+                <path
+                  d="M27 18 L27 31"
+                  stroke="#cdbb94"
+                  stroke-width="3"
+              />
+
+              </g>
+
+
+              <g transform="translate(1084 446)">
+
+                <path
+                  d="M0 12 Q8 -5 19 12 Z"
+                  fill="#aa5e49"
+                  class="warm-line"
+              />
+
+                <path
+                  d="M9 12 L9 29"
+                  stroke="#cdbb94"
+                  stroke-width="4"
+              />
+
+                <path
+                  d="M23 18 Q30 7 38 18 Z"
+                  fill="#c48758"
+                  class="warm-line"
+              />
+
+                <path
+                  d="M30 18 L30 31"
+                  stroke="#cdbb94"
+                  stroke-width="3"
+              />
+
+              </g>
+
+            </g>
+
+
+            <!-- =============================================
+                 MERMAID'S MOONLIT POOL
+            ============================================== -->
+
+            <g>
+
+              <ellipse
+                cx="1031"
+                cy="440"
+                rx="151"
+                ry="57"
+                fill="#071c1b"
+                opacity=".55"
+              />
+
+              <ellipse
+                cx="1030"
+                cy="427"
+                rx="143"
+                ry="53"
+                fill="url(#poolGradient)"
+                stroke="#315d59"
+                stroke-width="4"
+              />
+
+              <ellipse
+                class="water-shimmer"
+                cx="1027"
+                cy="418"
+                rx="113"
+                ry="31"
+                fill="none"
+                stroke="#a4d8c7"
+                stroke-width="2"
+              />
+
+              <path
+                class="water-shimmer"
+                d="
+                  M919 430
+                  Q961 415 1002 429
+                  T1098 426
+                "
+                fill="none"
+                stroke="#b2ded1"
+                stroke-width="2"
+              />
+
+              <path
+                d="
+                  M963 403
+                  Q975 392 988 403
+                  Q976 414 963 403
+                  Z
+                "
+                fill="#4d8965"
+              />
+
+              <circle
+                cx="976"
+                cy="400"
+                r="4"
+                fill="#d6a2b0"
+              />
+
+            </g>
+
+
+            <!-- =============================================
+                 ROGUE
+                 Mid-story, gesturing dramatically
             ============================================== -->
 
             <g
               id="rogue"
-              transform="translate(92 115)"
+              transform="translate(110 123)"
             >
 
-              <!-- cloak behind -->
+              <!-- shadow -->
+
+              <ellipse
+                cx="124"
+                cy="317"
+                rx="102"
+                ry="28"
+                fill="#06110e"
+                opacity=".45"
+              />
+
+
+              <!-- cloak -->
 
               <path
                 d="
-                  M94 127
-                  Q45 151 38 233
-                  Q35 293 85 321
-                  Q125 343 169 313
-                  Q188 286 174 226
-                  Q163 164 126 133
+                  M72 132
+                  Q39 161 36 224
+                  Q31 278 65 307
+                  Q98 331 145 317
+                  Q186 304 185 248
+                  Q183 178 157 141
                   Z
                 "
-                fill="#26352e"
-                class="scene-outline"
+                fill="#33473b"
+                class="ink-heavy"
+              />
+
+
+              <!-- cloak folds -->
+
+              <path
+                d="M77 183 Q63 237 73 290"
+                class="cloth-line"
+              />
+
+              <path
+                d="M149 179 Q164 232 153 291"
+                class="cloth-line"
               />
 
 
@@ -2734,15 +3311,15 @@
 
               <path
                 d="
-                  M78 126
-                  Q84 67 126 60
-                  Q169 72 174 126
-                  Q154 110 126 108
-                  Q98 109 78 126
+                  M74 129
+                  Q76 71 123 58
+                  Q169 70 175 129
+                  Q153 108 124 106
+                  Q94 108 74 129
                   Z
                 "
-                fill="#34463b"
-                class="scene-outline"
+                fill="#293a31"
+                class="ink-heavy"
               />
 
 
@@ -2750,106 +3327,158 @@
 
               <path
                 d="
-                  M96 110
-                  Q126 91 156 111
-                  L151 148
-                  Q126 169 101 148
+                  M94 109
+                  Q123 92 155 109
+                  L150 150
+                  Q124 171 98 149
                   Z
                 "
-                fill="#a66d51"
-                class="warm-outline"
+                fill="#a96f52"
+                class="warm-line"
+              />
+
+
+              <!-- brows -->
+
+              <path
+                d="M105 120 Q113 116 119 120"
+                fill="none"
+                stroke="#4c3328"
+                stroke-width="2"
+              />
+
+              <path
+                d="M132 120 Q140 116 146 120"
+                fill="none"
+                stroke="#4c3328"
+                stroke-width="2"
+              />
+
+
+              <!-- eyes -->
+
+              <circle
+                cx="113"
+                cy="125"
+                r="2.2"
+                fill="#241a16"
+              />
+
+              <circle
+                cx="139"
+                cy="125"
+                r="2.2"
+                fill="#241a16"
               />
 
 
               <!-- nose -->
 
               <path
-                d="M127 120 L123 135 L132 136"
-                class="scene-fine"
+                d="M127 124 L123 138 L132 139"
+                fill="none"
                 stroke="#704735"
+                stroke-width="2"
+                stroke-linecap="round"
               />
 
 
-              <!-- smile -->
+              <!-- grin -->
 
               <path
-                d="M116 145 Q127 151 138 144"
-                class="scene-fine"
-                stroke="#704735"
+                d="M113 147 Q127 157 142 145"
+                fill="none"
+                stroke="#6b4033"
+                stroke-width="2.5"
+                stroke-linecap="round"
               />
 
 
-              <!-- cloak collar -->
+              <!-- tunic -->
 
               <path
                 d="
-                  M83 153
-                  Q125 179 169 151
-                  L182 194
-                  Q126 220 69 193
+                  M79 174
+                  Q124 157 168 177
+                  L160 253
+                  L89 253
                   Z
                 "
-                fill="#1d2924"
-                class="scene-outline"
+                fill="#3c5546"
+                class="ink"
               />
 
 
-              <!-- torso -->
+              <!-- collar -->
 
               <path
                 d="
-                  M82 183
-                  Q125 166 168 184
-                  L161 252
-                  L91 252
+                  M82 160
+                  Q123 184 166 159
+                  L173 185
+                  Q126 208 75 184
                   Z
                 "
-                fill="#354b3f"
-                class="scene-outline"
+                fill="#202e27"
+                class="ink"
               />
 
 
               <!-- belt -->
 
               <path
-                d="M88 233 Q126 243 164 233"
+                d="M88 232 Q126 243 163 232"
                 fill="none"
-                stroke="#7c5636"
-                stroke-width="8"
+                stroke="#7e5635"
+                stroke-width="9"
                 stroke-linecap="round"
               />
 
               <rect
-                x="121"
-                y="233"
-                width="13"
-                height="11"
+                x="119"
+                y="232"
+                width="15"
+                height="12"
                 rx="2"
-                fill="#c59b58"
+                fill="#c8a15c"
+                stroke="#684a2e"
+                stroke-width="2"
               />
 
 
-              <!-- arm gesturing toward group -->
+              <!-- raised storytelling arm -->
 
               <path
                 d="
-                  M156 190
-                  Q193 190 215 164
-                  Q224 153 235 161
-                  Q221 194 177 219
+                  M157 188
+                  Q193 184 218 155
                 "
                 fill="none"
-                stroke="#354b3f"
-                stroke-width="24"
+                stroke="#3c5546"
+                stroke-width="25"
                 stroke-linecap="round"
               />
 
               <circle
-                cx="235"
-                cy="160"
-                r="10"
-                fill="#a66d51"
-                class="warm-outline"
+                cx="221"
+                cy="151"
+                r="11"
+                fill="#a96f52"
+                class="warm-line"
+              />
+
+
+              <!-- pointing finger -->
+
+              <path
+                d="
+                  M228 148
+                  L245 137
+                "
+                fill="none"
+                stroke="#a96f52"
+                stroke-width="6"
+                stroke-linecap="round"
               />
 
 
@@ -2857,36 +3486,36 @@
 
               <path
                 d="
-                  M91 194
-                  Q66 223 70 254
+                  M84 191
+                  Q58 218 65 251
                 "
                 fill="none"
-                stroke="#354b3f"
-                stroke-width="23"
+                stroke="#3c5546"
+                stroke-width="24"
                 stroke-linecap="round"
               />
 
 
-              <!-- seated legs -->
+              <!-- legs -->
 
               <path
                 d="
-                  M101 248
-                  Q76 269 62 299
-                  Q96 315 126 286
+                  M100 249
+                  Q73 267 56 297
+                  Q89 317 125 284
                 "
-                fill="#252e29"
-                class="scene-outline"
+                fill="#242f29"
+                class="ink"
               />
 
               <path
                 d="
-                  M151 248
-                  Q181 266 194 298
-                  Q157 316 126 286
+                  M150 249
+                  Q181 266 197 298
+                  Q159 318 125 284
                 "
-                fill="#252e29"
-                class="scene-outline"
+                fill="#242f29"
+                class="ink"
               />
 
 
@@ -2894,41 +3523,128 @@
 
               <path
                 d="
-                  M61 294
-                  Q42 298 34 312
-                  Q61 324 86 310
+                  M57 291
+                  Q34 298 27 313
+                  Q57 327 84 307
                   Z
                 "
                 fill="#171d1a"
-                class="scene-outline"
+                class="ink"
               />
 
               <path
                 d="
-                  M190 293
-                  Q212 298 220 311
-                  Q190 325 169 310
+                  M194 291
+                  Q218 297 226 311
+                  Q195 327 168 307
                   Z
                 "
                 fill="#171d1a"
-                class="scene-outline"
+                class="ink"
               />
 
 
               <!-- dagger -->
 
               <path
-                d="M170 225 L197 255"
-                stroke="#c7c3b2"
+                d="M164 226 L195 259"
+                stroke="#d0c8b5"
                 stroke-width="5"
                 stroke-linecap="round"
               />
 
               <path
-                d="M165 221 L178 235"
-                stroke="#b18348"
+                d="M160 221 L177 238"
+                stroke="#bd8b4c"
                 stroke-width="7"
                 stroke-linecap="round"
+              />
+
+
+              <!-- little shoulder pin -->
+
+              <circle
+                cx="159"
+                cy="174"
+                r="6"
+                fill="#d3a45b"
+              />
+
+            </g>
+
+
+            <!-- =============================================
+                 ROGUE'S MAP + BAG
+            ============================================== -->
+
+            <g transform="translate(268 410) rotate(-8)">
+
+              <path
+                d="
+                  M0 0
+                  Q35 -8 72 2
+                  L68 44
+                  Q34 34 2 43
+                  Z
+                "
+                fill="#cbb482"
+                stroke="#5c4831"
+                stroke-width="2"
+              />
+
+              <path
+                d="
+                  M12 11
+                  Q26 20 37 12
+                  Q48 4 58 17
+                  Q48 24 54 33
+                "
+                fill="none"
+                stroke="#775b3b"
+                stroke-width="2"
+                stroke-dasharray="4 4"
+              />
+
+              <path
+                d="M53 30 l8 8 M61 30 l-8 8"
+                stroke="#8c4e3d"
+                stroke-width="2"
+              />
+
+            </g>
+
+
+            <g transform="translate(177 418)">
+
+              <path
+                d="
+                  M0 18
+                  Q5 -2 29 0
+                  H59
+                  Q81 1 84 21
+                  L78 58
+                  H8
+                  Z
+                "
+                fill="#644936"
+                class="ink"
+              />
+
+              <path
+                d="
+                  M18 4
+                  Q20 -20 42 -20
+                  Q64 -20 67 4
+                "
+                fill="none"
+                stroke="#8b6a4a"
+                stroke-width="7"
+              />
+
+              <path
+                d="M8 27 H78"
+                stroke="#b08a5b"
+                stroke-width="4"
               />
 
             </g>
@@ -2940,19 +3656,35 @@
 
             <g
               id="astronaut"
-              transform="translate(322 130)"
+              transform="translate(345 130)"
             >
+
+              <ellipse
+                cx="119"
+                cy="318"
+                rx="105"
+                ry="27"
+                fill="#06110e"
+                opacity=".42"
+              />
+
 
               <!-- backpack -->
 
               <rect
-                x="58"
-                y="135"
-                width="48"
-                height="103"
-                rx="17"
-                fill="#a8aba3"
-                class="astronaut-line"
+                x="54"
+                y="138"
+                width="50"
+                height="105"
+                rx="16"
+                fill="#9da49f"
+                class="ink"
+              />
+
+              <path
+                d="M65 151 V226"
+                stroke="#737e79"
+                stroke-width="3"
               />
 
 
@@ -2960,152 +3692,228 @@
 
               <circle
                 cx="120"
-                cy="105"
-                r="63"
-                fill="#d8d6c7"
-                class="astronaut-line"
+                cy="103"
+                r="65"
+                fill="#d9d8cb"
+                class="ink"
               />
 
               <ellipse
-                cx="122"
-                cy="105"
-                rx="47"
-                ry="40"
+                cx="121"
+                cy="103"
+                rx="48"
+                ry="41"
                 fill="url(#visorGradient)"
-                class="astronaut-line"
+                stroke="#637675"
+                stroke-width="4"
               />
 
-              <!-- visor reflection -->
+
+              <!-- visor reflection from fire -->
 
               <path
                 d="
-                  M91 86
-                  Q110 69 133 72
+                  M89 84
+                  Q109 66 136 72
                 "
                 fill="none"
-                stroke="#b6e1d3"
+                stroke="#c5eee1"
                 stroke-width="5"
                 stroke-linecap="round"
-                opacity=".65"
+                opacity=".7"
+              />
+
+              <path
+                d="
+                  M139 126
+                  Q126 137 113 131
+                "
+                fill="none"
+                stroke="#f7a64e"
+                stroke-width="5"
+                stroke-linecap="round"
+                opacity=".55"
               />
 
 
               <!-- neck ring -->
 
               <path
-                d="M87 154 Q120 169 153 154"
+                d="M87 153 Q120 170 154 153"
                 fill="none"
-                stroke="#707d7b"
+                stroke="#6e7d7a"
                 stroke-width="10"
                 stroke-linecap="round"
               />
 
 
-              <!-- suit torso -->
+              <!-- torso -->
 
               <path
                 d="
-                  M80 159
-                  Q120 145 160 160
-                  L171 247
-                  Q120 264 69 247
+                  M78 160
+                  Q120 145 162 161
+                  L172 247
+                  Q120 265 68 247
                   Z
                 "
-                fill="#d5d3c5"
-                class="astronaut-line"
+                fill="#d6d4c7"
+                class="ink"
               />
 
 
-              <!-- chest control -->
+              <!-- suit seams -->
+
+              <path
+                d="M92 166 Q86 207 90 242"
+                fill="none"
+                stroke="#a5aaa3"
+                stroke-width="2"
+              />
+
+              <path
+                d="M149 166 Q155 207 151 242"
+                fill="none"
+                stroke="#a5aaa3"
+                stroke-width="2"
+              />
+
+
+              <!-- control panel -->
 
               <rect
-                x="101"
-                y="180"
-                width="39"
-                height="30"
+                x="98"
+                y="179"
+                width="45"
+                height="34"
                 rx="4"
-                fill="#5c6d69"
+                fill="#5b6d69"
+                stroke="#414e4c"
+                stroke-width="2"
               />
 
               <circle
-                cx="111"
+                cx="109"
                 cy="190"
-                r="3"
-                fill="#e3a856"
+                r="3.5"
+                fill="#e9b65e"
               />
 
               <circle
                 cx="121"
                 cy="190"
-                r="3"
-                fill="#7db2a0"
+                r="3.5"
+                fill="#72b9a5"
+              />
+
+              <circle
+                cx="133"
+                cy="190"
+                r="3.5"
+                fill="#c97762"
               />
 
               <path
-                d="M109 200 H133"
-                stroke="#c6d1c9"
+                d="M108 202 H134"
+                stroke="#d0d8d0"
                 stroke-width="3"
               />
 
 
-              <!-- arm toward firefly -->
+              <!-- reaching arm -->
 
               <path
                 d="
-                  M158 173
-                  Q188 164 205 140
+                  M160 175
+                  Q190 163 208 139
                 "
                 fill="none"
-                stroke="#d5d3c5"
-                stroke-width="25"
+                stroke="#d6d4c7"
+                stroke-width="26"
                 stroke-linecap="round"
-                class="astronaut-line"
+                class="ink"
               />
 
               <circle
-                cx="207"
-                cy="137"
+                cx="210"
+                cy="135"
                 r="13"
-                fill="#c7c6b9"
-                class="astronaut-line"
+                fill="#c9c8bd"
+                class="ink"
               />
 
 
-              <!-- left arm resting -->
+              <!-- fingers -->
+
+              <path
+                d="M217 131 L228 125"
+                stroke="#8d9893"
+                stroke-width="3"
+                stroke-linecap="round"
+              />
+
+              <path
+                d="M218 137 L230 136"
+                stroke="#8d9893"
+                stroke-width="3"
+                stroke-linecap="round"
+              />
+
+
+              <!-- resting arm -->
 
               <path
                 d="
-                  M81 176
-                  Q54 206 65 234
+                  M79 177
+                  Q52 207 63 235
                 "
                 fill="none"
-                stroke="#d5d3c5"
+                stroke="#d6d4c7"
                 stroke-width="25"
                 stroke-linecap="round"
-                class="astronaut-line"
+                class="ink"
               />
 
 
-              <!-- seated legs -->
+              <!-- legs -->
 
               <path
                 d="
-                  M93 242
-                  Q61 260 42 294
-                  Q82 312 120 275
+                  M92 242
+                  Q59 261 39 294
+                  Q80 314 120 275
                 "
-                fill="#c9c8bc"
-                class="astronaut-line"
+                fill="#cac9be"
+                class="ink"
               />
 
               <path
                 d="
-                  M148 242
-                  Q181 261 201 294
-                  Q159 313 120 275
+                  M149 242
+                  Q182 260 203 294
+                  Q160 314 120 275
                 "
-                fill="#c9c8bc"
-                class="astronaut-line"
+                fill="#cac9be"
+                class="ink"
+              />
+
+
+              <!-- knee pads -->
+
+              <ellipse
+                cx="78"
+                cy="270"
+                rx="17"
+                ry="13"
+                fill="#aeb4ae"
+              />
+
+              <ellipse
+                cx="164"
+                cy="270"
+                rx="17"
+                ry="13"
+                fill="#aeb4ae"
               />
 
 
@@ -3113,36 +3921,191 @@
 
               <path
                 d="
-                  M44 287
-                  Q22 294 15 311
-                  Q50 321 76 305
+                  M42 287
+                  Q18 294 11 312
+                  Q48 324 76 305
                   Z
                 "
-                fill="#777f7b"
-                class="astronaut-line"
+                fill="#747e79"
+                class="ink"
               />
 
               <path
                 d="
-                  M198 287
-                  Q222 294 230 310
-                  Q194 322 168 305
+                  M200 287
+                  Q224 294 233 310
+                  Q196 324 168 305
                   Z
                 "
-                fill="#777f7b"
-                class="astronaut-line"
+                fill="#747e79"
+                class="ink"
               />
 
 
-              <!-- astronaut's favorite firefly -->
+              <!-- mission patch -->
 
               <circle
-                class="svg-firefly"
-                cx="222"
-                cy="117"
-                r="4.5"
-                fill="#ffe789"
+                cx="82"
+                cy="184"
+                r="8"
+                fill="#315d65"
+                stroke="#e0c87c"
+                stroke-width="2"
+              />
+
+              <path
+                d="M78 184 L82 179 L86 184 L82 189 Z"
+                fill="#e0c87c"
+              />
+
+
+              <!-- FIREFLY -->
+
+              <circle
+                class="firefly"
+                cx="233"
+                cy="115"
+                r="5"
+                fill="#ffe88d"
                 filter="url(#tinyGlow)"
+              />
+
+              <circle
+                cx="233"
+                cy="115"
+                r="14"
+                fill="#ffe88d"
+                opacity=".07"
+              />
+
+            </g>
+
+
+            <!-- =============================================
+                 CAMP SUPPLIES
+            ============================================== -->
+
+            <!-- stacked books -->
+
+            <g transform="translate(381 435) rotate(-4)">
+
+              <rect
+                width="76"
+                height="14"
+                rx="3"
+                fill="#874e3e"
+                class="warm-line"
+              />
+
+              <rect
+                x="5"
+                y="15"
+                width="72"
+                height="14"
+                rx="3"
+                fill="#4d715e"
+                class="ink"
+              />
+
+              <rect
+                x="10"
+                y="30"
+                width="68"
+                height="14"
+                rx="3"
+                fill="#967349"
+                class="warm-line"
+              />
+
+              <path
+                d="M13 21 H62"
+                stroke="#d8c99d"
+                stroke-width="2"
+                opacity=".6"
+              />
+
+            </g>
+
+
+            <!-- kettle -->
+
+            <g transform="translate(500 421)">
+
+              <path
+                d="
+                  M0 22
+                  Q3 2 24 0
+                  Q46 3 48 23
+                  L43 48
+                  H6
+                  Z
+                "
+                fill="#525d57"
+                class="ink"
+              />
+
+              <path
+                d="
+                  M8 9
+                  Q23 -12 40 9
+                "
+                fill="none"
+                stroke="#77827a"
+                stroke-width="5"
+              />
+
+              <path
+                d="M47 15 Q64 10 68 18"
+                fill="none"
+                stroke="#525d57"
+                stroke-width="6"
+                stroke-linecap="round"
+              />
+
+              <path
+                d="M18 -4 Q11 -15 18 -25"
+                class="smoke"
+                fill="none"
+                stroke="#c6c1ae"
+                stroke-width="3"
+              />
+
+            </g>
+
+
+            <!-- little snack plate -->
+
+            <g transform="translate(455 468)">
+
+              <ellipse
+                cx="26"
+                cy="7"
+                rx="28"
+                ry="9"
+                fill="#a48d68"
+                stroke="#554531"
+                stroke-width="2"
+              />
+
+              <circle
+                cx="15"
+                cy="2"
+                r="6"
+                fill="#9a6440"
+              />
+
+              <circle
+                cx="29"
+                cy="4"
+                r="6"
+                fill="#a86b42"
+              />
+
+              <circle
+                cx="40"
+                cy="1"
+                r="5"
+                fill="#8b593b"
               />
 
             </g>
@@ -3154,33 +4117,111 @@
 
             <g
               id="wizard"
-              transform="translate(685 105)"
+              transform="translate(700 112)"
             >
+
+              <ellipse
+                cx="126"
+                cy="319"
+                rx="105"
+                ry="27"
+                fill="#06110e"
+                opacity=".42"
+              />
+
 
               <!-- robe -->
 
               <path
                 d="
-                  M80 190
-                  Q127 164 171 190
-                  L194 316
-                  Q130 340 63 315
+                  M78 188
+                  Q126 163 172 190
+                  L195 315
+                  Q129 341 61 315
                   Z
                 "
                 fill="url(#wizardRobe)"
-                class="scene-outline"
+                class="ink-heavy"
               />
 
 
-              <!-- face -->
+              <!-- robe trim -->
+
+              <path
+                d="
+                  M80 295
+                  Q127 311 184 295
+                "
+                fill="none"
+                stroke="#9396c7"
+                stroke-width="3"
+                opacity=".5"
+              />
+
+              <path
+                d="M107 216 Q94 267 94 310"
+                class="cloth-line"
+              />
+
+              <path
+                d="M145 216 Q160 267 160 313"
+                class="cloth-line"
+              />
+
+
+              <!-- head -->
 
               <ellipse
                 cx="126"
-                cy="143"
-                rx="38"
-                ry="42"
+                cy="141"
+                rx="39"
+                ry="43"
                 fill="#9b705a"
-                class="warm-outline"
+                class="warm-line"
+              />
+
+
+              <!-- eyebrows -->
+
+              <path
+                d="M102 132 Q111 127 119 131"
+                fill="none"
+                stroke="#4b3c35"
+                stroke-width="3"
+              />
+
+              <path
+                d="M134 131 Q144 127 151 132"
+                fill="none"
+                stroke="#4b3c35"
+                stroke-width="3"
+              />
+
+
+              <!-- eyes -->
+
+              <circle
+                cx="112"
+                cy="137"
+                r="2.4"
+                fill="#211a18"
+              />
+
+              <circle
+                cx="143"
+                cy="137"
+                r="2.4"
+                fill="#211a18"
+              />
+
+
+              <!-- amused mouth -->
+
+              <path
+                d="M116 151 Q127 157 138 150"
+                fill="none"
+                stroke="#6e4839"
+                stroke-width="2"
               />
 
 
@@ -3188,15 +4229,29 @@
 
               <path
                 d="
-                  M97 151
-                  Q108 190 127 207
-                  Q147 188 158 151
-                  Q143 169 126 163
-                  Q109 169 97 151
+                  M96 149
+                  Q106 190 127 208
+                  Q148 188 158 149
+                  Q144 169 127 164
+                  Q109 169 96 149
                   Z
                 "
-                fill="#c4bba8"
-                class="scene-outline"
+                fill="#c8c0ae"
+                class="ink"
+              />
+
+              <path
+                d="M112 171 Q120 187 126 199"
+                fill="none"
+                stroke="#8e8b81"
+                stroke-width="2"
+              />
+
+              <path
+                d="M143 169 Q136 187 129 200"
+                fill="none"
+                stroke="#8e8b81"
+                stroke-width="2"
               />
 
 
@@ -3204,55 +4259,70 @@
 
               <path
                 d="
-                  M87 112
-                  L124 28
-                  Q159 61 169 116
-                  Q127 132 87 112
+                  M85 111
+                  L123 24
+                  Q158 58 170 115
+                  Q127 133 85 111
                   Z
                 "
-                fill="#343b72"
-                class="scene-outline"
+                fill="#353d75"
+                class="ink-heavy"
               />
 
               <path
                 d="
-                  M67 116
-                  Q126 95 187 116
-                  Q129 143 67 116
+                  M64 116
+                  Q126 94 190 116
+                  Q128 145 64 116
                   Z
                 "
                 fill="#29315f"
-                class="scene-outline"
+                class="ink-heavy"
               />
 
 
-              <!-- hat stars -->
+              <!-- hat constellation -->
 
               <circle
-                cx="127"
-                cy="63"
+                cx="126"
+                cy="58"
                 r="3"
-                fill="#e6c478"
+                fill="#e8c97b"
               />
 
               <circle
-                cx="146"
-                cy="91"
-                r="2.5"
-                fill="#e6c478"
+                cx="145"
+                cy="87"
+                r="3"
+                fill="#e8c97b"
+              />
+
+              <circle
+                cx="112"
+                cy="92"
+                r="2"
+                fill="#e8c97b"
+              />
+
+              <path
+                d="M126 58 L145 87 L112 92"
+                fill="none"
+                stroke="#e8c97b"
+                stroke-width="1"
+                opacity=".45"
               />
 
 
-              <!-- raised arm -->
+              <!-- casting arm -->
 
               <path
                 d="
                   M164 198
-                  Q204 179 211 137
+                  Q203 179 211 137
                 "
                 fill="none"
-                stroke="#41477c"
-                stroke-width="25"
+                stroke="#454d84"
+                stroke-width="26"
                 stroke-linecap="round"
               />
 
@@ -3261,144 +4331,202 @@
                 cy="130"
                 r="11"
                 fill="#9b705a"
-                class="warm-outline"
+                class="warm-line"
               />
 
 
-              <!-- other arm -->
+              <!-- casting fingers -->
+
+              <path
+                d="M216 124 L225 113"
+                stroke="#9b705a"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
+
+              <path
+                d="M219 129 L231 124"
+                stroke="#9b705a"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
+
+
+              <!-- resting arm -->
 
               <path
                 d="
-                  M86 204
-                  Q61 226 67 259
+                  M84 204
+                  Q58 226 65 260
                 "
                 fill="none"
-                stroke="#343a6a"
+                stroke="#353c70"
                 stroke-width="24"
                 stroke-linecap="round"
               />
 
+            </g>
 
-              <!-- seated robe folds -->
+
+            <!-- =============================================
+                 WIZARD'S STORY MADE VISIBLE
+
+                 A tiny spectral castle + dragon floating
+                 above the campfire.
+            ============================================== -->
+
+            <g
+              class="magic-story"
+              filter="url(#magicGlow)"
+            >
+
+              <!-- magic trail from hand -->
 
               <path
-                d="M111 216 Q96 268 95 313"
-                class="scene-fine"
-                stroke="#6f73a3"
+                d="
+                  M912 242
+                  C875 220 844 224 811 244
+                  C777 265 739 268 703 251
+                  C672 236 647 245 626 267
+                "
+                fill="none"
+                stroke="url(#magicGradient)"
+                stroke-width="4"
+                stroke-linecap="round"
+                opacity=".75"
               />
 
-              <path
-                d="M143 216 Q158 268 158 316"
-                class="scene-fine"
-                stroke="#6f73a3"
+
+              <!-- magical castle -->
+
+              <g
+                transform="translate(608 203)"
+                fill="none"
+                stroke="url(#magicGradient)"
+                stroke-width="3"
+                stroke-linejoin="round"
+                opacity=".85"
+              >
+
+                <path
+                  d="
+                    M0 74
+                    V33
+                    H17
+                    V12
+                    L28 0
+                    L39 12
+                    V34
+                    H59
+                    V20
+                    L69 8
+                    L80 20
+                    V74
+                    Z
+                  "
               />
 
+                <path
+                  d="M18 74 V51 H38 V74"
+              />
 
-              <!-- MAGIC ORBIT -->
+                <path
+                  d="M57 74 V48 H72 V74"
+              />
 
-              <g class="magic-orbit">
+                <path
+                  d="M23 31 H32"
+              />
 
-                <circle
-                  cx="212"
-                  cy="130"
-                  r="53"
-                  fill="none"
-                  stroke="#b9d9ff"
-                  stroke-width="1.5"
-                  stroke-dasharray="3 13"
-                  opacity=".45"
-                />
-
-                <circle
-                  class="wizard-spark"
-                  cx="212"
-                  cy="73"
-                  r="5"
-                  fill="#d8eaff"
-                  filter="url(#tinyGlow)"
-                />
-
-                <circle
-                  class="wizard-spark two"
-                  cx="260"
-                  cy="133"
-                  r="4"
-                  fill="#ffe69c"
-                  filter="url(#tinyGlow)"
-                />
-
-                <circle
-                  class="wizard-spark three"
-                  cx="178"
-                  cy="164"
-                  r="4"
-                  fill="#d8b7ff"
-                  filter="url(#tinyGlow)"
-                />
+                <path
+                  d="M64 34 H73"
+              />
 
               </g>
 
 
-              <!-- story magic trail -->
+              <!-- spectral dragon -->
 
               <path
-                class="magic-pulse"
+                class="magic-dragon"
                 d="
-                  M211 126
-                  Q246 85 283 100
-                  Q315 112 302 72
+                  M653 192
+                  C675 165 705 163 722 178
+                  C736 190 733 208 719 214
+                  C746 210 762 220 769 238
+                  C748 229 731 232 717 245
+                  C699 260 674 255 665 237
+                  C655 219 664 204 681 199
+                  C669 200 659 197 653 192
+                  Z
                 "
-                fill="none"
-                stroke="#bcd9ef"
+                fill="rgba(173,204,255,.08)"
+                stroke="url(#magicGradient)"
                 stroke-width="3"
-                stroke-linecap="round"
-                stroke-dasharray="5 8"
-                opacity=".65"
+                stroke-linejoin="round"
               />
 
 
-              <!-- magical fireworks -->
+              <!-- dragon wing -->
 
-              <g
-                transform="translate(303 68)"
+              <path
+                d="
+                  M702 194
+                  Q720 166 748 167
+                  Q731 185 730 207
+                "
+                fill="none"
+                stroke="url(#magicGradient)"
+                stroke-width="3"
+              />
+
+
+              <!-- dragon tail -->
+
+              <path
+                d="
+                  M666 236
+                  Q641 249 632 235
+                  Q626 226 614 231
+                "
+                fill="none"
+                stroke="url(#magicGradient)"
+                stroke-width="3"
                 stroke-linecap="round"
-                filter="url(#tinyGlow)"
-              >
+              />
 
-                <path
-                  d="M0 -10 V-27"
-                  stroke="#ffe19a"
-                  stroke-width="3"
-                />
 
-                <path
-                  d="M7 -7 L20 -20"
-                  stroke="#d5c0ff"
-                  stroke-width="3"
-                />
+              <!-- magic stars -->
 
-                <path
-                  d="M10 0 H28"
-                  stroke="#9ed9dd"
-                  stroke-width="3"
-                />
-
-                <path
-                  d="M-7 -7 L-20 -20"
-                  stroke="#d5c0ff"
-                  stroke-width="3"
-                />
-
-                <path
-                  d="M-10 0 H-28"
-                  stroke="#ffe19a"
-                  stroke-width="3"
-                />
+              <g fill="#d9e6ff">
 
                 <circle
-                  r="5"
-                  fill="#fff2ba"
-                />
+                  class="magic-star"
+                  cx="595"
+                  cy="194"
+                  r="4"
+              />
+
+                <circle
+                  class="magic-star delay"
+                  cx="682"
+                  cy="154"
+                  r="3"
+              />
+
+                <circle
+                  class="magic-star"
+                  cx="755"
+                  cy="196"
+                  r="3.5"
+              />
+
+                <circle
+                  class="magic-star delay"
+                  cx="622"
+                  cy="167"
+                  r="2.5"
+              />
 
               </g>
 
@@ -3406,57 +4534,207 @@
 
 
             <!-- =============================================
-                 MERMAID POOL
+                 PRINCESS + MERMAID
+                 Intentionally overlapping so they read
+                 as cuddled together.
             ============================================== -->
 
-            <g id="mermaidPool">
+            <g
+              id="princess"
+              transform="translate(895 137) rotate(3)"
+            >
 
               <ellipse
-                cx="1030"
-                cy="437"
-                rx="144"
-                ry="52"
-                fill="#0b2423"
-                opacity=".45"
+                cx="118"
+                cy="306"
+                rx="96"
+                ry="24"
+                fill="#06110e"
+                opacity=".30"
               />
 
-              <ellipse
-                cx="1028"
-                cy="425"
-                rx="135"
-                ry="48"
-                fill="url(#poolGradient)"
-                stroke="#315c58"
-                stroke-width="4"
+
+              <!-- dress -->
+
+              <path
+                d="
+                  M71 183
+                  Q113 158 153 184
+                  Q177 230 191 300
+                  Q123 327 51 302
+                  Q60 237 71 183
+                  Z
+                "
+                fill="url(#princessDress)"
+                class="ink-heavy"
               />
 
-              <ellipse
-                cx="1028"
-                cy="419"
-                rx="111"
-                ry="29"
+
+              <!-- embroidery -->
+
+              <path
+                d="
+                  M76 219
+                  Q114 237 163 216
+                "
                 fill="none"
-                stroke="#91c7b8"
+                stroke="#e0a9b2"
+                stroke-width="3"
+                opacity=".65"
+              />
+
+              <path
+                d="
+                  M65 272
+                  Q116 293 178 268
+                "
+                fill="none"
+                stroke="#e0a9b2"
+                stroke-width="3"
+                opacity=".48"
+              />
+
+              <path
+                d="
+                  M101 196
+                  Q117 210 132 196
+                "
+                fill="none"
+                stroke="#efc5c7"
                 stroke-width="2"
-                opacity=".28"
+              />
+
+
+              <!-- neck -->
+
+              <rect
+                x="105"
+                y="140"
+                width="23"
+                height="30"
+                rx="9"
+                fill="#b77d60"
+              />
+
+
+              <!-- face -->
+
+              <ellipse
+                cx="116"
+                cy="111"
+                rx="39"
+                ry="43"
+                fill="#b77d60"
+                class="warm-line"
+              />
+
+
+              <!-- hair -->
+
+              <path
+                d="
+                  M77 116
+                  Q70 69 112 58
+                  Q160 63 160 116
+                  Q160 150 145 172
+                  Q144 133 151 105
+                  Q129 87 88 101
+                  Q93 139 86 165
+                  Q76 145 77 116
+                  Z
+                "
+                fill="#563b30"
+                class="ink"
+              />
+
+
+              <!-- eyes -->
+
+              <path
+                d="M96 112 Q102 116 108 112"
+                fill="none"
+                stroke="#3f2c25"
+                stroke-width="2"
               />
 
               <path
-                class="water-line"
-                d="
-                  M928 420
-                  Q970 406 1012 421
-                  T1095 419
-                "
+                d="M126 112 Q132 116 138 111"
+                fill="none"
+                stroke="#3f2c25"
+                stroke-width="2"
               />
 
+
+              <!-- smile -->
+
               <path
-                class="water-line"
+                d="M105 126 Q116 135 129 126"
+                fill="none"
+                stroke="#77493b"
+                stroke-width="2.4"
+                stroke-linecap="round"
+              />
+
+
+              <!-- crown -->
+
+              <path
                 d="
-                  M955 436
-                  Q993 424 1030 437
-                  T1101 433
+                  M89 70
+                  L94 43
+                  L108 58
+                  L118 34
+                  L131 58
+                  L148 42
+                  L149 72
+                  Z
                 "
+                fill="#d6ad5a"
+                stroke="#6b4c2c"
+                stroke-width="2"
+                stroke-linejoin="round"
+              />
+
+              <circle
+                cx="118"
+                cy="49"
+                r="3"
+                fill="#8d5060"
+              />
+
+
+              <!-- arm wrapped toward mermaid -->
+
+              <path
+                d="
+                  M146 183
+                  Q171 157 191 135
+                "
+                fill="none"
+                stroke="#b77d60"
+                stroke-width="18"
+                stroke-linecap="round"
+              />
+
+              <circle
+                cx="193"
+                cy="132"
+                r="8"
+                fill="#b77d60"
+              />
+
+
+              <!-- resting hand -->
+
+              <path
+                d="
+                  M76 191
+                  Q57 214 62 241
+                "
+                fill="none"
+                stroke="#b77d60"
+                stroke-width="17"
+                stroke-linecap="round"
               />
 
             </g>
@@ -3468,131 +4746,24 @@
 
             <g
               id="mermaid"
-              transform="translate(944 191)"
+              transform="translate(1013 191) rotate(-4)"
             >
 
-              <!-- tail behind body -->
+              <!-- tail -->
 
               <path
                 d="
-                  M86 183
-                  Q107 228 84 264
-                  Q60 297 99 322
-                  Q133 341 168 317
-                  Q138 310 126 285
-                  Q115 262 135 232
-                  Q151 207 136 179
+                  M76 179
+                  Q99 222 78 257
+                  Q57 289 92 315
+                  Q127 340 164 313
+                  Q136 304 124 281
+                  Q113 257 132 229
+                  Q148 204 134 175
                   Z
                 "
                 fill="url(#mermaidTail)"
-                class="scene-outline"
-              />
-
-
-              <!-- tail fin -->
-
-              <path
-                d="
-                  M162 315
-                  Q195 299 213 312
-                  Q198 331 171 337
-                  Q189 355 179 374
-                  Q151 350 151 329
-                  Z
-                "
-                fill="#75b89e"
-                class="scene-outline"
-              />
-
-
-              <!-- torso -->
-
-              <path
-                d="
-                  M82 126
-                  Q112 112 140 128
-                  L139 190
-                  Q109 203 80 187
-                  Z
-                "
-                fill="#8f6655"
-                class="warm-outline"
-              />
-
-
-              <!-- shell top -->
-
-              <path
-                d="
-                  M82 155
-                  Q95 143 108 156
-                  Q120 143 136 156
-                  L136 176
-                  Q110 184 83 174
-                  Z
-                "
-                fill="#835f86"
-                class="scene-outline"
-              />
-
-
-              <!-- head -->
-
-              <ellipse
-                cx="110"
-                cy="92"
-                rx="35"
-                ry="40"
-                fill="#9d715d"
-                class="warm-outline"
-              />
-
-
-              <!-- hair -->
-
-              <path
-                d="
-                  M74 95
-                  Q67 51 108 43
-                  Q151 48 150 99
-                  Q147 130 164 153
-                  Q137 143 128 113
-                  Q117 132 88 131
-                  Q73 118 74 95
-                  Z
-                "
-                fill="#273c3b"
-                class="scene-outline"
-              />
-
-
-              <!-- face -->
-
-              <path
-                d="M99 103 Q110 109 121 102"
-                class="scene-fine"
-                stroke="#704638"
-              />
-
-
-              <!-- arm toward princess -->
-
-              <path
-                d="
-                  M86 139
-                  Q59 130 46 108
-                "
-                fill="none"
-                stroke="#9d715d"
-                stroke-width="16"
-                stroke-linecap="round"
-              />
-
-              <circle
-                cx="43"
-                cy="105"
-                r="8"
-                fill="#9d715d"
+                class="ink-heavy"
               />
 
 
@@ -3600,92 +4771,76 @@
 
               <g
                 fill="none"
-                stroke="#a6d7ba"
-                stroke-width="1.3"
-                opacity=".35"
+                stroke="#b2e0c5"
+                stroke-width="1.4"
+                opacity=".42"
               >
 
-                <path d="M98 216 Q112 226 126 216"/>
-                <path d="M92 236 Q107 246 122 236"/>
-                <path d="M88 256 Q103 266 117 256"/>
-                <path d="M88 277 Q101 287 115 278"/>
+                <path d="M89 211 Q105 222 121 211"/>
+                <path d="M84 231 Q100 242 117 231"/>
+                <path d="M80 251 Q96 262 112 251"/>
+                <path d="M80 271 Q95 282 110 272"/>
+                <path d="M88 291 Q103 301 118 291"/>
 
               </g>
 
-            </g>
 
-
-            <!-- =============================================
-                 PRINCESS
-            ============================================== -->
-
-            <g
-              id="princess"
-              transform="translate(846 126)"
-            >
-
-              <!-- dress -->
+              <!-- fin -->
 
               <path
                 d="
-                  M74 190
-                  Q116 164 155 191
-                  Q180 241 194 310
-                  Q125 335 53 310
-                  Q65 245 74 190
+                  M158 310
+                  Q191 293 210 307
+                  Q195 328 168 333
+                  Q189 351 177 370
+                  Q148 347 148 325
                   Z
                 "
-                fill="url(#princessDress)"
-                class="scene-outline"
+                fill="#79bfa2"
+                class="ink"
               />
 
 
-              <!-- dress embroidery -->
+              <!-- torso -->
 
               <path
                 d="
-                  M82 221
-                  Q117 238 161 218
+                  M75 121
+                  Q104 108 134 124
+                  L134 183
+                  Q105 196 77 181
+                  Z
                 "
-                fill="none"
-                stroke="#d4a2a5"
-                stroke-width="3"
-                opacity=".65"
+                fill="#9d715d"
+                class="warm-line"
               />
+
+
+              <!-- shell top -->
 
               <path
                 d="
-                  M72 277
-                  Q119 296 177 273
+                  M77 151
+                  Q91 138 104 152
+                  Q118 138 133 152
+                  L133 171
+                  Q105 180 78 170
+                  Z
                 "
-                fill="none"
-                stroke="#d4a2a5"
-                stroke-width="3"
-                opacity=".45"
-              />
-
-
-              <!-- neck -->
-
-              <rect
-                x="106"
-                y="147"
-                width="23"
-                height="30"
-                rx="9"
-                fill="#b67c60"
+                fill="#835f86"
+                class="ink"
               />
 
 
               <!-- head -->
 
               <ellipse
-                cx="117"
-                cy="117"
-                rx="39"
-                ry="43"
-                fill="#b67c60"
-                class="warm-outline"
+                cx="104"
+                cy="88"
+                rx="35"
+                ry="40"
+                fill="#9d715d"
+                class="warm-line"
               />
 
 
@@ -3693,303 +4848,213 @@
 
               <path
                 d="
-                  M78 121
-                  Q70 74 113 64
-                  Q160 68 160 121
-                  Q160 157 143 178
-                  Q143 135 151 111
-                  Q129 91 89 106
-                  Q94 142 87 171
-                  Q77 149 78 121
+                  M68 91
+                  Q62 47 103 39
+                  Q147 44 146 95
+                  Q143 125 160 149
+                  Q133 139 124 109
+                  Q111 128 83 126
+                  Q68 114 68 91
                   Z
                 "
-                fill="#563c30"
-                class="scene-outline"
+                fill="#273d3c"
+                class="ink"
               />
 
 
-              <!-- crown -->
+              <!-- eyes -->
 
               <path
-                d="
-                  M90 75
-                  L94 47
-                  L109 63
-                  L119 39
-                  L131 63
-                  L148 47
-                  L150 77
-                  Z
-                "
-                fill="#d4ad5e"
-                stroke="#6c4d2d"
+                d="M87 91 Q93 95 99 91"
+                fill="none"
+                stroke="#3e2d27"
                 stroke-width="2"
-                stroke-linejoin="round"
+              />
+
+              <path
+                d="M111 91 Q117 95 123 91"
+                fill="none"
+                stroke="#3e2d27"
+                stroke-width="2"
               />
 
 
               <!-- smile -->
 
               <path
-                d="M106 129 Q117 136 129 128"
-                class="scene-fine"
-                stroke="#77493b"
+                d="M94 102 Q104 109 116 101"
+                fill="none"
+                stroke="#704638"
+                stroke-width="2"
               />
 
 
-              <!-- arm around mermaid -->
+              <!-- arm around princess -->
 
               <path
                 d="
-                  M149 191
-                  Q174 168 190 144
+                  M80 135
+                  Q55 124 39 105
                 "
                 fill="none"
-                stroke="#b67c60"
+                stroke="#9d715d"
                 stroke-width="17"
                 stroke-linecap="round"
               />
 
               <circle
-                cx="192"
-                cy="141"
+                cx="36"
+                cy="102"
                 r="8"
-                fill="#b67c60"
-              />
-
-
-              <!-- other arm -->
-
-              <path
-                d="
-                  M80 196
-                  Q60 218 66 248
-                "
-                fill="none"
-                stroke="#b67c60"
-                stroke-width="17"
-                stroke-linecap="round"
-              />
-
-
-              <!-- leaning posture accent -->
-
-              <path
-                d="M149 179 Q171 166 183 147"
-                fill="none"
-                stroke="#d8a48c"
-                stroke-width="3"
-                opacity=".45"
+                fill="#9d715d"
               />
 
             </g>
 
 
             <!-- =============================================
-                 FOREGROUND CLUTTER:
-                 BOOKS, MUGS, BLANKET
+                 SHARED BLANKET UNDER PRINCESS/MERMAID
             ============================================== -->
 
-            <g class="camp-detail">
+            <path
+              d="
+                M889 446
+                Q963 420 1041 438
+                Q1090 450 1112 477
+                Q1011 493 905 474
+                Z
+              "
+              fill="#684e61"
+              stroke="#33293a"
+              stroke-width="3"
+              opacity=".86"
+            />
 
-              <!-- books -->
-
-              <g transform="translate(285 432) rotate(-6)">
-
-                <rect
-                  width="80"
-                  height="15"
-                  rx="3"
-                  fill="#844a3c"
-                  class="warm-outline"
-                />
-
-                <rect
-                  x="6"
-                  y="16"
-                  width="74"
-                  height="14"
-                  rx="3"
-                  fill="#4d6b59"
-                  class="scene-outline"
-                />
-
-                <rect
-                  x="11"
-                  y="31"
-                  width="69"
-                  height="14"
-                  rx="3"
-                  fill="#856a45"
-                  class="warm-outline"
-                />
-
-                <path
-                  d="M13 22 H66"
-                  stroke="#d6c89d"
-                  stroke-width="2"
-                  opacity=".5"
-                />
-
-              </g>
+            <path
+              d="
+                M914 449
+                Q970 436 1032 447
+              "
+              fill="none"
+              stroke="#a77a91"
+              stroke-width="3"
+              opacity=".6"
+            />
 
 
-              <!-- open book -->
+            <!-- =============================================
+                 OPEN BOOK
+            ============================================== -->
 
-              <g transform="translate(715 427) rotate(5)">
+            <g transform="translate(784 433) rotate(4)">
 
-                <path
-                  d="
-                    M0 7
-                    Q32 -5 58 9
-                    L56 43
-                    Q29 32 0 42
-                    Z
-                  "
-                  fill="#d9cba7"
-                  stroke="#594835"
-                  stroke-width="2"
-                />
+              <path
+                d="
+                  M0 8
+                  Q32 -5 60 9
+                  L57 45
+                  Q30 33 0 43
+                  Z
+                "
+                fill="#d9cba7"
+                stroke="#594835"
+                stroke-width="2"
+              />
 
-                <path
-                  d="
-                    M58 9
-                    Q86 -5 117 7
-                    L117 42
-                    Q87 32 56 43
-                    Z
-                  "
-                  fill="#d9cba7"
-                  stroke="#594835"
-                  stroke-width="2"
-                />
+              <path
+                d="
+                  M60 9
+                  Q88 -5 119 7
+                  L119 43
+                  Q88 32 57 45
+                  Z
+                "
+                fill="#d9cba7"
+                stroke="#594835"
+                stroke-width="2"
+              />
 
-                <path
-                  d="M58 9 L56 43"
-                  stroke="#7b6448"
-                  stroke-width="2"
-                />
+              <path
+                d="M60 9 L57 45"
+                stroke="#7b6448"
+                stroke-width="2"
+              />
 
-                <path
-                  d="M11 15 Q31 10 48 16"
-                  stroke="#8b7658"
-                  stroke-width="1.5"
-                  fill="none"
-                />
+              <g
+                fill="none"
+                stroke="#8b7658"
+                stroke-width="1.3"
+                opacity=".75"
+              >
 
-                <path
-                  d="M69 15 Q88 10 106 16"
-                  stroke="#8b7658"
-                  stroke-width="1.5"
-                  fill="none"
-                />
+                <path d="M11 16 Q31 11 49 17"/>
+                <path d="M10 23 Q31 18 48 23"/>
+                <path d="M69 16 Q89 11 107 17"/>
+                <path d="M69 23 Q89 18 106 23"/>
 
               </g>
 
-
-              <!-- mug left -->
-
-              <g transform="translate(395 438)">
-
-                <path
-                  d="
-                    M0 0
-                    H31
-                    L27 34
-                    H5
-                    Z
-                  "
-                  fill="#8c6a4a"
-                  stroke="#432f24"
-                  stroke-width="2"
-                />
-
-                <path
-                  d="
-                    M30 7
-                    Q48 7 44 21
-                    Q42 29 29 26
-                  "
-                  fill="none"
-                  stroke="#8c6a4a"
-                  stroke-width="6"
-                />
-
-                <path
-                  d="M9 -6 Q4 -17 11 -24"
-                  fill="none"
-                  stroke="#c9c1aa"
-                  stroke-width="2"
-                  opacity=".35"
-                />
-
-              </g>
+            </g>
 
 
-              <!-- mug right -->
+            <!-- =============================================
+                 MUGS
+            ============================================== -->
 
-              <g transform="translate(805 449)">
+            <g transform="translate(419 457)">
 
-                <path
-                  d="
-                    M0 0
-                    H28
-                    L25 31
-                    H4
-                    Z
-                  "
-                  fill="#486b62"
-                  stroke="#253d38"
-                  stroke-width="2"
-                />
+              <path
+                d="
+                  M0 0
+                  H29
+                  L26 33
+                  H4
+                  Z
+                "
+                fill="#8c6849"
+                stroke="#432f24"
+                stroke-width="2"
+              />
 
-                <path
-                  d="
-                    M27 6
-                    Q43 6 40 19
-                    Q38 26 26 23
-                  "
-                  fill="none"
-                  stroke="#486b62"
-                  stroke-width="6"
-                />
+              <path
+                d="
+                  M28 7
+                  Q45 7 42 20
+                  Q40 28 28 25
+                "
+                fill="none"
+                stroke="#8c6849"
+                stroke-width="6"
+              />
 
-              </g>
+            </g>
 
 
-              <!-- rolled blanket -->
+            <g transform="translate(902 452)">
 
-              <g transform="translate(176 443) rotate(8)">
+              <path
+                d="
+                  M0 0
+                  H28
+                  L25 31
+                  H4
+                  Z
+                "
+                fill="#496c63"
+                stroke="#253d38"
+                stroke-width="2"
+              />
 
-                <ellipse
-                  cx="22"
-                  cy="20"
-                  rx="21"
-                  ry="17"
-                  fill="#704c45"
-                  stroke="#392c28"
-                  stroke-width="3"
-                />
-
-                <rect
-                  x="20"
-                  y="3"
-                  width="72"
-                  height="34"
-                  rx="15"
-                  fill="#82584e"
-                  stroke="#392c28"
-                  stroke-width="3"
-                />
-
-                <path
-                  d="M48 5 V35"
-                  stroke="#c38e70"
-                  stroke-width="4"
-                  opacity=".5"
-                />
-
-              </g>
+              <path
+                d="
+                  M27 6
+                  Q43 6 40 19
+                  Q38 26 26 23
+                "
+                fill="none"
+                stroke="#496c63"
+                stroke-width="6"
+              />
 
             </g>
 
@@ -4002,56 +5067,56 @@
 
               <ellipse
                 cx="600"
-                cy="462"
-                rx="83"
-                ry="25"
-                fill="#07110f"
-                opacity=".55"
+                cy="467"
+                rx="88"
+                ry="27"
+                fill="#06110f"
+                opacity=".58"
               />
 
               <ellipse
-                cx="537"
-                cy="452"
-                rx="24"
-                ry="15"
-                fill="#626158"
-                class="scene-outline"
-              />
-
-              <ellipse
-                cx="565"
-                cy="466"
+                cx="534"
+                cy="455"
                 rx="25"
                 ry="15"
-                fill="#55564f"
-                class="scene-outline"
+                fill="#65645b"
+                class="ink"
+              />
+
+              <ellipse
+                cx="564"
+                cy="469"
+                rx="26"
+                ry="16"
+                fill="#55584f"
+                class="ink"
               />
 
               <ellipse
                 cx="600"
-                cy="471"
-                rx="26"
-                ry="15"
-                fill="#6b675b"
-                class="scene-outline"
+                cy="474"
+                rx="27"
+                ry="16"
+                fill="#706b5e"
+                class="ink"
               />
 
               <ellipse
-                cx="636"
-                cy="466"
+                cx="637"
+                cy="469"
+                rx="26"
+                ry="16"
+                fill="#565850"
+                class="ink"
+              />
+
+              <ellipse
+                cx="667"
+                cy="455"
                 rx="25"
                 ry="15"
-                fill="#55564f"
-                class="scene-outline"
-              />
-
-              <ellipse
-                cx="664"
-                cy="452"
-                rx="24"
-                ry="15"
-                fill="#626158"
-                class="scene-outline"
+                fill="#65645b"
+                class="ink"
               />
 
             </g>
@@ -4064,71 +5129,80 @@
             <g>
 
               <rect
-                x="553"
-                y="438"
-                width="99"
-                height="17"
+                x="551"
+                y="440"
+                width="103"
+                height="18"
                 rx="8"
-                fill="#603c27"
+                fill="#604027"
                 stroke="#2f2119"
                 stroke-width="3"
-                transform="rotate(10 603 446)"
+                transform="rotate(11 602 449)"
               />
 
               <rect
-                x="550"
-                y="438"
-                width="103"
-                height="17"
+                x="548"
+                y="440"
+                width="106"
+                height="18"
                 rx="8"
-                fill="#70472c"
+                fill="#744a2c"
                 stroke="#2f2119"
                 stroke-width="3"
-                transform="rotate(-10 601 446)"
+                transform="rotate(-11 601 449)"
+              />
+
+              <circle
+                cx="558"
+                cy="447"
+                r="7"
+                fill="none"
+                stroke="#98704b"
+                stroke-width="2"
               />
 
             </g>
 
 
             <!-- =============================================
-                 FIRE
+                 CAMPFIRE
             ============================================== -->
 
             <g filter="url(#softGlow)">
 
               <path
-                class="svg-flame-outer"
+                class="flame-outer"
                 d="
-                  M600 449
-                  C559 430 562 395 584 374
-                  C578 402 597 398 597 357
-                  C634 385 651 414 631 440
-                  C622 451 610 456 600 449
+                  M600 452
+                  C557 431 561 394 583 372
+                  C577 402 597 398 597 354
+                  C636 384 654 415 632 443
+                  C623 453 611 458 600 452
                   Z
                 "
                 fill="url(#flameOuterGradient)"
               />
 
               <path
-                class="svg-flame-mid"
+                class="flame-middle"
                 d="
-                  M601 447
-                  C578 434 580 411 594 397
-                  C592 416 606 411 610 386
-                  C631 409 630 430 617 442
-                  C612 447 606 449 601 447
+                  M601 449
+                  C577 435 579 410 594 395
+                  C592 416 607 411 611 383
+                  C633 408 632 431 618 444
+                  C612 449 606 451 601 449
                   Z
                 "
-                fill="url(#flameMidGradient)"
+                fill="url(#flameMiddleGradient)"
               />
 
               <path
-                class="svg-flame-inner"
+                class="flame-inner"
                 d="
-                  M602 445
-                  C591 437 592 424 600 415
-                  C600 427 607 425 612 414
-                  C619 430 615 441 607 445
+                  M602 447
+                  C590 438 592 423 600 413
+                  C600 426 608 424 613 412
+                  C621 429 616 442 608 447
                   Z
                 "
                 fill="url(#flameInnerGradient)"
@@ -4138,12 +5212,12 @@
 
 
             <!-- =============================================
-                 SMOKE
+                 CAMPFIRE SMOKE
             ============================================== -->
 
             <g
               fill="none"
-              stroke="#c7c5b4"
+              stroke="#c8c6b8"
               stroke-width="8"
               stroke-linecap="round"
             >
@@ -4151,18 +5225,27 @@
               <path
                 class="smoke"
                 d="
-                  M603 365
-                  Q580 333 605 305
-                  Q623 285 608 260
+                  M603 362
+                  Q579 329 605 299
+                  Q623 278 608 251
                 "
               />
 
               <path
-                class="smoke second"
+                class="smoke two"
                 d="
-                  M618 367
-                  Q640 337 622 313
-                  Q608 294 625 274
+                  M618 363
+                  Q641 331 622 305
+                  Q608 286 625 263
+                "
+              />
+
+              <path
+                class="smoke three"
+                d="
+                  M591 366
+                  Q570 340 585 318
+                  Q598 299 584 280
                 "
               />
 
@@ -4170,7 +5253,7 @@
 
 
             <!-- =============================================
-                 FIREFLIES
+                 FIREFLIES THROUGHOUT THE SCENE
             ============================================== -->
 
             <g
@@ -4179,72 +5262,86 @@
             >
 
               <circle
-                class="svg-firefly"
-                cx="181"
-                cy="262"
+                class="firefly"
+                cx="180"
+                cy="273"
                 r="3.5"
               />
 
               <circle
-                class="svg-firefly"
-                cx="252"
-                cy="192"
+                class="firefly delay-one"
+                cx="250"
+                cy="191"
                 r="4"
               />
 
               <circle
-                class="svg-firefly"
+                class="firefly delay-two"
                 cx="304"
-                cy="310"
+                cy="315"
                 r="3"
               />
 
               <circle
-                class="svg-firefly"
-                cx="475"
-                cy="216"
+                class="firefly delay-three"
+                cx="472"
+                cy="220"
                 r="4"
               />
 
               <circle
-                class="svg-firefly"
-                cx="514"
-                cy="298"
+                class="firefly delay-two"
+                cx="518"
+                cy="305"
                 r="3.5"
               />
 
               <circle
-                class="svg-firefly"
-                cx="679"
-                cy="246"
+                class="firefly delay-one"
+                cx="680"
+                cy="303"
                 r="3"
               />
 
               <circle
-                class="svg-firefly"
-                cx="832"
-                cy="188"
+                class="firefly"
+                cx="845"
+                cy="190"
                 r="4"
               />
 
               <circle
-                class="svg-firefly"
-                cx="915"
-                cy="270"
+                class="firefly delay-three"
+                cx="944"
+                cy="278"
                 r="3"
               />
 
               <circle
-                class="svg-firefly"
-                cx="1093"
-                cy="236"
+                class="firefly delay-one"
+                cx="1095"
+                cy="250"
                 r="4"
               />
 
               <circle
-                class="svg-firefly"
-                cx="1125"
-                cy="337"
+                class="firefly delay-two"
+                cx="1130"
+                cy="340"
+                r="3"
+              />
+
+              <circle
+                class="firefly"
+                cx="77"
+                cy="340"
+                r="3"
+              />
+
+              <circle
+                class="firefly delay-three"
+                cx="1038"
+                cy="158"
                 r="3"
               />
 
@@ -4261,30 +5358,30 @@
             >
 
               <circle
-                class="wizard-spark"
-                cx="584"
-                cy="369"
+                class="magic-star"
+                cx="583"
+                cy="370"
                 r="2.5"
               />
 
               <circle
-                class="wizard-spark two"
+                class="magic-star delay"
                 cx="618"
-                cy="349"
+                cy="350"
                 r="2.5"
               />
 
               <circle
-                class="wizard-spark three"
-                cx="601"
-                cy="329"
+                class="magic-star"
+                cx="600"
+                cy="328"
                 r="2"
               />
 
               <circle
-                class="wizard-spark"
+                class="magic-star delay"
                 cx="629"
-                cy="383"
+                cy="384"
                 r="2"
               />
 
@@ -4292,30 +5389,135 @@
 
 
             <!-- =============================================
-                 FOREGROUND GRASS
+                 FOREGROUND FLOWERS + GRASS
             ============================================== -->
 
             <g
               fill="none"
-              stroke="#254b3e"
+              stroke="#2e5d49"
               stroke-width="4"
               stroke-linecap="round"
-              opacity=".9"
             >
 
-              <path d="M63 493 Q61 465 47 447"/>
-              <path d="M65 493 Q72 463 88 449"/>
+              <path d="M52 520 Q48 485 29 461"/>
+              <path d="M54 520 Q65 481 84 463"/>
 
-              <path d="M230 506 Q226 477 209 459"/>
-              <path d="M231 506 Q242 476 256 463"/>
+              <path d="M236 530 Q230 493 208 470"/>
+              <path d="M238 530 Q250 490 268 472"/>
 
-              <path d="M948 504 Q943 475 927 458"/>
-              <path d="M949 504 Q959 473 975 456"/>
+              <path d="M956 527 Q949 489 929 469"/>
+              <path d="M958 527 Q969 489 987 467"/>
 
-              <path d="M1135 492 Q1131 466 1115 450"/>
-              <path d="M1136 492 Q1145 466 1160 452"/>
+              <path d="M1145 517 Q1140 482 1120 461"/>
+              <path d="M1147 517 Q1158 480 1177 463"/>
 
             </g>
+
+
+            <g>
+
+              <circle
+                cx="73"
+                cy="483"
+                r="4"
+                fill="#d3a5b3"
+              />
+
+              <circle
+                cx="83"
+                cy="472"
+                r="3"
+                fill="#e2c779"
+              />
+
+              <circle
+                cx="1122"
+                cy="476"
+                r="4"
+                fill="#a7bfd8"
+              />
+
+              <circle
+                cx="1135"
+                cy="466"
+                r="3"
+                fill="#e1c879"
+              />
+
+            </g>
+
+
+            <!-- =============================================
+                 TINY FOREST CREATURE
+                 Because of course Paper Gremlin needs one.
+            ============================================== -->
+
+            <g
+              transform="translate(105 382)"
+            >
+
+              <ellipse
+                cx="0"
+                cy="14"
+                rx="13"
+                ry="16"
+                fill="#3d5142"
+                class="ink"
+              />
+
+              <path
+                d="M-9 3 L-7 -8 L0 1"
+                fill="#3d5142"
+                class="ink"
+              />
+
+              <path
+                d="M9 3 L7 -8 L0 1"
+                fill="#3d5142"
+                class="ink"
+              />
+
+              <circle
+                cx="-5"
+                cy="11"
+                r="2"
+                fill="#f2d37b"
+              />
+
+              <circle
+                cx="5"
+                cy="11"
+                r="2"
+                fill="#f2d37b"
+              />
+
+              <path
+                d="M0 16 L-3 19 L3 19 Z"
+                fill="#b47b65"
+              />
+
+            </g>
+
+
+            <!-- =============================================
+                 LAST FOREGROUND SHADOW
+            ============================================== -->
+
+            <path
+              d="
+                M0 525
+                Q164 495 317 518
+                Q452 538 602 515
+                Q769 492 908 517
+                Q1057 542 1200 518
+                V560
+                H0
+                Z
+              "
+              fill="#061612"
+              opacity=".78"
+            />
+
 
           </svg>
 
@@ -4340,13 +5542,18 @@
             href="discover.html"
             class="path"
           >
-            <span class="path-icon">
+
+            <span
+              class="path-icon"
+              aria-hidden="true"
+            >
               ✦
             </span>
 
             <span class="path-label">
               Explore Books
             </span>
+
           </a>
 
 
@@ -4354,13 +5561,18 @@
             href="clubs.html"
             class="path"
           >
-            <span class="path-icon">
+
+            <span
+              class="path-icon"
+              aria-hidden="true"
+            >
               ◉
             </span>
 
             <span class="path-label">
               Join a Club
             </span>
+
           </a>
 
 
@@ -4368,13 +5580,18 @@
             href="profile.html"
             class="path"
           >
-            <span class="path-icon">
+
+            <span
+              class="path-icon"
+              aria-hidden="true"
+            >
               ♙
             </span>
 
             <span class="path-label">
               Create Your Avatar
             </span>
+
           </a>
 
 
@@ -4382,13 +5599,18 @@
             href="ratings.html"
             class="path"
           >
-            <span class="path-icon">
+
+            <span
+              class="path-icon"
+              aria-hidden="true"
+            >
               ❧
             </span>
 
             <span class="path-label">
               Share Your DogEars
             </span>
+
           </a>
 
 
@@ -4396,13 +5618,18 @@
             href="#stories"
             class="path"
           >
-            <span class="path-icon">
+
+            <span
+              class="path-icon"
+              aria-hidden="true"
+            >
               ↟
             </span>
 
             <span class="path-label">
               Explore More
             </span>
+
           </a>
 
         </div>
@@ -4823,12 +6050,10 @@
       <div class="wrap">
 
         <div class="quote">
-
           “In a world full of
           <em>different paths,</em>
           we still end up around
           the same fire.”
-
         </div>
 
         <p class="quote-small">
@@ -4948,17 +6173,16 @@
 
   <!-- =====================================================
        SUPABASE
-       Same project and session method used by dashboard.html
+
+       Kept separate from the rest of the page JavaScript so
+       a book-search/animation error cannot prevent the
+       homepage from checking the logged-in session.
   ====================================================== -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
   <script>
-
-    /* =====================================================
-       CONFIG
-    ===================================================== */
 
     const SUPABASE_URL =
       "https://nrtutxjznkfvvbmaagum.supabase.co";
@@ -4974,10 +6198,6 @@
         SUPABASE_KEY
       );
 
-
-    /* =====================================================
-       AUTHENTICATED NAVIGATION
-    ===================================================== */
 
     const navLogin =
       document.getElementById(
@@ -5099,14 +6319,7 @@
     }
 
 
-    /* =====================================================
-       SESSION CHECK
-
-       This follows the same method used by the working
-       dashboard: supabaseClient.auth.getSession()
-    ===================================================== */
-
-    async function checkSession(){
+    async function syncHomepageAuth(){
 
       try{
 
@@ -5120,16 +6333,7 @@
 
 
         if(error){
-
-          console.warn(
-            "Homepage session:",
-            error
-          );
-
-          showLoggedOutNavigation();
-
-          return;
-
+          throw error;
         }
 
 
@@ -5163,10 +6367,6 @@
     }
 
 
-    /* =====================================================
-       AUTH STATE CHANGES
-    ===================================================== */
-
     supabaseClient
       .auth
       .onAuthStateChange(
@@ -5176,12 +6376,10 @@
         ) => {
 
           if(
-            event ===
-            "SIGNED_OUT"
+            event === "SIGNED_OUT"
           ){
 
             showLoggedOutNavigation();
-
             return;
 
           }
@@ -5199,9 +6397,16 @@
       );
 
 
-    /* =====================================================
-       GOOGLE BOOKS SEARCH
-    ===================================================== */
+    syncHomepageAuth();
+
+  </script>
+
+
+  <!-- =====================================================
+       BOOK SEARCH + PAGE EFFECTS
+  ====================================================== -->
+
+  <script>
 
     const bookSearchForm =
       document.getElementById(
@@ -5245,9 +6450,7 @@
       );
 
 
-    function stripHtml(
-      value
-    ){
+    function stripHtml(value){
 
       const temporary =
         document.createElement(
@@ -5275,12 +6478,15 @@
       bookCover.hidden =
         true;
 
+
       bookCover.removeAttribute(
         "src"
       );
 
+
       bookCover.alt =
         "";
+
 
       bookPlaceholder.hidden =
         false;
@@ -5288,9 +6494,7 @@
     }
 
 
-    function renderBook(
-      volume
-    ){
+    function renderBook(volume){
 
       const info =
         volume?.volumeInfo ||
@@ -5330,11 +6534,10 @@
           images.thumbnail ||
           images.smallThumbnail ||
           ""
-        )
-          .replace(
-            /^http:/,
-            "https:"
-          );
+        ).replace(
+          /^http:/,
+          "https:"
+        );
 
 
       bookTitle.textContent =
@@ -5393,9 +6596,7 @@
     }
 
 
-    function showBookError(
-      message
-    ){
+    function showBookError(message){
 
       bookTitle.textContent =
         "The gremlin came back empty-handed.";
@@ -5414,15 +6615,12 @@
     }
 
 
-    async function searchBooks(
-      query
-    ){
+    async function searchBooks(query){
 
       const cleanQuery =
         String(
           query || ""
-        )
-          .trim();
+        ).trim();
 
 
       if(!cleanQuery){
@@ -5508,42 +6706,46 @@
     }
 
 
-    bookSearchForm
-      .addEventListener(
-        "submit",
-        event => {
+    if(bookSearchForm){
 
-          event.preventDefault();
+      bookSearchForm
+        .addEventListener(
+          "submit",
+          event => {
+
+            event.preventDefault();
 
 
-          searchBooks(
-            bookSearchInput.value
-          );
+            searchBooks(
+              bookSearchInput.value
+            );
 
-        }
-      );
+          }
+        );
+
+    }
+
+
+    if(bookCover){
+
+      bookCover
+        .addEventListener(
+          "error",
+          () => {
+
+            resetBookCover();
+
+            bookPlaceholder.textContent =
+              "Cover unavailable";
+
+          }
+        );
+
+    }
 
 
     /* =====================================================
-       COVER FAILURE
-    ===================================================== */
-
-    bookCover
-      .addEventListener(
-        "error",
-        () => {
-
-          resetBookCover();
-
-          bookPlaceholder.textContent =
-            "Cover unavailable";
-
-        }
-      );
-
-
-    /* =====================================================
-       OPTIONAL SEARCH QUERY
+       OPTIONAL URL BOOK SEARCH
 
        Example:
        index.html?q=Fourth%20Wing
@@ -5561,7 +6763,10 @@
       );
 
 
-    if(requestedBook){
+    if(
+      requestedBook &&
+      bookSearchInput
+    ){
 
       bookSearchInput.value =
         requestedBook;
@@ -5575,7 +6780,10 @@
 
 
     /* =====================================================
-       SUBTLE HERO PARALLAX
+       PARALLAX
+
+       Intentionally subtle. The illustration itself should
+       be the star rather than moving all over the screen.
     ===================================================== */
 
     const campScene =
@@ -5605,19 +6813,14 @@
           "(prefers-reduced-motion: reduce)"
         ).matches
       ){
-
         return;
-
       }
 
 
       if(
-        window.innerWidth <
-        1001
+        window.innerWidth < 1001
       ){
-
         return;
-
       }
 
 
@@ -5631,7 +6834,7 @@
       if(campScene){
 
         campScene.style.translate =
-          `0 ${scroll * .025}px`;
+          `0 ${scroll * .018}px`;
 
       }
 
@@ -5639,7 +6842,7 @@
       if(moon){
 
         moon.style.translate =
-          `0 ${scroll * .08}px`;
+          `0 ${scroll * .055}px`;
 
       }
 
@@ -5650,9 +6853,7 @@
       "scroll",
       () => {
 
-        if(
-          !parallaxScheduled
-        ){
+        if(!parallaxScheduled){
 
           parallaxScheduled =
             true;
@@ -5672,10 +6873,101 @@
 
 
     /* =====================================================
-       INITIALIZE
+       RANDOM TINY TWINKLES
+
+       These are DOM elements, not another giant image.
     ===================================================== */
 
-    checkSession();
+    const hero =
+      document.querySelector(
+        ".hero"
+      );
+
+
+    if(
+      hero &&
+      !window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches
+    ){
+
+      for(
+        let i = 0;
+        i < 16;
+        i++
+      ){
+
+        const spark =
+          document.createElement(
+            "span"
+          );
+
+
+        spark.setAttribute(
+          "aria-hidden",
+          "true"
+        );
+
+
+        spark.style.position =
+          "absolute";
+
+
+        spark.style.zIndex =
+          "10";
+
+
+        spark.style.pointerEvents =
+          "none";
+
+
+        spark.style.width =
+          `${1 + Math.random() * 2}px`;
+
+
+        spark.style.height =
+          spark.style.width;
+
+
+        spark.style.borderRadius =
+          "50%";
+
+
+        spark.style.background =
+          "#ffe9a1";
+
+
+        spark.style.boxShadow =
+          "0 0 8px #f5c66e";
+
+
+        spark.style.left =
+          `${4 + Math.random() * 92}%`;
+
+
+        spark.style.top =
+          `${30 + Math.random() * 54}%`;
+
+
+        spark.style.opacity =
+          `${.25 + Math.random() * .55}`;
+
+
+        spark.style.animation =
+          `starsTwinkle ${
+            2.8 + Math.random() * 4
+          }s ease-in-out ${
+            Math.random() * -4
+          }s infinite alternate`;
+
+
+        hero.appendChild(
+          spark
+        );
+
+      }
+
+    }
 
   </script>
 
