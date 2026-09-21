@@ -17,46 +17,25 @@
 
 <style>
 
-/* =========================================================
-   PAPER GREMLIN
-   ULTRA-DETAILED STORYBOOK HOMEPAGE
-========================================================= */
-
 :root{
-  --night-0:#020b0d;
-  --night-1:#041419;
-  --night-2:#08262b;
-  --night-3:#0d3535;
+  --night:#031114;
+  --night-soft:#071c1d;
+  --panel:#081917;
+  --panel-soft:#0c211d;
 
-  --forest-0:#04110f;
-  --forest-1:#071c17;
-  --forest-2:#0b2b23;
-  --forest-3:#174637;
-  --forest-4:#2d6650;
+  --cream:#f5e5c3;
+  --muted:#c6baa3;
 
-  --cream:#f4e6c7;
-  --cream-muted:#c9bda5;
+  --gold:#d8aa5a;
+  --gold-light:#f0ca7b;
 
-  --gold:#cda45f;
-  --gold-light:#f0cc82;
+  --fire:#ef8639;
+  --fire-light:#ffd67b;
 
-  --fire-red:#b84525;
-  --fire:#ed7633;
-  --fire-orange:#ff9b43;
-  --fire-gold:#ffc75f;
-  --fire-light:#fff0ac;
+  --paper:#e3c99a;
+  --ink:#392a1c;
 
-  --magic-blue:#9cd9ec;
-  --magic-lilac:#c5b7ff;
-  --magic-pink:#e2b3df;
-
-  --paper:#e4cea1;
-  --paper-light:#f1dfb9;
-  --paper-dark:#9d7c51;
-
-  --ink:#33271c;
-
-  --max:1220px;
+  --max:1240px;
 }
 
 *{
@@ -71,8 +50,8 @@ body{
   margin:0;
   overflow-x:hidden;
 
-  background:var(--night-0);
   color:var(--cream);
+  background:var(--night);
 
   font-family:
     Georgia,
@@ -96,10 +75,6 @@ button{
   cursor:pointer;
 }
 
-img{
-  max-width:100%;
-}
-
 .wrap{
   width:min(
     calc(100% - 40px),
@@ -111,108 +86,85 @@ img{
 
 
 /* =========================================================
-   NAVIGATION
+   HEADER
 ========================================================= */
 
-.topbar{
-  position:sticky;
+.site-header{
+  position:absolute;
+
+  z-index:100;
+
   top:0;
+  left:0;
+  right:0;
 
-  z-index:1000;
-
-  min-height:70px;
-
-  border-bottom:
-    1px solid
-    rgba(234,196,123,.20);
+  min-height:82px;
 
   background:
-    rgba(2,12,15,.94);
-
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
+    linear-gradient(
+      180deg,
+      rgba(1,9,11,.92),
+      rgba(1,9,11,.64),
+      transparent
+    );
 }
 
 .nav{
-  min-height:70px;
+  min-height:82px;
 
   display:flex;
   align-items:center;
   justify-content:space-between;
 
-  gap:28px;
+  gap:32px;
 }
 
 .brand{
   display:flex;
   align-items:center;
 
-  gap:12px;
+  gap:13px;
 
   color:var(--gold-light);
 
+  font-size:22px;
   font-weight:bold;
 
-  letter-spacing:.08em;
+  letter-spacing:.025em;
+
+  text-shadow:
+    0 2px 8px
+    rgba(0,0,0,.6);
 }
 
 .brand-mark{
-  position:relative;
-
-  width:36px;
-  height:36px;
+  width:39px;
+  height:39px;
 
   display:grid;
   place-items:center;
 
   border:
     1px solid
-    rgba(240,204,130,.55);
+    rgba(239,198,113,.68);
 
-  border-radius:56% 44% 52% 48%;
+  border-radius:50%;
 
   background:
-    radial-gradient(
-      circle at 50% 70%,
-      rgba(237,118,51,.28),
-      rgba(13,53,53,.72)
-    );
+    rgba(9,25,22,.58);
 
   box-shadow:
-    inset 0 0 12px
-    rgba(255,210,127,.07);
-}
-
-.brand-mark::after{
-  content:"";
-
-  position:absolute;
-
-  width:9px;
-  height:13px;
-
-  right:-1px;
-  top:-6px;
-
-  border:
-    1px solid
-    rgba(240,204,130,.55);
-
-  border-bottom:0;
-
-  border-radius:
-    90% 20% 0 0;
-
-  transform:rotate(28deg);
+    0 0 20px
+    rgba(231,173,75,.08);
 }
 
 .navlinks{
   display:flex;
   align-items:center;
 
-  gap:22px;
+  gap:28px;
 
-  color:var(--cream-muted);
+  color:#e1d7c2;
 
   font-family:
     Arial,
@@ -222,10 +174,14 @@ img{
 
   text-transform:uppercase;
 
-  letter-spacing:.11em;
+  letter-spacing:.12em;
 }
 
 .navlinks a{
+  text-shadow:
+    0 2px 6px
+    rgba(0,0,0,.8);
+
   transition:
     color .2s ease,
     transform .2s ease;
@@ -239,490 +195,130 @@ img{
 }
 
 .nav-join{
-  padding:9px 16px;
+  padding:
+    10px 18px;
 
   border:
     1px solid
-    rgba(240,204,130,.62);
+    rgba(237,193,105,.75);
 
   border-radius:999px;
 
-  color:var(--gold-light);
+  color:#191108 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f2c875,
+      #dca64f
+    );
+
+  text-shadow:none !important;
+
+  box-shadow:
+    0 6px 18px
+    rgba(0,0,0,.24);
 }
 
 
 /* =========================================================
    HERO
+
+   THIS IS THE IMPORTANT CHANGE.
+
+   The detailed illustration is now the actual visual
+   environment instead of being redrawn with primitive SVG.
 ========================================================= */
 
 .hero{
   position:relative;
 
   min-height:
-    calc(100vh - 70px);
+    clamp(
+      760px,
+      72vw,
+      980px
+    );
 
   overflow:hidden;
-
-  /*
-     IMPORTANT:
-     This is deliberately larger than the old 76px.
-     It prevents the headline from disappearing beneath
-     the sticky navigation.
-  */
-
-  padding:
-    125px 0 0;
 
   isolation:isolate;
 
   background:
-    radial-gradient(
-      ellipse at 50% 74%,
-      rgba(237,118,51,.18),
-      transparent 25%
-    ),
-
-    radial-gradient(
-      ellipse at 50% 36%,
-      rgba(47,111,119,.20),
-      transparent 43%
-    ),
-
-    linear-gradient(
-      180deg,
-      #04151b 0%,
-      #07252b 42%,
-      #08231f 72%,
-      #061612 100%
-    );
+    #041416;
 }
 
 
 /* =========================================================
-   NIGHT SKY
+   APPROVED CAMPFIRE ARTWORK
 ========================================================= */
 
-.night-sky{
+.hero-art{
   position:absolute;
+
+  z-index:0;
+
   inset:0;
-
-  z-index:-30;
-
-  pointer-events:none;
-}
-
-.night-sky::before{
-  content:"";
-
-  position:absolute;
-  inset:0;
-
-  opacity:.86;
 
   background-image:
+    url("assets/home/paper-gremlin-campfire.png");
 
-    radial-gradient(
-      circle at 5% 12%,
-      #fff2b7 0 1px,
-      transparent 1.6px
-    ),
+  background-repeat:no-repeat;
 
-    radial-gradient(
-      circle at 11% 27%,
-      #fff 0 1px,
-      transparent 1.6px
-    ),
+  background-position:
+    center top;
 
-    radial-gradient(
-      circle at 17% 8%,
-      #fff4c2 0 1.3px,
-      transparent 1.9px
-    ),
+  background-size:cover;
 
-    radial-gradient(
-      circle at 23% 21%,
-      #fff 0 1px,
-      transparent 1.5px
-    ),
+  transform:
+    scale(1.015);
 
-    radial-gradient(
-      circle at 29% 7%,
-      #fff1b5 0 1px,
-      transparent 1.6px
-    ),
+  transform-origin:center;
 
-    radial-gradient(
-      circle at 34% 29%,
-      #fff 0 1px,
-      transparent 1.5px
-    ),
-
-    radial-gradient(
-      circle at 41% 15%,
-      #fff5ca 0 1.2px,
-      transparent 1.8px
-    ),
-
-    radial-gradient(
-      circle at 48% 6%,
-      #fff 0 1px,
-      transparent 1.6px
-    ),
-
-    radial-gradient(
-      circle at 55% 25%,
-      #fff1b6 0 1px,
-      transparent 1.6px
-    ),
-
-    radial-gradient(
-      circle at 62% 10%,
-      #fff 0 1px,
-      transparent 1.5px
-    ),
-
-    radial-gradient(
-      circle at 69% 29%,
-      #fff5ca 0 1.2px,
-      transparent 1.8px
-    ),
-
-    radial-gradient(
-      circle at 76% 7%,
-      #fff 0 1px,
-      transparent 1.5px
-    ),
-
-    radial-gradient(
-      circle at 83% 20%,
-      #fff0b4 0 1px,
-      transparent 1.6px
-    ),
-
-    radial-gradient(
-      circle at 90% 9%,
-      #fff 0 1px,
-      transparent 1.5px
-    ),
-
-    radial-gradient(
-      circle at 96% 29%,
-      #fff2b7 0 1.2px,
-      transparent 1.8px
-    );
+  filter:
+    saturate(1.03)
+    contrast(1.02);
 }
 
-.night-sky::after{
+
+/* Slight darkening on left so our real HTML text
+   stays readable without destroying the artwork. */
+
+.hero-art::before{
   content:"";
 
   position:absolute;
   inset:0;
-
-  opacity:.38;
-
-  background:
-    radial-gradient(
-      ellipse at 44% 22%,
-      rgba(116,183,189,.20),
-      transparent 26%
-    ),
-
-    radial-gradient(
-      ellipse at 72% 18%,
-      rgba(111,155,187,.14),
-      transparent 24%
-    );
-
-  animation:
-    skyBreathe
-    9s ease-in-out
-    infinite alternate;
-}
-
-@keyframes skyBreathe{
-
-  from{
-    opacity:.25;
-  }
-
-  to{
-    opacity:.52;
-  }
-
-}
-
-
-/* =========================================================
-   MOON
-========================================================= */
-
-.moon{
-  position:absolute;
-
-  z-index:-24;
-
-  top:73px;
-  right:7%;
-
-  width:142px;
-  height:142px;
-
-  border-radius:50%;
-
-  background:
-    radial-gradient(
-      circle at 35% 31%,
-      #fffde9 0%,
-      #e5e2ce 57%,
-      #b8b9a5 100%
-    );
-
-  box-shadow:
-    0 0 28px
-      rgba(236,242,224,.25),
-
-    0 0 85px
-      rgba(169,214,215,.17),
-
-    0 0 180px
-      rgba(105,170,178,.08);
-}
-
-.moon::before{
-  content:"";
-
-  position:absolute;
-
-  width:28px;
-  height:22px;
-
-  left:27px;
-  top:33px;
-
-  border-radius:50%;
-
-  background:
-    rgba(109,114,105,.11);
-
-  box-shadow:
-    53px 19px 0 8px
-      rgba(109,114,105,.08),
-
-    27px 65px 0 4px
-      rgba(109,114,105,.09),
-
-    71px 61px 0 2px
-      rgba(109,114,105,.07);
-}
-
-
-/* =========================================================
-   DISTANT MOUNTAINS
-========================================================= */
-
-.mountains{
-  position:absolute;
-
-  z-index:-22;
-
-  left:-4%;
-  right:-4%;
-  bottom:25%;
-
-  height:270px;
-
-  opacity:.62;
-
-  pointer-events:none;
-}
-
-.mountains::before{
-  content:"";
-
-  position:absolute;
-
-  inset:auto 0 0;
-
-  height:100%;
-
-  background:
-    linear-gradient(
-      140deg,
-      transparent 0 11%,
-      #0b3436 11.3% 21%,
-      transparent 21.3%
-    ),
-
-    linear-gradient(
-      220deg,
-      transparent 0 16%,
-      #0b3436 16.3% 29%,
-      transparent 29.3%
-    ),
-
-    linear-gradient(
-      135deg,
-      transparent 0 37%,
-      #0a3032 37.3% 51%,
-      transparent 51.3%
-    ),
-
-    linear-gradient(
-      225deg,
-      transparent 0 55%,
-      #0b3435 55.3% 68%,
-      transparent 68.3%
-    ),
-
-    linear-gradient(
-      140deg,
-      transparent 0 72%,
-      #0a2d30 72.3% 86%,
-      transparent 86.3%
-    );
-}
-
-
-/* =========================================================
-   DISTANT LAKE
-========================================================= */
-
-.distant-lake{
-  position:absolute;
-
-  z-index:-21;
-
-  left:0;
-  right:0;
-  bottom:16%;
-
-  height:155px;
-
-  pointer-events:none;
-
-  opacity:.58;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(48,107,108,.30),
-      rgba(7,35,34,.05)
-    );
-
-  clip-path:
-    polygon(
-      0 37%,
-      18% 28%,
-      33% 36%,
-      52% 21%,
-      70% 33%,
-      85% 24%,
-      100% 31%,
-      100% 100%,
-      0 100%
-    );
-}
-
-.distant-lake::after{
-  content:"";
-
-  position:absolute;
-
-  left:8%;
-  right:8%;
-  top:48%;
-
-  height:1px;
-
-  opacity:.5;
 
   background:
     linear-gradient(
       90deg,
-      transparent,
-      rgba(169,218,209,.65),
-      transparent
+      rgba(1,9,11,.78) 0%,
+      rgba(1,9,11,.57) 19%,
+      rgba(1,9,11,.20) 37%,
+      rgba(1,9,11,.03) 55%,
+      rgba(1,9,11,.04) 100%
     );
-
-  box-shadow:
-    0 17px 0
-      rgba(143,196,187,.13),
-
-    0 34px 0
-      rgba(143,196,187,.08);
 }
 
 
-/* =========================================================
-   MIST
-========================================================= */
+/* Dark fade at bottom so the hero flows naturally
+   into the real website below it. */
 
-.mist{
+.hero-art::after{
+  content:"";
+
   position:absolute;
+  inset:0;
 
-  z-index:-18;
-
-  pointer-events:none;
-
-  border-radius:50%;
-
-  filter:blur(28px);
-
-  opacity:.14;
-}
-
-.mist-one{
-  width:72%;
-  height:100px;
-
-  left:-15%;
-  bottom:25%;
-
-  background:#9dc5b5;
-
-  animation:
-    mistOne
-    20s ease-in-out
-    infinite alternate;
-}
-
-.mist-two{
-  width:66%;
-  height:85px;
-
-  right:-17%;
-  bottom:31%;
-
-  background:#8fbab1;
-
-  animation:
-    mistTwo
-    25s ease-in-out
-    infinite alternate;
-}
-
-@keyframes mistOne{
-
-  from{
-    transform:translateX(-2%);
-  }
-
-  to{
-    transform:translateX(10%);
-  }
-
-}
-
-@keyframes mistTwo{
-
-  from{
-    transform:translateX(5%);
-  }
-
-  to{
-    transform:translateX(-8%);
-  }
-
+  background:
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 72%,
+      rgba(3,17,20,.18) 84%,
+      #031114 100%
+    );
 }
 
 
@@ -730,22 +326,44 @@ img{
    HERO COPY
 ========================================================= */
 
-.hero-copy{
+.hero-content{
   position:relative;
 
-  z-index:60;
+  z-index:20;
 
-  max-width:1050px;
+  min-height:
+    clamp(
+      760px,
+      72vw,
+      980px
+    );
 
-  margin:auto;
+  display:flex;
+  align-items:flex-start;
 
-  text-align:center;
+  padding-top:
+    clamp(
+      155px,
+      14vw,
+      205px
+    );
+}
+
+.hero-copy{
+  width:min(
+    500px,
+    43vw
+  );
+
+  text-shadow:
+    0 3px 13px
+    rgba(0,0,0,.8);
 }
 
 .hero-kicker{
-  margin-bottom:11px;
+  margin-bottom:13px;
 
-  color:var(--gold);
+  color:var(--gold-light);
 
   font-family:
     Arial,
@@ -753,556 +371,148 @@ img{
 
   font-size:10px;
 
+  font-weight:bold;
+
   text-transform:uppercase;
 
-  letter-spacing:.31em;
+  letter-spacing:.27em;
 }
 
 .hero h1{
-  max-width:1050px;
-
   margin:
-    0 auto 15px;
+    0 0 21px;
 
-  color:var(--cream);
+  color:#f6d38e;
 
   font-size:
     clamp(
-      47px,
-      6.3vw,
-      86px
+      57px,
+      6.8vw,
+      103px
     );
 
-  line-height:1.02;
+  line-height:.86;
 
   font-weight:400;
 
-  letter-spacing:-.035em;
-
-  text-shadow:
-    0 5px 15px
-      rgba(0,0,0,.45),
-
-    0 15px 38px
-      rgba(0,0,0,.35);
+  letter-spacing:-.055em;
 }
 
 .hero h1 span{
   display:block;
-
-  color:var(--fire-gold);
-
-  text-shadow:
-    0 0 26px
-    rgba(240,142,59,.12);
 }
 
 .hero-subtitle{
-  max-width:700px;
+  max-width:430px;
 
-  margin:auto;
+  margin:
+    0 0 29px;
 
-  color:var(--cream-muted);
+  color:#f0e5d2;
 
   font-size:
     clamp(
-      17px,
-      2vw,
-      21px
-    );
-}
-
-
-/* =========================================================
-   ILLUSTRATION STAGE
-========================================================= */
-
-.story-stage{
-  position:relative;
-
-  z-index:40;
-
-  width:min(
-    1420px,
-    112vw
-  );
-
-  height:
-    clamp(
-      570px,
-      51vw,
-      735px
+      18px,
+      1.7vw,
+      24px
     );
 
-  left:50%;
-
-  margin-top:-4px;
-
-  transform:
-    translateX(-50%);
-
-  pointer-events:none;
+  line-height:1.28;
 }
 
+.hero-button{
+  display:inline-flex;
+  align-items:center;
 
-/* =========================================================
-   GIANT FOREGROUND TREES
-========================================================= */
+  gap:14px;
 
-.tree{
-  position:absolute;
+  padding:
+    13px 24px;
 
-  z-index:4;
-
-  bottom:-10px;
-
-  width:290px;
-  height:660px;
-
-  pointer-events:none;
-}
-
-.tree-left{
-  left:-25px;
-}
-
-.tree-right{
-  right:-28px;
-
-  transform:
-    scaleX(-1);
-}
-
-.tree-trunk{
-  position:absolute;
-
-  left:40px;
-  bottom:0;
-
-  width:160px;
-  height:600px;
-
-  border-radius:
-    46% 38% 15% 18%;
-
-  transform:
-    rotate(-4deg);
-
-  background:
-    linear-gradient(
-      90deg,
-      #071713 0%,
-      #153128 22%,
-      #27483a 43%,
-      #102b23 67%,
-      #061512 100%
-    );
-
-  box-shadow:
-    inset 17px 0 20px
-      rgba(71,108,82,.13),
-
-    inset -19px 0 26px
-      rgba(0,0,0,.40);
-}
-
-.tree-trunk::before{
-  content:"";
-
-  position:absolute;
-
-  left:24px;
-  top:31px;
-
-  width:18px;
-  height:495px;
-
-  border-radius:50%;
-
-  border-left:
-    4px solid
-    rgba(82,119,90,.23);
-
-  transform:rotate(4deg);
-}
-
-.tree-trunk::after{
-  content:"";
-
-  position:absolute;
-
-  right:29px;
-  top:90px;
-
-  width:25px;
-  height:420px;
-
-  border-radius:50%;
-
-  border-right:
-    5px solid
-    rgba(0,0,0,.24);
-
-  transform:rotate(-5deg);
-}
-
-.tree-branch{
-  position:absolute;
-
-  z-index:2;
-
-  height:47px;
+  border:
+    1px solid
+    rgba(255,224,157,.82);
 
   border-radius:999px;
 
-  transform-origin:left center;
+  color:#241609;
 
   background:
-    linear-gradient(
-      #18382e,
-      #071813
-    );
-
-  box-shadow:
-    inset 0 8px 8px
-    rgba(59,94,72,.10);
-}
-
-.tree-branch.one{
-  width:270px;
-
-  left:114px;
-  top:74px;
-
-  transform:rotate(-23deg);
-}
-
-.tree-branch.two{
-  width:230px;
-
-  left:103px;
-  top:157px;
-
-  transform:rotate(14deg);
-}
-
-.tree-branch.three{
-  width:198px;
-
-  left:68px;
-  top:235px;
-
-  transform:rotate(-36deg);
-}
-
-.tree-canopy{
-  position:absolute;
-
-  z-index:3;
-
-  border-radius:50%;
-
-  background:
-    radial-gradient(
-      ellipse at 45% 45%,
-      #173f31,
-      #09231c 62%,
-      #04130f
-    );
-
-  box-shadow:
-    inset 10px 13px 25px
-      rgba(62,106,76,.13),
-
-    0 18px 35px
-      rgba(0,0,0,.24);
-}
-
-.tree-canopy.a{
-  width:250px;
-  height:150px;
-
-  left:-35px;
-  top:-10px;
-}
-
-.tree-canopy.b{
-  width:285px;
-  height:160px;
-
-  left:96px;
-  top:-40px;
-}
-
-.tree-canopy.c{
-  width:235px;
-  height:142px;
-
-  left:175px;
-  top:72px;
-}
-
-
-/* =========================================================
-   HANGING MOSS
-========================================================= */
-
-.moss{
-  position:absolute;
-
-  z-index:4;
-
-  width:4px;
-
-  border-radius:999px;
-
-  background:
-    linear-gradient(
-      #416b4c,
-      rgba(56,100,70,.05)
-    );
-
-  transform-origin:top;
-
-  opacity:.67;
-
-  animation:
-    mossSway
-    6s ease-in-out
-    infinite alternate;
-}
-
-@keyframes mossSway{
-
-  from{
-    transform:rotate(-3deg);
-  }
-
-  to{
-    transform:rotate(4deg);
-  }
-
-}
-
-.moss.m1{
-  left:117px;
-  top:102px;
-  height:75px;
-}
-
-.moss.m2{
-  left:155px;
-  top:79px;
-  height:105px;
-  animation-delay:-2s;
-}
-
-.moss.m3{
-  left:211px;
-  top:67px;
-  height:82px;
-  animation-delay:-3.5s;
-}
-
-.moss.m4{
-  left:270px;
-  top:97px;
-  height:67px;
-  animation-delay:-1s;
-}
-
-
-/* =========================================================
-   FOREST FLOOR
-========================================================= */
-
-.forest-floor{
-  position:absolute;
-
-  z-index:6;
-
-  left:-5%;
-  right:-5%;
-  bottom:-40px;
-
-  height:265px;
-
-  border-radius:
-    50% 50% 0 0;
-
-  background:
-    radial-gradient(
-      ellipse at 50% 20%,
-      rgba(241,123,50,.16),
-      transparent 24%
-    ),
-
-    radial-gradient(
-      ellipse at 25% 30%,
-      rgba(44,97,69,.40),
-      transparent 30%
-    ),
-
-    radial-gradient(
-      ellipse at 77% 33%,
-      rgba(43,93,68,.36),
-      transparent 31%
-    ),
-
     linear-gradient(
       180deg,
-      #163c2e,
-      #09251d 45%,
-      #04140f
+      #f3ce80,
+      #dda952
     );
 
   box-shadow:
-    inset 0 25px 60px
-    rgba(69,111,81,.08);
+    0 8px 25px
+    rgba(0,0,0,.33);
+
+  font-family:
+    Arial,
+    sans-serif;
+
+  font-size:11px;
+
+  font-weight:bold;
+
+  text-transform:uppercase;
+
+  letter-spacing:.08em;
+
+  text-shadow:none;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.hero-button:hover{
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 12px 31px
+    rgba(0,0,0,.4);
 }
 
 
 /* =========================================================
-   CAMPFIRE LIGHT
+   LIVE FIREFLIES
+
+   These are HTML elements over the illustration so the
+   finished hero isn't just a static picture.
 ========================================================= */
 
-.camp-light{
+.firefly-layer{
   position:absolute;
 
-  z-index:7;
+  z-index:10;
 
-  left:50%;
-  bottom:36px;
+  inset:0;
 
-  width:690px;
-  height:400px;
-
-  transform:
-    translateX(-50%);
-
-  border-radius:50%;
-
-  background:
-    radial-gradient(
-      ellipse,
-      rgba(255,190,83,.32) 0%,
-      rgba(236,113,47,.15) 30%,
-      rgba(212,74,34,.05) 53%,
-      transparent 72%
-    );
-
-  filter:blur(4px);
-
-  animation:
-    campGlow
-    2.2s ease-in-out
-    infinite alternate;
+  pointer-events:none;
 }
-
-@keyframes campGlow{
-
-  from{
-    opacity:.75;
-
-    transform:
-      translateX(-50%)
-      scale(.97);
-  }
-
-  to{
-    opacity:1;
-
-    transform:
-      translateX(-50%)
-      scale(1.04);
-  }
-
-}
-
-
-/* =========================================================
-   STORYBOOK SVG
-========================================================= */
-
-.camp-art{
-  position:absolute;
-
-  z-index:20;
-
-  left:50%;
-  bottom:0;
-
-  width:min(
-    1260px,
-    94vw
-  );
-
-  height:auto;
-
-  overflow:visible;
-
-  transform:
-    translateX(-50%);
-
-  filter:
-    drop-shadow(
-      0 28px 30px
-      rgba(0,0,0,.30)
-    );
-}
-
-.ink{
-  stroke:#1a241f;
-  stroke-width:3;
-
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-
-.ink-soft{
-  stroke:#26372f;
-  stroke-width:2;
-
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-
-.detail-line{
-  fill:none;
-
-  stroke:
-    rgba(236,219,183,.32);
-
-  stroke-width:1.5;
-
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-
-
-/* =========================================================
-   FIREFLIES
-========================================================= */
 
 .firefly{
   position:absolute;
-
-  z-index:35;
 
   width:4px;
   height:4px;
 
   border-radius:50%;
 
-  background:#ffe58b;
+  background:#ffe38a;
 
   box-shadow:
-    0 0 5px #ffe58b,
-    0 0 13px rgba(255,216,102,.75);
+    0 0 5px #ffe38a,
+    0 0 14px #f5bd55,
+    0 0 24px
+    rgba(242,174,68,.48);
 
   animation:
     fireflyFloat
-    6s ease-in-out
+    7s ease-in-out
     infinite;
 }
 
@@ -1317,196 +527,237 @@ img{
       scale(.7);
   }
 
-  27%{
+  25%{
     opacity:1;
 
     transform:
-      translate(14px,-13px)
-      scale(1.2);
+      translate(13px,-17px)
+      scale(1.15);
   }
 
-  58%{
+  53%{
     opacity:.45;
 
     transform:
-      translate(-9px,-25px)
+      translate(-9px,-29px)
       scale(.85);
   }
 
-  81%{
-    opacity:1;
+  78%{
+    opacity:.95;
 
     transform:
-      translate(-16px,-8px)
-      scale(1.12);
+      translate(-16px,-9px)
+      scale(1.1);
   }
 
 }
 
 
 /* =========================================================
-   EMBERS
+   FIRE GLOW
+
+   Adds a very subtle living glow over the illustrated fire.
 ========================================================= */
 
-.ember{
+.live-fire-glow{
   position:absolute;
 
-  z-index:36;
+  z-index:9;
 
-  width:3px;
-  height:3px;
+  left:50%;
+  bottom:22%;
+
+  width:310px;
+  height:250px;
+
+  transform:
+    translateX(-50%);
 
   border-radius:50%;
 
-  background:var(--fire-gold);
+  pointer-events:none;
 
-  box-shadow:
-    0 0 7px
-    var(--fire-orange);
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(255,201,94,.18),
+      rgba(240,112,45,.08) 38%,
+      transparent 69%
+    );
 
-  opacity:0;
+  mix-blend-mode:screen;
 
   animation:
-    emberRise
-    4s ease-out
-    infinite;
+    firePulse
+    1.8s ease-in-out
+    infinite alternate;
 }
 
-@keyframes emberRise{
+@keyframes firePulse{
 
-  0%{
-    opacity:0;
+  from{
+    opacity:.55;
 
     transform:
-      translateY(0)
-      translateX(0);
+      translateX(-50%)
+      scale(.94);
   }
 
-  18%{
+  to{
     opacity:1;
-  }
-
-  100%{
-    opacity:0;
 
     transform:
-      translateY(-170px)
-      translateX(28px);
+      translateX(-50%)
+      scale(1.08);
   }
 
 }
 
 
 /* =========================================================
-   QUICK PATHS
+   HERO BOTTOM GRADIENT
 ========================================================= */
 
-.quick-paths{
-  position:relative;
+.hero-bottom{
+  position:absolute;
 
-  z-index:70;
+  z-index:30;
 
-  padding:
-    0 0 80px;
+  left:0;
+  right:0;
+  bottom:0;
+
+  height:120px;
+
+  pointer-events:none;
 
   background:
     linear-gradient(
       180deg,
-      #061612,
-      #08221c
+      transparent,
+      #031114
     );
 }
 
-.path-grid{
+
+/* =========================================================
+   QUICK NAVIGATION
+========================================================= */
+
+.quick-nav{
+  position:relative;
+
+  z-index:40;
+
+  margin-top:-48px;
+
+  padding-bottom:80px;
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent 0 48px,
+      #031114 48px
+    );
+}
+
+.quick-panel{
   display:grid;
 
   grid-template-columns:
     repeat(5,1fr);
 
+  overflow:hidden;
+
   border:
     1px solid
-    rgba(226,190,123,.31);
+    rgba(221,181,106,.28);
+
+  border-radius:22px;
 
   background:
-    rgba(3,16,15,.91);
+    rgba(5,20,19,.94);
 
   box-shadow:
-    0 28px 58px
-    rgba(0,0,0,.32);
+    0 26px 70px
+    rgba(0,0,0,.42);
+
+  backdrop-filter:
+    blur(15px);
 }
 
-.path{
-  position:relative;
-
-  min-height:108px;
+.quick-link{
+  min-height:110px;
 
   padding:
-    21px 14px;
+    18px 13px;
 
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
 
-  gap:7px;
-
-  text-align:center;
+  gap:8px;
 
   border-right:
     1px solid
-    rgba(226,190,123,.17);
+    rgba(221,181,106,.14);
+
+  text-align:center;
 
   transition:
     background .2s ease,
-    color .2s ease,
-    transform .2s ease;
+    color .2s ease;
 }
 
-.path:last-child{
+.quick-link:last-child{
   border-right:0;
 }
 
-.path:hover{
+.quick-link:hover{
   color:var(--fire-light);
 
   background:
     radial-gradient(
-      circle at center,
-      rgba(239,135,56,.16),
-      rgba(19,55,48,.24)
+      circle,
+      rgba(223,146,61,.13),
+      transparent 72%
     );
 }
 
-.path-icon{
-  font-size:22px;
+.quick-icon{
+  font-size:23px;
 }
 
-.path-label{
+.quick-label{
   font-family:
     Arial,
     sans-serif;
 
+  font-size:9px;
+
+  font-weight:bold;
+
   text-transform:uppercase;
 
   letter-spacing:.12em;
-
-  font-size:9px;
 }
 
 
 /* =========================================================
-   GENERAL CONTENT
+   GENERAL SECTIONS
 ========================================================= */
 
-.content-section{
+.section{
   position:relative;
 
   padding:
-    100px 0;
+    95px 0;
 }
 
-.eyebrow{
-  margin-bottom:12px;
+.section-eyebrow{
+  margin-bottom:10px;
 
   color:var(--gold);
 
@@ -1514,320 +765,211 @@ img{
     Arial,
     sans-serif;
 
+  font-size:10px;
+
+  font-weight:bold;
+
   text-transform:uppercase;
 
   letter-spacing:.23em;
-
-  font-size:10px;
 }
 
-.section-header{
-  max-width:770px;
-
-  margin-bottom:44px;
-}
-
-.section-header.center{
-  margin-left:auto;
-  margin-right:auto;
-
-  text-align:center;
-}
-
-.section-header h2{
+.section-title{
   margin:
     0 0 15px;
 
   font-size:
     clamp(
-      36px,
+      39px,
       5vw,
-      60px
+      62px
     );
 
-  line-height:1.05;
+  line-height:1.02;
 
   font-weight:400;
 }
 
-.section-header p{
+.section-intro{
+  max-width:700px;
+
   margin:0;
 
-  color:var(--cream-muted);
+  color:var(--muted);
 
-  font-size:18px;
+  font-size:17px;
 }
 
 
 /* =========================================================
-   PARCHMENT
-========================================================= */
-
-.parchment-section{
-  color:var(--ink);
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(95,64,34,.11),
-      transparent 11%,
-      transparent 89%,
-      rgba(95,64,34,.11)
-    ),
-
-    repeating-linear-gradient(
-      0deg,
-      rgba(91,62,34,.025) 0,
-      rgba(91,62,34,.025) 1px,
-      transparent 1px,
-      transparent 5px
-    ),
-
-    radial-gradient(
-      circle at 30% 20%,
-      rgba(255,248,221,.28),
-      transparent 30%
-    ),
-
-    var(--paper);
-}
-
-.parchment-section::before,
-.parchment-section::after{
-  content:"";
-
-  position:absolute;
-
-  left:0;
-  right:0;
-
-  height:22px;
-
-  pointer-events:none;
-}
-
-.parchment-section::before{
-  top:-10px;
-
-  background:
-    linear-gradient(
-      135deg,
-      transparent 10px,
-      var(--paper) 0
-    )
-    0 0 / 20px 20px
-    repeat-x;
-}
-
-.parchment-section::after{
-  bottom:-10px;
-
-  transform:rotate(180deg);
-
-  background:
-    linear-gradient(
-      135deg,
-      transparent 10px,
-      var(--paper) 0
-    )
-    0 0 / 20px 20px
-    repeat-x;
-}
-
-.parchment-section .eyebrow{
-  color:#805a32;
-}
-
-.parchment-section
-.section-header p{
-  color:#675746;
-}
-  /* =========================================================
-   CLUBS SECTION
+   FEATURED CLUBS
 ========================================================= */
 
 .clubs-section{
   background:
     radial-gradient(
       ellipse at 50% 0%,
-      rgba(49,105,83,.18),
-      transparent 44%
+      rgba(44,98,77,.19),
+      transparent 45%
     ),
+
     linear-gradient(
       180deg,
-      #08221c,
-      #061713
+      #031114,
+      #061a17
     );
+}
+
+.clubs-heading{
+  margin-bottom:42px;
 }
 
 .club-grid{
   display:grid;
+
   grid-template-columns:
     repeat(4,1fr);
 
-  gap:18px;
+  gap:17px;
 }
 
 .club-card{
-  position:relative;
   overflow:hidden;
-
-  min-height:350px;
 
   border:
     1px solid
-    rgba(224,188,119,.20);
+    rgba(218,177,102,.22);
 
-  background:#0a211b;
+  border-radius:16px;
+
+  background:#071b18;
 
   box-shadow:
-    0 20px 45px
+    0 18px 40px
     rgba(0,0,0,.23);
 
   transition:
-    transform .25s ease,
-    border-color .25s ease,
-    box-shadow .25s ease;
+    transform .22s ease,
+    border-color .22s ease;
 }
 
 .club-card:hover{
   transform:
-    translateY(-6px);
+    translateY(-5px);
 
   border-color:
-    rgba(240,204,130,.52);
-
-  box-shadow:
-    0 27px 55px
-    rgba(0,0,0,.34);
+    rgba(237,197,120,.5);
 }
 
-.club-art{
+.club-image{
   position:relative;
 
-  height:165px;
+  height:155px;
 
   overflow:hidden;
 
   border-bottom:
     1px solid
-    rgba(224,188,119,.16);
+    rgba(218,177,102,.15);
 }
 
-.club-art::before,
-.club-art::after{
+.club-image::after{
   content:"";
 
   position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent 40%,
+      rgba(2,12,12,.58)
+    );
 }
-
-
-/* FANTASY CLUB */
 
 .club-fantasy{
   background:
     radial-gradient(
-      circle at 66% 30%,
-      rgba(255,217,122,.75) 0 2px,
+      circle at 75% 28%,
+      rgba(245,219,146,.74) 0 2px,
       transparent 3px
     ),
 
     linear-gradient(
-      135deg,
-      transparent 0 47%,
-      rgba(123,163,145,.18) 48% 50%,
-      transparent 51%
+      145deg,
+      transparent 0 37%,
+      #36595b 38% 53%,
+      transparent 54%
     ),
 
     linear-gradient(
       180deg,
-      #163b42,
-      #102d2c 55%,
-      #0a1c17
+      #203d51,
+      #183833 53%,
+      #0b1f19
     );
 }
 
 .club-fantasy::before{
-  width:95px;
-  height:110px;
+  content:"";
 
-  left:38px;
-  bottom:-18px;
+  position:absolute;
 
-  background:#14231f;
+  left:33%;
+  bottom:0;
+
+  width:85px;
+  height:105px;
+
+  background:#091b18;
 
   clip-path:
     polygon(
       0 100%,
-      8% 40%,
-      22% 40%,
-      22% 21%,
-      34% 21%,
-      34% 42%,
-      50% 42%,
+      9% 41%,
+      23% 41%,
+      23% 20%,
+      35% 20%,
+      35% 43%,
+      50% 43%,
       50% 0,
-      63% 0,
-      63% 41%,
-      79% 41%,
+      64% 0,
+      64% 42%,
+      79% 42%,
       79% 22%,
-      91% 22%,
-      91% 42%,
-      100% 42%,
+      92% 22%,
+      92% 43%,
+      100% 43%,
       100% 100%
     );
 }
-
-.club-fantasy::after{
-  width:105px;
-  height:60px;
-
-  right:20px;
-  top:27px;
-
-  border:
-    2px solid
-    rgba(160,201,211,.58);
-
-  border-left-color:
-    transparent;
-
-  border-bottom-color:
-    transparent;
-
-  border-radius:
-    55% 40% 50% 30%;
-
-  transform:
-    rotate(-14deg);
-
-  opacity:.75;
-}
-
-
-/* QUEER READS */
 
 .club-queer{
   background:
     radial-gradient(
       circle at 50% 45%,
-      rgba(231,170,196,.17),
-      transparent 32%
+      rgba(221,149,191,.28),
+      transparent 34%
     ),
 
     linear-gradient(
       180deg,
-      #42314e,
-      #28273e 57%,
-      #151d24
+      #4a3453,
+      #272a3d 58%,
+      #111d21
     );
 }
 
 .club-queer::before{
-  width:94px;
-  height:94px;
+  content:"";
+
+  position:absolute;
+
+  width:88px;
+  height:88px;
 
   left:50%;
-  top:37px;
+  top:30px;
 
   transform:
     translateX(-50%)
@@ -1839,181 +981,123 @@ img{
   background:
     linear-gradient(
       135deg,
-      #c56f7c 0 17%,
-      #d89867 17% 34%,
-      #d7bf70 34% 51%,
-      #6e9f83 51% 68%,
-      #6386a3 68% 84%,
-      #8d6d9e 84%
+      #c7707e 0 17%,
+      #db9866 17% 34%,
+      #d9bd6b 34% 51%,
+      #6b9b7e 51% 68%,
+      #6584a0 68% 84%,
+      #8d6c9e 84%
     );
 
-  opacity:.66;
+  opacity:.7;
 }
-
-.club-queer::after{
-  width:130px;
-  height:2px;
-
-  left:50%;
-  bottom:27px;
-
-  transform:
-    translateX(-50%);
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(242,215,174,.68),
-      transparent
-    );
-}
-
-
-/* SCI-FI */
 
 .club-scifi{
   background:
     radial-gradient(
-      circle at 71% 27%,
-      #d8e8f1 0 2px,
+      circle at 70% 24%,
+      #e1eff7 0 2px,
       transparent 3px
     ),
 
     radial-gradient(
-      circle at 29% 31%,
-      #d8e8f1 0 1px,
+      circle at 25% 31%,
+      #e1eff7 0 1px,
       transparent 2px
-    ),
-
-    radial-gradient(
-      circle at 53% 18%,
-      #d8e8f1 0 1.5px,
-      transparent 2.5px
     ),
 
     linear-gradient(
       180deg,
-      #122d42,
-      #102635 58%,
-      #0b1922
+      #172f49,
+      #112636 60%,
+      #08171e
     );
 }
 
 .club-scifi::before{
-  width:115px;
-  height:115px;
+  content:"";
 
-  right:32px;
+  position:absolute;
+
+  width:100px;
+  height:100px;
+
+  right:28px;
   top:25px;
 
   border:
     2px solid
-    rgba(148,204,215,.40);
+    rgba(167,215,225,.38);
 
   border-radius:50%;
-
-  box-shadow:
-    inset 0 0 25px
-    rgba(80,165,182,.15);
 
   background:
     radial-gradient(
-      circle at 38% 34%,
-      #659aa2 0 4%,
-      transparent 5%
+      circle at 40% 35%,
+      #608d9b 0 5%,
+      transparent 6%
     ),
 
     radial-gradient(
-      circle at 60% 60%,
-      #456f7a 0 7%,
-      transparent 8%
+      circle at 62% 61%,
+      #456b79 0 8%,
+      transparent 9%
     ),
 
-    #294c5a;
+    #274c5b;
+
+  box-shadow:
+    0 0 25px
+    rgba(77,146,170,.16);
 }
-
-.club-scifi::after{
-  width:145px;
-  height:38px;
-
-  right:17px;
-  top:64px;
-
-  border:
-    2px solid
-    rgba(184,218,224,.52);
-
-  border-radius:50%;
-
-  transform:
-    rotate(-18deg);
-}
-
-
-/* COZY */
 
 .club-cozy{
   background:
     radial-gradient(
-      ellipse at 50% 75%,
-      rgba(239,164,82,.22),
-      transparent 45%
+      ellipse at 50% 72%,
+      rgba(240,157,74,.28),
+      transparent 46%
     ),
 
     linear-gradient(
       180deg,
-      #4b342b,
-      #302821 57%,
-      #1a1d19
+      #4d372c,
+      #302720 58%,
+      #171b17
     );
 }
 
 .club-cozy::before{
-  width:72px;
-  height:58px;
+  content:"";
+
+  position:absolute;
+
+  width:70px;
+  height:55px;
 
   left:50%;
-  bottom:24px;
+  bottom:25px;
 
   transform:
     translateX(-50%);
 
   border-radius:
-    5px 5px 25px 25px;
+    5px 5px 23px 23px;
 
-  background:#9b7250;
+  background:#a27853;
 
   box-shadow:
-    0 0 30px
-    rgba(238,157,78,.16);
+    0 0 35px
+    rgba(240,164,79,.25);
 }
 
-.club-cozy::after{
-  width:38px;
-  height:46px;
-
-  left:calc(50% + 27px);
-  bottom:30px;
-
-  border:
-    7px solid
-    #9b7250;
-
-  border-left:0;
-
-  border-radius:
-    0 25px 25px 0;
+.club-body{
+  padding:
+    20px 20px 23px;
 }
 
-.club-content{
-  padding:23px 22px 25px;
-}
-
-.club-content small{
-  display:block;
-
-  margin-bottom:8px;
+.club-meta{
+  margin-bottom:7px;
 
   color:var(--gold);
 
@@ -2021,105 +1105,155 @@ img{
     Arial,
     sans-serif;
 
-  font-size:9px;
+  font-size:8px;
 
   text-transform:uppercase;
 
-  letter-spacing:.13em;
+  letter-spacing:.12em;
 }
 
-.club-content h3{
+.club-body h3{
   margin:
-    0 0 8px;
+    0 0 7px;
 
-  font-size:24px;
+  font-size:22px;
 
   font-weight:400;
 }
 
-.club-content p{
+.club-body p{
   margin:0;
 
-  color:var(--cream-muted);
+  color:var(--muted);
 
-  font-size:14px;
+  font-size:13px;
 
-  line-height:1.6;
+  line-height:1.55;
 }
-
-
-/* =========================================================
-   STORY CARDS
+  /* =========================================================
+   STORY / PARCHMENT SECTION
 ========================================================= */
 
+.story-section{
+  color:var(--ink);
+
+  background:
+    linear-gradient(
+      rgba(230,205,160,.96),
+      rgba(215,184,130,.97)
+    );
+
+  box-shadow:
+    inset 0 20px 60px
+    rgba(69,40,18,.12),
+    inset 0 -20px 60px
+    rgba(69,40,18,.12);
+}
+
+.story-section::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  pointer-events:none;
+
+  opacity:.17;
+
+  background-image:
+    radial-gradient(
+      circle at 20% 30%,
+      #6b492d 0 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 80% 65%,
+      #6b492d 0 1px,
+      transparent 1.5px
+    );
+
+  background-size:
+    37px 41px,
+    51px 47px;
+}
+
+.story-section .section-eyebrow{
+  color:#80552e;
+}
+
+.story-section .section-intro{
+  color:#5b4734;
+}
+
+.story-heading{
+  position:relative;
+  z-index:2;
+
+  text-align:center;
+
+  margin-bottom:48px;
+}
+
+.story-heading .section-intro{
+  margin:
+    0 auto;
+}
+
 .story-grid{
+  position:relative;
+  z-index:2;
+
   display:grid;
 
   grid-template-columns:
     repeat(3,1fr);
 
-  gap:25px;
+  gap:22px;
 }
 
 .story-card{
   position:relative;
 
-  min-height:330px;
+  min-height:300px;
 
   padding:
-    34px 31px;
+    34px 30px;
 
   border:
     1px solid
-    rgba(90,63,35,.28);
+    rgba(81,54,31,.32);
+
+  border-radius:8px;
 
   background:
-    rgba(255,246,218,.27);
+    rgba(245,225,186,.35);
 
   box-shadow:
-    0 17px 30px
-    rgba(82,58,35,.08);
-}
-
-.story-card::before{
-  content:"";
-
-  position:absolute;
-
-  inset:9px;
-
-  border:
-    1px solid
-    rgba(103,74,41,.14);
-
-  pointer-events:none;
+    0 12px 30px
+    rgba(79,48,23,.08);
 }
 
 .story-number{
   position:absolute;
 
-  top:15px;
-  right:22px;
+  top:18px;
+  right:21px;
 
   color:
-    rgba(104,73,42,.25);
+    rgba(75,48,27,.25);
 
-  font-size:48px;
-
-  font-style:italic;
+  font-size:34px;
 }
 
 .story-icon{
-  margin-bottom:20px;
+  margin-bottom:18px;
 
-  font-size:29px;
+  font-size:30px;
 }
 
 .story-card h3{
-  position:relative;
-
   margin:
-    0 0 14px;
+    0 0 12px;
 
   font-size:27px;
 
@@ -2127,21 +1261,18 @@ img{
 }
 
 .story-card p{
-  position:relative;
+  margin:
+    0 0 21px;
 
-  color:#5d4e40;
+  color:#5d4835;
 
-  font-size:15px;
+  font-size:14px;
+
+  line-height:1.65;
 }
 
 .story-link{
-  position:relative;
-
-  display:inline-block;
-
-  margin-top:11px;
-
-  color:#70491f;
+  color:#714827;
 
   font-family:
     Arial,
@@ -2153,65 +1284,41 @@ img{
 
   text-transform:uppercase;
 
-  letter-spacing:.12em;
+  letter-spacing:.09em;
 }
 
 
 /* =========================================================
-   BOOK SEARCH SECTION
+   BOOK DISCOVERY
 ========================================================= */
 
 .book-section{
-  overflow:hidden;
-
   background:
     radial-gradient(
-      ellipse at 17% 50%,
-      rgba(230,145,66,.11),
-      transparent 28%
+      ellipse at 24% 50%,
+      rgba(177,112,49,.13),
+      transparent 35%
     ),
 
     linear-gradient(
       180deg,
-      #071b18,
-      #061512
+      #061a17,
+      #041310
     );
-}
-
-.book-section::before{
-  content:"";
-
-  position:absolute;
-
-  width:620px;
-  height:620px;
-
-  left:-250px;
-  top:50%;
-
-  transform:
-    translateY(-50%);
-
-  border-radius:50%;
-
-  border:
-    1px solid
-    rgba(212,178,111,.08);
 }
 
 .book-shell{
   display:grid;
 
   grid-template-columns:
-    minmax(300px,.8fr)
-    minmax(0,1.2fr);
+    .85fr 1.15fr;
+
+  gap:80px;
 
   align-items:center;
-
-  gap:70px;
 }
 
-.book-stack{
+.book-art{
   position:relative;
 
   min-height:430px;
@@ -2223,167 +1330,170 @@ img{
 .book-glow{
   position:absolute;
 
-  width:320px;
-  height:320px;
+  width:330px;
+  height:330px;
 
   border-radius:50%;
 
   background:
     radial-gradient(
       circle,
-      rgba(239,160,72,.21),
-      transparent 67%
+      rgba(238,173,76,.24),
+      rgba(238,173,76,.07) 38%,
+      transparent 70%
     );
-
-  filter:blur(10px);
 }
 
 .book-cover{
   position:relative;
 
-  z-index:3;
+  z-index:2;
 
-  width:230px;
-  height:335px;
+  width:235px;
+  aspect-ratio:.67;
 
   overflow:hidden;
 
   border:
-    7px solid
-    #7b5736;
+    6px solid
+    #6b4a2d;
 
-  border-left-width:13px;
+  border-radius:
+    5px 12px 12px 5px;
 
   background:
     linear-gradient(
-      135deg,
-      #4d3127,
-      #2e2821
+      145deg,
+      #765032,
+      #33271e
     );
 
   box-shadow:
-    -17px 17px 0
-      #34261c,
-
-    -25px 27px 38px
-      rgba(0,0,0,.39);
+    -15px 17px 0 #2d2118,
+    0 28px 65px
+    rgba(0,0,0,.55);
 }
 
-.book-cover::before{
+.book-cover::after{
   content:"";
 
   position:absolute;
 
-  z-index:10;
+  top:0;
+  bottom:0;
+  left:15px;
 
-  inset:7px;
+  width:2px;
 
-  border:
-    1px solid
-    rgba(226,187,112,.37);
+  background:
+    rgba(255,228,174,.18);
 
   pointer-events:none;
 }
 
 .book-cover img{
+  position:absolute;
+
+  inset:0;
+
   width:100%;
   height:100%;
 
-  display:none;
-
   object-fit:cover;
+
+  display:none;
 }
 
 .book-placeholder{
-  width:100%;
-  height:100%;
+  position:absolute;
+
+  inset:0;
 
   display:grid;
   place-items:center;
 
-  padding:30px;
+  padding:24px;
 
-  color:#d7b779;
+  color:#e7c889;
 
   text-align:center;
 
-  font-size:18px;
+  font-size:22px;
 
-  line-height:1.8;
+  line-height:1.45;
+
+  background:
+    radial-gradient(
+      circle at 50% 38%,
+      rgba(223,178,96,.15),
+      transparent 36%
+    );
 }
 
-.book-copy h2{
-  margin:
-    0 0 17px;
-
-  font-size:
-    clamp(
-      39px,
-      5vw,
-      61px
-    );
-
-  line-height:1.03;
-
-  font-weight:400;
+.book-copy .section-title{
+  max-width:570px;
 }
 
 .book-copy > p{
-  max-width:620px;
+  max-width:600px;
 
-  color:var(--cream-muted);
+  color:var(--muted);
 
-  font-size:17px;
+  font-size:16px;
 }
 
 .book-search{
-  max-width:680px;
+  max-width:650px;
 
   display:flex;
 
-  margin:
-    29px 0 28px;
+  margin-top:28px;
+
+  overflow:hidden;
 
   border:
     1px solid
-    rgba(225,188,117,.38);
+    rgba(229,189,112,.32);
+
+  border-radius:999px;
 
   background:
-    rgba(2,12,12,.55);
+    rgba(1,11,11,.52);
 }
 
 .book-search input{
   min-width:0;
-
   flex:1;
 
   padding:
-    15px 17px;
+    15px 21px;
 
   border:0;
   outline:0;
 
-  color:var(--cream);
+  color:#f2e5ce;
 
   background:transparent;
 }
 
 .book-search input::placeholder{
-  color:#7f8f84;
+  color:#887f70;
 }
 
 .book-search button{
   padding:
-    0 23px;
+    13px 24px;
 
   border:0;
-  border-left:
-    1px solid
-    rgba(225,188,117,.28);
 
-  color:#17120c;
+  color:#211508;
 
-  background:var(--gold-light);
+  background:
+    linear-gradient(
+      180deg,
+      #f0ca7c,
+      #dba44f
+    );
 
   font-family:
     Arial,
@@ -2395,29 +1505,34 @@ img{
 
   text-transform:uppercase;
 
-  letter-spacing:.12em;
+  letter-spacing:.08em;
 }
 
 .book-result{
-  max-width:660px;
+  max-width:650px;
 
-  padding-top:4px;
+  margin-top:28px;
+
+  padding:
+    22px 0 0;
+
+  border-top:
+    1px solid
+    rgba(229,189,112,.15);
 }
 
 .book-result h3{
   margin:
-    0 0 3px;
+    0 0 5px;
 
-  color:var(--fire-light);
+  color:#efd39a;
 
-  font-size:25px;
+  font-size:27px;
 
   font-weight:400;
 }
 
 .book-result .author{
-  margin-bottom:11px;
-
   color:var(--gold);
 
   font-family:
@@ -2428,21 +1543,18 @@ img{
 
   text-transform:uppercase;
 
-  letter-spacing:.12em;
+  letter-spacing:.1em;
 }
 
 .book-result .description{
-  max-height:135px;
+  margin:
+    13px 0 0;
 
-  overflow:auto;
+  color:var(--muted);
 
-  margin:0;
+  font-size:13px;
 
-  padding-right:8px;
-
-  color:var(--cream-muted);
-
-  font-size:14px;
+  line-height:1.65;
 }
 
 
@@ -2453,42 +1565,70 @@ img{
 .quote-section{
   position:relative;
 
+  overflow:hidden;
+
   padding:
-    115px 0;
+    120px 0;
 
   text-align:center;
 
   background:
-    radial-gradient(
-      ellipse at center,
-      rgba(75,121,94,.20),
-      transparent 53%
-    ),
+    linear-gradient(
+      180deg,
+      #041310,
+      #071b1a
+    );
+}
 
-    #09221c;
+.quote-section::before{
+  content:"";
+
+  position:absolute;
+
+  width:680px;
+  height:330px;
+
+  left:50%;
+  bottom:-210px;
+
+  transform:
+    translateX(-50%);
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(232,135,57,.17),
+      transparent 67%
+    );
 }
 
 .quote{
-  max-width:920px;
+  position:relative;
+
+  z-index:2;
+
+  max-width:880px;
 
   margin:auto;
 
   font-size:
     clamp(
-      34px,
-      5.4vw,
-      66px
+      32px,
+      5vw,
+      61px
     );
 
-  line-height:1.14;
+  line-height:1.16;
 
   font-style:italic;
 
-  color:#e6d9bb;
+  color:#e8d9bd;
 }
 
 .quote span{
-  color:var(--fire-gold);
+  color:#e6b45e;
 }
 
 
@@ -2499,34 +1639,22 @@ img{
 .dawn{
   position:relative;
 
-  min-height:520px;
+  min-height:580px;
 
-  display:flex;
-  align-items:center;
+  display:grid;
+  place-items:center;
 
   overflow:hidden;
 
   text-align:center;
 
   background:
-    radial-gradient(
-      ellipse at 50% 100%,
-      rgba(255,202,117,.70),
-      transparent 26%
-    ),
-
-    radial-gradient(
-      ellipse at 50% 92%,
-      rgba(218,130,86,.52),
-      transparent 44%
-    ),
-
     linear-gradient(
       180deg,
-      #172f37 0%,
-      #465d63 35%,
-      #a47869 72%,
-      #dca674 100%
+      #071b1a 0%,
+      #153c3c 28%,
+      #9b7963 67%,
+      #e4ad74 100%
     );
 }
 
@@ -2535,93 +1663,125 @@ img{
 
   position:absolute;
 
-  left:-5%;
-  right:-5%;
-  bottom:-30px;
+  width:520px;
+  height:260px;
 
-  height:180px;
+  left:50%;
+  bottom:-120px;
 
-  background:#173126;
+  transform:
+    translateX(-50%);
 
-  clip-path:
-    polygon(
-      0 63%,
-      9% 45%,
-      18% 57%,
-      28% 31%,
-      38% 56%,
-      50% 25%,
-      61% 53%,
-      72% 36%,
-      82% 58%,
-      91% 39%,
-      100% 59%,
-      100% 100%,
-      0 100%
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      ellipse,
+      #ffe3a0,
+      rgba(245,170,92,.55) 35%,
+      transparent 70%
+    );
+
+  filter:
+    blur(4px);
+}
+
+.dawn::after{
+  content:"";
+
+  position:absolute;
+
+  left:0;
+  right:0;
+  bottom:0;
+
+  height:170px;
+
+  opacity:.65;
+
+  background:
+    linear-gradient(
+      160deg,
+      transparent 0 22%,
+      #17261e 23% 32%,
+      transparent 33%
+    ),
+    linear-gradient(
+      200deg,
+      transparent 0 29%,
+      #11231d 30% 39%,
+      transparent 40%
     );
 }
 
 .dawn-copy{
   position:relative;
 
-  z-index:4;
+  z-index:3;
 
-  max-width:720px;
-
-  margin:auto;
-
-  text-shadow:
-    0 3px 15px
-    rgba(0,0,0,.24);
-}
-
-.dawn-copy .eyebrow{
-  color:#f7d99a;
+  max-width:700px;
 }
 
 .dawn-copy h2{
   margin:
     0 0 15px;
 
+  color:#fff0ce;
+
   font-size:
     clamp(
-      43px,
+      45px,
       6vw,
-      70px
+      74px
     );
 
   line-height:1;
-
   font-weight:400;
+
+  text-shadow:
+    0 3px 15px
+    rgba(0,0,0,.35);
 }
 
 .dawn-copy p{
-  max-width:600px;
+  max-width:580px;
 
   margin:
     0 auto 27px;
 
-  font-size:18px;
+  color:#f3e0c4;
 
-  color:#f1e5d1;
+  font-size:17px;
+
+  text-shadow:
+    0 2px 8px
+    rgba(0,0,0,.35);
 }
 
 .dawn-button{
-  display:inline-block;
+  display:inline-flex;
 
   padding:
-    13px 22px;
+    13px 23px;
 
   border:
     1px solid
-    rgba(255,238,199,.74);
+    rgba(255,231,182,.78);
 
   border-radius:999px;
 
-  color:#fff4d9;
+  color:#26190c;
 
   background:
-    rgba(35,43,38,.25);
+    linear-gradient(
+      180deg,
+      #f7d68d,
+      #e6b460
+    );
+
+  box-shadow:
+    0 10px 30px
+    rgba(0,0,0,.23);
 
   font-family:
     Arial,
@@ -2633,9 +1793,7 @@ img{
 
   text-transform:uppercase;
 
-  letter-spacing:.13em;
-
-  backdrop-filter:blur(8px);
+  letter-spacing:.08em;
 }
 
 
@@ -2645,17 +1803,18 @@ img{
 
 footer{
   padding:
-    37px 0;
+    42px 0;
 
   border-top:
     1px solid
-    rgba(220,186,117,.17);
+    rgba(218,177,102,.14);
 
-  background:#020b0a;
+  background:#020c0d;
 }
 
 .footer-grid{
   display:flex;
+
   align-items:center;
   justify-content:space-between;
 
@@ -2665,30 +1824,28 @@ footer{
 .footer-brand{
   color:var(--gold-light);
 
-  font-size:19px;
-
-  font-weight:bold;
-
-  letter-spacing:.05em;
+  font-size:21px;
 }
 
 .footer-tag{
   margin-top:5px;
 
-  color:#718179;
+  color:#81796d;
 
-  font-size:12px;
+  font-size:11px;
 }
 
 .footer-links{
   display:flex;
+
   flex-wrap:wrap;
 
   justify-content:flex-end;
 
-  gap:18px;
+  gap:
+    13px 22px;
 
-  color:#9d9e8d;
+  color:#a99f8d;
 
   font-family:
     Arial,
@@ -2698,78 +1855,11 @@ footer{
 
   text-transform:uppercase;
 
-  letter-spacing:.1em;
+  letter-spacing:.09em;
 }
 
-
-/* =========================================================
-   SVG ANIMATION
-========================================================= */
-
-.magic-story{
-  transform-origin:center;
-
-  animation:
-    magicFloat
-    6s ease-in-out
-    infinite alternate;
-}
-
-@keyframes magicFloat{
-
-  from{
-    transform:
-      translateY(2px);
-  }
-
-  to{
-    transform:
-      translateY(-8px);
-  }
-
-}
-
-.water-line{
-  animation:
-    waterShift
-    4s ease-in-out
-    infinite alternate;
-}
-
-@keyframes waterShift{
-
-  from{
-    transform:
-      translateX(-4px);
-  }
-
-  to{
-    transform:
-      translateX(5px);
-  }
-
-}
-
-.owl-blink{
-  transform-origin:center;
-
-  animation:
-    owlBlink
-    5.5s infinite;
-}
-
-@keyframes owlBlink{
-
-  0%,
-  92%,
-  100%{
-    transform:scaleY(1);
-  }
-
-  95%{
-    transform:scaleY(.12);
-  }
-
+.footer-links a:hover{
+  color:var(--gold-light);
 }
 
 
@@ -2777,95 +1867,236 @@ footer{
    RESPONSIVE
 ========================================================= */
 
-@media(max-width:1050px){
+@media(max-width:1000px){
+
+  .navlinks{
+    gap:16px;
+  }
+
+  .hero{
+    min-height:820px;
+  }
+
+  .hero-content{
+    min-height:820px;
+
+    padding-top:145px;
+  }
+
+  .hero-copy{
+    width:47%;
+  }
+
+  .hero h1{
+    font-size:
+      clamp(
+        50px,
+        7vw,
+        76px
+      );
+  }
+
+  .hero-art{
+    background-position:
+      55% top;
+  }
 
   .club-grid{
     grid-template-columns:
       repeat(2,1fr);
   }
 
-  .path-grid{
-    grid-template-columns:
-      repeat(3,1fr);
+  .story-grid{
+    grid-template-columns:1fr;
   }
 
-  .path:nth-child(3){
-    border-right:0;
-  }
-
-  .path:nth-child(n+4){
-    border-top:
-      1px solid
-      rgba(226,190,123,.17);
+  .story-card{
+    min-height:0;
   }
 
   .book-shell{
-    gap:30px;
-  }
-
-  .story-stage{
-    width:1280px;
+    gap:45px;
   }
 
 }
 
 
-@media(max-width:820px){
+@media(max-width:760px){
+
+  .wrap{
+    width:min(
+      calc(100% - 28px),
+      var(--max)
+    );
+  }
+
+  .site-header{
+    position:absolute;
+  }
+
+  .nav{
+    min-height:68px;
+  }
+
+  .brand{
+    font-size:16px;
+  }
+
+  .brand-mark{
+    width:32px;
+    height:32px;
+  }
 
   .navlinks a:not(
-    .nav-join
+    #navLogin
+  ):not(
+    #navJoin
   ){
     display:none;
   }
 
+  .navlinks{
+    gap:10px;
+  }
+
+  .nav-join{
+    padding:
+      8px 13px;
+  }
+
+
+  /* Mobile hero keeps the art visible instead of
+     cropping almost everything out. */
+
   .hero{
-    padding-top:90px;
+    min-height:850px;
+
+    background:#041416;
   }
 
-  .moon{
-    width:100px;
-    height:100px;
+  .hero-art{
+    background-size:auto 850px;
 
-    right:4%;
+    background-position:
+      57% top;
+
+    transform:none;
   }
 
-  .story-stage{
-    width:1200px;
-    height:590px;
-
-    margin-top:20px;
-
-    transform:
-      translateX(-50%)
-      scale(.86);
-
-    transform-origin:
-      center top;
+  .hero-art::before{
+    background:
+      linear-gradient(
+        180deg,
+        rgba(1,9,11,.7) 0%,
+        rgba(1,9,11,.35) 24%,
+        rgba(1,9,11,.03) 47%,
+        rgba(1,9,11,.05) 76%,
+        #031114 100%
+      );
   }
 
-  .story-grid{
+  .hero-content{
+    min-height:850px;
+
+    padding-top:105px;
+
+    align-items:flex-start;
+  }
+
+  .hero-copy{
+    width:100%;
+    max-width:520px;
+
+    text-align:center;
+
+    margin:auto;
+  }
+
+  .hero h1{
+    font-size:
+      clamp(
+        48px,
+        15vw,
+        72px
+      );
+
+    line-height:.9;
+  }
+
+  .hero-subtitle{
+    margin:
+      0 auto 22px;
+
+    font-size:17px;
+  }
+
+  .live-fire-glow{
+    bottom:18%;
+
+    width:220px;
+    height:190px;
+  }
+
+  .quick-nav{
+    margin-top:-25px;
+
+    padding-bottom:60px;
+
+    background:
+      linear-gradient(
+        180deg,
+        transparent 0 25px,
+        #031114 25px
+      );
+  }
+
+  .quick-panel{
+    grid-template-columns:
+      repeat(2,1fr);
+
+    border-radius:16px;
+  }
+
+  .quick-link{
+    min-height:95px;
+
+    border-bottom:
+      1px solid
+      rgba(221,181,106,.14);
+  }
+
+  .quick-link:nth-child(even){
+    border-right:0;
+  }
+
+  .quick-link:last-child{
+    grid-column:
+      1 / -1;
+
+    border-bottom:0;
+  }
+
+  .section{
+    padding:
+      70px 0;
+  }
+
+  .club-grid{
     grid-template-columns:1fr;
   }
 
   .book-shell{
     grid-template-columns:1fr;
 
-    text-align:center;
+    gap:20px;
   }
 
-  .book-stack{
-    min-height:380px;
+  .book-art{
+    min-height:370px;
   }
 
-  .book-copy > p,
-  .book-result{
-    margin-left:auto;
-    margin-right:auto;
-  }
-
-  .book-search{
-    margin-left:auto;
-    margin-right:auto;
+  .book-cover{
+    width:190px;
   }
 
   .footer-grid{
@@ -2881,136 +2112,73 @@ footer{
 }
 
 
-@media(max-width:620px){
-
-  .wrap{
-    width:min(
-      calc(100% - 26px),
-      var(--max)
-    );
-  }
+@media(max-width:430px){
 
   .hero{
-    min-height:800px;
+    min-height:790px;
+  }
 
-    padding-top:70px;
+  .hero-content{
+    min-height:790px;
+  }
+
+  .hero-art{
+    background-size:auto 790px;
+
+    background-position:
+      59% top;
+  }
+
+  .hero-kicker{
+    font-size:8px;
   }
 
   .hero h1{
-    font-size:
-      clamp(
-        42px,
-        13vw,
-        65px
-      );
+    font-size:46px;
   }
 
   .hero-subtitle{
-    font-size:16px;
-  }
+    max-width:330px;
 
-  .story-stage{
-    width:1200px;
-    height:560px;
-
-    margin-top:28px;
-
-    transform:
-      translateX(-50%)
-      scale(.67);
-
-    transform-origin:
-      center top;
-  }
-
-  .path-grid{
-    grid-template-columns:
-      repeat(2,1fr);
-  }
-
-  .path{
-    border-top:
-      1px solid
-      rgba(226,190,123,.17);
-  }
-
-  .path:nth-child(odd){
-    border-right:
-      1px solid
-      rgba(226,190,123,.17);
-  }
-
-  .path:nth-child(even){
-    border-right:0;
-  }
-
-  .path:first-child,
-  .path:nth-child(2){
-    border-top:0;
-  }
-
-  .club-grid{
-    grid-template-columns:1fr;
-  }
-
-  .content-section{
-    padding:
-      75px 0;
-  }
-
-  .section-header p{
-    font-size:16px;
+    font-size:15px;
   }
 
   .book-search{
+    border-radius:14px;
+
     flex-direction:column;
   }
 
   .book-search button{
-    min-height:48px;
-
-    border-left:0;
-
-    border-top:
-      1px solid
-      rgba(225,188,117,.28);
+    padding:13px;
   }
 
 }
 
 
 /* =========================================================
-   REDUCED MOTION
+   ACCESSIBILITY
 ========================================================= */
 
 @media(
   prefers-reduced-motion:reduce
 ){
 
+  html{
+    scroll-behavior:auto;
+  }
+
   *,
   *::before,
   *::after{
-    scroll-behavior:auto !important;
-
-    animation-duration:
-      .001ms !important;
-
-    animation-iteration-count:
-      1 !important;
-
-    transition-duration:
-      .001ms !important;
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
   }
 
 }
 
-
-/* =========================================================
-   END CSS
-========================================================= */
-
 </style>
-
 </head>
 
 
@@ -3018,10 +2186,10 @@ footer{
 
 
 <!-- ======================================================
-     NAVIGATION
+     HEADER
 ======================================================= -->
 
-<header class="topbar">
+<header class="site-header">
 
   <div class="wrap nav">
 
@@ -3039,7 +2207,7 @@ footer{
       </span>
 
       <span>
-        Paper Gremlin
+        PAPER GREMLIN
       </span>
 
     </a>
@@ -3092,3496 +2260,181 @@ footer{
 
 
 <!-- ======================================================
-     HERO
+     ILLUSTRATED HERO
 ======================================================= -->
 
 <section class="hero">
 
-  <div
-    class="night-sky"
-    aria-hidden="true"
-  ></div>
+  <!--
+    This is the detailed artwork you uploaded to:
+
+    assets/home/paper-gremlin-campfire.png
+  -->
 
   <div
-    class="moon"
-    aria-hidden="true"
+    class="hero-art"
+    id="heroArt"
+    role="img"
+    aria-label="A diverse group of readers and fantasy adventurers gathered around a glowing campfire beneath a moonlit enchanted forest."
   ></div>
 
-  <div
-    class="mountains"
-    aria-hidden="true"
-  ></div>
+
+  <!-- Living glow over the illustrated campfire -->
 
   <div
-    class="distant-lake"
-    aria-hidden="true"
-  ></div>
-
-  <div
-    class="mist mist-one"
-    aria-hidden="true"
-  ></div>
-
-  <div
-    class="mist mist-two"
+    class="live-fire-glow"
     aria-hidden="true"
   ></div>
 
 
-  <!-- HERO WORDS -->
-
-  <div class="wrap hero-copy">
-
-    <div class="hero-kicker">
-      Stories bring us home
-    </div>
-
-    <h1>
-      Different Readers.
-      <span>
-        Same Campfire.
-      </span>
-    </h1>
-
-    <p class="hero-subtitle">
-      A home for every kind of story and every kind of reader.
-    </p>
-
-  </div>
-
-
-  <!-- ====================================================
-       ILLUSTRATED STORY STAGE
-  ===================================================== -->
+  <!-- Animated fireflies -->
 
   <div
-    class="story-stage"
-    id="storyStage"
+    class="firefly-layer"
+    aria-hidden="true"
   >
 
-
-    <!-- LEFT TREE -->
-
-    <div
-      class="tree tree-left"
-      aria-hidden="true"
-    >
-
-      <div class="tree-trunk"></div>
-
-      <div class="tree-branch one"></div>
-      <div class="tree-branch two"></div>
-      <div class="tree-branch three"></div>
-
-      <div class="tree-canopy a"></div>
-      <div class="tree-canopy b"></div>
-      <div class="tree-canopy c"></div>
-
-      <span class="moss m1"></span>
-      <span class="moss m2"></span>
-      <span class="moss m3"></span>
-      <span class="moss m4"></span>
-
-    </div>
-
-
-    <!-- RIGHT TREE -->
-
-    <div
-      class="tree tree-right"
-      aria-hidden="true"
-    >
-
-      <div class="tree-trunk"></div>
-
-      <div class="tree-branch one"></div>
-      <div class="tree-branch two"></div>
-      <div class="tree-branch three"></div>
-
-      <div class="tree-canopy a"></div>
-      <div class="tree-canopy b"></div>
-      <div class="tree-canopy c"></div>
-
-      <span class="moss m1"></span>
-      <span class="moss m2"></span>
-      <span class="moss m3"></span>
-      <span class="moss m4"></span>
-
-    </div>
-
-
-    <div
-      class="forest-floor"
-      aria-hidden="true"
-    ></div>
-
-    <div
-      class="camp-light"
-      aria-hidden="true"
-    ></div>
-
-
-    <!-- ==================================================
-         FIREFLIES
-    =================================================== -->
-
     <span
       class="firefly"
-      style="left:18%;top:38%;"
+      style="
+        left:19%;
+        top:36%;
+        animation-delay:-1s;
+      "
     ></span>
 
     <span
       class="firefly"
-      style="left:24%;top:53%;animation-delay:-2s;"
+      style="
+        left:27%;
+        top:49%;
+        animation-delay:-4s;
+      "
     ></span>
 
     <span
       class="firefly"
-      style="left:31%;top:29%;animation-delay:-4s;"
+      style="
+        left:35%;
+        top:29%;
+        animation-delay:-2.4s;
+      "
     ></span>
 
     <span
       class="firefly"
-      style="left:42%;top:41%;animation-delay:-1s;"
+      style="
+        left:43%;
+        top:46%;
+        animation-delay:-5.2s;
+      "
     ></span>
 
     <span
       class="firefly"
-      style="left:53%;top:27%;animation-delay:-3s;"
+      style="
+        left:51%;
+        top:33%;
+        animation-delay:-3.1s;
+      "
     ></span>
 
     <span
       class="firefly"
-      style="left:67%;top:37%;animation-delay:-1.5s;"
+      style="
+        left:61%;
+        top:42%;
+        animation-delay:-6.2s;
+      "
     ></span>
 
     <span
       class="firefly"
-      style="left:76%;top:29%;animation-delay:-4.5s;"
+      style="
+        left:69%;
+        top:31%;
+        animation-delay:-1.8s;
+      "
     ></span>
 
     <span
       class="firefly"
-      style="left:84%;top:48%;animation-delay:-2.5s;"
+      style="
+        left:78%;
+        top:48%;
+        animation-delay:-4.6s;
+      "
     ></span>
 
     <span
       class="firefly"
-      style="left:89%;top:33%;animation-delay:-.7s;"
+      style="
+        left:84%;
+        top:34%;
+        animation-delay:-2.8s;
+      "
     ></span>
-
-
-    <!-- EMBERS -->
-
-    <span
-      class="ember"
-      style="left:48%;bottom:23%;"
-    ></span>
-
-    <span
-      class="ember"
-      style="left:50%;bottom:22%;animation-delay:-1s;"
-    ></span>
-
-    <span
-      class="ember"
-      style="left:52%;bottom:24%;animation-delay:-2s;"
-    ></span>
-
-    <span
-      class="ember"
-      style="left:49%;bottom:24%;animation-delay:-2.7s;"
-    ></span>
-
-
-    <!-- ==================================================
-         MAIN SVG ILLUSTRATION
-    =================================================== -->
-
-    <svg
-      class="camp-art"
-      viewBox="0 0 1260 620"
-      role="img"
-      aria-label="A rogue, astronaut, wizard, princess and mermaid sharing stories around a glowing campfire in an enchanted forest."
-      xmlns="http://www.w3.org/2000/svg"
-    >
-
-
-      <!-- =================================================
-           SVG DEFINITIONS
-      ================================================== -->
-
-      <defs>
-
-
-        <!-- SKIN -->
-
-        <linearGradient
-          id="skinLight"
-          x1="0"
-          y1="0"
-          x2="1"
-          y2="1"
-        >
-
-          <stop
-            offset="0%"
-            stop-color="#e0b28f"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#b9795d"
-          />
-
-        </linearGradient>
-
-
-        <linearGradient
-          id="skinWarm"
-          x1="0"
-          y1="0"
-          x2="1"
-          y2="1"
-        >
-
-          <stop
-            offset="0%"
-            stop-color="#c58b6b"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#945c49"
-          />
-
-        </linearGradient>
-
-
-        <!-- CLOTHING -->
-
-        <linearGradient
-          id="rogueGreen"
-          x1="0"
-          y1="0"
-          x2="1"
-          y2="1"
-        >
-
-          <stop
-            offset="0%"
-            stop-color="#496657"
-          />
-
-          <stop
-            offset="55%"
-            stop-color="#314b41"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#20362f"
-          />
-
-        </linearGradient>
-
-
-        <linearGradient
-          id="spaceSuit"
-          x1="0"
-          y1="0"
-          x2="1"
-          y2="1"
-        >
-
-          <stop
-            offset="0%"
-            stop-color="#ecece2"
-          />
-
-          <stop
-            offset="58%"
-            stop-color="#cfd4ca"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#9ea9a4"
-          />
-
-        </linearGradient>
-
-
-        <linearGradient
-          id="wizardBlue"
-          x1="0"
-          y1="0"
-          x2="1"
-          y2="1"
-        >
-
-          <stop
-            offset="0%"
-            stop-color="#445f98"
-          />
-
-          <stop
-            offset="55%"
-            stop-color="#303f78"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#202b5b"
-          />
-
-        </linearGradient>
-
-
-        <linearGradient
-          id="princessRose"
-          x1="0"
-          y1="0"
-          x2="1"
-          y2="1"
-        >
-
-          <stop
-            offset="0%"
-            stop-color="#c67b8f"
-          />
-
-          <stop
-            offset="52%"
-            stop-color="#9f617d"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#704e6d"
-          />
-
-        </linearGradient>
-
-
-        <linearGradient
-          id="mermaidTeal"
-          x1="0"
-          y1="0"
-          x2="1"
-          y2="1"
-        >
-
-          <stop
-            offset="0%"
-            stop-color="#70b5a5"
-          />
-
-          <stop
-            offset="55%"
-            stop-color="#3f8b83"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#24645f"
-          />
-
-        </linearGradient>
-
-
-        <!-- WATER -->
-
-        <radialGradient
-          id="poolWater"
-          cx="50%"
-          cy="35%"
-          r="75%"
-        >
-
-          <stop
-            offset="0%"
-            stop-color="#4f9e98"
-            stop-opacity=".72"
-          />
-
-          <stop
-            offset="58%"
-            stop-color="#236f70"
-            stop-opacity=".84"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#103f43"
-            stop-opacity=".92"
-          />
-
-        </radialGradient>
-
-
-        <!-- ASTRONAUT VISOR -->
-
-        <radialGradient
-          id="visorGlass"
-          cx="40%"
-          cy="30%"
-          r="75%"
-        >
-
-          <stop
-            offset="0%"
-            stop-color="#9bd3cf"
-          />
-
-          <stop
-            offset="38%"
-            stop-color="#447c80"
-          />
-
-          <stop
-            offset="78%"
-            stop-color="#1b4c58"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#0c2833"
-          />
-
-        </radialGradient>
-
-
-        <!-- FIRE -->
-
-        <linearGradient
-          id="flameOuter"
-          x1="0"
-          y1="1"
-          x2=".5"
-          y2="0"
-        >
-
-          <stop
-            offset="0%"
-            stop-color="#d85027"
-          />
-
-          <stop
-            offset="58%"
-            stop-color="#f68a36"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#ffc75e"
-          />
-
-        </linearGradient>
-
-
-        <linearGradient
-          id="flameInner"
-          x1="0"
-          y1="1"
-          x2=".5"
-          y2="0"
-        >
-
-          <stop
-            offset="0%"
-            stop-color="#ff9b3f"
-          />
-
-          <stop
-            offset="70%"
-            stop-color="#ffd667"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#fff4b0"
-          />
-
-        </linearGradient>
-
-
-        <!-- MAGIC -->
-
-        <linearGradient
-          id="magicStroke"
-          x1="0"
-          y1="0"
-          x2="1"
-          y2="1"
-        >
-
-          <stop
-            offset="0%"
-            stop-color="#92dbea"
-          />
-
-          <stop
-            offset="48%"
-            stop-color="#c3c2ff"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#e0aede"
-          />
-
-        </linearGradient>
-
-
-        <!-- FIRE LIGHT -->
-
-        <radialGradient
-          id="svgFireGlow"
-        >
-
-          <stop
-            offset="0%"
-            stop-color="#ffca68"
-            stop-opacity=".72"
-          />
-
-          <stop
-            offset="35%"
-            stop-color="#ed7c36"
-            stop-opacity=".31"
-          />
-
-          <stop
-            offset="100%"
-            stop-color="#d64d28"
-            stop-opacity="0"
-          />
-
-        </radialGradient>
-
-
-        <!-- FILTERS -->
-
-        <filter
-          id="magicGlow"
-          x="-100%"
-          y="-100%"
-          width="300%"
-          height="300%"
-        >
-
-          <feGaussianBlur
-            stdDeviation="4"
-            result="blur"
-          />
-
-          <feMerge>
-
-            <feMergeNode in="blur"/>
-
-            <feMergeNode in="SourceGraphic"/>
-
-          </feMerge>
-
-        </filter>
-
-
-        <filter
-          id="flameGlow"
-          x="-100%"
-          y="-100%"
-          width="300%"
-          height="300%"
-        >
-
-          <feGaussianBlur
-            stdDeviation="3"
-            result="fireblur"
-          />
-
-          <feMerge>
-
-            <feMergeNode in="fireblur"/>
-
-            <feMergeNode in="SourceGraphic"/>
-
-          </feMerge>
-
-        </filter>
-
-
-        <filter
-          id="lanternGlow"
-          x="-150%"
-          y="-150%"
-          width="400%"
-          height="400%"
-        >
-
-          <feGaussianBlur
-            stdDeviation="5"
-            result="lanternblur"
-          />
-
-          <feMerge>
-
-            <feMergeNode in="lanternblur"/>
-
-            <feMergeNode in="SourceGraphic"/>
-
-          </feMerge>
-
-        </filter>
-
-
-      </defs>
-
-
-      <!-- =================================================
-           GROUND SHADOWS
-      ================================================== -->
-
-      <ellipse
-        cx="625"
-        cy="544"
-        rx="520"
-        ry="67"
-        fill="#020b08"
-        opacity=".25"
-      />
-
-      <ellipse
-        cx="625"
-        cy="490"
-        rx="340"
-        ry="175"
-        fill="url(#svgFireGlow)"
-        opacity=".24"
-      />
-
-
-      <!-- =================================================
-           MERMAID POOL — BEHIND CHARACTERS
-      ================================================== -->
-
-      <path
-        d="
-          M964 448
-          C1010 414 1122 412 1191 446
-          C1223 462 1223 494 1191 515
-          C1137 550 1021 548 971 514
-          C945 496 940 467 964 448 Z
-        "
-        fill="url(#poolWater)"
-        stroke="#5da6a1"
-        stroke-width="3"
-        opacity=".92"
-      />
-
-      <path
-        class="water-line"
-        d="
-          M978 465
-          C1034 441 1132 442 1182 467
-        "
-        fill="none"
-        stroke="#8bc8bd"
-        stroke-width="3"
-        opacity=".54"
-      />
-
-      <path
-        class="water-line"
-        d="
-          M990 492
-          C1043 474 1129 474 1171 494
-        "
-        fill="none"
-        stroke="#73b5ad"
-        stroke-width="2"
-        opacity=".42"
-      />
-
-
-      <!-- =================================================
-           OWL
-      ================================================== -->
-
-      <g
-        transform="translate(82 173)"
-      >
-
-        <ellipse
-          cx="31"
-          cy="39"
-          rx="24"
-          ry="31"
-          fill="#6d604a"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M12 20
-            L17 2
-            L29 15
-            L41 2
-            L49 22
-          "
-          fill="#5a503f"
-          class="ink-soft"
-        />
-
-        <g class="owl-blink">
-
-          <circle
-            cx="23"
-            cy="35"
-            r="7"
-            fill="#f1cb69"
-          />
-
-          <circle
-            cx="40"
-            cy="35"
-            r="7"
-            fill="#f1cb69"
-          />
-
-          <circle
-            cx="23"
-            cy="35"
-            r="3"
-            fill="#161912"
-          />
-
-          <circle
-            cx="40"
-            cy="35"
-            r="3"
-            fill="#161912"
-          />
-
-        </g>
-
-        <path
-          d="
-            M28 43
-            L34 43
-            L31 49 Z
-          "
-          fill="#d48b42"
-        />
-
-      </g>
-
-
-      <!-- =================================================
-           LEFT FOREST DETAILS
-      ================================================== -->
-
-      <g
-        transform="translate(17 435)"
-      >
-
-        <path
-          d="
-            M22 95
-            C21 63 14 34 0 9
-            M24 65
-            L4 51
-            M23 50
-            L40 33
-            M19 37
-            L5 25
-          "
-          fill="none"
-          stroke="#3f755a"
-          stroke-width="5"
-          stroke-linecap="round"
-        />
-
-        <path
-          d="
-            M74 103
-            C76 67 85 39 99 15
-            M80 72
-            L62 55
-            M84 57
-            L103 44
-            M89 40
-            L77 25
-          "
-          fill="none"
-          stroke="#315e49"
-          stroke-width="5"
-          stroke-linecap="round"
-        />
-
-      </g>
-
-
-      <!-- =================================================
-           ROGUE
-      ================================================== -->
-
-      <g
-        transform="translate(130 220)"
-      >
-
-        <!-- cloak behind -->
-
-        <path
-          d="
-            M45 86
-            C20 112 12 171 19 222
-            C35 246 63 256 93 247
-            C117 230 125 194 116 151
-            C110 118 91 94 73 85 Z
-          "
-          fill="#243b33"
-          class="ink"
-        />
-
-        <!-- hood -->
-
-        <path
-          d="
-            M40 79
-            C36 40 56 18 83 21
-            C108 24 122 48 112 85
-            C93 73 66 71 40 79 Z
-          "
-          fill="#263c34"
-          class="ink"
-        />
-
-        <!-- face -->
-
-        <ellipse
-          cx="78"
-          cy="77"
-          rx="31"
-          ry="35"
-          fill="url(#skinWarm)"
-          class="ink-soft"
-        />
-
-        <!-- hood front -->
-
-        <path
-          d="
-            M42 70
-            C50 39 68 30 84 31
-            C102 32 113 48 113 71
-            C98 58 62 57 42 70 Z
-          "
-          fill="#31483d"
-        />
-
-        <!-- eyes -->
-
-        <path
-          d="
-            M61 75
-            C65 72 70 72 74 75
-            M84 75
-            C89 72 94 72 98 75
-          "
-          fill="none"
-          stroke="#30221d"
-          stroke-width="2"
-        />
-
-        <!-- nose -->
-
-        <path
-          d="
-            M80 78
-            L77 88
-            L82 89
-          "
-          fill="none"
-          stroke="#6e4538"
-          stroke-width="1.7"
-        />
-
-        <!-- smile -->
-
-        <path
-          d="
-            M66 96
-            C75 102 87 101 94 95
-          "
-          fill="none"
-          stroke="#623e34"
-          stroke-width="2"
-        />
-
-        <!-- torso -->
-
-        <path
-          d="
-            M43 108
-            C64 95 95 95 115 110
-            L119 192
-            C94 207 59 206 34 190 Z
-          "
-          fill="url(#rogueGreen)"
-          class="ink"
-        />
-
-        <!-- scarf -->
-
-        <path
-          d="
-            M47 105
-            C65 119 95 121 111 107
-            L105 130
-            C87 141 64 138 50 128 Z
-          "
-          fill="#182d27"
-          class="ink-soft"
-        />
-
-        <!-- belt -->
-
-        <path
-          d="
-            M37 169
-            C59 178 96 180 117 169
-          "
-          fill="none"
-          stroke="#805838"
-          stroke-width="9"
-        />
-
-        <rect
-          x="73"
-          y="170"
-          width="15"
-          height="12"
-          rx="2"
-          fill="#c69d51"
-          stroke="#4e3b28"
-          stroke-width="2"
-        />
-
-        <!-- gesturing arm -->
-
-        <path
-          d="
-            M109 119
-            C133 131 149 119 166 104
-          "
-          fill="none"
-          stroke="#405f50"
-          stroke-width="22"
-          stroke-linecap="round"
-          class="ink-soft"
-        />
-
-        <!-- hand -->
-
-        <circle
-          cx="168"
-          cy="103"
-          r="10"
-          fill="#ad7158"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M172 99
-            L186 89
-          "
-          stroke="#ad7158"
-          stroke-width="6"
-          stroke-linecap="round"
-        />
-
-        <!-- other arm -->
-
-        <path
-          d="
-            M39 120
-            C19 143 16 170 21 191
-          "
-          fill="none"
-          stroke="#405f50"
-          stroke-width="21"
-          stroke-linecap="round"
-          class="ink-soft"
-        />
-
-        <!-- seated legs -->
-
-        <path
-          d="
-            M55 194
-            C39 213 28 228 16 239
-          "
-          fill="none"
-          stroke="#263c33"
-          stroke-width="25"
-          stroke-linecap="round"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M96 195
-            C114 212 129 225 145 233
-          "
-          fill="none"
-          stroke="#263c33"
-          stroke-width="25"
-          stroke-linecap="round"
-          class="ink-soft"
-        />
-
-        <!-- boot -->
-
-        <path
-          d="
-            M9 231
-            C21 228 34 230 42 239
-            C31 247 15 249 2 244 Z
-          "
-          fill="#2b2924"
-          class="ink-soft"
-        />
-
-        <!-- dagger -->
-
-        <path
-          d="
-            M114 178
-            L149 216
-          "
-          stroke="#d0c8ac"
-          stroke-width="5"
-          stroke-linecap="round"
-        />
-
-        <path
-          d="
-            M108 172
-            L121 185
-          "
-          stroke="#a8783e"
-          stroke-width="7"
-          stroke-linecap="round"
-        />
-
-      </g>
-
-
-      <!-- ROGUE BAG -->
-
-      <g
-        transform="translate(177 490)"
-      >
-
-        <path
-          d="
-            M9 30
-            C13 7 58 7 64 30
-          "
-          fill="none"
-          stroke="#8a6544"
-          stroke-width="6"
-        />
-
-        <path
-          d="
-            M0 28
-            L72 28
-            L68 72
-            L6 72 Z
-          "
-          fill="#806044"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M8 41
-            L64 41
-          "
-          stroke="#aa7e50"
-          stroke-width="3"
-        />
-
-      </g>
-
-
-      <!-- ROGUE MAP -->
-
-      <g
-        transform="translate(268 486) rotate(-6)"
-      >
-
-        <path
-          d="
-            M0 5
-            C17 0 35 3 52 0
-            C68 4 82 2 97 7
-            L94 61
-            C78 56 65 59 49 55
-            C34 59 17 54 3 59 Z
-          "
-          fill="#d6bd8b"
-          stroke="#66523b"
-          stroke-width="2"
-        />
-
-        <path
-          d="
-            M14 22
-            C27 13 37 27 49 19
-            C62 11 68 23 78 18
-          "
-          fill="none"
-          stroke="#876b47"
-          stroke-width="2"
-          stroke-dasharray="4 4"
-        />
-
-        <path
-          d="
-            M73 41
-            L84 51
-            M84 41
-            L73 51
-          "
-          stroke="#a14e3d"
-          stroke-width="3"
-        />
-
-      </g>
-            <!-- =================================================
-           ASTRONAUT
-      ================================================== -->
-
-      <g
-        transform="translate(375 205)"
-      >
-
-        <!-- backpack -->
-
-        <rect
-          x="18"
-          y="105"
-          width="38"
-          height="105"
-          rx="15"
-          fill="#899792"
-          class="ink"
-        />
-
-        <path
-          d="M26 121 L26 190"
-          stroke="#b9c1b9"
-          stroke-width="4"
-          opacity=".6"
-        />
-
-
-        <!-- helmet outer -->
-
-        <circle
-          cx="100"
-          cy="79"
-          r="67"
-          fill="#e7e7dc"
-          class="ink"
-        />
-
-        <circle
-          cx="100"
-          cy="79"
-          r="51"
-          fill="#839a99"
-          class="ink-soft"
-        />
-
-        <!-- visor -->
-
-        <ellipse
-          cx="100"
-          cy="79"
-          rx="43"
-          ry="39"
-          fill="url(#visorGlass)"
-          stroke="#274a4d"
-          stroke-width="3"
-        />
-
-        <!-- visor reflection -->
-
-        <path
-          d="
-            M72 65
-            C83 49 99 44 116 47
-          "
-          fill="none"
-          stroke="#b9ebe2"
-          stroke-width="6"
-          stroke-linecap="round"
-          opacity=".62"
-        />
-
-        <circle
-          cx="119"
-          cy="61"
-          r="5"
-          fill="#ffe478"
-          opacity=".88"
-        />
-
-        <!-- visor smile reflection -->
-
-        <path
-          d="
-            M89 94
-            C98 100 108 100 116 94
-          "
-          fill="none"
-          stroke="#c89559"
-          stroke-width="4"
-          stroke-linecap="round"
-          opacity=".8"
-        />
-
-
-        <!-- torso -->
-
-        <path
-          d="
-            M58 141
-            C75 127 126 127 143 143
-            L151 251
-            C127 267 76 268 51 250 Z
-          "
-          fill="url(#spaceSuit)"
-          class="ink"
-        />
-
-
-        <!-- neck ring -->
-
-        <path
-          d="
-            M64 127
-            C82 140 119 141 138 127
-          "
-          fill="none"
-          stroke="#9ca9a5"
-          stroke-width="10"
-        />
-
-
-        <!-- chest control panel -->
-
-        <rect
-          x="78"
-          y="165"
-          width="48"
-          height="43"
-          rx="4"
-          fill="#526563"
-          stroke="#33413e"
-          stroke-width="3"
-        />
-
-        <circle
-          cx="90"
-          cy="178"
-          r="4"
-          fill="#e5b95d"
-        />
-
-        <circle
-          cx="102"
-          cy="178"
-          r="4"
-          fill="#70b4a9"
-        />
-
-        <circle
-          cx="114"
-          cy="178"
-          r="4"
-          fill="#d17b5f"
-        />
-
-        <path
-          d="
-            M88 191
-            L116 191
-          "
-          stroke="#cad3c9"
-          stroke-width="3"
-        />
-
-
-        <!-- left arm -->
-
-        <path
-          d="
-            M59 151
-            C40 172 38 207 44 230
-          "
-          fill="none"
-          stroke="#cbd1c8"
-          stroke-width="24"
-          stroke-linecap="round"
-          class="ink-soft"
-        />
-
-        <!-- right arm reaching -->
-
-        <path
-          d="
-            M142 154
-            C163 167 179 162 195 145
-          "
-          fill="none"
-          stroke="#cbd1c8"
-          stroke-width="24"
-          stroke-linecap="round"
-          class="ink-soft"
-        />
-
-        <!-- glove -->
-
-        <circle
-          cx="199"
-          cy="141"
-          r="13"
-          fill="#c9d0c8"
-          class="ink-soft"
-        />
-
-        <!-- little glove fingers -->
-
-        <path
-          d="
-            M207 138
-            L219 132
-            M208 143
-            L221 143
-          "
-          stroke="#c9d0c8"
-          stroke-width="5"
-          stroke-linecap="round"
-        />
-
-
-        <!-- firefly astronaut is watching -->
-
-        <circle
-          cx="229"
-          cy="126"
-          r="5"
-          fill="#ffe781"
-          filter="url(#lanternGlow)"
-        />
-
-        <circle
-          cx="229"
-          cy="126"
-          r="13"
-          fill="#ffe781"
-          opacity=".08"
-        />
-
-
-        <!-- waist -->
-
-        <path
-          d="
-            M57 224
-            C80 235 125 236 147 224
-          "
-          fill="none"
-          stroke="#98a5a0"
-          stroke-width="7"
-        />
-
-
-        <!-- legs -->
-
-        <path
-          d="
-            M76 247
-            C62 268 51 283 34 297
-          "
-          fill="none"
-          stroke="#c8cec5"
-          stroke-width="32"
-          stroke-linecap="round"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M126 247
-            C143 267 157 281 177 292
-          "
-          fill="none"
-          stroke="#c8cec5"
-          stroke-width="32"
-          stroke-linecap="round"
-          class="ink-soft"
-        />
-
-
-        <!-- boots -->
-
-        <path
-          d="
-            M17 289
-            C36 283 51 287 61 298
-            C46 312 23 314 5 306 Z
-          "
-          fill="#697775"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M165 283
-            C183 279 201 284 212 296
-            C197 308 174 311 157 303 Z
-          "
-          fill="#697775"
-          class="ink-soft"
-        />
-
-      </g>
-
-
-      <!-- =================================================
-           WIZARD
-      ================================================== -->
-
-      <g
-        transform="translate(700 175)"
-      >
-
-        <!-- robe shadow -->
-
-        <path
-          d="
-            M62 137
-            C37 177 30 239 34 309
-            C72 333 137 333 174 306
-            C174 243 166 181 144 139 Z
-          "
-          fill="#10263d"
-          opacity=".82"
-          class="ink"
-        />
-
-        <!-- robe -->
-
-        <path
-          d="
-            M71 126
-            C91 110 128 111 149 129
-            C162 178 165 234 155 294
-            C127 315 76 316 47 294
-            C44 234 51 174 71 126 Z
-          "
-          fill="url(#wizardBlue)"
-          class="ink"
-        />
-
-        <!-- robe folds -->
-
-        <path
-          d="
-            M82 151
-            C71 198 72 249 78 291
-
-            M111 145
-            C105 198 107 249 106 300
-
-            M137 151
-            C148 205 144 252 138 290
-          "
-          class="detail-line"
-          opacity=".65"
-        />
-
-        <!-- gold trim -->
-
-        <path
-          d="
-            M52 288
-            C81 307 126 311 154 291
-          "
-          fill="none"
-          stroke="#c5a35d"
-          stroke-width="4"
-          opacity=".66"
-        />
-
-
-        <!-- face -->
-
-        <ellipse
-          cx="108"
-          cy="89"
-          rx="36"
-          ry="43"
-          fill="url(#skinLight)"
-          class="ink-soft"
-        />
-
-        <ellipse
-          cx="72"
-          cy="91"
-          rx="7"
-          ry="11"
-          fill="#c48c6d"
-        />
-
-        <ellipse
-          cx="144"
-          cy="91"
-          rx="7"
-          ry="11"
-          fill="#c48c6d"
-        />
-
-
-        <!-- eyes -->
-
-        <path
-          d="
-            M87 81
-            C93 77 99 78 102 82
-
-            M116 82
-            C122 77 129 79 132 83
-          "
-          fill="none"
-          stroke="#2d2925"
-          stroke-width="2.5"
-        />
-
-
-        <!-- eyebrows -->
-
-        <path
-          d="
-            M84 72
-            C91 67 99 67 104 70
-
-            M115 70
-            C123 66 131 68 135 72
-          "
-          fill="none"
-          stroke="#6d6c69"
-          stroke-width="3"
-        />
-
-
-        <!-- nose -->
-
-        <path
-          d="
-            M108 83
-            L103 96
-            L112 98
-          "
-          fill="none"
-          stroke="#825a48"
-          stroke-width="2"
-        />
-
-
-        <!-- beard -->
-
-        <path
-          d="
-            M79 101
-            C83 124 88 150 108 169
-            C130 151 138 124 137 102
-            C127 112 119 115 108 111
-            C97 117 88 113 79 101 Z
-          "
-          fill="#b9b6a7"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M91 113
-            C94 131 98 145 107 158
-
-            M105 115
-            C106 133 108 147 108 160
-
-            M121 113
-            C119 133 115 147 110 158
-          "
-          fill="none"
-          stroke="#777c76"
-          stroke-width="2"
-          opacity=".7"
-        />
-
-        <!-- moustache -->
-
-        <path
-          d="
-            M105 103
-            C96 98 88 101 84 107
-
-            M110 103
-            C120 98 130 101 134 107
-          "
-          fill="none"
-          stroke="#c8c4b4"
-          stroke-width="5"
-          stroke-linecap="round"
-        />
-
-
-        <!-- hat brim -->
-
-        <path
-          d="
-            M57 56
-            C83 44 136 43 159 57
-            C139 69 79 71 57 56 Z
-          "
-          fill="#263f61"
-          class="ink"
-        />
-
-        <!-- hat -->
-
-        <path
-          d="
-            M78 51
-            C81 23 98 -6 118 -34
-            C127 -10 127 8 122 24
-            C139 13 151 15 161 22
-            C148 36 138 47 132 55
-            C113 61 94 60 78 51 Z
-          "
-          fill="url(#wizardBlue)"
-          class="ink"
-        />
-
-        <path
-          d="
-            M99 31
-            C108 25 119 24 129 27
-
-            M112 2
-            C118 6 123 11 125 17
-          "
-          fill="none"
-          stroke="#6d88a0"
-          stroke-width="3"
-          opacity=".55"
-        />
-
-        <!-- hat band -->
-
-        <path
-          d="
-            M78 47
-            C97 53 119 54 137 49
-          "
-          fill="none"
-          stroke="#c29b55"
-          stroke-width="6"
-        />
-
-        <!-- star pin -->
-
-        <path
-          d="
-            M104 49
-            l3 -7
-            l3 7
-            l7 2
-            l-7 3
-            l-3 7
-            l-3 -7
-            l-7 -3 Z
-          "
-          fill="#f0ce7b"
-        />
-
-
-        <!-- left arm -->
-
-        <path
-          d="
-            M67 147
-            C42 165 27 194 24 224
-          "
-          fill="none"
-          stroke="#314d70"
-          stroke-width="27"
-          stroke-linecap="round"
-          class="ink-soft"
-        />
-
-
-        <!-- casting arm -->
-
-        <path
-          d="
-            M146 145
-            C171 133 191 111 203 84
-          "
-          fill="none"
-          stroke="#314d70"
-          stroke-width="28"
-          stroke-linecap="round"
-          class="ink-soft"
-        />
-
-        <circle
-          cx="204"
-          cy="79"
-          r="10"
-          fill="#d6a27e"
-          class="ink-soft"
-        />
-
-        <!-- fingers -->
-
-        <path
-          d="
-            M204 76
-            C210 62 214 54 221 46
-
-            M207 78
-            C220 68 228 63 237 61
-
-            M207 82
-            C221 81 231 84 239 89
-          "
-          fill="none"
-          stroke="#d6a27e"
-          stroke-width="6"
-          stroke-linecap="round"
-        />
-
-        <!-- spell ring -->
-
-        <circle
-          cx="222"
-          cy="66"
-          r="27"
-          fill="none"
-          stroke="url(#magicStroke)"
-          stroke-width="2"
-          stroke-dasharray="3 7"
-          opacity=".78"
-          filter="url(#magicGlow)"
-        />
-
-
-        <!-- belt -->
-
-        <path
-          d="
-            M57 205
-            C87 216 131 217 159 205
-          "
-          fill="none"
-          stroke="#725338"
-          stroke-width="10"
-          class="ink-soft"
-        />
-
-        <circle
-          cx="108"
-          cy="211"
-          r="9"
-          fill="#c8a65e"
-          stroke="#3a3023"
-          stroke-width="2"
-        />
-
-
-        <!-- legs -->
-
-        <path
-          d="
-            M78 290
-            C60 308 45 321 28 330
-          "
-          fill="none"
-          stroke="#18324c"
-          stroke-width="28"
-          stroke-linecap="round"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M133 291
-            C153 307 171 318 191 325
-          "
-          fill="none"
-          stroke="#18324c"
-          stroke-width="28"
-          stroke-linecap="round"
-          class="ink-soft"
-        />
-
-      </g>
-
-
-      <!-- =================================================
-           WIZARD'S STORY COMES ALIVE
-      ================================================== -->
-
-      <g
-        class="magic-story"
-        filter="url(#magicGlow)"
-      >
-
-        <!-- spell trail -->
-
-        <path
-          d="
-            M925 247
-            C949 214 943 180 916 163
-            C884 143 851 155 837 129
-            C819 96 848 64 891 64
-            C935 64 956 91 991 82
-            C1024 73 1032 45 1063 42
-          "
-          fill="none"
-          stroke="url(#magicStroke)"
-          stroke-width="5"
-          stroke-linecap="round"
-          opacity=".78"
-        />
-
-        <path
-          d="
-            M920 249
-            C956 226 970 196 959 171
-            C948 146 921 140 919 119
-            C916 92 948 85 971 93
-          "
-          fill="none"
-          stroke="#8fd4e2"
-          stroke-width="2"
-          stroke-dasharray="4 10"
-          opacity=".7"
-        />
-
-
-        <!-- constellation -->
-
-        <path
-          d="
-            M826 132
-            L879 99
-            L932 91
-            L977 132
-            L1003 73
-            L1068 45
-          "
-          fill="none"
-          stroke="#c6d7ff"
-          stroke-width="1"
-          opacity=".43"
-        />
-
-        <g fill="#e4edff">
-
-          <circle cx="826" cy="132" r="3"/>
-          <circle cx="879" cy="99" r="4"/>
-          <circle cx="932" cy="91" r="3"/>
-          <circle cx="977" cy="132" r="2.5"/>
-          <circle cx="1003" cy="73" r="4"/>
-          <circle cx="1068" cy="45" r="3"/>
-
-        </g>
-
-
-        <!-- spectral mountains -->
-
-        <path
-          d="
-            M855 153
-            L907 93
-            L939 124
-            L968 88
-            L1024 153
-          "
-          fill="#83b9cc"
-          fill-opacity=".07"
-          stroke="#9ac9db"
-          stroke-width="2"
-          opacity=".72"
-        />
-
-
-        <!-- spectral castle -->
-
-        <g
-          transform="translate(934 89)"
-          opacity=".86"
-        >
-
-          <path
-            d="
-              M0 79
-              L0 34
-              L12 34
-              L12 18
-              L23 18
-              L23 35
-              L42 35
-              L42 5
-              L53 5
-              L53 35
-              L72 35
-              L72 20
-              L83 20
-              L83 35
-              L95 35
-              L95 79 Z
-            "
-            fill="#8fc5d5"
-            fill-opacity=".10"
-            stroke="#a8d7e4"
-            stroke-width="2"
-          />
-
-          <path
-            d="
-              M7 34 L17 22 L27 34
-              M37 6 L48 -8 L59 6
-              M67 35 L77 23 L87 35
-            "
-            fill="none"
-            stroke="#c1e2e8"
-            stroke-width="2"
-          />
-
-          <rect
-            x="45"
-            y="47"
-            width="7"
-            height="13"
-            rx="3"
-            fill="#f8e7a2"
-            opacity=".78"
-          />
-
-          <rect
-            x="16"
-            y="47"
-            width="6"
-            height="9"
-            rx="3"
-            fill="#f8e7a2"
-            opacity=".62"
-          />
-
-          <rect
-            x="76"
-            y="48"
-            width="6"
-            height="9"
-            rx="3"
-            fill="#f8e7a2"
-            opacity=".62"
-          />
-
-          <path
-            d="
-              M48 -8
-              L48 -26
-              L68 -20
-              L48 -14
-            "
-            fill="#d9c7ff"
-            fill-opacity=".48"
-            stroke="#c8d7ff"
-            stroke-width="1"
-          />
-
-        </g>
-
-
-        <!-- =================================================
-             LARGE SPECTRAL DRAGON
-        ================================================== -->
-
-        <g
-          transform="translate(672 28)"
-          opacity=".83"
-        >
-
-          <!-- left wing -->
-
-          <path
-            d="
-              M173 113
-              C119 66 70 54 19 66
-              C59 80 85 101 104 132
-              C69 119 40 120 7 135
-              C66 145 117 158 151 181
-              C158 157 166 134 173 113 Z
-            "
-            fill="#92bfe0"
-            fill-opacity=".08"
-            stroke="#a8c9e8"
-            stroke-width="2"
-          />
-
-          <!-- right wing -->
-
-          <path
-            d="
-              M187 113
-              C231 61 287 37 349 42
-              C310 58 284 82 268 112
-              C306 93 342 91 380 103
-              C329 120 286 144 252 177
-              C235 151 214 128 187 113 Z
-            "
-            fill="#b3b9ef"
-            fill-opacity=".09"
-            stroke="#bfc8f0"
-            stroke-width="2.5"
-          />
-
-          <!-- wing bones -->
-
-          <path
-            d="
-              M177 118 L73 75
-              M174 126 L64 127
-              M197 116 L311 59
-              M205 124 L327 103
-            "
-            fill="none"
-            stroke="#c6d7f4"
-            stroke-width="1.5"
-            opacity=".55"
-          />
-
-
-          <!-- body -->
-
-          <path
-            d="
-              M132 165
-              C157 124 192 103 224 109
-              C252 114 267 138 258 158
-              C250 176 225 177 212 163
-              C232 163 238 153 233 144
-              C227 133 211 133 200 142
-              C183 156 179 180 190 200
-              C204 224 238 231 272 219
-              C244 243 211 251 179 236
-              C143 219 121 193 132 165 Z
-            "
-            fill="#9fc7e3"
-            fill-opacity=".12"
-            stroke="#c0d9ee"
-            stroke-width="3"
-          />
-
-
-          <!-- head -->
-
-          <path
-            d="
-              M223 112
-              C240 89 262 77 283 79
-              L300 65
-              L298 84
-              C313 86 325 95 333 108
-              L350 110
-              L337 120
-              C328 137 309 143 289 137
-              C274 133 263 123 253 118 Z
-            "
-            fill="#a8cce5"
-            fill-opacity=".13"
-            stroke="#c4ddef"
-            stroke-width="3"
-          />
-
-
-          <!-- horns -->
-
-          <path
-            d="
-              M282 80
-              L273 55
-              L291 76
-
-              M300 83
-              L307 57
-              L310 89
-            "
-            fill="none"
-            stroke="#d0e0f4"
-            stroke-width="2"
-          />
-
-          <circle
-            cx="316"
-            cy="106"
-            r="3.5"
-            fill="#fff0a7"
-          />
-
-          <!-- tail -->
-
-          <path
-            d="
-              M145 188
-              C95 207 59 202 29 181
-              C5 164 -10 170 -22 187
-              C8 179 24 193 47 209
-              C77 231 118 225 169 208
-            "
-            fill="none"
-            stroke="#b7d2e8"
-            stroke-width="5"
-            stroke-linecap="round"
-          />
-
-          <!-- breath -->
-
-          <path
-            d="
-              M347 113
-              C370 104 387 93 401 78
-              C392 99 394 113 409 126
-              C387 116 371 117 347 126
-            "
-            fill="#c6d8ff"
-            fill-opacity=".13"
-            stroke="#d6e4ff"
-            stroke-width="2"
-          />
-
-        </g>
-
-      </g>
-
-
-      <!-- =================================================
-           PRINCESS
-      ================================================== -->
-
-      <g
-        transform="translate(945 215) rotate(4)"
-      >
-
-        <!-- skirt -->
-
-        <path
-          d="
-            M48 147
-            C24 188 12 239 13 290
-            C49 309 112 310 151 287
-            C147 236 132 187 112 150 Z
-          "
-          fill="url(#princessRose)"
-          class="ink"
-        />
-
-        <!-- skirt folds -->
-
-        <path
-          d="
-            M58 164
-            C49 209 49 251 54 290
-
-            M83 158
-            C78 207 80 251 82 297
-
-            M107 162
-            C120 210 124 251 120 289
-          "
-          fill="none"
-          stroke="#d9a4ad"
-          stroke-width="2"
-          opacity=".35"
-        />
-
-
-        <!-- torso -->
-
-        <path
-          d="
-            M57 103
-            C75 91 99 91 115 104
-            L124 174
-            C104 187 70 186 49 171 Z
-          "
-          fill="#a85f77"
-          class="ink"
-        />
-
-        <path
-          d="
-            M66 105
-            C79 116 96 116 108 105
-          "
-          fill="none"
-          stroke="#e0b2b3"
-          stroke-width="4"
-        />
-
-
-        <!-- face -->
-
-        <ellipse
-          cx="84"
-          cy="68"
-          rx="32"
-          ry="39"
-          fill="url(#skinLight)"
-          class="ink-soft"
-        />
-
-
-        <!-- hair -->
-
-        <path
-          d="
-            M52 63
-            C50 27 74 12 98 22
-            C123 32 124 60 112 80
-            C110 59 100 44 85 40
-            C72 37 61 47 52 63 Z
-          "
-          fill="#39282a"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M56 58
-            C47 84 50 112 63 127
-
-            M110 55
-            C124 79 122 107 111 126
-          "
-          fill="none"
-          stroke="#4e3536"
-          stroke-width="11"
-          stroke-linecap="round"
-        />
-
-
-        <!-- crown -->
-
-        <path
-          d="
-            M60 31
-            L65 9
-            L78 24
-            L87 5
-            L97 24
-            L111 10
-            L110 34 Z
-          "
-          fill="#d7b45e"
-          stroke="#5e482b"
-          stroke-width="2"
-        />
-
-        <circle
-          cx="87"
-          cy="20"
-          r="3"
-          fill="#b95f72"
-        />
-
-
-        <!-- face -->
-
-        <path
-          d="
-            M68 65
-            C73 62 78 63 81 66
-
-            M91 66
-            C96 62 101 63 104 67
-          "
-          fill="none"
-          stroke="#3b2b29"
-          stroke-width="2"
-        />
-
-        <path
-          d="
-            M77 83
-            C85 88 93 87 98 82
-          "
-          fill="none"
-          stroke="#955e59"
-          stroke-width="2"
-        />
-
-
-        <!-- necklace -->
-
-        <path
-          d="
-            M69 107
-            C78 120 91 121 101 108
-          "
-          fill="none"
-          stroke="#e1bd6c"
-          stroke-width="2"
-        />
-
-        <circle
-          cx="85"
-          cy="119"
-          r="4"
-          fill="#74b9b5"
-        />
-
-
-        <!-- arm around mermaid -->
-
-        <path
-          d="
-            M111 118
-            C133 123 150 134 165 149
-            C176 160 184 163 192 158
-          "
-          fill="none"
-          stroke="#c88e70"
-          stroke-width="18"
-          stroke-linecap="round"
-          class="ink-soft"
-        />
-
-        <ellipse
-          cx="192"
-          cy="158"
-          rx="11"
-          ry="8"
-          fill="#d3a07e"
-          class="ink-soft"
-        />
-
-
-        <!-- other arm -->
-
-        <path
-          d="
-            M52 121
-            C34 143 29 166 34 190
-          "
-          fill="none"
-          stroke="#bd7f67"
-          stroke-width="17"
-          stroke-linecap="round"
-          class="ink-soft"
-        />
-
-
-        <!-- belt -->
-
-        <path
-          d="
-            M49 166
-            C71 177 102 178 123 167
-          "
-          fill="none"
-          stroke="#d3ac5f"
-          stroke-width="6"
-        />
-
-        <circle
-          cx="85"
-          cy="174"
-          r="5"
-          fill="#6ba5a6"
-          stroke="#5c482f"
-          stroke-width="1.5"
-        />
-
-      </g>
-
-
-      <!-- =================================================
-           MERMAID — REBUILT
-
-           Visible face, softer hair, natural shoulders,
-           leaning into princess, body visibly emerging
-           from the pool, curved scaled tail.
-      ================================================== -->
-
-      <g
-        transform="translate(1072 246) rotate(-4)"
-      >
-
-
-        <!-- =================================================
-             TAIL BEHIND BODY
-        ================================================== -->
-
-        <path
-          d="
-            M72 176
-            C94 192 111 214 118 238
-            C125 263 119 286 101 303
-            C87 317 69 324 51 317
-            C69 304 77 287 71 269
-            C65 248 49 234 46 214
-            C43 196 52 182 72 176 Z
-          "
-          fill="url(#mermaidTeal)"
-          class="ink"
-        />
-
-
-        <!-- tail highlight -->
-
-        <path
-          d="
-            M80 190
-            C95 211 105 232 105 253
-            C105 274 95 291 79 302
-          "
-          fill="none"
-          stroke="#91d0bc"
-          stroke-width="5"
-          opacity=".35"
-        />
-
-
-        <!-- scales -->
-
-        <g
-          fill="none"
-          stroke="#a9ddc7"
-          stroke-width="1.5"
-          opacity=".52"
-        >
-
-          <path d="M57 204 q9 10 18 0"/>
-          <path d="M75 204 q9 10 18 0"/>
-
-          <path d="M64 216 q9 10 18 0"/>
-          <path d="M82 216 q9 10 18 0"/>
-
-          <path d="M68 228 q9 10 18 0"/>
-          <path d="M87 228 q9 10 18 0"/>
-
-          <path d="M70 240 q9 10 18 0"/>
-          <path d="M89 240 q9 10 18 0"/>
-
-          <path d="M72 252 q9 10 18 0"/>
-          <path d="M89 252 q9 10 18 0"/>
-
-          <path d="M72 264 q9 10 18 0"/>
-          <path d="M69 276 q9 10 18 0"/>
-
-        </g>
-
-
-        <!-- large tail fin -->
-
-        <path
-          d="
-            M53 310
-            C30 300 7 302 -13 318
-            C10 323 27 335 35 351
-            C49 338 60 326 68 311 Z
-          "
-          fill="#54a698"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M-13 318
-            C10 314 30 316 53 310
-
-            M35 351
-            C40 333 49 321 68 311
-          "
-          fill="none"
-          stroke="#9bd7c1"
-          stroke-width="2"
-          opacity=".48"
-        />
-
-
-        <!-- =================================================
-             HAIR BEHIND BODY
-        ================================================== -->
-
-        <path
-          d="
-            M44 62
-            C37 37 44 17 61 6
-            C78 -5 101 0 114 18
-            C126 35 124 59 112 77
-
-            C123 95 121 119 110 142
-
-            C101 128 96 113 94 97
-
-            C81 104 66 103 55 95
-
-            C54 113 57 128 64 142
-
-            C45 127 37 102 46 78 Z
-          "
-          fill="#173739"
-          class="ink"
-        />
-
-
-        <!-- flowing hair behind shoulder -->
-
-        <path
-          d="
-            M47 72
-            C32 101 39 133 54 155
-
-            M109 68
-            C127 96 122 127 108 151
-          "
-          fill="none"
-          stroke="#173739"
-          stroke-width="16"
-          stroke-linecap="round"
-        />
-
-
-        <!-- teal highlights -->
-
-        <path
-          d="
-            M54 48
-            C63 23 84 14 101 27
-
-            M48 75
-            C44 97 49 116 58 130
-
-            M107 55
-            C117 80 113 105 105 124
-          "
-          fill="none"
-          stroke="#4d7772"
-          stroke-width="4"
-          stroke-linecap="round"
-          opacity=".75"
-        />
-
-
-        <!-- =================================================
-             NECK
-        ================================================== -->
-
-        <path
-          d="
-            M68 97
-            L68 80
-            L90 80
-            L91 99
-          "
-          fill="#b77d62"
-          stroke="#53382f"
-          stroke-width="2"
-        />
-
-
-        <!-- =================================================
-             FACE
-        ================================================== -->
-
-        <ellipse
-          cx="79"
-          cy="59"
-          rx="31"
-          ry="37"
-          fill="url(#skinWarm)"
-          class="ink-soft"
-        />
-
-
-        <!-- hairline -->
-
-        <path
-          d="
-            M49 55
-            C55 29 74 19 93 25
-            C105 29 112 39 113 52
-
-            C103 45 96 39 88 37
-            C76 34 64 40 56 50 Z
-          "
-          fill="#173739"
-        />
-
-
-        <!-- side locks -->
-
-        <path
-          d="
-            M50 53
-            C43 71 45 91 54 107
-
-            M108 50
-            C118 69 117 90 107 108
-          "
-          fill="none"
-          stroke="#173739"
-          stroke-width="10"
-          stroke-linecap="round"
-        />
-
-
-        <!-- brows -->
-
-        <path
-          d="
-            M61 51
-            C67 47 73 47 77 50
-
-            M84 50
-            C90 47 97 48 101 52
-          "
-          fill="none"
-          stroke="#3c2925"
-          stroke-width="2.5"
-          stroke-linecap="round"
-        />
-
-
-        <!-- closed happy eyes -->
-
-        <path
-          d="
-            M62 59
-            C67 63 72 63 76 59
-
-            M85 59
-            C90 63 96 63 100 59
-          "
-          fill="none"
-          stroke="#332520"
-          stroke-width="2"
-          stroke-linecap="round"
-        />
-
-
-        <!-- eyelashes -->
-
-        <path
-          d="
-            M63 59 L59 56
-            M99 59 L103 56
-          "
-          stroke="#332520"
-          stroke-width="1.5"
-          stroke-linecap="round"
-        />
-
-
-        <!-- nose -->
-
-        <path
-          d="
-            M80 61
-            L77 70
-            L82 71
-          "
-          fill="none"
-          stroke="#74493d"
-          stroke-width="1.7"
-          stroke-linecap="round"
-        />
-
-
-        <!-- smile -->
-
-        <path
-          d="
-            M69 78
-            C76 84 85 84 92 77
-          "
-          fill="none"
-          stroke="#6f413b"
-          stroke-width="2.5"
-          stroke-linecap="round"
-        />
-
-
-        <!-- cheeks -->
-
-        <ellipse
-          cx="61"
-          cy="72"
-          rx="7"
-          ry="4"
-          fill="#d78372"
-          opacity=".25"
-        />
-
-        <ellipse
-          cx="99"
-          cy="72"
-          rx="7"
-          ry="4"
-          fill="#d78372"
-          opacity=".25"
-        />
-
-
-        <!-- tiny sea jewelry -->
-
-        <circle
-          cx="55"
-          cy="69"
-          r="3"
-          fill="#d5b85f"
-        />
-
-        <circle
-          cx="103"
-          cy="69"
-          r="3"
-          fill="#d5b85f"
-        />
-
-
-        <!-- =================================================
-             TORSO
-        ================================================== -->
-
-        <path
-          d="
-            M49 102
-            C59 94 69 90 80 90
-            C92 90 102 94 109 102
-            C115 122 115 145 108 170
-            C99 181 59 182 46 170
-            C41 145 42 121 49 102 Z
-          "
-          fill="#aa705a"
-          class="ink"
-        />
-
-
-        <!-- sea-shell bodice -->
-
-        <path
-          d="
-            M47 111
-            C55 99 69 100 77 114
-            C84 100 99 100 108 111
-            L105 136
-            C88 143 66 143 47 136 Z
-          "
-          fill="#80557c"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M52 115
-            C59 108 68 108 76 116
-
-            M80 116
-            C88 108 98 108 104 115
-          "
-          fill="none"
-          stroke="#d0a2c5"
-          stroke-width="2.5"
-          opacity=".7"
-        />
-
-
-        <!-- waist to tail -->
-
-        <path
-          d="
-            M47 165
-            C62 176 94 178 108 165
-            L106 188
-            C90 198 63 198 48 187 Z
-          "
-          fill="#397d76"
-          class="ink-soft"
-        />
-
-
-        <!-- =================================================
-             ARM AROUND PRINCESS
-        ================================================== -->
-
-        <path
-          d="
-            M51 111
-            C33 103 19 91 7 79
-            C-2 70 -11 66 -20 69
-          "
-          fill="none"
-          stroke="#ad735b"
-          stroke-width="17"
-          stroke-linecap="round"
-          class="ink-soft"
-        />
-
-        <!-- hand -->
-
-        <path
-          d="
-            M-18 69
-            C-27 67 -34 70 -39 76
-
-            M-18 70
-            C-27 73 -31 79 -33 85
-          "
-          fill="none"
-          stroke="#bc8065"
-          stroke-width="7"
-          stroke-linecap="round"
-        />
-
-
-        <!-- =================================================
-             OTHER ARM RESTING IN POOL
-        ================================================== -->
-
-        <path
-          d="
-            M107 113
-            C123 132 132 150 133 170
-          "
-          fill="none"
-          stroke="#ac725a"
-          stroke-width="17"
-          stroke-linecap="round"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M133 169
-            C136 179 132 185 123 187
-          "
-          fill="none"
-          stroke="#b97c61"
-          stroke-width="8"
-          stroke-linecap="round"
-        />
-
-        <!-- bracelet -->
-
-        <circle
-          cx="131"
-          cy="165"
-          r="10"
-          fill="none"
-          stroke="#d6b55f"
-          stroke-width="3"
-        />
-
-
-        <!-- =================================================
-             WATER OVER BODY
-
-             These lines are intentionally drawn AFTER the
-             torso/tail so she reads as sitting in the pool.
-        ================================================== -->
-
-        <path
-          d="
-            M31 184
-            C58 176 89 177 117 185
-          "
-          fill="none"
-          stroke="#9bd1c4"
-          stroke-width="3"
-          opacity=".78"
-        />
-
-        <path
-          d="
-            M20 194
-            C54 185 99 187 129 197
-          "
-          fill="none"
-          stroke="#68aaa1"
-          stroke-width="2"
-          opacity=".48"
-        />
-
-      </g>
-
-
-      <!-- =================================================
-           SHARED BLANKET
-      ================================================== -->
-
-      <path
-        d="
-          M958 487
-          C1000 462 1064 464 1100 487
-          C1070 512 1014 520 970 506 Z
-        "
-        fill="#79576b"
-        opacity=".72"
-        class="ink-soft"
-      />
-
-      <path
-        d="
-          M978 490
-          C1012 479 1053 480 1082 491
-        "
-        fill="none"
-        stroke="#c592a5"
-        stroke-width="2"
-        opacity=".48"
-      />
-
-
-      <!-- =================================================
-           LANTERN
-      ================================================== -->
-
-      <g
-        transform="translate(1162 427)"
-      >
-
-        <path
-          d="
-            M8 22
-            C7 7 29 7 28 22
-          "
-          fill="none"
-          stroke="#7a6444"
-          stroke-width="4"
-        />
-
-        <rect
-          x="5"
-          y="20"
-          width="28"
-          height="39"
-          rx="5"
-          fill="#5e4933"
-          class="ink-soft"
-        />
-
-        <rect
-          x="11"
-          y="27"
-          width="16"
-          height="23"
-          rx="3"
-          fill="#ffd273"
-          opacity=".85"
-          filter="url(#lanternGlow)"
-        />
-
-      </g>
-
-
-      <!-- =================================================
-           BEDROLL
-      ================================================== -->
-
-      <g
-        transform="translate(315 525)"
-      >
-
-        <path
-          d="
-            M0 15
-            C18 3 65 3 83 16
-            L79 42
-            C57 52 20 50 3 39 Z
-          "
-          fill="#7c5b48"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M16 12 L16 44
-            M66 12 L66 45
-          "
-          stroke="#bd8e5c"
-          stroke-width="4"
-          opacity=".6"
-        />
-
-      </g>
-
-
-      <!-- =================================================
-           STACKED BOOKS
-      ================================================== -->
-
-      <g
-        transform="translate(430 540)"
-      >
-
-        <path
-          d="
-            M0 22
-            L77 12
-            L81 30
-            L4 40 Z
-          "
-          fill="#8a4d3c"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M9 6
-            L70 0
-            L75 16
-            L13 23 Z
-          "
-          fill="#355d50"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M16 5
-            L18 20
-          "
-          stroke="#c3a45e"
-          stroke-width="3"
-        />
-
-      </g>
-
-
-      <!-- =================================================
-           OPEN BOOK
-      ================================================== -->
-
-      <g
-        transform="translate(748 522)"
-      >
-
-        <path
-          d="
-            M0 16
-            C27 4 53 7 69 20
-            L69 64
-            C49 50 27 48 0 58 Z
-          "
-          fill="#ddc99d"
-          stroke="#6a5235"
-          stroke-width="2"
-        />
-
-        <path
-          d="
-            M69 20
-            C86 6 113 5 139 17
-            L139 58
-            C113 48 91 50 69 64 Z
-          "
-          fill="#e7d5aa"
-          stroke="#6a5235"
-          stroke-width="2"
-        />
-
-        <path
-          d="
-            M69 20
-            L69 64
-          "
-          stroke="#8a704a"
-          stroke-width="2"
-        />
-
-        <g
-          stroke="#927a58"
-          stroke-width="1"
-          opacity=".55"
-        >
-
-          <path d="M12 27 L54 24"/>
-          <path d="M10 35 L57 31"/>
-          <path d="M12 43 L50 40"/>
-
-          <path d="M82 26 L125 24"/>
-          <path d="M80 34 L128 32"/>
-          <path d="M84 42 L122 40"/>
-
-        </g>
-
-      </g>
-
-
-      <!-- =================================================
-           MUG
-      ================================================== -->
-
-      <g
-        transform="translate(664 541)"
-      >
-
-        <path
-          d="
-            M0 5
-            L25 5
-            L22 35
-            L4 35 Z
-          "
-          fill="#8d6948"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M23 12
-            C40 9 40 29 24 27
-          "
-          fill="none"
-          stroke="#8d6948"
-          stroke-width="5"
-        />
-
-        <path
-          d="
-            M9 1
-            C3 -10 17 -13 10 -25
-
-            M18 0
-            C12 -9 24 -14 18 -23
-          "
-          fill="none"
-          stroke="#c8d5c9"
-          stroke-width="2"
-          opacity=".35"
-        />
-
-      </g>
-
-
-      <!-- =================================================
-           KETTLE
-      ================================================== -->
-
-      <g
-        transform="translate(548 518)"
-      >
-
-        <ellipse
-          cx="29"
-          cy="38"
-          rx="27"
-          ry="22"
-          fill="#3d4841"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M9 30
-            C9 3 49 3 49 30
-          "
-          fill="none"
-          stroke="#65716a"
-          stroke-width="5"
-        />
-
-        <path
-          d="
-            M54 31
-            L74 22
-            L58 39
-          "
-          fill="#4c5750"
-          class="ink-soft"
-        />
-
-      </g>
-
-
-      <!-- =================================================
-           SLEEPING FOREST CREATURE
-      ================================================== -->
-
-      <g
-        transform="translate(880 536)"
-      >
-
-        <path
-          d="
-            M5 28
-            C13 4 49 2 64 22
-            C73 34 66 47 52 51
-            C34 57 11 48 5 28 Z
-          "
-          fill="#8a684d"
-          class="ink-soft"
-        />
-
-        <circle
-          cx="58"
-          cy="23"
-          r="17"
-          fill="#957054"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M48 11
-            L47 -2
-            L57 9
-
-            M64 9
-            L72 -3
-            L72 13
-          "
-          fill="#957054"
-          class="ink-soft"
-        />
-
-        <path
-          d="
-            M53 20
-            q4 3 8 0
-          "
-          fill="none"
-          stroke="#372820"
-          stroke-width="2"
-        />
-
-        <path
-          d="
-            M60 25
-            C64 28 68 28 71 25
-          "
-          fill="none"
-          stroke="#372820"
-          stroke-width="2"
-        />
-
-      </g>
-
-
-      <!-- =================================================
-           CAMPFIRE
-      ================================================== -->
-
-      <g
-        transform="translate(553 520)"
-      >
-
-        <!-- stones -->
-
-        <g
-          fill="#6d6758"
-          stroke="#302b25"
-          stroke-width="3"
-        >
-
-          <ellipse cx="8" cy="56" rx="24" ry="15"/>
-          <ellipse cx="43" cy="69" rx="24" ry="15"/>
-          <ellipse cx="83" cy="72" rx="25" ry="15"/>
-          <ellipse cx="123" cy="66" rx="24" ry="15"/>
-          <ellipse cx="151" cy="48" rx="23" ry="14"/>
-          <ellipse cx="127" cy="29" rx="22" ry="13"/>
-          <ellipse cx="31" cy="30" rx="23" ry="14"/>
-
-        </g>
-
-
-        <!-- logs -->
-
-        <path
-          d="M35 52 L126 25"
-          stroke="#65432e"
-          stroke-width="18"
-          stroke-linecap="round"
-          class="ink-soft"
-        />
-
-        <path
-          d="M41 24 L126 56"
-          stroke="#74503a"
-          stroke-width="18"
-          stroke-linecap="round"
-          class="ink-soft"
-        />
-
-
-        <!-- outer flame -->
-
-        <path
-          d="
-            M72 48
-            C48 23 58 -1 80 -23
-            C75 2 91 8 91 24
-            C98 8 111 -3 108 -23
-            C133 3 135 31 112 51
-            C101 62 82 62 72 48 Z
-          "
-          fill="url(#flameOuter)"
-          filter="url(#flameGlow)"
-        >
-
-          <animate
-            attributeName="d"
-            dur="1.15s"
-            repeatCount="indefinite"
-            values="
-              M72 48 C48 23 58 -1 80 -23 C75 2 91 8 91 24 C98 8 111 -3 108 -23 C133 3 135 31 112 51 C101 62 82 62 72 48 Z;
-              M72 48 C53 23 64 3 76 -31 C82 -3 94 4 91 25 C104 5 110 -7 116 -18 C128 11 136 33 112 51 C101 62 82 62 72 48 Z;
-              M72 48 C48 23 58 -1 80 -23 C75 2 91 8 91 24 C98 8 111 -3 108 -23 C133 3 135 31 112 51 C101 62 82 62 72 48 Z
-            "
-          />
-
-        </path>
-
-
-        <!-- inner flame -->
-
-        <path
-          d="
-            M82 49
-            C69 31 76 14 90 1
-            C88 18 99 20 98 33
-            C105 22 111 17 112 8
-            C124 29 116 51 102 57
-            C94 60 86 56 82 49 Z
-          "
-          fill="url(#flameInner)"
-        >
-
-          <animate
-            attributeName="d"
-            dur=".82s"
-            repeatCount="indefinite"
-            values="
-              M82 49 C69 31 76 14 90 1 C88 18 99 20 98 33 C105 22 111 17 112 8 C124 29 116 51 102 57 C94 60 86 56 82 49 Z;
-              M82 49 C72 29 83 17 88 3 C93 17 102 22 98 34 C108 24 114 15 115 3 C123 30 116 51 102 57 C94 60 86 56 82 49 Z;
-              M82 49 C69 31 76 14 90 1 C88 18 99 20 98 33 C105 22 111 17 112 8 C124 29 116 51 102 57 C94 60 86 56 82 49 Z
-            "
-          />
-
-        </path>
-
-
-        <!-- hot center -->
-
-        <path
-          d="
-            M91 50
-            C84 39 89 28 97 20
-            C96 33 104 36 102 48
-            C100 56 94 56 91 50 Z
-          "
-          fill="#fff2ae"
-          opacity=".91"
-        />
-
-      </g>
-
-
-      <!-- smoke -->
-
-      <g
-        fill="none"
-        stroke="#b7c6bc"
-        stroke-linecap="round"
-        opacity=".16"
-      >
-
-        <path
-          d="
-            M641 485
-            C620 460 649 443 638 417
-            C628 393 652 380 645 358
-          "
-          stroke-width="10"
-        />
-
-        <path
-          d="
-            M623 483
-            C643 460 620 442 630 425
-            C642 405 629 390 637 373
-          "
-          stroke-width="6"
-        />
-
-      </g>
-
-
-      <!-- foreground fire glow -->
-
-      <ellipse
-        cx="625"
-        cy="500"
-        rx="385"
-        ry="155"
-        fill="url(#svgFireGlow)"
-        opacity=".16"
-        style="mix-blend-mode:screen"
-      />
-
-
-    </svg>
 
   </div>
+
+
+  <!-- REAL HTML COPY OVER THE ARTWORK -->
+
+  <div class="wrap hero-content">
+
+    <div class="hero-copy">
+
+      <div class="hero-kicker">
+        Stories bring us home
+      </div>
+
+      <h1>
+        Different
+        <span>Readers.</span>
+        <span>Same Campfire.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        A home for every kind of story
+        and every kind of reader.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div
+    class="hero-bottom"
+    aria-hidden="true"
+  ></div>
 
 </section>
 
 
 <!-- ======================================================
-     QUICK PATHS
+     QUICK NAV
 ======================================================= -->
 
-<section class="quick-paths">
+<section class="quick-nav">
 
   <div class="wrap">
 
-    <div class="path-grid">
+    <div class="quick-panel">
 
       <a
-        class="path"
+        class="quick-link"
         href="discover.html"
       >
 
-        <span class="path-icon">
+        <span
+          class="quick-icon"
+          aria-hidden="true"
+        >
           📚
         </span>
 
-        <span class="path-label">
+        <span class="quick-label">
           Explore Books
         </span>
 
@@ -6589,15 +2442,18 @@ footer{
 
 
       <a
-        class="path"
+        class="quick-link"
         href="clubs.html"
       >
 
-        <span class="path-icon">
+        <span
+          class="quick-icon"
+          aria-hidden="true"
+        >
           ⛺
         </span>
 
-        <span class="path-label">
+        <span class="quick-label">
           Join a Club
         </span>
 
@@ -6605,15 +2461,18 @@ footer{
 
 
       <a
-        class="path"
+        class="quick-link"
         href="profile.html"
       >
 
-        <span class="path-icon">
+        <span
+          class="quick-icon"
+          aria-hidden="true"
+        >
           🧙
         </span>
 
-        <span class="path-label">
+        <span class="quick-label">
           Create Your Avatar
         </span>
 
@@ -6621,15 +2480,18 @@ footer{
 
 
       <a
-        class="path"
+        class="quick-link"
         href="#stories"
       >
 
-        <span class="path-icon">
+        <span
+          class="quick-icon"
+          aria-hidden="true"
+        >
           🔖
         </span>
 
-        <span class="path-label">
+        <span class="quick-label">
           Share Your DogEars
         </span>
 
@@ -6637,15 +2499,18 @@ footer{
 
 
       <a
-        class="path"
+        class="quick-link"
         href="#stories"
       >
 
-        <span class="path-icon">
+        <span
+          class="quick-icon"
+          aria-hidden="true"
+        >
           ✨
         </span>
 
-        <span class="path-label">
+        <span class="quick-label">
           Explore More
         </span>
 
@@ -6663,23 +2528,23 @@ footer{
 ======================================================= -->
 
 <section
-  class="content-section clubs-section"
+  class="section clubs-section"
   id="clubs"
 >
 
   <div class="wrap">
 
-    <div class="section-header">
+    <div class="clubs-heading">
 
-      <div class="eyebrow">
+      <div class="section-eyebrow">
         Around the fire
       </div>
 
-      <h2>
+      <h2 class="section-title">
         Find your people.
       </h2>
 
-      <p>
+      <p class="section-intro">
         Every corner of the campfire has a different
         conversation. Wander over. Pull up a log.
         Stay awhile.
@@ -6696,14 +2561,14 @@ footer{
       >
 
         <div
-          class="club-art club-fantasy"
+          class="club-image club-fantasy"
         ></div>
 
-        <div class="club-content">
+        <div class="club-body">
 
-          <small>
+          <div class="club-meta">
             Swords · Spells · Dragons
-          </small>
+          </div>
 
           <h3>
             Fantasy Seekers
@@ -6725,14 +2590,14 @@ footer{
       >
 
         <div
-          class="club-art club-queer"
+          class="club-image club-queer"
         ></div>
 
-        <div class="club-content">
+        <div class="club-body">
 
-          <small>
+          <div class="club-meta">
             Love · Identity · Belonging
-          </small>
+          </div>
 
           <h3>
             Queer Reads
@@ -6754,14 +2619,14 @@ footer{
       >
 
         <div
-          class="club-art club-scifi"
+          class="club-image club-scifi"
         ></div>
 
-        <div class="club-content">
+        <div class="club-body">
 
-          <small>
+          <div class="club-meta">
             Stars · Futures · Strange Worlds
-          </small>
+          </div>
 
           <h3>
             Sci-Fi Voyagers
@@ -6783,14 +2648,14 @@ footer{
       >
 
         <div
-          class="club-art club-cozy"
+          class="club-image club-cozy"
         ></div>
 
-        <div class="club-content">
+        <div class="club-body">
 
-          <small>
+          <div class="club-meta">
             Tea · Blankets · Happy Endings
-          </small>
+          </div>
 
           <h3>
             Cozy Corner
@@ -6811,27 +2676,27 @@ footer{
 
 </section>
 <!-- ======================================================
-     THE CAMPFIRE EXPERIENCE
+     STORY / PARCHMENT SECTION
 ======================================================= -->
 
 <section
-  class="content-section parchment-section"
+  class="section story-section"
   id="stories"
 >
 
   <div class="wrap">
 
-    <div class="section-header center">
+    <div class="story-heading">
 
-      <div class="eyebrow">
+      <div class="section-eyebrow">
         However you read
       </div>
 
-      <h2>
+      <h2 class="section-title">
         There is a place for you here.
       </h2>
 
-      <p>
+      <p class="section-intro">
         Some readers devour a book overnight.
         Some take a month. Some annotate every page.
         Some just want somebody to scream about the ending with.
@@ -6842,9 +2707,6 @@ footer{
 
 
     <div class="story-grid">
-
-
-      <!-- CARD 1 -->
 
       <article class="story-card">
 
@@ -6880,8 +2742,6 @@ footer{
       </article>
 
 
-      <!-- CARD 2 -->
-
       <article class="story-card">
 
         <span class="story-number">
@@ -6902,7 +2762,7 @@ footer{
         <p>
           Save the moments that made you laugh,
           stare at the ceiling, throw the book down,
-          or immediately text somebody
+          or immediately text somebody,
           “YOU NEED TO READ THIS.”
         </p>
 
@@ -6915,8 +2775,6 @@ footer{
 
       </article>
 
-
-      <!-- CARD 3 -->
 
       <article class="story-card">
 
@@ -6962,17 +2820,15 @@ footer{
 ======================================================= -->
 
 <section
-  class="content-section book-section"
+  class="section book-section"
   id="books"
 >
 
   <div class="wrap book-shell">
 
 
-    <!-- BOOK ART -->
-
     <div
-      class="book-stack"
+      class="book-art"
       aria-hidden="true"
     >
 
@@ -6990,13 +2846,15 @@ footer{
           class="book-placeholder"
           id="bookPlaceholder"
         >
-          ✦
-          <br>
-          Find your next
-          <br>
-          favorite story
-          <br>
-          ✦
+          <div>
+            ✦
+            <br>
+            Find your next
+            <br>
+            favorite story
+            <br>
+            ✦
+          </div>
         </div>
 
       </div>
@@ -7004,15 +2862,13 @@ footer{
     </div>
 
 
-    <!-- BOOK SEARCH -->
-
     <div class="book-copy">
 
-      <div class="eyebrow">
+      <div class="section-eyebrow">
         The path keeps going
       </div>
 
-      <h2>
+      <h2 class="section-title">
         What are you reading next?
       </h2>
 
@@ -7110,7 +2966,7 @@ footer{
 
   <div class="wrap dawn-copy">
 
-    <div class="eyebrow">
+    <div class="section-eyebrow">
       Somehow it is morning already
     </div>
 
@@ -7212,14 +3068,12 @@ footer{
 <script>
 
 /* =========================================================
-   PAPER GREMLIN HOMEPAGE
+   PAPER GREMLIN HOMEPAGE JAVASCRIPT
 ========================================================= */
 
 
 /* =========================================================
    SUPABASE CONFIG
-
-   This is the same project/config used by the dashboard.
 ========================================================= */
 
 const SUPABASE_URL =
@@ -7231,10 +3085,6 @@ const SUPABASE_KEY =
 
 let supabaseClient = null;
 
-
-/* =========================================================
-   INITIALIZE SUPABASE SAFELY
-========================================================= */
 
 if(
   window.supabase &&
@@ -7281,7 +3131,7 @@ const dawnAction =
 
 
 /* =========================================================
-   LOGGED OUT STATE
+   LOGGED OUT HOMEPAGE
 ========================================================= */
 
 function showLoggedOutHomepage(){
@@ -7344,7 +3194,7 @@ function showLoggedOutHomepage(){
 
 
 /* =========================================================
-   LOGGED IN STATE
+   LOGGED IN HOMEPAGE
 ========================================================= */
 
 function showLoggedInHomepage(){
@@ -7407,7 +3257,7 @@ function showLoggedInHomepage(){
 
 
 /* =========================================================
-   CHECK EXISTING SESSION
+   SESSION CHECK
 ========================================================= */
 
 async function syncHomepageAuth(){
@@ -7475,7 +3325,7 @@ async function syncHomepageAuth(){
 
 
 /* =========================================================
-   LISTEN FOR AUTH CHANGES
+   AUTH CHANGES
 ========================================================= */
 
 if(supabaseClient){
@@ -7505,7 +3355,7 @@ if(supabaseClient){
 
 
 /* =========================================================
-   GOOGLE BOOKS SEARCH
+   GOOGLE BOOKS ELEMENTS
 ========================================================= */
 
 const bookSearchForm =
@@ -7545,7 +3395,7 @@ const bookPlaceholder =
 
 
 /* =========================================================
-   CLEAN GOOGLE BOOKS DESCRIPTION
+   DESCRIPTION CLEANUP
 ========================================================= */
 
 function cleanDescription(
@@ -7580,7 +3430,7 @@ function cleanDescription(
 
 
 /* =========================================================
-   DISPLAY SEARCH STATUS
+   SEARCH STATUS
 ========================================================= */
 
 function setBookSearchStatus(
@@ -7613,10 +3463,8 @@ function setBookSearchStatus(
   }
 
 }
-
-
-/* =========================================================
-   SEARCH GOOGLE BOOKS
+  /* =========================================================
+   GOOGLE BOOKS SEARCH
 ========================================================= */
 
 async function searchGoogleBooks(
@@ -7863,18 +3711,26 @@ if(bookSearchForm){
 
 
 /* =========================================================
-   SUBTLE HERO PARALLAX
+   HERO ART PARALLAX
+
+   The illustration moves only slightly. This keeps the
+   painterly artwork intact instead of making it feel like
+   a moving game background.
 ========================================================= */
 
-const storyStage =
+const heroArt =
   document.getElementById(
-    "storyStage"
+    "heroArt"
   );
+
+
+let ticking =
+  false;
 
 
 function updateHeroParallax(){
 
-  if(!storyStage){
+  if(!heroArt){
 
     return;
 
@@ -7892,9 +3748,9 @@ function updateHeroParallax(){
   }
 
 
-  if(window.innerWidth < 821){
+  if(window.innerWidth <= 760){
 
-    storyStage.style.marginTop =
+    heroArt.style.transform =
       "";
 
     return;
@@ -7902,137 +3758,267 @@ function updateHeroParallax(){
   }
 
 
-  const scrollY =
-    window.scrollY || 0;
-
-
-  const movement =
+  const scrollAmount =
     Math.min(
-      scrollY * .055,
-      24
+      window.scrollY * .035,
+      18
     );
 
 
-  storyStage.style.marginTop =
-    (-4 + movement) +
-    "px";
+  heroArt.style.transform =
+    "translateY(" +
+    scrollAmount +
+    "px) scale(1.015)";
 
 }
 
 
 /* =========================================================
-   RANDOM STAR TWINKLES
+   SCROLL HANDLER
 ========================================================= */
 
-function createTwinkles(){
+function requestHeroUpdate(){
 
-  const sky =
-    document.querySelector(
-      ".night-sky"
-    );
-
-
-  if(!sky){
+  if(ticking){
 
     return;
 
   }
 
 
-  const count =
+  ticking =
+    true;
+
+
+  window.requestAnimationFrame(
+    () => {
+
+      updateHeroParallax();
+
+      ticking =
+        false;
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   SUBTLE POINTER DEPTH
+
+   Desktop only. The artwork shifts by just a few pixels
+   depending on pointer position.
+========================================================= */
+
+const hero =
+  document.querySelector(
+    ".hero"
+  );
+
+
+let pointerX =
+  0;
+
+let pointerY =
+  0;
+
+
+function updatePointerDepth(
+  event
+){
+
+  if(
+    !heroArt ||
+    window.innerWidth <= 900 ||
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches
+  ){
+
+    return;
+
+  }
+
+
+  const bounds =
+    hero.getBoundingClientRect();
+
+
+  if(
+    event.clientY <
+      bounds.top ||
+    event.clientY >
+      bounds.bottom
+  ){
+
+    return;
+
+  }
+
+
+  const x =
+    (
+      event.clientX -
+      bounds.left
+    ) /
+    bounds.width;
+
+
+  const y =
+    (
+      event.clientY -
+      bounds.top
+    ) /
+    bounds.height;
+
+
+  pointerX =
+    (
+      x - .5
+    ) * 5;
+
+
+  pointerY =
+    (
+      y - .5
+    ) * 3;
+
+
+  const scrollAmount =
+    Math.min(
+      window.scrollY * .035,
+      18
+    );
+
+
+  heroArt.style.transform =
+    "translate(" +
+    pointerX +
+    "px," +
+    (
+      scrollAmount +
+      pointerY
+    ) +
+    "px) scale(1.018)";
+
+}
+
+
+/* =========================================================
+   POINTER RESET
+========================================================= */
+
+function resetPointerDepth(){
+
+  if(!heroArt){
+
+    return;
+
+  }
+
+
+  pointerX =
+    0;
+
+  pointerY =
+    0;
+
+
+  updateHeroParallax();
+
+}
+
+
+/* =========================================================
+   ADD MORE NATURAL FIREFLIES
+========================================================= */
+
+function createExtraFireflies(){
+
+  const layer =
+    document.querySelector(
+      ".firefly-layer"
+    );
+
+
+  if(!layer){
+
+    return;
+
+  }
+
+
+  const numberOfFireflies =
     window.innerWidth < 700
-      ? 10
-      : 20;
+      ? 5
+      : 11;
 
 
   for(
     let i = 0;
-    i < count;
+    i < numberOfFireflies;
     i++
   ){
 
-    const star =
+    const firefly =
       document.createElement(
         "span"
       );
 
 
-    star.style.position =
-      "absolute";
+    firefly.className =
+      "firefly";
 
-    star.style.left =
+
+    firefly.style.left =
       (
-        3 +
-        Math.random() * 94
+        12 +
+        Math.random() * 76
       ) +
       "%";
 
-    star.style.top =
+
+    firefly.style.top =
       (
-        5 +
-        Math.random() * 47
+        24 +
+        Math.random() * 43
       ) +
       "%";
 
-    star.style.width =
+
+    firefly.style.animationDelay =
       (
-        1 +
-        Math.random() * 2
+        Math.random() * -7
       ) +
+      "s";
+
+
+    firefly.style.animationDuration =
+      (
+        5.5 +
+        Math.random() * 5
+      ) +
+      "s";
+
+
+    const size =
+      2 +
+      Math.random() * 3;
+
+
+    firefly.style.width =
+      size +
       "px";
 
-    star.style.height =
-      star.style.width;
 
-    star.style.borderRadius =
-      "50%";
-
-    star.style.background =
-      "#fff2c2";
-
-    star.style.boxShadow =
-      "0 0 7px rgba(255,240,178,.8)";
-
-    star.style.opacity =
-      (
-        .2 +
-        Math.random() * .7
-      );
+    firefly.style.height =
+      size +
+      "px";
 
 
-    star.animate(
-      [
-        {
-          opacity:.15,
-          transform:"scale(.7)"
-        },
-
-        {
-          opacity:.95,
-          transform:"scale(1.35)"
-        },
-
-        {
-          opacity:.15,
-          transform:"scale(.7)"
-        }
-      ],
-      {
-        duration:
-          2800 +
-          Math.random() * 4200,
-
-        iterations:
-          Infinity,
-
-        delay:
-          Math.random() * -5000
-      }
-    );
-
-
-    sky.appendChild(
-      star
+    layer.appendChild(
+      firefly
     );
 
   }
@@ -8041,14 +4027,255 @@ function createTwinkles(){
 
 
 /* =========================================================
-   INITIALIZE HOMEPAGE
+   EMBERS
+
+   Small embers are generated over the area of the fire.
+   They are separate from the illustration so the campfire
+   appears alive.
+========================================================= */
+
+function createEmberLayer(){
+
+  if(!hero){
+
+    return;
+
+  }
+
+
+  const emberLayer =
+    document.createElement(
+      "div"
+    );
+
+
+  emberLayer.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  Object.assign(
+    emberLayer.style,
+    {
+      position:
+        "absolute",
+
+      inset:
+        "0",
+
+      overflow:
+        "hidden",
+
+      pointerEvents:
+        "none",
+
+      zIndex:
+        "11"
+    }
+  );
+
+
+  hero.appendChild(
+    emberLayer
+  );
+
+
+  const emberCount =
+    window.innerWidth < 700
+      ? 7
+      : 15;
+
+
+  for(
+    let i = 0;
+    i < emberCount;
+    i++
+  ){
+
+    const ember =
+      document.createElement(
+        "span"
+      );
+
+
+    const size =
+      1 +
+      Math.random() * 2.5;
+
+
+    Object.assign(
+      ember.style,
+      {
+        position:
+          "absolute",
+
+        left:
+          (
+            45 +
+            Math.random() * 12
+          ) +
+          "%",
+
+        top:
+          (
+            59 +
+            Math.random() * 12
+          ) +
+          "%",
+
+        width:
+          size +
+          "px",
+
+        height:
+          size +
+          "px",
+
+        borderRadius:
+          "50%",
+
+        background:
+          "#ffd178",
+
+        boxShadow:
+          "0 0 7px rgba(255,166,66,.95)",
+
+        opacity:
+          "0"
+      }
+    );
+
+
+    emberLayer.appendChild(
+      ember
+    );
+
+
+    const horizontalMovement =
+      -25 +
+      Math.random() * 50;
+
+
+    const verticalMovement =
+      -75 -
+      Math.random() * 95;
+
+
+    ember.animate(
+      [
+        {
+          transform:
+            "translate(0,0) scale(.6)",
+
+          opacity:
+            0
+        },
+
+        {
+          offset:
+            .15,
+
+          opacity:
+            .95
+        },
+
+        {
+          offset:
+            .7,
+
+          opacity:
+            .55
+        },
+
+        {
+          transform:
+            "translate(" +
+            horizontalMovement +
+            "px," +
+            verticalMovement +
+            "px) scale(.2)",
+
+          opacity:
+            0
+        }
+      ],
+      {
+        duration:
+          2400 +
+          Math.random() * 2600,
+
+        delay:
+          Math.random() * -4000,
+
+        iterations:
+          Infinity,
+
+        easing:
+          "ease-out"
+      }
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   IMAGE CHECK
+
+   If the filename/path is wrong, this leaves a useful
+   message in the browser console rather than failing
+   completely silently.
+========================================================= */
+
+function verifyHeroArtwork(){
+
+  const testImage =
+    new Image();
+
+
+  testImage.onload =
+    () => {
+
+      console.log(
+        "Paper Gremlin campfire artwork loaded successfully."
+      );
+
+    };
+
+
+  testImage.onerror =
+    () => {
+
+      console.error(
+        "Paper Gremlin hero artwork could not be loaded. " +
+        "Check that this exact file exists: " +
+        "assets/home/paper-gremlin-campfire.png"
+      );
+
+    };
+
+
+  testImage.src =
+    "assets/home/paper-gremlin-campfire.png";
+
+}
+
+
+/* =========================================================
+   INITIALIZE
 ========================================================= */
 
 document.addEventListener(
   "DOMContentLoaded",
   async () => {
 
-    createTwinkles();
+    verifyHeroArtwork();
+
+    createExtraFireflies();
+
+    createEmberLayer();
 
     updateHeroParallax();
 
@@ -8059,29 +4286,91 @@ document.addEventListener(
 
 
 /* =========================================================
-   SCROLL EFFECT
+   EVENTS
 ========================================================= */
 
 window.addEventListener(
   "scroll",
-  updateHeroParallax,
+  requestHeroUpdate,
   {
     passive:true
   }
 );
 
 
-/* =========================================================
-   RESIZE
-========================================================= */
-
 window.addEventListener(
   "resize",
-  updateHeroParallax
+  requestHeroUpdate
+);
+
+
+if(hero){
+
+  hero.addEventListener(
+    "pointermove",
+    updatePointerDepth,
+    {
+      passive:true
+    }
+  );
+
+
+  hero.addEventListener(
+    "pointerleave",
+    resetPointerDepth
+  );
+
+}
+
+
+/* =========================================================
+   CLEAN UP IMAGE ALT STATE
+
+   The cover image is hidden until Google Books returns
+   an actual cover.
+========================================================= */
+
+if(bookCover){
+
+  bookCover.addEventListener(
+    "error",
+    () => {
+
+      bookCover.style.display =
+        "none";
+
+
+      bookCover.removeAttribute(
+        "src"
+      );
+
+
+      bookCover.alt =
+        "";
+
+
+      if(bookPlaceholder){
+
+        bookPlaceholder.style.display =
+          "grid";
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   READY
+========================================================= */
+
+console.log(
+  "Paper Gremlin homepage ready."
 );
 
 </script>
-
 
 </body>
 </html>
