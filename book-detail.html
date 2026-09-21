@@ -24,7 +24,6 @@
 }
 
 *{box-sizing:border-box}
-
 html{scroll-behavior:smooth}
 
 body{
@@ -110,7 +109,9 @@ button{color:inherit}
 }
 
 .nav a:hover,
-.nav .active{color:var(--gold2)}
+.nav .active{
+  color:var(--gold2);
+}
 
 .avatar{
   width:38px;
@@ -523,7 +524,9 @@ h1{
   flex-wrap:wrap;
 }
 
-.review-list{display:grid}
+.review-list{
+  display:grid;
+}
 
 .review-item{
   padding:22px 0;
@@ -568,7 +571,9 @@ h1{
   object-fit:cover;
 }
 
-.reviewer-name{font-size:15px}
+.reviewer-name{
+  font-size:15px;
+}
 
 .review-date{
   margin-top:3px;
@@ -619,7 +624,9 @@ h1{
   text-transform:uppercase;
 }
 
-.loading.hidden{display:none}
+.loading.hidden{
+  display:none;
+}
 
 @media(max-width:900px){
   .hero{
@@ -632,7 +639,9 @@ h1{
 }
 
 @media(max-width:680px){
-  .nav{display:none}
+  .nav{
+    display:none;
+  }
 
   .hero{
     grid-template-columns:1fr;
@@ -681,7 +690,7 @@ h1{
     href="profile.html"
     aria-label="Profile"
   >
-    D
+    P
   </a>
 
 </header>
@@ -817,12 +826,18 @@ h1{
 
             </div>
 
-            <div class="rating-breakdown" id="ratingBreakdown">
+            <div
+              class="rating-breakdown"
+              id="ratingBreakdown"
+            >
 
               <div class="rating-row">
                 <span>5 ★</span>
                 <div class="rating-bar">
-                  <div class="rating-bar-fill" id="ratingBar5"></div>
+                  <div
+                    class="rating-bar-fill"
+                    id="ratingBar5"
+                  ></div>
                 </div>
                 <span id="ratingCount5">0</span>
               </div>
@@ -830,7 +845,10 @@ h1{
               <div class="rating-row">
                 <span>4 ★</span>
                 <div class="rating-bar">
-                  <div class="rating-bar-fill" id="ratingBar4"></div>
+                  <div
+                    class="rating-bar-fill"
+                    id="ratingBar4"
+                  ></div>
                 </div>
                 <span id="ratingCount4">0</span>
               </div>
@@ -838,7 +856,10 @@ h1{
               <div class="rating-row">
                 <span>3 ★</span>
                 <div class="rating-bar">
-                  <div class="rating-bar-fill" id="ratingBar3"></div>
+                  <div
+                    class="rating-bar-fill"
+                    id="ratingBar3"
+                  ></div>
                 </div>
                 <span id="ratingCount3">0</span>
               </div>
@@ -846,7 +867,10 @@ h1{
               <div class="rating-row">
                 <span>2 ★</span>
                 <div class="rating-bar">
-                  <div class="rating-bar-fill" id="ratingBar2"></div>
+                  <div
+                    class="rating-bar-fill"
+                    id="ratingBar2"
+                  ></div>
                 </div>
                 <span id="ratingCount2">0</span>
               </div>
@@ -854,7 +878,10 @@ h1{
               <div class="rating-row">
                 <span>1 ★</span>
                 <div class="rating-bar">
-                  <div class="rating-bar-fill" id="ratingBar1"></div>
+                  <div
+                    class="rating-bar-fill"
+                    id="ratingBar1"
+                  ></div>
                 </div>
                 <span id="ratingCount1">0</span>
               </div>
@@ -863,7 +890,10 @@ h1{
 
           </div>
 
-          <div class="review-editor" id="reviewEditor">
+          <div
+            class="review-editor"
+            id="reviewEditor"
+          >
 
             <div class="review-editor-title">
               Your Review
@@ -882,11 +912,35 @@ h1{
               aria-label="Choose a rating"
             >
 
-              <button class="star-button" type="button" data-rating="1">★</button>
-              <button class="star-button" type="button" data-rating="2">★</button>
-              <button class="star-button" type="button" data-rating="3">★</button>
-              <button class="star-button" type="button" data-rating="4">★</button>
-              <button class="star-button" type="button" data-rating="5">★</button>
+              <button
+                class="star-button"
+                type="button"
+                data-rating="1"
+              >★</button>
+
+              <button
+                class="star-button"
+                type="button"
+                data-rating="2"
+              >★</button>
+
+              <button
+                class="star-button"
+                type="button"
+                data-rating="3"
+              >★</button>
+
+              <button
+                class="star-button"
+                type="button"
+                data-rating="4"
+              >★</button>
+
+              <button
+                class="star-button"
+                type="button"
+                data-rating="5"
+              >★</button>
 
             </div>
 
@@ -934,7 +988,10 @@ h1{
 
             </div>
 
-            <div class="message" id="reviewMessage"></div>
+            <div
+              class="message"
+              id="reviewMessage"
+            ></div>
 
           </div>
 
@@ -1001,8 +1058,8 @@ h1{
             </a>
 
             <div class="disclosure">
-              Paper Gremlin may earn an affiliate commission from
-              qualifying Bookshop.org purchases.
+              Paper Gremlin may earn an affiliate commission
+              from qualifying Bookshop.org purchases.
             </div>
 
           </div>
@@ -1021,26 +1078,60 @@ h1{
 
           <div class="detail-grid">
 
-            <div class="detail-label">Publisher</div>
-            <div class="detail-value" id="detailPublisher">—</div>
+            <div class="detail-label">
+              Publisher
+            </div>
 
-            <div class="detail-label">Published</div>
-            <div class="detail-value" id="detailPublished">—</div>
+            <div
+              class="detail-value"
+              id="detailPublisher"
+            >
+              —
+            </div>
 
-            <div class="detail-label">Pages</div>
-            <div class="detail-value" id="detailPages">—</div>
+            <div class="detail-label">
+              Published
+            </div>
 
-            <div class="detail-label">ISBN-13</div>
-            <div class="detail-value" id="detailIsbn13">—</div>
+            <div
+              class="detail-value"
+              id="detailPublished"
+            >
+              —
+            </div>
 
-            <div class="detail-label">ISBN-10</div>
-            <div class="detail-value" id="detailIsbn10">—</div>
+            <div class="detail-label">
+              ISBN-13
+            </div>
 
-            <div class="detail-label">Categories</div>
-            <div class="detail-value" id="detailCategories">—</div>
+            <div
+              class="detail-value"
+              id="detailIsbn13"
+            >
+              —
+            </div>
 
-            <div class="detail-label">Language</div>
-            <div class="detail-value" id="detailLanguage">—</div>
+            <div class="detail-label">
+              ISBN-10
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailIsbn10"
+            >
+              —
+            </div>
+
+            <div class="detail-label">
+              Categories
+            </div>
+
+            <div
+              class="detail-value"
+              id="detailCategories"
+            >
+              —
+            </div>
 
           </div>
 
@@ -1057,7 +1148,7 @@ h1{
 <script>
 
 /* =========================================================
-   CONFIGURATION
+   SUPABASE
 ========================================================= */
 
 const SUPABASE_URL =
@@ -1066,63 +1157,106 @@ const SUPABASE_URL =
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
 
-const BOOKSHOP_AFFILIATE_ID =
-  "128186";
-
 const supabaseClient =
-  supabase.createClient(
+  window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
   );
+
+const BOOKSHOP_AFFILIATE_ID =
+  "128186";
 
 /* =========================================================
    STATE
 ========================================================= */
 
-const params =
-  new URLSearchParams(
-    window.location.search
-  );
+let currentUser =
+  null;
 
-const requestedBookId =
-  params.get("id");
+let currentBook =
+  null;
 
-const requestedGoogleId =
-  params.get("google_id") ||
-  params.get("googleId");
+let currentBookId =
+  null;
 
-let currentUser = null;
-let currentProfile = null;
-let currentBook = null;
-let currentBookId = null;
-let currentRating = 0;
-let hoveredRating = 0;
-let currentUserReview = null;
-let communityReviews = [];
+let currentUserReview =
+  null;
+
+let communityReviews =
+  [];
+
+let currentRating =
+  0;
+
+let hoveredRating =
+  0;
 
 /* =========================================================
-   HELPERS
+   BASIC HELPERS
 ========================================================= */
 
-const $ =
-  id =>
-    document.getElementById(id);
+function $(
+  id
+){
+  return document.getElementById(id);
+}
+
+function escapeHtml(
+  value
+){
+
+  return String(
+    value ?? ""
+  )
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+function initials(
+  value
+){
+
+  const words =
+    String(
+      value || "P"
+    )
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+  if(!words.length){
+    return "P";
+  }
+
+  return words
+    .slice(0,2)
+    .map(
+      word =>
+        word.charAt(0).toUpperCase()
+    )
+    .join("");
+
+}
 
 function setMessage(
-  elementId,
-  message = "",
+  id,
+  text = "",
   type = ""
 ){
 
   const element =
-    $(elementId);
+    $(id);
 
   if(!element){
     return;
   }
 
   element.textContent =
-    message;
+    text;
 
   element.className =
     "message" +
@@ -1134,187 +1268,262 @@ function setMessage(
 
 }
 
-function escapeHtml(value){
-
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-}
-
-function initials(value){
-
-  const words =
-    String(value || "Paper Gremlin")
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean);
-
-  if(!words.length){
-    return "D";
-  }
-
-  return words
-    .slice(0,2)
-    .map(
-      word =>
-        word.charAt(0)
-    )
-    .join("")
-    .toUpperCase();
-
-}
-
-function normalizeAuthors(value){
-
-  if(Array.isArray(value)){
-    return value.filter(Boolean).map(String);
-  }
-
-  if(
-    typeof value === "string" &&
-    value.trim()
-  ){
-
-    try{
-
-      const parsed =
-        JSON.parse(value);
-
-      if(Array.isArray(parsed)){
-        return parsed.filter(Boolean).map(String);
-      }
-
-    }
-    catch(error){
-      /* regular author string */
-    }
-
-    return value
-      .split(",")
-      .map(item => item.trim())
-      .filter(Boolean);
-
-  }
-
-  return [];
-
-}
-
-function normalizeCategories(value){
-
-  if(Array.isArray(value)){
-    return value.filter(Boolean).map(String);
-  }
-
-  if(
-    typeof value === "string" &&
-    value.trim()
-  ){
-
-    try{
-
-      const parsed =
-        JSON.parse(value);
-
-      if(Array.isArray(parsed)){
-        return parsed.filter(Boolean).map(String);
-      }
-
-    }
-    catch(error){
-      /* regular category string */
-    }
-
-    return value
-      .split(",")
-      .map(item => item.trim())
-      .filter(Boolean);
-
-  }
-
-  return [];
-
-}
-
-function normalizeIdentifiers(value){
-
-  if(Array.isArray(value)){
-    return value;
-  }
-
-  if(
-    typeof value === "string" &&
-    value.trim()
-  ){
-
-    try{
-
-      const parsed =
-        JSON.parse(value);
-
-      return Array.isArray(parsed)
-        ? parsed
-        : [];
-
-    }
-    catch(error){
-      return [];
-    }
-
-  }
-
-  return [];
-
-}
-
-function findIdentifier(
-  identifiers,
-  type
+function starString(
+  rating
 ){
 
-  const normalized =
-    normalizeIdentifiers(
-      identifiers
-    );
-
-  const match =
-    normalized.find(
-      item =>
-        String(
-          item?.type || ""
-        ).toUpperCase() ===
-        type.toUpperCase()
-    );
-
-  return match?.identifier || "";
-
-}
-
-function starString(rating){
-
   const rounded =
-    Math.round(
-      Number(rating) || 0
+    Math.max(
+      0,
+      Math.min(
+        5,
+        Math.round(
+          Number(rating) || 0
+        )
+      )
     );
 
   return (
-    "★".repeat(
-      Math.max(
-        0,
-        Math.min(5,rounded)
-      )
-    ) +
-    "☆".repeat(
-      Math.max(
-        0,
-        5 - rounded
-      )
-    )
+    "★".repeat(rounded) +
+    "☆".repeat(5 - rounded)
   );
+
+}
+
+function normalizeHttps(
+  value
+){
+
+  if(!value){
+    return "";
+  }
+
+  return String(value)
+    .replace(
+      /^http:\/\//i,
+      "https://"
+    );
+
+}
+
+function normalizeAuthors(
+  value
+){
+
+  if(
+    Array.isArray(value)
+  ){
+
+    return value
+      .map(
+        author =>
+          String(author).trim()
+      )
+      .filter(Boolean);
+
+  }
+
+  if(
+    typeof value ===
+    "string"
+  ){
+
+    return value
+      .split(/\s*,\s*/)
+      .map(
+        author =>
+          author.trim()
+      )
+      .filter(Boolean);
+
+  }
+
+  return [];
+
+}
+
+/* =========================================================
+   NORMALIZE LOCAL BOOK
+========================================================= */
+
+function normalizeLocalBook(
+  row
+){
+
+  const authors =
+    normalizeAuthors(
+      row.authors ||
+      row.author
+    );
+
+  return {
+
+    id:
+      row.id,
+
+    googleId:
+      row.google_books_id ||
+      row.google_id ||
+      null,
+
+    title:
+      row.title ||
+      "Untitled",
+
+    subtitle:
+      row.subtitle ||
+      "",
+
+    authors,
+
+    publisher:
+      row.publisher ||
+      "",
+
+    publishedDate:
+      row.published_date ||
+      "",
+
+    description:
+      row.description ||
+      "",
+
+    isbn13:
+      row.isbn_13 ||
+      "",
+
+    isbn10:
+      row.isbn_10 ||
+      "",
+
+    thumbnail:
+      normalizeHttps(
+        row.cover_url ||
+        row.thumbnail ||
+        row.image_url ||
+        ""
+      ),
+
+    categories:
+      Array.isArray(
+        row.categories
+      )
+        ? row.categories
+        : [],
+
+    infoLink:
+      row.google_books_id
+        ? (
+            "https://books.google.com/books?id=" +
+            encodeURIComponent(
+              row.google_books_id
+            )
+          )
+        : ""
+
+  };
+
+}
+
+/* =========================================================
+   NORMALIZE GOOGLE BOOK
+========================================================= */
+
+function normalizeGoogleBook(
+  item
+){
+
+  const volume =
+    item?.volumeInfo ||
+    {};
+
+  const identifiers =
+    Array.isArray(
+      volume.industryIdentifiers
+    )
+      ? volume.industryIdentifiers
+      : [];
+
+  const isbn13 =
+    identifiers.find(
+      item =>
+        item.type ===
+        "ISBN_13"
+    )?.identifier || "";
+
+  const isbn10 =
+    identifiers.find(
+      item =>
+        item.type ===
+        "ISBN_10"
+    )?.identifier || "";
+
+  return {
+
+    id:null,
+
+    googleId:
+      item?.id ||
+      null,
+
+    title:
+      volume.title ||
+      "Untitled",
+
+    subtitle:
+      volume.subtitle ||
+      "",
+
+    authors:
+      Array.isArray(
+        volume.authors
+      )
+        ? volume.authors
+        : [],
+
+    publisher:
+      volume.publisher ||
+      "",
+
+    publishedDate:
+      volume.publishedDate ||
+      "",
+
+    description:
+      volume.description ||
+      "",
+
+    isbn13,
+    isbn10,
+
+    thumbnail:
+      normalizeHttps(
+        volume.imageLinks?.thumbnail ||
+        volume.imageLinks?.smallThumbnail ||
+        ""
+      ),
+
+    categories:
+      Array.isArray(
+        volume.categories
+      )
+        ? volume.categories
+        : [],
+
+    infoLink:
+      volume.infoLink ||
+      (
+        item?.id
+          ? (
+              "https://books.google.com/books?id=" +
+              encodeURIComponent(
+                item.id
+              )
+            )
+          : ""
+      )
+
+  };
 
 }
 
@@ -1322,36 +1531,32 @@ function starString(rating){
    BOOKSHOP
 ========================================================= */
 
-function bookshopSearchUrl(book){
+function bookshopSearchUrl(
+  book
+){
 
-  /*
-    Prefer ISBN-13 because it is the most precise way to
-    land on the correct edition.
-
-    If Google Books does not provide one, use ISBN-10.
-    Last fallback is title + first author.
-
-    Every route includes Paper Gremlin's affiliate ID.
-  */
-
-  const isbn =
+  let searchTerm =
     book?.isbn13 ||
     book?.isbn10 ||
     "";
 
-  const query =
-    isbn ||
-    [
-      book?.title,
-      book?.authors?.[0]
-    ]
-      .filter(Boolean)
-      .join(" ");
+  if(!searchTerm){
+
+    searchTerm =
+      [
+        book?.title || "",
+        book?.authors?.[0] || ""
+      ]
+        .filter(Boolean)
+        .join(" ");
+
+  }
 
   return (
-    "https://bookshop.org/search" +
-    "?keywords=" +
-    encodeURIComponent(query) +
+    "https://bookshop.org/search?keywords=" +
+    encodeURIComponent(
+      searchTerm
+    ) +
     "&a=" +
     encodeURIComponent(
       BOOKSHOP_AFFILIATE_ID
@@ -1375,7 +1580,14 @@ async function loadSession(){
       .getSession();
 
   if(error){
-    throw error;
+
+    console.warn(
+      "Session lookup:",
+      error
+    );
+
+    return;
+
   }
 
   currentUser =
@@ -1383,15 +1595,18 @@ async function loadSession(){
     null;
 
   if(currentUser){
-    await loadCurrentProfile();
-  }
-  else{
-    renderLoggedOutProfile();
+
+    await loadProfileAvatar();
+
   }
 
 }
 
-async function loadCurrentProfile(){
+/* =========================================================
+   PROFILE AVATAR
+========================================================= */
+
+async function loadProfileAvatar(){
 
   if(!currentUser){
     return;
@@ -1404,121 +1619,112 @@ async function loadCurrentProfile(){
       error
     } =
       await supabaseClient
-        .from("profiles")
-        .select(
-          "id,display_name,username,avatar_url"
-        )
-        .eq(
-          "id",
-          currentUser.id
-        )
-        .maybeSingle();
+        .rpc(
+          "get_public_profile",
+          {
+            check_user_id:
+              currentUser.id
+          }
+        );
 
     if(error){
       throw error;
     }
 
-    currentProfile =
-      data || null;
+    const profile =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+    const holder =
+      $("profileAvatar");
+
+    if(!profile){
+      return;
+    }
+
+    const displayName =
+      profile.display_name ||
+      profile.username ||
+      "P";
+
+    if(profile.avatar_url){
+
+      holder.innerHTML =
+        "";
+
+      const image =
+        document.createElement(
+          "img"
+        );
+
+      image.src =
+        profile.avatar_url;
+
+      image.alt =
+        "";
+
+      image.onerror =
+        () => {
+
+          holder.innerHTML =
+            "";
+
+          holder.textContent =
+            initials(
+              displayName
+            );
+
+        };
+
+      holder.appendChild(
+        image
+      );
+
+    }
+
+    else{
+
+      holder.textContent =
+        initials(
+          displayName
+        );
+
+    }
 
   }
 
   catch(error){
 
     console.warn(
-      "Profile load:",
+      "Profile avatar:",
       error
     );
-
-    currentProfile =
-      null;
-
-  }
-
-  renderProfileAvatar();
-
-}
-
-function renderLoggedOutProfile(){
-
-  const avatar =
-    $("profileAvatar");
-
-  avatar.textContent =
-    "↪";
-
-  avatar.href =
-    "auth.html#login";
-
-}
-
-function renderProfileAvatar(){
-
-  const avatar =
-    $("profileAvatar");
-
-  if(!currentUser){
-
-    renderLoggedOutProfile();
-    return;
-
-  }
-
-  const displayName =
-    currentProfile?.display_name ||
-    currentProfile?.username ||
-    currentUser.email ||
-    "Paper Gremlin";
-
-  const avatarUrl =
-    currentProfile?.avatar_url ||
-    "";
-
-  avatar.href =
-    "profile.html";
-
-  if(avatarUrl){
-
-    avatar.innerHTML =
-      `<img
-        src="${escapeHtml(avatarUrl)}"
-        alt=""
-      >`;
-
-  }
-
-  else{
-
-    avatar.textContent =
-      initials(displayName);
 
   }
 
 }
 
 /* =========================================================
-   GOOGLE BOOKS FETCH
+   FETCH GOOGLE BOOK
 ========================================================= */
 
 async function fetchGoogleBook(
   googleId
 ){
 
-  const endpoint =
-    "https://www.googleapis.com/books/v1/volumes/" +
-    encodeURIComponent(
-      googleId
-    );
-
   const response =
     await fetch(
-      endpoint
+      "https://www.googleapis.com/books/v1/volumes/" +
+      encodeURIComponent(
+        googleId
+      )
     );
 
   if(!response.ok){
 
     throw new Error(
-      "Google Books could not find this title."
+      "Google Books could not load this title."
     );
 
   }
@@ -1526,117 +1732,29 @@ async function fetchGoogleBook(
   const item =
     await response.json();
 
-  const info =
-    item?.volumeInfo ||
-    {};
-
-  const identifiers =
-    Array.isArray(
-      info.industryIdentifiers
-    )
-      ? info.industryIdentifiers
-      : [];
-
-  const isbn13 =
-    identifiers.find(
-      identifier =>
-        identifier.type === "ISBN_13"
-    )?.identifier ||
-    "";
-
-  const isbn10 =
-    identifiers.find(
-      identifier =>
-        identifier.type === "ISBN_10"
-    )?.identifier ||
-    "";
-
-  return {
-
-    googleId:
-      item.id,
-
-    title:
-      info.title ||
-      "Untitled",
-
-    subtitle:
-      info.subtitle ||
-      "",
-
-    authors:
-      Array.isArray(info.authors)
-        ? info.authors
-        : [],
-
-    publisher:
-      info.publisher ||
-      "",
-
-    publishedDate:
-      info.publishedDate ||
-      "",
-
-    description:
-      info.description ||
-      "",
-
-    pageCount:
-      info.pageCount ||
-      null,
-
-    categories:
-      Array.isArray(info.categories)
-        ? info.categories
-        : [],
-
-    language:
-      info.language ||
-      "",
-
-    thumbnail:
-      (
-        info.imageLinks?.thumbnail ||
-        info.imageLinks?.smallThumbnail ||
-        ""
-      )
-        .replace(
-          /^http:/,
-          "https:"
-        ),
-
-    smallThumbnail:
-      (
-        info.imageLinks?.smallThumbnail ||
-        ""
-      )
-        .replace(
-          /^http:/,
-          "https:"
-        ),
-
-    isbn13,
-
-    isbn10,
-
-    infoLink:
-      info.infoLink ||
-      "",
-
-    previewLink:
-      info.previewLink ||
-      "",
-
-    canonicalVolumeLink:
-      info.canonicalVolumeLink ||
-      ""
-
-  };
+  return normalizeGoogleBook(
+    item
+  );
 
 }
 
 /* =========================================================
    IMPORT GOOGLE BOOK INTO PAPER GREMLIN
+
+   IMPORTANT:
+   These parameter names match the LIVE Supabase RPC:
+   get_or_create_book(
+     new_isbn_13,
+     new_isbn_10,
+     new_google_books_id,
+     new_title,
+     new_subtitle,
+     new_authors,
+     new_publisher,
+     new_published_date,
+     new_description,
+     new_cover_url
+   )
 ========================================================= */
 
 async function importGoogleBook(
@@ -1645,28 +1763,19 @@ async function importGoogleBook(
 
   if(!currentUser){
 
-    /*
-      Logged-out visitors can still view Google Books
-      information and use the Bookshop link.
-
-      A Paper Gremlin database row is only required when
-      saving/rating the book.
-    */
-
-    return null;
+    throw new Error(
+      "Sign in to add this book to Paper Gremlin."
+    );
 
   }
 
-  const author =
-    book.authors.length
-      ? book.authors.join(", ")
-      : "Unknown author";
+  if(!book?.googleId){
 
-  /*
-    The secure get_or_create_book RPC was added specifically
-    for this flow. It can create Google Books titles even when
-    the volume does not have an ISBN-13.
-  */
+    throw new Error(
+      "This Google Books result is missing its Google Books ID."
+    );
+
+  }
 
   const {
     data,
@@ -1676,29 +1785,46 @@ async function importGoogleBook(
       .rpc(
         "get_or_create_book",
         {
-          p_google_books_id:
-            book.googleId,
-
-          p_title:
-            book.title,
-
-          p_author:
-            author,
-
-          p_isbn_13:
+          new_isbn_13:
             book.isbn13 ||
             null,
 
-          p_isbn_10:
+          new_isbn_10:
             book.isbn10 ||
             null,
 
-          p_cover_url:
-            book.thumbnail ||
+          new_google_books_id:
+            book.googleId,
+
+          new_title:
+            book.title ||
             null,
 
-          p_description:
+          new_subtitle:
+            book.subtitle ||
+            null,
+
+          new_authors:
+            Array.isArray(
+              book.authors
+            )
+              ? book.authors
+              : [],
+
+          new_publisher:
+            book.publisher ||
+            null,
+
+          new_published_date:
+            book.publishedDate ||
+            null,
+
+          new_description:
             book.description ||
+            null,
+
+          new_cover_url:
+            book.thumbnail ||
             null
         }
       );
@@ -1707,46 +1833,16 @@ async function importGoogleBook(
     throw error;
   }
 
-  let id =
-    data;
+  const id =
+    Number(data);
 
-  if(Array.isArray(data)){
-
-    const first =
-      data[0];
-
-    id =
-      (
-        first &&
-        typeof first === "object"
-      )
-        ? (
-            first.id ||
-            first.book_id ||
-            first.get_or_create_book ||
-            Object.values(first)[0]
-          )
-        : first;
-
-  }
-
-  else if(
-    data &&
-    typeof data === "object"
+  if(
+    !Number.isFinite(id) ||
+    id <= 0
   ){
 
-    id =
-      data.id ||
-      data.book_id ||
-      data.get_or_create_book ||
-      Object.values(data)[0];
-
-  }
-
-  if(!id){
-
     throw new Error(
-      "Paper Gremlin could not create a local record for this book."
+      "Paper Gremlin created the book but did not return a valid book ID."
     );
 
   }
@@ -1756,94 +1852,60 @@ async function importGoogleBook(
 }
 
 /* =========================================================
-   BOOK LOOKUP
+   LOAD LOCAL BOOK
 ========================================================= */
 
-async function loadBook(){
-
-  if(requestedBookId){
-
-    const found =
-      await loadBookByDatabaseId(
-        requestedBookId
-      );
-
-    if(found){
-      return;
-    }
-
-  }
-
-  if(requestedGoogleId){
-
-    await loadBookByGoogleId(
-      requestedGoogleId
-    );
-
-    return;
-
-  }
-
-  throw new Error(
-    "This book could not be found."
-  );
-
-}
-
-async function loadBookByDatabaseId(
+async function loadBookByLocalId(
   id
 ){
 
-  try{
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("books")
+      .select("*")
+      .eq(
+        "id",
+        id
+      )
+      .maybeSingle();
 
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("books")
-        .select("*")
-        .eq(
-          "id",
-          id
-        )
-        .maybeSingle();
-
-    if(error){
-      throw error;
-    }
-
-    if(!data){
-      return false;
-    }
-
-    currentBook =
-      normalizeDatabaseBook(
-        data
-      );
-
-    currentBookId =
-      data.id;
-
-    return true;
-
+  if(error){
+    throw error;
   }
 
-  catch(error){
+  if(!data){
 
-    console.warn(
-      "Database book lookup:",
-      error
+    throw new Error(
+      "Paper Gremlin could not find this book."
     );
 
-    return false;
-
   }
+
+  currentBookId =
+    data.id;
+
+  currentBook =
+    normalizeLocalBook(
+      data
+    );
 
 }
 
 /* =========================================================
-   GOOGLE BOOK LOOKUP + AUTO IMPORT
+   LOAD GOOGLE BOOK
+
+   If signed in:
+   - fetch Google metadata
+   - create/reuse local Paper Gremlin record
+   - obtain local book ID
+   - replace URL with permanent local route
+
+   If signed out:
+   - display Google metadata
+   - import happens after login when user tries to interact
 ========================================================= */
 
 async function loadBookByGoogleId(
@@ -1851,59 +1913,53 @@ async function loadBookByGoogleId(
 ){
 
   /*
-    First see whether another reader has already imported
-    this Google Books volume.
+    First see whether this Google Books title already exists
+    locally.
   */
 
-  try{
+  const {
+    data:existing,
+    error:existingError
+  } =
+    await supabaseClient
+      .from("books")
+      .select("*")
+      .eq(
+        "google_books_id",
+        googleId
+      )
+      .maybeSingle();
 
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("books")
-        .select("*")
-        .eq(
-          "google_books_id",
-          googleId
-        )
-        .maybeSingle();
-
-    if(
-      !error &&
-      data
-    ){
-
-      currentBook =
-        normalizeDatabaseBook(
-          data
-        );
-
-      currentBookId =
-        data.id;
-
-      return true;
-
-    }
-
-  }
-
-  catch(error){
+  if(existingError){
 
     console.warn(
-      "Existing Google book lookup:",
-      error
+      "Existing book lookup:",
+      existingError
     );
 
   }
 
-  /*
-    It isn't in Paper Gremlin yet.
+  if(existing){
 
-    Fetch the actual Google Books volume so the reader can
-    immediately see the book rather than hitting the old
-    "book must exist" dead end.
+    currentBookId =
+      existing.id;
+
+    currentBook =
+      normalizeLocalBook(
+        existing
+      );
+
+    replaceWithLocalBookUrl(
+      currentBookId
+    );
+
+    return;
+
+  }
+
+  /*
+    Not in Paper Gremlin yet. Fetch the actual Google Books
+    record.
   */
 
   currentBook =
@@ -1912,182 +1968,131 @@ async function loadBookByGoogleId(
     );
 
   /*
-    Signed-in users automatically create/reuse the canonical
-    Paper Gremlin book record. Once this succeeds, ratings,
-    reviews and saved books all have a real book_id.
+    Signed-in readers can immediately create/reuse the local
+    Paper Gremlin record. This is the part that fixes Heather's
+    "book must exist before it can be reviewed" failure.
   */
 
   if(currentUser){
 
-    try{
-
-      currentBookId =
-        await importGoogleBook(
-          currentBook
-        );
-
-      /*
-        Replace the URL with the canonical Paper Gremlin ID.
-        Reloading/bookmarking the page will now use the local
-        record instead of needing to import again.
-      */
-
-      if(currentBookId){
-
-        const canonicalUrl =
-          "book-detail.html?id=" +
-          encodeURIComponent(
-            currentBookId
-          );
-
-        history.replaceState(
-          {},
-          "",
-          canonicalUrl
-        );
-
-      }
-
-    }
-
-    catch(error){
-
-      console.error(
-        "Google book import:",
-        error
+    currentBookId =
+      await importGoogleBook(
+        currentBook
       );
 
-      setMessage(
-        "heroMessage",
-        "The book loaded, but Paper Gremlin couldn't prepare it for ratings yet.",
-        "error"
+    /*
+      Read the newly-created local record back so the page is
+      using the database copy rather than assuming the import
+      succeeded correctly.
+    */
+
+    const {
+      data:localBook,
+      error:localError
+    } =
+      await supabaseClient
+        .from("books")
+        .select("*")
+        .eq(
+          "id",
+          currentBookId
+        )
+        .maybeSingle();
+
+    if(localError){
+      throw localError;
+    }
+
+    if(!localBook){
+
+      throw new Error(
+        "The book was imported but could not be read back from Paper Gremlin."
       );
 
     }
+
+    currentBook =
+      normalizeLocalBook(
+        localBook
+      );
+
+    replaceWithLocalBookUrl(
+      currentBookId
+    );
 
   }
 
-  return true;
+}
+
+function replaceWithLocalBookUrl(
+  bookId
+){
+
+  if(!bookId){
+    return;
+  }
+
+  const nextUrl =
+    "book-detail.html?id=" +
+    encodeURIComponent(
+      bookId
+    );
+
+  window.history.replaceState(
+    {},
+    "",
+    nextUrl
+  );
 
 }
 
 /* =========================================================
-   NORMALIZE DATABASE BOOK
+   ROUTE
 ========================================================= */
 
-function normalizeDatabaseBook(row){
+async function loadBook(){
 
-  const authors =
-    normalizeAuthors(
-      row.authors ||
-      row.author
+  const params =
+    new URLSearchParams(
+      window.location.search
     );
 
-  const categories =
-    normalizeCategories(
-      row.categories
+  const localId =
+    params.get("id") ||
+    params.get("book_id") ||
+    params.get("bookId");
+
+  const googleId =
+    params.get("google_id") ||
+    params.get("googleId");
+
+  if(googleId){
+
+    await loadBookByGoogleId(
+      googleId
     );
 
-  const identifiers =
-    normalizeIdentifiers(
-      row.industry_identifiers
+    return;
+
+  }
+
+  if(localId){
+
+    await loadBookByLocalId(
+      localId
     );
 
-  const isbn13 =
-    row.isbn13 ||
-    row.isbn_13 ||
-    findIdentifier(
-      identifiers,
-      "ISBN_13"
-    );
+    return;
 
-  const isbn10 =
-    row.isbn10 ||
-    row.isbn_10 ||
-    findIdentifier(
-      identifiers,
-      "ISBN_10"
-    );
+  }
 
-  return {
-
-    id:row.id,
-
-    googleId:
-      row.google_books_id ||
-      row.google_id ||
-      "",
-
-    title:
-      row.title ||
-      "Untitled",
-
-    subtitle:
-      row.subtitle ||
-      "",
-
-    authors,
-
-    publisher:
-      row.publisher ||
-      "",
-
-    publishedDate:
-      row.published_date ||
-      row.publishedDate ||
-      "",
-
-    description:
-      row.description ||
-      "",
-
-    pageCount:
-      row.page_count ||
-      row.pageCount ||
-      null,
-
-    categories,
-
-    language:
-      row.language ||
-      "",
-
-    thumbnail:
-      row.thumbnail ||
-      row.cover_url ||
-      row.image_url ||
-      "",
-
-    smallThumbnail:
-      row.small_thumbnail ||
-      "",
-
-    isbn13,
-
-    isbn10,
-
-    infoLink:
-      row.info_link ||
-      row.infoLink ||
-      "",
-
-    previewLink:
-      row.preview_link ||
-      row.previewLink ||
-      "",
-
-    canonicalVolumeLink:
-      row.canonical_volume_link ||
-      ""
-
-  };
+  throw new Error(
+    "No book was selected."
+  );
 
 }
 
 /* =========================================================
-   PART 2 CONTINUES DIRECTLY HERE
-========================================================= */
-  /* =========================================================
    RENDER BOOK
 ========================================================= */
 
@@ -2100,47 +2105,35 @@ function renderBook(){
   const book =
     currentBook;
 
-  document.title =
-    `${book.title} | Paper Gremlin`;
-
-  $("bookTitle").textContent =
-    book.title;
-
-  $("bookAuthor").textContent =
-    book.authors.length
+  const authorText =
+    book.authors?.length
       ? book.authors.join(", ")
       : "Unknown author";
+
+  $("bookTitle").textContent =
+    book.title ||
+    "Untitled";
+
+  $("bookAuthor").textContent =
+    authorText;
+
+  $("bookDescription").textContent =
+    book.description ||
+    "No description is available for this book.";
 
   $("bookEyebrow").textContent =
     book.categories?.[0] ||
     "Book";
 
-  $("bookDescription").textContent =
-    book.description ||
-    "No description is currently available for this book.";
+  /* COVER */
 
-  renderCover();
-  renderEditionPills();
-  renderDetails();
-  renderExternalLinks();
-  renderBookshopLink();
-
-}
-
-function renderCover(){
-
-  const holder =
+  const cover =
     $("bookCover");
 
-  const coverUrl =
-    currentBook?.thumbnail ||
-    currentBook?.smallThumbnail ||
+  cover.innerHTML =
     "";
 
-  holder.innerHTML =
-    "";
-
-  if(coverUrl){
+  if(book.thumbnail){
 
     const image =
       document.createElement(
@@ -2148,32 +2141,23 @@ function renderCover(){
       );
 
     image.src =
-      String(coverUrl)
-        .replace(
-          /^http:/,
-          "https:"
-        );
+      book.thumbnail;
 
     image.alt =
-      `${currentBook.title} cover`;
+      `${book.title} cover`;
 
-    image.addEventListener(
-      "error",
+    image.onerror =
       () => {
 
-        holder.innerHTML =
+        cover.innerHTML =
           "";
 
-        holder.textContent =
+        cover.textContent =
           "No cover";
 
-      },
-      {
-        once:true
-      }
-    );
+      };
 
-    holder.appendChild(
+    cover.appendChild(
       image
     );
 
@@ -2181,157 +2165,129 @@ function renderCover(){
 
   else{
 
-    holder.textContent =
+    cover.textContent =
       "No cover";
 
   }
 
-}
+  /* EDITION PILLS */
 
-function renderEditionPills(){
-
-  const holder =
+  const pills =
     $("editionPills");
 
-  holder.innerHTML =
+  pills.innerHTML =
     "";
 
-  const values =
+  const pillValues =
     [];
 
-  if(currentBook.publishedDate){
+  if(book.publishedDate){
 
-    values.push(
-      currentBook.publishedDate
+    pillValues.push(
+      book.publishedDate
     );
 
   }
 
-  if(currentBook.pageCount){
+  if(book.publisher){
 
-    values.push(
-      `${currentBook.pageCount} pages`
+    pillValues.push(
+      book.publisher
     );
 
   }
 
-  if(currentBook.language){
+  if(book.isbn13){
 
-    values.push(
-      currentBook.language
-        .toUpperCase()
+    pillValues.push(
+      "ISBN-13 " +
+      book.isbn13
     );
 
   }
 
-  if(currentBook.isbn13){
+  if(!book.isbn13 && book.isbn10){
 
-    values.push(
-      `ISBN ${currentBook.isbn13}`
+    pillValues.push(
+      "ISBN-10 " +
+      book.isbn10
     );
 
   }
 
-  for(
-    const value
-    of values
-  ){
+  pillValues
+    .slice(0,3)
+    .forEach(
+      value => {
 
-    const pill =
-      document.createElement(
-        "span"
-      );
+        const pill =
+          document.createElement(
+            "span"
+          );
 
-    pill.className =
-      "pill";
+        pill.className =
+          "pill";
 
-    pill.textContent =
-      value;
+        pill.textContent =
+          value;
 
-    holder.appendChild(
-      pill
+        pills.appendChild(
+          pill
+        );
+
+      }
     );
 
-  }
-
-}
-
-function renderDetails(){
+  /* DETAILS */
 
   $("detailPublisher").textContent =
-    currentBook.publisher ||
+    book.publisher ||
     "—";
 
   $("detailPublished").textContent =
-    currentBook.publishedDate ||
-    "—";
-
-  $("detailPages").textContent =
-    currentBook.pageCount ||
+    book.publishedDate ||
     "—";
 
   $("detailIsbn13").textContent =
-    currentBook.isbn13 ||
+    book.isbn13 ||
     "—";
 
   $("detailIsbn10").textContent =
-    currentBook.isbn10 ||
+    book.isbn10 ||
     "—";
 
   $("detailCategories").textContent =
-    currentBook.categories?.length
-      ? currentBook.categories.join(", ")
+    book.categories?.length
+      ? book.categories.join(", ")
       : "—";
 
-  $("detailLanguage").textContent =
-    currentBook.language
-      ? currentBook.language.toUpperCase()
-      : "—";
+  /* GOOGLE BOOKS */
 
-}
-
-function renderExternalLinks(){
-
-  const button =
+  const googleButton =
     $("googleBooksBtn");
 
-  const url =
-    currentBook.infoLink ||
-    currentBook.previewLink ||
-    currentBook.canonicalVolumeLink ||
-    "";
+  if(book.infoLink){
 
-  if(url){
+    googleButton.href =
+      book.infoLink;
 
-    button.href =
-      url;
-
-    button.hidden =
+    googleButton.hidden =
       false;
 
   }
 
   else{
 
-    button.hidden =
+    googleButton.hidden =
       true;
 
   }
 
-}
+  /* BOOKSHOP */
 
-/* =========================================================
-   BOOKSHOP LINK
-========================================================= */
-
-function renderBookshopLink(){
-
-  const button =
-    $("bookshopBtn");
-
-  button.href =
+  $("bookshopBtn").href =
     bookshopSearchUrl(
-      currentBook
+      book
     );
 
 }
@@ -2351,7 +2307,7 @@ async function loadSavedBookState(){
       "false";
 
     button.textContent =
-      "Save Book";
+      "Sign In to Save";
 
     return;
 
@@ -2361,6 +2317,9 @@ async function loadSavedBookState(){
 
     button.dataset.saved =
       "false";
+
+    button.textContent =
+      "Save Book";
 
     return;
 
@@ -2374,7 +2333,7 @@ async function loadSavedBookState(){
     } =
       await supabaseClient
         .from("user_books")
-        .select("id")
+        .select("book_id")
         .eq(
           "user_id",
           currentUser.id
@@ -2413,6 +2372,96 @@ async function loadSavedBookState(){
 }
 
 /* =========================================================
+   ENSURE LOCAL BOOK
+
+   Any action that requires a Paper Gremlin book ID calls
+   this first.
+
+   Normally Google results are imported during page load.
+   This is an additional safety net.
+========================================================= */
+
+async function ensureLocalBook(){
+
+  if(currentBookId){
+
+    return currentBookId;
+
+  }
+
+  if(!currentUser){
+
+    throw new Error(
+      "Sign in to save, rate, or review this book."
+    );
+
+  }
+
+  if(
+    !currentBook ||
+    !currentBook.googleId
+  ){
+
+    throw new Error(
+      "Paper Gremlin couldn't identify this book."
+    );
+
+  }
+
+  const id =
+    await importGoogleBook(
+      currentBook
+    );
+
+  /*
+    Verify that the ID returned by the RPC actually points
+    to a readable local book.
+  */
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("books")
+      .select("*")
+      .eq(
+        "id",
+        id
+      )
+      .maybeSingle();
+
+  if(error){
+    throw error;
+  }
+
+  if(!data){
+
+    throw new Error(
+      "Paper Gremlin imported this book, but could not read it back."
+    );
+
+  }
+
+  currentBookId =
+    data.id;
+
+  currentBook =
+    normalizeLocalBook(
+      data
+    );
+
+  replaceWithLocalBookUrl(
+    currentBookId
+  );
+
+  renderBook();
+
+  return currentBookId;
+
+}
+
+/* =========================================================
    SAVE / UNSAVE BOOK
 ========================================================= */
 
@@ -2422,50 +2471,6 @@ async function toggleSavedBook(){
 
     window.location.href =
       "auth.html#login";
-
-    return;
-
-  }
-
-  /*
-    This should normally already exist because Google Books
-    results are imported during loadBookByGoogleId().
-
-    This fallback protects the flow if that import was delayed.
-  */
-
-  if(
-    !currentBookId &&
-    currentBook?.googleId
-  ){
-
-    try{
-
-      currentBookId =
-        await importGoogleBook(
-          currentBook
-        );
-
-    }
-
-    catch(error){
-
-      console.error(
-        "Book import before save:",
-        error
-      );
-
-    }
-
-  }
-
-  if(!currentBookId){
-
-    setMessage(
-      "heroMessage",
-      "Paper Gremlin couldn't prepare this book for saving.",
-      "error"
-    );
 
     return;
 
@@ -2482,6 +2487,8 @@ async function toggleSavedBook(){
   );
 
   try{
+
+    await ensureLocalBook();
 
     const isSaved =
       button.dataset.saved ===
@@ -2506,6 +2513,39 @@ async function toggleSavedBook(){
 
       if(error){
         throw error;
+      }
+
+      /*
+        Verify removal.
+      */
+
+      const {
+        data:verifyRemoved,
+        error:verifyRemovedError
+      } =
+        await supabaseClient
+          .from("user_books")
+          .select("book_id")
+          .eq(
+            "user_id",
+            currentUser.id
+          )
+          .eq(
+            "book_id",
+            currentBookId
+          )
+          .maybeSingle();
+
+      if(verifyRemovedError){
+        throw verifyRemovedError;
+      }
+
+      if(verifyRemoved){
+
+        throw new Error(
+          "Paper Gremlin could not verify that the book was removed."
+        );
+
       }
 
       button.dataset.saved =
@@ -2541,7 +2581,54 @@ async function toggleSavedBook(){
           });
 
       if(error){
-        throw error;
+
+        /*
+          If a duplicate saved-book row already exists,
+          reload the actual state rather than treating it as
+          a destructive failure.
+        */
+
+        if(
+          !/duplicate|unique/i.test(
+            error.message || ""
+          )
+        ){
+          throw error;
+        }
+
+      }
+
+      /*
+        Verify persistence.
+      */
+
+      const {
+        data:verifySaved,
+        error:verifySavedError
+      } =
+        await supabaseClient
+          .from("user_books")
+          .select("book_id")
+          .eq(
+            "user_id",
+            currentUser.id
+          )
+          .eq(
+            "book_id",
+            currentBookId
+          )
+          .maybeSingle();
+
+      if(verifySavedError){
+        throw verifySavedError;
+      }
+
+      if(!verifySaved){
+
+        throw new Error(
+          "Paper Gremlin could not verify that the book stayed saved."
+        );
+
       }
 
       button.dataset.saved =
@@ -2600,6 +2687,8 @@ async function loadReviews(){
     renderCommunityReviews(
       []
     );
+
+    renderCurrentUserReview();
 
     return;
 
@@ -2677,6 +2766,7 @@ async function loadReviews(){
 
     setMessage(
       "reviewMessage",
+      error?.message ||
       "Paper Gremlin couldn't load reader ratings.",
       "error"
     );
@@ -2703,7 +2793,9 @@ function renderRatings(
           );
 
         return (
-          Number.isFinite(rating) &&
+          Number.isFinite(
+            rating
+          ) &&
           rating >= 1 &&
           rating <= 5
         );
@@ -2739,17 +2831,29 @@ function renderRatings(
 
   $("averageRatingStars").textContent =
     total
-      ? starString(average)
+      ? starString(
+          average
+        )
       : "☆☆☆☆☆";
 
   $("ratingCount").textContent =
     total
-      ? `${total} rating${total === 1 ? "" : "s"}`
+      ? (
+          total +
+          " rating" +
+          (
+            total === 1
+              ? ""
+              : "s"
+          )
+        )
       : "No ratings yet";
 
   $("heroRatingStars").textContent =
     total
-      ? starString(average)
+      ? starString(
+          average
+        )
       : "☆☆☆☆☆";
 
   $("heroRatingNumber").textContent =
@@ -2759,7 +2863,15 @@ function renderRatings(
 
   $("heroRatingCount").textContent =
     total
-      ? `${total} reader rating${total === 1 ? "" : "s"}`
+      ? (
+          total +
+          " reader rating" +
+          (
+            total === 1
+              ? ""
+              : "s"
+          )
+        )
       : "No ratings yet";
 
   for(
@@ -2781,8 +2893,7 @@ function renderRatings(
         ? (
             count /
             total
-          ) *
-          100
+          ) * 100
         : 0;
 
     $(
@@ -2811,12 +2922,15 @@ function renderCurrentUserReview(){
   const deleteButton =
     $("deleteReviewBtn");
 
+  const saveButton =
+    $("saveReviewBtn");
+
   if(!currentUser){
 
     copy.textContent =
       "Sign in to rate or review this book.";
 
-    $("saveReviewBtn").textContent =
+    saveButton.textContent =
       "Sign In to Review";
 
     deleteButton.hidden =
@@ -2828,13 +2942,14 @@ function renderCurrentUserReview(){
     $("reviewText").value =
       "";
 
+    updateCharacterCount();
     renderStarPicker();
 
     return;
 
   }
 
-  $("saveReviewBtn").textContent =
+  saveButton.textContent =
     "Save Review";
 
   if(currentUserReview){
@@ -2918,13 +3033,21 @@ function renderStarPicker(){
 
   $("reviewRatingLabel").textContent =
     displayRating
-      ? `${displayRating} star${displayRating === 1 ? "" : "s"}`
+      ? (
+          displayRating +
+          " star" +
+          (
+            displayRating === 1
+              ? ""
+              : "s"
+          )
+        )
       : "Choose a rating";
 
 }
 
 /* =========================================================
-   REVIEW CHARACTER COUNT
+   CHARACTER COUNT
 ========================================================= */
 
 function updateCharacterCount(){
@@ -2950,50 +3073,6 @@ async function saveReview(){
 
     window.location.href =
       "auth.html#login";
-
-    return;
-
-  }
-
-  /*
-    Same protection as saved books: if a Google result somehow
-    reached this point before its local record was created,
-    create/reuse it now instead of showing Heather's old
-    "must exist" error.
-  */
-
-  if(
-    !currentBookId &&
-    currentBook?.googleId
-  ){
-
-    try{
-
-      currentBookId =
-        await importGoogleBook(
-          currentBook
-        );
-
-    }
-
-    catch(error){
-
-      console.error(
-        "Book import before review:",
-        error
-      );
-
-    }
-
-  }
-
-  if(!currentBookId){
-
-    setMessage(
-      "reviewMessage",
-      "Paper Gremlin couldn't prepare this book for ratings.",
-      "error"
-    );
 
     return;
 
@@ -3027,40 +3106,34 @@ async function saveReview(){
 
   try{
 
+    /*
+      This is the key protection for Heather's beta issue.
+
+      A Google Books result is converted to a real local
+      Paper Gremlin book before the review insert occurs.
+    */
+
+    await ensureLocalBook();
+
     const reviewText =
       $("reviewText")
         .value
         .trim();
 
-    const payload = {
-      user_id:
-        currentUser.id,
-
-      book_id:
-        currentBookId,
-
-      rating:
-        currentRating,
-
-      review_text:
-        reviewText ||
-        null
-    };
-
-    let error =
-      null;
-
     if(currentUserReview){
 
-      const result =
+      const {
+        error
+      } =
         await supabaseClient
           .from("book_reviews")
           .update({
             rating:
-              payload.rating,
+              currentRating,
 
             review_text:
-              payload.review_text
+              reviewText ||
+              null
           })
           .eq(
             "id",
@@ -3071,32 +3144,102 @@ async function saveReview(){
             currentUser.id
           );
 
-      error =
-        result.error;
+      if(error){
+        throw error;
+      }
 
     }
 
     else{
 
-      const result =
+      const {
+        error
+      } =
         await supabaseClient
           .from("book_reviews")
-          .insert(
-            payload
-          );
+          .insert({
+            user_id:
+              currentUser.id,
 
-      error =
-        result.error;
+            book_id:
+              currentBookId,
+
+            rating:
+              currentRating,
+
+            review_text:
+              reviewText ||
+              null
+          });
+
+      if(error){
+        throw error;
+      }
 
     }
 
-    if(error){
-      throw error;
+    /*
+      Read the review back before claiming success.
+    */
+
+    const {
+      data:verifiedReview,
+      error:verifyError
+    } =
+      await supabaseClient
+        .from("book_reviews")
+        .select(`
+          id,
+          user_id,
+          book_id,
+          rating,
+          review_text,
+          created_at,
+          updated_at
+        `)
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .eq(
+          "book_id",
+          currentBookId
+        )
+        .maybeSingle();
+
+    if(verifyError){
+      throw verifyError;
     }
+
+    if(!verifiedReview){
+
+      throw new Error(
+        "The rating was submitted but could not be verified."
+      );
+
+    }
+
+    if(
+      Number(
+        verifiedReview.rating
+      ) !==
+      Number(
+        currentRating
+      )
+    ){
+
+      throw new Error(
+        "The saved rating did not match the rating you selected."
+      );
+
+    }
+
+    currentUserReview =
+      verifiedReview;
 
     setMessage(
       "reviewMessage",
-      "Your rating has been saved.",
+      "Your rating has been saved and verified.",
       "success"
     );
 
@@ -3111,10 +3254,24 @@ async function saveReview(){
       error
     );
 
+    let message =
+      error?.message ||
+      "Paper Gremlin couldn't save your review.";
+
+    if(
+      /not authenticated|jwt/i.test(
+        message
+      )
+    ){
+
+      message =
+        "Your login session expired. Sign in again and then save your rating.";
+
+    }
+
     setMessage(
       "reviewMessage",
-      error?.message ||
-      "Paper Gremlin couldn't save your review.",
+      message,
       "error"
     );
 
@@ -3178,6 +3335,39 @@ async function deleteReview(){
       throw error;
     }
 
+    /*
+      Verify deletion.
+    */
+
+    const {
+      data:remainingReview,
+      error:verifyError
+    } =
+      await supabaseClient
+        .from("book_reviews")
+        .select("id")
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .eq(
+          "book_id",
+          currentBookId
+        )
+        .maybeSingle();
+
+    if(verifyError){
+      throw verifyError;
+    }
+
+    if(remainingReview){
+
+      throw new Error(
+        "Paper Gremlin could not verify that the review was deleted."
+      );
+
+    }
+
     currentUserReview =
       null;
 
@@ -3223,7 +3413,7 @@ async function deleteReview(){
 }
 
 /* =========================================================
-   COMMUNITY REVIEW PROFILES
+   REVIEWER PROFILES
 ========================================================= */
 
 async function loadReviewerProfiles(
@@ -3238,7 +3428,9 @@ async function loadReviewerProfiles(
     ];
 
   if(!uniqueIds.length){
+
     return new Map();
+
   }
 
   try{
@@ -3362,7 +3554,11 @@ async function renderCommunityReviews(
           `
         : `
             <span class="reviewer-avatar">
-              ${escapeHtml(initials(displayName))}
+              ${escapeHtml(
+                initials(
+                  displayName
+                )
+              )}
             </span>
           `;
 
@@ -3372,7 +3568,9 @@ async function renderCommunityReviews(
 
           <a
             class="reviewer"
-            href="profile.html?id=${encodeURIComponent(review.user_id)}"
+            href="profile.html?id=${encodeURIComponent(
+              review.user_id
+            )}"
           >
 
             ${avatarMarkup}
@@ -3380,7 +3578,9 @@ async function renderCommunityReviews(
             <span>
 
               <span class="reviewer-name">
-                ${escapeHtml(displayName)}
+                ${escapeHtml(
+                  displayName
+                )}
               </span>
 
               <span class="review-date">
@@ -3407,7 +3607,9 @@ async function renderCommunityReviews(
         </div>
 
         <div class="review-text">
-          ${escapeHtml(review.review_text)}
+          ${escapeHtml(
+            review.review_text
+          )}
         </div>
       `;
 
@@ -3419,6 +3621,10 @@ async function renderCommunityReviews(
 
 }
 
+/* =========================================================
+   DATE FORMAT
+========================================================= */
+
 function formatReviewDate(
   value
 ){
@@ -3428,7 +3634,9 @@ function formatReviewDate(
   }
 
   const date =
-    new Date(value);
+    new Date(
+      value
+    );
 
   if(
     Number.isNaN(
@@ -3445,7 +3653,9 @@ function formatReviewDate(
       day:"numeric",
       year:"numeric"
     }
-  ).format(date);
+  ).format(
+    date
+  );
 
 }
 
@@ -3539,6 +3749,78 @@ $("reviewText")
   );
 
 /* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    async (
+      event,
+      session
+    ) => {
+
+      const previousUserId =
+        currentUser?.id ||
+        null;
+
+      currentUser =
+        session?.user ||
+        null;
+
+      const nextUserId =
+        currentUser?.id ||
+        null;
+
+      /*
+        Ignore token refreshes that do not actually change
+        the signed-in user.
+      */
+
+      if(
+        previousUserId ===
+        nextUserId
+      ){
+        return;
+      }
+
+      if(currentUser){
+
+        await loadProfileAvatar();
+
+      }
+
+      if(
+        currentBook &&
+        !currentBookId &&
+        currentBook.googleId &&
+        currentUser
+      ){
+
+        try{
+
+          await ensureLocalBook();
+
+        }
+
+        catch(error){
+
+          console.warn(
+            "Book import after sign in:",
+            error
+          );
+
+        }
+
+      }
+
+      await loadSavedBookState();
+      await loadReviews();
+
+    }
+  );
+
+/* =========================================================
    INITIALIZE
 ========================================================= */
 
@@ -3546,9 +3828,25 @@ async function initialize(){
 
   try{
 
+    /*
+      Session MUST load before the book.
+
+      That matters because Google Books results are imported
+      into the local Paper Gremlin database for signed-in
+      readers during loadBook().
+    */
+
     await loadSession();
 
     await loadBook();
+
+    if(!currentBook){
+
+      throw new Error(
+        "Paper Gremlin couldn't load this book."
+      );
+
+    }
 
     renderBook();
 
