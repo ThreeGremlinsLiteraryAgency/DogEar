@@ -8,107 +8,94 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Paper Gremlin — Different Readers. Same Campfire.</title>
-
   <meta
     name="description"
-    content="Paper Gremlin is a gathering place for every kind of reader and every kind of story."
+    content="Paper Gremlin — A home for every kind of story and every kind of reader."
   >
 
+  <title>Paper Gremlin — Different Readers. Same Campfire.</title>
+
   <style>
-    :root {
-      --night: #06151b;
-      --night-deep: #031014;
-      --night-blue: #0b2730;
-      --forest: #0c2926;
-      --forest-mid: #143b32;
-      --forest-light: #235346;
+    :root{
+      --night:#06171c;
+      --night-deep:#031014;
+      --night-soft:#0c2930;
+      --forest:#0d2a25;
+      --forest-light:#1c4538;
 
-      --fire-red: #d9582e;
-      --fire: #ef8738;
-      --fire-gold: #ffb957;
-      --fire-light: #ffe39a;
+      --cream:#f5e7c8;
+      --cream-muted:#cbbda1;
 
-      --parchment: #e7d2a6;
-      --parchment-light: #f3e2bd;
-      --parchment-dark: #a88457;
+      --gold:#cda45f;
+      --gold-light:#f1cc83;
 
-      --cream: #f7e8c8;
-      --cream-muted: #cdbfa2;
+      --fire:#ed7d35;
+      --fire-gold:#ffb654;
+      --fire-light:#ffe49b;
 
-      --gold: #cda45f;
-      --gold-light: #efca82;
+      --paper:#e5d0a5;
+      --paper-light:#f2dfb7;
+      --paper-ink:#33271c;
 
-      --ink: #30241a;
-
-      --max: 1180px;
+      --max:1180px;
     }
 
 
-    * {
-      box-sizing: border-box;
+    *{
+      box-sizing:border-box;
     }
 
 
-    html {
-      scroll-behavior: smooth;
+    html{
+      scroll-behavior:smooth;
     }
 
 
-    body {
-      margin: 0;
-      overflow-x: hidden;
+    body{
+      margin:0;
+      overflow-x:hidden;
 
-      background:
-        linear-gradient(
-          180deg,
-          var(--night-deep),
-          var(--night) 38%,
-          #0a211d 72%,
-          #071713
-        );
-
-      color: var(--cream);
+      background:var(--night-deep);
+      color:var(--cream);
 
       font-family:
         Georgia,
         "Times New Roman",
         serif;
 
-      line-height: 1.6;
+      line-height:1.6;
     }
 
 
-    a {
-      color: inherit;
-      text-decoration: none;
+    a{
+      color:inherit;
+      text-decoration:none;
     }
 
 
     button,
-    input {
-      font: inherit;
+    input{
+      font:inherit;
     }
 
 
-    button {
-      cursor: pointer;
+    button{
+      cursor:pointer;
     }
 
 
-    img {
-      max-width: 100%;
+    img{
+      max-width:100%;
     }
 
 
-    .wrap {
-      width:
-        min(
-          calc(100% - 40px),
-          var(--max)
-        );
+    .wrap{
+      width:min(
+        calc(100% - 40px),
+        var(--max)
+      );
 
-      margin: auto;
+      margin:auto;
     }
 
 
@@ -116,59 +103,58 @@
        NAVIGATION
     ===================================================== */
 
-    .topbar {
-      position: sticky;
-      top: 0;
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:1000;
 
-      z-index: 1000;
+      min-height:68px;
 
       border-bottom:
-        1px solid rgba(223, 184, 110, .22);
+        1px solid rgba(229,189,112,.22);
 
       background:
-        rgba(3, 14, 18, .93);
+        rgba(3,14,18,.94);
 
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
+      backdrop-filter:blur(15px);
+      -webkit-backdrop-filter:blur(15px);
     }
 
 
-    .nav {
-      min-height: 68px;
+    .nav{
+      min-height:68px;
 
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
 
-      gap: 25px;
+      gap:25px;
     }
 
 
-    .brand {
-      display: flex;
-      align-items: center;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:11px;
 
-      gap: 11px;
+      color:var(--gold-light);
 
-      color: var(--gold-light);
-
-      font-weight: bold;
-
-      letter-spacing: .08em;
+      font-weight:bold;
+      letter-spacing:.08em;
     }
 
 
-    .brand-mark {
-      width: 32px;
-      height: 32px;
+    .brand-mark{
+      width:33px;
+      height:33px;
 
-      position: relative;
+      position:relative;
 
-      display: grid;
-      place-items: center;
+      display:grid;
+      place-items:center;
 
       border:
-        1px solid rgba(239, 202, 130, .52);
+        1px solid rgba(239,202,130,.55);
 
       border-radius:
         55% 45% 50% 50%;
@@ -176,494 +162,372 @@
       background:
         radial-gradient(
           circle at 50% 70%,
-          rgba(239, 135, 56, .25),
-          rgba(17, 51, 45, .65)
+          rgba(239,135,56,.25),
+          rgba(17,51,45,.65)
         );
     }
 
 
-    .brand-mark::after {
-      content: "";
+    .brand-mark::after{
+      content:"";
 
-      position: absolute;
+      position:absolute;
 
-      width: 8px;
-      height: 12px;
+      width:8px;
+      height:12px;
 
-      right: -1px;
-      top: -5px;
+      right:-1px;
+      top:-5px;
 
       border:
-        1px solid rgba(239, 202, 130, .52);
+        1px solid rgba(239,202,130,.55);
 
-      border-bottom: 0;
+      border-bottom:0;
 
       border-radius:
         80% 20% 0 0;
 
-      transform: rotate(27deg);
+      transform:rotate(27deg);
     }
 
 
-    .navlinks {
-      display: flex;
-      align-items: center;
-
-      gap: 22px;
+    .navlinks{
+      display:flex;
+      align-items:center;
+      gap:22px;
 
       font-family:
         Arial,
         sans-serif;
 
-      text-transform: uppercase;
+      text-transform:uppercase;
+      letter-spacing:.11em;
 
-      letter-spacing: .11em;
+      font-size:10px;
 
-      font-size: 10px;
-
-      color: var(--cream-muted);
+      color:var(--cream-muted);
     }
 
 
-    .navlinks a {
+    .navlinks a{
       transition:
         color .2s ease,
         transform .2s ease;
     }
 
 
-    .navlinks a:hover {
-      color: var(--fire-light);
-      transform: translateY(-1px);
+    .navlinks a:hover{
+      color:var(--fire-light);
+      transform:translateY(-1px);
     }
 
 
-    .nav-join {
-      padding: 9px 15px;
+    .nav-join{
+      padding:9px 15px;
 
       border:
-        1px solid rgba(239, 202, 130, .62);
+        1px solid rgba(239,202,130,.62);
 
-      border-radius: 999px;
+      border-radius:999px;
 
-      color: var(--gold-light);
+      color:var(--gold-light);
     }
 
 
     /* =====================================================
-       HERO WORLD
+       HERO
     ===================================================== */
 
-    .hero {
-      position: relative;
+    .hero{
+      position:relative;
 
       min-height:
         calc(100vh - 68px);
 
-      overflow: hidden;
+      overflow:hidden;
 
       padding:
-        76px 0
-        70px;
+        62px 0 20px;
 
-      isolation: isolate;
+      isolation:isolate;
 
       background:
         radial-gradient(
           ellipse at 50% 72%,
-          rgba(240, 123, 48, .11),
-          transparent 28%
+          rgba(238,125,53,.12),
+          transparent 31%
         ),
         radial-gradient(
-          ellipse at 50% 25%,
-          rgba(52, 103, 108, .18),
-          transparent 50%
+          ellipse at 50% 22%,
+          rgba(65,115,120,.17),
+          transparent 48%
         ),
         linear-gradient(
           180deg,
-          #071820,
-          #082127 47%,
-          #071b1c
+          #071920 0%,
+          #09252a 49%,
+          #071b19 100%
         );
     }
 
 
-    /* stars */
+    /* =====================================================
+       NIGHT SKY
+    ===================================================== */
 
-    .stars,
-    .stars::before,
-    .stars::after {
-      position: absolute;
-      inset: 0;
+    .stars{
+      position:absolute;
+      inset:0;
 
-      pointer-events: none;
-    }
+      z-index:-9;
 
-
-    .stars {
-      z-index: -8;
+      pointer-events:none;
 
       background-image:
         radial-gradient(
-          circle at 8% 18%,
-          #ffe8a6 0 1px,
-          transparent 2px
+          circle at 7% 18%,
+          #fff0b8 0 1px,
+          transparent 1.7px
         ),
         radial-gradient(
-          circle at 18% 36%,
-          #fff2c4 0 1px,
-          transparent 2px
+          circle at 14% 36%,
+          #fff0b8 0 1px,
+          transparent 1.7px
         ),
         radial-gradient(
-          circle at 31% 13%,
-          #fff2c4 0 1px,
-          transparent 2px
+          circle at 25% 12%,
+          #fff8d7 0 1px,
+          transparent 1.7px
         ),
         radial-gradient(
-          circle at 43% 28%,
-          #ffe8a6 0 1px,
-          transparent 2px
+          circle at 34% 27%,
+          #fff0b8 0 1px,
+          transparent 1.7px
         ),
         radial-gradient(
-          circle at 57% 16%,
-          #fff2c4 0 1px,
-          transparent 2px
+          circle at 47% 10%,
+          #fff8d7 0 1px,
+          transparent 1.7px
         ),
         radial-gradient(
-          circle at 69% 34%,
-          #ffe8a6 0 1px,
-          transparent 2px
+          circle at 58% 29%,
+          #fff0b8 0 1px,
+          transparent 1.7px
         ),
         radial-gradient(
-          circle at 79% 12%,
-          #fff2c4 0 1px,
-          transparent 2px
+          circle at 69% 13%,
+          #fff8d7 0 1px,
+          transparent 1.7px
         ),
         radial-gradient(
-          circle at 91% 29%,
-          #ffe8a6 0 1px,
-          transparent 2px
+          circle at 78% 32%,
+          #fff0b8 0 1px,
+          transparent 1.7px
+        ),
+        radial-gradient(
+          circle at 91% 18%,
+          #fff8d7 0 1px,
+          transparent 1.7px
         );
     }
 
 
-    .stars::before {
-      content: "";
+    .stars::after{
+      content:"";
 
-      opacity: .55;
+      position:absolute;
+      inset:0;
+
+      opacity:.5;
 
       background-image:
         radial-gradient(
-          circle at 15% 12%,
-          #fff 0 1px,
+          circle at 18% 8%,
+          white 0 1px,
           transparent 1.5px
         ),
         radial-gradient(
-          circle at 25% 25%,
-          #fff 0 1px,
+          circle at 39% 17%,
+          white 0 1px,
           transparent 1.5px
         ),
         radial-gradient(
-          circle at 37% 8%,
-          #fff 0 1px,
+          circle at 64% 8%,
+          white 0 1px,
           transparent 1.5px
         ),
         radial-gradient(
-          circle at 62% 24%,
-          #fff 0 1px,
-          transparent 1.5px
-        ),
-        radial-gradient(
-          circle at 73% 18%,
-          #fff 0 1px,
-          transparent 1.5px
-        ),
-        radial-gradient(
-          circle at 86% 8%,
-          #fff 0 1px,
+          circle at 84% 25%,
+          white 0 1px,
           transparent 1.5px
         );
 
       animation:
-        starPulse 5s ease-in-out infinite alternate;
+        starsTwinkle 5s
+        ease-in-out
+        infinite alternate;
     }
 
 
-    @keyframes starPulse {
-      from {
-        opacity: .25;
+    @keyframes starsTwinkle{
+      from{
+        opacity:.2;
       }
 
-      to {
-        opacity: .8;
+      to{
+        opacity:.75;
       }
     }
 
 
-    /* moon */
+    /* =====================================================
+       MOON
+    ===================================================== */
 
-    .moon {
-      position: absolute;
+    .moon{
+      position:absolute;
 
-      top: 58px;
-      right: 7%;
+      top:60px;
+      right:7%;
 
-      z-index: -7;
+      z-index:-7;
 
-      width: 140px;
-      height: 140px;
+      width:125px;
+      height:125px;
 
-      border-radius: 50%;
+      border-radius:50%;
 
       background:
         radial-gradient(
           circle at 38% 35%,
-          #fff9df,
-          #ddd8bd 66%,
-          #aaa992
+          #fffbe8,
+          #dcd8c2 65%,
+          #a6a68f
         );
 
       box-shadow:
-        0 0 38px rgba(230, 234, 211, .22),
-        0 0 100px rgba(181, 216, 213, .11);
+        0 0 38px rgba(232,236,216,.20),
+        0 0 110px rgba(167,214,211,.10);
     }
 
 
-    .moon::before {
-      content: "";
+    .moon::before{
+      content:"";
 
-      position: absolute;
+      position:absolute;
 
-      width: 25px;
-      height: 25px;
+      width:24px;
+      height:24px;
 
-      left: 28px;
-      top: 37px;
+      left:25px;
+      top:31px;
 
-      border-radius: 50%;
+      border-radius:50%;
 
       background:
-        rgba(129, 134, 120, .12);
+        rgba(123,127,113,.11);
 
       box-shadow:
-        50px 20px 0 8px rgba(129, 134, 120, .09),
-        24px 64px 0 3px rgba(129, 134, 120, .10);
+        45px 18px 0 7px
+          rgba(123,127,113,.08),
+        22px 57px 0 3px
+          rgba(123,127,113,.09);
     }
 
 
-    /* distant mountains */
+    /* =====================================================
+       DISTANT FOREST
+    ===================================================== */
 
-    .mountains {
-      position: absolute;
+    .distant-forest{
+      position:absolute;
 
-      left: -5%;
-      right: -5%;
-      bottom: 210px;
+      left:0;
+      right:0;
+      bottom:0;
 
-      height: 260px;
+      height:58%;
 
-      z-index: -6;
+      z-index:-6;
 
-      opacity: .5;
+      opacity:.7;
 
       background:
         linear-gradient(
-          135deg,
-          transparent 0 28%,
-          #183934 28.2% 45%,
-          transparent 45.2%
+          150deg,
+          transparent 0 20%,
+          rgba(17,52,47,.7) 20.2% 31%,
+          transparent 31.2%
         ),
         linear-gradient(
-          45deg,
-          transparent 0 43%,
-          #15332f 43.2% 62%,
-          transparent 62.2%
+          35deg,
+          transparent 0 37%,
+          rgba(14,47,42,.72) 37.2% 51%,
+          transparent 51.2%
         );
     }
 
 
-    /* forest silhouette */
+    .tree-line{
+      position:absolute;
 
-    .forest-back {
-      position: absolute;
+      left:-3%;
+      right:-3%;
+      bottom:0;
 
-      left: -3%;
-      right: -3%;
-      bottom: 115px;
+      height:49%;
 
-      height: 260px;
+      z-index:-5;
 
-      z-index: -5;
-
-      opacity: .75;
+      opacity:.92;
 
       background:
         repeating-linear-gradient(
-          76deg,
-          transparent 0 35px,
-          #0b2924 36px 44px,
-          transparent 45px 72px
+          77deg,
+          transparent 0 46px,
+          #0a2823 47px 55px,
+          transparent 56px 83px
         );
     }
 
 
-    .forest-back::before {
-      content: "";
+    .tree-line::after{
+      content:"";
 
-      position: absolute;
-      inset: 0;
+      position:absolute;
+      inset:0;
 
       background:
         radial-gradient(
-          ellipse at 5% 55%,
-          #12372e 0 9%,
-          transparent 10%
+          ellipse at 4% 48%,
+          #10342c 0 10%,
+          transparent 10.5%
         ),
         radial-gradient(
-          ellipse at 18% 42%,
-          #12372e 0 12%,
-          transparent 13%
+          ellipse at 17% 38%,
+          #10342c 0 12%,
+          transparent 12.5%
         ),
         radial-gradient(
-          ellipse at 35% 55%,
-          #12372e 0 10%,
-          transparent 11%
+          ellipse at 33% 55%,
+          #10342c 0 10%,
+          transparent 10.5%
         ),
         radial-gradient(
-          ellipse at 66% 45%,
-          #12372e 0 12%,
-          transparent 13%
+          ellipse at 67% 47%,
+          #10342c 0 12%,
+          transparent 12.5%
         ),
         radial-gradient(
-          ellipse at 83% 50%,
-          #12372e 0 11%,
-          transparent 12%
+          ellipse at 83% 43%,
+          #10342c 0 11%,
+          transparent 11.5%
         ),
         radial-gradient(
-          ellipse at 96% 40%,
-          #12372e 0 12%,
-          transparent 13%
+          ellipse at 97% 37%,
+          #10342c 0 12%,
+          transparent 12.5%
         );
-    }
-
-
-    /* foreground ground */
-
-    .ground {
-      position: absolute;
-
-      left: -10%;
-      right: -10%;
-      bottom: -170px;
-
-      height: 430px;
-
-      z-index: -3;
-
-      border-radius:
-        50% 50% 0 0;
-
-      background:
-        radial-gradient(
-          ellipse at 50% 12%,
-          #17382e,
-          #0b241f 45%,
-          #061612 75%
-        );
-    }
-
-
-    /* foreground trees */
-
-    .big-tree {
-      position: absolute;
-
-      bottom: -20px;
-
-      width: 300px;
-      height: 720px;
-
-      z-index: -2;
-
-      pointer-events: none;
-    }
-
-
-    .big-tree.left {
-      left: -85px;
-    }
-
-
-    .big-tree.right {
-      right: -85px;
-
-      transform: scaleX(-1);
-    }
-
-
-    .trunk {
-      position: absolute;
-
-      left: 80px;
-      bottom: 0;
-
-      width: 90px;
-      height: 690px;
-
-      border-radius:
-        60% 35% 20% 20%;
-
-      transform: rotate(-5deg);
-
-      background:
-        linear-gradient(
-          90deg,
-          #061411,
-          #142a20 42%,
-          #071612
-        );
-    }
-
-
-    .branch {
-      position: absolute;
-
-      width: 170px;
-      height: 40px;
-
-      left: 110px;
-      top: 165px;
-
-      border-radius: 50%;
-
-      transform: rotate(-24deg);
-
-      background: #0b1d17;
-    }
-
-
-    .canopy {
-      position: absolute;
-
-      width: 250px;
-      height: 240px;
-
-      left: 10px;
-      top: 25px;
-
-      border-radius: 50%;
-
-      background:
-        radial-gradient(
-          ellipse,
-          #113329 0 45%,
-          transparent 68%
-        );
-
-      box-shadow:
-        80px 45px 0 -15px #102d25,
-        -45px 80px 0 -25px #0c2820,
-        50px -35px 0 -25px #15392e;
     }
 
 
@@ -671,1318 +535,406 @@
        HERO COPY
     ===================================================== */
 
-    .hero-copy {
-      position: relative;
+    .hero-copy{
+      position:relative;
+      z-index:20;
 
-      z-index: 20;
+      max-width:1050px;
 
-      max-width: 1040px;
+      margin:auto;
 
-      margin: auto;
-
-      text-align: center;
+      text-align:center;
     }
 
 
-    .hero-kicker {
-      margin-bottom: 14px;
+    .hero-kicker{
+      margin-bottom:12px;
 
-      color: var(--gold);
+      color:var(--gold);
 
       font-family:
         Arial,
         sans-serif;
 
-      text-transform: uppercase;
+      text-transform:uppercase;
 
-      letter-spacing: .30em;
+      letter-spacing:.3em;
 
-      font-size: 10px;
+      font-size:10px;
     }
 
 
-    .hero h1 {
-      margin:
-        0 auto
-        18px;
+    .hero h1{
+      max-width:1050px;
 
-      max-width: 1000px;
+      margin:
+        0 auto 17px;
 
       font-size:
         clamp(
           48px,
-          7vw,
-          92px
+          6.6vw,
+          88px
         );
 
-      line-height: .98;
+      line-height:.98;
 
-      font-weight: 400;
+      font-weight:400;
 
-      letter-spacing: -.035em;
+      letter-spacing:-.035em;
 
       text-shadow:
-        0 6px 25px rgba(0, 0, 0, .58);
+        0 7px 28px
+        rgba(0,0,0,.55);
     }
 
 
-    .hero h1 span {
-      color: var(--fire-gold);
+    .hero h1 span{
+      color:var(--fire-gold);
     }
 
 
-    .hero-subtitle {
-      max-width: 700px;
+    .hero-subtitle{
+      max-width:690px;
 
-      margin: auto;
+      margin:auto;
 
-      color: var(--cream-muted);
+      color:var(--cream-muted);
 
       font-size:
         clamp(
           17px,
           2vw,
-          22px
+          21px
         );
     }
 
 
     /* =====================================================
-       CAMPFIRE GATHERING
+       ILLUSTRATED CAMPSITE
     ===================================================== */
 
-    .gathering {
-      position: relative;
+    .camp-scene-wrap{
+      position:relative;
 
-      z-index: 25;
+      z-index:30;
 
-      width:
-        min(
-          1000px,
-          96vw
-        );
-
-      height: 430px;
+      width:min(
+        1180px,
+        100%
+      );
 
       margin:
-        20px auto
-        -15px;
+        -5px auto -5px;
     }
 
 
-    .firelight {
-      position: absolute;
+    .camp-scene{
+      display:block;
 
-      left: 50%;
-      bottom: 5px;
+      width:100%;
+      height:auto;
 
-      width: 620px;
-      height: 310px;
-
-      transform: translateX(-50%);
-
-      border-radius: 50%;
-
-      background:
-        radial-gradient(
-          ellipse,
-          rgba(255, 173, 70, .23),
-          rgba(235, 101, 41, .09) 42%,
-          transparent 70%
-        );
-
-      filter: blur(7px);
-
-      animation:
-        glowPulse 2.2s ease-in-out infinite;
-    }
-
-
-    @keyframes glowPulse {
-      0%,
-      100% {
-        opacity: .75;
-
-        transform:
-          translateX(-50%)
-          scale(.96);
-      }
-
-      50% {
-        opacity: 1;
-
-        transform:
-          translateX(-50%)
-          scale(1.05);
-      }
-    }
-
-
-    /* =====================================================
-       CHARACTER BASE
-    ===================================================== */
-
-    .character {
-      position: absolute;
-
-      bottom: 35px;
-
-      width: 150px;
-      height: 230px;
+      overflow:visible;
 
       filter:
         drop-shadow(
-          0 10px 12px rgba(0, 0, 0, .5)
+          0 20px 30px
+          rgba(0,0,0,.30)
         );
     }
 
 
-    .character .head {
-      position: absolute;
+    /* fire glow */
 
-      width: 49px;
-      height: 55px;
-
-      left: 50%;
-      top: 18px;
-
-      transform: translateX(-50%);
-
-      border-radius:
-        48% 48% 45% 45%;
-
-      background: #b87954;
-
-      z-index: 4;
-    }
-
-
-    .character .body {
-      position: absolute;
-
-      left: 50%;
-      top: 66px;
-
-      width: 88px;
-      height: 116px;
-
-      transform: translateX(-50%);
-
-      border-radius:
-        45% 45% 25% 25%;
-
-      z-index: 3;
-    }
-
-
-    .character .leg {
-      position: absolute;
-
-      bottom: 7px;
-
-      width: 72px;
-      height: 28px;
-
-      border-radius: 999px;
-
-      z-index: 2;
-    }
-
-
-    /* =====================================================
-       ROGUE
-    ===================================================== */
-
-    .rogue {
-      left: 8%;
-
-      transform: rotate(-3deg);
-    }
-
-
-    .rogue .head {
-      background: #a86e4f;
-    }
-
-
-    .rogue .hood {
-      position: absolute;
-
-      left: 50%;
-      top: 6px;
-
-      width: 70px;
-      height: 82px;
-
-      transform: translateX(-50%);
-
-      border-radius:
-        55% 55% 40% 40%;
-
-      background: #26392f;
-
-      z-index: 3;
-    }
-
-
-    .rogue .body {
-      background:
-        linear-gradient(
-          90deg,
-          #26372d,
-          #405044
-        );
-    }
-
-
-    .rogue .belt {
-      position: absolute;
-
-      left: 31px;
-      top: 126px;
-
-      width: 88px;
-      height: 10px;
-
-      border-radius: 999px;
-
-      background: #684a32;
-
-      z-index: 5;
-    }
-
-
-    .rogue .leg.one {
-      left: 10px;
-
-      transform: rotate(-13deg);
-
-      background: #202b26;
-    }
-
-
-    .rogue .leg.two {
-      right: 7px;
-
-      transform: rotate(17deg);
-
-      background: #202b26;
-    }
-
-
-    .rogue .dagger {
-      position: absolute;
-
-      right: 12px;
-      top: 110px;
-
-      width: 7px;
-      height: 65px;
-
-      transform: rotate(18deg);
-
-      background:
-        linear-gradient(
-          90deg,
-          #777,
-          #e3d7b5,
-          #777
-        );
-
-      clip-path:
-        polygon(
-          50% 0,
-          100% 75%,
-          55% 100%,
-          0 75%
-        );
-
-      z-index: 1;
-    }
-
-
-    /* =====================================================
-       ASTRONAUT
-    ===================================================== */
-
-    .astronaut {
-      left: 25%;
-
-      bottom: 28px;
-
-      transform: rotate(2deg);
-    }
-
-
-    .astronaut .helmet {
-      position: absolute;
-
-      left: 50%;
-      top: 5px;
-
-      width: 72px;
-      height: 72px;
-
-      transform: translateX(-50%);
-
-      border:
-        7px solid #c8c6b8;
-
-      border-radius: 50%;
-
-      background:
-        radial-gradient(
-          circle at 60% 35%,
-          #305b62,
-          #102a32 65%
-        );
-
-      box-shadow:
-        inset 7px 7px 10px rgba(255, 255, 255, .08);
-
-      z-index: 5;
-    }
-
-
-    .astronaut .helmet::after {
-      content: "";
-
-      position: absolute;
-
-      width: 18px;
-      height: 7px;
-
-      right: 8px;
-      top: 15px;
-
-      border-radius: 50%;
-
-      background:
-        rgba(255, 228, 155, .35);
-
-      transform: rotate(-25deg);
-    }
-
-
-    .astronaut .body {
-      top: 69px;
-
-      background:
-        linear-gradient(
-          90deg,
-          #b9b8ad,
-          #e0ddd0 50%,
-          #aaa99f
-        );
-    }
-
-
-    .astronaut .body::after {
-      content: "";
-
-      position: absolute;
-
-      left: 27px;
-      top: 27px;
-
-      width: 34px;
-      height: 26px;
-
-      border:
-        2px solid #7b817b;
-
-      background:
-        linear-gradient(
-          90deg,
-          #d36d3e 0 25%,
-          #5b8580 25% 55%,
-          #d8c16c 55%
-        );
-    }
-
-
-    .astronaut .leg.one {
-      left: 8px;
-
-      background: #b6b5aa;
-
-      transform: rotate(-14deg);
-    }
-
-
-    .astronaut .leg.two {
-      right: 8px;
-
-      background: #b6b5aa;
-
-      transform: rotate(14deg);
-    }
-
-
-    /* =====================================================
-       WIZARD
-    ===================================================== */
-
-    .wizard {
-      right: 25%;
-
-      bottom: 30px;
-
-      transform: rotate(-2deg);
-    }
-
-
-    .wizard .head {
-      background: #8e624b;
-    }
-
-
-    .wizard .hat {
-      position: absolute;
-
-      left: 50%;
-      top: -36px;
-
-      width: 90px;
-      height: 95px;
-
-      transform: translateX(-50%);
-
-      z-index: 7;
-    }
-
-
-    .wizard .hat::before {
-      content: "";
-
-      position: absolute;
-
-      left: 18px;
-      top: 0;
-
-      width: 55px;
-      height: 75px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #27345e,
-          #485184
-        );
-
-      clip-path:
-        polygon(
-          55% 0,
-          100% 100%,
-          0 100%
-        );
-
-      transform: rotate(7deg);
-    }
-
-
-    .wizard .hat::after {
-      content: "";
-
-      position: absolute;
-
-      left: 0;
-      bottom: 3px;
-
-      width: 90px;
-      height: 18px;
-
-      border-radius: 50%;
-
-      background: #343d70;
-    }
-
-
-    .wizard .body {
-      background:
-        linear-gradient(
-          90deg,
-          #29315d,
-          #454d7e
-        );
-    }
-
-
-    .wizard .body::after {
-      content: "✦";
-
-      position: absolute;
-
-      left: 35px;
-      top: 35px;
-
-      color: #e9cf82;
-
-      font-size: 20px;
-    }
-
-
-    .wizard .leg.one {
-      left: 8px;
-
-      background: #252b4f;
-
-      transform: rotate(-14deg);
-    }
-
-
-    .wizard .leg.two {
-      right: 8px;
-
-      background: #252b4f;
-
-      transform: rotate(14deg);
-    }
-
-
-    /* magic above wizard */
-
-    .magic {
-      position: absolute;
-
-      right: 20%;
-      top: 40px;
-
-      width: 180px;
-      height: 150px;
-
-      pointer-events: none;
-    }
-
-
-    .magic-star {
-      position: absolute;
-
-      color: #d7bcff;
-
-      text-shadow:
-        0 0 8px #886dff,
-        0 0 18px rgba(143, 108, 255, .7);
-
+    .svg-fire-glow{
       animation:
-        magicFloat 3s ease-in-out infinite;
-    }
-
-
-    .magic-star.one {
-      left: 25px;
-      top: 75px;
-
-      font-size: 14px;
-    }
-
-
-    .magic-star.two {
-      left: 80px;
-      top: 22px;
-
-      font-size: 23px;
-
-      animation-delay: -.7s;
-    }
-
-
-    .magic-star.three {
-      right: 10px;
-      top: 65px;
-
-      font-size: 12px;
-
-      animation-delay: -1.4s;
-    }
-
-
-    .magic-star.four {
-      right: 45px;
-      top: 105px;
-
-      font-size: 18px;
-
-      animation-delay: -2s;
-    }
-
-
-    @keyframes magicFloat {
-      0%,
-      100% {
-        opacity: .4;
-
-        transform:
-          translateY(0)
-          rotate(0deg)
-          scale(.8);
-      }
-
-      50% {
-        opacity: 1;
-
-        transform:
-          translateY(-15px)
-          rotate(30deg)
-          scale(1.15);
-      }
-    }
-
-
-    /* =====================================================
-       PRINCESS
-    ===================================================== */
-
-    .princess {
-      right: 8%;
-
-      bottom: 27px;
-
-      transform: rotate(4deg);
-    }
-
-
-    .princess .head {
-      background: #8f5b43;
-    }
-
-
-    .princess .hair {
-      position: absolute;
-
-      left: 50%;
-      top: 9px;
-
-      width: 64px;
-      height: 75px;
-
-      transform: translateX(-50%);
-
-      border-radius:
-        48% 48% 40% 40%;
-
-      background: #412d26;
-
-      z-index: 3;
-    }
-
-
-    .princess .crown {
-      position: absolute;
-
-      left: 50%;
-      top: 1px;
-
-      width: 43px;
-      height: 30px;
-
-      transform: translateX(-50%);
-
-      clip-path:
-        polygon(
-          0 100%,
-          0 30%,
-          22% 62%,
-          40% 5%,
-          60% 62%,
-          80% 15%,
-          100% 100%
-        );
-
-      background: #e7c36c;
-
-      z-index: 8;
-    }
-
-
-    .princess .body {
-      background:
-        linear-gradient(
-          90deg,
-          #7d4869,
-          #b16b8f
-        );
-    }
-
-
-    .princess .leg.one {
-      left: 9px;
-
-      width: 83px;
-
-      background: #70425f;
-
-      transform: rotate(-9deg);
-    }
-
-
-    .princess .leg.two {
-      right: 0;
-
-      width: 83px;
-
-      background: #70425f;
-
-      transform: rotate(12deg);
-    }
-
-
-    /* =====================================================
-       MERMAID POOL
-    ===================================================== */
-
-    .pool {
-      position: absolute;
-
-      right: -5px;
-      bottom: 0;
-
-      width: 235px;
-      height: 65px;
-
-      border-radius: 50%;
-
-      background:
-        radial-gradient(
-          ellipse,
-          #2e7b7c,
-          #174d54 55%,
-          #0c3037 72%
-        );
-
-      box-shadow:
-        inset 0 5px 13px rgba(176, 255, 239, .17),
-        0 0 25px rgba(46, 123, 124, .16);
-
-      opacity: .92;
-    }
-
-
-    .mermaid {
-      position: absolute;
-
-      right: 65px;
-      bottom: 19px;
-
-      width: 110px;
-      height: 155px;
-    }
-
-
-    .mermaid .head {
-      position: absolute;
-
-      left: 35px;
-      top: 3px;
-
-      width: 44px;
-      height: 49px;
-
-      border-radius: 50%;
-
-      background: #8b5d49;
-
-      z-index: 4;
-    }
-
-
-    .mermaid .hair {
-      position: absolute;
-
-      left: 25px;
-      top: -5px;
-
-      width: 64px;
-      height: 75px;
-
-      border-radius: 50%;
-
-      background: #202a34;
-
-      z-index: 3;
-    }
-
-
-    .mermaid .torso {
-      position: absolute;
-
-      left: 35px;
-      top: 47px;
-
-      width: 48px;
-      height: 55px;
-
-      border-radius:
-        35% 35% 20% 20%;
-
-      background: #376d68;
-
-      z-index: 3;
-    }
-
-
-    .mermaid .tail {
-      position: absolute;
-
-      left: 40px;
-      top: 90px;
-
-      width: 82px;
-      height: 40px;
-
-      border-radius:
-        999px 20px 20px 999px;
-
-      transform: rotate(12deg);
-
-      background:
-        linear-gradient(
-          90deg,
-          #317b72,
-          #58a692
-        );
-    }
-
-
-    .mermaid .tail::after {
-      content: "";
-
-      position: absolute;
-
-      right: -27px;
-      top: -15px;
-
-      width: 38px;
-      height: 60px;
-
-      background: #58a692;
-
-      clip-path:
-        polygon(
-          0 50%,
-          100% 0,
-          75% 50%,
-          100% 100%
-        );
-    }
-
-
-    /* =====================================================
-       CAMPFIRE
-    ===================================================== */
-
-    .campfire {
-      position: absolute;
-
-      left: 50%;
-      bottom: 24px;
-
-      width: 150px;
-      height: 165px;
-
-      transform: translateX(-50%);
-
-      z-index: 30;
-    }
-
-
-    .stone-ring {
-      position: absolute;
-
-      left: 50%;
-      bottom: 0;
-
-      width: 165px;
-      height: 42px;
-
-      transform: translateX(-50%);
-
-      border:
-        10px dotted #706957;
-
-      border-radius: 50%;
-    }
-
-
-    .log {
-      position: absolute;
-
-      left: 50%;
-      bottom: 22px;
-
-      width: 112px;
-      height: 18px;
-
-      border-radius: 999px;
-
-      background:
-        linear-gradient(
-          #653b27,
-          #2c1a12
-        );
-
-      box-shadow:
-        0 4px 8px rgba(0, 0, 0, .55);
-    }
-
-
-    .log.one {
-      transform:
-        translateX(-50%)
-        rotate(16deg);
-    }
-
-
-    .log.two {
-      transform:
-        translateX(-50%)
-        rotate(-16deg);
-    }
-
-
-    .flame {
-      position: absolute;
-
-      left: 50%;
-      bottom: 35px;
+        svgGlow 2.1s
+        ease-in-out
+        infinite alternate;
 
       transform-origin:
-        50% 100%;
-
-      animation:
-        flameDance 1.15s ease-in-out infinite alternate;
+        600px 425px;
     }
 
 
-    .flame.outer {
-      width: 82px;
-      height: 118px;
-
-      margin-left: -41px;
-
-      background:
-        linear-gradient(
-          #ffd36d,
-          #ed702f 52%,
-          #a83922
-        );
-
-      clip-path:
-        polygon(
-          50% 0,
-          75% 35%,
-          91% 62%,
-          72% 100%,
-          27% 100%,
-          9% 61%,
-          30% 34%
-        );
-    }
-
-
-    .flame.middle {
-      width: 54px;
-      height: 87px;
-
-      margin-left: -27px;
-
-      background:
-        linear-gradient(
-          #fff0a0,
-          #ffae45 55%,
-          #e34f27
-        );
-
-      clip-path:
-        polygon(
-          52% 0,
-          82% 43%,
-          71% 100%,
-          28% 100%,
-          16% 50%
-        );
-
-      animation-delay: -.4s;
-    }
-
-
-    .flame.inner {
-      width: 28px;
-      height: 55px;
-
-      margin-left: -14px;
-
-      background:
-        linear-gradient(
-          #fffbd2,
-          #ffd66f
-        );
-
-      clip-path:
-        polygon(
-          52% 0,
-          87% 55%,
-          66% 100%,
-          28% 100%,
-          12% 58%
-        );
-
-      animation-delay: -.8s;
-    }
-
-
-    @keyframes flameDance {
-      from {
-        transform:
-          rotate(-3deg)
-          scaleX(.94)
-          scaleY(.97);
+    @keyframes svgGlow{
+      from{
+        opacity:.66;
+        transform:scale(.94);
       }
 
-      to {
+      to{
+        opacity:1;
+        transform:scale(1.06);
+      }
+    }
+
+
+    /* flames */
+
+    .svg-flame-outer{
+      transform-origin:
+        600px 435px;
+
+      animation:
+        flameOuter .82s
+        ease-in-out
+        infinite alternate;
+    }
+
+
+    .svg-flame-mid{
+      transform-origin:
+        600px 435px;
+
+      animation:
+        flameMid .68s
+        ease-in-out
+        infinite alternate;
+    }
+
+
+    .svg-flame-inner{
+      transform-origin:
+        600px 435px;
+
+      animation:
+        flameInner .55s
+        ease-in-out
+        infinite alternate;
+    }
+
+
+    @keyframes flameOuter{
+      from{
+        transform:
+          rotate(-2deg)
+          scaleX(.94)
+          scaleY(.98);
+      }
+
+      to{
         transform:
           rotate(3deg)
-          scaleX(1.05)
+          scaleX(1.04)
           scaleY(1.05);
       }
     }
 
 
-    /* =====================================================
-       CAMP CLUTTER
-    ===================================================== */
+    @keyframes flameMid{
+      from{
+        transform:
+          rotate(3deg)
+          scale(.94);
+      }
 
-    .book-stack {
-      position: absolute;
-
-      left: 18%;
-      bottom: 8px;
-
-      width: 100px;
-      height: 48px;
-
-      transform: rotate(-5deg);
+      to{
+        transform:
+          rotate(-3deg)
+          scale(1.04);
+      }
     }
 
 
-    .book-stack span {
-      position: absolute;
+    @keyframes flameInner{
+      from{
+        transform:
+          translateY(2px)
+          scaleY(.91);
+      }
 
-      left: 0;
-
-      width: 90px;
-      height: 13px;
-
-      border-radius: 2px;
-
-      box-shadow:
-        0 3px 5px rgba(0, 0, 0, .25);
+      to{
+        transform:
+          translateY(-2px)
+          scaleY(1.06);
+      }
     }
 
 
-    .book-stack span:nth-child(1) {
-      bottom: 0;
+    /* wizard magic */
 
-      background: #8d4f42;
-    }
-
-
-    .book-stack span:nth-child(2) {
-      bottom: 13px;
-      left: 7px;
-
-      background: #a8884d;
-    }
-
-
-    .book-stack span:nth-child(3) {
-      bottom: 26px;
-      left: 2px;
-
-      background: #3f6760;
-    }
-
-
-    .mug {
-      position: absolute;
-
-      left: 33%;
-      bottom: 10px;
-
-      width: 29px;
-      height: 31px;
-
-      border-radius:
-        3px 3px 8px 8px;
-
-      background: #aa7953;
-
-      box-shadow:
-        inset 0 4px 0 #3c261b;
-    }
-
-
-    .mug::after {
-      content: "";
-
-      position: absolute;
-
-      right: -13px;
-      top: 7px;
-
-      width: 16px;
-      height: 15px;
-
-      border:
-        4px solid #aa7953;
-
-      border-left: 0;
-
-      border-radius:
-        0 50% 50% 0;
-    }
-
-
-    .bedroll {
-      position: absolute;
-
-      right: 28%;
-      bottom: 3px;
-
-      width: 95px;
-      height: 28px;
-
-      border-radius: 999px;
-
-      transform: rotate(6deg);
-
-      background:
-        repeating-linear-gradient(
-          90deg,
-          #795747 0 13px,
-          #68493c 13px 26px
-        );
-
-      box-shadow:
-        0 7px 10px rgba(0, 0, 0, .25);
-    }
-
-
-    /* =====================================================
-       EMBERS / FIREFLIES
-    ===================================================== */
-
-    .ember,
-    .firefly {
-      position: absolute;
-
-      border-radius: 50%;
-
-      pointer-events: none;
-    }
-
-
-    .ember {
-      z-index: 40;
-
-      width: 4px;
-      height: 4px;
-
-      background: var(--fire-light);
-
-      box-shadow:
-        0 0 8px var(--fire);
+    .magic-orbit{
+      transform-origin:
+        775px 214px;
 
       animation:
-        emberRise 4s linear infinite;
+        orbitMagic 9s
+        linear
+        infinite;
     }
 
 
-    @keyframes emberRise {
-      0% {
-        opacity: 0;
-
-        transform:
-          translate(0, 0)
-          scale(.5);
-      }
-
-      15% {
-        opacity: 1;
-      }
-
-      75% {
-        opacity: .7;
-      }
-
-      100% {
-        opacity: 0;
-
-        transform:
-          translate(35px, -180px)
-          scale(.1);
+    @keyframes orbitMagic{
+      to{
+        transform:rotate(360deg);
       }
     }
 
 
-    .firefly {
-      z-index: 35;
+    .magic-pulse{
+      animation:
+        magicPulse 2.3s
+        ease-in-out
+        infinite alternate;
+    }
 
-      width: 5px;
-      height: 5px;
 
-      background: #ffe88f;
+    @keyframes magicPulse{
+      from{
+        opacity:.38;
+      }
 
-      box-shadow:
-        0 0 9px #ffe88f,
-        0 0 20px rgba(255, 232, 143, .42);
+      to{
+        opacity:1;
+      }
+    }
+
+
+    /* fireflies */
+
+    .svg-firefly{
+      transform-box:fill-box;
+      transform-origin:center;
 
       animation:
-        fireflyFloat 7s ease-in-out infinite;
+        svgFirefly 5.5s
+        ease-in-out
+        infinite;
     }
 
 
-    @keyframes fireflyFloat {
+    .svg-firefly:nth-of-type(2n){
+      animation-delay:-1.8s;
+    }
+
+
+    .svg-firefly:nth-of-type(3n){
+      animation-delay:-3.4s;
+    }
+
+
+    @keyframes svgFirefly{
       0%,
-      100% {
-        opacity: .2;
-
+      100%{
+        opacity:.25;
         transform:
-          translate(0, 0);
+          translate(0,0)
+          scale(.8);
       }
 
-      25% {
-        opacity: 1;
-
+      30%{
+        opacity:1;
         transform:
-          translate(22px, -18px);
+          translate(12px,-9px)
+          scale(1.15);
       }
 
-      50% {
-        opacity: .45;
-
+      60%{
+        opacity:.45;
         transform:
-          translate(-10px, -42px);
+          translate(-7px,-18px)
+          scale(.9);
       }
 
-      75% {
-        opacity: 1;
-
+      82%{
+        opacity:1;
         transform:
-          translate(-28px, -12px);
+          translate(-14px,-5px)
+          scale(1.1);
       }
     }
-        /* =====================================================
+
+
+    /* magic sparks */
+
+    .wizard-spark{
+      transform-box:fill-box;
+      transform-origin:center;
+
+      animation:
+        sparkFloat 3s
+        ease-in-out
+        infinite;
+    }
+
+
+    .wizard-spark.two{
+      animation-delay:-1s;
+    }
+
+
+    .wizard-spark.three{
+      animation-delay:-2s;
+    }
+
+
+    @keyframes sparkFloat{
+      0%,
+      100%{
+        opacity:.25;
+        transform:
+          translateY(5px)
+          rotate(0deg);
+      }
+
+      50%{
+        opacity:1;
+        transform:
+          translateY(-10px)
+          rotate(25deg);
+      }
+    }
+
+
+    /* smoke */
+
+    .smoke{
+      animation:
+        smokeRise 5s
+        ease-in-out
+        infinite;
+    }
+
+
+    .smoke.second{
+      animation-delay:-2.4s;
+    }
+
+
+    @keyframes smokeRise{
+      0%{
+        opacity:0;
+        transform:
+          translateY(5px)
+          scale(.8);
+      }
+
+      30%{
+        opacity:.13;
+      }
+
+      100%{
+        opacity:0;
+        transform:
+          translateY(-55px)
+          translateX(18px)
+          scale(1.3);
+      }
+    }
+
+
+    /* =====================================================
        QUICK PATHS
     ===================================================== */
 
-    .quick-paths {
-      position: relative;
-      z-index: 50;
+    .quick-paths{
+      position:relative;
+      z-index:50;
 
       padding:
-        0 0
-        75px;
+        0 0 78px;
 
       background:
         linear-gradient(
@@ -1993,130 +945,131 @@
     }
 
 
-    .path-grid {
-      display: grid;
+    .path-grid{
+      display:grid;
 
       grid-template-columns:
-        repeat(5, 1fr);
+        repeat(5,1fr);
 
       border:
-        1px solid rgba(226, 190, 123, .32);
+        1px solid
+        rgba(226,190,123,.32);
 
       background:
-        rgba(4, 18, 17, .86);
+        rgba(4,18,17,.86);
 
       box-shadow:
-        0 24px 55px rgba(0, 0, 0, .28);
+        0 24px 55px
+        rgba(0,0,0,.28);
     }
 
 
-    .path {
-      min-height: 105px;
+    .path{
+      min-height:105px;
 
-      padding: 20px 14px;
+      padding:20px 14px;
 
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
 
-      gap: 7px;
+      gap:7px;
 
-      text-align: center;
+      text-align:center;
 
       border-right:
-        1px solid rgba(226, 190, 123, .17);
+        1px solid
+        rgba(226,190,123,.17);
 
       transition:
         background .2s ease,
-        color .2s ease,
-        transform .2s ease;
+        color .2s ease;
     }
 
 
-    .path:last-child {
-      border-right: 0;
+    .path:last-child{
+      border-right:0;
     }
 
 
-    .path:hover {
-      color: var(--fire-light);
+    .path:hover{
+      color:var(--fire-light);
 
       background:
         radial-gradient(
           circle at center,
-          rgba(239, 135, 56, .15),
-          rgba(19, 55, 48, .24)
+          rgba(239,135,56,.15),
+          rgba(19,55,48,.24)
         );
     }
 
 
-    .path-icon {
-      font-size: 21px;
+    .path-icon{
+      font-size:21px;
     }
 
 
-    .path-label {
+    .path-label{
       font-family:
         Arial,
         sans-serif;
 
-      text-transform: uppercase;
+      text-transform:uppercase;
 
-      letter-spacing: .12em;
+      letter-spacing:.12em;
 
-      font-size: 9px;
+      font-size:9px;
     }
 
 
     /* =====================================================
-       GENERAL SECTIONS
+       COMMON CONTENT
     ===================================================== */
 
-    section.content-section {
-      position: relative;
+    .content-section{
+      position:relative;
 
       padding:
         95px 0;
     }
 
 
-    .eyebrow {
-      margin-bottom: 12px;
+    .eyebrow{
+      margin-bottom:12px;
 
-      color: var(--gold);
+      color:var(--gold);
 
       font-family:
         Arial,
         sans-serif;
 
-      text-transform: uppercase;
+      text-transform:uppercase;
 
-      letter-spacing: .23em;
+      letter-spacing:.23em;
 
-      font-size: 10px;
+      font-size:10px;
     }
 
 
-    .section-header {
-      max-width: 760px;
+    .section-header{
+      max-width:760px;
 
-      margin-bottom: 42px;
+      margin-bottom:42px;
     }
 
 
-    .section-header.center {
-      margin-left: auto;
-      margin-right: auto;
+    .section-header.center{
+      margin-left:auto;
+      margin-right:auto;
 
-      text-align: center;
+      text-align:center;
     }
 
 
-    .section-header h2 {
+    .section-header h2{
       margin:
-        0 0
-        15px;
+        0 0 15px;
 
       font-size:
         clamp(
@@ -2125,18 +1078,18 @@
           58px
         );
 
-      line-height: 1.05;
+      line-height:1.05;
 
-      font-weight: 400;
+      font-weight:400;
     }
 
 
-    .section-header p {
-      margin: 0;
+    .section-header p{
+      margin:0;
 
-      color: var(--cream-muted);
+      color:var(--cream-muted);
 
-      font-size: 18px;
+      font-size:18px;
     }
 
 
@@ -2144,116 +1097,112 @@
        PARCHMENT
     ===================================================== */
 
-    .parchment-section {
-      color: var(--ink);
+    .parchment-section{
+      color:var(--paper-ink);
 
       background:
         linear-gradient(
           90deg,
-          rgba(94, 64, 35, .10),
+          rgba(94,64,35,.10),
           transparent 12%,
           transparent 88%,
-          rgba(94, 64, 35, .10)
+          rgba(94,64,35,.10)
         ),
         repeating-linear-gradient(
           0deg,
-          rgba(91, 62, 34, .025) 0,
-          rgba(91, 62, 34, .025) 1px,
+          rgba(91,62,34,.025) 0,
+          rgba(91,62,34,.025) 1px,
           transparent 1px,
           transparent 5px
         ),
-        var(--parchment);
+        var(--paper);
     }
 
 
     .parchment-section::before,
-    .parchment-section::after {
-      content: "";
+    .parchment-section::after{
+      content:"";
 
-      position: absolute;
+      position:absolute;
 
-      left: 0;
-      right: 0;
+      left:0;
+      right:0;
 
-      height: 22px;
+      height:22px;
 
-      pointer-events: none;
+      pointer-events:none;
     }
 
 
-    .parchment-section::before {
-      top: -10px;
+    .parchment-section::before{
+      top:-10px;
 
       background:
         linear-gradient(
           135deg,
           transparent 10px,
-          var(--parchment) 0
+          var(--paper) 0
         )
-        0 0 / 20px 20px repeat-x;
+        0 0 / 20px 20px
+        repeat-x;
     }
 
 
-    .parchment-section::after {
-      bottom: -10px;
+    .parchment-section::after{
+      bottom:-10px;
 
-      transform: rotate(180deg);
+      transform:rotate(180deg);
 
       background:
         linear-gradient(
           135deg,
           transparent 10px,
-          var(--parchment) 0
+          var(--paper) 0
         )
-        0 0 / 20px 20px repeat-x;
+        0 0 / 20px 20px
+        repeat-x;
     }
 
 
-    .parchment-section .eyebrow {
-      color: #805a32;
+    .parchment-section .eyebrow{
+      color:#805a32;
     }
 
 
-    .parchment-section .section-header p {
-      color: #675746;
+    .parchment-section
+    .section-header p{
+      color:#675746;
     }
-
-
-    /* =====================================================
+        /* =====================================================
        CLUBS
     ===================================================== */
 
-    .club-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(4, 1fr);
-
-      gap: 18px;
+    .club-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
     }
 
 
-    .club-card {
-      position: relative;
+    .club-card{
+      position:relative;
+      min-height:295px;
+      overflow:hidden;
 
-      min-height: 295px;
+      padding:26px;
 
-      overflow: hidden;
-
-      padding: 26px;
-
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
 
       border:
-        1px solid rgba(82, 58, 35, .32);
+        1px solid rgba(82,58,35,.32);
 
       background:
-        rgba(255, 248, 225, .23);
+        rgba(255,248,225,.23);
 
       box-shadow:
-        0 8px 20px rgba(76, 51, 28, .10);
+        0 8px 20px rgba(76,51,28,.10);
 
       transition:
         transform .25s ease,
@@ -2261,89 +1210,86 @@
     }
 
 
-    .club-card:hover {
+    .club-card:hover{
       transform:
         translateY(-5px)
         rotate(-.25deg);
 
       box-shadow:
-        0 15px 30px rgba(76, 51, 28, .18);
+        0 15px 30px rgba(76,51,28,.18);
     }
 
 
-    .club-card::before {
-      content: "";
+    .club-card::before{
+      content:"";
 
-      position: absolute;
+      position:absolute;
 
-      width: 190px;
-      height: 190px;
+      width:190px;
+      height:190px;
 
-      top: -70px;
-      right: -65px;
+      top:-70px;
+      right:-65px;
 
       border:
-        1px solid rgba(68, 50, 33, .22);
+        1px solid rgba(68,50,33,.22);
 
-      border-radius: 50%;
+      border-radius:50%;
     }
 
 
-    .club-art {
-      position: absolute;
+    .club-art{
+      position:absolute;
 
-      top: 27px;
-      right: 32px;
+      top:27px;
+      right:32px;
 
-      color: rgba(89, 59, 32, .33);
+      color:
+        rgba(89,59,32,.33);
 
-      font-size: 45px;
+      font-size:45px;
     }
 
 
-    .club-card-content {
-      position: relative;
+    .club-card-content{
+      position:relative;
+      z-index:2;
 
-      z-index: 2;
-
-      padding-top: 95px;
+      padding-top:95px;
     }
 
 
-    .club-card h3 {
+    .club-card h3{
       margin:
-        0 0
-        7px;
+        0 0 7px;
 
-      font-size: 25px;
-
-      font-weight: 400;
+      font-size:25px;
+      font-weight:400;
     }
 
 
-    .club-card p {
+    .club-card p{
       margin:
-        0 0
-        16px;
+        0 0 16px;
 
-      color: #685745;
+      color:#685745;
 
-      font-size: 14px;
+      font-size:14px;
     }
 
 
-    .club-link {
-      color: #75502d;
+    .club-link{
+      color:#75502d;
 
       font-family:
         Arial,
         sans-serif;
 
-      text-transform: uppercase;
+      text-transform:uppercase;
 
-      letter-spacing: .12em;
+      letter-spacing:.12em;
 
-      font-size: 9px;
+      font-size:9px;
     }
 
 
@@ -2351,44 +1297,40 @@
        STORY CARDS
     ===================================================== */
 
-    .story-section {
+    .story-section{
       background:
         radial-gradient(
           circle at 50% 20%,
-          rgba(40, 91, 77, .20),
+          rgba(40,91,77,.20),
           transparent 33rem
         ),
         #09211d;
     }
 
 
-    .story-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(3, 1fr);
-
-      gap: 20px;
+    .story-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:20px;
     }
 
 
-    .story-card {
-      min-height: 330px;
+    .story-card{
+      min-height:330px;
 
-      position: relative;
+      position:relative;
+      overflow:hidden;
 
-      overflow: hidden;
-
-      padding: 30px;
+      padding:30px;
 
       border:
-        1px solid rgba(230, 193, 122, .27);
+        1px solid rgba(230,193,122,.27);
 
       background:
         linear-gradient(
           145deg,
-          rgba(26, 66, 57, .65),
-          rgba(7, 24, 24, .95)
+          rgba(26,66,57,.65),
+          rgba(7,24,24,.95)
         );
 
       transition:
@@ -2397,61 +1339,59 @@
     }
 
 
-    .story-card:hover {
-      transform: translateY(-5px);
+    .story-card:hover{
+      transform:translateY(-5px);
 
       border-color:
-        rgba(240, 206, 137, .62);
+        rgba(240,206,137,.62);
     }
 
 
-    .story-symbol {
-      height: 120px;
+    .story-symbol{
+      height:120px;
 
-      display: flex;
-      align-items: center;
+      display:flex;
+      align-items:center;
 
-      color: var(--gold-light);
+      color:var(--gold-light);
 
-      font-size: 58px;
+      font-size:58px;
 
       text-shadow:
-        0 0 25px rgba(234, 138, 59, .18);
+        0 0 25px
+        rgba(234,138,59,.18);
     }
 
 
-    .story-card h3 {
+    .story-card h3{
       margin:
-        0 0
-        10px;
+        0 0 10px;
 
-      font-size: 28px;
-
-      font-weight: 400;
+      font-size:28px;
+      font-weight:400;
     }
 
 
-    .story-card p {
+    .story-card p{
       margin:
-        0 0
-        24px;
+        0 0 24px;
 
-      color: var(--cream-muted);
+      color:var(--cream-muted);
     }
 
 
-    .story-link {
-      color: var(--fire-light);
+    .story-link{
+      color:var(--fire-light);
 
       font-family:
         Arial,
         sans-serif;
 
-      text-transform: uppercase;
+      text-transform:uppercase;
 
-      letter-spacing: .13em;
+      letter-spacing:.13em;
 
-      font-size: 9px;
+      font-size:9px;
     }
 
 
@@ -2459,7 +1399,7 @@
        BOOK SEARCH
     ===================================================== */
 
-    .book-section {
+    .book-section{
       background:
         linear-gradient(
           180deg,
@@ -2469,104 +1409,102 @@
     }
 
 
-    .book-layout {
-      display: grid;
+    .book-layout{
+      display:grid;
 
       grid-template-columns:
         .9fr 1.1fr;
 
-      gap: 70px;
+      gap:70px;
 
-      align-items: center;
+      align-items:center;
     }
 
 
-    .book-cover-area {
-      position: relative;
+    .book-cover-area{
+      position:relative;
 
-      min-height: 470px;
+      min-height:470px;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
 
       border:
-        1px solid rgba(233, 197, 128, .28);
+        1px solid rgba(233,197,128,.28);
 
       background:
         radial-gradient(
           circle at 50% 65%,
-          rgba(233, 138, 59, .13),
+          rgba(233,138,59,.13),
           transparent 38%
         ),
         linear-gradient(
           145deg,
-          rgba(29, 69, 59, .54),
-          rgba(7, 23, 24, .92)
+          rgba(29,69,59,.54),
+          rgba(7,23,24,.92)
         );
 
       box-shadow:
-        inset 0 0 50px rgba(0, 0, 0, .24),
-        0 20px 50px rgba(0, 0, 0, .18);
+        inset 0 0 50px rgba(0,0,0,.24),
+        0 20px 50px rgba(0,0,0,.18);
     }
 
 
-    .book-cover-area::before {
-      content: "";
+    .book-cover-area::before{
+      content:"";
 
-      position: absolute;
-      inset: 18px;
+      position:absolute;
+      inset:18px;
 
       border:
-        1px solid rgba(233, 197, 128, .11);
+        1px solid rgba(233,197,128,.11);
 
-      pointer-events: none;
+      pointer-events:none;
     }
 
 
-    .book-cover {
-      position: relative;
+    .book-cover{
+      position:relative;
+      z-index:3;
 
-      z-index: 3;
+      width:auto;
+      max-width:70%;
+      max-height:385px;
 
-      width: auto;
-      max-width: 70%;
-      max-height: 385px;
-
-      border-radius: 2px;
+      border-radius:2px;
 
       box-shadow:
-        0 28px 50px rgba(0, 0, 0, .62);
+        0 28px 50px rgba(0,0,0,.62);
     }
 
 
-    .book-placeholder {
-      position: relative;
+    .book-placeholder{
+      position:relative;
+      z-index:3;
 
-      z-index: 3;
+      color:
+        rgba(214,201,172,.65);
 
-      color: rgba(214, 201, 172, .65);
-
-      text-align: center;
+      text-align:center;
 
       font-family:
         Arial,
         sans-serif;
 
-      text-transform: uppercase;
+      text-transform:uppercase;
 
-      letter-spacing: .17em;
+      letter-spacing:.17em;
 
-      font-size: 10px;
+      font-size:10px;
 
-      line-height: 2;
+      line-height:2;
     }
 
 
-    .book-info h2 {
+    .book-info h2{
       margin:
-        5px 0
-        8px;
+        5px 0 8px;
 
       font-size:
         clamp(
@@ -2575,82 +1513,77 @@
           58px
         );
 
-      font-weight: 400;
-
-      line-height: 1.05;
+      font-weight:400;
+      line-height:1.05;
     }
 
 
-    .book-author {
-      margin-bottom: 22px;
+    .book-author{
+      margin-bottom:22px;
 
-      color: var(--fire-light);
+      color:var(--fire-light);
 
-      font-size: 18px;
-
-      font-style: italic;
+      font-size:18px;
+      font-style:italic;
     }
 
 
-    .book-description {
-      max-height: 190px;
+    .book-description{
+      max-height:190px;
 
-      overflow: auto;
+      overflow:auto;
 
-      padding-right: 10px;
+      padding-right:10px;
 
-      color: var(--cream-muted);
+      color:var(--cream-muted);
 
-      font-size: 16px;
+      font-size:16px;
     }
 
 
-    .book-search {
-      display: flex;
+    .book-search{
+      display:flex;
+      gap:10px;
 
-      gap: 10px;
-
-      margin-top: 28px;
+      margin-top:28px;
     }
 
 
-    .book-search input {
-      flex: 1;
+    .book-search input{
+      flex:1;
+      min-width:0;
 
-      min-width: 0;
-
-      padding: 14px 15px;
+      padding:14px 15px;
 
       border:
-        1px solid rgba(233, 197, 128, .30);
+        1px solid rgba(233,197,128,.30);
 
-      border-radius: 2px;
+      border-radius:2px;
 
-      outline: 0;
+      outline:0;
 
       background:
-        rgba(2, 14, 16, .72);
+        rgba(2,14,16,.72);
 
-      color: var(--cream);
+      color:var(--cream);
     }
 
 
-    .book-search input:focus {
-      border-color: var(--fire-light);
+    .book-search input:focus{
+      border-color:var(--fire-light);
 
       box-shadow:
-        0 0 0 2px rgba(233, 138, 59, .08);
+        0 0 0 2px
+        rgba(233,138,59,.08);
     }
 
 
-    .book-actions {
-      display: flex;
+    .book-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
 
-      flex-wrap: wrap;
-
-      gap: 10px;
-
-      margin-top: 18px;
+      margin-top:18px;
     }
 
 
@@ -2658,27 +1591,27 @@
        BUTTONS
     ===================================================== */
 
-    .button {
-      display: inline-block;
+    .button{
+      display:inline-block;
 
-      padding: 13px 20px;
+      padding:13px 20px;
 
       border:
         1px solid var(--gold);
 
-      border-radius: 2px;
+      border-radius:2px;
 
-      background: transparent;
+      background:transparent;
 
       font-family:
         Arial,
         sans-serif;
 
-      text-transform: uppercase;
+      text-transform:uppercase;
 
-      letter-spacing: .14em;
+      letter-spacing:.14em;
 
-      font-size: 9px;
+      font-size:9px;
 
       transition:
         transform .2s ease,
@@ -2686,13 +1619,13 @@
     }
 
 
-    .button:hover {
-      transform: translateY(-2px);
+    .button:hover{
+      transform:translateY(-2px);
     }
 
 
-    .button-primary {
-      border-color: var(--fire-light);
+    .button-primary{
+      border-color:var(--fire-light);
 
       background:
         linear-gradient(
@@ -2700,69 +1633,69 @@
           #cf7a35
         );
 
-      color: #27170e;
+      color:#27170e;
 
-      font-weight: bold;
+      font-weight:bold;
     }
 
 
-    .button-secondary {
-      color: var(--gold-light);
+    .button-secondary{
+      color:var(--gold-light);
 
       background:
-        rgba(10, 31, 30, .4);
+        rgba(10,31,30,.4);
     }
 
 
     /* =====================================================
-       QUOTE
+       COMMUNITY QUOTE
     ===================================================== */
 
-    .quote-section {
-      position: relative;
+    .quote-section{
+      position:relative;
 
-      overflow: hidden;
+      overflow:hidden;
 
       padding:
         125px 0;
 
-      text-align: center;
+      text-align:center;
 
-      background: #061614;
+      background:#061614;
     }
 
 
-    .quote-section::before {
-      content: "";
+    .quote-section::before{
+      content:"";
 
-      position: absolute;
+      position:absolute;
 
-      left: 50%;
-      top: 50%;
+      left:50%;
+      top:50%;
 
-      width: 700px;
-      height: 400px;
+      width:700px;
+      height:400px;
 
       transform:
-        translate(-50%, -50%);
+        translate(-50%,-50%);
 
-      border-radius: 50%;
+      border-radius:50%;
 
       background:
         radial-gradient(
           ellipse,
-          rgba(231, 123, 49, .10),
+          rgba(231,123,49,.10),
           transparent 68%
         );
     }
 
 
-    .quote {
-      position: relative;
+    .quote{
+      position:relative;
 
-      max-width: 940px;
+      max-width:940px;
 
-      margin: auto;
+      margin:auto;
 
       font-size:
         clamp(
@@ -2771,27 +1704,25 @@
           64px
         );
 
-      line-height: 1.12;
+      line-height:1.12;
     }
 
 
-    .quote em {
-      color: var(--fire-light);
-
-      font-style: normal;
+    .quote em{
+      color:var(--fire-light);
+      font-style:normal;
     }
 
 
-    .quote-small {
-      position: relative;
+    .quote-small{
+      position:relative;
 
-      max-width: 650px;
+      max-width:650px;
 
       margin:
-        28px auto
-        0;
+        28px auto 0;
 
-      color: var(--cream-muted);
+      color:var(--cream-muted);
     }
 
 
@@ -2799,15 +1730,15 @@
        DAWN
     ===================================================== */
 
-    .dawn-section {
-      position: relative;
+    .dawn-section{
+      position:relative;
 
-      min-height: 590px;
+      min-height:590px;
 
-      display: flex;
-      align-items: center;
+      display:flex;
+      align-items:center;
 
-      overflow: hidden;
+      overflow:hidden;
 
       background:
         linear-gradient(
@@ -2819,66 +1750,65 @@
     }
 
 
-    .dawn-section::before {
-      content: "";
+    .dawn-section::before{
+      content:"";
 
-      position: absolute;
+      position:absolute;
 
-      left: 50%;
-      bottom: -190px;
+      left:50%;
+      bottom:-190px;
 
-      width: 680px;
-      height: 420px;
+      width:680px;
+      height:420px;
 
-      transform: translateX(-50%);
+      transform:
+        translateX(-50%);
 
-      border-radius: 50%;
+      border-radius:50%;
 
       background:
         radial-gradient(
           circle,
-          rgba(255, 210, 138, .62),
-          rgba(236, 145, 88, .22) 38%,
+          rgba(255,210,138,.62),
+          rgba(236,145,88,.22) 38%,
           transparent 68%
         );
     }
 
 
-    .dawn-section::after {
-      content: "";
+    .dawn-section::after{
+      content:"";
 
-      position: absolute;
+      position:absolute;
 
-      left: -5%;
-      right: -5%;
-      bottom: -125px;
+      left:-5%;
+      right:-5%;
+      bottom:-125px;
 
-      height: 280px;
+      height:280px;
 
       border-radius:
         50% 50% 0 0;
 
-      background: #0b211c;
+      background:#0b211c;
     }
 
 
-    .dawn-content {
-      position: relative;
+    .dawn-content{
+      position:relative;
+      z-index:3;
 
-      z-index: 3;
+      max-width:790px;
 
-      max-width: 790px;
+      margin:auto;
 
-      margin: auto;
-
-      text-align: center;
+      text-align:center;
     }
 
 
-    .dawn-content h2 {
+    .dawn-content h2{
       margin:
-        0 0
-        20px;
+        0 0 20px;
 
       font-size:
         clamp(
@@ -2887,20 +1817,20 @@
           72px
         );
 
-      font-weight: 400;
+      font-weight:400;
 
-      line-height: 1;
+      line-height:1;
     }
 
 
-    .dawn-content p {
-      max-width: 710px;
+    .dawn-content p{
+      max-width:710px;
 
-      margin: auto;
+      margin:auto;
 
-      color: #f3dfc4;
+      color:#f3dfc4;
 
-      font-size: 18px;
+      font-size:18px;
     }
 
 
@@ -2908,73 +1838,119 @@
        FOOTER
     ===================================================== */
 
-    footer {
-      position: relative;
-
-      z-index: 5;
+    footer{
+      position:relative;
+      z-index:5;
 
       padding:
-        42px 0
-        55px;
+        42px 0 55px;
 
       border-top:
-        1px solid rgba(232, 194, 122, .20);
+        1px solid rgba(232,194,122,.20);
 
-      background: #061210;
+      background:#061210;
     }
 
 
-    .footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .footer{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
 
-      gap: 28px;
+      gap:28px;
 
-      flex-wrap: wrap;
+      flex-wrap:wrap;
     }
 
 
-    .footer-brand {
-      color: var(--gold-light);
-
-      font-size: 14px;
+    .footer-brand{
+      color:var(--gold-light);
+      font-size:14px;
     }
 
 
-    .footer-motto {
-      color: #9f937c;
+    .footer-motto{
+      color:#9f937c;
 
       font-family:
         Arial,
         sans-serif;
 
-      text-transform: uppercase;
+      text-transform:uppercase;
 
-      letter-spacing: .12em;
+      letter-spacing:.12em;
 
-      font-size: 8px;
+      font-size:8px;
     }
 
 
-    .footer-links {
-      display: flex;
+    .footer-links{
+      display:flex;
+      gap:17px;
+      flex-wrap:wrap;
 
-      gap: 17px;
-
-      flex-wrap: wrap;
-
-      color: #aa9d83;
+      color:#aa9d83;
 
       font-family:
         Arial,
         sans-serif;
 
-      text-transform: uppercase;
+      text-transform:uppercase;
 
-      letter-spacing: .1em;
+      letter-spacing:.1em;
 
-      font-size: 9px;
+      font-size:9px;
+    }
+
+
+    /* =====================================================
+       SVG DETAIL STYLES
+    ===================================================== */
+
+    .scene-outline{
+      stroke:#14241f;
+      stroke-width:3;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+
+    .scene-fine{
+      stroke:#29372e;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      fill:none;
+    }
+
+
+    .warm-outline{
+      stroke:#5c3c29;
+      stroke-width:2.5;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+
+    .astronaut-line{
+      stroke:#677879;
+      stroke-width:2.5;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+
+    .water-line{
+      fill:none;
+      stroke:#78c2bb;
+      stroke-width:2;
+      stroke-linecap:round;
+      opacity:.5;
+    }
+
+
+    .camp-detail{
+      opacity:.94;
     }
 
 
@@ -2982,119 +1958,88 @@
        RESPONSIVE
     ===================================================== */
 
-    @media (max-width: 1000px) {
+    @media(max-width:1000px){
 
-      .character {
+      .club-grid{
+        grid-template-columns:
+          repeat(2,1fr);
+      }
+
+
+      .story-grid{
+        grid-template-columns:1fr;
+      }
+
+
+      .book-layout{
+        grid-template-columns:1fr;
+        gap:45px;
+      }
+
+
+      .path-grid{
+        grid-template-columns:
+          repeat(3,1fr);
+      }
+
+
+      .camp-scene-wrap{
+        width:1100px;
+        max-width:none;
+
+        left:50%;
+
         transform:
+          translateX(-50%)
           scale(.86);
-      }
 
+        transform-origin:
+          center top;
 
-      .rogue {
-        left: 4%;
-      }
-
-
-      .astronaut {
-        left: 21%;
-      }
-
-
-      .wizard {
-        right: 21%;
-      }
-
-
-      .princess {
-        right: 4%;
-      }
-
-
-      .pool {
-        right: -30px;
-
-        transform: scale(.85);
-      }
-
-
-      .mermaid {
-        right: 25px;
-
-        transform: scale(.85);
-      }
-
-
-      .club-grid {
-        grid-template-columns:
-          repeat(2, 1fr);
-      }
-
-
-      .story-grid {
-        grid-template-columns: 1fr;
-      }
-
-
-      .book-layout {
-        grid-template-columns: 1fr;
-
-        gap: 45px;
-      }
-
-
-      .path-grid {
-        grid-template-columns:
-          repeat(3, 1fr);
+        margin-bottom:-65px;
       }
 
     }
 
 
-    @media (max-width: 760px) {
+    @media(max-width:760px){
 
-      .navlinks a:not(.nav-join) {
-        display: none;
+      .navlinks a:not(.nav-join){
+        display:none;
       }
 
 
-      .hero {
-        min-height: 900px;
+      .hero{
+        padding-top:50px;
       }
 
 
-      .moon {
-        width: 95px;
-        height: 95px;
+      .moon{
+        width:90px;
+        height:90px;
 
-        right: 4%;
+        right:4%;
       }
 
 
-      .big-tree {
-        opacity: .55;
-      }
-
-
-      .gathering {
-        height: 500px;
+      .camp-scene-wrap{
+        width:1100px;
 
         transform:
-          scale(.82);
+          translateX(-50%)
+          scale(.67);
 
-        transform-origin:
-          center top;
-
-        margin-bottom: -80px;
+        margin-bottom:-150px;
       }
 
 
-      .path-grid {
+      .path-grid{
         grid-template-columns:
           1fr 1fr;
       }
 
 
-      .path:last-child {
+      .path:last-child{
         grid-column:
           1 / -1;
       }
@@ -3102,92 +2047,88 @@
     }
 
 
-    @media (max-width: 560px) {
+    @media(max-width:560px){
 
-      .wrap {
-        width:
-          min(
-            calc(100% - 28px),
-            var(--max)
+      .wrap{
+        width:min(
+          calc(100% - 28px),
+          var(--max)
+        );
+      }
+
+
+      .brand{
+        font-size:13px;
+      }
+
+
+      .hero h1{
+        font-size:
+          clamp(
+            44px,
+            14vw,
+            66px
           );
       }
 
 
-      .brand {
-        font-size: 13px;
-      }
-
-
-      .hero {
-        min-height: 850px;
-
-        padding-top: 55px;
-      }
-
-
-      .gathering {
-        width: 1120px;
-
-        left: 50%;
+      .camp-scene-wrap{
+        width:1120px;
 
         transform:
           translateX(-50%)
-          scale(.52);
+          scale(.50);
 
-        transform-origin:
-          center top;
-
-        margin-bottom: -175px;
+        margin-top:10px;
+        margin-bottom:-230px;
       }
 
 
-      .club-grid {
-        grid-template-columns: 1fr;
+      .club-grid{
+        grid-template-columns:1fr;
       }
 
 
-      section.content-section {
+      .content-section{
         padding:
           70px 0;
       }
 
 
       .book-search,
-      .book-actions {
-        flex-direction: column;
+      .book-actions{
+        flex-direction:column;
       }
 
 
       .book-search .button,
-      .book-actions .button {
-        width: 100%;
-
-        text-align: center;
+      .book-actions .button{
+        width:100%;
+        text-align:center;
       }
 
 
-      .footer {
-        flex-direction: column;
-
-        text-align: center;
+      .footer{
+        flex-direction:column;
+        text-align:center;
       }
 
 
-      .footer-links {
-        justify-content: center;
+      .footer-links{
+        justify-content:center;
       }
 
     }
 
 
-    @media (
+    @media(
       prefers-reduced-motion:
       reduce
-    ) {
+    ){
 
       *,
       *::before,
-      *::after {
+      *::after{
         scroll-behavior:
           auto !important;
 
@@ -3297,39 +2238,14 @@
       ></div>
 
       <div
-        class="mountains"
+        class="distant-forest"
         aria-hidden="true"
       ></div>
 
       <div
-        class="forest-back"
+        class="tree-line"
         aria-hidden="true"
       ></div>
-
-      <div
-        class="ground"
-        aria-hidden="true"
-      ></div>
-
-
-      <div
-        class="big-tree left"
-        aria-hidden="true"
-      >
-        <div class="trunk"></div>
-        <div class="branch"></div>
-        <div class="canopy"></div>
-      </div>
-
-
-      <div
-        class="big-tree right"
-        aria-hidden="true"
-      >
-        <div class="trunk"></div>
-        <div class="branch"></div>
-        <div class="canopy"></div>
-      </div>
 
 
       <div class="wrap">
@@ -3356,255 +2272,2052 @@
 
 
         <!-- =================================================
-             THE GATHERING
+             ILLUSTRATED CAMPSITE STARTS HERE
         ================================================== -->
 
-        <div
-          class="gathering"
-          aria-label="A fantasy gathering of readers around a campfire"
-        >
+        <div class="camp-scene-wrap">
 
-          <div
-            class="firelight"
-            aria-hidden="true"
-          ></div>
-
-
-          <!-- ROGUE -->
-
-          <div
-            class="character rogue"
-            aria-hidden="true"
+          <svg
+            class="camp-scene"
+            viewBox="0 0 1200 540"
+            role="img"
+            aria-labelledby="campSceneTitle campSceneDescription"
           >
 
-            <div class="hood"></div>
-            <div class="head"></div>
-            <div class="body"></div>
-            <div class="belt"></div>
+            <title id="campSceneTitle">
+              Readers gathered around a campfire
+            </title>
 
-            <div class="leg one"></div>
-            <div class="leg two"></div>
-
-            <div class="dagger"></div>
-
-          </div>
+            <desc id="campSceneDescription">
+              A rogue, astronaut, wizard, princess,
+              and mermaid share stories around a
+              glowing campfire beneath the stars.
+            </desc>
 
 
-          <!-- ASTRONAUT -->
+            <defs>
 
-          <div
-            class="character astronaut"
-            aria-hidden="true"
-          >
+              <!-- FIRELIGHT -->
 
-            <div class="helmet"></div>
-            <div class="body"></div>
+              <radialGradient
+                id="fireGlow"
+                cx="50%"
+                cy="50%"
+                r="50%"
+              >
 
-            <div class="leg one"></div>
-            <div class="leg two"></div>
+                <stop
+                  offset="0%"
+                  stop-color="#ffca69"
+                  stop-opacity=".55"
+                />
 
-          </div>
+                <stop
+                  offset="42%"
+                  stop-color="#e87b35"
+                  stop-opacity=".20"
+                />
 
+                <stop
+                  offset="100%"
+                  stop-color="#e87b35"
+                  stop-opacity="0"
+                />
 
-          <!-- WIZARD -->
-
-          <div
-            class="character wizard"
-            aria-hidden="true"
-          >
-
-            <div class="hat"></div>
-            <div class="head"></div>
-            <div class="body"></div>
-
-            <div class="leg one"></div>
-            <div class="leg two"></div>
-
-          </div>
-
-
-          <!-- WIZARD MAGIC -->
-
-          <div
-            class="magic"
-            aria-hidden="true"
-          >
-
-            <span class="magic-star one">
-              ✦
-            </span>
-
-            <span class="magic-star two">
-              ✧
-            </span>
-
-            <span class="magic-star three">
-              ✦
-            </span>
-
-            <span class="magic-star four">
-              ✵
-            </span>
-
-          </div>
+              </radialGradient>
 
 
-          <!-- PRINCESS -->
+              <!-- GROUND -->
 
-          <div
-            class="character princess"
-            aria-hidden="true"
-          >
+              <radialGradient
+                id="groundGradient"
+                cx="50%"
+                cy="20%"
+                r="80%"
+              >
 
-            <div class="hair"></div>
-            <div class="crown"></div>
-            <div class="head"></div>
-            <div class="body"></div>
+                <stop
+                  offset="0%"
+                  stop-color="#234638"
+                />
 
-            <div class="leg one"></div>
-            <div class="leg two"></div>
+                <stop
+                  offset="52%"
+                  stop-color="#102d26"
+                />
 
-          </div>
+                <stop
+                  offset="100%"
+                  stop-color="#071914"
+                />
 
-
-          <!-- MERMAID -->
-
-          <div
-            class="pool"
-            aria-hidden="true"
-          ></div>
-
-          <div
-            class="mermaid"
-            aria-hidden="true"
-          >
-
-            <div class="hair"></div>
-            <div class="head"></div>
-            <div class="torso"></div>
-            <div class="tail"></div>
-
-          </div>
+              </radialGradient>
 
 
-          <!-- CAMP CLUTTER -->
+              <!-- WATER -->
 
-          <div
-            class="book-stack"
-            aria-hidden="true"
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
+              <radialGradient
+                id="poolGradient"
+                cx="50%"
+                cy="40%"
+                r="70%"
+              >
 
+                <stop
+                  offset="0%"
+                  stop-color="#4f9d96"
+                />
 
-          <div
-            class="mug"
-            aria-hidden="true"
-          ></div>
+                <stop
+                  offset="48%"
+                  stop-color="#256d70"
+                />
 
+                <stop
+                  offset="100%"
+                  stop-color="#123e47"
+                />
 
-          <div
-            class="bedroll"
-            aria-hidden="true"
-          ></div>
-
-
-          <!-- CAMPFIRE -->
-
-          <div
-            class="campfire"
-            aria-hidden="true"
-          >
-
-            <div class="stone-ring"></div>
-
-            <div class="log one"></div>
-            <div class="log two"></div>
-
-            <div class="flame outer"></div>
-            <div class="flame middle"></div>
-            <div class="flame inner"></div>
-
-          </div>
+              </radialGradient>
 
 
-          <!-- FIREFLIES AROUND THE ASTRONAUT -->
+              <!-- ASTRONAUT VISOR -->
 
-          <span
-            class="firefly"
-            style="
-              left:27%;
-              bottom:205px;
-            "
-          ></span>
+              <linearGradient
+                id="visorGradient"
+                x1="0"
+                y1="0"
+                x2="1"
+                y2="1"
+              >
 
-          <span
-            class="firefly"
-            style="
-              left:31%;
-              bottom:165px;
-              animation-delay:-2s;
-            "
-          ></span>
+                <stop
+                  offset="0%"
+                  stop-color="#7eb0ad"
+                />
 
-          <span
-            class="firefly"
-            style="
-              left:22%;
-              bottom:135px;
-              animation-delay:-4s;
-            "
-          ></span>
+                <stop
+                  offset="35%"
+                  stop-color="#315d65"
+                />
 
-          <span
-            class="firefly"
-            style="
-              left:36%;
-              bottom:115px;
-              animation-delay:-1s;
-            "
-          ></span>
+                <stop
+                  offset="100%"
+                  stop-color="#102c35"
+                />
+
+              </linearGradient>
 
 
-          <!-- STATIC EMBERS -->
+              <!-- WIZARD ROBE -->
 
-          <span
-            class="ember"
-            style="
-              left:48%;
-              bottom:145px;
-              animation-delay:-.5s;
-            "
-          ></span>
+              <linearGradient
+                id="wizardRobe"
+                x1="0"
+                y1="0"
+                x2="1"
+                y2="0"
+              >
 
-          <span
-            class="ember"
-            style="
-              left:51%;
-              bottom:135px;
-              animation-delay:-1.5s;
-            "
-          ></span>
+                <stop
+                  offset="0%"
+                  stop-color="#252b57"
+                />
 
-          <span
-            class="ember"
-            style="
-              left:50%;
-              bottom:160px;
-              animation-delay:-2.6s;
-            "
-          ></span>
+                <stop
+                  offset="50%"
+                  stop-color="#4b5187"
+                />
 
-          <span
-            class="ember"
-            style="
-              left:53%;
-              bottom:145px;
-              animation-delay:-3.2s;
-            "
-          ></span>
+                <stop
+                  offset="100%"
+                  stop-color="#24294d"
+                />
+
+              </linearGradient>
+
+
+              <!-- PRINCESS DRESS -->
+
+              <linearGradient
+                id="princessDress"
+                x1="0"
+                y1="0"
+                x2="1"
+                y2="1"
+              >
+
+                <stop
+                  offset="0%"
+                  stop-color="#b26f8d"
+                />
+
+                <stop
+                  offset="100%"
+                  stop-color="#6f405e"
+                />
+
+              </linearGradient>
+
+
+              <!-- MERMAID TAIL -->
+
+              <linearGradient
+                id="mermaidTail"
+                x1="0"
+                y1="0"
+                x2="1"
+                y2="0"
+              >
+
+                <stop
+                  offset="0%"
+                  stop-color="#2d716d"
+                />
+
+                <stop
+                  offset="60%"
+                  stop-color="#58aa94"
+                />
+
+                <stop
+                  offset="100%"
+                  stop-color="#86c8a7"
+                />
+
+              </linearGradient>
+
+
+              <!-- FIRE -->
+
+              <linearGradient
+                id="flameOuterGradient"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+
+                <stop
+                  offset="0%"
+                  stop-color="#ffd46d"
+                />
+
+                <stop
+                  offset="48%"
+                  stop-color="#ed7834"
+                />
+
+                <stop
+                  offset="100%"
+                  stop-color="#a53b24"
+                />
+
+              </linearGradient>
+
+
+              <linearGradient
+                id="flameMidGradient"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+
+                <stop
+                  offset="0%"
+                  stop-color="#fff2a8"
+                />
+
+                <stop
+                  offset="55%"
+                  stop-color="#ffac45"
+                />
+
+                <stop
+                  offset="100%"
+                  stop-color="#e34f27"
+                />
+
+              </linearGradient>
+
+
+              <linearGradient
+                id="flameInnerGradient"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+
+                <stop
+                  offset="0%"
+                  stop-color="#fffde2"
+                />
+
+                <stop
+                  offset="100%"
+                  stop-color="#ffd66d"
+                />
+
+              </linearGradient>
+
+
+              <!-- SOFT GLOW -->
+
+              <filter
+                id="softGlow"
+                x="-100%"
+                y="-100%"
+                width="300%"
+                height="300%"
+              >
+
+                <feGaussianBlur
+                  stdDeviation="5"
+                  result="blur"
+                />
+
+                <feMerge>
+
+                  <feMergeNode in="blur"/>
+
+                  <feMergeNode
+                    in="SourceGraphic"
+                  />
+
+                </feMerge>
+
+              </filter>
+
+
+              <filter
+                id="tinyGlow"
+                x="-200%"
+                y="-200%"
+                width="500%"
+                height="500%"
+              >
+
+                <feGaussianBlur
+                  stdDeviation="2.5"
+                  result="blur"
+                />
+
+                <feMerge>
+
+                  <feMergeNode in="blur"/>
+
+                  <feMergeNode
+                    in="SourceGraphic"
+                  />
+
+                </feMerge>
+
+              </filter>
+
+            </defs>
+                        <!-- =============================================
+                 CAMPSITE GROUND
+            ============================================== -->
+
+            <ellipse
+              cx="600"
+              cy="474"
+              rx="555"
+              ry="105"
+              fill="url(#groundGradient)"
+              opacity=".96"
+            />
+
+            <ellipse
+              class="svg-fire-glow"
+              cx="600"
+              cy="425"
+              rx="270"
+              ry="155"
+              fill="url(#fireGlow)"
+            />
+
+
+            <!-- =============================================
+                 DISTANT GRASS / PLANTS
+            ============================================== -->
+
+            <g
+              opacity=".65"
+              class="scene-fine"
+              stroke="#31594a"
+            >
+
+              <path d="M90 458 Q80 425 65 411"/>
+              <path d="M91 458 Q100 427 119 415"/>
+              <path d="M107 459 Q108 433 126 423"/>
+
+              <path d="M184 465 Q173 430 156 420"/>
+              <path d="M185 465 Q194 430 210 416"/>
+
+              <path d="M1015 458 Q1003 424 984 412"/>
+              <path d="M1018 458 Q1028 426 1048 411"/>
+              <path d="M1040 461 Q1045 438 1063 425"/>
+
+              <path d="M1110 469 Q1097 435 1080 424"/>
+              <path d="M1111 469 Q1121 435 1140 424"/>
+
+            </g>
+
+
+            <!-- =============================================
+                 LITTLE MUSHROOMS
+            ============================================== -->
+
+            <g class="camp-detail">
+
+              <path
+                d="M126 456
+                   Q132 444 143 456
+                   Z"
+                fill="#c98c5c"
+                class="warm-outline"
+              />
+
+              <path
+                d="M134 455 L134 469"
+                class="scene-fine"
+                stroke="#c6b48d"
+              />
+
+              <path
+                d="M1080 457
+                   Q1087 445 1098 457
+                   Z"
+                fill="#b76e55"
+                class="warm-outline"
+              />
+
+              <path
+                d="M1089 456 L1089 470"
+                class="scene-fine"
+                stroke="#c6b48d"
+              />
+
+            </g>
+
+
+            <!-- =============================================
+                 ROGUE — LEFT SIDE
+            ============================================== -->
+
+            <g
+              id="rogue"
+              transform="translate(92 115)"
+            >
+
+              <!-- cloak behind -->
+
+              <path
+                d="
+                  M94 127
+                  Q45 151 38 233
+                  Q35 293 85 321
+                  Q125 343 169 313
+                  Q188 286 174 226
+                  Q163 164 126 133
+                  Z
+                "
+                fill="#26352e"
+                class="scene-outline"
+              />
+
+
+              <!-- hood -->
+
+              <path
+                d="
+                  M78 126
+                  Q84 67 126 60
+                  Q169 72 174 126
+                  Q154 110 126 108
+                  Q98 109 78 126
+                  Z
+                "
+                fill="#34463b"
+                class="scene-outline"
+              />
+
+
+              <!-- face -->
+
+              <path
+                d="
+                  M96 110
+                  Q126 91 156 111
+                  L151 148
+                  Q126 169 101 148
+                  Z
+                "
+                fill="#a66d51"
+                class="warm-outline"
+              />
+
+
+              <!-- nose -->
+
+              <path
+                d="M127 120 L123 135 L132 136"
+                class="scene-fine"
+                stroke="#704735"
+              />
+
+
+              <!-- smile -->
+
+              <path
+                d="M116 145 Q127 151 138 144"
+                class="scene-fine"
+                stroke="#704735"
+              />
+
+
+              <!-- cloak collar -->
+
+              <path
+                d="
+                  M83 153
+                  Q125 179 169 151
+                  L182 194
+                  Q126 220 69 193
+                  Z
+                "
+                fill="#1d2924"
+                class="scene-outline"
+              />
+
+
+              <!-- torso -->
+
+              <path
+                d="
+                  M82 183
+                  Q125 166 168 184
+                  L161 252
+                  L91 252
+                  Z
+                "
+                fill="#354b3f"
+                class="scene-outline"
+              />
+
+
+              <!-- belt -->
+
+              <path
+                d="M88 233 Q126 243 164 233"
+                fill="none"
+                stroke="#7c5636"
+                stroke-width="8"
+                stroke-linecap="round"
+              />
+
+              <rect
+                x="121"
+                y="233"
+                width="13"
+                height="11"
+                rx="2"
+                fill="#c59b58"
+              />
+
+
+              <!-- arm gesturing toward group -->
+
+              <path
+                d="
+                  M156 190
+                  Q193 190 215 164
+                  Q224 153 235 161
+                  Q221 194 177 219
+                "
+                fill="none"
+                stroke="#354b3f"
+                stroke-width="24"
+                stroke-linecap="round"
+              />
+
+              <circle
+                cx="235"
+                cy="160"
+                r="10"
+                fill="#a66d51"
+                class="warm-outline"
+              />
+
+
+              <!-- other arm -->
+
+              <path
+                d="
+                  M91 194
+                  Q66 223 70 254
+                "
+                fill="none"
+                stroke="#354b3f"
+                stroke-width="23"
+                stroke-linecap="round"
+              />
+
+
+              <!-- seated legs -->
+
+              <path
+                d="
+                  M101 248
+                  Q76 269 62 299
+                  Q96 315 126 286
+                "
+                fill="#252e29"
+                class="scene-outline"
+              />
+
+              <path
+                d="
+                  M151 248
+                  Q181 266 194 298
+                  Q157 316 126 286
+                "
+                fill="#252e29"
+                class="scene-outline"
+              />
+
+
+              <!-- boots -->
+
+              <path
+                d="
+                  M61 294
+                  Q42 298 34 312
+                  Q61 324 86 310
+                  Z
+                "
+                fill="#171d1a"
+                class="scene-outline"
+              />
+
+              <path
+                d="
+                  M190 293
+                  Q212 298 220 311
+                  Q190 325 169 310
+                  Z
+                "
+                fill="#171d1a"
+                class="scene-outline"
+              />
+
+
+              <!-- dagger -->
+
+              <path
+                d="M170 225 L197 255"
+                stroke="#c7c3b2"
+                stroke-width="5"
+                stroke-linecap="round"
+              />
+
+              <path
+                d="M165 221 L178 235"
+                stroke="#b18348"
+                stroke-width="7"
+                stroke-linecap="round"
+              />
+
+            </g>
+
+
+            <!-- =============================================
+                 ASTRONAUT
+            ============================================== -->
+
+            <g
+              id="astronaut"
+              transform="translate(322 130)"
+            >
+
+              <!-- backpack -->
+
+              <rect
+                x="58"
+                y="135"
+                width="48"
+                height="103"
+                rx="17"
+                fill="#a8aba3"
+                class="astronaut-line"
+              />
+
+
+              <!-- helmet -->
+
+              <circle
+                cx="120"
+                cy="105"
+                r="63"
+                fill="#d8d6c7"
+                class="astronaut-line"
+              />
+
+              <ellipse
+                cx="122"
+                cy="105"
+                rx="47"
+                ry="40"
+                fill="url(#visorGradient)"
+                class="astronaut-line"
+              />
+
+              <!-- visor reflection -->
+
+              <path
+                d="
+                  M91 86
+                  Q110 69 133 72
+                "
+                fill="none"
+                stroke="#b6e1d3"
+                stroke-width="5"
+                stroke-linecap="round"
+                opacity=".65"
+              />
+
+
+              <!-- neck ring -->
+
+              <path
+                d="M87 154 Q120 169 153 154"
+                fill="none"
+                stroke="#707d7b"
+                stroke-width="10"
+                stroke-linecap="round"
+              />
+
+
+              <!-- suit torso -->
+
+              <path
+                d="
+                  M80 159
+                  Q120 145 160 160
+                  L171 247
+                  Q120 264 69 247
+                  Z
+                "
+                fill="#d5d3c5"
+                class="astronaut-line"
+              />
+
+
+              <!-- chest control -->
+
+              <rect
+                x="101"
+                y="180"
+                width="39"
+                height="30"
+                rx="4"
+                fill="#5c6d69"
+              />
+
+              <circle
+                cx="111"
+                cy="190"
+                r="3"
+                fill="#e3a856"
+              />
+
+              <circle
+                cx="121"
+                cy="190"
+                r="3"
+                fill="#7db2a0"
+              />
+
+              <path
+                d="M109 200 H133"
+                stroke="#c6d1c9"
+                stroke-width="3"
+              />
+
+
+              <!-- arm toward firefly -->
+
+              <path
+                d="
+                  M158 173
+                  Q188 164 205 140
+                "
+                fill="none"
+                stroke="#d5d3c5"
+                stroke-width="25"
+                stroke-linecap="round"
+                class="astronaut-line"
+              />
+
+              <circle
+                cx="207"
+                cy="137"
+                r="13"
+                fill="#c7c6b9"
+                class="astronaut-line"
+              />
+
+
+              <!-- left arm resting -->
+
+              <path
+                d="
+                  M81 176
+                  Q54 206 65 234
+                "
+                fill="none"
+                stroke="#d5d3c5"
+                stroke-width="25"
+                stroke-linecap="round"
+                class="astronaut-line"
+              />
+
+
+              <!-- seated legs -->
+
+              <path
+                d="
+                  M93 242
+                  Q61 260 42 294
+                  Q82 312 120 275
+                "
+                fill="#c9c8bc"
+                class="astronaut-line"
+              />
+
+              <path
+                d="
+                  M148 242
+                  Q181 261 201 294
+                  Q159 313 120 275
+                "
+                fill="#c9c8bc"
+                class="astronaut-line"
+              />
+
+
+              <!-- boots -->
+
+              <path
+                d="
+                  M44 287
+                  Q22 294 15 311
+                  Q50 321 76 305
+                  Z
+                "
+                fill="#777f7b"
+                class="astronaut-line"
+              />
+
+              <path
+                d="
+                  M198 287
+                  Q222 294 230 310
+                  Q194 322 168 305
+                  Z
+                "
+                fill="#777f7b"
+                class="astronaut-line"
+              />
+
+
+              <!-- astronaut's favorite firefly -->
+
+              <circle
+                class="svg-firefly"
+                cx="222"
+                cy="117"
+                r="4.5"
+                fill="#ffe789"
+                filter="url(#tinyGlow)"
+              />
+
+            </g>
+
+
+            <!-- =============================================
+                 WIZARD
+            ============================================== -->
+
+            <g
+              id="wizard"
+              transform="translate(685 105)"
+            >
+
+              <!-- robe -->
+
+              <path
+                d="
+                  M80 190
+                  Q127 164 171 190
+                  L194 316
+                  Q130 340 63 315
+                  Z
+                "
+                fill="url(#wizardRobe)"
+                class="scene-outline"
+              />
+
+
+              <!-- face -->
+
+              <ellipse
+                cx="126"
+                cy="143"
+                rx="38"
+                ry="42"
+                fill="#9b705a"
+                class="warm-outline"
+              />
+
+
+              <!-- beard -->
+
+              <path
+                d="
+                  M97 151
+                  Q108 190 127 207
+                  Q147 188 158 151
+                  Q143 169 126 163
+                  Q109 169 97 151
+                  Z
+                "
+                fill="#c4bba8"
+                class="scene-outline"
+              />
+
+
+              <!-- hat -->
+
+              <path
+                d="
+                  M87 112
+                  L124 28
+                  Q159 61 169 116
+                  Q127 132 87 112
+                  Z
+                "
+                fill="#343b72"
+                class="scene-outline"
+              />
+
+              <path
+                d="
+                  M67 116
+                  Q126 95 187 116
+                  Q129 143 67 116
+                  Z
+                "
+                fill="#29315f"
+                class="scene-outline"
+              />
+
+
+              <!-- hat stars -->
+
+              <circle
+                cx="127"
+                cy="63"
+                r="3"
+                fill="#e6c478"
+              />
+
+              <circle
+                cx="146"
+                cy="91"
+                r="2.5"
+                fill="#e6c478"
+              />
+
+
+              <!-- raised arm -->
+
+              <path
+                d="
+                  M164 198
+                  Q204 179 211 137
+                "
+                fill="none"
+                stroke="#41477c"
+                stroke-width="25"
+                stroke-linecap="round"
+              />
+
+              <circle
+                cx="212"
+                cy="130"
+                r="11"
+                fill="#9b705a"
+                class="warm-outline"
+              />
+
+
+              <!-- other arm -->
+
+              <path
+                d="
+                  M86 204
+                  Q61 226 67 259
+                "
+                fill="none"
+                stroke="#343a6a"
+                stroke-width="24"
+                stroke-linecap="round"
+              />
+
+
+              <!-- seated robe folds -->
+
+              <path
+                d="M111 216 Q96 268 95 313"
+                class="scene-fine"
+                stroke="#6f73a3"
+              />
+
+              <path
+                d="M143 216 Q158 268 158 316"
+                class="scene-fine"
+                stroke="#6f73a3"
+              />
+
+
+              <!-- MAGIC ORBIT -->
+
+              <g class="magic-orbit">
+
+                <circle
+                  cx="212"
+                  cy="130"
+                  r="53"
+                  fill="none"
+                  stroke="#b9d9ff"
+                  stroke-width="1.5"
+                  stroke-dasharray="3 13"
+                  opacity=".45"
+                />
+
+                <circle
+                  class="wizard-spark"
+                  cx="212"
+                  cy="73"
+                  r="5"
+                  fill="#d8eaff"
+                  filter="url(#tinyGlow)"
+                />
+
+                <circle
+                  class="wizard-spark two"
+                  cx="260"
+                  cy="133"
+                  r="4"
+                  fill="#ffe69c"
+                  filter="url(#tinyGlow)"
+                />
+
+                <circle
+                  class="wizard-spark three"
+                  cx="178"
+                  cy="164"
+                  r="4"
+                  fill="#d8b7ff"
+                  filter="url(#tinyGlow)"
+                />
+
+              </g>
+
+
+              <!-- story magic trail -->
+
+              <path
+                class="magic-pulse"
+                d="
+                  M211 126
+                  Q246 85 283 100
+                  Q315 112 302 72
+                "
+                fill="none"
+                stroke="#bcd9ef"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-dasharray="5 8"
+                opacity=".65"
+              />
+
+
+              <!-- magical fireworks -->
+
+              <g
+                transform="translate(303 68)"
+                stroke-linecap="round"
+                filter="url(#tinyGlow)"
+              >
+
+                <path
+                  d="M0 -10 V-27"
+                  stroke="#ffe19a"
+                  stroke-width="3"
+                />
+
+                <path
+                  d="M7 -7 L20 -20"
+                  stroke="#d5c0ff"
+                  stroke-width="3"
+                />
+
+                <path
+                  d="M10 0 H28"
+                  stroke="#9ed9dd"
+                  stroke-width="3"
+                />
+
+                <path
+                  d="M-7 -7 L-20 -20"
+                  stroke="#d5c0ff"
+                  stroke-width="3"
+                />
+
+                <path
+                  d="M-10 0 H-28"
+                  stroke="#ffe19a"
+                  stroke-width="3"
+                />
+
+                <circle
+                  r="5"
+                  fill="#fff2ba"
+                />
+
+              </g>
+
+            </g>
+
+
+            <!-- =============================================
+                 MERMAID POOL
+            ============================================== -->
+
+            <g id="mermaidPool">
+
+              <ellipse
+                cx="1030"
+                cy="437"
+                rx="144"
+                ry="52"
+                fill="#0b2423"
+                opacity=".45"
+              />
+
+              <ellipse
+                cx="1028"
+                cy="425"
+                rx="135"
+                ry="48"
+                fill="url(#poolGradient)"
+                stroke="#315c58"
+                stroke-width="4"
+              />
+
+              <ellipse
+                cx="1028"
+                cy="419"
+                rx="111"
+                ry="29"
+                fill="none"
+                stroke="#91c7b8"
+                stroke-width="2"
+                opacity=".28"
+              />
+
+              <path
+                class="water-line"
+                d="
+                  M928 420
+                  Q970 406 1012 421
+                  T1095 419
+                "
+              />
+
+              <path
+                class="water-line"
+                d="
+                  M955 436
+                  Q993 424 1030 437
+                  T1101 433
+                "
+              />
+
+            </g>
+
+
+            <!-- =============================================
+                 MERMAID
+            ============================================== -->
+
+            <g
+              id="mermaid"
+              transform="translate(944 191)"
+            >
+
+              <!-- tail behind body -->
+
+              <path
+                d="
+                  M86 183
+                  Q107 228 84 264
+                  Q60 297 99 322
+                  Q133 341 168 317
+                  Q138 310 126 285
+                  Q115 262 135 232
+                  Q151 207 136 179
+                  Z
+                "
+                fill="url(#mermaidTail)"
+                class="scene-outline"
+              />
+
+
+              <!-- tail fin -->
+
+              <path
+                d="
+                  M162 315
+                  Q195 299 213 312
+                  Q198 331 171 337
+                  Q189 355 179 374
+                  Q151 350 151 329
+                  Z
+                "
+                fill="#75b89e"
+                class="scene-outline"
+              />
+
+
+              <!-- torso -->
+
+              <path
+                d="
+                  M82 126
+                  Q112 112 140 128
+                  L139 190
+                  Q109 203 80 187
+                  Z
+                "
+                fill="#8f6655"
+                class="warm-outline"
+              />
+
+
+              <!-- shell top -->
+
+              <path
+                d="
+                  M82 155
+                  Q95 143 108 156
+                  Q120 143 136 156
+                  L136 176
+                  Q110 184 83 174
+                  Z
+                "
+                fill="#835f86"
+                class="scene-outline"
+              />
+
+
+              <!-- head -->
+
+              <ellipse
+                cx="110"
+                cy="92"
+                rx="35"
+                ry="40"
+                fill="#9d715d"
+                class="warm-outline"
+              />
+
+
+              <!-- hair -->
+
+              <path
+                d="
+                  M74 95
+                  Q67 51 108 43
+                  Q151 48 150 99
+                  Q147 130 164 153
+                  Q137 143 128 113
+                  Q117 132 88 131
+                  Q73 118 74 95
+                  Z
+                "
+                fill="#273c3b"
+                class="scene-outline"
+              />
+
+
+              <!-- face -->
+
+              <path
+                d="M99 103 Q110 109 121 102"
+                class="scene-fine"
+                stroke="#704638"
+              />
+
+
+              <!-- arm toward princess -->
+
+              <path
+                d="
+                  M86 139
+                  Q59 130 46 108
+                "
+                fill="none"
+                stroke="#9d715d"
+                stroke-width="16"
+                stroke-linecap="round"
+              />
+
+              <circle
+                cx="43"
+                cy="105"
+                r="8"
+                fill="#9d715d"
+              />
+
+
+              <!-- tail scales -->
+
+              <g
+                fill="none"
+                stroke="#a6d7ba"
+                stroke-width="1.3"
+                opacity=".35"
+              >
+
+                <path d="M98 216 Q112 226 126 216"/>
+                <path d="M92 236 Q107 246 122 236"/>
+                <path d="M88 256 Q103 266 117 256"/>
+                <path d="M88 277 Q101 287 115 278"/>
+
+              </g>
+
+            </g>
+
+
+            <!-- =============================================
+                 PRINCESS
+            ============================================== -->
+
+            <g
+              id="princess"
+              transform="translate(846 126)"
+            >
+
+              <!-- dress -->
+
+              <path
+                d="
+                  M74 190
+                  Q116 164 155 191
+                  Q180 241 194 310
+                  Q125 335 53 310
+                  Q65 245 74 190
+                  Z
+                "
+                fill="url(#princessDress)"
+                class="scene-outline"
+              />
+
+
+              <!-- dress embroidery -->
+
+              <path
+                d="
+                  M82 221
+                  Q117 238 161 218
+                "
+                fill="none"
+                stroke="#d4a2a5"
+                stroke-width="3"
+                opacity=".65"
+              />
+
+              <path
+                d="
+                  M72 277
+                  Q119 296 177 273
+                "
+                fill="none"
+                stroke="#d4a2a5"
+                stroke-width="3"
+                opacity=".45"
+              />
+
+
+              <!-- neck -->
+
+              <rect
+                x="106"
+                y="147"
+                width="23"
+                height="30"
+                rx="9"
+                fill="#b67c60"
+              />
+
+
+              <!-- head -->
+
+              <ellipse
+                cx="117"
+                cy="117"
+                rx="39"
+                ry="43"
+                fill="#b67c60"
+                class="warm-outline"
+              />
+
+
+              <!-- hair -->
+
+              <path
+                d="
+                  M78 121
+                  Q70 74 113 64
+                  Q160 68 160 121
+                  Q160 157 143 178
+                  Q143 135 151 111
+                  Q129 91 89 106
+                  Q94 142 87 171
+                  Q77 149 78 121
+                  Z
+                "
+                fill="#563c30"
+                class="scene-outline"
+              />
+
+
+              <!-- crown -->
+
+              <path
+                d="
+                  M90 75
+                  L94 47
+                  L109 63
+                  L119 39
+                  L131 63
+                  L148 47
+                  L150 77
+                  Z
+                "
+                fill="#d4ad5e"
+                stroke="#6c4d2d"
+                stroke-width="2"
+                stroke-linejoin="round"
+              />
+
+
+              <!-- smile -->
+
+              <path
+                d="M106 129 Q117 136 129 128"
+                class="scene-fine"
+                stroke="#77493b"
+              />
+
+
+              <!-- arm around mermaid -->
+
+              <path
+                d="
+                  M149 191
+                  Q174 168 190 144
+                "
+                fill="none"
+                stroke="#b67c60"
+                stroke-width="17"
+                stroke-linecap="round"
+              />
+
+              <circle
+                cx="192"
+                cy="141"
+                r="8"
+                fill="#b67c60"
+              />
+
+
+              <!-- other arm -->
+
+              <path
+                d="
+                  M80 196
+                  Q60 218 66 248
+                "
+                fill="none"
+                stroke="#b67c60"
+                stroke-width="17"
+                stroke-linecap="round"
+              />
+
+
+              <!-- leaning posture accent -->
+
+              <path
+                d="M149 179 Q171 166 183 147"
+                fill="none"
+                stroke="#d8a48c"
+                stroke-width="3"
+                opacity=".45"
+              />
+
+            </g>
+
+
+            <!-- =============================================
+                 FOREGROUND CLUTTER:
+                 BOOKS, MUGS, BLANKET
+            ============================================== -->
+
+            <g class="camp-detail">
+
+              <!-- books -->
+
+              <g transform="translate(285 432) rotate(-6)">
+
+                <rect
+                  width="80"
+                  height="15"
+                  rx="3"
+                  fill="#844a3c"
+                  class="warm-outline"
+                />
+
+                <rect
+                  x="6"
+                  y="16"
+                  width="74"
+                  height="14"
+                  rx="3"
+                  fill="#4d6b59"
+                  class="scene-outline"
+                />
+
+                <rect
+                  x="11"
+                  y="31"
+                  width="69"
+                  height="14"
+                  rx="3"
+                  fill="#856a45"
+                  class="warm-outline"
+                />
+
+                <path
+                  d="M13 22 H66"
+                  stroke="#d6c89d"
+                  stroke-width="2"
+                  opacity=".5"
+                />
+
+              </g>
+
+
+              <!-- open book -->
+
+              <g transform="translate(715 427) rotate(5)">
+
+                <path
+                  d="
+                    M0 7
+                    Q32 -5 58 9
+                    L56 43
+                    Q29 32 0 42
+                    Z
+                  "
+                  fill="#d9cba7"
+                  stroke="#594835"
+                  stroke-width="2"
+                />
+
+                <path
+                  d="
+                    M58 9
+                    Q86 -5 117 7
+                    L117 42
+                    Q87 32 56 43
+                    Z
+                  "
+                  fill="#d9cba7"
+                  stroke="#594835"
+                  stroke-width="2"
+                />
+
+                <path
+                  d="M58 9 L56 43"
+                  stroke="#7b6448"
+                  stroke-width="2"
+                />
+
+                <path
+                  d="M11 15 Q31 10 48 16"
+                  stroke="#8b7658"
+                  stroke-width="1.5"
+                  fill="none"
+                />
+
+                <path
+                  d="M69 15 Q88 10 106 16"
+                  stroke="#8b7658"
+                  stroke-width="1.5"
+                  fill="none"
+                />
+
+              </g>
+
+
+              <!-- mug left -->
+
+              <g transform="translate(395 438)">
+
+                <path
+                  d="
+                    M0 0
+                    H31
+                    L27 34
+                    H5
+                    Z
+                  "
+                  fill="#8c6a4a"
+                  stroke="#432f24"
+                  stroke-width="2"
+                />
+
+                <path
+                  d="
+                    M30 7
+                    Q48 7 44 21
+                    Q42 29 29 26
+                  "
+                  fill="none"
+                  stroke="#8c6a4a"
+                  stroke-width="6"
+                />
+
+                <path
+                  d="M9 -6 Q4 -17 11 -24"
+                  fill="none"
+                  stroke="#c9c1aa"
+                  stroke-width="2"
+                  opacity=".35"
+                />
+
+              </g>
+
+
+              <!-- mug right -->
+
+              <g transform="translate(805 449)">
+
+                <path
+                  d="
+                    M0 0
+                    H28
+                    L25 31
+                    H4
+                    Z
+                  "
+                  fill="#486b62"
+                  stroke="#253d38"
+                  stroke-width="2"
+                />
+
+                <path
+                  d="
+                    M27 6
+                    Q43 6 40 19
+                    Q38 26 26 23
+                  "
+                  fill="none"
+                  stroke="#486b62"
+                  stroke-width="6"
+                />
+
+              </g>
+
+
+              <!-- rolled blanket -->
+
+              <g transform="translate(176 443) rotate(8)">
+
+                <ellipse
+                  cx="22"
+                  cy="20"
+                  rx="21"
+                  ry="17"
+                  fill="#704c45"
+                  stroke="#392c28"
+                  stroke-width="3"
+                />
+
+                <rect
+                  x="20"
+                  y="3"
+                  width="72"
+                  height="34"
+                  rx="15"
+                  fill="#82584e"
+                  stroke="#392c28"
+                  stroke-width="3"
+                />
+
+                <path
+                  d="M48 5 V35"
+                  stroke="#c38e70"
+                  stroke-width="4"
+                  opacity=".5"
+                />
+
+              </g>
+
+            </g>
+
+
+            <!-- =============================================
+                 CAMPFIRE STONES
+            ============================================== -->
+
+            <g>
+
+              <ellipse
+                cx="600"
+                cy="462"
+                rx="83"
+                ry="25"
+                fill="#07110f"
+                opacity=".55"
+              />
+
+              <ellipse
+                cx="537"
+                cy="452"
+                rx="24"
+                ry="15"
+                fill="#626158"
+                class="scene-outline"
+              />
+
+              <ellipse
+                cx="565"
+                cy="466"
+                rx="25"
+                ry="15"
+                fill="#55564f"
+                class="scene-outline"
+              />
+
+              <ellipse
+                cx="600"
+                cy="471"
+                rx="26"
+                ry="15"
+                fill="#6b675b"
+                class="scene-outline"
+              />
+
+              <ellipse
+                cx="636"
+                cy="466"
+                rx="25"
+                ry="15"
+                fill="#55564f"
+                class="scene-outline"
+              />
+
+              <ellipse
+                cx="664"
+                cy="452"
+                rx="24"
+                ry="15"
+                fill="#626158"
+                class="scene-outline"
+              />
+
+            </g>
+
+
+            <!-- =============================================
+                 FIREWOOD
+            ============================================== -->
+
+            <g>
+
+              <rect
+                x="553"
+                y="438"
+                width="99"
+                height="17"
+                rx="8"
+                fill="#603c27"
+                stroke="#2f2119"
+                stroke-width="3"
+                transform="rotate(10 603 446)"
+              />
+
+              <rect
+                x="550"
+                y="438"
+                width="103"
+                height="17"
+                rx="8"
+                fill="#70472c"
+                stroke="#2f2119"
+                stroke-width="3"
+                transform="rotate(-10 601 446)"
+              />
+
+            </g>
+
+
+            <!-- =============================================
+                 FIRE
+            ============================================== -->
+
+            <g filter="url(#softGlow)">
+
+              <path
+                class="svg-flame-outer"
+                d="
+                  M600 449
+                  C559 430 562 395 584 374
+                  C578 402 597 398 597 357
+                  C634 385 651 414 631 440
+                  C622 451 610 456 600 449
+                  Z
+                "
+                fill="url(#flameOuterGradient)"
+              />
+
+              <path
+                class="svg-flame-mid"
+                d="
+                  M601 447
+                  C578 434 580 411 594 397
+                  C592 416 606 411 610 386
+                  C631 409 630 430 617 442
+                  C612 447 606 449 601 447
+                  Z
+                "
+                fill="url(#flameMidGradient)"
+              />
+
+              <path
+                class="svg-flame-inner"
+                d="
+                  M602 445
+                  C591 437 592 424 600 415
+                  C600 427 607 425 612 414
+                  C619 430 615 441 607 445
+                  Z
+                "
+                fill="url(#flameInnerGradient)"
+              />
+
+            </g>
+
+
+            <!-- =============================================
+                 SMOKE
+            ============================================== -->
+
+            <g
+              fill="none"
+              stroke="#c7c5b4"
+              stroke-width="8"
+              stroke-linecap="round"
+            >
+
+              <path
+                class="smoke"
+                d="
+                  M603 365
+                  Q580 333 605 305
+                  Q623 285 608 260
+                "
+              />
+
+              <path
+                class="smoke second"
+                d="
+                  M618 367
+                  Q640 337 622 313
+                  Q608 294 625 274
+                "
+              />
+
+            </g>
+
+
+            <!-- =============================================
+                 FIREFLIES
+            ============================================== -->
+
+            <g
+              fill="#ffe98d"
+              filter="url(#tinyGlow)"
+            >
+
+              <circle
+                class="svg-firefly"
+                cx="181"
+                cy="262"
+                r="3.5"
+              />
+
+              <circle
+                class="svg-firefly"
+                cx="252"
+                cy="192"
+                r="4"
+              />
+
+              <circle
+                class="svg-firefly"
+                cx="304"
+                cy="310"
+                r="3"
+              />
+
+              <circle
+                class="svg-firefly"
+                cx="475"
+                cy="216"
+                r="4"
+              />
+
+              <circle
+                class="svg-firefly"
+                cx="514"
+                cy="298"
+                r="3.5"
+              />
+
+              <circle
+                class="svg-firefly"
+                cx="679"
+                cy="246"
+                r="3"
+              />
+
+              <circle
+                class="svg-firefly"
+                cx="832"
+                cy="188"
+                r="4"
+              />
+
+              <circle
+                class="svg-firefly"
+                cx="915"
+                cy="270"
+                r="3"
+              />
+
+              <circle
+                class="svg-firefly"
+                cx="1093"
+                cy="236"
+                r="4"
+              />
+
+              <circle
+                class="svg-firefly"
+                cx="1125"
+                cy="337"
+                r="3"
+              />
+
+            </g>
+
+
+            <!-- =============================================
+                 EMBERS
+            ============================================== -->
+
+            <g
+              fill="#ffb755"
+              filter="url(#tinyGlow)"
+            >
+
+              <circle
+                class="wizard-spark"
+                cx="584"
+                cy="369"
+                r="2.5"
+              />
+
+              <circle
+                class="wizard-spark two"
+                cx="618"
+                cy="349"
+                r="2.5"
+              />
+
+              <circle
+                class="wizard-spark three"
+                cx="601"
+                cy="329"
+                r="2"
+              />
+
+              <circle
+                class="wizard-spark"
+                cx="629"
+                cy="383"
+                r="2"
+              />
+
+            </g>
+
+
+            <!-- =============================================
+                 FOREGROUND GRASS
+            ============================================== -->
+
+            <g
+              fill="none"
+              stroke="#254b3e"
+              stroke-width="4"
+              stroke-linecap="round"
+              opacity=".9"
+            >
+
+              <path d="M63 493 Q61 465 47 447"/>
+              <path d="M65 493 Q72 463 88 449"/>
+
+              <path d="M230 506 Q226 477 209 459"/>
+              <path d="M231 506 Q242 476 256 463"/>
+
+              <path d="M948 504 Q943 475 927 458"/>
+              <path d="M949 504 Q959 473 975 456"/>
+
+              <path d="M1135 492 Q1131 466 1115 450"/>
+              <path d="M1136 492 Q1145 466 1160 452"/>
+
+            </g>
+
+          </svg>
 
         </div>
 
@@ -3617,7 +4330,7 @@
          QUICK PATHS
     ====================================================== -->
 
-    <div class="quick-paths">
+    <section class="quick-paths">
 
       <div class="wrap">
 
@@ -3627,15 +4340,13 @@
             href="discover.html"
             class="path"
           >
-
             <span class="path-icon">
-              📖
+              ✦
             </span>
 
             <span class="path-label">
               Explore Books
             </span>
-
           </a>
 
 
@@ -3643,15 +4354,13 @@
             href="clubs.html"
             class="path"
           >
-
             <span class="path-icon">
-              🔥
+              ◉
             </span>
 
             <span class="path-label">
               Join a Club
             </span>
-
           </a>
 
 
@@ -3659,54 +4368,48 @@
             href="profile.html"
             class="path"
           >
-
             <span class="path-icon">
-              ✦
+              ♙
             </span>
 
             <span class="path-label">
               Create Your Avatar
             </span>
-
           </a>
 
 
           <a
-            href="dashboard.html"
+            href="ratings.html"
             class="path"
           >
-
             <span class="path-icon">
-              📝
+              ❧
             </span>
 
             <span class="path-label">
               Share Your DogEars
             </span>
-
           </a>
 
 
           <a
-            href="discover.html"
+            href="#stories"
             class="path"
           >
-
             <span class="path-icon">
-              ☾
+              ↟
             </span>
 
             <span class="path-label">
               Explore More
             </span>
-
           </a>
 
         </div>
 
       </div>
 
-    </div>
+    </section>
 
 
     <!-- =====================================================
@@ -3715,30 +4418,27 @@
 
     <section
       class="content-section parchment-section"
+      id="clubs"
     >
 
       <div class="wrap">
 
-        <div
-          class="section-header center"
-        >
+        <div class="section-header center">
 
           <div class="eyebrow">
-            Gather around
+            Find your corner of the fire
           </div>
 
           <h2>
-            Find your corner
-            of the campfire.
+            Featured Clubs
           </h2>
 
           <p>
             Some readers chase dragons.
             Some chase spaceships.
-            Some want romance, mysteries,
-            comfort reads, or something
-            wonderfully strange.
-            There is room for all of them.
+            Some just want a blanket,
+            tea, and a devastating romance.
+            There's room for all of them.
           </p>
 
         </div>
@@ -3747,11 +4447,14 @@
         <div class="club-grid">
 
           <a
-            href="clubs.html"
             class="club-card"
+            href="clubs.html"
           >
 
-            <div class="club-art">
+            <div
+              class="club-art"
+              aria-hidden="true"
+            >
               ⚔
             </div>
 
@@ -3762,13 +4465,14 @@
               </h3>
 
               <p>
-                Dragons, quests, magic,
-                ancient kingdoms and
-                impossible journeys.
+                Dragons, quests, impossible
+                kingdoms, and people making
+                extremely questionable decisions
+                with magical artifacts.
               </p>
 
               <span class="club-link">
-                Find your party →
+                Find the club →
               </span>
 
             </div>
@@ -3777,12 +4481,15 @@
 
 
           <a
-            href="clubs.html"
             class="club-card"
+            href="clubs.html"
           >
 
-            <div class="club-art">
-              ☾
+            <div
+              class="club-art"
+              aria-hidden="true"
+            >
+              ♡
             </div>
 
             <div class="club-card-content">
@@ -3792,13 +4499,14 @@
               </h3>
 
               <p>
-                Stories where every kind
-                of love and every kind
-                of hero gets to exist.
+                Queer stories, queer joy,
+                queer heartbreak, and shelves
+                where everyone gets to exist
+                loudly.
               </p>
 
               <span class="club-link">
-                Pull up a seat →
+                Find the club →
               </span>
 
             </div>
@@ -3807,11 +4515,14 @@
 
 
           <a
-            href="clubs.html"
             class="club-card"
+            href="clubs.html"
           >
 
-            <div class="club-art">
+            <div
+              class="club-art"
+              aria-hidden="true"
+            >
               ✧
             </div>
 
@@ -3822,14 +4533,14 @@
               </h3>
 
               <p>
-                Strange worlds, distant
-                stars, new civilizations
-                and questions without
-                easy answers.
+                Strange planets, stranger
+                civilizations, artificial minds,
+                and very bad ideas involving
+                airlocks.
               </p>
 
               <span class="club-link">
-                Launch into a story →
+                Find the club →
               </span>
 
             </div>
@@ -3838,11 +4549,14 @@
 
 
           <a
-            href="clubs.html"
             class="club-card"
+            href="clubs.html"
           >
 
-            <div class="club-art">
+            <div
+              class="club-art"
+              aria-hidden="true"
+            >
               ☕
             </div>
 
@@ -3853,135 +4567,17 @@
               </h3>
 
               <p>
-                Warm drinks, quiet towns,
-                gentle mysteries and books
-                that feel like blankets.
+                Warm kitchens, little mysteries,
+                found families, gentle magic,
+                and books best read under
+                too many blankets.
               </p>
 
               <span class="club-link">
-                Get comfortable →
+                Find the club →
               </span>
 
             </div>
-
-          </a>
-
-        </div>
-
-      </div>
-
-    </section>
-        <!-- =====================================================
-         STORY PATHS
-    ====================================================== -->
-
-    <section
-      class="content-section story-section"
-    >
-
-      <div class="wrap">
-
-        <div class="section-header">
-
-          <div class="eyebrow">
-            Every reader belongs somewhere
-          </div>
-
-          <h2>
-            The story doesn't end
-            when you close the book.
-          </h2>
-
-          <p>
-            Find people who felt what you felt,
-            leave thoughts along the way,
-            discover something unexpected,
-            and make the story your own.
-          </p>
-
-        </div>
-
-
-        <div class="story-grid">
-
-          <a
-            href="discover.html"
-            class="story-card"
-          >
-
-            <div class="story-symbol">
-              ✧
-            </div>
-
-            <h3>
-              Explore Stories
-            </h3>
-
-            <p>
-              Wander outside your usual shelves.
-              Find the book everyone is talking about,
-              the one nobody has discovered yet,
-              or the strange little story that
-              somehow feels written for you.
-            </p>
-
-            <span class="story-link">
-              Start wandering →
-            </span>
-
-          </a>
-
-
-          <a
-            href="profile.html"
-            class="story-card"
-          >
-
-            <div class="story-symbol">
-              ♙
-            </div>
-
-            <h3>
-              Create Your Gremlin
-            </h3>
-
-            <p>
-              Build the little reader who represents
-              you around the fire. Make them heroic,
-              ridiculous, cozy, mysterious—or some
-              combination nobody else understands.
-            </p>
-
-            <span class="story-link">
-              Meet your gremlin →
-            </span>
-
-          </a>
-
-
-          <a
-            href="dashboard.html"
-            class="story-card"
-          >
-
-            <div class="story-symbol">
-              ❧
-            </div>
-
-            <h3>
-              Share DogEars
-            </h3>
-
-            <p>
-              Keep notes as you read, remember the
-              moments that mattered, and share the
-              thoughts worth bringing back to your
-              book club when the fire gets going.
-            </p>
-
-            <span class="story-link">
-              Leave a DogEar →
-            </span>
 
           </a>
 
@@ -3993,44 +4589,146 @@
 
 
     <!-- =====================================================
-         BOOK DISCOVERY
+         STORY PATHS
     ====================================================== -->
 
     <section
-      class="content-section book-section"
+      class="content-section story-section"
+      id="stories"
     >
+
+      <div class="wrap">
+
+        <div class="section-header">
+
+          <div class="eyebrow">
+            However you read
+          </div>
+
+          <h2>
+            There's more than one way
+            to belong to a story.
+          </h2>
+
+          <p>
+            Read together, discover something
+            strange, or help a story become
+            what it was meant to be.
+          </p>
+
+        </div>
+
+
+        <div class="story-grid">
+
+          <a
+            class="story-card"
+            href="clubs.html"
+          >
+
+            <div class="story-symbol">
+              ◉
+            </div>
+
+            <h3>
+              Gather Around
+            </h3>
+
+            <p>
+              Join a book club and turn
+              solitary reading into the kind
+              of conversation that keeps going
+              long after the last page.
+            </p>
+
+            <span class="story-link">
+              Explore clubs →
+            </span>
+
+          </a>
+
+
+          <a
+            class="story-card"
+            href="discover.html"
+          >
+
+            <div class="story-symbol">
+              ✦
+            </div>
+
+            <h3>
+              Wander Somewhere New
+            </h3>
+
+            <p>
+              Find books, people, and ideas
+              you weren't necessarily looking
+              for—and might be very glad
+              you found.
+            </p>
+
+            <span class="story-link">
+              Start wandering →
+            </span>
+
+          </a>
+
+
+          <a
+            class="story-card"
+            href="beta-reading.html"
+          >
+
+            <div class="story-symbol">
+              ❧
+            </div>
+
+            <h3>
+              Help Shape a Story
+            </h3>
+
+            <p>
+              Step into a manuscript before
+              publication, leave thoughtful
+              DogEars, and help a writer see
+              their story through another
+              reader's eyes.
+            </p>
+
+            <span class="story-link">
+              Beta reading →
+            </span>
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+        <!-- =====================================================
+         BOOK DISCOVERY
+    ====================================================== -->
+
+    <section class="content-section book-section">
 
       <div class="wrap book-layout">
 
-        <div
-          class="book-cover-area"
-          id="featuredBookCoverArea"
-        >
+        <div class="book-cover-area">
 
           <div
             class="book-placeholder"
-            id="featuredBookPlaceholder"
+            id="bookPlaceholder"
           >
-
-            <div
-              style="
-                font-size:46px;
-                margin-bottom:8px;
-              "
-            >
-              📚
-            </div>
-
-            Search for a story
-            <br>
-            to bring it to the fire
-
+            Search for a book<br>
+            and let the gremlin<br>
+            go looking.
           </div>
 
-
           <img
-            id="featuredBookCover"
             class="book-cover"
+            id="bookCover"
             alt=""
             hidden
           >
@@ -4044,26 +4742,27 @@
             Find your next story
           </div>
 
-          <h2 id="featuredBookTitle">
+          <h2 id="bookTitle">
             What are you reading next?
           </h2>
 
           <div
             class="book-author"
-            id="featuredBookAuthor"
+            id="bookAuthor"
           >
             Search by title, author, or ISBN.
           </div>
 
           <div
             class="book-description"
-            id="featuredBookDescription"
+            id="bookDescription"
           >
-            Search the shelves without leaving
-            the campfire. We'll pull in book
-            information so you can find something
-            new to read, talk about, or bring back
-            to your club.
+            Somewhere out there is a book
+            that will ruin your sleep schedule,
+            occupy your brain for three weeks,
+            and make you bother everyone you
+            know until they read it too.
+            Let's find it.
           </div>
 
 
@@ -4072,37 +4771,19 @@
             id="bookSearchForm"
           >
 
-            <label
-              for="bookSearchInput"
-              style="
-                position:absolute;
-                width:1px;
-                height:1px;
-                padding:0;
-                margin:-1px;
-                overflow:hidden;
-                clip:rect(0,0,0,0);
-                white-space:nowrap;
-                border:0;
-              "
-            >
-              Search for a book
-            </label>
-
-
             <input
-              type="search"
               id="bookSearchInput"
-              placeholder="Title, author, or ISBN..."
+              type="search"
+              placeholder="Title, author, or ISBN"
               autocomplete="off"
+              aria-label="Search for a book"
             >
-
 
             <button
-              type="submit"
               class="button button-primary"
+              type="submit"
             >
-              Search
+              Search Books
             </button>
 
           </form>
@@ -4111,19 +4792,17 @@
           <div class="book-actions">
 
             <a
-              href="discover.html"
               class="button button-secondary"
-              id="exploreBookButton"
+              href="marketplace.html"
             >
-              Explore Books
+              Browse Books
             </a>
 
-
             <a
-              href="clubs.html"
               class="button button-secondary"
+              href="discover.html"
             >
-              Find a Book Club
+              Explore Paper Gremlin
             </a>
 
           </div>
@@ -4143,25 +4822,21 @@
 
       <div class="wrap">
 
-        <div class="eyebrow">
-          The fire is big enough
-        </div>
-
         <div class="quote">
-          In a world full of
+
+          “In a world full of
           <em>different paths,</em>
           we still end up around
-          the same fire.
+          the same fire.”
+
         </div>
 
         <p class="quote-small">
-          The rogue has a story.
-          The astronaut has questions.
-          The wizard is absolutely exaggerating.
-          Someone brought snacks.
-          Someone cried over chapter thirty-seven.
-          Nobody has to love the same books
-          to belong here.
+          The rogue can sit beside the astronaut.
+          The princess can fall in love with the
+          mermaid. The wizard can absolutely
+          exaggerate what happened on his last
+          adventure. That's the point.
         </p>
 
       </div>
@@ -4175,25 +4850,29 @@
 
     <section class="dawn-section">
 
-      <div class="wrap dawn-content">
+      <div class="wrap">
 
-        <div class="eyebrow">
-          One more chapter
+        <div class="dawn-content">
+
+          <div class="eyebrow">
+            Stay until morning
+          </div>
+
+          <h2>
+            There's always room
+            for one more story.
+          </h2>
+
+          <p>
+            Read until the fire burns low.
+            Argue about fictional people like
+            they're family. Find somebody who
+            understands exactly why that one
+            chapter destroyed you. Then come
+            back tomorrow night and do it again.
+          </p>
+
         </div>
-
-        <h2>
-          Stay until morning.
-        </h2>
-
-        <p>
-          The rogue finishes laughing.
-          The astronaut watches the last fireflies
-          disappear. The princess is asleep against
-          her mermaid. The wizard's story somehow
-          lasted three hours. The fire burns low,
-          dawn reaches the mountains, and a group
-          of strangers has become a little less strange.
-        </p>
 
       </div>
 
@@ -4214,12 +4893,12 @@
       <div>
 
         <div class="footer-brand">
-          Paper Gremlin · Stories bring us home.
+          Paper Gremlin
         </div>
 
         <div class="footer-motto">
-          Good books · Kind people · Weird ideas ·
-          Brighter tomorrows
+          Good books · Kind people ·
+          Weird ideas · Brighter tomorrows
         </div>
 
       </div>
@@ -4234,12 +4913,12 @@
           Discover
         </a>
 
-        <a href="clubs.html">
-          Clubs
-        </a>
-
         <a href="marketplace.html">
           Books
+        </a>
+
+        <a href="clubs.html">
+          Clubs
         </a>
 
         <a href="beta-reading.html">
@@ -4269,26 +4948,17 @@
 
   <!-- =====================================================
        SUPABASE
+       Same project and session method used by dashboard.html
   ====================================================== -->
 
-  <script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-  ></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
   <script>
 
     /* =====================================================
-       PAPER GREMLIN HOMEPAGE
-    ====================================================== */
-
-
-    /* -----------------------------------------------------
-       SUPABASE
-
-       This restores the actual Supabase client instead
-       of trying to guess login state from localStorage.
-    ------------------------------------------------------ */
+       CONFIG
+    ===================================================== */
 
     const SUPABASE_URL =
       "https://nrtutxjznkfvvbmaagum.supabase.co";
@@ -4298,38 +4968,16 @@
       "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
 
 
-    let supabaseClient =
-      null;
-
-
-    try {
-
-      if (
-        window.supabase &&
-        window.supabase.createClient
-      ) {
-
-        supabaseClient =
-          window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_KEY
-          );
-
-      }
-
-    } catch (error) {
-
-      console.warn(
-        "Supabase could not initialize:",
-        error
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
       );
 
-    }
 
-
-    /* -----------------------------------------------------
-       AUTH-AWARE NAVIGATION
-    ------------------------------------------------------ */
+    /* =====================================================
+       AUTHENTICATED NAVIGATION
+    ===================================================== */
 
     const navLogin =
       document.getElementById(
@@ -4355,9 +5003,9 @@
       );
 
 
-    function showLoggedInNavigation() {
+    function showLoggedInNavigation(){
 
-      if (navLogin) {
+      if(navLogin){
 
         navLogin.textContent =
           "Home";
@@ -4368,7 +5016,7 @@
       }
 
 
-      if (navSignup) {
+      if(navSignup){
 
         navSignup.textContent =
           "Profile";
@@ -4379,7 +5027,7 @@
       }
 
 
-      if (footerLogin) {
+      if(footerLogin){
 
         footerLogin.textContent =
           "Home";
@@ -4390,7 +5038,7 @@
       }
 
 
-      if (footerSignup) {
+      if(footerSignup){
 
         footerSignup.textContent =
           "Profile";
@@ -4403,67 +5051,145 @@
     }
 
 
-    async function checkSession() {
+    function showLoggedOutNavigation(){
 
-      if (!supabaseClient) {
-        return;
+      if(navLogin){
+
+        navLogin.textContent =
+          "Log In";
+
+        navLogin.href =
+          "auth.html#login";
+
       }
 
 
-      try {
+      if(navSignup){
 
-        const {
-          data,
-          error
-        } =
-          await supabaseClient.auth.getSession();
+        navSignup.textContent =
+          "Join";
 
+        navSignup.href =
+          "auth.html#signup";
 
-        if (error) {
-
-          console.warn(
-            "Could not read session:",
-            error
-          );
-
-          return;
-
-        }
+      }
 
 
-        if (
-          data &&
-          data.session
-        ) {
+      if(footerLogin){
 
-          showLoggedInNavigation();
+        footerLogin.textContent =
+          "Log In";
 
-        }
+        footerLogin.href =
+          "auth.html#login";
 
-      } catch (error) {
+      }
 
-        console.warn(
-          "Session check failed:",
-          error
-        );
+
+      if(footerSignup){
+
+        footerSignup.textContent =
+          "Join";
+
+        footerSignup.href =
+          "auth.html#signup";
 
       }
 
     }
 
 
-    checkSession();
+    /* =====================================================
+       SESSION CHECK
+
+       This follows the same method used by the working
+       dashboard: supabaseClient.auth.getSession()
+    ===================================================== */
+
+    async function checkSession(){
+
+      try{
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .auth
+            .getSession();
 
 
-    if (supabaseClient) {
+        if(error){
 
-      supabaseClient.auth.onAuthStateChange(
-        function (
+          console.warn(
+            "Homepage session:",
+            error
+          );
+
+          showLoggedOutNavigation();
+
+          return;
+
+        }
+
+
+        if(
+          data?.session?.user
+        ){
+
+          showLoggedInNavigation();
+
+        }
+
+        else{
+
+          showLoggedOutNavigation();
+
+        }
+
+      }
+
+      catch(error){
+
+        console.warn(
+          "Homepage authentication:",
+          error
+        );
+
+        showLoggedOutNavigation();
+
+      }
+
+    }
+
+
+    /* =====================================================
+       AUTH STATE CHANGES
+    ===================================================== */
+
+    supabaseClient
+      .auth
+      .onAuthStateChange(
+        (
           event,
           session
-        ) {
+        ) => {
 
-          if (session) {
+          if(
+            event ===
+            "SIGNED_OUT"
+          ){
+
+            showLoggedOutNavigation();
+
+            return;
+
+          }
+
+
+          if(
+            session?.user
+          ){
 
             showLoggedInNavigation();
 
@@ -4472,12 +5198,10 @@
         }
       );
 
-    }
 
-
-    /* -----------------------------------------------------
-       GOOGLE BOOKS
-    ------------------------------------------------------ */
+    /* =====================================================
+       GOOGLE BOOKS SEARCH
+    ===================================================== */
 
     const bookSearchForm =
       document.getElementById(
@@ -4491,55 +5215,39 @@
       );
 
 
-    const featuredBookTitle =
+    const bookTitle =
       document.getElementById(
-        "featuredBookTitle"
+        "bookTitle"
       );
 
 
-    const featuredBookAuthor =
+    const bookAuthor =
       document.getElementById(
-        "featuredBookAuthor"
+        "bookAuthor"
       );
 
 
-    const featuredBookDescription =
+    const bookDescription =
       document.getElementById(
-        "featuredBookDescription"
+        "bookDescription"
       );
 
 
-    const featuredBookCover =
+    const bookCover =
       document.getElementById(
-        "featuredBookCover"
+        "bookCover"
       );
 
 
-    const featuredBookPlaceholder =
+    const bookPlaceholder =
       document.getElementById(
-        "featuredBookPlaceholder"
+        "bookPlaceholder"
       );
 
 
-    const exploreBookButton =
-      document.getElementById(
-        "exploreBookButton"
-      );
-
-
-    function cleanBookDescription(
-      html
-    ) {
-
-      if (!html) {
-
-        return (
-          "No description was provided for this book. " +
-          "Apparently the gremlins ate it."
-        );
-
-      }
-
+    function stripHtml(
+      value
+    ){
 
       const temporary =
         document.createElement(
@@ -4548,73 +5256,50 @@
 
 
       temporary.innerHTML =
-        html;
+        String(
+          value || ""
+        );
 
 
       return (
         temporary.textContent ||
         temporary.innerText ||
         ""
-      ).trim();
+      );
 
     }
 
 
-    function showBookLoading() {
+    function resetBookCover(){
 
-      featuredBookTitle.textContent =
-        "Searching the shelves…";
-
-
-      featuredBookAuthor.textContent =
-        "The gremlins are looking.";
-
-
-      featuredBookDescription.textContent =
-        "One of them wandered off. " +
-        "This is normal.";
-
-    }
-
-
-    function showBookError(
-      message
-    ) {
-
-      featuredBookTitle.textContent =
-        "That story slipped away.";
-
-
-      featuredBookAuthor.textContent =
-        "Try another title, author, or ISBN.";
-
-
-      featuredBookDescription.textContent =
-        message ||
-        "We couldn't find a matching book.";
-
-
-      featuredBookCover.hidden =
+      bookCover.hidden =
         true;
 
+      bookCover.removeAttribute(
+        "src"
+      );
 
-      featuredBookPlaceholder.hidden =
+      bookCover.alt =
+        "";
+
+      bookPlaceholder.hidden =
         false;
 
     }
 
 
     function renderBook(
-      book
-    ) {
+      volume
+    ){
 
       const info =
-        book.volumeInfo || {};
+        volume?.volumeInfo ||
+        {};
 
 
       const title =
         info.title ||
-        "Untitled Story";
+        "Untitled Book";
 
 
       const authors =
@@ -4626,93 +5311,141 @@
 
 
       const description =
-        cleanBookDescription(
-          info.description
+        stripHtml(
+          info.description ||
+          "No description is available for this book yet."
         );
 
 
-      const image =
-        info.imageLinks?.thumbnail ||
-        info.imageLinks?.smallThumbnail ||
-        "";
+      const images =
+        info.imageLinks ||
+        {};
 
 
-      featuredBookTitle.textContent =
-        title;
-
-
-      featuredBookAuthor.textContent =
-        "by " + authors;
-
-
-      featuredBookDescription.textContent =
-        description;
-
-
-      if (image) {
-
-        featuredBookCover.src =
-          image.replace(
-            "http://",
-            "https://"
+      const cover =
+        (
+          images.extraLarge ||
+          images.large ||
+          images.medium ||
+          images.thumbnail ||
+          images.smallThumbnail ||
+          ""
+        )
+          .replace(
+            /^http:/,
+            "https:"
           );
 
 
-        featuredBookCover.alt =
-          "Cover of " + title;
+      bookTitle.textContent =
+        title;
 
 
-        featuredBookCover.hidden =
+      bookAuthor.textContent =
+        `by ${authors}`;
+
+
+      bookDescription.textContent =
+        description;
+
+
+      if(cover){
+
+        bookCover.src =
+          cover;
+
+        bookCover.alt =
+          `${title} cover`;
+
+        bookCover.hidden =
           false;
 
-
-        featuredBookPlaceholder.hidden =
+        bookPlaceholder.hidden =
           true;
-
-      } else {
-
-        featuredBookCover.hidden =
-          true;
-
-
-        featuredBookPlaceholder.hidden =
-          false;
 
       }
 
+      else{
 
-      exploreBookButton.href =
-        "discover.html?q=" +
-        encodeURIComponent(
-          title
-        );
+        resetBookCover();
+
+        bookPlaceholder.textContent =
+          "No cover available";
+
+      }
 
     }
 
 
-    async function searchGoogleBooks(
+    function showBookLoading(){
+
+      bookTitle.textContent =
+        "Sending a gremlin to the stacks...";
+
+
+      bookAuthor.textContent =
+        "Searching Google Books";
+
+
+      bookDescription.textContent =
+        "This should only take a moment.";
+
+    }
+
+
+    function showBookError(
+      message
+    ){
+
+      bookTitle.textContent =
+        "The gremlin came back empty-handed.";
+
+
+      bookAuthor.textContent =
+        "Try another search";
+
+
+      bookDescription.textContent =
+        message;
+
+
+      resetBookCover();
+
+    }
+
+
+    async function searchBooks(
       query
-    ) {
+    ){
 
-      const trimmed =
-        query.trim();
+      const cleanQuery =
+        String(
+          query || ""
+        )
+          .trim();
 
 
-      if (!trimmed) {
+      if(!cleanQuery){
+
+        showBookError(
+          "Enter a title, author, or ISBN first."
+        );
+
         return;
+
       }
 
 
       showBookLoading();
 
 
-      try {
+      try{
 
         const endpoint =
           "https://www.googleapis.com/books/v1/volumes" +
           "?q=" +
           encodeURIComponent(
-            trimmed
+            cleanQuery
           ) +
           "&maxResults=1";
 
@@ -4723,11 +5456,10 @@
           );
 
 
-        if (!response.ok) {
+        if(!response.ok){
 
           throw new Error(
-            "Google Books returned " +
-            response.status
+            `Google Books returned ${response.status}.`
           );
 
         }
@@ -4737,14 +5469,15 @@
           await response.json();
 
 
-        if (
-          !data.items ||
+        if(
+          !Array.isArray(
+            data.items
+          ) ||
           !data.items.length
-        ) {
+        ){
 
           showBookError(
-            "No books matched that search. " +
-            "Try fewer words or search by ISBN."
+            "No matching book was found. Try a title, author, or ISBN."
           );
 
           return;
@@ -4756,18 +5489,18 @@
           data.items[0]
         );
 
+      }
 
-      } catch (error) {
+      catch(error){
 
-        console.error(
-          "Book search failed:",
+        console.warn(
+          "Book search:",
           error
         );
 
 
         showBookError(
-          "The shelves aren't cooperating right now. " +
-          "Try again in a moment."
+          "The book search could not be completed right now. Try again in a moment."
         );
 
       }
@@ -4775,31 +5508,46 @@
     }
 
 
-    if (bookSearchForm) {
-
-      bookSearchForm.addEventListener(
+    bookSearchForm
+      .addEventListener(
         "submit",
-        function (
-          event
-        ) {
+        event => {
 
           event.preventDefault();
 
 
-          searchGoogleBooks(
+          searchBooks(
             bookSearchInput.value
           );
 
         }
       );
 
-    }
-        /* -----------------------------------------------------
-       BOOK SEARCH FROM URL
+
+    /* =====================================================
+       COVER FAILURE
+    ===================================================== */
+
+    bookCover
+      .addEventListener(
+        "error",
+        () => {
+
+          resetBookCover();
+
+          bookPlaceholder.textContent =
+            "Cover unavailable";
+
+        }
+      );
+
+
+    /* =====================================================
+       OPTIONAL SEARCH QUERY
 
        Example:
        index.html?q=Fourth%20Wing
-    ------------------------------------------------------ */
+    ===================================================== */
 
     const pageParameters =
       new URLSearchParams(
@@ -4807,428 +5555,130 @@
       );
 
 
-    const initialBookQuery =
+    const requestedBook =
       pageParameters.get(
         "q"
       );
 
 
-    if (
-      initialBookQuery &&
-      bookSearchInput
-    ) {
+    if(requestedBook){
 
       bookSearchInput.value =
-        initialBookQuery;
+        requestedBook;
 
 
-      searchGoogleBooks(
-        initialBookQuery
+      searchBooks(
+        requestedBook
       );
 
     }
 
 
-    /* -----------------------------------------------------
-       BROKEN COVER FALLBACK
-    ------------------------------------------------------ */
+    /* =====================================================
+       SUBTLE HERO PARALLAX
+    ===================================================== */
 
-    if (featuredBookCover) {
+    const campScene =
+      document.querySelector(
+        ".camp-scene-wrap"
+      );
 
-      featuredBookCover.addEventListener(
-        "error",
-        function () {
 
-          featuredBookCover.hidden =
+    const moon =
+      document.querySelector(
+        ".moon"
+      );
+
+
+    let parallaxScheduled =
+      false;
+
+
+    function updateParallax(){
+
+      parallaxScheduled =
+        false;
+
+
+      if(
+        window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches
+      ){
+
+        return;
+
+      }
+
+
+      if(
+        window.innerWidth <
+        1001
+      ){
+
+        return;
+
+      }
+
+
+      const scroll =
+        Math.min(
+          window.scrollY,
+          650
+        );
+
+
+      if(campScene){
+
+        campScene.style.translate =
+          `0 ${scroll * .025}px`;
+
+      }
+
+
+      if(moon){
+
+        moon.style.translate =
+          `0 ${scroll * .08}px`;
+
+      }
+
+    }
+
+
+    window.addEventListener(
+      "scroll",
+      () => {
+
+        if(
+          !parallaxScheduled
+        ){
+
+          parallaxScheduled =
             true;
 
 
-          featuredBookPlaceholder.hidden =
-            false;
-
-        }
-      );
-
-    }
-
-
-    /* -----------------------------------------------------
-       AMBIENT EMBERS
-    ------------------------------------------------------ */
-
-    const gathering =
-      document.querySelector(
-        ".gathering"
-      );
-
-
-    const reducedMotion =
-      window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
-
-
-    function createEmber() {
-
-      if (!gathering) {
-        return;
-      }
-
-
-      const ember =
-        document.createElement(
-          "span"
-        );
-
-
-      ember.className =
-        "ember";
-
-
-      ember.style.left =
-        (
-          47 +
-          Math.random() * 6
-        ) +
-        "%";
-
-
-      ember.style.bottom =
-        (
-          135 +
-          Math.random() * 35
-        ) +
-        "px";
-
-
-      ember.style.animationDuration =
-        (
-          2.8 +
-          Math.random() * 2.2
-        ) +
-        "s";
-
-
-      gathering.appendChild(
-        ember
-      );
-
-
-      window.setTimeout(
-        function () {
-
-          ember.remove();
-
-        },
-        5200
-      );
-
-    }
-
-
-    if (!reducedMotion) {
-
-      window.setInterval(
-        createEmber,
-        650
-      );
-
-    }
-
-
-    /* -----------------------------------------------------
-       EXTRA FIREFLIES
-
-       These stay mostly around the astronaut but wander
-       far enough to make the campsite feel alive.
-    ------------------------------------------------------ */
-
-    function createFireflies() {
-
-      if (
-        !gathering ||
-        reducedMotion
-      ) {
-        return;
-      }
-
-
-      for (
-        let index = 0;
-        index < 7;
-        index++
-      ) {
-
-        const fly =
-          document.createElement(
-            "span"
+          window.requestAnimationFrame(
+            updateParallax
           );
 
-
-        fly.className =
-          "firefly";
-
-
-        fly.style.left =
-          (
-            15 +
-            Math.random() * 28
-          ) +
-          "%";
-
-
-        fly.style.bottom =
-          (
-            85 +
-            Math.random() * 210
-          ) +
-          "px";
-
-
-        fly.style.animationDelay =
-          (
-            Math.random() * -7
-          ) +
-          "s";
-
-
-        fly.style.animationDuration =
-          (
-            5 +
-            Math.random() * 5
-          ) +
-          "s";
-
-
-        gathering.appendChild(
-          fly
-        );
-
-      }
-
-    }
-
-
-    createFireflies();
-
-
-    /* -----------------------------------------------------
-       FIRELIGHT FLICKER
-
-       Tiny randomized changes make the characters appear
-       to be sitting in uneven firelight rather than under
-       a static orange circle.
-    ------------------------------------------------------ */
-
-    const firelight =
-      document.querySelector(
-        ".firelight"
-      );
-
-
-    if (
-      firelight &&
-      !reducedMotion
-    ) {
-
-      window.setInterval(
-        function () {
-
-          const opacity =
-            .82 +
-            Math.random() * .18;
-
-
-          firelight.style.opacity =
-            opacity;
-
-        },
-        240
-      );
-
-    }
-
-
-    /* -----------------------------------------------------
-       MAGIC SPARKS
-
-       Add a few tiny sparks around the wizard's story.
-    ------------------------------------------------------ */
-
-    const magic =
-      document.querySelector(
-        ".magic"
-      );
-
-
-    function createMagicSpark() {
-
-      if (
-        !magic ||
-        reducedMotion
-      ) {
-        return;
-      }
-
-
-      const spark =
-        document.createElement(
-          "span"
-        );
-
-
-      spark.className =
-        "magic-star";
-
-
-      const symbols =
-        [
-          "✦",
-          "✧",
-          "·",
-          "✵"
-        ];
-
-
-      spark.textContent =
-        symbols[
-          Math.floor(
-            Math.random() *
-            symbols.length
-          )
-        ];
-
-
-      spark.style.left =
-        (
-          Math.random() * 150
-        ) +
-        "px";
-
-
-      spark.style.top =
-        (
-          20 +
-          Math.random() * 110
-        ) +
-        "px";
-
-
-      spark.style.fontSize =
-        (
-          8 +
-          Math.random() * 12
-        ) +
-        "px";
-
-
-      spark.style.animationDuration =
-        (
-          2 +
-          Math.random() * 2
-        ) +
-        "s";
-
-
-      magic.appendChild(
-        spark
-      );
-
-
-      window.setTimeout(
-        function () {
-
-          spark.remove();
-
-        },
-        4100
-      );
-
-    }
-
-
-    if (!reducedMotion) {
-
-      window.setInterval(
-        createMagicSpark,
-        1200
-      );
-
-    }
-
-
-    /* -----------------------------------------------------
-       VERY LIGHT FOREST PARALLAX
-    ------------------------------------------------------ */
-
-    const mountains =
-      document.querySelector(
-        ".mountains"
-      );
-
-
-    const forestBack =
-      document.querySelector(
-        ".forest-back"
-      );
-
-
-    if (
-      !reducedMotion &&
-      window.innerWidth > 760
-    ) {
-
-      window.addEventListener(
-        "scroll",
-        function () {
-
-          const scroll =
-            window.scrollY;
-
-
-          if (mountains) {
-
-            mountains.style.transform =
-              "translateY(" +
-              Math.min(
-                scroll * .025,
-                18
-              ) +
-              "px)";
-
-          }
-
-
-          if (forestBack) {
-
-            forestBack.style.transform =
-              "translateY(" +
-              Math.min(
-                scroll * .04,
-                28
-              ) +
-              "px)";
-
-          }
-
-        },
-        {
-          passive: true
         }
-      );
 
-    }
-
-
-    /* -----------------------------------------------------
-       HOMEPAGE READY
-    ------------------------------------------------------ */
-
-    document.documentElement.classList.add(
-      "paper-gremlin-ready"
+      },
+      {
+        passive:true
+      }
     );
 
+
+    /* =====================================================
+       INITIALIZE
+    ===================================================== */
+
+    checkSession();
+
   </script>
+
 
 </body>
 </html>
