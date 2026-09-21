@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
 
@@ -9,58 +8,67 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Paper Gremlin — Where Books Find Their People</title>
+  <title>Paper Gremlin — Different Readers. Same Campfire.</title>
 
   <meta
     name="description"
-    content="Paper Gremlin is a community for readers, writers, book clubs, beta readers, agents, editors, and everyone who loves stories."
+    content="Paper Gremlin is a gathering place for readers, writers, book clubs, beta readers, and everyone who loves stories."
   >
 
   <style>
-
     :root {
-      --black: #090b0a;
-      --black-soft: #111411;
+      --night: #07131a;
+      --night-soft: #0d2025;
+      --forest: #102d2a;
+      --forest-light: #1c4540;
 
-      --green: #17231c;
-      --green-light: #26372c;
+      --fire: #e98a3b;
+      --fire-light: #ffc875;
+      --ember: #b9512b;
 
-      --cream: #f3e8cf;
-      --cream-muted: #cfc1a4;
+      --moon: #e7e2cb;
 
-      --gold: #c99a51;
-      --gold-light: #e2bc78;
-      --gold-dark: #7d592c;
+      --parchment: #ead7ae;
+      --parchment-light: #f4e6c5;
+      --parchment-dark: #b99a6c;
 
-      --burgundy: #4b201e;
-      --burgundy-light: #6a302a;
+      --ink: #30261e;
+      --cream: #fff0cf;
+      --cream-muted: #d6c9ac;
 
-      --line: rgba(201,154,81,.32);
+      --gold: #d4aa63;
+      --gold-light: #f0ce89;
+
+      --line: rgba(232, 194, 122, .30);
 
       --max-width: 1180px;
     }
-
 
     * {
       box-sizing: border-box;
     }
 
-
     html {
       scroll-behavior: smooth;
     }
 
-
     body {
       margin: 0;
+      overflow-x: hidden;
 
       background:
         radial-gradient(
-          circle at top,
-          rgba(64,80,57,.14),
-          transparent 500px
+          circle at 50% 4%,
+          rgba(74, 119, 117, .23),
+          transparent 32rem
         ),
-        var(--black);
+        linear-gradient(
+          180deg,
+          #07131a 0%,
+          #0b2023 35%,
+          #102923 70%,
+          #071512 100%
+        );
 
       color: var(--cream);
 
@@ -72,23 +80,50 @@
       line-height: 1.6;
     }
 
+    body::before {
+      content: "";
 
-    img {
-      max-width: 100%;
+      position: fixed;
+      inset: 0;
+
+      pointer-events: none;
+      z-index: -10;
+
+      background:
+        radial-gradient(
+          circle at 50% 58%,
+          rgba(234, 126, 48, .12),
+          transparent 24rem
+        ),
+        radial-gradient(
+          circle at 12% 20%,
+          rgba(43, 102, 92, .16),
+          transparent 20rem
+        ),
+        radial-gradient(
+          circle at 88% 28%,
+          rgba(43, 102, 92, .13),
+          transparent 22rem
+        );
     }
-
 
     a {
       color: inherit;
       text-decoration: none;
     }
 
-
     button,
     input {
       font: inherit;
     }
 
+    button {
+      cursor: pointer;
+    }
+
+    img {
+      max-width: 100%;
+    }
 
     .wrap {
       width: min(
@@ -100,284 +135,1580 @@
     }
 
 
+    /* =====================================================
+       NIGHT SKY
+    ===================================================== */
+
+    .sky {
+      position: absolute;
+      inset: 0 0 auto 0;
+
+      height: 900px;
+
+      overflow: hidden;
+      pointer-events: none;
+
+      z-index: -5;
+    }
+
+    .moon {
+      position: absolute;
+
+      top: 110px;
+      right: 8vw;
+
+      width: 145px;
+      height: 145px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle at 38% 35%,
+          #fffbe9,
+          #ded9bf 65%,
+          #c2bea9
+        );
+
+      box-shadow:
+        0 0 35px rgba(236, 236, 207, .25),
+        0 0 95px rgba(201, 220, 210, .13);
+    }
+
+    .moon::after {
+      content: "";
+
+      position: absolute;
+
+      width: 27px;
+      height: 27px;
+
+      left: 31px;
+      top: 38px;
+
+      border-radius: 50%;
+
+      background: rgba(150, 151, 135, .16);
+
+      box-shadow:
+        49px 20px 0 8px rgba(150, 151, 135, .10),
+        25px 65px 0 4px rgba(150, 151, 135, .10);
+    }
+
+    .star {
+      position: absolute;
+
+      width: 2px;
+      height: 2px;
+
+      border-radius: 50%;
+
+      background: #fff4ca;
+
+      box-shadow:
+        0 0 7px #fff4ca;
+
+      opacity: .75;
+
+      animation:
+        twinkle 3.8s ease-in-out infinite;
+    }
+
+    .star:nth-child(2) {
+      top: 145px;
+      left: 13%;
+    }
+
+    .star:nth-child(3) {
+      top: 220px;
+      left: 27%;
+
+      animation-delay: .7s;
+    }
+
+    .star:nth-child(4) {
+      top: 95px;
+      left: 42%;
+
+      animation-delay: 1.3s;
+    }
+
+    .star:nth-child(5) {
+      top: 180px;
+      left: 63%;
+
+      animation-delay: 2s;
+    }
+
+    .star:nth-child(6) {
+      top: 275px;
+      left: 79%;
+
+      animation-delay: .4s;
+    }
+
+    .star:nth-child(7) {
+      top: 340px;
+      left: 18%;
+
+      animation-delay: 1.8s;
+    }
+
+    @keyframes twinkle {
+      0%,
+      100% {
+        opacity: .25;
+        transform: scale(.8);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.6);
+      }
+    }
+
 
     /* =====================================================
-       TOP NAV
+       NAVIGATION
     ===================================================== */
 
     .topbar {
       position: sticky;
       top: 0;
-      z-index: 50;
 
-      background: rgba(9,11,10,.94);
+      z-index: 100;
+
+      border-bottom:
+        1px solid rgba(226, 186, 113, .22);
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(5, 16, 21, .97),
+          rgba(7, 21, 25, .91)
+        );
 
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-
-      border-bottom:
-        1px solid rgba(201,154,81,.18);
     }
 
-
     .nav {
-      min-height: 64px;
+      min-height: 68px;
 
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      gap: 20px;
+      gap: 24px;
     }
 
+    .brand {
+      display: flex;
+      align-items: center;
 
-    .mini-brand {
-      font-family: Arial, sans-serif;
-
-      text-transform: uppercase;
-
-      letter-spacing: .22em;
-
-      font-size: 12px;
+      gap: 10px;
 
       color: var(--gold-light);
 
-      transition: color .2s ease;
+      font-size: 17px;
+      font-weight: bold;
+
+      letter-spacing: .08em;
     }
 
+    .brand-mark {
+      width: 30px;
+      height: 30px;
 
-    .mini-brand:hover {
-      color: var(--cream);
+      position: relative;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      border:
+        1px solid rgba(232, 194, 122, .48);
+
+      border-radius:
+        50% 50% 45% 55%;
+
+      background:
+        radial-gradient(
+          circle at 50% 70%,
+          rgba(233, 138, 59, .25),
+          rgba(14, 49, 45, .8)
+        );
+
+      font-size: 16px;
     }
 
+    .brand-mark::after {
+      content: "";
+
+      position: absolute;
+
+      width: 7px;
+      height: 10px;
+
+      right: 1px;
+      top: -4px;
+
+      border:
+        1px solid rgba(232, 194, 122, .48);
+
+      border-bottom: 0;
+
+      transform: rotate(24deg);
+
+      border-radius:
+        80% 20% 0 0;
+    }
 
     .navlinks {
       display: flex;
       align-items: center;
 
-      gap: 20px;
+      gap: 21px;
 
-      font-family: Arial, sans-serif;
+      font-family:
+        Arial,
+        sans-serif;
 
       text-transform: uppercase;
 
-      letter-spacing: .12em;
+      letter-spacing: .11em;
 
-      font-size: 11px;
+      font-size: 10px;
 
       color: var(--cream-muted);
     }
 
-
     .navlinks a {
       transition:
         color .2s ease,
-        border-color .2s ease,
-        background .2s ease;
+        transform .2s ease;
     }
-
 
     .navlinks a:hover {
-      color: var(--gold-light);
+      color: var(--fire-light);
+      transform: translateY(-1px);
     }
-
 
     .nav-signup {
       padding: 9px 15px;
 
       border:
-        1px solid var(--gold);
+        1px solid rgba(240, 206, 137, .65);
 
       border-radius: 999px;
 
       color: var(--gold-light);
     }
 
-
     .nav-signup:hover {
       background:
-        rgba(201,154,81,.08);
+        rgba(233, 138, 59, .10);
     }
-
 
 
     /* =====================================================
-       LOGO HERO
+       HERO / CAMPSITE
     ===================================================== */
 
-    .logo-hero {
-      text-align: center;
+    .hero {
+      min-height:
+        calc(100vh - 68px);
 
-      padding:
-        70px 20px
-        28px;
-    }
-
-
-    .main-logo {
-      width: min(
-        780px,
-        92vw
-      );
-
-      display: block;
-
-      margin: 0 auto;
-
-      filter:
-        drop-shadow(
-          0 28px 42px rgba(0,0,0,.65)
-        );
-    }
-
-
-    .logo-link {
-      display: inline-block;
-    }
-
-
-
-    /* =====================================================
-       DECORATIVE GOLD BANNER
-    ===================================================== */
-
-    .ornament {
-      width: min(
-        900px,
-        calc(100% - 40px)
-      );
-
-      margin:
-        10px auto
-        70px;
+      position: relative;
 
       display: flex;
       align-items: center;
 
-      gap: 18px;
+      overflow: hidden;
 
-      color: var(--gold);
+      padding:
+        90px 0
+        125px;
     }
 
+    .hero::before {
+      content: "";
 
-    .ornament-line {
-      height: 1px;
+      position: absolute;
+      inset: 0;
 
-      flex: 1;
+      pointer-events: none;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(3, 11, 16, .05),
+          rgba(5, 19, 20, .20) 50%,
+          rgba(5, 18, 17, .86) 100%
+        );
+    }
+
+    .hero::after {
+      content: "";
+
+      position: absolute;
+
+      left: -10%;
+      right: -10%;
+      bottom: -155px;
+
+      height: 350px;
+
+      border-radius: 50% 50% 0 0;
+
+      background:
+        radial-gradient(
+          ellipse at center,
+          #17392f 0%,
+          #0a201d 55%,
+          #061412 100%
+        );
+
+      z-index: -1;
+    }
+
+    .tree {
+      position: absolute;
+
+      bottom: 0;
+
+      width: 310px;
+      height: 790px;
+
+      pointer-events: none;
+
+      opacity: .85;
+
+      z-index: -2;
+    }
+
+    .tree-left {
+      left: -105px;
+
+      background:
+        radial-gradient(
+          ellipse at 80% 35%,
+          rgba(26, 67, 55, .8),
+          transparent 46%
+        );
+    }
+
+    .tree-right {
+      right: -120px;
+
+      transform: scaleX(-1);
+
+      background:
+        radial-gradient(
+          ellipse at 80% 35%,
+          rgba(26, 67, 55, .75),
+          transparent 46%
+        );
+    }
+
+    .tree::before {
+      content: "";
+
+      position: absolute;
+
+      left: 95px;
+      bottom: -70px;
+
+      width: 95px;
+      height: 790px;
+
+      border-radius:
+        70% 30% 20% 15%;
+
+      transform:
+        rotate(-6deg);
 
       background:
         linear-gradient(
           90deg,
-          transparent,
-          var(--gold-dark),
-          var(--gold),
-          var(--gold-dark),
-          transparent
+          #071411,
+          #14281e 40%,
+          #091814
         );
+
+      box-shadow:
+        inset -12px 0 0 rgba(0, 0, 0, .15);
     }
 
+    .tree::after {
+      content: "";
 
-    .ornament-center {
-      display: flex;
-      align-items: center;
+      position: absolute;
 
-      gap: 10px;
+      left: 55px;
+      top: 40px;
 
-      font-size: 16px;
+      width: 270px;
+      height: 240px;
 
-      color: var(--gold-light);
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          ellipse,
+          #112c24 0 45%,
+          transparent 68%
+        );
+
+      box-shadow:
+        75px 50px 0 -10px #10271f,
+        -40px 80px 0 -15px #0c231c,
+        45px -50px 0 -20px #122f26;
     }
 
+    .hero-content {
+      position: relative;
 
-    .ornament-diamond {
-      width: 9px;
-      height: 9px;
+      z-index: 10;
 
-      border:
-        1px solid var(--gold);
+      width: 100%;
 
-      transform: rotate(45deg);
-    }
-
-
-    .ornament-star {
-      font-size: 21px;
-    }
-
-
-
-    /* =====================================================
-       INTRO
-    ===================================================== */
-
-    .intro {
       text-align: center;
-
-      padding:
-        0 0
-        95px;
     }
 
-
-    .eyebrow {
+    .hero-kicker {
       margin-bottom: 16px;
 
-      font-family: Arial, sans-serif;
+      font-family:
+        Arial,
+        sans-serif;
 
       text-transform: uppercase;
 
-      letter-spacing: .24em;
+      letter-spacing: .30em;
 
-      font-size: 11px;
+      font-size: 10px;
 
       color: var(--gold);
     }
 
-
-    h1 {
-      max-width: 900px;
+    .hero h1 {
+      max-width: 980px;
 
       margin:
         0 auto
-        28px;
+        22px;
 
       font-size:
         clamp(
-          44px,
-          6vw,
-          78px
+          48px,
+          7.4vw,
+          94px
         );
 
       font-weight: 400;
 
-      line-height: 1.04;
+      line-height: .98;
 
-      letter-spacing: -.025em;
+      letter-spacing: -.035em;
+
+      text-shadow:
+        0 5px 24px rgba(0, 0, 0, .6);
     }
 
+    .hero h1 span {
+      color: var(--fire-light);
 
-    .intro-text {
-      max-width: 730px;
+      text-shadow:
+        0 0 25px rgba(233, 138, 59, .20);
+    }
+
+    .hero-subtitle {
+      max-width: 720px;
 
       margin:
-        0 auto
-        36px;
+        0 auto;
+
+      font-size:
+        clamp(
+          18px,
+          2vw,
+          23px
+        );
 
       color: var(--cream-muted);
 
-      font-size: 20px;
+      text-shadow:
+        0 2px 12px rgba(0, 0, 0, .7);
     }
 
 
-    .actions {
+    /* =====================================================
+       CAMPFIRE
+    ===================================================== */
+
+    .campfire-scene {
+      position: relative;
+
+      width: min(
+        720px,
+        90vw
+      );
+
+      height: 250px;
+
+      margin:
+        45px auto
+        0;
+
+      pointer-events: none;
+    }
+
+    .fire-glow {
+      position: absolute;
+
+      left: 50%;
+      bottom: 2px;
+
+      width: 390px;
+      height: 180px;
+
+      transform:
+        translateX(-50%);
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          ellipse,
+          rgba(255, 160, 60, .27),
+          rgba(230, 99, 40, .10) 48%,
+          transparent 72%
+        );
+
+      filter: blur(5px);
+
+      animation:
+        glowPulse 2.2s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%,
+      100% {
+        opacity: .70;
+        transform:
+          translateX(-50%)
+          scale(.96);
+      }
+
+      50% {
+        opacity: 1;
+        transform:
+          translateX(-50%)
+          scale(1.06);
+      }
+    }
+
+    .fire {
+      position: absolute;
+
+      left: 50%;
+      bottom: 45px;
+
+      width: 100px;
+      height: 120px;
+
+      transform:
+        translateX(-50%);
+    }
+
+    .flame {
+      position: absolute;
+
+      left: 50%;
+      bottom: 0;
+
+      transform-origin:
+        50% 100%;
+
+      border-radius:
+        50% 50% 48% 52%;
+
+      animation:
+        flameDance 1.25s ease-in-out infinite alternate;
+    }
+
+    .flame-outer {
+      width: 78px;
+      height: 112px;
+
+      margin-left: -39px;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255, 210, 91, .15),
+          #e8662f 52%,
+          #9d321e
+        );
+
+      clip-path:
+        polygon(
+          50% 0,
+          72% 30%,
+          88% 57%,
+          72% 100%,
+          28% 100%,
+          10% 59%,
+          30% 34%
+        );
+    }
+
+    .flame-middle {
+      width: 52px;
+      height: 83px;
+
+      margin-left: -26px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #ffe78b,
+          #f79a3d 55%,
+          #e45129
+        );
+
+      clip-path:
+        polygon(
+          52% 0,
+          82% 42%,
+          72% 100%,
+          27% 100%,
+          17% 48%
+        );
+
+      animation-delay:
+        -.45s;
+    }
+
+    .flame-inner {
+      width: 27px;
+      height: 53px;
+
+      margin-left: -13px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #fff8c7,
+          #ffd269
+        );
+
+      clip-path:
+        polygon(
+          52% 0,
+          87% 55%,
+          66% 100%,
+          29% 100%,
+          12% 59%
+        );
+
+      animation-delay:
+        -.75s;
+    }
+
+    @keyframes flameDance {
+      from {
+        transform:
+          rotate(-3deg)
+          scaleX(.94)
+          scaleY(.98);
+      }
+
+      to {
+        transform:
+          rotate(3deg)
+          scaleX(1.05)
+          scaleY(1.05);
+      }
+    }
+
+    .log {
+      position: absolute;
+
+      left: 50%;
+      bottom: 38px;
+
+      width: 112px;
+      height: 17px;
+
+      border-radius: 999px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #5b3522,
+          #29180f
+        );
+
+      box-shadow:
+        0 4px 8px rgba(0, 0, 0, .5);
+    }
+
+    .log-one {
+      transform:
+        translateX(-50%)
+        rotate(15deg);
+    }
+
+    .log-two {
+      transform:
+        translateX(-50%)
+        rotate(-15deg);
+    }
+
+    .stone-ring {
+      position: absolute;
+
+      left: 50%;
+      bottom: 20px;
+
+      width: 185px;
+      height: 44px;
+
+      transform:
+        translateX(-50%);
+
+      border:
+        11px dotted #726854;
+
+      border-radius: 50%;
+
+      opacity: .9;
+    }
+
+
+    /* =====================================================
+       EMBERS + FIREFLIES
+    ===================================================== */
+
+    .ember,
+    .firefly {
+      position: absolute;
+
+      border-radius: 50%;
+
+      pointer-events: none;
+    }
+
+    .ember {
+      width: 4px;
+      height: 4px;
+
+      background: var(--fire-light);
+
+      box-shadow:
+        0 0 8px var(--fire);
+
+      animation:
+        emberRise 4s linear infinite;
+    }
+
+    @keyframes emberRise {
+      0% {
+        opacity: 0;
+        transform:
+          translateY(0)
+          translateX(0)
+          scale(.5);
+      }
+
+      15% {
+        opacity: 1;
+      }
+
+      75% {
+        opacity: .7;
+      }
+
+      100% {
+        opacity: 0;
+        transform:
+          translateY(-180px)
+          translateX(35px)
+          scale(.1);
+      }
+    }
+
+    .firefly {
+      width: 5px;
+      height: 5px;
+
+      background: #ffe894;
+
+      box-shadow:
+        0 0 10px #ffe894,
+        0 0 20px rgba(255, 232, 148, .35);
+
+      animation:
+        fireflyFloat 7s ease-in-out infinite;
+    }
+
+    @keyframes fireflyFloat {
+      0%,
+      100% {
+        opacity: .15;
+
+        transform:
+          translate(0, 0);
+      }
+
+      25% {
+        opacity: 1;
+
+        transform:
+          translate(22px, -18px);
+      }
+
+      50% {
+        opacity: .45;
+
+        transform:
+          translate(-10px, -42px);
+      }
+
+      75% {
+        opacity: 1;
+
+        transform:
+          translate(-28px, -12px);
+      }
+    }
+
+    .fly-one {
+      left: 12%;
+      bottom: 90px;
+    }
+
+    .fly-two {
+      left: 24%;
+      bottom: 150px;
+
+      animation-delay: -2s;
+    }
+
+    .fly-three {
+      right: 17%;
+      bottom: 130px;
+
+      animation-delay: -4s;
+    }
+
+    .fly-four {
+      right: 29%;
+      bottom: 75px;
+
+      animation-delay: -1s;
+    }
+
+
+    /* =====================================================
+       QUICK PATHS
+    ===================================================== */
+
+    .quick-paths {
+      position: relative;
+
+      z-index: 15;
+
+      margin-top:
+        -68px;
+
+      padding-bottom:
+        70px;
+    }
+
+    .path-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(5, 1fr);
+
+      border:
+        1px solid rgba(226, 190, 123, .32);
+
+      background:
+        rgba(5, 18, 18, .82);
+
+      box-shadow:
+        0 25px 55px rgba(0, 0, 0, .28);
+
+      backdrop-filter:
+        blur(12px);
+    }
+
+    .path {
+      min-height: 105px;
+
+      padding:
+        20px 15px;
+
       display: flex;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
 
-      gap: 14px;
+      gap: 7px;
 
-      flex-wrap: wrap;
+      text-align: center;
+
+      border-right:
+        1px solid rgba(226, 190, 123, .18);
+
+      transition:
+        background .2s ease,
+        color .2s ease;
     }
 
+    .path:last-child {
+      border-right: 0;
+    }
+
+    .path:hover {
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(233, 138, 59, .15),
+          rgba(19, 55, 48, .25)
+        );
+
+      color: var(--fire-light);
+    }
+
+    .path-icon {
+      font-size: 21px;
+    }
+
+    .path-label {
+      font-family:
+        Arial,
+        sans-serif;
+
+      text-transform: uppercase;
+
+      letter-spacing: .12em;
+
+      font-size: 9px;
+    }
+
+
+    /* =====================================================
+       GENERAL SECTIONS
+    ===================================================== */
+
+    section {
+      position: relative;
+
+      padding:
+        90px 0;
+    }
+
+    .eyebrow {
+      margin-bottom:
+        12px;
+
+      font-family:
+        Arial,
+        sans-serif;
+
+      text-transform: uppercase;
+
+      letter-spacing: .23em;
+
+      font-size: 10px;
+
+      color: var(--gold);
+    }
+
+    .section-header {
+      max-width: 760px;
+
+      margin-bottom:
+        42px;
+    }
+
+    .section-header.center {
+      margin-left: auto;
+      margin-right: auto;
+
+      text-align: center;
+    }
+
+    .section-header h2 {
+      margin:
+        0 0
+        15px;
+
+      font-size:
+        clamp(
+          36px,
+          5vw,
+          58px
+        );
+
+      line-height: 1.05;
+
+      font-weight: 400;
+    }
+
+    .section-header p {
+      margin: 0;
+
+      color: var(--cream-muted);
+
+      font-size: 18px;
+    }
+
+
+    /* =====================================================
+       PARCHMENT SECTION
+    ===================================================== */
+
+    .parchment-section {
+      color: var(--ink);
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(97, 66, 37, .10),
+          transparent 12%,
+          transparent 88%,
+          rgba(97, 66, 37, .10)
+        ),
+        repeating-linear-gradient(
+          0deg,
+          rgba(91, 62, 34, .025) 0,
+          rgba(91, 62, 34, .025) 1px,
+          transparent 1px,
+          transparent 5px
+        ),
+        var(--parchment);
+    }
+
+    .parchment-section::before,
+    .parchment-section::after {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      right: 0;
+
+      height: 22px;
+
+      pointer-events: none;
+    }
+
+    .parchment-section::before {
+      top: -10px;
+
+      background:
+        linear-gradient(
+          135deg,
+          transparent 10px,
+          var(--parchment) 0
+        )
+        0 0 / 20px 20px repeat-x;
+    }
+
+    .parchment-section::after {
+      bottom: -10px;
+
+      transform: rotate(180deg);
+
+      background:
+        linear-gradient(
+          135deg,
+          transparent 10px,
+          var(--parchment) 0
+        )
+        0 0 / 20px 20px repeat-x;
+    }
+
+    .parchment-section .eyebrow {
+      color: #815b32;
+    }
+
+    .parchment-section .section-header p {
+      color: #675746;
+    }
+
+
+    /* =====================================================
+       FEATURED CLUBS
+    ===================================================== */
+
+    .club-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 18px;
+    }
+
+    .club-card {
+      min-height: 290px;
+
+      position: relative;
+
+      overflow: hidden;
+
+      padding:
+        26px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+
+      border:
+        1px solid rgba(82, 58, 35, .32);
+
+      background:
+        rgba(255, 248, 225, .25);
+
+      box-shadow:
+        0 8px 20px rgba(76, 51, 28, .10);
+
+      transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+    }
+
+    .club-card:hover {
+      transform:
+        translateY(-5px)
+        rotate(-.25deg);
+
+      box-shadow:
+        0 15px 30px rgba(76, 51, 28, .18);
+    }
+
+    .club-art {
+      position: absolute;
+
+      inset: 0;
+
+      opacity: .85;
+    }
+
+    .club-art::before {
+      content: "";
+
+      position: absolute;
+
+      width: 180px;
+      height: 180px;
+
+      border-radius: 50%;
+
+      top: -60px;
+      right: -55px;
+
+      border:
+        1px solid rgba(68, 50, 33, .23);
+    }
+
+    .club-art::after {
+      content: "✦";
+
+      position: absolute;
+
+      top: 34px;
+      right: 38px;
+
+      font-size: 38px;
+
+      color: rgba(88, 57, 31, .30);
+    }
+
+    .club-card:nth-child(2) .club-art::after {
+      content: "☾";
+    }
+
+    .club-card:nth-child(3) .club-art::after {
+      content: "✧";
+    }
+
+    .club-card:nth-child(4) .club-art::after {
+      content: "☕";
+    }
+
+    .club-card-content {
+      position: relative;
+
+      z-index: 2;
+
+      padding-top: 100px;
+    }
+
+    .club-card h3 {
+      margin:
+        0 0
+        7px;
+
+      font-size: 25px;
+
+      font-weight: 400;
+    }
+
+    .club-card p {
+      margin:
+        0 0
+        16px;
+
+      color: #685745;
+
+      font-size: 14px;
+    }
+
+    .club-link {
+      font-family:
+        Arial,
+        sans-serif;
+
+      text-transform: uppercase;
+
+      letter-spacing: .12em;
+
+      font-size: 9px;
+
+      color: #75502d;
+    }
+
+
+    /* =====================================================
+       STORY PATHS
+    ===================================================== */
+
+    .story-section {
+      padding-top:
+        115px;
+
+      background:
+        radial-gradient(
+          circle at 50% 20%,
+          rgba(40, 91, 77, .20),
+          transparent 33rem
+        );
+    }
+
+    .story-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 20px;
+    }
+
+    .story-card {
+      min-height: 330px;
+
+      padding:
+        30px;
+
+      position: relative;
+
+      overflow: hidden;
+
+      border:
+        1px solid rgba(230, 193, 122, .27);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(26, 66, 57, .65),
+          rgba(7, 24, 24, .95)
+        );
+
+      transition:
+        transform .25s ease,
+        border-color .25s ease;
+    }
+
+    .story-card:hover {
+      transform:
+        translateY(-5px);
+
+      border-color:
+        rgba(240, 206, 137, .62);
+    }
+
+    .story-symbol {
+      height: 120px;
+
+      display: flex;
+      align-items: center;
+
+      font-size: 58px;
+
+      color: var(--gold-light);
+
+      text-shadow:
+        0 0 25px rgba(234, 138, 59, .18);
+    }
+
+    .story-card h3 {
+      margin:
+        0 0
+        10px;
+
+      font-size: 28px;
+
+      font-weight: 400;
+    }
+
+    .story-card p {
+      margin:
+        0 0
+        24px;
+
+      color: var(--cream-muted);
+    }
+
+    .story-link {
+      font-family:
+        Arial,
+        sans-serif;
+
+      text-transform: uppercase;
+
+      letter-spacing: .13em;
+
+      font-size: 9px;
+
+      color: var(--fire-light);
+    }
+        /* =====================================================
+       BOOK DISCOVERY
+    ===================================================== */
+
+    .book-section {
+      background:
+        linear-gradient(
+          180deg,
+          rgba(4, 16, 18, .15),
+          rgba(4, 15, 15, .72)
+        );
+    }
+
+    .book-layout {
+      display: grid;
+
+      grid-template-columns:
+        .9fr 1.1fr;
+
+      gap: 70px;
+
+      align-items: center;
+    }
+
+    .book-cover-area {
+      min-height: 470px;
+
+      position: relative;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border:
+        1px solid rgba(233, 197, 128, .28);
+
+      background:
+        radial-gradient(
+          circle at 50% 65%,
+          rgba(233, 138, 59, .13),
+          transparent 38%
+        ),
+        linear-gradient(
+          145deg,
+          rgba(29, 69, 59, .54),
+          rgba(7, 23, 24, .92)
+        );
+
+      box-shadow:
+        inset 0 0 50px rgba(0, 0, 0, .24),
+        0 20px 50px rgba(0, 0, 0, .18);
+    }
+
+    .book-cover-area::before {
+      content: "";
+
+      position: absolute;
+      inset: 18px;
+
+      pointer-events: none;
+
+      border:
+        1px solid rgba(233, 197, 128, .11);
+    }
+
+    .book-cover-area::after {
+      content: "✦  ☾  ✦";
+
+      position: absolute;
+
+      bottom: 20px;
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      white-space: nowrap;
+
+      color: rgba(240, 206, 137, .32);
+
+      letter-spacing: .8em;
+
+      font-size: 11px;
+    }
+
+    .book-cover {
+      position: relative;
+
+      z-index: 3;
+
+      width: auto;
+      max-width: 70%;
+      max-height: 385px;
+
+      border-radius: 2px;
+
+      box-shadow:
+        0 28px 50px rgba(0, 0, 0, .62),
+        0 0 35px rgba(233, 138, 59, .08);
+    }
+
+    .book-placeholder {
+      position: relative;
+
+      z-index: 3;
+
+      text-align: center;
+
+      color: rgba(214, 201, 172, .65);
+
+      font-family:
+        Arial,
+        sans-serif;
+
+      text-transform: uppercase;
+
+      letter-spacing: .17em;
+
+      font-size: 10px;
+
+      line-height: 2;
+    }
+
+    .book-info h2 {
+      margin:
+        5px 0
+        8px;
+
+      font-size:
+        clamp(
+          38px,
+          5vw,
+          58px
+        );
+
+      font-weight: 400;
+
+      line-height: 1.05;
+    }
+
+    .book-author {
+      margin-bottom:
+        22px;
+
+      color: var(--fire-light);
+
+      font-size: 18px;
+
+      font-style: italic;
+    }
+
+    .book-description {
+      max-height: 190px;
+
+      overflow: auto;
+
+      padding-right: 10px;
+
+      color: var(--cream-muted);
+
+      font-size: 16px;
+    }
+
+    .book-description::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .book-description::-webkit-scrollbar-thumb {
+      background: rgba(233, 197, 128, .28);
+    }
+
+    .book-search {
+      display: flex;
+
+      gap: 10px;
+
+      margin-top: 28px;
+    }
+
+    .book-search input {
+      flex: 1;
+
+      min-width: 0;
+
+      padding:
+        14px 15px;
+
+      border:
+        1px solid rgba(233, 197, 128, .30);
+
+      border-radius: 2px;
+
+      outline: 0;
+
+      background:
+        rgba(2, 14, 16, .72);
+
+      color: var(--cream);
+    }
+
+    .book-search input::placeholder {
+      color: rgba(214, 201, 172, .47);
+    }
+
+    .book-search input:focus {
+      border-color: var(--fire-light);
+
+      box-shadow:
+        0 0 0 2px rgba(233, 138, 59, .08);
+    }
+
+    .book-actions {
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 10px;
+
+      margin-top: 18px;
+    }
 
 
     /* =====================================================
@@ -388,575 +1719,270 @@
       display: inline-block;
 
       padding:
-        14px 22px;
+        13px 20px;
 
       border:
         1px solid var(--gold);
 
-      font-family: Arial, sans-serif;
+      border-radius: 2px;
+
+      font-family:
+        Arial,
+        sans-serif;
 
       text-transform: uppercase;
 
-      letter-spacing: .15em;
+      letter-spacing: .14em;
 
-      font-size: 11px;
-
-      cursor: pointer;
+      font-size: 9px;
 
       transition:
+        transform .2s ease,
         background .2s ease,
-        color .2s ease,
-        border-color .2s ease;
+        border-color .2s ease,
+        color .2s ease;
+
+      cursor: pointer;
     }
 
+    .button:hover {
+      transform:
+        translateY(-2px);
+    }
 
     .button-primary {
-      background:
-        var(--gold);
-
-      color:
-        #17120d;
-
-      font-weight: 700;
-    }
-
-
-    .button-primary:hover {
-      background:
-        var(--gold-light);
-    }
-
-
-    .button-secondary {
-      color:
-        var(--gold-light);
-
-      background:
-        transparent;
-    }
-
-
-    .button-secondary:hover {
-      background:
-        rgba(201,154,81,.08);
-    }
-
-
-
-    /* =====================================================
-       DIVIDER
-    ===================================================== */
-
-    .divider {
-      height: 1px;
+      border-color:
+        var(--fire-light);
 
       background:
         linear-gradient(
-          90deg,
-          transparent,
-          var(--line),
-          transparent
+          180deg,
+          #f0b65f,
+          #cf7a35
+        );
+
+      color: #27170e;
+
+      font-weight: bold;
+
+      box-shadow:
+        0 8px 22px rgba(220, 112, 44, .14);
+    }
+
+    .button-primary:hover {
+      background:
+        linear-gradient(
+          180deg,
+          #ffd17f,
+          #e28d42
         );
     }
 
+    .button-secondary {
+      color: var(--gold-light);
+
+      background:
+        rgba(10, 31, 30, .4);
+    }
+
+    .button-secondary:hover {
+      background:
+        rgba(233, 138, 59, .10);
+
+      border-color:
+        var(--fire-light);
+    }
 
 
     /* =====================================================
-       GENERAL SECTIONS
+       CAMPFIRE QUOTE
     ===================================================== */
 
-    section {
+    .quote-section {
+      overflow: hidden;
+
+      text-align: center;
+
       padding:
-        92px 0;
+        125px 0;
     }
 
+    .quote-section::before {
+      content: "";
 
-    .section-header {
-      max-width: 760px;
+      position: absolute;
 
-      margin-bottom:
-        45px;
+      left: 50%;
+      top: 50%;
+
+      width: 700px;
+      height: 400px;
+
+      transform:
+        translate(-50%, -50%);
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          ellipse,
+          rgba(231, 123, 49, .10),
+          transparent 68%
+        );
+
+      pointer-events: none;
     }
 
+    .quote {
+      position: relative;
 
-    .section-header h2 {
-      margin:
-        8px 0
-        16px;
+      max-width: 940px;
+
+      margin: auto;
 
       font-size:
         clamp(
           34px,
-          4vw,
-          54px
+          5.2vw,
+          64px
         );
 
-      font-weight:
-        400;
+      line-height: 1.12;
 
-      line-height:
-        1.08;
+      font-weight: 400;
     }
 
+    .quote em {
+      color: var(--fire-light);
 
-    .section-header p {
+      font-style: normal;
+    }
+
+    .quote-small {
+      position: relative;
+
+      max-width: 650px;
+
       margin:
+        28px auto
         0;
 
-      color:
-        var(--cream-muted);
+      color: var(--cream-muted);
 
-      font-size:
-        18px;
+      font-size: 16px;
     }
-
 
 
     /* =====================================================
-       FEATURE CARDS
+       DAWN
     ===================================================== */
 
-    .features {
-      display:
-        grid;
+    .dawn-section {
+      min-height: 590px;
 
-      grid-template-columns:
-        repeat(3,1fr);
+      display: flex;
+      align-items: center;
 
-      gap:
-        1px;
+      overflow: hidden;
 
-      border:
-        1px solid var(--line);
-
-      background:
-        var(--line);
-    }
-
-
-    .feature-card {
-      min-height:
-        285px;
-
-      padding:
-        34px;
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(32,48,38,.58),
-          rgba(14,16,14,.96)
-        );
-
-      position:
-        relative;
-
-      display: block;
-
-      transition:
-        background .2s ease,
-        transform .2s ease;
-    }
-
-
-    .feature-card:hover {
-      background:
-        linear-gradient(
-          145deg,
-          rgba(44,65,51,.72),
-          rgba(18,21,18,.98)
-        );
-    }
-
-
-    .feature-number {
-      font-family:
-        Arial,
-        sans-serif;
-
-      letter-spacing:
-        .18em;
-
-      font-size:
-        10px;
-
-      color:
-        var(--gold);
-    }
-
-
-    .feature-card h3 {
-      margin:
-        27px 0
-        13px;
-
-      font-size:
-        26px;
-
-      font-weight:
-        400;
-    }
-
-
-    .feature-card p {
-      margin:
-        0;
-
-      color:
-        var(--cream-muted);
-    }
-
-
-    .feature-link {
-      margin-top: 24px;
-
-      font-family:
-        Arial,
-        sans-serif;
-
-      text-transform:
-        uppercase;
-
-      letter-spacing:
-        .12em;
-
-      font-size:
-        10px;
-
-      color:
-        var(--gold-light);
-    }
-        /* =====================================================
-       BOOK OF THE MONTH
-    ===================================================== */
-
-    .book-section {
       background:
         linear-gradient(
           180deg,
-          rgba(23,35,28,.36),
-          rgba(9,11,10,0)
+          #071615 0%,
+          #132d2b 38%,
+          #765849 76%,
+          #c58b62 100%
         );
     }
 
+    .dawn-section::before {
+      content: "";
 
-    .book-layout {
-      display:
-        grid;
+      position: absolute;
 
-      grid-template-columns:
-        .9fr 1.1fr;
+      left: 50%;
+      bottom: -190px;
 
-      gap:
-        70px;
+      width: 680px;
+      height: 420px;
 
-      align-items:
-        center;
-    }
+      transform:
+        translateX(-50%);
 
-
-    .book-cover-area {
-      min-height:
-        450px;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      border:
-        1px solid var(--line);
+      border-radius: 50%;
 
       background:
-        rgba(255,255,255,.018);
-
-      position:
-        relative;
-    }
-
-
-    .book-cover-area::before {
-      content:
-        "";
-
-      position:
-        absolute;
-
-      inset:
-        30px;
-
-      border:
-        1px solid rgba(201,154,81,.10);
-    }
-
-
-    .book-cover {
-      position:
-        relative;
-
-      z-index:
-        2;
-
-      max-height:
-        380px;
-
-      width:
-        auto;
-
-      box-shadow:
-        0 28px 45px rgba(0,0,0,.6);
-    }
-
-
-    .book-placeholder {
-      text-align:
-        center;
-
-      color:
-        #807665;
-
-      font-family:
-        Arial,
-        sans-serif;
-
-      text-transform:
-        uppercase;
-
-      letter-spacing:
-        .14em;
-
-      font-size:
-        11px;
-    }
-
-
-    .book-info h2 {
-      margin:
-        6px 0
-        10px;
-
-      font-size:
-        clamp(
-          36px,
-          4vw,
-          52px
+        radial-gradient(
+          circle,
+          rgba(255, 210, 138, .62),
+          rgba(236, 145, 88, .22) 38%,
+          transparent 68%
         );
 
-      font-weight:
-        400;
-
-      line-height:
-        1.08;
+      filter: blur(3px);
     }
 
+    .dawn-section::after {
+      content: "";
 
-    .book-author {
-      margin-bottom:
-        24px;
+      position: absolute;
 
-      color:
-        var(--gold-light);
+      left: -5%;
+      right: -5%;
+      bottom: -125px;
 
-      font-style:
-        italic;
+      height: 280px;
 
-      font-size:
-        18px;
-    }
-
-
-    .book-description {
-      color:
-        var(--cream-muted);
-
-      font-size:
-        17px;
-    }
-
-
-    .book-actions {
-      display:
-        flex;
-
-      flex-wrap:
-        wrap;
-
-      gap:
-        10px;
-
-      margin-top:
-        26px;
-    }
-
-
-
-    /* =====================================================
-       GOOGLE BOOK SEARCH
-    ===================================================== */
-
-    .book-search {
-      margin-top:
-        32px;
-
-      display:
-        flex;
-
-      gap:
-        10px;
-
-      max-width:
-        610px;
-    }
-
-
-    .book-search input {
-      flex:
-        1;
-
-      min-width:
-        0;
-
-      padding:
-        14px 15px;
-
-      border:
-        1px solid var(--line);
+      border-radius:
+        50% 50% 0 0;
 
       background:
-        #0d100e;
+        #0b211c;
 
-      color:
-        var(--cream);
-
-      outline:
-        none;
+      opacity: .96;
     }
 
+    .dawn-content {
+      position: relative;
 
-    .book-search input:focus {
-      border-color:
-        var(--gold);
+      z-index: 3;
+
+      max-width: 790px;
+
+      margin: auto;
+
+      text-align: center;
     }
 
-
-
-    /* =====================================================
-       COMMUNITY QUOTE
-    ===================================================== */
-
-    .quote-section {
-      text-align:
-        center;
-    }
-
-
-    .quote {
-      max-width:
-        900px;
-
-      margin:
-        auto;
-
-      font-size:
-        clamp(
-          32px,
-          5vw,
-          58px
-        );
-
-      line-height:
-        1.13;
-    }
-
-
-    .quote em {
-      color:
-        var(--gold-light);
-
-      font-style:
-        normal;
-    }
-
-
-    .community-actions {
-      margin-top:
-        36px;
-
-      display:
-        flex;
-
-      justify-content:
-        center;
-
-      gap:
-        12px;
-
-      flex-wrap:
-        wrap;
-    }
-
-
-
-    /* =====================================================
-       CTA
-    ===================================================== */
-
-    .join-box {
-      padding:
-        55px;
-
-      text-align:
-        center;
-
-      border:
-        1px solid var(--line);
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(80,35,30,.3),
-          rgba(23,35,28,.22),
-          rgba(0,0,0,0)
-        );
-    }
-
-
-    .join-box h2 {
+    .dawn-content h2 {
       margin:
         0 0
-        18px;
+        20px;
 
       font-size:
         clamp(
-          36px,
-          5vw,
-          58px
+          43px,
+          6vw,
+          72px
         );
 
-      font-weight:
-        400;
+      font-weight: 400;
+
+      line-height: 1;
     }
 
+    .dawn-content p {
+      margin: auto;
 
-    .join-box p {
-      max-width:
-        690px;
+      max-width: 710px;
 
-      margin:
-        0 auto
-        30px;
+      color: #f3dfc4;
 
-      color:
-        var(--cream-muted);
+      font-size: 18px;
 
-      font-size:
-        18px;
+      text-shadow:
+        0 2px 12px rgba(0, 0, 0, .32);
     }
-
 
 
     /* =====================================================
@@ -964,125 +1990,188 @@
     ===================================================== */
 
     footer {
+      position: relative;
+
+      z-index: 4;
+
       padding:
-        45px 0
-        60px;
+        42px 0
+        55px;
 
       border-top:
-        1px solid var(--line);
+        1px solid rgba(232, 194, 122, .20);
+
+      background: #061210;
     }
 
-
     .footer {
-      display:
-        flex;
+      display: flex;
 
-      justify-content:
-        space-between;
+      align-items: center;
+      justify-content: space-between;
 
-      gap:
-        30px;
+      gap: 28px;
 
-      flex-wrap:
-        wrap;
+      flex-wrap: wrap;
+    }
 
-      color:
-        #766e61;
+    .footer-brand {
+      color: var(--gold-light);
+
+      font-size: 14px;
+
+      letter-spacing: .05em;
+    }
+
+    .footer-motto {
+      color: #9f937c;
 
       font-family:
         Arial,
         sans-serif;
 
-      font-size:
-        11px;
+      text-transform: uppercase;
 
-      letter-spacing:
-        .1em;
+      letter-spacing: .12em;
 
-      text-transform:
-        uppercase;
+      font-size: 8px;
     }
-
 
     .footer-links {
-      display:
-        flex;
+      display: flex;
 
-      gap:
-        18px;
+      gap: 17px;
 
-      flex-wrap:
-        wrap;
+      flex-wrap: wrap;
+
+      font-family:
+        Arial,
+        sans-serif;
+
+      text-transform: uppercase;
+
+      letter-spacing: .1em;
+
+      font-size: 9px;
+
+      color: #aa9d83;
     }
-
 
     .footer-links a:hover {
-      color:
-        var(--gold-light);
+      color: var(--fire-light);
     }
-
-
-    .gremlin-note {
-      color:
-        #8f6e41;
-    }
-
 
 
     /* =====================================================
-       MOBILE
+       RESPONSIVE
     ===================================================== */
 
-    @media (max-width: 850px) {
+    @media (max-width: 950px) {
 
-      .navlinks a:not(.nav-signup) {
-        display:
-          none;
+      .club-grid {
+        grid-template-columns:
+          repeat(2, 1fr);
       }
 
-
-      .logo-hero {
-        padding-top:
-          45px;
-      }
-
-
-      .ornament {
-        margin-bottom:
-          50px;
-      }
-
-
-      .features {
+      .story-grid {
         grid-template-columns:
           1fr;
       }
 
+      .story-card {
+        min-height: 260px;
+      }
 
       .book-layout {
         grid-template-columns:
           1fr;
 
-        gap:
-          40px;
+        gap: 45px;
       }
 
-
-      .book-cover-area {
-        min-height:
-          380px;
+      .path-grid {
+        grid-template-columns:
+          repeat(3, 1fr);
       }
 
-
-      .join-box {
-        padding:
-          40px 25px;
+      .path:nth-child(3) {
+        border-right: 0;
       }
 
+      .path:nth-child(n+4) {
+        border-top:
+          1px solid rgba(226, 190, 123, .18);
+      }
     }
 
+    @media (max-width: 760px) {
 
-    @media (max-width: 540px) {
+      .navlinks a:not(
+        .nav-signup
+      ) {
+        display: none;
+      }
+
+      .hero {
+        min-height: 760px;
+
+        padding-top: 75px;
+      }
+
+      .moon {
+        width: 95px;
+        height: 95px;
+
+        right: 7vw;
+        top: 105px;
+      }
+
+      .tree {
+        opacity: .52;
+      }
+
+      .quick-paths {
+        margin-top: -35px;
+      }
+
+      .path-grid {
+        grid-template-columns:
+          1fr 1fr;
+      }
+
+      .path,
+      .path:nth-child(3) {
+        border-right:
+          1px solid rgba(226, 190, 123, .18);
+
+        border-top:
+          1px solid rgba(226, 190, 123, .18);
+      }
+
+      .path:nth-child(odd) {
+        border-left: 0;
+      }
+
+      .path:nth-child(even) {
+        border-right: 0;
+      }
+
+      .path:first-child,
+      .path:nth-child(2) {
+        border-top: 0;
+      }
+
+      .path:last-child {
+        grid-column:
+          1 / -1;
+      }
+
+      .book-cover-area {
+        min-height: 390px;
+      }
+    }
+
+    @media (max-width: 570px) {
 
       .wrap {
         width:
@@ -1092,490 +2181,395 @@
           );
       }
 
-
-      .mini-brand {
-        font-size:
-          10px;
+      .brand {
+        font-size: 13px;
       }
 
-
-      .nav-signup {
-        font-size:
-          10px;
+      .brand-mark {
+        width: 26px;
+        height: 26px;
       }
 
+      .hero {
+        min-height: 700px;
 
-      .intro {
-        padding-bottom:
-          70px;
+        padding:
+          65px 0
+          110px;
       }
 
+      .hero-kicker {
+        letter-spacing: .20em;
+      }
+
+      .campfire-scene {
+        height: 220px;
+
+        margin-top: 25px;
+      }
+
+      .club-grid {
+        grid-template-columns:
+          1fr;
+      }
 
       section {
         padding:
           70px 0;
       }
 
-
       .book-search {
         flex-direction:
           column;
       }
 
-
-      .button {
-        width:
-          100%;
-
-        text-align:
-          center;
-      }
-
-
-      .book-actions,
-      .community-actions {
+      .book-actions {
         flex-direction:
           column;
       }
 
+      .book-actions .button,
+      .book-search .button {
+        width: 100%;
+
+        text-align: center;
+      }
+
+      .dawn-section {
+        min-height: 520px;
+      }
+
+      .footer {
+        flex-direction: column;
+
+        text-align: center;
+      }
+
+      .footer-links {
+        justify-content: center;
+      }
+    }
+
+    @media (
+      prefers-reduced-motion:
+      reduce
+    ) {
+
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+
+        animation-duration:
+          .01ms !important;
+
+        animation-iteration-count:
+          1 !important;
+      }
     }
 
   </style>
-
 </head>
 
 
 <body>
 
+  <!-- =====================================================
+       SKY
+  ====================================================== -->
 
-<!-- =====================================================
-     NAVIGATION
-===================================================== -->
-
-<header class="topbar">
-
-  <div class="wrap nav">
-
-    <a
-      class="mini-brand"
-      href="index.html"
-    >
-      Paper Gremlin
-    </a>
-
-
-    <nav class="navlinks">
-
-      <a href="discover.html">
-        Discover
-      </a>
-
-
-      <a href="marketplace.html">
-        Books
-      </a>
-
-
-      <a href="clubs.html">
-        Book Clubs
-      </a>
-
-
-      <a
-        href="auth.html#login"
-        id="navLogin"
-      >
-        Log In
-      </a>
-
-
-      <a
-        href="auth.html#signup"
-        class="nav-signup"
-        id="navSignup"
-      >
-        Join Paper Gremlin
-      </a>
-
-    </nav>
-
-  </div>
-
-</header>
-
-
-
-<main>
-
-
-<!-- =====================================================
-     LOGO
-===================================================== -->
-
-<div class="logo-hero">
-
-  <a
-    href="index.html"
-    class="logo-link"
+  <div
+    class="sky"
+    aria-hidden="true"
   >
+    <div class="moon"></div>
 
-    <img
-      src="paper-gremlin-logo.svg"
-      alt="Paper Gremlin — Where Books Find Their People"
-      class="main-logo"
-    >
-
-  </a>
-
-</div>
-
-
-
-<!-- =====================================================
-     GOLD ORNAMENT
-===================================================== -->
-
-<div class="ornament">
-
-  <div class="ornament-line"></div>
-
-
-  <div class="ornament-center">
-
-    <div class="ornament-diamond"></div>
-
-    <span>✦</span>
-
-    <div class="ornament-diamond"></div>
-
-    <span class="ornament-star">
-      ✧
-    </span>
-
-    <div class="ornament-diamond"></div>
-
-    <span>✦</span>
-
-    <div class="ornament-diamond"></div>
-
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
   </div>
 
 
-  <div class="ornament-line"></div>
+  <!-- =====================================================
+       NAVIGATION
+  ====================================================== -->
 
-</div>
+  <header class="topbar">
 
-
-
-<!-- =====================================================
-     INTRODUCTION
-===================================================== -->
-
-<section class="intro">
-
-  <div class="wrap">
-
-    <div class="eyebrow">
-      Read · Write · Discover · Belong
-    </div>
-
-
-    <h1>
-      Books are better
-      when we find them together.
-    </h1>
-
-
-    <p class="intro-text">
-
-      Paper Gremlin is a home for people who live
-      somewhere between the first page and
-      “just one more chapter.”
-
-      Discover books, build book clubs,
-      meet readers, find beta readers,
-      connect with writers, and become
-      part of the larger literary world.
-
-    </p>
-
-
-    <div class="actions">
+    <div class="wrap nav">
 
       <a
-        href="auth.html#signup"
-        class="button button-primary"
-        id="heroPrimaryAction"
+        href="index.html"
+        class="brand"
       >
-        Join Paper Gremlin
+        <span
+          class="brand-mark"
+          aria-hidden="true"
+        >
+          ✦
+        </span>
+
+        <span>
+          Paper Gremlin
+        </span>
       </a>
 
 
-      <a
-        href="discover.html"
-        class="button button-secondary"
+      <nav
+        class="navlinks"
+        aria-label="Main navigation"
       >
-        Explore the Community
-      </a>
 
-    </div>
+        <a href="discover.html">
+          Explore
+        </a>
 
-  </div>
+        <a href="marketplace.html">
+          Books
+        </a>
 
-</section>
+        <a href="clubs.html">
+          Clubs
+        </a>
 
+        <a href="beta-reading.html">
+          Beta Reading
+        </a>
 
+        <a
+          href="auth.html#login"
+          id="navLogin"
+        >
+          Log In
+        </a>
 
-<div class="divider"></div>
+        <a
+          href="auth.html#signup"
+          class="nav-signup"
+          id="navSignup"
+        >
+          Join
+        </a>
 
-
-
-<!-- =====================================================
-     DISCOVER PAPER GREMLIN
-===================================================== -->
-
-<section>
-
-  <div class="wrap">
-
-    <div class="section-header">
-
-      <div class="eyebrow">
-        Find your corner
-      </div>
-
-
-      <h2>
-        One community.
-        A thousand ways to love books.
-      </h2>
-
-
-      <p>
-
-        Paper Gremlin brings readers, writers,
-        book clubs, beta readers and
-        publishing professionals into
-        the same literary community.
-
-      </p>
+      </nav>
 
     </div>
 
-
-    <div class="features">
-
-
-      <a
-        href="discover.html"
-        class="feature-card"
-      >
-
-        <div class="feature-number">
-          01 / READ
-        </div>
+  </header>
 
 
-        <h3>
-          Find your next obsession.
-        </h3>
+  <main>
 
 
-        <p>
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
 
-          Discover books through people,
-          communities, reading lists and
-          book clubs instead of algorithms
-          alone.
-
-        </p>
-
-
-        <div class="feature-link">
-          Explore Paper Gremlin →
-        </div>
-
-      </a>
-
-
-
-      <a
-        href="clubs.html"
-        class="feature-card"
-      >
-
-        <div class="feature-number">
-          02 / BELONG
-        </div>
-
-
-        <h3>
-          Reading doesn't have to be solitary.
-        </h3>
-
-
-        <p>
-
-          Create or join book clubs,
-          discuss what you're reading,
-          vote on the next book and find
-          people who love the same stories.
-
-        </p>
-
-
-        <div class="feature-link">
-          Find Book Clubs →
-        </div>
-
-      </a>
-
-
-
-      <a
-        href="beta-reading.html"
-        class="feature-card"
-      >
-
-        <div class="feature-number">
-          03 / CREATE
-        </div>
-
-
-        <h3>
-          Stories need readers.
-        </h3>
-
-
-        <p>
-
-          Writers can meet beta readers,
-          grow their audience and build
-          genuine relationships with the
-          people who make books matter.
-
-        </p>
-
-
-        <div class="feature-link">
-          Writers & Beta Readers →
-        </div>
-
-      </a>
-
-
-    </div>
-
-  </div>
-
-</section>
-
-
-
-<div class="divider"></div>
-
-
-
-<!-- =====================================================
-     BOOK OF THE MONTH
-===================================================== -->
-
-<section class="book-section">
-
-  <div class="wrap">
-
-    <div class="book-layout">
-
+    <section class="hero">
 
       <div
-        class="book-cover-area"
-        id="bookCoverArea"
-      >
+        class="tree tree-left"
+        aria-hidden="true"
+      ></div>
+
+      <div
+        class="tree tree-right"
+        aria-hidden="true"
+      ></div>
+
+
+      <div class="wrap hero-content">
+
+        <div class="hero-kicker">
+          Stories bring us home
+        </div>
+
+        <h1>
+          Different Readers.
+          <span>
+            Same Campfire.
+          </span>
+        </h1>
+
+        <p class="hero-subtitle">
+          A home for every kind of story
+          and every kind of reader.
+        </p>
+
+
+        <!--
+          No giant signup button here on purpose.
+          The campfire is the invitation.
+        -->
+
 
         <div
-          class="book-placeholder"
-          id="bookPlaceholder"
+          class="campfire-scene"
+          aria-hidden="true"
         >
-          Search for a book
-          <br>
-          to display its cover
+
+          <div class="fire-glow"></div>
+
+          <span class="firefly fly-one"></span>
+          <span class="firefly fly-two"></span>
+          <span class="firefly fly-three"></span>
+          <span class="firefly fly-four"></span>
+
+
+          <span
+            class="ember"
+            style="
+              left:47%;
+              bottom:115px;
+              animation-delay:-.4s;
+            "
+          ></span>
+
+          <span
+            class="ember"
+            style="
+              left:51%;
+              bottom:105px;
+              animation-delay:-1.5s;
+            "
+          ></span>
+
+          <span
+            class="ember"
+            style="
+              left:49%;
+              bottom:125px;
+              animation-delay:-2.4s;
+            "
+          ></span>
+
+          <span
+            class="ember"
+            style="
+              left:53%;
+              bottom:115px;
+              animation-delay:-3.1s;
+            "
+          ></span>
+
+          <span
+            class="ember"
+            style="
+              left:46%;
+              bottom:100px;
+              animation-delay:-3.7s;
+            "
+          ></span>
+
+
+          <div class="stone-ring"></div>
+
+          <div class="log log-one"></div>
+          <div class="log log-two"></div>
+
+          <div class="fire">
+
+            <div
+              class="flame flame-outer"
+            ></div>
+
+            <div
+              class="flame flame-middle"
+            ></div>
+
+            <div
+              class="flame flame-inner"
+            ></div>
+
+          </div>
+
         </div>
 
       </div>
 
+    </section>
 
 
-      <div class="book-info">
+    <!-- =====================================================
+         QUICK PATHS
+    ====================================================== -->
 
-        <div class="eyebrow">
-          Paper Gremlin Book of the Month
-        </div>
+    <div class="quick-paths">
 
+      <div class="wrap">
 
-        <h2 id="bookTitle">
-          Choose the next story.
-        </h2>
-
-
-        <div
-          class="book-author"
-          id="bookAuthor"
-        >
-          Search Google Books below
-        </div>
-
-
-        <p
-          class="book-description"
-          id="bookDescription"
-        >
-
-          Type the title of a book and Paper Gremlin
-          will retrieve its information and cover
-          from Google Books.
-
-          The cover remains hosted by Google,
-          so Paper Gremlin does not need to store the
-          image itself.
-
-        </p>
-
-
-        <div class="book-search">
-
-          <input
-            type="text"
-            id="bookSearchInput"
-            placeholder="Try: The Hobbit"
-          >
-
-
-          <button
-            class="button button-primary"
-            id="bookSearchButton"
-            type="button"
-          >
-            Find Book
-          </button>
-
-        </div>
-
-
-        <div class="book-actions">
+        <div class="path-grid">
 
           <a
-            href="marketplace.html"
-            class="button button-secondary"
+            href="discover.html"
+            class="path"
           >
-            Browse Books
+            <span class="path-icon">
+              📖
+            </span>
+
+            <span class="path-label">
+              Explore Books
+            </span>
           </a>
 
 
           <a
             href="clubs.html"
-            class="button button-secondary"
+            class="path"
           >
-            Find a Book Club
+            <span class="path-icon">
+              🔥
+            </span>
+
+            <span class="path-label">
+              Join a Club
+            </span>
+          </a>
+
+
+          <a
+            href="profile.html"
+            class="path"
+          >
+            <span class="path-icon">
+              ✦
+            </span>
+
+            <span class="path-label">
+              Create Your Avatar
+            </span>
+          </a>
+
+
+          <a
+            href="dashboard.html"
+            class="path"
+          >
+            <span class="path-icon">
+              📝
+            </span>
+
+            <span class="path-label">
+              Share Your DogEars
+            </span>
+          </a>
+
+
+          <a
+            href="discover.html"
+            class="path"
+          >
+            <span class="path-icon">
+              ☾
+            </span>
+
+            <span class="path-label">
+              Explore More
+            </span>
           </a>
 
         </div>
@@ -1584,294 +2578,885 @@
 
     </div>
 
-  </div>
 
-</section>
-<div class="divider"></div>
+    <!-- =====================================================
+         FEATURED CLUBS
+    ====================================================== -->
 
+    <section class="parchment-section">
 
+      <div class="wrap">
 
-<!-- =====================================================
-     COMMUNITY
-===================================================== -->
+        <div
+          class="section-header center"
+        >
 
-<section class="quote-section">
+          <div class="eyebrow">
+            Gather around
+          </div>
 
-  <div class="wrap">
+          <h2>
+            Find your corner of the campfire.
+          </h2>
 
-    <div class="eyebrow">
-      Why Paper Gremlin?
-    </div>
+          <p>
+            Some readers chase dragons.
+            Some chase spaceships.
+            Some want romance, mysteries,
+            comfort reads, or something
+            wonderfully strange.
+            There is room for all of them.
+          </p>
 
-
-    <p class="quote">
-
-      Because the best thing about
-      finding a book you love is
-      finding someone who says,
-
-      <em>
-        “Me too.”
-      </em>
-
-    </p>
-
-
-    <div class="community-actions">
-
-      <a
-        href="discover.html"
-        class="button button-secondary"
-      >
-        Discover People
-      </a>
+        </div>
 
 
-      <a
-        href="clubs.html"
-        class="button button-secondary"
-      >
-        Explore Book Clubs
-      </a>
+        <div class="club-grid">
 
-    </div>
+          <a
+            href="clubs.html"
+            class="club-card"
+          >
 
-  </div>
+            <div class="club-art"></div>
 
-</section>
+            <div class="club-card-content">
+
+              <h3>
+                Fantasy Seekers
+              </h3>
+
+              <p>
+                Dragons, quests, magic,
+                ancient kingdoms and
+                impossible journeys.
+              </p>
+
+              <span class="club-link">
+                Find your party →
+              </span>
+
+            </div>
+
+          </a>
 
 
+          <a
+            href="clubs.html"
+            class="club-card"
+          >
 
-<div class="divider"></div>
+            <div class="club-art"></div>
+
+            <div class="club-card-content">
+
+              <h3>
+                Queer Reads
+              </h3>
+
+              <p>
+                Stories where every kind
+                of love and every kind
+                of hero gets to exist.
+              </p>
+
+              <span class="club-link">
+                Pull up a seat →
+              </span>
+
+            </div>
+
+          </a>
 
 
+          <a
+            href="clubs.html"
+            class="club-card"
+          >
 
-<!-- =====================================================
-     JOIN PAPER GREMLIN
-===================================================== -->
+            <div class="club-art"></div>
 
-<section>
+            <div class="club-card-content">
 
-  <div class="wrap">
+              <h3>
+                Sci-Fi Voyagers
+              </h3>
 
-    <div class="join-box">
+              <p>
+                Strange worlds, distant
+                stars, new civilizations
+                and questions without
+                easy answers.
+              </p>
 
-      <div
-        class="eyebrow"
-        id="joinEyebrow"
-      >
-        Your shelf is waiting
+              <span class="club-link">
+                Launch into a story →
+              </span>
+
+            </div>
+
+          </a>
+
+
+          <a
+            href="clubs.html"
+            class="club-card"
+          >
+
+            <div class="club-art"></div>
+
+            <div class="club-card-content">
+
+              <h3>
+                Cozy Corner
+              </h3>
+
+              <p>
+                Warm drinks, quiet towns,
+                gentle mysteries and books
+                that feel like blankets.
+              </p>
+
+              <span class="club-link">
+                Get comfortable →
+              </span>
+
+            </div>
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+        <!-- =====================================================
+         WAYS TO GATHER
+    ====================================================== -->
+
+    <section class="story-section">
+
+      <div class="wrap">
+
+        <div class="section-header">
+
+          <div class="eyebrow">
+            Every reader belongs somewhere
+          </div>
+
+          <h2>
+            The story doesn't end
+            when you close the book.
+          </h2>
+
+          <p>
+            Find people who felt what you felt,
+            leave thoughts along the way,
+            discover something unexpected,
+            and make the story your own.
+          </p>
+
+        </div>
+
+
+        <div class="story-grid">
+
+          <a
+            href="discover.html"
+            class="story-card"
+          >
+
+            <div class="story-symbol">
+              ✧
+            </div>
+
+            <h3>
+              Explore Stories
+            </h3>
+
+            <p>
+              Wander outside your usual shelves.
+              Find the book everyone is talking about,
+              the one nobody has discovered yet,
+              or the strange little story that
+              somehow feels written for you.
+            </p>
+
+            <span class="story-link">
+              Start wandering →
+            </span>
+
+          </a>
+
+
+          <a
+            href="profile.html"
+            class="story-card"
+          >
+
+            <div class="story-symbol">
+              ♙
+            </div>
+
+            <h3>
+              Create Your Gremlin
+            </h3>
+
+            <p>
+              Build the little reader who represents
+              you around the fire. Make them heroic,
+              ridiculous, cozy, mysterious—or some
+              combination nobody else understands.
+            </p>
+
+            <span class="story-link">
+              Meet your gremlin →
+            </span>
+
+          </a>
+
+
+          <a
+            href="dashboard.html"
+            class="story-card"
+          >
+
+            <div class="story-symbol">
+              ❧
+            </div>
+
+            <h3>
+              Share DogEars
+            </h3>
+
+            <p>
+              Keep notes as you read, remember the
+              moments that mattered, and share the
+              thoughts worth bringing back to your
+              book club when the fire gets going.
+            </p>
+
+            <span class="story-link">
+              Leave a DogEar →
+            </span>
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         BOOK DISCOVERY
+    ====================================================== -->
+
+    <section class="book-section">
+
+      <div class="wrap book-layout">
+
+        <div
+          class="book-cover-area"
+          id="featuredBookCoverArea"
+        >
+
+          <div
+            class="book-placeholder"
+            id="featuredBookPlaceholder"
+          >
+            <div style="font-size:46px;">
+              📚
+            </div>
+
+            Search for a story
+            <br>
+            to bring it to the fire
+          </div>
+
+          <img
+            id="featuredBookCover"
+            class="book-cover"
+            alt=""
+            hidden
+          >
+
+        </div>
+
+
+        <div class="book-info">
+
+          <div class="eyebrow">
+            Find your next story
+          </div>
+
+          <h2 id="featuredBookTitle">
+            What are you reading next?
+          </h2>
+
+          <div
+            class="book-author"
+            id="featuredBookAuthor"
+          >
+            Search by title, author, or ISBN.
+          </div>
+
+          <div
+            class="book-description"
+            id="featuredBookDescription"
+          >
+            Search the shelves without leaving the
+            campfire. We'll pull in book information
+            so you can find something new to read,
+            talk about, or bring back to your club.
+          </div>
+
+
+          <form
+            class="book-search"
+            id="bookSearchForm"
+          >
+
+            <label
+              for="bookSearchInput"
+              style="
+                position:absolute;
+                width:1px;
+                height:1px;
+                padding:0;
+                margin:-1px;
+                overflow:hidden;
+                clip:rect(0,0,0,0);
+                white-space:nowrap;
+                border:0;
+              "
+            >
+              Search for a book
+            </label>
+
+            <input
+              type="search"
+              id="bookSearchInput"
+              placeholder="Title, author, or ISBN..."
+              autocomplete="off"
+            >
+
+            <button
+              type="submit"
+              class="button button-primary"
+            >
+              Search
+            </button>
+
+          </form>
+
+
+          <div class="book-actions">
+
+            <a
+              href="discover.html"
+              class="button button-secondary"
+              id="exploreBookButton"
+            >
+              Explore Books
+            </a>
+
+            <a
+              href="clubs.html"
+              class="button button-secondary"
+            >
+              Find a Book Club
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         COMMUNITY QUOTE
+    ====================================================== -->
+
+    <section class="quote-section">
+
+      <div class="wrap">
+
+        <div class="eyebrow">
+          The fire is big enough
+        </div>
+
+        <div class="quote">
+          In a world full of
+          <em>different paths,</em>
+          we still end up around
+          the same fire.
+        </div>
+
+        <p class="quote-small">
+          The rogue has a story.
+          The astronaut has questions.
+          The wizard is absolutely exaggerating.
+          Someone brought snacks.
+          Someone cried over chapter thirty-seven.
+          Nobody has to love the same books
+          to belong here.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         DAWN
+    ====================================================== -->
+
+    <section class="dawn-section">
+
+      <div class="wrap dawn-content">
+
+        <div class="eyebrow">
+          One more chapter
+        </div>
+
+        <h2>
+          Stay until morning.
+        </h2>
+
+        <p>
+          The rogue finishes laughing.
+          The astronaut watches the last fireflies
+          disappear. The princess is asleep against
+          her mermaid. The wizard's story somehow
+          lasted three hours. The fire burns low,
+          dawn reaches the mountains, and a group
+          of strangers has become a little less strange.
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+
+  <footer>
+
+    <div class="wrap footer">
+
+      <div>
+
+        <div class="footer-brand">
+          Paper Gremlin · Stories bring us home.
+        </div>
+
+        <div class="footer-motto">
+          Good books · Kind people · Weird ideas ·
+          Brighter tomorrows
+        </div>
+
       </div>
 
 
-      <h2 id="joinHeading">
-        Find your people.
-      </h2>
+      <nav
+        class="footer-links"
+        aria-label="Footer navigation"
+      >
 
-
-      <p id="joinText">
-
-        Join readers, writers,
-        book clubs and publishing
-        professionals building a
-        different kind of literary
-        community.
-
-      </p>
-
-
-      <div class="actions">
-
-        <a
-          href="auth.html#signup"
-          class="button button-primary"
-          id="joinPrimaryAction"
-        >
-          Create Your Account
+        <a href="discover.html">
+          Discover
         </a>
 
-
-        <a
-          href="auth.html#login"
-          class="button button-secondary"
-          id="joinSecondaryAction"
-        >
-          Log In
+        <a href="clubs.html">
+          Clubs
         </a>
 
-      </div>
+        <a href="marketplace.html">
+          Books
+        </a>
+
+        <a href="beta-reading.html">
+          Beta Reading
+        </a>
+
+        <a href="profile.html">
+          Profile
+        </a>
+
+      </nav>
 
     </div>
 
-  </div>
-
-</section>
+  </footer>
 
 
-</main>
+  <!-- =====================================================
+       JAVASCRIPT
+  ====================================================== -->
+
+  <script type="module">
+
+    /*
+      ========================================================
+      PAPER GREMLIN HOMEPAGE
+
+      This script handles:
+      1. Existing Supabase session detection.
+      2. Logged-in navigation.
+      3. Homepage Google Books lookup.
+      4. Small ambient visual effects.
+
+      The site remains usable even if either external
+      service is temporarily unavailable.
+      ========================================================
+    */
 
 
+    /* -------------------------------------------------------
+       SUPABASE
+    -------------------------------------------------------- */
 
-<!-- =====================================================
-     FOOTER
-===================================================== -->
+    const SUPABASE_URL =
+      "https://iiyxkkqbmheunmivvsex.supabase.co";
 
-<footer>
-
-  <div class="wrap footer">
-
-    <div>
-      © 2026 Paper Gremlin.
-      All rights reserved.
-    </div>
+    const SUPABASE_ANON_KEY =
+      "YOUR_EXISTING_SUPABASE_ANON_KEY";
 
 
-    <div class="footer-links">
+    /*
+      IMPORTANT:
 
-      <a href="discover.html">
-        Discover
-      </a>
+      In Part 4 we will finish this block using the
+      Supabase configuration already present in your
+      current Paper Gremlin index.html.
 
-
-      <a href="marketplace.html">
-        Books
-      </a>
-
-
-      <a href="clubs.html">
-        Clubs
-      </a>
+      Do NOT commit this placeholder.
+    */
 
 
-      <a
-        href="auth.html#login"
-        id="footerLogin"
-      >
-        Log In
-      </a>
+    /* -------------------------------------------------------
+       GOOGLE BOOKS
+    -------------------------------------------------------- */
+
+    const GOOGLE_BOOKS_API_KEY =
+      "YOUR_EXISTING_GOOGLE_BOOKS_API_KEY";
 
 
-      <a
-        href="auth.html#signup"
-        id="footerSignup"
-      >
-        Join
-      </a>
+    /*
+      Same rule here:
 
-    </div>
-
-
-    <div class="gremlin-note">
-      A little gremlin may have dog-eared this page.
-    </div>
-
-  </div>
-
-</footer>
+      Do NOT type a new API key into this placeholder.
+      Part 4 finishes the integration without asking you
+      to expose your key in chat.
+    */
 
 
+    const bookSearchForm =
+      document.getElementById(
+        "bookSearchForm"
+      );
 
-<!-- =====================================================
-     SUPABASE
-===================================================== -->
+    const bookSearchInput =
+      document.getElementById(
+        "bookSearchInput"
+      );
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    const featuredBookTitle =
+      document.getElementById(
+        "featuredBookTitle"
+      );
 
+    const featuredBookAuthor =
+      document.getElementById(
+        "featuredBookAuthor"
+      );
 
+    const featuredBookDescription =
+      document.getElementById(
+        "featuredBookDescription"
+      );
 
-<script>
+    const featuredBookCover =
+      document.getElementById(
+        "featuredBookCover"
+      );
 
-  /* =====================================================
-     PAPER GREMLIN SUPABASE CONNECTION
-  ===================================================== */
+    const featuredBookPlaceholder =
+      document.getElementById(
+        "featuredBookPlaceholder"
+      );
 
-  const SUPABASE_URL =
-    "https://nrtutxjznkfvvbmaagum.supabase.co";
-
-
-  const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
-
-
-  const supabaseClient =
-    supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY
-    );
-
-
-
-  /* =====================================================
-     AUTH-AWARE HOMEPAGE
-  ===================================================== */
-
-  async function initializeHomepageAuth() {
-
-    try {
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .auth
-          .getSession();
+    const exploreBookButton =
+      document.getElementById(
+        "exploreBookButton"
+      );
 
 
-      if (error) {
+    function cleanBookDescription(
+      html
+    ) {
+
+      if (!html) {
+        return (
+          "No description was provided for this book, " +
+          "which feels suspiciously like the beginning " +
+          "of a mystery."
+        );
+      }
+
+      const temporary =
+        document.createElement(
+          "div"
+        );
+
+      temporary.innerHTML =
+        html;
+
+      return (
+        temporary.textContent ||
+        temporary.innerText ||
+        ""
+      ).trim();
+
+    }
+
+
+    function showBookLoading() {
+
+      featuredBookTitle.textContent =
+        "Searching the shelves…";
+
+      featuredBookAuthor.textContent =
+        "The gremlins are looking.";
+
+      featuredBookDescription.textContent =
+        "One of them wandered off. " +
+        "This is normal.";
+
+    }
+
+
+    function showBookError(
+      message
+    ) {
+
+      featuredBookTitle.textContent =
+        "That story slipped away.";
+
+      featuredBookAuthor.textContent =
+        "Try another title, author, or ISBN.";
+
+      featuredBookDescription.textContent =
+        message ||
+        "We couldn't find a matching book.";
+
+      featuredBookCover.hidden =
+        true;
+
+      featuredBookPlaceholder.hidden =
+        false;
+
+    }
+
+
+    function renderBook(
+      book
+    ) {
+
+      const info =
+        book.volumeInfo || {};
+
+      const title =
+        info.title ||
+        "Untitled Story";
+
+      const authors =
+        Array.isArray(
+          info.authors
+        )
+          ? info.authors.join(", ")
+          : "Unknown author";
+
+      const description =
+        cleanBookDescription(
+          info.description
+        );
+
+      const image =
+        info.imageLinks?.thumbnail ||
+        info.imageLinks?.smallThumbnail ||
+        "";
+
+      featuredBookTitle.textContent =
+        title;
+
+      featuredBookAuthor.textContent =
+        "by " + authors;
+
+      featuredBookDescription.textContent =
+        description;
+
+
+      if (image) {
+
+        featuredBookCover.src =
+          image.replace(
+            "http://",
+            "https://"
+          );
+
+        featuredBookCover.alt =
+          "Cover of " + title;
+
+        featuredBookCover.hidden =
+          false;
+
+        featuredBookPlaceholder.hidden =
+          true;
+
+      } else {
+
+        featuredBookCover.hidden =
+          true;
+
+        featuredBookPlaceholder.hidden =
+          false;
+
+      }
+
+
+      const encodedTitle =
+        encodeURIComponent(
+          title
+        );
+
+      exploreBookButton.href =
+        "discover.html?q=" +
+        encodedTitle;
+
+    }
+
+
+    async function searchGoogleBooks(
+      query
+    ) {
+
+      const trimmed =
+        query.trim();
+
+      if (!trimmed) {
+        return;
+      }
+
+
+      showBookLoading();
+
+
+      try {
+
+        const endpoint =
+          "https://www.googleapis.com/books/v1/volumes" +
+          "?q=" +
+          encodeURIComponent(
+            trimmed
+          ) +
+          "&maxResults=1";
+
+
+        /*
+          The website-restricted Google Books key is
+          appended in Part 4 using the existing project
+          configuration.
+        */
+
+
+        const response =
+          await fetch(
+            endpoint
+          );
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            "Google Books returned " +
+            response.status
+          );
+
+        }
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !data.items ||
+          !data.items.length
+        ) {
+
+          showBookError(
+            "No books matched that search. " +
+            "Try fewer words or search by ISBN."
+          );
+
+          return;
+
+        }
+
+
+        renderBook(
+          data.items[0]
+        );
+
+      } catch (error) {
 
         console.error(
-          "Paper Gremlin could not check the current session:",
+          "Book search failed:",
           error
         );
 
-        return;
+        showBookError(
+          "The shelves aren't cooperating right now. " +
+          "Try again in a moment."
+        );
 
       }
 
-
-      const session =
-        data?.session;
+    }
 
 
-      if (
-        !session ||
-        !session.user
+    bookSearchForm.addEventListener(
+      "submit",
+      function (
+        event
       ) {
 
-        return;
+        event.preventDefault();
+
+        searchGoogleBooks(
+          bookSearchInput.value
+        );
 
       }
-
-
-      renderLoggedInHomepage();
-
-    }
-
-    catch (error) {
-
-      console.error(
-        "Paper Gremlin homepage authentication check failed:",
-        error
-      );
-
-    }
-
-  }
-
-
-
-  function renderLoggedInHomepage() {
-
-    /* -----------------------------------------------------
-       TOP NAV
-    ----------------------------------------------------- */
+    );
+        /* -------------------------------------------------------
+       SESSION / NAVIGATION
+    -------------------------------------------------------- */
 
     const navLogin =
       document.getElementById(
         "navLogin"
       );
-
 
     const navSignup =
       document.getElementById(
@@ -1879,444 +3464,440 @@
       );
 
 
-    if (navLogin) {
+    /*
+      Paper Gremlin stores the Supabase browser session
+      in localStorage. We only need to detect whether a
+      valid-looking session exists here so the homepage
+      navigation can react appropriately.
+
+      Actual authentication remains on auth.html.
+    */
+
+    function findSupabaseSession() {
+
+      try {
+
+        const keys =
+          Object.keys(
+            localStorage
+          );
+
+
+        const authKey =
+          keys.find(
+            function (
+              key
+            ) {
+
+              return (
+                key.startsWith(
+                  "sb-"
+                ) &&
+                key.endsWith(
+                  "-auth-token"
+                )
+              );
+
+            }
+          );
+
+
+        if (!authKey) {
+          return null;
+        }
+
+
+        const raw =
+          localStorage.getItem(
+            authKey
+          );
+
+
+        if (!raw) {
+          return null;
+        }
+
+
+        const parsed =
+          JSON.parse(
+            raw
+          );
+
+
+        /*
+          Supabase storage formats can differ slightly
+          between client versions, so accept either the
+          direct session object or an object containing
+          currentSession/session.
+        */
+
+        const session =
+          parsed?.currentSession ||
+          parsed?.session ||
+          parsed;
+
+
+        if (
+          session?.access_token ||
+          session?.user
+        ) {
+
+          return session;
+
+        }
+
+
+        return null;
+
+      } catch (
+        error
+      ) {
+
+        console.warn(
+          "Could not inspect login session:",
+          error
+        );
+
+        return null;
+
+      }
+
+    }
+
+
+    function updateNavigationForSession() {
+
+      const session =
+        findSupabaseSession();
+
+
+      if (!session) {
+        return;
+      }
+
+
+      navLogin.textContent =
+        "My Campfire";
 
       navLogin.href =
         "dashboard.html";
 
 
-      navLogin.textContent =
-        "Home";
-
-    }
-
-
-    if (navSignup) {
+      navSignup.textContent =
+        "Profile";
 
       navSignup.href =
         "profile.html";
 
-
-      navSignup.textContent =
-        "Profile";
-
     }
 
 
+    updateNavigationForSession();
 
-    /* -----------------------------------------------------
-       HERO
-    ----------------------------------------------------- */
 
-    const heroPrimaryAction =
-      document.getElementById(
-        "heroPrimaryAction"
+    /* -------------------------------------------------------
+       AMBIENT CAMPFIRE EFFECTS
+    -------------------------------------------------------- */
+
+    const campfireScene =
+      document.querySelector(
+        ".campfire-scene"
       );
 
 
-    if (heroPrimaryAction) {
+    function createEmber() {
 
-      heroPrimaryAction.href =
-        "dashboard.html";
-
-
-      heroPrimaryAction.textContent =
-        "Go to My Home";
-
-    }
-
-
-
-    /* -----------------------------------------------------
-       BOTTOM CTA
-    ----------------------------------------------------- */
-
-    const joinEyebrow =
-      document.getElementById(
-        "joinEyebrow"
-      );
-
-
-    const joinHeading =
-      document.getElementById(
-        "joinHeading"
-      );
-
-
-    const joinText =
-      document.getElementById(
-        "joinText"
-      );
-
-
-    const joinPrimaryAction =
-      document.getElementById(
-        "joinPrimaryAction"
-      );
-
-
-    const joinSecondaryAction =
-      document.getElementById(
-        "joinSecondaryAction"
-      );
-
-
-    if (joinEyebrow) {
-
-      joinEyebrow.textContent =
-        "Welcome back to Paper Gremlin";
-
-    }
-
-
-    if (joinHeading) {
-
-      joinHeading.textContent =
-        "Your shelf is waiting.";
-
-    }
-
-
-    if (joinText) {
-
-      joinText.textContent =
-        "Head back to your Paper Gremlin home, continue exploring the community, manage your clubs, and pick up where you left off.";
-
-    }
-
-
-    if (joinPrimaryAction) {
-
-      joinPrimaryAction.href =
-        "dashboard.html";
-
-
-      joinPrimaryAction.textContent =
-        "Go to My Home";
-
-    }
-
-
-    if (joinSecondaryAction) {
-
-      joinSecondaryAction.href =
-        "profile.html";
-
-
-      joinSecondaryAction.textContent =
-        "View My Profile";
-
-    }
-
-
-
-    /* -----------------------------------------------------
-       FOOTER
-    ----------------------------------------------------- */
-
-    const footerLogin =
-      document.getElementById(
-        "footerLogin"
-      );
-
-
-    const footerSignup =
-      document.getElementById(
-        "footerSignup"
-      );
-
-
-    if (footerLogin) {
-
-      footerLogin.href =
-        "dashboard.html";
-
-
-      footerLogin.textContent =
-        "Home";
-
-    }
-
-
-    if (footerSignup) {
-
-      footerSignup.href =
-        "profile.html";
-
-
-      footerSignup.textContent =
-        "Profile";
-
-    }
-
-  }
-
-
-
-  initializeHomepageAuth();
-
-
-
-  /* =====================================================
-     GOOGLE BOOKS LOOKUP
-  ===================================================== */
-
-  const searchButton =
-    document.getElementById(
-      "bookSearchButton"
-    );
-
-
-  const searchInput =
-    document.getElementById(
-      "bookSearchInput"
-    );
-
-
-  searchButton.addEventListener(
-    "click",
-    searchBook
-  );
-
-
-  searchInput.addEventListener(
-    "keydown",
-    function(event) {
-
-      if (
-        event.key === "Enter"
-      ) {
-
-        searchBook();
-
-      }
-
-    }
-  );
-
-
-  async function searchBook() {
-
-    const query =
-      searchInput.value.trim();
-
-
-    if (!query) {
-      return;
-    }
-
-
-    searchButton.disabled =
-      true;
-
-
-    searchButton.textContent =
-      "Searching...";
-
-
-    try {
-
-      const url =
-        "https://www.googleapis.com/books/v1/volumes?q=" +
-        encodeURIComponent(query) +
-        "&maxResults=1";
-
-
-      const response =
-        await fetch(url);
-
-
-      if (!response.ok) {
-
-        throw new Error(
-          "Google Books request failed."
-        );
-
-      }
-
-
-      const data =
-        await response.json();
-
-
-      if (
-        !data.items ||
-        data.items.length === 0
-      ) {
-
-        document.getElementById(
-          "bookTitle"
-        ).textContent =
-          "No book found.";
-
-
-        document.getElementById(
-          "bookAuthor"
-        ).textContent =
-          "Try another search.";
-
-
-        document.getElementById(
-          "bookDescription"
-        ).textContent =
-          "Paper Gremlin could not find a matching title.";
-
-
-        document.getElementById(
-          "bookCoverArea"
-        ).innerHTML =
-          `
-            <div class="book-placeholder">
-              No cover found
-            </div>
-          `;
-
-
+      if (!campfireScene) {
         return;
-
       }
 
 
-      const volume =
-        data.items[0];
-
-
-      const book =
-        volume.volumeInfo || {};
-
-
-      document.getElementById(
-        "bookTitle"
-      ).textContent =
-        book.title ||
-        "Untitled";
-
-
-      document.getElementById(
-        "bookAuthor"
-      ).textContent =
-        book.authors
-          ? "by " +
-            book.authors.join(", ")
-          : "Author unavailable";
-
-
-      document.getElementById(
-        "bookDescription"
-      ).textContent =
-        book.description ||
-        "No description is available for this title.";
-
-
-      const coverArea =
-        document.getElementById(
-          "bookCoverArea"
+      const ember =
+        document.createElement(
+          "span"
         );
 
 
-      if (
-        book.imageLinks &&
-        book.imageLinks.thumbnail
-      ) {
-
-        const imageUrl =
-          book.imageLinks.thumbnail
-            .replace(
-              "http://",
-              "https://"
-            );
+      ember.className =
+        "ember";
 
 
-        const safeTitle =
-          String(
-            book.title ||
-            "Book"
-          )
-            .replaceAll(
-              "&",
-              "&amp;"
-            )
-            .replaceAll(
-              "<",
-              "&lt;"
-            )
-            .replaceAll(
-              ">",
-              "&gt;"
-            )
-            .replaceAll(
-              '"',
-              "&quot;"
-            );
+      const center =
+        50 +
+        (
+          Math.random() *
+          8 -
+          4
+        );
 
 
-        coverArea.innerHTML =
-          `
-            <img
-              src="${imageUrl}"
-              alt="${safeTitle} book cover"
-              class="book-cover"
-            >
-          `;
+      ember.style.left =
+        center + "%";
 
-      }
 
-      else {
+      ember.style.bottom =
+        (
+          95 +
+          Math.random() *
+          35
+        ) +
+        "px";
 
-        coverArea.innerHTML =
-          `
-            <div class="book-placeholder">
-              Cover unavailable
-            </div>
-          `;
 
-      }
+      ember.style.animationDuration =
+        (
+          2.8 +
+          Math.random() *
+          2.4
+        ) +
+        "s";
 
-    }
 
-    catch (error) {
-
-      console.error(
-        "Google Books search failed:",
-        error
+      campfireScene.appendChild(
+        ember
       );
 
 
-      document.getElementById(
-        "bookTitle"
-      ).textContent =
-        "Something went wrong.";
+      window.setTimeout(
+        function () {
 
+          ember.remove();
 
-      document.getElementById(
-        "bookAuthor"
-      ).textContent =
-        "Please try again.";
-
-
-      document.getElementById(
-        "bookDescription"
-      ).textContent =
-        "Paper Gremlin could not reach Google Books. Please try again.";
+        },
+        5400
+      );
 
     }
 
-    finally {
 
-      searchButton.disabled =
-        false;
+    const reducedMotion =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
 
 
-      searchButton.textContent =
-        "Find Book";
+    if (!reducedMotion) {
+
+      window.setInterval(
+        createEmber,
+        650
+      );
 
     }
 
-  }
 
-</script>
+    /* -------------------------------------------------------
+       FIREFLY GENERATOR
+    -------------------------------------------------------- */
 
+    function addRandomFireflies() {
+
+      if (
+        reducedMotion ||
+        window.innerWidth < 500
+      ) {
+        return;
+      }
+
+
+      const hero =
+        document.querySelector(
+          ".hero"
+        );
+
+
+      if (!hero) {
+        return;
+      }
+
+
+      for (
+        let index = 0;
+        index < 8;
+        index++
+      ) {
+
+        const fly =
+          document.createElement(
+            "span"
+          );
+
+
+        fly.className =
+          "firefly";
+
+
+        fly.style.left =
+          (
+            8 +
+            Math.random() *
+            84
+          ) +
+          "%";
+
+
+        fly.style.bottom =
+          (
+            90 +
+            Math.random() *
+            250
+          ) +
+          "px";
+
+
+        fly.style.animationDelay =
+          (
+            Math.random() *
+            -7
+          ) +
+          "s";
+
+
+        fly.style.animationDuration =
+          (
+            5 +
+            Math.random() *
+            5
+          ) +
+          "s";
+
+
+        hero.appendChild(
+          fly
+        );
+
+      }
+
+    }
+
+
+    addRandomFireflies();
+
+
+    /* -------------------------------------------------------
+       SEARCH URL SUPPORT
+
+       If someone arrives at the homepage with:
+       index.html?q=Fourth%20Wing
+
+       the homepage automatically performs that search.
+    -------------------------------------------------------- */
+
+    const pageParameters =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    const initialBookQuery =
+      pageParameters.get(
+        "q"
+      );
+
+
+    if (initialBookQuery) {
+
+      bookSearchInput.value =
+        initialBookQuery;
+
+      searchGoogleBooks(
+        initialBookQuery
+      );
+
+    }
+
+
+    /* -------------------------------------------------------
+       PARALLAX-LITE
+
+       Very small movement only. This gives the forest a
+       little depth without turning the page into a video
+       game interface.
+    -------------------------------------------------------- */
+
+    if (
+      !reducedMotion &&
+      window.innerWidth > 760
+    ) {
+
+      const leftTree =
+        document.querySelector(
+          ".tree-left"
+        );
+
+      const rightTree =
+        document.querySelector(
+          ".tree-right"
+        );
+
+
+      window.addEventListener(
+        "scroll",
+        function () {
+
+          const amount =
+            Math.min(
+              window.scrollY *
+              .035,
+              24
+            );
+
+
+          if (leftTree) {
+
+            leftTree.style.transform =
+              "translateY(" +
+              amount +
+              "px)";
+
+          }
+
+
+          if (rightTree) {
+
+            rightTree.style.transform =
+              "scaleX(-1) translateY(" +
+              amount +
+              "px)";
+
+          }
+
+        },
+        {
+          passive: true
+        }
+      );
+
+    }
+
+
+    /* -------------------------------------------------------
+       SAFETY NET FOR BROKEN BOOK COVERS
+    -------------------------------------------------------- */
+
+    featuredBookCover.addEventListener(
+      "error",
+      function () {
+
+        featuredBookCover.hidden =
+          true;
+
+        featuredBookPlaceholder.hidden =
+          false;
+
+      }
+    );
+
+
+    /* -------------------------------------------------------
+       HOMEPAGE READY
+    -------------------------------------------------------- */
+
+    document.documentElement.classList.add(
+      "paper-gremlin-ready"
+    );
+
+  </script>
 
 </body>
-
 </html>
