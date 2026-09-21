@@ -43,7 +43,6 @@ a{
 }
 
 button,input{font:inherit}
-
 button{cursor:pointer}
 
 .loading-screen{
@@ -379,7 +378,6 @@ button{cursor:pointer}
 }
 
 .section{margin-top:32px}
-
 .section.hidden{display:none}
 
 .section-head{
@@ -837,6 +835,7 @@ button{cursor:pointer}
   <form class="search-row" id="discoverSearchForm">
     <div class="search-input-wrap">
       <span class="search-icon">⌕</span>
+
       <input
         class="search-input"
         id="discoverSearch"
@@ -874,8 +873,10 @@ button{cursor:pointer}
       <h2>Discover Books</h2>
       <p>Books from Paper Gremlin and Google Books.</p>
     </div>
+
     <div class="result-count" id="bookResultCount">Loading...</div>
   </div>
+
   <div class="book-grid" id="bookGrid"></div>
 </section>
 
@@ -886,8 +887,10 @@ button{cursor:pointer}
       <h2>Book Clubs</h2>
       <p>Public reading communities around Paper Gremlin.</p>
     </div>
+
     <div class="result-count" id="clubResultCount">Loading...</div>
   </div>
+
   <div class="club-grid" id="clubGrid"></div>
 </section>
 
@@ -898,8 +901,10 @@ button{cursor:pointer}
       <h2>Readers</h2>
       <p>Readers you may recognize around the community.</p>
     </div>
+
     <div class="result-count" id="peopleResultCount">Loading...</div>
   </div>
+
   <div class="people-grid" id="peopleGrid"></div>
 </section>
 
@@ -916,7 +921,12 @@ button{cursor:pointer}
 <script>
 const SUPABASE_URL="https://nrtutxjznkfvvbmaagum.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
-const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const GOOGLE_BOOKS_API_KEY="AIzaSyDoOi5oVWrsqZppnTp8Lii8DYKOOq0o9dk";
+
+const supabaseClient=window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
 
 let currentUser=null;
 let localBooks=[];
@@ -952,13 +962,25 @@ function escapeHtml(value){
 }
 
 function normalize(value){
-  return String(value??"").trim().toLowerCase();
+  return String(value??"")
+    .trim()
+    .toLowerCase();
 }
 
 function initials(name){
-  const pieces=String(name||"").trim().split(/\s+/).filter(Boolean);
-  if(!pieces.length)return "?";
-  return pieces.slice(0,2).map(piece=>piece.charAt(0).toUpperCase()).join("");
+  const pieces=String(name||"")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if(!pieces.length){
+    return "?";
+  }
+
+  return pieces
+    .slice(0,2)
+    .map(piece=>piece.charAt(0).toUpperCase())
+    .join("");
 }
 
 function hideLoading(){
@@ -971,58 +993,96 @@ function bookTitle(book){
 }
 
 function bookAuthor(book){
-  if(Array.isArray(book?.authors))return book.authors.join(", ")||"Unknown author";
+  if(Array.isArray(book?.authors)){
+    return book.authors.join(", ")||"Unknown author";
+  }
+
   return book?.author||"Unknown author";
 }
 
 function bookCover(book){
-  return book?.cover_url||book?.thumbnail||"";
+  return book?.cover_url||
+    book?.thumbnail||
+    "";
 }
 
 function bookRating(book){
-  const number=Number(book?.average_rating||book?.rating||0);
-  return Number.isFinite(number)&&number>0?number.toFixed(1):"";
+  const number=Number(
+    book?.average_rating||
+    book?.rating||
+    0
+  );
+
+  return Number.isFinite(number)&&number>0
+    ? number.toFixed(1)
+    : "";
 }
 
 function bookDetailsUrl(book){
-  if(book?._source==="google"&&book.google_books_id){
-    return "book-detail.html?"+new URLSearchParams({
-      google_id:String(book.google_books_id),
-      return:"discover.html"
-    }).toString();
+  if(
+    book?._source==="google" &&
+    book.google_books_id
+  ){
+    return "book-detail.html?"+
+      new URLSearchParams({
+        google_id:String(book.google_books_id),
+        return:"discover.html"
+      }).toString();
   }
 
-  if(book?.id!==undefined&&book?.id!==null&&String(book.id)!==""){
-    return "book-detail.html?"+new URLSearchParams({
-      id:String(book.id),
-      return:"discover.html"
-    }).toString();
+  if(
+    book?.id!==undefined &&
+    book?.id!==null &&
+    String(book.id)!==""
+  ){
+    return "book-detail.html?"+
+      new URLSearchParams({
+        id:String(book.id),
+        return:"discover.html"
+      }).toString();
   }
 
   if(book?.google_books_id){
-    return "book-detail.html?"+new URLSearchParams({
-      google_id:String(book.google_books_id),
-      return:"discover.html"
-    }).toString();
+    return "book-detail.html?"+
+      new URLSearchParams({
+        google_id:String(book.google_books_id),
+        return:"discover.html"
+      }).toString();
   }
 
   return "";
 }
 
 function bookIdentity(book){
-  if(book?.google_books_id)return "google:"+String(book.google_books_id);
+  if(book?.google_books_id){
+    return "google:"+String(book.google_books_id);
+  }
 
-  const isbn13=String(book?.isbn_13||"").replace(/\D/g,"");
-  if(isbn13)return "isbn:"+isbn13;
+  const isbn13=String(book?.isbn_13||"")
+    .replace(/\D/g,"");
 
-  const isbn10=String(book?.isbn_10||"").replace(/[^0-9Xx]/g,"").toUpperCase();
-  if(isbn10)return "isbn:"+isbn10;
+  if(isbn13){
+    return "isbn:"+isbn13;
+  }
 
-  return "title:"+normalize(bookTitle(book))+"|"+normalize(bookAuthor(book));
+  const isbn10=String(book?.isbn_10||"")
+    .replace(/[^0-9Xx]/g,"")
+    .toUpperCase();
+
+  if(isbn10){
+    return "isbn:"+isbn10;
+  }
+
+  return "title:"+
+    normalize(bookTitle(book))+
+    "|"+
+    normalize(bookAuthor(book));
 }
 
 function bookMatchesSearch(book,query){
-  if(!query)return true;
+  if(!query){
+    return true;
+  }
 
   return [
     bookTitle(book),
@@ -1043,7 +1103,9 @@ function bookMatchesSearch(book,query){
 }
 
 function clubMatchesSearch(club,query){
-  if(!query)return true;
+  if(!query){
+    return true;
+  }
 
   return [
     club?.name,
@@ -1057,7 +1119,9 @@ function clubMatchesSearch(club,query){
 }
 
 function personMatchesSearch(person,query){
-  if(!query)return true;
+  if(!query){
+    return true;
+  }
 
   return [
     person?.display_name,
@@ -1074,14 +1138,20 @@ function combinedBooks(){
   const map=new Map();
 
   for(const book of localBooks){
-    map.set(bookIdentity(book),book);
+    map.set(
+      bookIdentity(book),
+      book
+    );
   }
 
   for(const book of googleBooks){
     const key=bookIdentity(book);
 
     if(!map.has(key)){
-      map.set(key,book);
+      map.set(
+        key,
+        book
+      );
     }
   }
 
@@ -1089,190 +1159,362 @@ function combinedBooks(){
 }
 
 function renderBooks(books){
-  const list=Array.isArray(books)?books:[];
+  const list=Array.isArray(books)
+    ? books
+    : [];
 
-  bookResultCount.textContent=list.length===1?"1 book":`${list.length} books`;
+  bookResultCount.textContent=
+    list.length===1
+      ? "1 book"
+      : `${list.length} books`;
 
   if(!list.length){
     bookGrid.innerHTML=`
       <div class="empty-state">
         <div class="empty-symbol">▱</div>
         <h3>No books found.</h3>
-        <p>Try another title, author, ISBN, or search term.</p>
+        <p>
+          Try another title, author, ISBN, or search term.
+        </p>
       </div>
     `;
+
     return;
   }
 
-  bookGrid.innerHTML=list.map(book=>{
-    const title=bookTitle(book);
-    const author=bookAuthor(book);
-    const cover=bookCover(book);
-    const rating=bookRating(book);
-    const url=bookDetailsUrl(book);
-    const google=book._source==="google";
+  bookGrid.innerHTML=list
+    .map(book=>{
+      const title=bookTitle(book);
+      const author=bookAuthor(book);
+      const cover=bookCover(book);
+      const rating=bookRating(book);
+      const url=bookDetailsUrl(book);
+      const google=book._source==="google";
 
-    return `
-      <article
-        class="book-card"
-        tabindex="0"
-        role="link"
-        data-book-url="${escapeHtml(url)}"
-        aria-label="View ${escapeHtml(title)}"
-      >
-        <div class="book-cover-shell">
-          ${
-            cover
-              ? `<img class="book-cover" src="${escapeHtml(cover)}" alt="${escapeHtml(title)} cover" loading="lazy">`
-              : `<div class="book-cover-placeholder">${escapeHtml(title)}</div>`
-          }
-          <div class="book-source">
-            ${google?"Google Books":"Paper Gremlin"}
+      return `
+        <article
+          class="book-card"
+          tabindex="0"
+          role="link"
+          data-book-url="${escapeHtml(url)}"
+          aria-label="View ${escapeHtml(title)}"
+        >
+          <div class="book-cover-shell">
+            ${
+              cover
+                ? `
+                  <img
+                    class="book-cover"
+                    src="${escapeHtml(cover)}"
+                    alt="${escapeHtml(title)} cover"
+                    loading="lazy"
+                  >
+                `
+                : `
+                  <div class="book-cover-placeholder">
+                    ${escapeHtml(title)}
+                  </div>
+                `
+            }
+
+            <div class="book-source">
+              ${google?"Google Books":"Paper Gremlin"}
+            </div>
           </div>
-        </div>
 
-        <div class="book-info">
-          <h3 class="book-title">
-            <a href="${escapeHtml(url)}">${escapeHtml(title)}</a>
-          </h3>
+          <div class="book-info">
+            <h3 class="book-title">
+              <a href="${escapeHtml(url)}">
+                ${escapeHtml(title)}
+              </a>
+            </h3>
 
-          <div class="book-author">${escapeHtml(author)}</div>
-
-          <div class="book-meta">
-            <div class="book-rating">
-              ${rating?`★ ${escapeHtml(rating)}`:google?"Google Books":"Paper Gremlin Book"}
+            <div class="book-author">
+              ${escapeHtml(author)}
             </div>
 
-            <a class="book-link" href="${escapeHtml(url)}">View →</a>
+            <div class="book-meta">
+              <div class="book-rating">
+                ${
+                  rating
+                    ? `★ ${escapeHtml(rating)}`
+                    : google
+                      ? "Google Books"
+                      : "Paper Gremlin Book"
+                }
+              </div>
+
+              <a
+                class="book-link"
+                href="${escapeHtml(url)}"
+              >
+                View →
+              </a>
+            </div>
           </div>
-        </div>
-      </article>
-    `;
-  }).join("");
+        </article>
+      `;
+    })
+    .join("");
 
-  bookGrid.querySelectorAll(".book-card[data-book-url]").forEach(card=>{
-    const url=card.dataset.bookUrl;
-    if(!url)return;
+  bookGrid
+    .querySelectorAll(".book-card[data-book-url]")
+    .forEach(card=>{
+      const url=card.dataset.bookUrl;
 
-    card.addEventListener("click",event=>{
-      if(event.target.closest("a"))return;
-      location.href=url;
-    });
-
-    card.addEventListener("keydown",event=>{
-      if(event.key==="Enter"||event.key===" "){
-        event.preventDefault();
-        location.href=url;
+      if(!url){
+        return;
       }
+
+      card.addEventListener(
+        "click",
+        event=>{
+          if(event.target.closest("a")){
+            return;
+          }
+
+          location.href=url;
+        }
+      );
+
+      card.addEventListener(
+        "keydown",
+        event=>{
+          if(
+            event.key==="Enter" ||
+            event.key===" "
+          ){
+            event.preventDefault();
+            location.href=url;
+          }
+        }
+      );
     });
-  });
 }
 
 function renderClubs(clubs){
-  const list=Array.isArray(clubs)?clubs:[];
+  const list=Array.isArray(clubs)
+    ? clubs
+    : [];
 
-  clubResultCount.textContent=list.length===1?"1 club":`${list.length} clubs`;
+  clubResultCount.textContent=
+    list.length===1
+      ? "1 club"
+      : `${list.length} clubs`;
 
   if(!list.length){
     clubGrid.innerHTML=`
       <div class="empty-state">
         <div class="empty-symbol">◉</div>
         <h3>No clubs found.</h3>
-        <p>Try another club name, genre, or search term.</p>
+        <p>
+          Try another club name, genre, or search term.
+        </p>
       </div>
     `;
+
     return;
   }
 
-  clubGrid.innerHTML=list.map(club=>{
-    const count=Number(club.member_count||0);
-    const url="club-detail.html?id="+encodeURIComponent(club.id);
+  clubGrid.innerHTML=list
+    .map(club=>{
+      const count=Number(
+        club.member_count||0
+      );
 
-    return `
-      <a class="club-card" href="${escapeHtml(url)}">
-        <div class="club-top">
-          <div class="club-symbol">◉</div>
-          <div class="club-badge">Public</div>
-        </div>
+      const url=
+        "club-detail.html?id="+
+        encodeURIComponent(club.id);
 
-        <h3>${escapeHtml(club.name||"Book Club")}</h3>
-
-        <p class="club-description">
-          ${escapeHtml(club.description||"A community of readers on Paper Gremlin.")}
-        </p>
-
-        <div class="club-footer">
-          <div class="club-members">
-            ${count} ${count===1?"member":"members"}
+      return `
+        <a
+          class="club-card"
+          href="${escapeHtml(url)}"
+        >
+          <div class="club-top">
+            <div class="club-symbol">◉</div>
+            <div class="club-badge">Public</div>
           </div>
-          <div class="club-view">Visit Club →</div>
-        </div>
-      </a>
-    `;
-  }).join("");
+
+          <h3>
+            ${escapeHtml(club.name||"Book Club")}
+          </h3>
+
+          <p class="club-description">
+            ${escapeHtml(
+              club.description||
+              "A community of readers on Paper Gremlin."
+            )}
+          </p>
+
+          <div class="club-footer">
+            <div class="club-members">
+              ${count}
+              ${count===1?"member":"members"}
+            </div>
+
+            <div class="club-view">
+              Visit Club →
+            </div>
+          </div>
+        </a>
+      `;
+    })
+    .join("");
 }
 
 function renderPeople(people){
-  const list=Array.isArray(people)?people:[];
+  const list=Array.isArray(people)
+    ? people
+    : [];
 
-  peopleResultCount.textContent=list.length===1?"1 reader":`${list.length} readers`;
+  peopleResultCount.textContent=
+    list.length===1
+      ? "1 reader"
+      : `${list.length} readers`;
 
   if(!list.length){
     peopleGrid.innerHTML=`
       <div class="empty-state">
         <div class="empty-symbol">☺</div>
         <h3>No readers found.</h3>
-        <p>Try another display name or username.</p>
+        <p>
+          Try another display name or username.
+        </p>
       </div>
     `;
+
     return;
   }
 
-  peopleGrid.innerHTML=list.map(person=>{
-    const id=person.user_id||person.id||"";
-    const name=person.display_name||person.username||"Paper Gremlin Reader";
-    const username=person.username?`@${String(person.username).replace(/^@/,"")}`:"";
-    const bio=person.bio||"A reader wandering around Paper Gremlin.";
-    const avatar=person.avatar_url||"";
-    const url=id?"profile.html?id="+encodeURIComponent(id):"profile.html";
+  peopleGrid.innerHTML=list
+    .map(person=>{
+      const id=
+        person.user_id||
+        person.id||
+        "";
 
-    return `
-      <article class="person-card">
-        <a class="person-avatar" href="${escapeHtml(url)}">
+      const name=
+        person.display_name||
+        person.username||
+        "Paper Gremlin Reader";
+
+      const username=
+        person.username
+          ? `@${String(person.username).replace(/^@/,"")}`
+          : "";
+
+      const bio=
+        person.bio||
+        "A reader wandering around Paper Gremlin.";
+
+      const avatar=
+        person.avatar_url||
+        "";
+
+      const url=
+        id
+          ? "profile.html?id="+encodeURIComponent(id)
+          : "profile.html";
+
+      return `
+        <article class="person-card">
+          <a
+            class="person-avatar"
+            href="${escapeHtml(url)}"
+          >
+            ${
+              avatar
+                ? `
+                  <img
+                    src="${escapeHtml(avatar)}"
+                    alt="${escapeHtml(name)}"
+                    loading="lazy"
+                  >
+                `
+                : escapeHtml(initials(name))
+            }
+          </a>
+
+          <h3>
+            <a href="${escapeHtml(url)}">
+              ${escapeHtml(name)}
+            </a>
+          </h3>
+
           ${
-            avatar
-              ? `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(name)}" loading="lazy">`
-              : escapeHtml(initials(name))
+            username
+              ? `
+                <div class="person-username">
+                  ${escapeHtml(username)}
+                </div>
+              `
+              : ""
           }
-        </a>
 
-        <h3><a href="${escapeHtml(url)}">${escapeHtml(name)}</a></h3>
+          <p class="person-bio">
+            ${escapeHtml(bio)}
+          </p>
 
-        ${username?`<div class="person-username">${escapeHtml(username)}</div>`:""}
-
-        <p class="person-bio">${escapeHtml(bio)}</p>
-
-        <a class="person-link" href="${escapeHtml(url)}">View Profile →</a>
-      </article>
-    `;
-  }).join("");
+          <a
+            class="person-link"
+            href="${escapeHtml(url)}"
+          >
+            View Profile →
+          </a>
+        </article>
+      `;
+    })
+    .join("");
 }
 
 function updateVisibleSections(){
-  booksSection.classList.toggle("hidden",!(currentTab==="all"||currentTab==="books"));
-  clubsSection.classList.toggle("hidden",!(currentTab==="all"||currentTab==="clubs"));
-  peopleSection.classList.toggle("hidden",!(currentTab==="all"||currentTab==="people"));
+  booksSection.classList.toggle(
+    "hidden",
+    !(
+      currentTab==="all" ||
+      currentTab==="books"
+    )
+  );
+
+  clubsSection.classList.toggle(
+    "hidden",
+    !(
+      currentTab==="all" ||
+      currentTab==="clubs"
+    )
+  );
+
+  peopleSection.classList.toggle(
+    "hidden",
+    !(
+      currentTab==="all" ||
+      currentTab==="people"
+    )
+  );
 }
 
 function applyDiscoveryFilters(){
-  const query=normalize(currentSearch);
+  const query=normalize(
+    currentSearch
+  );
 
-  const books=query
-    ? combinedBooks().filter(book=>bookMatchesSearch(book,query))
-    : localBooks;
+  const books=
+    query
+      ? combinedBooks().filter(
+          book=>bookMatchesSearch(book,query)
+        )
+      : localBooks;
 
-  const clubs=allClubs.filter(club=>clubMatchesSearch(club,query));
-  const people=allPeople.filter(person=>personMatchesSearch(person,query));
+  const clubs=
+    allClubs.filter(
+      club=>clubMatchesSearch(club,query)
+    );
+
+  const people=
+    allPeople.filter(
+      person=>personMatchesSearch(person,query)
+    );
 
   renderBooks(books);
   renderClubs(clubs);
@@ -1282,35 +1524,56 @@ function applyDiscoveryFilters(){
 
 async function loadBooks(){
   try{
-    const {data,error}=await supabaseClient
+    const {
+      data,
+      error
+    }=await supabaseClient
       .from("books")
       .select("*")
-      .order("created_at",{ascending:false})
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      )
       .limit(100);
 
-    if(error)throw error;
+    if(error){
+      throw error;
+    }
 
-    localBooks=(data||[]).map(book=>({
-      ...book,
-      _source:"local"
-    }));
-  }catch(error){
-    console.error("Discover books:",error);
+    localBooks=(data||[])
+      .map(book=>({
+        ...book,
+        _source:"local"
+      }));
+  }
+  catch(error){
+    console.error(
+      "Discover books:",
+      error
+    );
+
     localBooks=[];
   }
 }
 
 async function searchGoogleBooks(query){
-  const clean=String(query||"").trim();
+  const clean=String(query||"")
+    .trim();
 
   if(clean.length<2){
     googleBooks=[];
+    searchStatus.textContent="";
     return;
   }
 
-  const sequence=++searchSequence;
+  const sequence=
+    ++searchSequence;
 
-  searchStatus.textContent="Searching Google Books…";
+  searchStatus.textContent=
+    "Searching Google Books…";
+
   searchButton.disabled=true;
   searchButton.textContent="Searching…";
 
@@ -1320,69 +1583,125 @@ async function searchGoogleBooks(query){
       new URLSearchParams({
         q:clean,
         maxResults:"30",
-        printType:"books"
+        printType:"books",
+        key:GOOGLE_BOOKS_API_KEY
       }).toString();
 
-    const response=await fetch(url);
+    const response=
+      await fetch(url);
 
     if(!response.ok){
-      throw new Error(`Google Books returned ${response.status}.`);
-    }
+      let details="";
 
-    const payload=await response.json();
+      try{
+        const errorPayload=
+          await response.json();
 
-    if(sequence!==searchSequence)return;
-
-    googleBooks=(payload.items||[]).map(item=>{
-      const info=item.volumeInfo||{};
-      const identifiers=Array.isArray(info.industryIdentifiers)
-        ? info.industryIdentifiers
-        : [];
-
-      const isbn13=identifiers.find(identifier=>identifier.type==="ISBN_13")?.identifier||"";
-      const isbn10=identifiers.find(identifier=>identifier.type==="ISBN_10")?.identifier||"";
-
-      let cover=
-        info.imageLinks?.thumbnail||
-        info.imageLinks?.smallThumbnail||
-        "";
-
-      if(cover.startsWith("http://")){
-        cover="https://"+cover.slice(7);
+        details=
+          errorPayload?.error?.message||
+          "";
+      }
+      catch{
+        details="";
       }
 
-      return {
-        _source:"google",
-        google_books_id:item.id,
-        title:info.title||"Untitled Book",
-        subtitle:info.subtitle||"",
-        authors:Array.isArray(info.authors)?info.authors:[],
-        publisher:info.publisher||"",
-        published_date:info.publishedDate||"",
-        description:info.description||"",
-        cover_url:cover,
-        isbn_13:isbn13,
-        isbn_10:isbn10,
-        categories:Array.isArray(info.categories)?info.categories:[],
-        page_count:info.pageCount||null,
-        average_rating:info.averageRating||null
-      };
-    });
+      throw new Error(
+        details||
+        `Google Books returned ${response.status}.`
+      );
+    }
+
+    const payload=
+      await response.json();
+
+    if(sequence!==searchSequence){
+      return;
+    }
+
+    googleBooks=(payload.items||[])
+      .map(item=>{
+        const info=
+          item.volumeInfo||
+          {};
+
+        const identifiers=
+          Array.isArray(info.industryIdentifiers)
+            ? info.industryIdentifiers
+            : [];
+
+        const isbn13=
+          identifiers.find(
+            identifier=>
+              identifier.type==="ISBN_13"
+          )?.identifier||
+          "";
+
+        const isbn10=
+          identifiers.find(
+            identifier=>
+              identifier.type==="ISBN_10"
+          )?.identifier||
+          "";
+
+        let cover=
+          info.imageLinks?.thumbnail||
+          info.imageLinks?.smallThumbnail||
+          "";
+
+        if(cover.startsWith("http://")){
+          cover=
+            "https://"+
+            cover.slice(7);
+        }
+
+        return {
+          _source:"google",
+          google_books_id:item.id,
+          title:info.title||"Untitled Book",
+          subtitle:info.subtitle||"",
+          authors:Array.isArray(info.authors)
+            ? info.authors
+            : [],
+          publisher:info.publisher||"",
+          published_date:info.publishedDate||"",
+          description:info.description||"",
+          cover_url:cover,
+          isbn_13:isbn13,
+          isbn_10:isbn10,
+          categories:Array.isArray(info.categories)
+            ? info.categories
+            : [],
+          page_count:info.pageCount||null,
+          average_rating:info.averageRating||null
+        };
+      });
 
     searchStatus.textContent=
       googleBooks.length
         ? `Found ${googleBooks.length} Google Books result${googleBooks.length===1?"":"s"}.`
         : "Google Books didn't return any matches.";
-  }catch(error){
-    if(sequence!==searchSequence)return;
+  }
+  catch(error){
+    if(sequence!==searchSequence){
+      return;
+    }
 
-    console.error("Google Books search:",error);
+    console.error(
+      "Google Books search:",
+      error
+    );
 
     googleBooks=[];
 
     searchStatus.textContent=
-      "Google Books couldn't be reached. Paper Gremlin results are still available.";
-  }finally{
+      "Google Books couldn't be reached. "+
+      (
+        error?.message
+          ? error.message
+          : "Paper Gremlin results are still available."
+      );
+  }
+  finally{
     if(sequence===searchSequence){
       searchButton.disabled=false;
       searchButton.textContent="Search";
@@ -1391,120 +1710,233 @@ async function searchGoogleBooks(query){
 }
 
 async function runSearch(){
-  currentSearch=discoverSearch.value.trim();
+  currentSearch=
+    discoverSearch.value
+      .trim();
 
-  const url=new URL(location.href);
+  const url=
+    new URL(
+      location.href
+    );
 
   if(currentSearch){
-    url.searchParams.set("q",currentSearch);
-  }else{
-    url.searchParams.delete("q");
+    url.searchParams.set(
+      "q",
+      currentSearch
+    );
+  }
+  else{
+    url.searchParams.delete(
+      "q"
+    );
   }
 
-  history.replaceState({},"",url);
+  history.replaceState(
+    {},
+    "",
+    url
+  );
 
   if(!currentSearch){
     ++searchSequence;
+
     googleBooks=[];
     searchStatus.textContent="";
+
     applyDiscoveryFilters();
+
     return;
   }
 
   applyDiscoveryFilters();
 
-  await searchGoogleBooks(currentSearch);
+  await searchGoogleBooks(
+    currentSearch
+  );
 
   applyDiscoveryFilters();
 }
 
 async function loadClubs(){
   try{
-    const {data,error}=await supabaseClient
+    const {
+      data,
+      error
+    }=await supabaseClient
       .from("clubs")
       .select("*")
-      .order("created_at",{ascending:false})
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      )
       .limit(100);
 
-    if(error)throw error;
+    if(error){
+      throw error;
+    }
 
-    allClubs=(data||[]).filter(club=>{
-      if(club.is_public===false)return false;
+    allClubs=(data||[])
+      .filter(club=>{
+        if(club.is_public===false){
+          return false;
+        }
 
-      const status=normalize(club.status);
+        const status=
+          normalize(
+            club.status
+          );
 
-      return !["deleted","suspended","disabled"].includes(status);
-    });
+        return ![
+          "deleted",
+          "suspended",
+          "disabled"
+        ].includes(status);
+      });
 
     await hydrateClubMemberCounts();
-  }catch(error){
-    console.error("Discover clubs:",error);
+  }
+  catch(error){
+    console.error(
+      "Discover clubs:",
+      error
+    );
+
     allClubs=[];
   }
 }
 
 async function hydrateClubMemberCounts(){
-  const ids=allClubs.map(club=>club.id).filter(id=>id!==null&&id!==undefined);
+  const ids=
+    allClubs
+      .map(club=>club.id)
+      .filter(
+        id=>
+          id!==null &&
+          id!==undefined
+      );
 
-  if(!ids.length)return;
+  if(!ids.length){
+    return;
+  }
 
   try{
-    const {data,error}=await supabaseClient
+    const {
+      data,
+      error
+    }=await supabaseClient
       .from("club_members")
       .select("club_id,user_id")
-      .in("club_id",ids);
+      .in(
+        "club_id",
+        ids
+      );
 
-    if(error)throw error;
-
-    const counts=new Map();
-
-    for(const row of data||[]){
-      const key=String(row.club_id);
-      counts.set(key,(counts.get(key)||0)+1);
+    if(error){
+      throw error;
     }
 
-    allClubs=allClubs.map(club=>({
-      ...club,
-      member_count:counts.get(String(club.id))||0
-    }));
-  }catch(error){
-    console.warn("Club member counts:",error);
+    const counts=
+      new Map();
+
+    for(const row of data||[]){
+      const key=
+        String(
+          row.club_id
+        );
+
+      counts.set(
+        key,
+        (counts.get(key)||0)+1
+      );
+    }
+
+    allClubs=
+      allClubs.map(
+        club=>({
+          ...club,
+          member_count:
+            counts.get(
+              String(club.id)
+            )||0
+        })
+      );
+  }
+  catch(error){
+    console.warn(
+      "Club member counts:",
+      error
+    );
   }
 }
 
 async function loadPublicProfile(userId){
   try{
-    const {data,error}=await supabaseClient.rpc(
+    const {
+      data,
+      error
+    }=await supabaseClient.rpc(
       "get_public_profile",
-      {check_user_id:userId}
+      {
+        check_user_id:userId
+      }
     );
 
-    if(error)throw error;
+    if(error){
+      throw error;
+    }
 
-    const profile=Array.isArray(data)?data[0]:data;
+    const profile=
+      Array.isArray(data)
+        ? data[0]
+        : data;
 
-    if(!profile)return null;
+    if(!profile){
+      return null;
+    }
 
     return {
       ...profile,
-      id:profile.id||profile.user_id||userId,
-      user_id:profile.user_id||profile.id||userId
+      id:
+        profile.id||
+        profile.user_id||
+        userId,
+      user_id:
+        profile.user_id||
+        profile.id||
+        userId
     };
-  }catch(error){
-    console.warn("Public profile:",error);
+  }
+  catch(error){
+    console.warn(
+      "Public profile:",
+      error
+    );
+
     return null;
   }
 }
 
 async function loadPeople(){
   try{
-    const {data,error}=await supabaseClient
+    const {
+      data,
+      error
+    }=await supabaseClient
       .from("club_members")
       .select("user_id,created_at")
-      .order("created_at",{ascending:false})
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      )
       .limit(150);
 
-    if(error)throw error;
+    if(error){
+      throw error;
+    }
 
     const ids=[
       ...new Set(
@@ -1515,26 +1947,51 @@ async function loadPeople(){
       )
     ].slice(0,40);
 
-    if(currentUser?.id&&!ids.includes(String(currentUser.id))){
-      ids.unshift(String(currentUser.id));
+    if(
+      currentUser?.id &&
+      !ids.includes(
+        String(currentUser.id)
+      )
+    ){
+      ids.unshift(
+        String(currentUser.id)
+      );
     }
 
-    const profiles=await Promise.all(
-      ids.map(id=>loadPublicProfile(id))
+    const profiles=
+      await Promise.all(
+        ids.map(
+          id=>loadPublicProfile(id)
+        )
+      );
+
+    allPeople=
+      profiles.filter(Boolean);
+  }
+  catch(error){
+    console.warn(
+      "Discover readers:",
+      error
     );
 
-    allPeople=profiles.filter(Boolean);
-  }catch(error){
-    console.warn("Discover readers:",error);
     allPeople=[];
   }
 }
 
 async function loadCurrentUserProfile(){
-  if(!currentUser)return;
+  if(!currentUser){
+    return;
+  }
 
-  const profile=await loadPublicProfile(currentUser.id);
-  const holder=document.getElementById("navAvatar");
+  const profile=
+    await loadPublicProfile(
+      currentUser.id
+    );
+
+  const holder=
+    document.getElementById(
+      "navAvatar"
+    );
 
   const name=
     profile?.display_name||
@@ -1551,151 +2008,296 @@ async function loadCurrentUserProfile(){
   holder.innerHTML="";
 
   if(avatar){
-    const image=document.createElement("img");
+    const image=
+      document.createElement(
+        "img"
+      );
+
     image.src=avatar;
     image.alt=name;
 
     image.onerror=()=>{
       holder.innerHTML="";
-      holder.textContent=initials(name);
+      holder.textContent=
+        initials(name);
     };
 
-    holder.appendChild(image);
-  }else{
-    holder.textContent=initials(name);
+    holder.appendChild(
+      image
+    );
+  }
+  else{
+    holder.textContent=
+      initials(name);
   }
 }
 
 async function loadAdminStatus(){
-  if(!currentUser)return;
+  if(!currentUser){
+    return;
+  }
 
   try{
-    const {data,error}=await supabaseClient
+    const {
+      data,
+      error
+    }=await supabaseClient
       .from("admin_users")
       .select("user_id,active")
-      .eq("user_id",currentUser.id)
+      .eq(
+        "user_id",
+        currentUser.id
+      )
       .maybeSingle();
 
-    if(error)throw error;
-
-    if(data&&data.active!==false){
-      document.getElementById("adminLink").style.display="inline-flex";
+    if(error){
+      throw error;
     }
-  }catch(error){
-    console.warn("Admin status:",error);
+
+    if(
+      data &&
+      data.active!==false
+    ){
+      document
+        .getElementById(
+          "adminLink"
+        )
+        .style
+        .display="inline-flex";
+    }
+  }
+  catch(error){
+    console.warn(
+      "Admin status:",
+      error
+    );
   }
 }
 
 async function requireSession(){
-  const {data,error}=await supabaseClient.auth.getSession();
+  const {
+    data,
+    error
+  }=await supabaseClient
+    .auth
+    .getSession();
 
-  if(error)throw error;
+  if(error){
+    throw error;
+  }
 
   if(!data?.session?.user){
     const currentPage=
-      location.pathname.split("/").pop()+
+      location.pathname
+        .split("/")
+        .pop()+
       location.search;
 
     location.href=
       "index.html?next="+
-      encodeURIComponent(currentPage);
+      encodeURIComponent(
+        currentPage
+      );
 
     return false;
   }
 
-  currentUser=data.session.user;
+  currentUser=
+    data.session.user;
+
   return true;
 }
 
 function restoreUrlState(){
-  const params=new URLSearchParams(location.search);
+  const params=
+    new URLSearchParams(
+      location.search
+    );
 
-  currentSearch=params.get("q")||"";
-  discoverSearch.value=currentSearch;
+  currentSearch=
+    params.get("q")||
+    "";
 
-  const requested=params.get("tab")||"all";
-  const valid=["all","books","clubs","people"];
+  discoverSearch.value=
+    currentSearch;
 
-  currentTab=valid.includes(requested)?requested:"all";
+  const requested=
+    params.get("tab")||
+    "all";
 
-  document.querySelectorAll(".tab-button[data-tab]").forEach(button=>{
-    button.classList.toggle("active",button.dataset.tab===currentTab);
-  });
+  const valid=[
+    "all",
+    "books",
+    "clubs",
+    "people"
+  ];
+
+  currentTab=
+    valid.includes(requested)
+      ? requested
+      : "all";
+
+  document
+    .querySelectorAll(
+      ".tab-button[data-tab]"
+    )
+    .forEach(button=>{
+      button.classList.toggle(
+        "active",
+        button.dataset.tab===currentTab
+      );
+    });
 }
 
-discoverSearchForm.addEventListener("submit",async event=>{
-  event.preventDefault();
-  await runSearch();
-});
+discoverSearchForm.addEventListener(
+  "submit",
+  async event=>{
+    event.preventDefault();
+
+    await runSearch();
+  }
+);
 
 let typingTimer=null;
 
-discoverSearch.addEventListener("input",()=>{
-  clearTimeout(typingTimer);
+discoverSearch.addEventListener(
+  "input",
+  ()=>{
+    clearTimeout(
+      typingTimer
+    );
 
-  const value=discoverSearch.value.trim();
+    const value=
+      discoverSearch.value
+        .trim();
 
-  if(!value){
-    currentSearch="";
-    googleBooks=[];
-    searchStatus.textContent="";
-    applyDiscoveryFilters();
-    return;
-  }
+    if(!value){
+      currentSearch="";
+      googleBooks=[];
+      searchStatus.textContent="";
 
-  currentSearch=value;
-  applyDiscoveryFilters();
+      applyDiscoveryFilters();
 
-  typingTimer=setTimeout(()=>{
-    runSearch();
-  },550);
-});
+      const url=
+        new URL(
+          location.href
+        );
 
-document.querySelectorAll(".tab-button[data-tab]").forEach(button=>{
-  button.addEventListener("click",()=>{
-    currentTab=button.dataset.tab||"all";
+      url.searchParams.delete(
+        "q"
+      );
 
-    document.querySelectorAll(".tab-button[data-tab]").forEach(item=>{
-      item.classList.toggle("active",item===button);
-    });
+      history.replaceState(
+        {},
+        "",
+        url
+      );
 
-    updateVisibleSections();
-
-    const url=new URL(location.href);
-
-    if(currentTab==="all"){
-      url.searchParams.delete("tab");
-    }else{
-      url.searchParams.set("tab",currentTab);
+      return;
     }
 
-    history.replaceState({},"",url);
+    currentSearch=value;
+
+    applyDiscoveryFilters();
+
+    typingTimer=
+      setTimeout(
+        ()=>{
+          runSearch();
+        },
+        550
+      );
+  }
+);
+
+document
+  .querySelectorAll(
+    ".tab-button[data-tab]"
+  )
+  .forEach(button=>{
+    button.addEventListener(
+      "click",
+      ()=>{
+        currentTab=
+          button.dataset.tab||
+          "all";
+
+        document
+          .querySelectorAll(
+            ".tab-button[data-tab]"
+          )
+          .forEach(item=>{
+            item.classList.toggle(
+              "active",
+              item===button
+            );
+          });
+
+        updateVisibleSections();
+
+        const url=
+          new URL(
+            location.href
+          );
+
+        if(currentTab==="all"){
+          url.searchParams.delete(
+            "tab"
+          );
+        }
+        else{
+          url.searchParams.set(
+            "tab",
+            currentTab
+          );
+        }
+
+        history.replaceState(
+          {},
+          "",
+          url
+        );
+      }
+    );
   });
-});
 
-supabaseClient.auth.onAuthStateChange((event,session)=>{
-  if(event==="SIGNED_OUT"){
-    location.href="index.html";
-    return;
-  }
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    (
+      event,
+      session
+    )=>{
+      if(event==="SIGNED_OUT"){
+        location.href=
+          "index.html";
 
-  if(session?.user){
-    currentUser=session.user;
-  }
-});
+        return;
+      }
+
+      if(session?.user){
+        currentUser=
+          session.user;
+      }
+    }
+  );
 
 async function startDiscover(){
   try{
     restoreUrlState();
 
-    const authenticated=await requireSession();
+    const authenticated=
+      await requireSession();
 
-    if(!authenticated)return;
+    if(!authenticated){
+      return;
+    }
 
-    const navPromise=Promise.allSettled([
-      loadCurrentUserProfile(),
-      loadAdminStatus()
-    ]);
+    const navPromise=
+      Promise.allSettled([
+        loadCurrentUserProfile(),
+        loadAdminStatus()
+      ]);
 
     await Promise.all([
       loadBooks(),
@@ -1706,28 +2308,45 @@ async function startDiscover(){
     applyDiscoveryFilters();
 
     if(currentSearch){
-      await searchGoogleBooks(currentSearch);
+      await searchGoogleBooks(
+        currentSearch
+      );
+
       applyDiscoveryFilters();
     }
 
     await navPromise;
-  }catch(error){
-    console.error("Discover startup:",error);
+  }
+  catch(error){
+    console.error(
+      "Discover startup:",
+      error
+    );
 
     bookGrid.innerHTML=`
       <div class="empty-state">
         <div class="empty-symbol">!</div>
-        <h3>Paper Gremlin couldn't load Discover.</h3>
-        <p>Refresh the page and try again.</p>
+
+        <h3>
+          Paper Gremlin couldn't load Discover.
+        </h3>
+
+        <p>
+          Refresh the page and try again.
+        </p>
       </div>
     `;
 
     clubGrid.innerHTML="";
     peopleGrid.innerHTML="";
-    bookResultCount.textContent="Unavailable";
+
+    bookResultCount.textContent=
+      "Unavailable";
+
     clubResultCount.textContent="";
     peopleResultCount.textContent="";
-  }finally{
+  }
+  finally{
     hideLoading();
   }
 }
