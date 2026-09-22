@@ -14,819 +14,496 @@
 
 <style>
 
-:root{
-  --bg:#f4efe6;
-  --paper:#fffaf2;
-  --paper-2:#f9f2e7;
-  --ink:#2f2924;
-  --muted:#766d64;
-  --line:#ded3c4;
-  --accent:#8f6652;
-  --accent-dark:#684838;
-  --accent-soft:#ead9ca;
-  --red:#8a554c;
-  --shadow:0 16px 40px rgba(59,43,32,.08);
+:root {
+  --bg: #211f1a;
+  --panel: #27241e;
+  --panel-soft: #2e2922;
+  --ink: #f3e7d8;
+  --muted: #c5a88f;
+  --line: #746b60;
+  --accent: #7c5543;
+  --accent-light: #d4a184;
+  --danger: #d78376;
 }
 
-*{
-  box-sizing:border-box;
+* {
+  box-sizing: border-box;
 }
 
-html{
-  scroll-behavior:smooth;
+html {
+  scroll-behavior: smooth;
 }
 
-body{
-  margin:0;
-  min-height:100vh;
-  background:
-    radial-gradient(
-      circle at top left,
-      rgba(255,255,255,.75),
-      transparent 32%
-    ),
-    var(--bg);
-  color:var(--ink);
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
 }
 
-a{
-  color:inherit;
-  text-decoration:none;
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 button,
-input{
-  font:inherit;
+input {
+  font: inherit;
 }
 
-button{
-  cursor:pointer;
+button {
+  cursor: pointer;
 }
 
 /* =========================================================
    HEADER
 ========================================================= */
 
-.topbar{
-  height:72px;
-  padding:0 32px;
-  border-bottom:1px solid rgba(111,91,76,.13);
-  background:rgba(244,239,230,.92);
-  backdrop-filter:blur(16px);
-  position:sticky;
-  top:0;
-  z-index:100;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+.topbar {
+  min-height: 72px;
+  padding: 0 32px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-.brand{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  font-size:14px;
-  font-weight:700;
-  letter-spacing:.12em;
-  text-transform:uppercase;
+.brand {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
 }
 
-.brand-mark{
-  width:28px;
-  height:28px;
-  border:1.8px solid var(--accent);
-  border-radius:50% 50% 45% 55%;
-  position:relative;
-  display:inline-block;
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.brand-mark::after{
-  content:"";
-  position:absolute;
-  width:8px;
-  height:10px;
-  top:-3px;
-  right:-2px;
-  background:var(--bg);
-  border-left:1.8px solid var(--accent);
-  transform:rotate(35deg);
+.main-nav a {
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
 }
 
-.nav{
-  display:flex;
-  align-items:center;
-  gap:7px;
+.main-nav a:hover {
+  background: rgba(255,255,255,.06);
+  color: var(--ink);
 }
 
-.nav a{
-  padding:10px 15px;
-  border-radius:999px;
-  color:var(--muted);
-  font-size:14px;
+.account-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.nav a:hover{
-  color:var(--ink);
-  background:rgba(255,255,255,.68);
+.login-link,
+.admin-link {
+  padding: 10px 15px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
 }
 
-.nav-right{
-  display:flex;
-  align-items:center;
-  gap:10px;
+.admin-link {
+  display: none;
 }
 
-.auth-link,
-.admin-link{
-  padding:9px 13px;
-  border-radius:999px;
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:12px;
-  font-weight:700;
+.profile-link {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--accent);
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
 }
 
-.auth-link{
-  background:rgba(255,255,255,.7);
-  border:1px solid var(--line);
-}
-
-.admin-link{
-  display:none;
-  color:var(--muted);
-}
-
-.avatar{
-  width:39px;
-  height:39px;
-  border-radius:50%;
-  overflow:hidden;
-  background:var(--accent-dark);
-  color:#fff;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:13px;
-  font-weight:700;
-}
-
-.avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+.profile-link img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* =========================================================
-   PAGE / HERO
+   PAGE
 ========================================================= */
 
-.page{
-  width:min(1180px,calc(100% - 48px));
-  margin:0 auto;
-  padding:48px 0 100px;
+.page {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 55px 0 100px;
 }
 
-.search-hero{
-  max-width:820px;
-  margin:0 auto 34px;
-  text-align:center;
+.hero {
+  max-width: 800px;
+  margin: 0 auto 35px;
+  text-align: center;
 }
 
-.eyebrow{
-  margin-bottom:12px;
-  color:var(--accent);
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:.15em;
-  text-transform:uppercase;
+.eyebrow {
+  margin-bottom: 10px;
+  color: var(--accent-light);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
 }
 
-.search-hero h1{
-  margin:0;
-  font-size:clamp(42px,6vw,68px);
-  line-height:1;
-  font-weight:500;
-  letter-spacing:-.045em;
+.hero h1 {
+  margin: 0;
+  font-size: clamp(40px, 6vw, 67px);
+  font-weight: 500;
+  line-height: 1;
 }
 
-.search-hero p{
-  max-width:660px;
-  margin:18px auto 0;
-  color:var(--muted);
-  font-size:16px;
-  line-height:1.7;
+.hero p {
+  max-width: 680px;
+  margin: 18px auto 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.7;
 }
 
 /* =========================================================
-   SEARCH BAR
+   SEARCH
 ========================================================= */
 
-.search-shell{
-  max-width:900px;
-  margin:0 auto;
-  padding:9px;
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  gap:9px;
-  border:1px solid var(--line);
-  border-radius:21px;
-  background:var(--paper);
-  box-shadow:var(--shadow);
+.search-form {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  background: rgba(0,0,0,.08);
 }
 
-.search-input-wrap{
-  position:relative;
+.search-input {
+  width: 100%;
+  min-height: 58px;
+  padding: 0 20px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--ink);
+  font-size: 17px;
 }
 
-.search-symbol{
-  position:absolute;
-  left:18px;
-  top:50%;
-  transform:translateY(-50%);
-  color:var(--muted);
-  font-size:20px;
-  pointer-events:none;
+.search-input::placeholder {
+  color: #a98e79;
 }
 
-.search-input{
-  width:100%;
-  height:58px;
-  padding:0 18px 0 51px;
-  border:0;
-  border-radius:14px;
-  outline:none;
-  background:transparent;
-  color:var(--ink);
-  font-size:16px;
+.search-button {
+  min-width: 150px;
+  min-height: 58px;
+  padding: 0 25px;
+  border: 0;
+  border-radius: 17px;
+  background: var(--accent);
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 800;
 }
 
-.search-input::placeholder{
-  color:#9a9086;
+.search-button:disabled {
+  opacity: .55;
+  cursor: wait;
 }
 
-.search-submit{
-  min-width:126px;
-  height:58px;
-  padding:0 23px;
-  border:0;
-  border-radius:14px;
-  background:var(--accent-dark);
-  color:white;
-  font-family:Arial,Helvetica,sans-serif;
-  font-weight:700;
+.status {
+  min-height: 24px;
+  margin: 14px auto 0;
+  max-width: 900px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
 }
 
-.search-submit:disabled{
-  opacity:.55;
-  cursor:wait;
-}
-
-.search-summary{
-  max-width:900px;
-  min-height:23px;
-  margin:13px auto 0;
-  color:var(--muted);
-  font-size:13px;
-  text-align:center;
-}
-
-.search-summary.error{
-  color:var(--red);
+.status.error {
+  color: var(--danger);
 }
 
 /* =========================================================
-   TABS
+   FILTERS
 ========================================================= */
 
-.tabs{
-  margin:35px 0 25px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:8px;
+.filters {
+  margin: 35px 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-.tab{
-  padding:10px 17px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  background:rgba(255,250,242,.7);
-  color:var(--muted);
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:13px;
+.filter-button {
+  padding: 11px 21px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
 }
 
-.tab:hover{
-  background:var(--paper);
-  color:var(--ink);
-}
-
-.tab.active{
-  border-color:var(--accent-dark);
-  background:var(--accent-dark);
-  color:#fff;
-}
-
-.tab-count{
-  margin-left:5px;
-  opacity:.72;
+.filter-button.active {
+  border-color: var(--accent-light);
+  background: var(--accent);
+  color: white;
 }
 
 /* =========================================================
-   RESULTS
+   INITIAL / EMPTY
 ========================================================= */
 
-.results{
-  margin-top:10px;
+.empty-state {
+  padding: 80px 20px;
+  border-top: 1px dashed var(--line);
+  text-align: center;
 }
 
-.result-section{
-  margin-top:38px;
+.empty-icon {
+  width: 82px;
+  height: 82px;
+  margin: 0 auto 23px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #3b3026;
+  color: var(--accent-light);
+  font-size: 31px;
 }
 
-.hidden{
-  display:none !important;
+.empty-state h2 {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 500;
 }
 
-.section-head{
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  gap:18px;
-  margin-bottom:17px;
-}
-
-.section-kicker{
-  margin-bottom:6px;
-  color:var(--accent);
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:10px;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:.13em;
-}
-
-.section-head h2{
-  margin:0;
-  font-size:28px;
-  font-weight:500;
-}
-
-.section-count{
-  color:var(--muted);
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:12px;
+.empty-state p {
+  max-width: 700px;
+  margin: 16px auto 0;
+  color: var(--muted);
+  line-height: 1.6;
 }
 
 /* =========================================================
-   BOOK RESULTS
+   SECTIONS
 ========================================================= */
 
-.book-results{
-  display:grid;
-  gap:12px;
+.result-section {
+  margin-top: 42px;
 }
 
-.book-result{
-  display:grid;
-  grid-template-columns:82px minmax(0,1fr) auto;
-  gap:18px;
-  align-items:center;
-  padding:14px;
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:var(--paper);
-  box-shadow:0 7px 22px rgba(59,43,32,.045);
-  transition:
-    transform .16s ease,
-    box-shadow .16s ease;
+.hidden {
+  display: none !important;
 }
 
-.book-result:hover{
-  transform:translateY(-2px);
-  box-shadow:0 12px 27px rgba(59,43,32,.08);
+.section-header {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-.book-result-cover{
-  width:82px;
-  height:120px;
-  border-radius:10px;
-  overflow:hidden;
-  background:
-    linear-gradient(
-      135deg,
-      #d9cabb,
-      #b7a18e
-    );
+.section-header h2 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 500;
 }
 
-.book-result-cover img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.cover-placeholder{
-  width:100%;
-  height:100%;
-  padding:8px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  color:#fff;
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:10px;
-  line-height:1.3;
-}
-
-.result-title{
-  margin:0;
-  font-size:21px;
-  font-weight:600;
-  line-height:1.25;
-}
-
-.result-subtitle{
-  margin-top:6px;
-  color:var(--muted);
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:12px;
-  line-height:1.5;
-}
-
-.result-description{
-  max-width:720px;
-  margin-top:10px;
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.55;
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-}
-
-.result-action{
-  align-self:center;
-  padding:9px 13px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  background:#fffdf9;
-  color:var(--accent-dark);
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:11px;
-  font-weight:700;
-  white-space:nowrap;
+.section-count {
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
 }
 
 /* =========================================================
-   CLUB RESULTS
+   BOOKS
 ========================================================= */
 
-.club-results{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:14px;
+.book-list {
+  display: grid;
+  gap: 14px;
 }
 
-.club-result{
-  padding:20px;
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:var(--paper);
+.book-card {
+  padding: 15px;
+  border: 1px solid rgba(255,255,255,.11);
+  border-radius: 18px;
+  display: grid;
+  grid-template-columns: 82px minmax(0,1fr);
+  gap: 18px;
+  background: var(--panel);
 }
 
-.club-result-top{
-  display:flex;
-  align-items:center;
-  gap:12px;
+.book-cover {
+  width: 82px;
+  height: 120px;
+  overflow: hidden;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #40362e;
+  color: var(--muted);
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10px;
 }
 
-.club-symbol{
-  width:42px;
-  height:42px;
-  flex:0 0 42px;
-  border-radius:13px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:var(--accent-soft);
-  color:var(--accent-dark);
+.book-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.club-result h3{
-  margin:0;
-  font-size:19px;
+.book-title {
+  margin: 0;
+  font-size: 21px;
 }
 
-.club-meta{
-  margin-top:4px;
-  color:var(--muted);
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:11px;
+.book-meta {
+  margin-top: 7px;
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
-.club-description{
-  min-height:40px;
-  margin:13px 0 0;
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.6;
-}
-
-.club-result-bottom{
-  margin-top:15px;
-  padding-top:13px;
-  border-top:1px solid var(--line);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.club-member-count{
-  color:var(--muted);
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:11px;
-}
-
-.club-link{
-  color:var(--accent-dark);
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:11px;
-  font-weight:700;
+.book-tags {
+  margin-top: 10px;
+  color: #a9927e;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 /* =========================================================
-   READER RESULTS
+   CLUBS / READERS
 ========================================================= */
 
-.people-results{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:14px;
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 14px;
 }
 
-.person-result{
-  padding:19px;
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:var(--paper);
-  text-align:center;
+.simple-card {
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,.11);
+  border-radius: 18px;
+  background: var(--panel);
 }
 
-.person-avatar{
-  width:64px;
-  height:64px;
-  margin:0 auto;
-  border-radius:50%;
-  overflow:hidden;
-  background:var(--accent-dark);
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-family:Arial,Helvetica,sans-serif;
-  font-weight:700;
+.simple-card h3 {
+  margin: 0;
+  font-size: 19px;
 }
 
-.person-avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+.simple-card p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
 }
 
-.person-result h3{
-  margin:12px 0 0;
-  font-size:17px;
-}
-
-.person-handle{
-  margin-top:4px;
-  color:var(--muted);
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:11px;
-}
-
-.person-bio{
-  min-height:38px;
-  margin:10px 0 0;
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.55;
-}
-
-.person-link{
-  display:inline-block;
-  margin-top:12px;
-  color:var(--accent-dark);
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:11px;
-  font-weight:700;
-}
-
-/* =========================================================
-   EMPTY STATE
-========================================================= */
-
-.search-empty{
-  padding:62px 25px;
-  border:1px dashed #cdbfac;
-  border-radius:22px;
-  background:rgba(255,250,242,.5);
-  text-align:center;
-}
-
-.empty-symbol{
-  width:55px;
-  height:55px;
-  margin:0 auto 15px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:var(--accent-soft);
-  color:var(--accent-dark);
-  font-size:22px;
-}
-
-.search-empty h2{
-  margin:0;
-  font-size:24px;
-  font-weight:500;
-}
-
-.search-empty p{
-  max-width:540px;
-  margin:10px auto 0;
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.6;
+.simple-card a {
+  display: inline-block;
+  margin-top: 15px;
+  color: var(--accent-light);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 /* =========================================================
    PAGINATION
 ========================================================= */
 
-.pagination{
-  margin-top:24px;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
+.pagination {
+  margin-top: 28px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
 }
 
-.pagination.visible{
-  display:flex;
+.pagination.visible {
+  display: flex;
 }
 
-.page-button{
-  min-width:100px;
-  padding:10px 16px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  background:var(--paper);
-  color:var(--accent-dark);
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:12px;
-  font-weight:700;
+.page-button {
+  padding: 10px 17px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
 }
 
-.page-button:disabled{
-  opacity:.4;
-  cursor:not-allowed;
+.page-button:disabled {
+  opacity: .35;
+  cursor: default;
 }
 
-.page-status{
-  color:var(--muted);
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:12px;
+.page-label {
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
 }
 
 /* =========================================================
-   MOBILE NAV
+   MOBILE
 ========================================================= */
 
-.mobile-nav{
-  display:none;
-}
+@media (max-width: 800px) {
 
-@media(max-width:850px){
+  .main-nav {
+    display: none;
+  }
 
-  .people-results{
-    grid-template-columns:repeat(2,minmax(0,1fr));
+  .card-grid {
+    grid-template-columns: repeat(2, minmax(0,1fr));
   }
 
 }
 
-@media(max-width:720px){
+@media (max-width: 600px) {
 
-  body{
-    padding-bottom:72px;
+  .topbar {
+    padding: 0 16px;
   }
 
-  .topbar{
-    height:64px;
-    padding:0 18px;
+  .page {
+    width: min(100% - 24px, 1180px);
+    padding-top: 35px;
   }
 
-  .nav{
-    display:none;
+  .search-form {
+    grid-template-columns: 1fr;
   }
 
-  .admin-link{
-    display:none !important;
+  .search-button {
+    width: 100%;
   }
 
-  .page{
-    width:min(100% - 24px,1180px);
-    padding-top:30px;
-  }
-
-  .search-shell{
-    grid-template-columns:1fr;
-  }
-
-  .search-submit{
-    width:100%;
-  }
-
-  .book-result{
-    grid-template-columns:68px minmax(0,1fr);
-    gap:13px;
-  }
-
-  .book-result-cover{
-    width:68px;
-    height:101px;
-  }
-
-  .book-result .result-action{
-    display:none;
-  }
-
-  .club-results{
-    grid-template-columns:1fr;
-  }
-
-  .people-results{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-
-  .mobile-nav{
-    position:fixed;
-    left:0;
-    right:0;
-    bottom:0;
-    z-index:200;
-    height:66px;
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-    border-top:1px solid var(--line);
-    background:rgba(255,250,242,.96);
-    backdrop-filter:blur(16px);
-  }
-
-  .mobile-nav a{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:3px;
-    color:var(--muted);
-    font-family:Arial,Helvetica,sans-serif;
-    font-size:9px;
-    text-transform:uppercase;
-  }
-
-  .mobile-icon{
-    font-size:17px;
+  .card-grid {
+    grid-template-columns: 1fr;
   }
 
 }
-
-@media(max-width:460px){
-
-  .people-results{
-    grid-template-columns:1fr;
-  }
-
-  .pagination{
-    flex-wrap:wrap;
-  }
-
-}
-
-/* =========================================================
-   END STYLES
-========================================================= */
 
 </style>
 </head>
@@ -839,18 +516,17 @@ button{
     class="brand"
     href="index.html"
   >
-    <span class="brand-mark"></span>
     Paper Gremlin
   </a>
 
-  <nav class="nav">
+  <nav class="main-nav">
     <a href="index.html">Home</a>
     <a href="discover.html">Discover</a>
     <a href="clubs.html">Clubs</a>
     <a href="marketplace.html">Books</a>
   </nav>
 
-  <div class="nav-right">
+  <div class="account-area">
 
     <a
       class="admin-link"
@@ -861,18 +537,18 @@ button{
     </a>
 
     <a
-      class="auth-link"
-      id="authLink"
+      class="login-link"
+      id="loginLink"
       href="auth.html#login"
     >
       Log In
     </a>
 
     <a
-      class="avatar"
-      id="navAvatar"
+      class="profile-link"
+      id="profileLink"
       href="profile.html"
-      aria-label="Your profile"
+      aria-label="Profile"
     >
       ?
     </a>
@@ -883,10 +559,10 @@ button{
 
 <main class="page">
 
-  <section class="search-hero">
+  <section class="hero">
 
     <div class="eyebrow">
-      Search Paper Gremlin
+      Paper Gremlin Search
     </div>
 
     <h1>
@@ -894,37 +570,29 @@ button{
     </h1>
 
     <p>
-      Search Paper Gremlin's growing book catalog,
-      book clubs, and readers. Book searches are
-      cached by Paper Gremlin so popular searches
-      become faster over time.
+      Search books, book clubs, and readers.
+      Paper Gremlin's expanded catalog can find
+      titles far beyond the books already stored
+      on the site.
     </p>
 
   </section>
 
   <form
-    class="search-shell"
+    class="search-form"
     id="searchForm"
   >
 
-    <div class="search-input-wrap">
-
-      <span class="search-symbol">
-        ⌕
-      </span>
-
-      <input
-        class="search-input"
-        id="searchInput"
-        type="search"
-        autocomplete="off"
-        placeholder="Search titles, authors, ISBNs, clubs, or readers..."
-      >
-
-    </div>
+    <input
+      class="search-input"
+      id="searchInput"
+      type="search"
+      autocomplete="off"
+      placeholder="Search titles, authors, ISBNs, clubs, or readers..."
+    >
 
     <button
-      class="search-submit"
+      class="search-button"
       id="searchButton"
       type="submit"
     >
@@ -934,511 +602,347 @@ button{
   </form>
 
   <div
-    class="search-summary"
-    id="searchSummary"
+    class="status"
+    id="status"
   ></div>
 
-  <div class="tabs">
+  <div class="filters">
 
     <button
-      class="tab active"
+      class="filter-button active"
       type="button"
       data-filter="all"
     >
       All
-      <span
-        class="tab-count"
-        id="allCount"
-      ></span>
+      <span id="allCount"></span>
     </button>
 
     <button
-      class="tab"
+      class="filter-button"
       type="button"
       data-filter="books"
     >
       Books
-      <span
-        class="tab-count"
-        id="booksCount"
-      ></span>
+      <span id="bookCount"></span>
     </button>
 
     <button
-      class="tab"
+      class="filter-button"
       type="button"
       data-filter="clubs"
     >
       Clubs
-      <span
-        class="tab-count"
-        id="clubsCount"
-      ></span>
+      <span id="clubCount"></span>
     </button>
 
     <button
-      class="tab"
+      class="filter-button"
       type="button"
-      data-filter="people"
+      data-filter="readers"
     >
       Readers
-      <span
-        class="tab-count"
-        id="peopleCount"
-      ></span>
+      <span id="readerCount"></span>
     </button>
 
   </div>
 
   <div
-    class="results"
-    id="results"
+    class="empty-state"
+    id="emptyState"
   >
 
-    <div
-      class="search-empty"
-      id="initialState"
-    >
-
-      <div class="empty-symbol">
-        ⌕
-      </div>
-
-      <h2>
-        Search the shelves.
-      </h2>
-
-      <p>
-        Try a title like The Hobbit, an author,
-        a franchise like Magic the Gathering,
-        an ISBN, a club name, or a reader.
-      </p>
-
+    <div class="empty-icon">
+      ⌕
     </div>
 
-    <section
-      class="result-section hidden"
-      id="bookSection"
-      data-section="books"
-    >
+    <h2>
+      Search the shelves.
+    </h2>
 
-      <div class="section-head">
-
-        <div>
-
-          <div class="section-kicker">
-            Books
-          </div>
-
-          <h2>
-            Book results
-          </h2>
-
-        </div>
-
-        <div
-          class="section-count"
-          id="bookSectionCount"
-        ></div>
-
-      </div>
-
-      <div
-        class="book-results"
-        id="bookResults"
-      ></div>
-
-      <div
-        class="pagination"
-        id="pagination"
-      >
-
-        <button
-          class="page-button"
-          id="previousPage"
-          type="button"
-        >
-          ← Previous
-        </button>
-
-        <span
-          class="page-status"
-          id="pageStatus"
-        >
-          Page 1
-        </span>
-
-        <button
-          class="page-button"
-          id="nextPage"
-          type="button"
-        >
-          Next →
-        </button>
-
-      </div>
-
-    </section>
-
-    <section
-      class="result-section hidden"
-      id="clubSection"
-      data-section="clubs"
-    >
-
-      <div class="section-head">
-
-        <div>
-
-          <div class="section-kicker">
-            Clubs
-          </div>
-
-          <h2>
-            Book clubs
-          </h2>
-
-        </div>
-
-        <div
-          class="section-count"
-          id="clubSectionCount"
-        ></div>
-
-      </div>
-
-      <div
-        class="club-results"
-        id="clubResults"
-      ></div>
-
-    </section>
-
-    <section
-      class="result-section hidden"
-      id="peopleSection"
-      data-section="people"
-    >
-
-      <div class="section-head">
-
-        <div>
-
-          <div class="section-kicker">
-            Readers
-          </div>
-
-          <h2>
-            People
-          </h2>
-
-        </div>
-
-        <div
-          class="section-count"
-          id="peopleSectionCount"
-        ></div>
-
-      </div>
-
-      <div
-        class="people-results"
-        id="peopleResults"
-      ></div>
-
-    </section>
+    <p>
+      Try a title like The Hobbit, an author,
+      a franchise like Magic the Gathering,
+      an ISBN, a club name, or a reader.
+    </p>
 
   </div>
 
+  <section
+    class="result-section hidden"
+    id="bookSection"
+  >
+
+    <div class="section-header">
+
+      <h2>
+        Books
+      </h2>
+
+      <span
+        class="section-count"
+        id="bookSectionCount"
+      ></span>
+
+    </div>
+
+    <div
+      class="book-list"
+      id="bookList"
+    ></div>
+
+    <div
+      class="pagination"
+      id="pagination"
+    >
+
+      <button
+        class="page-button"
+        id="previousButton"
+        type="button"
+      >
+        ← Previous
+      </button>
+
+      <span
+        class="page-label"
+        id="pageLabel"
+      >
+        Page 1
+      </span>
+
+      <button
+        class="page-button"
+        id="nextButton"
+        type="button"
+      >
+        Next →
+      </button>
+
+    </div>
+
+  </section>
+
+  <section
+    class="result-section hidden"
+    id="clubSection"
+  >
+
+    <div class="section-header">
+
+      <h2>
+        Clubs
+      </h2>
+
+      <span
+        class="section-count"
+        id="clubSectionCount"
+      ></span>
+
+    </div>
+
+    <div
+      class="card-grid"
+      id="clubList"
+    ></div>
+
+  </section>
+
+  <section
+    class="result-section hidden"
+    id="readerSection"
+  >
+
+    <div class="section-header">
+
+      <h2>
+        Readers
+      </h2>
+
+      <span
+        class="section-count"
+        id="readerSectionCount"
+      ></span>
+
+    </div>
+
+    <div
+      class="card-grid"
+      id="readerList"
+    ></div>
+
+  </section>
+
 </main>
-
-<nav class="mobile-nav">
-
-  <a href="index.html">
-    <span class="mobile-icon">⌂</span>
-    Home
-  </a>
-
-  <a href="discover.html">
-    <span class="mobile-icon">⌕</span>
-    Discover
-  </a>
-
-  <a href="clubs.html">
-    <span class="mobile-icon">◉</span>
-    Clubs
-  </a>
-
-  <a href="marketplace.html">
-    <span class="mobile-icon">▱</span>
-    Books
-  </a>
-
-  <a href="profile.html">
-    <span class="mobile-icon">☺</span>
-    Profile
-  </a>
-
-</nav>
 
 <script>
 
 const SUPABASE_URL =
   "https://nrtutxjznkfvvbmaagum.supabase.co";
 
-const SUPABASE_PUBLISHABLE_KEY =
+const SUPABASE_KEY =
   "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
 
 const supabaseClient =
   window.supabase.createClient(
     SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
+    SUPABASE_KEY
   );
-
-/*
-  Search is intentionally PUBLIC.
-
-  A visitor does not need a Paper Gremlin account
-  to search the book catalog.
-
-  Authentication is only used to personalize the
-  navigation when a reader happens to be signed in.
-*/
-
-let currentUser =
-  null;
-
-let activeFilter =
-  "all";
-
-let currentQuery =
-  "";
-
-let currentBookPage =
-  1;
-
-let currentBookTotalPages =
-  1;
-
-let currentBookTotalResults =
-  0;
-
-let searchResults = {
-  books:[],
-  clubs:[],
-  people:[]
-};
 
 const searchForm =
-  document.getElementById(
-    "searchForm"
-  );
+  document.getElementById("searchForm");
 
 const searchInput =
-  document.getElementById(
-    "searchInput"
-  );
+  document.getElementById("searchInput");
 
 const searchButton =
-  document.getElementById(
-    "searchButton"
-  );
+  document.getElementById("searchButton");
 
-const searchSummary =
-  document.getElementById(
-    "searchSummary"
-  );
+const statusBox =
+  document.getElementById("status");
 
-const initialState =
-  document.getElementById(
-    "initialState"
-  );
+const emptyState =
+  document.getElementById("emptyState");
 
 const bookSection =
-  document.getElementById(
-    "bookSection"
-  );
+  document.getElementById("bookSection");
 
 const clubSection =
-  document.getElementById(
-    "clubSection"
-  );
+  document.getElementById("clubSection");
 
-const peopleSection =
-  document.getElementById(
-    "peopleSection"
-  );
+const readerSection =
+  document.getElementById("readerSection");
 
-const bookResults =
-  document.getElementById(
-    "bookResults"
-  );
+const bookList =
+  document.getElementById("bookList");
 
-const clubResults =
-  document.getElementById(
-    "clubResults"
-  );
+const clubList =
+  document.getElementById("clubList");
 
-const peopleResults =
-  document.getElementById(
-    "peopleResults"
-  );
-
-const allCount =
-  document.getElementById(
-    "allCount"
-  );
-
-const booksCount =
-  document.getElementById(
-    "booksCount"
-  );
-
-const clubsCount =
-  document.getElementById(
-    "clubsCount"
-  );
-
-const peopleCount =
-  document.getElementById(
-    "peopleCount"
-  );
-
-const bookSectionCount =
-  document.getElementById(
-    "bookSectionCount"
-  );
-
-const clubSectionCount =
-  document.getElementById(
-    "clubSectionCount"
-  );
-
-const peopleSectionCount =
-  document.getElementById(
-    "peopleSectionCount"
-  );
+const readerList =
+  document.getElementById("readerList");
 
 const pagination =
-  document.getElementById(
-    "pagination"
-  );
+  document.getElementById("pagination");
 
-const previousPage =
-  document.getElementById(
-    "previousPage"
-  );
+const previousButton =
+  document.getElementById("previousButton");
 
-const nextPage =
-  document.getElementById(
-    "nextPage"
-  );
+const nextButton =
+  document.getElementById("nextButton");
 
-const pageStatus =
-  document.getElementById(
-    "pageStatus"
-  );
+const pageLabel =
+  document.getElementById("pageLabel");
 
-const authLink =
-  document.getElementById(
-    "authLink"
-  );
+const allCount =
+  document.getElementById("allCount");
 
-const navAvatar =
-  document.getElementById(
-    "navAvatar"
-  );
+const bookCount =
+  document.getElementById("bookCount");
+
+const clubCount =
+  document.getElementById("clubCount");
+
+const readerCount =
+  document.getElementById("readerCount");
+
+const bookSectionCount =
+  document.getElementById("bookSectionCount");
+
+const clubSectionCount =
+  document.getElementById("clubSectionCount");
+
+const readerSectionCount =
+  document.getElementById("readerSectionCount");
+
+const loginLink =
+  document.getElementById("loginLink");
+
+const profileLink =
+  document.getElementById("profileLink");
 
 const adminLink =
-  document.getElementById(
-    "adminLink"
-  );
+  document.getElementById("adminLink");
+
+let currentQuery = "";
+let currentPage = 1;
+let totalPages = 1;
+let totalBookResults = 0;
+let activeFilter = "all";
+
+let results = {
+  books: [],
+  clubs: [],
+  readers: []
+};
 
 /* =========================================================
-   BASIC HELPERS
+   HELPERS
 ========================================================= */
 
-function setSummary(
-  text,
-  isError = false
-){
+function escapeHtml(value) {
 
-  searchSummary.textContent =
-    text || "";
-
-  searchSummary.classList.toggle(
-    "error",
-    Boolean(isError)
-  );
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 
 }
 
-function escapeHtml(
-  value
-){
+function safeArray(value) {
 
-  return String(
-    value ?? ""
-  )
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-
-}
-
-function normalizeImage(
-  value
-){
-
-  if(!value){
-    return "";
-  }
-
-  return String(
-    value
-  )
-    .replace(
-      /^http:\/\//i,
-      "https://"
-    );
-
-}
-
-function safeArray(
-  value
-){
-
-  return Array.isArray(
-    value
-  )
+  return Array.isArray(value)
     ? value
     : [];
 
 }
 
-function initials(
-  value
-){
+function normalizeImage(value) {
 
-  const pieces =
-    String(
-      value ||
-      "Reader"
-    )
+  if (!value) {
+    return "";
+  }
+
+  return String(value)
+    .replace(/^http:\/\//i, "https://");
+
+}
+
+function setStatus(message, error = false) {
+
+  statusBox.textContent =
+    message || "";
+
+  statusBox.classList.toggle(
+    "error",
+    error
+  );
+
+}
+
+function normalizeText(value) {
+
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+
+}
+
+function initials(value) {
+
+  const words =
+    String(value || "Reader")
       .trim()
       .split(/\s+/)
       .filter(Boolean);
 
   return (
-    pieces
-      .slice(0,2)
-      .map(
-        item =>
-          item
-            .charAt(0)
-            .toUpperCase()
+    words
+      .slice(0, 2)
+      .map(word =>
+        word.charAt(0).toUpperCase()
       )
       .join("") ||
     "?"
@@ -1446,232 +950,191 @@ function initials(
 
 }
 
-function truncate(
-  value,
-  maximum = 220
-){
+function updateUrl() {
 
-  const text =
-    String(
-      value ||
-      ""
-    )
-      .replace(/\s+/g," ")
-      .trim();
+  const url =
+    new URL(window.location.href);
 
-  if(
-    text.length <=
-    maximum
-  ){
-
-    return text;
-
+  if (currentQuery) {
+    url.searchParams.set(
+      "q",
+      currentQuery
+    );
+  } else {
+    url.searchParams.delete("q");
   }
 
-  return (
-    text.slice(
-      0,
-      maximum - 1
-    ) +
-    "…"
-  );
-  /* =========================================================
-   AUTH / NAV PERSONALIZATION
+  if (currentPage > 1) {
+    url.searchParams.set(
+      "page",
+      String(currentPage)
+    );
+  } else {
+    url.searchParams.delete("page");
+  }
 
-   Authentication is OPTIONAL on this page.
+  /*
+    Keep a version parameter so an old GitHub
+    Pages copy is less likely to get reused.
+  */
+
+  url.searchParams.set(
+    "v",
+    "4"
+  );
+
+  history.replaceState(
+    {},
+    "",
+    url
+  );
+
+}
+
+/* =========================================================
+   END PART 1
+========================================================= */
+  /* =========================================================
+   OPTIONAL AUTH / NAVIGATION
 ========================================================= */
 
-async function loadAuthState(){
+async function loadOptionalAccount() {
 
-  try{
+  try {
 
     const {
-      data:{
-        session
-      },
+      data: { session },
       error
     } =
       await supabaseClient.auth.getSession();
 
-    if(error){
-
+    if (error) {
       console.warn(
-        "Session check:",
+        "Session check failed:",
         error
       );
-
       return;
-
     }
 
-    currentUser =
-      session?.user ||
-      null;
+    const user =
+      session?.user || null;
 
-    if(!currentUser){
-
-      authLink.style.display =
-        "inline-block";
-
-      navAvatar.style.display =
-        "none";
-
-      adminLink.style.display =
-        "none";
-
+    if (!user) {
       return;
-
     }
 
-    authLink.style.display =
+    loginLink.style.display =
       "none";
 
-    navAvatar.style.display =
+    profileLink.style.display =
       "flex";
 
-    await Promise.allSettled([
-      loadCurrentProfile(),
-      loadAdminStatus()
-    ]);
-
-  }
-
-  catch(error){
-
-    console.warn(
-      "Optional authentication check failed:",
-      error
-    );
-
-  }
-
-}
-
-async function loadCurrentProfile(){
-
-  if(!currentUser){
-    return;
-  }
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("profiles")
-        .select(
-          "id, display_name, username, avatar_url"
-        )
-        .eq(
-          "id",
-          currentUser.id
-        )
-        .maybeSingle();
-
-    if(error){
-      throw error;
-    }
-
-    const displayName =
-      data?.display_name ||
-      data?.username ||
-      currentUser.email ||
-      "Reader";
-
-    if(data?.avatar_url){
-
-      navAvatar.innerHTML =
-        `
-          <img
-            src="${escapeHtml(
-              normalizeImage(
-                data.avatar_url
-              )
-            )}"
-            alt=""
-          >
-        `;
-
-    }
-
-    else{
-
-      navAvatar.textContent =
-        initials(
-          displayName
-        );
-
-    }
-
-  }
-
-  catch(error){
-
-    console.warn(
-      "Profile navigation:",
-      error
-    );
-
-    navAvatar.textContent =
+    profileLink.textContent =
       initials(
-        currentUser?.email ||
-        "Reader"
+        user.email || "Reader"
       );
 
-  }
+    try {
 
-}
+      const {
+        data: profile,
+        error: profileError
+      } =
+        await supabaseClient
+          .from("profiles")
+          .select(
+            "id, username, display_name, avatar_url"
+          )
+          .eq(
+            "id",
+            user.id
+          )
+          .maybeSingle();
 
-async function loadAdminStatus(){
+      if (!profileError && profile) {
 
-  if(!currentUser){
-    return;
-  }
+        const displayName =
+          profile.display_name ||
+          profile.username ||
+          user.email ||
+          "Reader";
 
-  try{
+        if (profile.avatar_url) {
 
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("admin_users")
-        .select("*")
-        .eq(
-          "user_id",
-          currentUser.id
-        )
-        .limit(1);
+          profileLink.innerHTML =
+            `
+              <img
+                src="${escapeHtml(
+                  normalizeImage(
+                    profile.avatar_url
+                  )
+                )}"
+                alt=""
+              >
+            `;
 
-    if(error){
+        } else {
+
+          profileLink.textContent =
+            initials(displayName);
+
+        }
+
+      }
+
+    } catch (profileError) {
 
       console.warn(
-        "Admin check:",
-        error
+        "Optional profile load failed:",
+        profileError
       );
 
-      return;
+    }
+
+    /*
+      Admin lookup is optional.
+      Failure here must NEVER affect search.
+    */
+
+    try {
+
+      const {
+        data: adminRows,
+        error: adminError
+      } =
+        await supabaseClient
+          .from("admin_users")
+          .select("*")
+          .eq(
+            "user_id",
+            user.id
+          )
+          .limit(1);
+
+      if (
+        !adminError &&
+        Array.isArray(adminRows) &&
+        adminRows.length > 0
+      ) {
+
+        adminLink.style.display =
+          "inline-block";
+
+      }
+
+    } catch (adminError) {
+
+      console.warn(
+        "Optional admin lookup failed:",
+        adminError
+      );
 
     }
 
-    if(
-      Array.isArray(data) &&
-      data.length
-    ){
-
-      adminLink.style.display =
-        "inline-block";
-
-    }
-
-  }
-
-  catch(error){
+  } catch (error) {
 
     console.warn(
-      "Admin check:",
+      "Optional account loading failed:",
       error
     );
 
@@ -1680,200 +1143,137 @@ async function loadAdminStatus(){
 }
 
 /* =========================================================
-   NORMALIZE LOCAL BOOK
+   LOCAL BOOK NORMALIZATION
 ========================================================= */
 
-function normalizeLocalBook(
-  row
-){
+function normalizeLocalBook(row) {
 
-  if(!row){
+  if (!row) {
     return null;
   }
 
-  const authors =
-    Array.isArray(
-      row.authors
-    )
-      ? row.authors
-      : [];
-
   return {
-
-    source:
-      "local",
+    source: "local",
 
     id:
-      row.id ||
-      null,
+      row.id || null,
 
     workKey:
-      row.openlibrary_work_key ||
-      row.open_library_work_key ||
-      null,
-
-    googleId:
-      row.google_books_id ||
-      row.google_book_id ||
-      row.google_id ||
       null,
 
     title:
-      row.title ||
-      "Untitled",
+      row.title || "Untitled",
 
     subtitle:
-      row.subtitle ||
-      "",
+      row.subtitle || "",
 
-    authors,
+    authors:
+      safeArray(row.authors),
 
     publisher:
-      row.publisher ||
-      "",
+      row.publisher || "",
 
     publishedDate:
-      row.published_date ||
-      "",
+      row.published_date || "",
 
     description:
-      row.description ||
-      "",
+      row.description || "",
 
     cover:
       normalizeImage(
-        row.cover_url ||
-        ""
+        row.cover_url || ""
       ),
 
     isbn13:
-      row.isbn_13 ||
-      row.isbn13 ||
-      "",
+      row.isbn_13 || "",
 
     isbn10:
-      row.isbn_10 ||
-      row.isbn10 ||
-      "",
+      row.isbn_10 || "",
 
     categories:
-      safeArray(
-        row.categories
-      ),
+      safeArray(row.categories),
 
     editionCount:
-      Number(
-        row.edition_count
-      ) || 0
-
+      0
   };
 
 }
 
 /* =========================================================
-   NORMALIZE CATALOG BOOK
+   CATALOG BOOK NORMALIZATION
 ========================================================= */
 
-function normalizeCatalogBook(
-  item
-){
+function normalizeCatalogBook(row) {
 
-  if(!item){
+  if (!row) {
     return null;
   }
 
   const isbns =
-    safeArray(
-      item.isbn
-    );
+    safeArray(row.isbn);
 
-  const isbn13 =
-    isbns.find(
-      value => {
+  let isbn13 = "";
+  let isbn10 = "";
 
-        const cleaned =
-          String(
-            value
-          )
-            .replace(
-              /[^0-9]/g,
-              ""
-            );
+  for (const isbn of isbns) {
 
-        return (
-          cleaned.length ===
-          13
+    const cleaned =
+      String(isbn)
+        .replace(
+          /[^0-9Xx]/g,
+          ""
         );
 
-      }
-    ) || "";
+    if (
+      !isbn13 &&
+      cleaned.length === 13
+    ) {
+      isbn13 = cleaned;
+    }
 
-  const isbn10 =
-    isbns.find(
-      value => {
+    if (
+      !isbn10 &&
+      cleaned.length === 10
+    ) {
+      isbn10 =
+        cleaned.toUpperCase();
+    }
 
-        const cleaned =
-          String(
-            value
-          )
-            .replace(
-              /[^0-9Xx]/g,
-              ""
-            );
-
-        return (
-          cleaned.length ===
-          10
-        );
-
-      }
-    ) || "";
+  }
 
   return {
+    source: "catalog",
 
-    source:
-      "catalog",
-
-    id:
-      null,
+    id: null,
 
     workKey:
-      item.source_work_key ||
-      null,
-
-    googleId:
-      null,
+      row.source_work_key || null,
 
     title:
-      item.title ||
-      "Untitled",
+      row.title || "Untitled",
 
     subtitle:
-      item.subtitle ||
-      "",
+      row.subtitle || "",
 
     authors:
       safeArray(
-        item.author_names
+        row.author_names
       ),
 
-    publisher:
-      "",
+    publisher: "",
 
     publishedDate:
-      item.first_publish_year
+      row.first_publish_year
         ? String(
-            item.first_publish_year
+            row.first_publish_year
           )
         : "",
 
-    description:
-      "",
+    description: "",
 
     cover:
       normalizeImage(
-        item.cover_url ||
-        ""
+        row.cover_url || ""
       ),
 
     isbn13,
@@ -1882,100 +1282,104 @@ function normalizeCatalogBook(
 
     categories:
       safeArray(
-        item.subjects
+        row.subjects
       ),
 
     editionCount:
       Number(
-        item.edition_count
+        row.edition_count
       ) || 0
-
   };
 
 }
 
 /* =========================================================
-   LOCAL BOOK MATCHING
+   LOCAL BOOK SEARCH
 ========================================================= */
 
-function bookMatchesQuery(
+function localBookMatches(
   book,
   query
-){
+) {
 
   const haystack =
-    [
-      book.title,
-      book.subtitle,
-      ...safeArray(
-        book.authors
-      ),
-      book.publisher,
-      book.isbn13,
-      book.isbn10,
-      ...safeArray(
-        book.categories
-      )
-    ]
-      .filter(Boolean)
-      .join(" ")
-      .toLowerCase();
+    normalizeText(
+      [
+        book.title,
+        book.subtitle,
+        ...safeArray(
+          book.authors
+        ),
+        book.publisher,
+        book.isbn13,
+        book.isbn10,
+        ...safeArray(
+          book.categories
+        )
+      ]
+        .filter(Boolean)
+        .join(" ")
+    );
 
   return haystack.includes(
-    String(
-      query
-    )
-      .toLowerCase()
+    normalizeText(query)
   );
 
 }
 
-/* =========================================================
-   SEARCH LOCAL PAPER GREMLIN BOOKS
-========================================================= */
+async function searchLocalBooks(query) {
 
-async function searchLocalBooks(
-  query
-){
+  try {
 
-  /*
-    We intentionally use the known Paper Gremlin
-    books columns instead of assuming additional
-    schema fields exist.
-  */
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("books")
+        .select(`
+          id,
+          isbn_13,
+          isbn_10,
+          google_books_id,
+          title,
+          subtitle,
+          authors,
+          publisher,
+          published_date,
+          description,
+          cover_url,
+          categories
+        `)
+        .order(
+          "created_at",
+          {
+            ascending: false
+          }
+        )
+        .limit(250);
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("books")
-      .select(`
-        id,
-        isbn_13,
-        isbn_10,
-        google_books_id,
-        title,
-        subtitle,
-        authors,
-        publisher,
-        published_date,
-        description,
-        cover_url,
-        categories
-      `)
-      .order(
-        "created_at",
-        {
-          ascending:false
-        }
+    if (error) {
+      throw error;
+    }
+
+    return safeArray(data)
+      .map(
+        normalizeLocalBook
       )
-      .limit(250);
+      .filter(Boolean)
+      .filter(
+        book =>
+          localBookMatches(
+            book,
+            query
+          )
+      );
 
-  if(error){
+  } catch (error) {
 
     console.warn(
-      "Local book search:",
+      "Local book search failed:",
       error
     );
 
@@ -1983,42 +1387,16 @@ async function searchLocalBooks(
 
   }
 
-  return (
-    data ||
-    []
-  )
-    .map(
-      normalizeLocalBook
-    )
-    .filter(Boolean)
-    .filter(
-      book =>
-        bookMatchesQuery(
-          book,
-          query
-        )
-    );
-
 }
 
 /* =========================================================
-   SEARCH EXPANDED PAPER GREMLIN CATALOG
-
-   This calls our Supabase Edge Function.
-
-   The browser does NOT call Google Books.
-
-   The Edge Function:
-   1. Checks Paper Gremlin's cache.
-   2. Uses Open Library when necessary.
-   3. Stores normalized works.
-   4. Returns one page of results.
+   EXPANDED PAPER GREMLIN BOOK SEARCH
 ========================================================= */
 
 async function searchCatalogBooks(
   query,
   page = 1
-){
+) {
 
   const {
     data,
@@ -2029,100 +1407,88 @@ async function searchCatalogBooks(
       .invoke(
         "book-search",
         {
-          body:{
-            q:query,
+          body: {
+            q: query,
             page,
-            page_size:30
+            page_size: 30
           }
         }
       );
 
-  if(error){
+  if (error) {
 
     console.error(
-      "book-search function:",
+      "book-search request failed:",
       error
     );
 
     throw new Error(
-      "Paper Gremlin couldn't reach the expanded book catalog."
+      "The expanded book catalog could not be reached."
     );
 
   }
 
-  if(data?.error){
+  if (
+    !data ||
+    data.error
+  ) {
 
     console.error(
-      "book-search response:",
+      "book-search returned an error:",
       data
     );
 
     throw new Error(
-      data.error
+      data?.error ||
+      "The expanded book catalog returned an invalid response."
     );
 
   }
 
-  const books =
-    safeArray(
-      data?.results
-    )
-      .map(
-        normalizeCatalogBook
-      )
-      .filter(
-        book =>
-          book &&
-          book.workKey
-      );
-
   return {
-
-    books,
-
-    total:
-      Number(
-        data?.total_results
-      ) || 0,
-
-    totalPages:
-      Math.max(
-        1,
-        Number(
-          data?.total_pages
-        ) || 1
-      ),
+    books:
+      safeArray(
+        data.results
+      )
+        .map(
+          normalizeCatalogBook
+        )
+        .filter(Boolean),
 
     page:
       Math.max(
         1,
         Number(
-          data?.page
+          data.page
         ) || page
       ),
 
-    cached:
-      Boolean(
-        data?.cached
+    total:
+      Math.max(
+        0,
+        Number(
+          data.total_results
+        ) || 0
       ),
 
-    source:
-      data?.source ||
-      ""
-
+    totalPages:
+      Math.max(
+        1,
+        Number(
+          data.total_pages
+        ) || 1
+      )
   };
 
 }
 
 /* =========================================================
-   SEARCH CLUBS
+   CLUB SEARCH
 ========================================================= */
 
-async function searchClubs(
-  query
-){
+async function searchClubs(query) {
 
-  try{
+  try {
 
     const {
       data,
@@ -2130,48 +1496,23 @@ async function searchClubs(
     } =
       await supabaseClient
         .from("clubs")
-        .select(`
-          id,
-          name,
-          description,
-          genre,
-          is_public,
-          status
-        `)
-        .eq(
-          "is_public",
-          true
-        )
-        .eq(
-          "status",
-          "active"
-        )
-        .order(
-          "name",
-          {
-            ascending:true
-          }
+        .select(
+          "id, name, description, genre"
         )
         .limit(200);
 
-    if(error){
+    if (error) {
       throw error;
     }
 
-    const normalizedQuery =
-      String(
-        query
-      )
-        .toLowerCase();
+    const needle =
+      normalizeText(query);
 
-    return (
-      data ||
-      []
-    )
-      .filter(
-        club => {
+    return safeArray(data)
+      .filter(club => {
 
-          const haystack =
+        const haystack =
+          normalizeText(
             [
               club.name,
               club.description,
@@ -2179,25 +1520,19 @@ async function searchClubs(
             ]
               .filter(Boolean)
               .join(" ")
-              .toLowerCase();
-
-          return haystack.includes(
-            normalizedQuery
           );
 
-        }
-      )
-      .slice(
-        0,
-        30
-      );
+        return haystack.includes(
+          needle
+        );
 
-  }
+      })
+      .slice(0, 30);
 
-  catch(error){
+  } catch (error) {
 
     console.warn(
-      "Club search:",
+      "Club search failed:",
       error
     );
 
@@ -2208,14 +1543,12 @@ async function searchClubs(
 }
 
 /* =========================================================
-   SEARCH READERS
+   READER SEARCH
 ========================================================= */
 
-async function searchPeople(
-  query
-){
+async function searchReaders(query) {
 
-  try{
+  try {
 
     const {
       data,
@@ -2223,65 +1556,43 @@ async function searchPeople(
     } =
       await supabaseClient
         .from("profiles")
-        .select(`
-          id,
-          username,
-          display_name,
-          bio,
-          avatar_url
-        `)
-        .order(
-          "display_name",
-          {
-            ascending:true
-          }
+        .select(
+          "id, username, display_name, bio, avatar_url"
         )
         .limit(250);
 
-    if(error){
+    if (error) {
       throw error;
     }
 
-    const normalizedQuery =
-      String(
-        query
-      )
-        .toLowerCase();
+    const needle =
+      normalizeText(query);
 
-    return (
-      data ||
-      []
-    )
-      .filter(
-        person => {
+    return safeArray(data)
+      .filter(reader => {
 
-          const haystack =
+        const haystack =
+          normalizeText(
             [
-              person.username,
-              person.display_name,
-              person.bio
+              reader.username,
+              reader.display_name,
+              reader.bio
             ]
               .filter(Boolean)
               .join(" ")
-              .toLowerCase();
-
-          return haystack.includes(
-            normalizedQuery
           );
 
-        }
-      )
-      .slice(
-        0,
-        30
-      );
+        return haystack.includes(
+          needle
+        );
 
-  }
+      })
+      .slice(0, 30);
 
-  catch(error){
+  } catch (error) {
 
     console.warn(
-      "Reader search:",
+      "Reader search failed:",
       error
     );
 
@@ -2295,249 +1606,122 @@ async function searchPeople(
    BOOK DEDUPLICATION
 ========================================================= */
 
-function normalizeIdentity(
-  value
-){
-
-  return String(
-    value ||
-    ""
-  )
-    .trim()
-    .toLowerCase()
-    .replace(
-      /\s+/g,
-      " "
-    );
-
-}
-
 function mergeBooks(
   localBooks,
   catalogBooks
-){
+) {
 
-  const merged =
-    [];
+  const output = [];
+  const isbnKeys = new Set();
+  const titleKeys = new Set();
 
-  const seenIsbn =
-    new Set();
+  function getIsbnKeys(book) {
 
-  const seenTitleAuthor =
-    new Set();
-
-  function titleAuthorKey(
-    book
-  ){
-
-    const title =
-      normalizeIdentity(
-        book.title
+    return [
+      book.isbn13,
+      book.isbn10
+    ]
+      .filter(Boolean)
+      .map(value =>
+        String(value)
+          .replace(
+            /[^0-9Xx]/g,
+            ""
+          )
+          .toUpperCase()
       );
 
-    const author =
-      normalizeIdentity(
-        safeArray(
-          book.authors
-        )[0]
-      );
+  }
 
-    return (
-      title +
-      "|" +
-      author
+  function getTitleKey(book) {
+
+    return normalizeText(
+      book.title
+    ) +
+    "|" +
+    normalizeText(
+      safeArray(
+        book.authors
+      )[0]
     );
 
   }
 
-  function isDuplicate(
-    book
-  ){
+  function addBook(book) {
 
-    const isbn13 =
-      String(
-        book.isbn13 ||
-        ""
-      )
-        .replace(
-          /[^0-9]/g,
-          ""
-        );
-
-    const isbn10 =
-      String(
-        book.isbn10 ||
-        ""
-      )
-        .replace(
-          /[^0-9Xx]/g,
-          ""
-        )
-        .toUpperCase();
-
-    if(
-      isbn13 &&
-      seenIsbn.has(
-        isbn13
-      )
-    ){
-
-      return true;
-
-    }
-
-    if(
-      isbn10 &&
-      seenIsbn.has(
-        isbn10
-      )
-    ){
-
-      return true;
-
-    }
-
-    const key =
-      titleAuthorKey(
-        book
-      );
-
-    if(
-      key !== "|" &&
-      seenTitleAuthor.has(
-        key
-      )
-    ){
-
-      return true;
-
-    }
-
-    return false;
-
-  }
-
-  function remember(
-    book
-  ){
-
-    const isbn13 =
-      String(
-        book.isbn13 ||
-        ""
-      )
-        .replace(
-          /[^0-9]/g,
-          ""
-        );
-
-    const isbn10 =
-      String(
-        book.isbn10 ||
-        ""
-      )
-        .replace(
-          /[^0-9Xx]/g,
-          ""
-        )
-        .toUpperCase();
-
-    if(isbn13){
-
-      seenIsbn.add(
-        isbn13
-      );
-
-    }
-
-    if(isbn10){
-
-      seenIsbn.add(
-        isbn10
-      );
-
-    }
-
-    const key =
-      titleAuthorKey(
-        book
-      );
-
-    if(
-      key !==
-      "|"
-    ){
-
-      seenTitleAuthor.add(
-        key
-      );
-
-    }
-
-  }
-
-  function add(
-    book
-  ){
-
-    if(
-      !book ||
-      isDuplicate(
-        book
-      )
-    ){
-
+    if (!book) {
       return;
-
     }
 
-    merged.push(
-      book
-    );
+    const bookIsbns =
+      getIsbnKeys(book);
 
-    remember(
-      book
-    );
+    const titleKey =
+      getTitleKey(book);
+
+    const duplicateIsbn =
+      bookIsbns.some(
+        isbn =>
+          isbnKeys.has(isbn)
+      );
+
+    const duplicateTitle =
+      titleKey !== "|" &&
+      titleKeys.has(
+        titleKey
+      );
+
+    if (
+      duplicateIsbn ||
+      duplicateTitle
+    ) {
+      return;
+    }
+
+    output.push(book);
+
+    for (
+      const isbn
+      of bookIsbns
+    ) {
+      isbnKeys.add(isbn);
+    }
+
+    if (
+      titleKey !== "|"
+    ) {
+      titleKeys.add(
+        titleKey
+      );
+    }
 
   }
 
   /*
-    Local records come first so Paper Gremlin's
-    own version wins when the same title exists
-    in both places.
+    Paper Gremlin's own stored record wins
+    when the same book appears in both sources.
   */
 
-  safeArray(
-    localBooks
-  )
-    .forEach(
-      add
-    );
+  safeArray(localBooks)
+    .forEach(addBook);
 
-  safeArray(
-    catalogBooks
-  )
-    .forEach(
-      add
-    );
+  safeArray(catalogBooks)
+    .forEach(addBook);
 
-  return merged;
+  return output;
 
 }
 
 /* =========================================================
-   BOOK DESTINATION
+   BOOK URL
 ========================================================= */
 
-function bookUrl(
-  book
-){
+function getBookUrl(book) {
 
-  if(
-    book.source ===
-      "local" &&
+  if (
+    book.source === "local" &&
     book.id
-  ){
+  ) {
 
     return (
       "book-detail.html?id=" +
@@ -2548,15 +1732,7 @@ function bookUrl(
 
   }
 
-  /*
-    Expanded catalog books use their Open Library
-    work key.
-
-    Example:
-    book-detail.html?work_key=OL12345W
-  */
-
-  if(book.workKey){
+  if (book.workKey) {
 
     return (
       "book-detail.html?work_key=" +
@@ -2567,41 +1743,21 @@ function bookUrl(
 
   }
 
-  /*
-    Retain compatibility with older Paper Gremlin
-    records that may still have a Google Books ID.
-  */
-
-  if(book.googleId){
-
-    return (
-      "book-detail.html?google_id=" +
-      encodeURIComponent(
-        book.googleId
-      )
-    );
-
-  }
-
-  return "marketplace.html";
+  return "#";
 
 }
 
 /* =========================================================
-   RENDER BOOK RESULTS
+   RENDER BOOKS
 ========================================================= */
 
-function renderBooks(){
+function renderBooks() {
 
-  bookResults.innerHTML =
-    "";
+  bookList.innerHTML = "";
 
-  const books =
-    safeArray(
-      searchResults.books
-    );
-
-  if(!books.length){
+  if (
+    results.books.length === 0
+  ) {
 
     bookSection.classList.add(
       "hidden"
@@ -2619,44 +1775,26 @@ function renderBooks(){
     "hidden"
   );
 
-  if(
-    currentBookTotalResults >
-    books.length
-  ){
+  bookSectionCount.textContent =
+    totalBookResults > 0
+      ? `${totalBookResults.toLocaleString()} catalog matches`
+      : `${results.books.length} results`;
 
-    bookSectionCount.textContent =
-      `${currentBookTotalResults.toLocaleString()} catalog matches`;
-
-  }
-
-  else{
-
-    bookSectionCount.textContent =
-      books.length === 1
-        ? "1 result"
-        : `${books.length} results`;
-
-  }
-
-  for(
+  for (
     const book
-    of books
-  ){
+    of results.books
+  ) {
 
-    const link =
-      document.createElement(
-        "a"
-      );
+    const card =
+      document.createElement("a");
 
-    link.className =
-      "book-result";
+    card.className =
+      "book-card";
 
-    link.href =
-      bookUrl(
-        book
-      );
+    card.href =
+      getBookUrl(book);
 
-    const authorText =
+    const authors =
       safeArray(
         book.authors
       )
@@ -2666,85 +1804,49 @@ function renderBooks(){
 
     const metadata =
       [
-        authorText,
+        authors,
         book.publishedDate,
-        book.editionCount
-          ? `${book.editionCount} edition${
-              book.editionCount === 1
-                ? ""
-                : "s"
-            }`
-          : ""
+        book.editionCount > 0
+          ? `${book.editionCount} editions`
+          : "",
+        book.source === "local"
+          ? "Paper Gremlin"
+          : "Expanded Catalog"
       ]
         .filter(Boolean)
         .join(" · ");
 
-    const sourceText =
-      book.source ===
-      "local"
-        ? "Paper Gremlin"
-        : "Expanded Catalog";
+    const tags =
+      safeArray(
+        book.categories
+      )
+        .slice(0, 5)
+        .join(" · ");
 
-    let coverMarkup =
-      `
-        <div class="cover-placeholder">
-          ${escapeHtml(
+    const coverHtml =
+      book.cover
+        ? `
+            <img
+              src="${escapeHtml(
+                book.cover
+              )}"
+              alt=""
+              loading="lazy"
+            >
+          `
+        : escapeHtml(
             book.title
-          )}
-        </div>
-      `;
+          );
 
-    if(book.cover){
-
-      coverMarkup =
-        `
-          <img
-            src="${escapeHtml(
-              book.cover
-            )}"
-            alt=""
-            loading="lazy"
-            onerror="
-              this.style.display='none';
-              this.nextElementSibling.style.display='flex';
-            "
-          >
-
-          <div
-            class="cover-placeholder"
-            style="display:none"
-          >
-            ${escapeHtml(
-              book.title
-            )}
-          </div>
-        `;
-
-    }
-
-    const description =
-      book.description
-        ? truncate(
-            book.description
-          )
-        : safeArray(
-            book.categories
-          )
-            .slice(
-              0,
-              5
-            )
-            .join(" · ");
-
-    link.innerHTML =
+    card.innerHTML =
       `
-        <div class="book-result-cover">
-          ${coverMarkup}
+        <div class="book-cover">
+          ${coverHtml}
         </div>
 
         <div>
 
-          <h3 class="result-title">
+          <h3 class="book-title">
             ${escapeHtml(
               book.title
             )}
@@ -2753,7 +1855,7 @@ function renderBooks(){
           ${
             book.subtitle
               ? `
-                  <div class="result-subtitle">
+                  <div class="book-meta">
                     ${escapeHtml(
                       book.subtitle
                     )}
@@ -2762,24 +1864,18 @@ function renderBooks(){
               : ""
           }
 
-          <div class="result-subtitle">
+          <div class="book-meta">
             ${escapeHtml(
               metadata
-            )}
-            ·
-            ${escapeHtml(
-              sourceText
             )}
           </div>
 
           ${
-            description
+            tags
               ? `
-                  <div class="result-description">
+                  <div class="book-tags">
                     ${escapeHtml(
-                      truncate(
-                        description
-                      )
+                      tags
                     )}
                   </div>
                 `
@@ -2787,14 +1883,10 @@ function renderBooks(){
           }
 
         </div>
-
-        <span class="result-action">
-          View Book →
-        </span>
       `;
 
-    bookResults.appendChild(
-      link
+    bookList.appendChild(
+      card
     );
 
   }
@@ -2804,55 +1896,16 @@ function renderBooks(){
 }
 
 /* =========================================================
-   PAGINATION DISPLAY
+   RENDER CLUBS
 ========================================================= */
 
-function updatePagination(){
+function renderClubs() {
 
-  if(
-    currentBookTotalPages <=
-    1
-  ){
+  clubList.innerHTML = "";
 
-    pagination.classList.remove(
-      "visible"
-    );
-
-    return;
-
-  }
-
-  pagination.classList.add(
-    "visible"
-  );
-
-  previousPage.disabled =
-    currentBookPage <=
-    1;
-
-  nextPage.disabled =
-    currentBookPage >=
-    currentBookTotalPages;
-
-  pageStatus.textContent =
-    `Page ${currentBookPage.toLocaleString()} of ${currentBookTotalPages.toLocaleString()}`;
-
-}
-  /* =========================================================
-   RENDER CLUB RESULTS
-========================================================= */
-
-function renderClubs(){
-
-  clubResults.innerHTML =
-    "";
-
-  const clubs =
-    safeArray(
-      searchResults.clubs
-    );
-
-  if(!clubs.length){
+  if (
+    results.clubs.length === 0
+  ) {
 
     clubSection.classList.add(
       "hidden"
@@ -2867,83 +1920,50 @@ function renderClubs(){
   );
 
   clubSectionCount.textContent =
-    clubs.length === 1
-      ? "1 result"
-      : `${clubs.length} results`;
+    `${results.clubs.length} result${
+      results.clubs.length === 1
+        ? ""
+        : "s"
+    }`;
 
-  for(
+  for (
     const club
-    of clubs
-  ){
+    of results.clubs
+  ) {
 
     const card =
-      document.createElement(
-        "div"
-      );
+      document.createElement("div");
 
     card.className =
-      "club-result";
-
-    const description =
-      truncate(
-        club.description ||
-        "A Paper Gremlin book club.",
-        180
-      );
+      "simple-card";
 
     card.innerHTML =
       `
-        <div class="club-result-top">
-
-          <div class="club-symbol">
-            ◉
-          </div>
-
-          <div>
-
-            <h3>
-              ${escapeHtml(
-                club.name ||
-                "Book Club"
-              )}
-            </h3>
-
-            <div class="club-meta">
-              ${escapeHtml(
-                club.genre ||
-                "Book club"
-              )}
-            </div>
-
-          </div>
-
-        </div>
-
-        <p class="club-description">
+        <h3>
           ${escapeHtml(
-            description
+            club.name ||
+            "Book Club"
+          )}
+        </h3>
+
+        <p>
+          ${escapeHtml(
+            club.description ||
+            club.genre ||
+            "Paper Gremlin book club."
           )}
         </p>
 
-        <div class="club-result-bottom">
-
-          <span class="club-member-count">
-            Public club
-          </span>
-
-          <a
-            class="club-link"
-            href="club-detail.html?id=${encodeURIComponent(
-              club.id
-            )}"
-          >
-            Visit Club →
-          </a>
-
-        </div>
+        <a
+          href="club-detail.html?id=${encodeURIComponent(
+            club.id
+          )}"
+        >
+          Visit Club →
+        </a>
       `;
 
-    clubResults.appendChild(
+    clubList.appendChild(
       card
     );
 
@@ -2952,22 +1972,18 @@ function renderClubs(){
 }
 
 /* =========================================================
-   RENDER READER RESULTS
+   RENDER READERS
 ========================================================= */
 
-function renderPeople(){
+function renderReaders() {
 
-  peopleResults.innerHTML =
-    "";
+  readerList.innerHTML = "";
 
-  const people =
-    safeArray(
-      searchResults.people
-    );
+  if (
+    results.readers.length === 0
+  ) {
 
-  if(!people.length){
-
-    peopleSection.classList.add(
+    readerSection.classList.add(
       "hidden"
     );
 
@@ -2975,68 +1991,35 @@ function renderPeople(){
 
   }
 
-  peopleSection.classList.remove(
+  readerSection.classList.remove(
     "hidden"
   );
 
-  peopleSectionCount.textContent =
-    people.length === 1
-      ? "1 result"
-      : `${people.length} results`;
+  readerSectionCount.textContent =
+    `${results.readers.length} result${
+      results.readers.length === 1
+        ? ""
+        : "s"
+    }`;
 
-  for(
-    const person
-    of people
-  ){
-
-    const card =
-      document.createElement(
-        "div"
-      );
-
-    card.className =
-      "person-result";
+  for (
+    const reader
+    of results.readers
+  ) {
 
     const displayName =
-      person.display_name ||
-      person.username ||
+      reader.display_name ||
+      reader.username ||
       "Reader";
 
-    const handle =
-      person.username
-        ? `@${person.username}`
-        : "";
+    const card =
+      document.createElement("div");
 
-    let avatarMarkup =
-      escapeHtml(
-        initials(
-          displayName
-        )
-      );
-
-    if(person.avatar_url){
-
-      avatarMarkup =
-        `
-          <img
-            src="${escapeHtml(
-              normalizeImage(
-                person.avatar_url
-              )
-            )}"
-            alt=""
-            loading="lazy"
-          >
-        `;
-
-    }
+    card.className =
+      "simple-card";
 
     card.innerHTML =
       `
-        <div class="person-avatar">
-          ${avatarMarkup}
-        </div>
-
         <h3>
           ${escapeHtml(
             displayName
@@ -3044,38 +2027,39 @@ function renderPeople(){
         </h3>
 
         ${
-          handle
+          reader.username
             ? `
-                <div class="person-handle">
-                  ${escapeHtml(
-                    handle
+                <p>
+                  @${escapeHtml(
+                    reader.username
                   )}
-                </div>
+                </p>
               `
             : ""
         }
 
-        <p class="person-bio">
-          ${escapeHtml(
-            truncate(
-              person.bio ||
-              "Paper Gremlin reader.",
-              130
-            )
-          )}
-        </p>
+        ${
+          reader.bio
+            ? `
+                <p>
+                  ${escapeHtml(
+                    reader.bio
+                  )}
+                </p>
+              `
+            : ""
+        }
 
         <a
-          class="person-link"
           href="profile.html?id=${encodeURIComponent(
-            person.id
+            reader.id
           )}"
         >
           View Profile →
         </a>
       `;
 
-    peopleResults.appendChild(
+    readerList.appendChild(
       card
     );
 
@@ -3084,136 +2068,132 @@ function renderPeople(){
 }
 
 /* =========================================================
-   COUNTS
+   END PART 2
+========================================================= */
+  /* =========================================================
+   PAGINATION
 ========================================================= */
 
-function updateCounts(){
+function updatePagination() {
 
-  const books =
-    safeArray(
-      searchResults.books
-    )
-      .length;
+  if (
+    totalPages <= 1 ||
+    results.books.length === 0
+  ) {
+
+    pagination.classList.remove(
+      "visible"
+    );
+
+    return;
+
+  }
+
+  pagination.classList.add(
+    "visible"
+  );
+
+  previousButton.disabled =
+    currentPage <= 1;
+
+  nextButton.disabled =
+    currentPage >= totalPages;
+
+  pageLabel.textContent =
+    `Page ${currentPage.toLocaleString()} of ${totalPages.toLocaleString()}`;
+
+}
+
+/* =========================================================
+   RESULT COUNTS
+========================================================= */
+
+function updateCounts() {
+
+  const displayedBooks =
+    results.books.length;
 
   const clubs =
-    safeArray(
-      searchResults.clubs
-    )
-      .length;
+    results.clubs.length;
 
-  const people =
-    safeArray(
-      searchResults.people
-    )
-      .length;
+  const readers =
+    results.readers.length;
 
   const all =
-    books +
+    displayedBooks +
     clubs +
-    people;
+    readers;
 
   allCount.textContent =
-    all
+    all > 0
       ? `(${all})`
       : "";
 
-  booksCount.textContent =
-    currentBookTotalResults
-      ? `(${currentBookTotalResults.toLocaleString()})`
+  bookCount.textContent =
+    totalBookResults > 0
+      ? `(${totalBookResults.toLocaleString()})`
       : "";
 
-  clubsCount.textContent =
-    clubs
+  clubCount.textContent =
+    clubs > 0
       ? `(${clubs})`
       : "";
 
-  peopleCount.textContent =
-    people
-      ? `(${people})`
+  readerCount.textContent =
+    readers > 0
+      ? `(${readers})`
       : "";
 
 }
 
 /* =========================================================
-   FILTERING
+   FILTER RESULTS
 ========================================================= */
 
-function applyFilter(){
+function applyFilter() {
 
-  const sections = {
-    books:
-      bookSection,
-    clubs:
-      clubSection,
-    people:
-      peopleSection
-  };
-
-  for(
-    const [
-      type,
-      section
-    ]
-    of Object.entries(
-      sections
-    )
-  ){
-
-    const hasResults =
-      safeArray(
-        searchResults[type]
-      )
-        .length >
-      0;
-
-    const shouldShow =
-      hasResults &&
-      (
-        activeFilter ===
-          "all" ||
-        activeFilter ===
-          type
-      );
-
-    section.classList.toggle(
-      "hidden",
-      !shouldShow
+  const showBooks =
+    results.books.length > 0 &&
+    (
+      activeFilter === "all" ||
+      activeFilter === "books"
     );
 
-  }
+  const showClubs =
+    results.clubs.length > 0 &&
+    (
+      activeFilter === "all" ||
+      activeFilter === "clubs"
+    );
 
-  if(
-    activeFilter !==
-    "books"
-  ){
+  const showReaders =
+    results.readers.length > 0 &&
+    (
+      activeFilter === "all" ||
+      activeFilter === "readers"
+    );
 
-    if(
-      activeFilter !==
-      "all"
-    ){
+  bookSection.classList.toggle(
+    "hidden",
+    !showBooks
+  );
 
-      pagination.classList.remove(
-        "visible"
-      );
+  clubSection.classList.toggle(
+    "hidden",
+    !showClubs
+  );
 
-    }
+  readerSection.classList.toggle(
+    "hidden",
+    !showReaders
+  );
 
-    else if(
-      searchResults.books.length
-    ){
-
-      updatePagination();
-
-    }
-
-  }
-
-  else if(
-    searchResults.books.length
-  ){
-
+  if (showBooks) {
     updatePagination();
-
+  } else {
+    pagination.classList.remove(
+      "visible"
+    );
   }
 
 }
@@ -3222,19 +2202,16 @@ function applyFilter(){
    EMPTY STATE
 ========================================================= */
 
-function updateEmptyState(){
+function updateEmptyState() {
 
-  const totalVisibleResults =
-    searchResults.books.length +
-    searchResults.clubs.length +
-    searchResults.people.length;
+  const totalDisplayed =
+    results.books.length +
+    results.clubs.length +
+    results.readers.length;
 
-  if(
-    totalVisibleResults >
-    0
-  ){
+  if (totalDisplayed > 0) {
 
-    initialState.classList.add(
+    emptyState.classList.add(
       "hidden"
     );
 
@@ -3242,13 +2219,13 @@ function updateEmptyState(){
 
   }
 
-  initialState.classList.remove(
+  emptyState.classList.remove(
     "hidden"
   );
 
-  initialState.innerHTML =
+  emptyState.innerHTML =
     `
-      <div class="empty-symbol">
+      <div class="empty-icon">
         ⌕
       </div>
 
@@ -3257,26 +2234,28 @@ function updateEmptyState(){
       </h2>
 
       <p>
-        We couldn't find anything for
-        <strong>${escapeHtml(
-          currentQuery
-        )}</strong>.
-        Try a title, author, ISBN, franchise,
-        club name, or reader name.
+        Nothing matched
+        <strong>
+          ${escapeHtml(
+            currentQuery
+          )}
+        </strong>.
+        Try another title, author, ISBN,
+        franchise, club, or reader.
       </p>
     `;
 
 }
 
 /* =========================================================
-   RENDER EVERYTHING
+   RENDER ALL
 ========================================================= */
 
-function renderResults(){
+function renderAll() {
 
   renderBooks();
   renderClubs();
-  renderPeople();
+  renderReaders();
 
   updateCounts();
   updateEmptyState();
@@ -3285,91 +2264,22 @@ function renderResults(){
 }
 
 /* =========================================================
-   URL STATE
-========================================================= */
-
-function updateSearchUrl(
-  query
-){
-
-  const url =
-    new URL(
-      window.location.href
-    );
-
-  if(query){
-
-    url.searchParams.set(
-      "q",
-      query
-    );
-
-  }
-
-  else{
-
-    url.searchParams.delete(
-      "q"
-    );
-
-  }
-
-  if(
-    currentBookPage >
-    1
-  ){
-
-    url.searchParams.set(
-      "page",
-      String(
-        currentBookPage
-      )
-    );
-
-  }
-
-  else{
-
-    url.searchParams.delete(
-      "page"
-    );
-
-  }
-
-  window.history.replaceState(
-    {},
-    "",
-    url
-  );
-
-}
-
-/* =========================================================
-   RUN FULL SEARCH
+   FULL SEARCH
 ========================================================= */
 
 async function runSearch(
   query,
   options = {}
-){
+) {
 
   const cleanedQuery =
-    String(
-      query ||
-      ""
-    )
+    String(query || "")
       .trim()
-      .replace(
-        /\s+/g,
-        " "
-      );
+      .replace(/\s+/g, " ");
 
-  if(
-    cleanedQuery.length <
-    2
-  ){
+  if (cleanedQuery.length < 2) {
 
-    setSummary(
+    setStatus(
       "Type at least 2 characters to search.",
       true
     );
@@ -3381,15 +2291,18 @@ async function runSearch(
   const requestedPage =
     Math.max(
       1,
-      Number(
-        options.page
-      ) || 1
+      Number(options.page) || 1
+    );
+
+  const booksOnly =
+    Boolean(
+      options.booksOnly
     );
 
   currentQuery =
     cleanedQuery;
 
-  currentBookPage =
+  currentPage =
     requestedPage;
 
   searchButton.disabled =
@@ -3398,104 +2311,44 @@ async function runSearch(
   searchButton.textContent =
     "Searching…";
 
-  setSummary(
-    `Searching Paper Gremlin for “${cleanedQuery}”…`
-  );
-
-  initialState.classList.add(
-    "hidden"
+  setStatus(
+    `Searching for “${cleanedQuery}”…`
   );
 
   /*
-    Clear old results while a completely new
-    search is running.
+    PAGINATION SEARCH
+
+    Only the expanded book catalog needs another
+    request when changing book pages.
   */
 
-  if(
-    !options.booksOnly
-  ){
+  if (booksOnly) {
 
-    searchResults = {
-      books:[],
-      clubs:[],
-      people:[]
-    };
+    try {
 
-    currentBookTotalResults =
-      0;
-
-    currentBookTotalPages =
-      1;
-
-    bookResults.innerHTML =
-      "";
-
-    clubResults.innerHTML =
-      "";
-
-    peopleResults.innerHTML =
-      "";
-
-    bookSection.classList.add(
-      "hidden"
-    );
-
-    clubSection.classList.add(
-      "hidden"
-    );
-
-    peopleSection.classList.add(
-      "hidden"
-    );
-
-  }
-
-  try{
-
-    /*
-      PAGINATION:
-
-      When somebody clicks Previous/Next we only
-      need another catalog page.
-
-      We do NOT need to re-query clubs, readers,
-      or the local Paper Gremlin book table.
-    */
-
-    if(
-      options.booksOnly
-    ){
-
-      const catalogResult =
+      const catalog =
         await searchCatalogBooks(
           cleanedQuery,
           requestedPage
         );
 
-      currentBookPage =
-        catalogResult.page;
+      currentPage =
+        catalog.page;
 
-      currentBookTotalResults =
-        catalogResult.total;
+      totalBookResults =
+        catalog.total;
 
-      currentBookTotalPages =
-        catalogResult.totalPages;
+      totalPages =
+        catalog.totalPages;
+
+      let localBooks = [];
 
       /*
-        Local Paper Gremlin books are only merged
-        into page 1.
-
-        They already appear before the expanded
-        catalog and shouldn't repeat on every page.
+        Local Paper Gremlin records only belong
+        on the first page.
       */
 
-      let localBooks =
-        [];
-
-      if(
-        requestedPage ===
-        1
-      ){
+      if (currentPage === 1) {
 
         localBooks =
           await searchLocalBooks(
@@ -3504,228 +2357,248 @@ async function runSearch(
 
       }
 
-      searchResults.books =
+      results.books =
         mergeBooks(
           localBooks,
-          catalogResult.books
+          catalog.books
         );
 
       renderBooks();
       updateCounts();
       applyFilter();
+      updateUrl();
 
-      setSummary(
-        currentBookTotalResults
-          ? `${currentBookTotalResults.toLocaleString()} book matches for “${cleanedQuery}”.`
-          : `Search complete for “${cleanedQuery}”.`
+      setStatus(
+        `${totalBookResults.toLocaleString()} book matches found for “${cleanedQuery}”.`
       );
 
-      updateSearchUrl(
-        cleanedQuery
-      );
-
-      window.scrollTo({
-        top:
-          Math.max(
-            0,
-            bookSection.offsetTop -
-            100
-          ),
-        behavior:
-          "smooth"
+      bookSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
       });
 
-      return;
+    } catch (error) {
+
+      console.error(
+        "Book page search failed:",
+        error
+      );
+
+      setStatus(
+        "Paper Gremlin couldn't load that page of books. Please try again.",
+        true
+      );
+
+    } finally {
+
+      searchButton.disabled =
+        false;
+
+      searchButton.textContent =
+        "Search";
 
     }
 
-    /*
-      Run independent searches together.
+    return;
+  }
 
-      allSettled means a club/profile permissions
-      problem will NOT prevent book search from
-      working.
+  /*
+    BRAND NEW SEARCH
+  */
+
+  results = {
+    books: [],
+    clubs: [],
+    readers: []
+  };
+
+  totalBookResults = 0;
+  totalPages = 1;
+
+  emptyState.classList.add(
+    "hidden"
+  );
+
+  bookSection.classList.add(
+    "hidden"
+  );
+
+  clubSection.classList.add(
+    "hidden"
+  );
+
+  readerSection.classList.add(
+    "hidden"
+  );
+
+  pagination.classList.remove(
+    "visible"
+  );
+
+  try {
+
+    /*
+      These searches are independent.
+
+      Promise.allSettled prevents a problem with
+      profiles or clubs from killing book search.
     */
 
     const [
-      localBookResult,
-      catalogBookResult,
+      localResult,
+      catalogResult,
       clubResult,
-      peopleResult
+      readerResult
     ] =
       await Promise.allSettled([
         searchLocalBooks(
           cleanedQuery
         ),
+
         searchCatalogBooks(
           cleanedQuery,
           requestedPage
         ),
+
         searchClubs(
           cleanedQuery
         ),
-        searchPeople(
+
+        searchReaders(
           cleanedQuery
         )
       ]);
 
     const localBooks =
-      localBookResult.status ===
-      "fulfilled"
-        ? localBookResult.value
+      localResult.status === "fulfilled"
+        ? localResult.value
         : [];
 
-    let catalogBooks =
-      [];
+    let catalogBooks = [];
+    let catalogFailed = false;
 
-    let catalogFailed =
-      false;
-
-    if(
-      catalogBookResult.status ===
+    if (
+      catalogResult.status ===
       "fulfilled"
-    ){
+    ) {
 
       catalogBooks =
-        catalogBookResult.value.books;
+        catalogResult.value.books;
 
-      currentBookPage =
-        catalogBookResult.value.page;
+      currentPage =
+        catalogResult.value.page;
 
-      currentBookTotalResults =
-        catalogBookResult.value.total;
+      totalBookResults =
+        catalogResult.value.total;
 
-      currentBookTotalPages =
-        catalogBookResult.value.totalPages;
+      totalPages =
+        catalogResult.value.totalPages;
 
-    }
+    } else {
 
-    else{
-
-      catalogFailed =
-        true;
+      catalogFailed = true;
 
       console.error(
-        "Expanded catalog search failed:",
-        catalogBookResult.reason
+        "Expanded catalog failed:",
+        catalogResult.reason
       );
 
-      currentBookPage =
-        1;
+      currentPage = 1;
 
-      currentBookTotalResults =
+      totalBookResults =
         localBooks.length;
 
-      currentBookTotalPages =
-        1;
+      totalPages = 1;
 
     }
 
-    searchResults.books =
+    results.books =
       mergeBooks(
         localBooks,
         catalogBooks
       );
 
-    searchResults.clubs =
+    results.clubs =
       clubResult.status ===
       "fulfilled"
         ? clubResult.value
         : [];
 
-    searchResults.people =
-      peopleResult.status ===
+    results.readers =
+      readerResult.status ===
       "fulfilled"
-        ? peopleResult.value
+        ? readerResult.value
         : [];
 
-    renderResults();
+    renderAll();
+    updateUrl();
 
-    updateSearchUrl(
-      cleanedQuery
-    );
+    const totalDisplayed =
+      results.books.length +
+      results.clubs.length +
+      results.readers.length;
 
-    const localCount =
-      searchResults.books.length;
+    if (catalogFailed) {
 
-    const clubCount =
-      searchResults.clubs.length;
+      if (totalDisplayed > 0) {
 
-    const peopleCountValue =
-      searchResults.people.length;
+        setStatus(
+          `Some Paper Gremlin results loaded for “${cleanedQuery}”, but the expanded book catalog could not be reached.`,
+          true
+        );
 
-    if(
-      catalogFailed
-    ){
+      } else {
 
-      if(
-        localCount ||
-        clubCount ||
-        peopleCountValue
-      ){
-
-        setSummary(
-          `Some results loaded for “${cleanedQuery}”, but the expanded book catalog could not be reached.`,
+        setStatus(
+          "The expanded book catalog could not be reached. Please try again.",
           true
         );
 
       }
 
-      else{
+    } else if (
+      totalBookResults > 0
+    ) {
 
-        setSummary(
-          "Paper Gremlin couldn't reach the expanded book catalog. Please try again.",
-          true
-        );
+      setStatus(
+        `${totalBookResults.toLocaleString()} book matches found for “${cleanedQuery}”.`
+      );
 
-      }
+    } else if (
+      totalDisplayed > 0
+    ) {
 
-    }
+      setStatus(
+        `${totalDisplayed} Paper Gremlin result${
+          totalDisplayed === 1
+            ? ""
+            : "s"
+        } found for “${cleanedQuery}”.`
+      );
 
-    else if(
-      currentBookTotalResults >
-      0
-    ){
+    } else {
 
-      setSummary(
-        `${currentBookTotalResults.toLocaleString()} book matches found for “${cleanedQuery}”.`
+      setStatus(
+        `No matches found for “${cleanedQuery}”.`
       );
 
     }
 
-    else{
-
-      const otherResults =
-        clubCount +
-        peopleCountValue;
-
-      setSummary(
-        otherResults
-          ? `${otherResults} Paper Gremlin result${otherResults === 1 ? "" : "s"} found for “${cleanedQuery}”.`
-          : `No matches found for “${cleanedQuery}”.`
-      );
-
-    }
-
-  }
-
-  catch(error){
+  } catch (error) {
 
     console.error(
       "Search failed:",
       error
     );
 
-    setSummary(
+    setStatus(
       "Paper Gremlin had trouble searching. Please try again.",
       true
     );
 
-    renderResults();
+    updateEmptyState();
 
-  }
-
-  finally{
+  } finally {
 
     searchButton.disabled =
       false;
@@ -3747,17 +2620,12 @@ searchForm.addEventListener(
 
     event.preventDefault();
 
-    const query =
-      searchInput.value
-        .trim();
-
-    currentBookPage =
-      1;
+    currentPage = 1;
 
     await runSearch(
-      query,
+      searchInput.value,
       {
-        page:1
+        page: 1
       }
     );
 
@@ -3770,54 +2638,53 @@ searchForm.addEventListener(
 
 document
   .querySelectorAll(
-    ".tab"
+    ".filter-button"
   )
-  .forEach(
-    button => {
+  .forEach(button => {
 
-      button.addEventListener(
-        "click",
-        () => {
+    button.addEventListener(
+      "click",
+      () => {
 
-          activeFilter =
-            button.dataset.filter ||
-            "all";
+        activeFilter =
+          button.dataset.filter ||
+          "all";
 
-          document
-            .querySelectorAll(
-              ".tab"
-            )
-            .forEach(
-              tab =>
-                tab.classList.remove(
-                  "active"
-                )
+        document
+          .querySelectorAll(
+            ".filter-button"
+          )
+          .forEach(item => {
+
+            item.classList.remove(
+              "active"
             );
 
-          button.classList.add(
-            "active"
-          );
+          });
 
-          applyFilter();
+        button.classList.add(
+          "active"
+        );
 
-        }
-      );
+        applyFilter();
 
-    }
-  );
+      }
+    );
+
+  });
 
 /* =========================================================
-   PAGINATION EVENTS
+   PREVIOUS PAGE
 ========================================================= */
 
-previousPage.addEventListener(
+previousButton.addEventListener(
   "click",
   async () => {
 
-    if(
-      currentBookPage <=
-      1
-    ){
+    if (
+      currentPage <= 1 ||
+      !currentQuery
+    ) {
       return;
     }
 
@@ -3825,33 +2692,10 @@ previousPage.addEventListener(
       currentQuery,
       {
         page:
-          currentBookPage -
-          1,
-        booksOnly:true
-      }
-    );
+          currentPage - 1,
 
-  }
-);
-
-nextPage.addEventListener(
-  "click",
-  async () => {
-
-    if(
-      currentBookPage >=
-      currentBookTotalPages
-    ){
-      return;
-    }
-
-    await runSearch(
-      currentQuery,
-      {
-        page:
-          currentBookPage +
-          1,
-        booksOnly:true
+        booksOnly:
+          true
       }
     );
 
@@ -3859,70 +2703,62 @@ nextPage.addEventListener(
 );
 
 /* =========================================================
-   AUTH CHANGES
-
-   Signing in/out NEVER controls whether search
-   itself is available.
+   NEXT PAGE
 ========================================================= */
 
-supabaseClient.auth.onAuthStateChange(
-  (
-    event,
-    session
-  ) => {
+nextButton.addEventListener(
+  "click",
+  async () => {
 
-    currentUser =
-      session?.user ||
-      null;
-
-    if(!currentUser){
-
-      authLink.style.display =
-        "inline-block";
-
-      navAvatar.style.display =
-        "none";
-
-      adminLink.style.display =
-        "none";
-
+    if (
+      currentPage >= totalPages ||
+      !currentQuery
+    ) {
+      return;
     }
+
+    await runSearch(
+      currentQuery,
+      {
+        page:
+          currentPage + 1,
+
+        booksOnly:
+          true
+      }
+    );
 
   }
 );
 
 /* =========================================================
    INITIALIZATION
-
-   There is deliberately NO full-screen loading
-   overlay on this page.
-
-   Even if Supabase auth/profile lookup fails,
-   visitors can immediately see and use search.
 ========================================================= */
 
-async function initialize(){
+async function initialize() {
 
   /*
-    Authentication is optional and should never
-    block page initialization.
+    Account information is optional.
+
+    Do not await it. Search must remain usable
+    even if auth/profile/admin calls fail.
   */
 
-  loadAuthState();
+  loadOptionalAccount();
 
   const params =
     new URLSearchParams(
       window.location.search
     );
 
-  const initialQuery =
+  const query =
     String(
       params.get("q") ||
       ""
     )
       .trim();
 
-  const initialPage =
+  const page =
     Math.max(
       1,
       Number(
@@ -3930,29 +2766,19 @@ async function initialize(){
       ) || 1
     );
 
-  if(initialQuery){
+  if (query) {
 
     searchInput.value =
-      initialQuery;
+      query;
 
     await runSearch(
-      initialQuery,
+      query,
       {
-        page:
-          initialPage
+        page
       }
     );
 
-  }
-
-  else{
-
-    /*
-      Nothing else needs to happen.
-
-      The page is already usable from the instant
-      the HTML renders.
-    */
+  } else {
 
     searchInput.focus();
 
@@ -3966,5 +2792,3 @@ initialize();
 
 </body>
 </html>
-
-}
