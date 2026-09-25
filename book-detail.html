@@ -2477,6 +2477,59 @@ async function loadBookByLocalId(
     normalizeLocalBook(
       data
     );
+
+  // Local rows are the social identity for saves/ratings, but older rows may
+  // contain sparse Google-era metadata. When possible, hydrate the display
+  // from the newer Open Library catalog without changing currentBookId.
+  try{
+    const localIsbn13 = String(currentBook.isbn13 || "").replace(/[^0-9Xx]/g, "");
+    const localIsbn10 = String(currentBook.isbn10 || "").replace(/[^0-9Xx]/g, "");
+    const sourceId = String(data.google_books_id || "");
+    const sourceWorkKey = sourceId.startsWith("OL-")
+      ? sourceId.slice(3).replace(/^OL-/, "")
+      : "";
+
+    let catalogRow = null;
+
+    if(sourceWorkKey){
+      const variants = [
+        sourceWorkKey,
+        "/works/" + sourceWorkKey
+      ];
+
+      const { data:byWork, error:workError } = await supabaseClient
+        .from("book_catalog_works")
+        .select("*")
+        .in("source_work_key", variants)
+        .limit(1)
+        .maybeSingle();
+
+      if(workError) throw workError;
+      catalogRow = byWork;
+    }
+
+    if(!catalogRow && (localIsbn13 || localIsbn10)){
+      const isbn = localIsbn13 || localIsbn10;
+      const { data:byIsbn, error:isbnError } = await supabaseClient
+        .from("book_catalog_works")
+        .select("*")
+        .contains("isbn", [isbn])
+        .limit(1)
+        .maybeSingle();
+
+      if(isbnError) throw isbnError;
+      catalogRow = byIsbn;
+    }
+
+    if(catalogRow){
+      const localSocialId = currentBookId;
+      await loadBookByWorkKey(catalogRow.source_work_key);
+      currentBookId = localSocialId;
+    }
+  }
+  catch(enrichmentError){
+    console.warn("Local catalog enrichment:", enrichmentError);
+  }
 }
 
 async function loadBookByGoogleId(
