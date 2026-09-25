@@ -1391,6 +1391,51 @@ function normalizeLocalBook(
   };
 }
 
+function normalizeCatalogBook(
+  row
+){
+  const isbns = Array.isArray(row?.isbn) ? row.isbn.map(value => String(value).replace(/[^0-9Xx]/g, "")) : [];
+  const isbn13 = isbns.find(value => value.length === 13) || "";
+  const isbn10 = isbns.find(value => value.length === 10) || "";
+  const coverId = row?.cover_id ? String(row.cover_id) : "";
+
+  return {
+    id:null,
+    catalogId:row?.id || null,
+    workKey:row?.source_work_key || null,
+    googleId:null,
+    title:row?.title || "Untitled",
+    subtitle:row?.subtitle || "",
+    authors:Array.isArray(row?.author_names) ? row.author_names : [],
+    publisher:"",
+    publishedDate:row?.first_publish_year ? String(row.first_publish_year) : "",
+    description:row?.raw?.description?.value || row?.raw?.description || "",
+    isbn13,
+    isbn10,
+    thumbnail:coverId ? "https://covers.openlibrary.org/b/id/" + encodeURIComponent(coverId) + "-L.jpg" : "",
+    categories:Array.isArray(row?.subjects) ? row.subjects : [],
+    infoLink:row?.source_work_key ? "https://openlibrary.org" + row.source_work_key : ""
+  };
+}
+
+async function loadBookByWorkKey(workKey){
+  const { data, error } = await supabaseClient
+    .from("book_catalog_works")
+    .select("*")
+    .eq("source_work_key", workKey)
+    .maybeSingle();
+
+  if(error){
+    throw error;
+  }
+
+  if(!data){
+    throw new Error("Paper Gremlin could not find this catalog book.");
+  }
+
+  currentBook = normalizeCatalogBook(data);
+}
+
 function normalizeGoogleBook(
   item
 ){
@@ -1963,6 +2008,15 @@ async function loadBook(){
   const googleId =
     params.get("google_id") ||
     params.get("googleId");
+
+  const workKey =
+    params.get("work_key") ||
+    params.get("workKey");
+
+  if(workKey){
+    await loadBookByWorkKey(workKey);
+    return;
+  }
 
   if(googleId){
     await loadBookByGoogleId(
