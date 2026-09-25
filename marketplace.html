@@ -1201,113 +1201,6 @@ function normalizeLocalBook(
 
 }
 
-function normalizeGoogleBook(
-  item
-){
-
-  const info =
-    item?.volumeInfo ||
-    {};
-
-  const identifiers =
-    Array.isArray(
-      info.industryIdentifiers
-    )
-      ? info.industryIdentifiers
-      : [];
-
-  const isbn13 =
-    identifiers.find(
-      identifier =>
-        identifier.type ===
-        "ISBN_13"
-    )?.identifier || "";
-
-  const isbn10 =
-    identifiers.find(
-      identifier =>
-        identifier.type ===
-        "ISBN_10"
-    )?.identifier || "";
-
-  let thumbnail =
-    info.imageLinks?.thumbnail ||
-    info.imageLinks?.smallThumbnail ||
-    "";
-
-  if(thumbnail){
-
-    thumbnail =
-      thumbnail.replace(
-        /^http:/,
-        "https:"
-      );
-
-  }
-
-  return {
-
-    source:
-      "google",
-
-    id:
-      "",
-
-    googleId:
-      item.id ||
-      "",
-
-    title:
-      info.title ||
-      "Untitled",
-
-    authors:
-      Array.isArray(info.authors)
-        ? info.authors
-        : [],
-
-    isbn13,
-
-    isbn10,
-
-    thumbnail,
-
-    description:
-      info.description ||
-      "",
-
-    raw:
-      item
-
-  };
-
-}
-
-/* =========================================================
-   BOOK HELPERS
-========================================================= */
-
-function bookAuthor(
-  book
-){
-
-  if(
-    Array.isArray(
-      book.authors
-    ) &&
-    book.authors.length
-  ){
-
-    return book.authors.join(
-      ", "
-    );
-
-  }
-
-  return "Unknown author";
-
-}
-
 function bookDetailsUrl(
   book
 ){
@@ -1401,8 +1294,8 @@ function bookCardMarkup(
     bookshopSearchUrl(book);
 
   const sourceLabel =
-    book.source === "google"
-      ? "Google Books"
+    book.source === "catalog"
+      ? "Book Catalog"
       : "Paper Gremlin";
 
   const coverMarkup =
@@ -1875,7 +1768,7 @@ function searchLocalCache(
 }
 
 /* =========================================================
-   GOOGLE BOOKS SEARCH
+   EXPANDED BOOK CATALOG SEARCH
 ========================================================= */
 
 async function searchCatalogBooks(
@@ -2001,10 +1894,10 @@ async function runBookSearch(
         cleanQuery
       );
 
-    let googleMatches = [];
+    let catalogMatches = [];
 
     try{
-      googleMatches = await searchCatalogBooks(cleanQuery);
+      catalogMatches = await searchCatalogBooks(cleanQuery);
     }
     catch(catalogError){
       console.warn("Catalog search:", catalogError);
@@ -2013,7 +1906,7 @@ async function runBookSearch(
     const results =
       mergeBooks(
         localMatches,
-        googleMatches
+        catalogMatches
       );
 
     searchDescription.textContent =
@@ -2395,7 +2288,7 @@ async function initialize(){
     /*
       Load Paper Gremlin's own books before searching.
       Search uses this local cache to merge existing books
-      with Google Books results.
+      with expanded catalog results.
     */
 
     await loadLocalBooks();
