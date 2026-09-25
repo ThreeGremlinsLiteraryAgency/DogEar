@@ -686,6 +686,95 @@ h1{
 
 }
 
+
+/* =========================================================
+   PAPER GREMLIN SHELVES — PRIVATE LIBRARY REDESIGN
+========================================================= */
+body{
+  background:
+    radial-gradient(ellipse at 12% 0%,rgba(72,100,75,.20),transparent 34rem),
+    radial-gradient(ellipse at 88% 8%,rgba(199,155,89,.09),transparent 30rem),
+    #050b09;
+}
+.topbar{
+  min-height:88px;
+  padding:0 clamp(22px,5vw,72px);
+  background:rgba(4,10,8,.86);
+  border-bottom:1px solid rgba(223,189,126,.18);
+  box-shadow:0 14px 40px rgba(0,0,0,.30);
+}
+.brand-mark{width:42px;height:42px;border-color:var(--gold-soft);box-shadow:0 0 0 5px rgba(199,155,89,.05)}
+.nav-links{gap:30px}
+.nav-links a{position:relative;padding:33px 0 30px}
+.nav-links a.active::after,.nav-links a:hover::after{
+  content:"";position:absolute;left:0;right:0;bottom:20px;height:1px;background:var(--gold-soft)
+}
+.page{width:min(1280px,calc(100% - 44px));padding-top:42px}
+.hero{
+  position:relative;
+  overflow:hidden;
+  align-items:center;
+  margin-bottom:26px;
+  padding:38px 42px;
+  border:1px solid rgba(223,189,126,.18);
+  border-radius:26px;
+  background:
+    radial-gradient(circle at 88% 15%,rgba(239,134,57,.09),transparent 22rem),
+    linear-gradient(110deg,rgba(13,30,23,.98),rgba(7,15,12,.96) 65%,rgba(29,22,12,.64));
+  box-shadow:0 28px 80px rgba(0,0,0,.30);
+}
+.hero::after{
+  content:"✦";position:absolute;right:38px;top:26px;color:rgba(216,170,90,.28);font-size:18px
+}
+.eyebrow{display:flex;align-items:center;gap:12px;letter-spacing:.24em}
+.eyebrow::after{content:"";width:78px;height:1px;background:linear-gradient(90deg,var(--gold),transparent)}
+h1{font-size:clamp(46px,6vw,72px);max-width:760px}
+.hero-copy p{color:#c9bea8;max-width:650px}
+.search-page-link,.search-button,.book-button{border-radius:10px}
+.search-panel{
+  padding:16px;
+  border-color:rgba(223,189,126,.18);
+  border-radius:18px;
+  background:linear-gradient(145deg,rgba(16,25,20,.94),rgba(8,14,11,.94));
+}
+.search-input{
+  border-radius:10px;
+  background:rgba(3,9,7,.68);
+}
+.section-heading{
+  padding-bottom:13px;
+  border-bottom:1px solid rgba(223,189,126,.14);
+}
+.section-heading h2{font-size:32px}
+.book-grid{gap:22px}
+.book-card{
+  border-color:rgba(223,189,126,.18);
+  border-radius:13px;
+  background:linear-gradient(145deg,rgba(16,25,20,.96),rgba(8,14,11,.96));
+  box-shadow:0 18px 50px rgba(0,0,0,.24);
+}
+.book-card:hover{transform:translateY(-5px);box-shadow:0 26px 65px rgba(0,0,0,.34)}
+.book-cover-link{
+  position:relative;
+  margin:12px 12px 0;
+  border-radius:5px 11px 11px 5px;
+  box-shadow:-5px 0 0 rgba(35,23,12,.8),0 15px 30px rgba(0,0,0,.30);
+}
+.book-cover-link::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  box-shadow:inset 7px 0 12px rgba(0,0,0,.14);
+  border:1px solid rgba(240,202,123,.13);border-radius:inherit
+}
+.book-info{padding:18px 16px 17px}
+.book-source{letter-spacing:.18em}
+.book-title{font-size:19px;line-height:1.22}
+.book-author{font-style:italic;color:#b9ad96}
+.book-button{background:rgba(245,229,195,.025)}
+@media(max-width:700px){
+  .topbar{min-height:72px}
+  .hero{padding:28px 24px}
+}
+
 </style>
 </head>
 
