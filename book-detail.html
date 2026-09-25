@@ -1441,6 +1441,60 @@ async function loadBookByWorkKey(workKey){
 
   currentBook = normalizeCatalogBook(data);
 
+  // Resolve a catalog result to an existing Paper Gremlin book immediately.
+  // This keeps saves, ratings, and reviews attached to the same identity
+  // whether the visitor arrived through catalog search or a local-book URL.
+  try{
+    const catalogKey = String(currentBook.workKey || "")
+      .replace(/^\/works\//, "");
+    const compatibilityId = "OL-" + catalogKey;
+
+    let localMatch = null;
+
+    if(compatibilityId){
+      const { data:bySource, error:sourceError } = await supabaseClient
+        .from("books")
+        .select("id")
+        .eq("google_books_id", compatibilityId)
+        .limit(1)
+        .maybeSingle();
+
+      if(sourceError) throw sourceError;
+      localMatch = bySource;
+    }
+
+    if(!localMatch && currentBook.isbn13){
+      const { data:byIsbn, error:isbnError } = await supabaseClient
+        .from("books")
+        .select("id")
+        .eq("isbn_13", currentBook.isbn13)
+        .limit(1)
+        .maybeSingle();
+
+      if(isbnError) throw isbnError;
+      localMatch = byIsbn;
+    }
+
+    if(!localMatch && currentBook.isbn10){
+      const { data:byIsbn10, error:isbn10Error } = await supabaseClient
+        .from("books")
+        .select("id")
+        .eq("isbn_10", currentBook.isbn10)
+        .limit(1)
+        .maybeSingle();
+
+      if(isbn10Error) throw isbn10Error;
+      localMatch = byIsbn10;
+    }
+
+    if(localMatch?.id){
+      currentBookId = localMatch.id;
+    }
+  }
+  catch(identityError){
+    console.warn("Catalog identity resolution:", identityError);
+  }
+
   // Search results are intentionally lightweight. Enrich the selected
   // Open Library work here so the detail page can show its description.
   try{
