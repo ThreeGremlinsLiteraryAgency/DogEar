@@ -3212,6 +3212,48 @@ function getAccessorySvg(){
 
   }
 
+  const hairColor = escapeXml(optionValue("hairColor"));
+  const skin = escapeXml(optionValue("skin"));
+
+  if(accessory === "Cat Ears") return `
+    <g fill="${hairColor}" stroke="#29231e" stroke-width="3">
+      <path d="M105 92 L111 43 L142 77 Z"/><path d="M178 77 L209 43 L215 92 Z"/>
+    </g>
+    <g fill="#d99a9a"><path d="M113 76 L116 55 L132 74 Z"/><path d="M188 74 L204 55 L207 76 Z"/></g>`;
+
+  if(accessory === "Horns") return `
+    <g fill="#d8c49a" stroke="#5c4931" stroke-width="3">
+      <path d="M116 87 Q82 53 103 31 Q99 62 132 73 Z"/>
+      <path d="M204 87 Q238 53 217 31 Q221 62 188 73 Z"/>
+    </g>`;
+
+  if(accessory === "Beanie") return `
+    <path d="M103 91 Q109 42 160 40 Q211 42 217 91 Q189 76 160 76 Q131 76 103 91Z" fill="${hairColor}" stroke="#29231e" stroke-width="3"/>
+    <path d="M101 83 Q160 67 219 83 L216 99 Q160 86 104 99Z" fill="${hairColor}" stroke="#29231e" stroke-width="3"/>`;
+
+  if(accessory === "Flower Crown") return `
+    <path d="M105 92 Q160 70 215 92" fill="none" stroke="#55714f" stroke-width="6"/>
+    <g fill="#dfbd7e" stroke="#7b5830" stroke-width="2">
+      <circle cx="118" cy="83" r="9"/><circle cx="140" cy="77" r="9"/><circle cx="162" cy="75" r="9"/><circle cx="184" cy="78" r="9"/><circle cx="204" cy="85" r="9"/>
+    </g>`;
+
+  if(accessory === "Nose Ring") return `
+    <circle cx="169" cy="165" r="7" fill="none" stroke="#d8aa5a" stroke-width="3"/>`;
+
+  if(accessory === "Freckles") return `
+    <g fill="#9b6548" opacity=".65">
+      <circle cx="121" cy="160" r="2"/><circle cx="129" cy="164" r="2"/><circle cx="137" cy="160" r="1.8"/>
+      <circle cx="183" cy="160" r="1.8"/><circle cx="191" cy="164" r="2"/><circle cx="199" cy="160" r="2"/>
+    </g>`;
+
+  if(accessory === "Scar") return `
+    <path d="M190 113 L180 158" stroke="#9b5b58" stroke-width="3" stroke-linecap="round"/>
+    <path d="M184 126 L193 130 M181 139 L190 143" stroke="#9b5b58" stroke-width="2"/>`;
+
+  if(accessory === "Pointed Ears") return `
+    <path d="M101 143 L68 127 Q78 162 104 170Z" fill="${skin}" stroke="rgba(80,50,40,.3)" stroke-width="3"/>
+    <path d="M219 143 L252 127 Q242 162 216 170Z" fill="${skin}" stroke="rgba(80,50,40,.3)" stroke-width="3"/>`;
+
   return "";
 
 }
