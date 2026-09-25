@@ -1414,7 +1414,7 @@ function normalizeCatalogBook(
     isbn10,
     thumbnail:coverId ? "https://covers.openlibrary.org/b/id/" + encodeURIComponent(coverId) + "-L.jpg" : "",
     categories:Array.isArray(row?.subjects) ? row.subjects : [],
-    infoLink:row?.source_work_key ? "https://openlibrary.org/works/" + String(row.source_work_key).replace(/^\\/works\\//, "") : ""
+    infoLink:row?.source_work_key ? "https://openlibrary.org/works/" + String(row.source_work_key).replace(/^\/works\//, "") : ""
   };
 }
 
@@ -2224,7 +2224,7 @@ function renderBook(){
   if(currentBook.workKey){
     const catalogImport = {
       ...currentBook,
-      googleId:"OL-" + String(currentBook.workKey).replace(/^\\/works\\//, "")
+      googleId:"OL-" + String(currentBook.workKey).replace(/^\/works\//, "")
     };
 
     currentBookId = await importGoogleBook(catalogImport);
