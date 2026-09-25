@@ -3469,8 +3469,16 @@ supabaseClient.auth.onAuthStateChange(
 );
 
 async function initialize(){
+  const loadingFailsafe = window.setTimeout(() => {
+    const overlay = $("loading");
+    if(overlay){ overlay.classList.add("hidden"); }
+  }, 8000);
+
   try{
-    await loadSession();
+    await Promise.race([
+      loadSession(),
+      new Promise(resolve => window.setTimeout(resolve, 2500))
+    ]);
 
     await loadBook();
 
@@ -3487,6 +3495,7 @@ async function initialize(){
     );
   }
   finally{
+    window.clearTimeout(loadingFailsafe);
     $("loading").classList.add(
       "hidden"
     );
