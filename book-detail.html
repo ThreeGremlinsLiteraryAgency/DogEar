@@ -1011,6 +1011,133 @@ h1{
   }
 }
 
+
+/* =========================================================
+   PAPER GREMLIN BOOK PAGE — LIBRARY PASS
+========================================================= */
+.hero{
+  grid-template-columns:250px minmax(0,1fr);
+  gap:46px;
+  min-height:0;
+  padding:34px 40px;
+  background:
+    radial-gradient(circle at 90% 14%,rgba(199,155,89,.09),transparent 28rem),
+    linear-gradient(110deg,rgba(13,30,23,.98),rgba(6,14,11,.97) 62%,rgba(29,22,12,.72));
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  top:27px;
+  right:31px;
+  width:70px;
+  height:70px;
+  border-top:1px solid rgba(223,189,126,.24);
+  border-right:1px solid rgba(223,189,126,.24);
+  border-radius:0 18px 0 0;
+  pointer-events:none;
+}
+
+.cover{
+  align-self:start;
+  max-height:480px;
+}
+
+.hero > div:last-child{
+  max-width:820px;
+  padding:2px 0;
+}
+
+.eyebrow{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.eyebrow::after{
+  content:"";
+  width:76px;
+  height:1px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+}
+
+h1{
+  font-size:clamp(45px,5.2vw,72px);
+  max-width:760px;
+}
+
+.author{
+  font-size:21px;
+}
+
+.description{
+  margin-top:22px;
+  max-width:760px;
+  font-size:16px;
+  line-height:1.72;
+}
+
+.actions{
+  margin-top:24px;
+}
+
+.hero-rating{
+  margin-top:16px;
+}
+
+.edition{
+  margin-top:15px;
+}
+
+.grid{
+  grid-template-columns:minmax(0,1fr) 310px;
+}
+
+.card-head{
+  position:relative;
+}
+
+.card-head::after{
+  content:"✦";
+  position:absolute;
+  right:27px;
+  top:24px;
+  color:rgba(216,170,90,.34);
+  font-size:14px;
+}
+
+.purchase-card::before{
+  content:"FROM THE SHELVES";
+  display:block;
+  margin-bottom:11px;
+  color:var(--gold);
+  font:800 8px Arial,sans-serif;
+  letter-spacing:.22em;
+}
+
+.detail-grid{
+  grid-template-columns:120px minmax(0,1fr);
+}
+
+@media(max-width:900px){
+  .hero{
+    grid-template-columns:210px minmax(0,1fr);
+    gap:30px;
+    padding:28px;
+  }
+  .grid{grid-template-columns:1fr}
+}
+
+@media(max-width:680px){
+  .hero{
+    grid-template-columns:1fr;
+    padding:22px;
+  }
+  .cover{
+    max-height:none;
+  }
+}
+
 </style>
 </head>
 
