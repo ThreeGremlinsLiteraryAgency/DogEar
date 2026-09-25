@@ -766,8 +766,7 @@ h1{
 
       <p>
         Browse books already wandering around Paper Gremlin,
-        or search the wider Google Books catalog for something
-        specific.
+        or search the wider book catalog for something specific.
       </p>
 
     </div>
@@ -813,10 +812,7 @@ h1{
     </form>
 
     <p class="search-hint">
-      Search results can come from both Paper Gremlin and
-      Google Books. Selecting a Google Books title opens it
-      through Paper Gremlin so it can be rated, reviewed,
-      saved, and shopped.
+      Search results come from Paper Gremlin and the expanded book catalog. Select any title to rate, review, save, and shop it through Paper Gremlin.
     </p>
 
   </section>
@@ -1328,6 +1324,13 @@ function bookDetailsUrl(
       )
     );
 
+  }
+
+  if(book.workKey){
+    return (
+      "book-detail.html?work_key=" +
+      encodeURIComponent(book.workKey)
+    );
   }
 
   if(book.googleId){
@@ -1875,54 +1878,58 @@ function searchLocalCache(
    GOOGLE BOOKS SEARCH
 ========================================================= */
 
-async function searchGoogleBooks(
+async function searchCatalogBooks(
   query
 ){
 
-  /*
-    This intentionally uses the public Google Books endpoint
-    without embedding Paper Gremlin's browser API key into
-    this replacement file.
-  */
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .functions
+      .invoke(
+        "book-search",
+        {
+          body: {
+            q: query,
+            page: 1,
+            page_size: 30
+          }
+        }
+      );
 
-  const url =
-    "https://www.googleapis.com/books/v1/volumes?" +
-    new URLSearchParams({
-      q:
-        query,
-
-      maxResults:
-        "30",
-
-      printType:
-        "books"
-    }).toString();
-
-  const response =
-    await fetch(
-      url
-    );
-
-  if(!response.ok){
-
+  if(error){
     throw new Error(
-      "Google Books search failed."
+      "The Paper Gremlin catalog search could not be reached."
     );
-
   }
 
-  const data =
-    await response.json();
-
-  return (
-    Array.isArray(data.items)
-      ? data.items
-      : []
-  )
-    .map(
-      normalizeGoogleBook
+  if(!data || data.error){
+    throw new Error(
+      data?.error ||
+      "The Paper Gremlin catalog returned an invalid response."
     );
+  }
 
+  return (Array.isArray(data.results) ? data.results : [])
+    .map(row => {
+      const isbns = Array.isArray(row?.isbn) ? row.isbn : [];
+      const coverId = row?.cover_id ? String(row.cover_id) : "";
+      return {
+        source:"catalog",
+        id:"",
+        workKey:row?.source_work_key || "",
+        googleId:"",
+        title:row?.title || "Untitled",
+        authors:Array.isArray(row?.author_names) ? row.author_names : [],
+        isbn13:isbns.find(value => String(value).replace(/[^0-9Xx]/g,"").length === 13) || "",
+        isbn10:isbns.find(value => String(value).replace(/[^0-9Xx]/g,"").length === 10) || "",
+        thumbnail:coverId ? "https://covers.openlibrary.org/b/id/" + encodeURIComponent(coverId) + "-M.jpg" : "",
+        description:"",
+        raw:row
+      };
+    });
 }
 
 /* =========================================================
@@ -1969,7 +1976,7 @@ async function runBookSearch(
       </h3>
 
       <p>
-        Checking Paper Gremlin and Google Books.
+        Checking Paper Gremlin and the expanded book catalog.
       </p>
 
     </div>
@@ -1994,30 +2001,13 @@ async function runBookSearch(
         cleanQuery
       );
 
-    let googleMatches =
-      [];
+    let googleMatches = [];
 
     try{
-
-      googleMatches =
-        await searchGoogleBooks(
-          cleanQuery
-        );
-
+      googleMatches = await searchCatalogBooks(cleanQuery);
     }
-
-    catch(googleError){
-
-      console.warn(
-        "Google Books:",
-        googleError
-      );
-
-      /*
-        Local results are still useful even if Google Books
-        is temporarily unavailable.
-      */
-
+    catch(catalogError){
+      console.warn("Catalog search:", catalogError);
     }
 
     const results =
