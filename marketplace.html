@@ -1003,6 +1003,12 @@ h1{font-size:clamp(46px,6vw,72px);max-width:760px}
 </nav>
 
 <script>
+function bookAuthor(book){
+  if(!book) return "";
+  if(Array.isArray(book.authors)) return book.authors.filter(Boolean).join(", ");
+  if(Array.isArray(book.author_names)) return book.author_names.filter(Boolean).join(", ");
+  return String(book.author || book.author_name || "").trim();
+}
 
 /* =========================================================
    SUPABASE
@@ -1290,21 +1296,6 @@ function normalizeLocalBook(
 
 }
 
-function bookAuthor(book){
-  if(!book){
-    return "";
-  }
-
-  if(Array.isArray(book.authors)){
-    return book.authors.filter(Boolean).join(", ");
-  }
-
-  if(Array.isArray(book.author_names)){
-    return book.author_names.filter(Boolean).join(", ");
-  }
-
-  return String(book.author || book.author_name || "").trim();
-}
 
 function bookDetailsUrl(
   book
