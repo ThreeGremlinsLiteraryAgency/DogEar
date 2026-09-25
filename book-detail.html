@@ -1414,7 +1414,7 @@ function normalizeCatalogBook(
     isbn10,
     thumbnail:coverId ? "https://covers.openlibrary.org/b/id/" + encodeURIComponent(coverId) + "-L.jpg" : "",
     categories:Array.isArray(row?.subjects) ? row.subjects : [],
-    infoLink:row?.source_work_key ? "https://openlibrary.org" + row.source_work_key : ""
+    infoLink:row?.source_work_key ? "https://openlibrary.org/works/" + String(row.source_work_key).replace(/^\\/works\\//, "") : ""
   };
 }
 
@@ -2190,11 +2190,9 @@ function renderBook(){
     $("googleBooksBtn");
 
   if(book.infoLink){
-    googleButton.href =
-      book.infoLink;
-
-    googleButton.hidden =
-      false;
+    googleButton.href = book.infoLink;
+    googleButton.textContent = book.workKey ? "Open Library" : "Google Books";
+    googleButton.hidden = false;
   }
   else{
     googleButton.hidden =
@@ -2223,9 +2221,20 @@ function renderBook(){
     );
   }
 
+  if(currentBook.workKey){
+    const catalogImport = {
+      ...currentBook,
+      googleId:"OL-" + String(currentBook.workKey).replace(/^\\/works\\//, "")
+    };
+
+    currentBookId = await importGoogleBook(catalogImport);
+    replaceWithLocalBookUrl(currentBookId);
+    return currentBookId;
+  }
+
   if(!currentBook.googleId){
     throw new Error(
-      "This book does not have a Google Books ID."
+      "This catalog book could not be added to Paper Gremlin."
     );
   }
 
