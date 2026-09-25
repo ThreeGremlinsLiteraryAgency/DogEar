@@ -1131,162 +1131,152 @@ button{
   line-height:1.55;
 }
   /* =========================================================
-   STORY / PARCHMENT SECTION
+   STORY / CAMPFIRE SECTION
 ========================================================= */
 
 .story-section{
-  color:var(--ink);
-
+  position:relative;
+  overflow:hidden;
+  color:var(--cream);
   background:
-    linear-gradient(
-      rgba(230,205,160,.96),
-      rgba(215,184,130,.97)
-    );
-
-  box-shadow:
-    inset 0 20px 60px
-    rgba(69,40,18,.12),
-    inset 0 -20px 60px
-    rgba(69,40,18,.12);
+    radial-gradient(ellipse at 50% 108%,rgba(239,134,57,.32),rgba(239,134,57,.10) 25%,transparent 52%),
+    radial-gradient(circle at 18% 28%,rgba(255,210,116,.08) 0 1px,transparent 2px),
+    linear-gradient(180deg,#061a19 0%,#041412 54%,#07140f 100%);
+  background-size:auto,46px 46px,auto;
+  box-shadow:inset 0 1px rgba(216,170,90,.12),inset 0 -1px rgba(216,170,90,.12);
 }
 
 .story-section::before{
   content:"";
-
   position:absolute;
   inset:0;
-
   pointer-events:none;
-
-  opacity:.17;
-
-  background-image:
-    radial-gradient(
-      circle at 20% 30%,
-      #6b492d 0 1px,
-      transparent 1.5px
-    ),
-    radial-gradient(
-      circle at 80% 65%,
-      #6b492d 0 1px,
-      transparent 1.5px
-    );
-
-  background-size:
-    37px 41px,
-    51px 47px;
+  background:
+    radial-gradient(ellipse at 8% 50%,rgba(77,105,65,.18),transparent 28%),
+    radial-gradient(ellipse at 92% 42%,rgba(83,103,62,.16),transparent 30%),
+    linear-gradient(90deg,rgba(1,9,11,.12),transparent 30%,transparent 70%,rgba(1,9,11,.12));
 }
 
-.story-section .section-eyebrow{
-  color:#80552e;
+.story-section::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:-145px;
+  width:min(820px,80vw);
+  height:300px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  pointer-events:none;
+  background:radial-gradient(ellipse,rgba(255,196,83,.42),rgba(239,112,45,.18) 34%,transparent 70%);
+  filter:blur(13px);
 }
 
-.story-section .section-intro{
-  color:#5b4734;
-}
+.story-section .section-eyebrow{color:var(--gold);}
+.story-section .section-intro{color:#d0c4ae;}
 
 .story-heading{
   position:relative;
   z-index:2;
-
   text-align:center;
-
   margin-bottom:48px;
 }
 
+.story-heading::after{
+  content:"✦";
+  display:block;
+  width:260px;
+  margin:18px auto 0;
+  color:var(--gold);
+  font-size:13px;
+  line-height:1;
+  background:linear-gradient(90deg,transparent,rgba(216,170,90,.62) 42%,transparent 42% 58%,rgba(216,170,90,.62) 58%,transparent);
+}
+
+.story-heading .section-title{
+  color:#f5e5c3;
+  font-size:clamp(44px,5.4vw,70px);
+  letter-spacing:-.035em;
+}
+
 .story-heading .section-intro{
-  margin:
-    0 auto;
+  max-width:760px;
+  margin:0 auto;
+  font-size:16px;
 }
 
 .story-grid{
   position:relative;
   z-index:2;
-
   display:grid;
-
-  grid-template-columns:
-    repeat(3,1fr);
-
-  gap:22px;
+  grid-template-columns:repeat(3,1fr);
+  gap:28px;
 }
 
 .story-card{
   position:relative;
-
-  min-height:300px;
-
-  padding:
-    34px 30px;
-
-  border:
-    1px solid
-    rgba(81,54,31,.32);
-
-  border-radius:8px;
-
+  min-height:340px;
+  padding:38px 32px 32px;
+  overflow:hidden;
+  border:1px solid rgba(216,170,90,.72);
+  border-radius:10px;
+  color:var(--cream);
   background:
-    rgba(245,225,186,.35);
-
-  box-shadow:
-    0 12px 30px
-    rgba(79,48,23,.08);
+    radial-gradient(circle at 50% 115%,rgba(166,89,35,.22),transparent 48%),
+    linear-gradient(180deg,rgba(17,25,21,.97),rgba(16,21,17,.97));
+  box-shadow:0 18px 42px rgba(0,0,0,.28),inset 0 0 0 4px rgba(216,170,90,.035);
 }
+
+.story-card::before,
+.story-card::after{
+  content:"";
+  position:absolute;
+  width:28px;
+  height:28px;
+  pointer-events:none;
+}
+.story-card::before{top:7px;left:7px;border-top:1px solid rgba(240,202,123,.62);border-left:1px solid rgba(240,202,123,.62);}
+.story-card::after{right:7px;bottom:7px;border-right:1px solid rgba(240,202,123,.62);border-bottom:1px solid rgba(240,202,123,.62);}
 
 .story-number{
   position:absolute;
-
-  top:18px;
-  right:21px;
-
-  color:
-    rgba(75,48,27,.25);
-
-  font-size:34px;
+  top:24px;
+  right:27px;
+  color:rgba(240,202,123,.64);
+  font-size:32px;
 }
 
 .story-icon{
-  margin-bottom:18px;
-
-  font-size:30px;
+  margin-bottom:22px;
+  color:var(--gold);
+  font-size:28px;
+  filter:sepia(1) saturate(.7);
 }
 
 .story-card h3{
-  margin:
-    0 0 12px;
-
-  font-size:27px;
-
+  margin:0 0 13px;
+  color:#f4e2bf;
+  font-size:29px;
+  line-height:1.12;
   font-weight:400;
 }
 
 .story-card p{
-  margin:
-    0 0 21px;
-
-  color:#5d4835;
-
+  margin:0 0 24px;
+  color:#c9bda8;
   font-size:14px;
-
   line-height:1.65;
 }
 
 .story-link{
-  color:#714827;
-
-  font-family:
-    Arial,
-    sans-serif;
-
+  color:var(--gold-light);
+  font-family:Arial,sans-serif;
   font-size:10px;
-
   font-weight:bold;
-
   text-transform:uppercase;
-
-  letter-spacing:.09em;
+  letter-spacing:.11em;
 }
 
+.story-link:hover{color:#ffe0a1;}
 
 /* =========================================================
    BOOK DISCOVERY
@@ -2736,21 +2726,21 @@ footer{
         </div>
 
         <h3>
-          Leave a DogEar.
+          Leave a list of scribbles.
         </h3>
 
         <p>
-          Save the moments that made you laugh,
-          stare at the ceiling, throw the book down,
-          or immediately text somebody,
-          “YOU NEED TO READ THIS.”
+          Keep a running list of quotes, thoughts,
+          recommendations, and wonderfully unhinged
+          notes for the stories you do not want
+          to forget.
         </p>
 
         <a
           class="story-link"
-          href="profile.html"
+          href="marketplace.html"
         >
-          Visit your profile →
+          Keep your reading list →
         </a>
 
       </article>
