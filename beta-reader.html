@@ -6654,27 +6654,27 @@ function loadTtsState(){
 function populateFeedbackForm(){
 
   $("ratingOverall").value =
-    feedback?.rating_overall ??
+    feedback?.overall_rating ??
     "";
 
   $("ratingPacing").value =
-    feedback?.rating_pacing ??
+    feedback?.pacing_rating ??
     "";
 
   $("ratingCharacter").value =
-    feedback?.rating_character ??
+    feedback?.character_rating ??
     "";
 
   $("ratingPlot").value =
-    feedback?.rating_plot ??
+    feedback?.plot_rating ??
     "";
 
   $("ratingWorldbuilding").value =
-    feedback?.rating_worldbuilding ??
+    feedback?.worldbuilding_rating ??
     "";
 
   $("ratingRomance").value =
-    feedback?.rating_romance ??
+    feedback?.romance_rating ??
     "";
 
   $("confusionNotes").value =
@@ -6776,41 +6776,37 @@ function buildFeedbackPayload(
   return {
     assignment_id:
       assignment.id,
-    project_id:
-      assignment.project_id,
-    round_id:
-      assignment.round_id,
     section_id:
       null,
     feedback_type:
       "overall",
 
-    rating_overall:
+    overall_rating:
       numberOrNull(
         $("ratingOverall").value
       ),
 
-    rating_pacing:
+    pacing_rating:
       numberOrNull(
         $("ratingPacing").value
       ),
 
-    rating_character:
+    character_rating:
       numberOrNull(
         $("ratingCharacter").value
       ),
 
-    rating_plot:
+    plot_rating:
       numberOrNull(
         $("ratingPlot").value
       ),
 
-    rating_worldbuilding:
+    worldbuilding_rating:
       numberOrNull(
         $("ratingWorldbuilding").value
       ),
 
-    rating_romance:
+    romance_rating:
       numberOrNull(
         $("ratingRomance").value
       ),
