@@ -380,8 +380,13 @@ h1{
 .avatar img{
   width:100%;
   height:100%;
-
   object-fit:cover;
+}
+
+.avatar svg{
+  width:100%;
+  height:100%;
+  display:block;
 }
 
 .preview-name{
@@ -1197,6 +1202,7 @@ textarea{
     <div
       class="avatar"
       id="avatarPreview"
+      aria-label="Your Paper Gremlin character"
     >
       ?
     </div>
@@ -3285,37 +3291,18 @@ function setAvatar(
   displayName
 ){
 
+  /*
+    The profile preview should show the actual Paper Gremlin
+    character, not depend on a data-URI image successfully
+    round-tripping through the browser/database.
+  */
   avatarPreview.innerHTML =
-    "";
+    getAvatarSvg();
 
-  const image =
-    document.createElement(
-      "img"
-    );
-
-  image.src =
-    url;
-
-  image.alt =
-    "Paper Gremlin avatar";
-
-  image.onerror =
-    () => {
-
-      avatarPreview.innerHTML =
-        "";
-
-      avatarPreview.textContent =
-        displayName
-          ? displayName
-              .charAt(0)
-              .toUpperCase()
-          : "?";
-
-    };
-
-  avatarPreview.appendChild(
-    image
+  avatarPreview.setAttribute(
+    "aria-label",
+    (displayName || "Your") +
+    " Paper Gremlin character"
   );
 
 }
