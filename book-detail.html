@@ -3475,30 +3475,27 @@ async function initialize(){
   }, 8000);
 
   try{
-    await Promise.race([
-      loadSession(),
-      new Promise(resolve => window.setTimeout(resolve, 2500))
-    ]);
-
+    // Public book content should render without waiting for authentication.
     await loadBook();
-
     renderBook();
 
-    await Promise.all([
+    window.clearTimeout(loadingFailsafe);
+    $("loading").classList.add("hidden");
+
+    // Then restore the real Supabase session for saves, ratings, and reviews.
+    await loadSession();
+
+    await Promise.allSettled([
       loadSavedState(),
       loadReviews()
     ]);
   }
   catch(error){
-    showBookLoadError(
-      error
-    );
+    showBookLoadError(error);
   }
   finally{
     window.clearTimeout(loadingFailsafe);
-    $("loading").classList.add(
-      "hidden"
-    );
+    $("loading").classList.add("hidden");
   }
 }
 
