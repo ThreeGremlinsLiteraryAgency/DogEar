@@ -4632,14 +4632,23 @@ async function saveReward(){
           )
           .insert({
 
-            project_id:
-              projectId,
-
             round_id:
               currentRound.id,
 
-            coins_offered:
-              coins
+            enabled:
+              coins > 0,
+
+            coin_amount:
+              coins,
+
+            require_completion:
+              true,
+
+            require_feedback:
+              true,
+
+            automatic_approval:
+              false
 
           })
           .select("*")
