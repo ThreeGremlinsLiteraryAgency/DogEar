@@ -3319,12 +3319,32 @@ function calculateCurrentProgress(){
         (paragraphs.length - 1)
       : 1;
 
-  const sectionFraction =
+  let sectionFraction =
     (
       currentSectionIndex +
       paragraphFraction
     ) /
     sections.length;
+
+  /*
+    Reaching the bottom of the final section means the
+    manuscript has been completed, even when that section
+    contains only one rendered paragraph.
+  */
+  if(
+    currentSectionIndex === sections.length - 1
+  ){
+
+    const nearPageBottom =
+      window.innerHeight +
+      window.scrollY >=
+      document.documentElement.scrollHeight - 24;
+
+    if(nearPageBottom){
+      sectionFraction = 1;
+    }
+
+  }
 
   return clamp(
     sectionFraction * 100,
