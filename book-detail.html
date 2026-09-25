@@ -1465,6 +1465,50 @@ async function loadBookByWorkKey(workKey){
           currentBook.description = description;
         }
 
+        // Some Open Library works have no description on the work itself.
+        // Try their editions and use the first useful edition description.
+        if(!currentBook.description){
+          try{
+            const editionsResponse = await fetch(
+              "https://openlibrary.org/works/" +
+              encodeURIComponent(workKey) +
+              "/editions.json?limit=20"
+            );
+
+            if(editionsResponse.ok){
+              const editionsData = await editionsResponse.json();
+              const editions = Array.isArray(editionsData?.entries)
+                ? editionsData.entries
+                : [];
+
+              for(const edition of editions){
+                const editionDescription =
+                  typeof edition?.description === "string"
+                    ? edition.description
+                    : edition?.description?.value || "";
+
+                if(editionDescription){
+                  currentBook.description = editionDescription;
+                  break;
+                }
+
+                const notes =
+                  typeof edition?.notes === "string"
+                    ? edition.notes
+                    : edition?.notes?.value || "";
+
+                if(notes && notes.length >= 80){
+                  currentBook.description = notes;
+                  break;
+                }
+              }
+            }
+          }
+          catch(editionError){
+            console.warn("Open Library edition enrichment:", editionError);
+          }
+        }
+
         if(
           (!currentBook.categories || !currentBook.categories.length) &&
           Array.isArray(work?.subjects)
