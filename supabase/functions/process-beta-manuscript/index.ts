@@ -484,9 +484,26 @@ function parseSections(
 
   if(frontMatter){
 
+    /*
+      If the first explicit heading is Chapter 2, a substantial
+      pre-heading block is almost certainly an unlabelled Chapter 1
+      rather than front matter. This is common in draft DOCX files
+      where the opening chapter has no Word heading style.
+    */
+    const firstHeadingTitle =
+      firstHeading.title.trim();
+
+    const frontMatterTitle =
+      /^chapter\s+(?:2|ii|two)(?:\b|\s*[:\-–—])/i.test(
+        firstHeadingTitle
+      ) &&
+      countWords(frontMatter) >= 100
+        ? "Chapter 1"
+        : "Front Matter";
+
     const pieces =
       splitLargeSection(
-        "Front Matter",
+        frontMatterTitle,
         frontMatter
       );
 
