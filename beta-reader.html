@@ -3417,7 +3417,7 @@ async function saveReadingPosition(){
     assignment_id:
       assignment.id,
     manuscript_id:
-      manuscript?.id || null,
+      manuscript.id,
     section_id:
       section.id,
     paragraph_index:
@@ -3471,6 +3471,10 @@ async function saveReadingPosition(){
     console.warn(
       "Could not save reading position:",
       error
+    );
+
+    showToast(
+      "Paper Gremlin couldn't save your reading place."
     );
 
   }
