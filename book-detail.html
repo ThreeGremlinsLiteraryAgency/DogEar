@@ -1440,6 +1440,43 @@ async function loadBookByWorkKey(workKey){
   }
 
   currentBook = normalizeCatalogBook(data);
+
+  // Search results are intentionally lightweight. Enrich the selected
+  // Open Library work here so the detail page can show its description.
+  try{
+    const workKey = String(currentBook.workKey || "")
+      .replace(/^\/works\//, "");
+
+    if(workKey){
+      const response = await fetch(
+        "https://openlibrary.org/works/" +
+        encodeURIComponent(workKey) +
+        ".json"
+      );
+
+      if(response.ok){
+        const work = await response.json();
+        const description =
+          typeof work?.description === "string"
+            ? work.description
+            : work?.description?.value || "";
+
+        if(description){
+          currentBook.description = description;
+        }
+
+        if(
+          (!currentBook.categories || !currentBook.categories.length) &&
+          Array.isArray(work?.subjects)
+        ){
+          currentBook.categories = work.subjects;
+        }
+      }
+    }
+  }
+  catch(error){
+    console.warn("Open Library detail enrichment:", error);
+  }
 }
 
 function normalizeGoogleBook(
