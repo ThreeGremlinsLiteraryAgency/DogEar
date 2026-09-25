@@ -803,6 +803,12 @@ body{background:radial-gradient(ellipse at 12% 0%,rgba(72,100,75,.20),transparen
 @media(max-width:700px){.topbar{height:72px}.hero{padding:28px 24px}}
 /* force current Paper Gremlin shell */
 html body{background:#050b09!important;color:#f1e7cf!important} body .topbar{background:rgba(4,10,8,.96)!important;border-color:rgba(223,189,126,.18)!important} body .page{background:transparent!important} body .hero{background:radial-gradient(circle at 88% 15%,rgba(239,134,57,.09),transparent 22rem),linear-gradient(110deg,#0d1e17,#070f0c 65%,#1d160c)!important;border:1px solid rgba(223,189,126,.18)!important} body .stat,body .club-card,body .pending-card,body .empty-state{background:#0b1511!important;color:#f1e7cf!important;border-color:rgba(199,155,89,.22)!important} body .nav a,body .hero-copy,body .section-note{color:#aaa18f!important}
+
+/* Shared primary navigation */
+.nav-links{display:flex;align-items:center;gap:30px}
+.nav-links a{position:relative;padding:33px 0 30px;border-radius:0;color:var(--muted);font:700 11px Arial,Helvetica,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.nav-links a:hover,.nav-links a.active{background:transparent;color:var(--gold-soft)}
+.nav-links a.active::after,.nav-links a:hover::after{content:"";position:absolute;left:0;right:0;bottom:20px;height:1px;background:var(--gold-soft)}
 </style>
 </head>
 
@@ -846,27 +852,12 @@ html body{background:#050b09!important;color:#f1e7cf!important} body .topbar{bac
 
   </a>
 
-  <nav class="nav">
-
-    <a href="dashboard.html">
-      Home
-    </a>
-
-    <a href="discover.html">
-      Discover
-    </a>
-
-    <a
-      class="active"
-      href="clubs.html"
-    >
-      Clubs
-    </a>
-
-    <a href="marketplace.html">
-      Marketplace
-    </a>
-
+  <nav class="nav-links">
+    <a href="dashboard.html">Home</a>
+    <a href="discover.html">Discover</a>
+    <a class="active" href="clubs.html">Clubs</a>
+    <a href="beta-reading.html">Beta</a>
+    <a href="marketplace.html">Marketplace</a>
   </nav>
 
   <div class="nav-right">
