@@ -685,7 +685,10 @@ function getParagraphStyleId(
 
   const children =
     Array.from(
-      paragraph.children
+      paragraph.childNodes
+    ).filter(
+      (node): node is Element =>
+        node.nodeType === 1
     );
 
 
@@ -706,7 +709,10 @@ function getParagraphStyleId(
 
   const propertyChildren =
     Array.from(
-      paragraphProperties.children
+      paragraphProperties.childNodes
+    ).filter(
+      (node): node is Element =>
+        node.nodeType === 1
     );
 
 
