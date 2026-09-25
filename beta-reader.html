@@ -3343,7 +3343,7 @@ function updateProgressDisplay(){
   const savedProgress =
     Number(
       readingPosition
-        ?.overall_progress || 0
+        ?.progress_percent || 0
     );
 
   const progress =
@@ -3416,11 +3416,15 @@ async function saveReadingPosition(){
   const payload = {
     assignment_id:
       assignment.id,
+    manuscript_id:
+      manuscript?.id || null,
     section_id:
       section.id,
     paragraph_index:
       paragraphIndex,
-    overall_progress:
+    character_offset:
+      0,
+    progress_percent:
       overallProgress,
     updated_at:
       new Date().toISOString()
