@@ -1419,10 +1419,16 @@ function normalizeCatalogBook(
 }
 
 async function loadBookByWorkKey(workKey){
+  const normalizedWorkKey = String(workKey || "").trim();
+  const alternateWorkKey = normalizedWorkKey.startsWith("/works/")
+    ? normalizedWorkKey.slice("/works/".length)
+    : "/works/" + normalizedWorkKey;
+
   const { data, error } = await supabaseClient
     .from("book_catalog_works")
     .select("*")
-    .eq("source_work_key", workKey)
+    .in("source_work_key", [normalizedWorkKey, alternateWorkKey])
+    .limit(1)
     .maybeSingle();
 
   if(error){
