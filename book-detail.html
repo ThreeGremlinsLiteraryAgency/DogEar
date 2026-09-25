@@ -1680,30 +1680,34 @@ function normalizeGoogleBook(
 function bookshopSearchUrl(
   book
 ){
-  let searchTerm =
-    book?.isbn13 ||
-    book?.isbn10 ||
-    "";
+  // Bookshop's documented direct affiliate format is:
+  // /a/{affiliate-id}/{ISBN-13}. Use it whenever we have a valid ISBN-13.
+  const isbn13 =
+    String(book?.isbn13 || "")
+      .replace(/[^0-9]/g, "");
 
-  if(!searchTerm){
-    searchTerm =
-      [
-        book?.title || "",
-        book?.authors?.[0] || ""
-      ]
-        .filter(Boolean)
-        .join(" ");
+  if(isbn13.length === 13){
+    return (
+      "https://bookshop.org/a/" +
+      encodeURIComponent(BOOKSHOP_AFFILIATE_ID) +
+      "/" +
+      encodeURIComponent(isbn13)
+    );
   }
+
+  // If we do not have an ISBN-13, fall back to Bookshop search rather than
+  // manufacturing a product URL that may not exist.
+  const searchTerm =
+    [
+      book?.title || "",
+      book?.authors?.[0] || ""
+    ]
+      .filter(Boolean)
+      .join(" ");
 
   return (
     "https://bookshop.org/search?keywords=" +
-    encodeURIComponent(
-      searchTerm
-    ) +
-    "&a=" +
-    encodeURIComponent(
-      BOOKSHOP_AFFILIATE_ID
-    )
+    encodeURIComponent(searchTerm)
   );
 }
 
