@@ -1633,167 +1633,101 @@ button{
 
 
 /* =========================================================
-   DAWN
+   DAWN / CLOSING CAMPFIRE
 ========================================================= */
 
 .dawn{
   position:relative;
-
-  min-height:580px;
-
+  min-height:520px;
   display:grid;
   place-items:center;
-
   overflow:hidden;
-
   text-align:center;
-
+  border-top:1px solid rgba(216,170,90,.14);
   background:
-    linear-gradient(
-      180deg,
-      #071b1a 0%,
-      #153c3c 28%,
-      #9b7963 67%,
-      #e4ad74 100%
-    );
+    radial-gradient(ellipse at 50% 112%, rgba(239,134,57,.22) 0%, rgba(239,134,57,.08) 24%, transparent 53%),
+    radial-gradient(circle at 18% 24%, rgba(216,170,90,.045) 0 1px, transparent 2px),
+    linear-gradient(180deg,#071b1a 0%,#061715 48%,#031114 100%);
+  background-size:auto,42px 42px,auto;
 }
 
 .dawn::before{
   content:"";
-
   position:absolute;
-
-  width:520px;
-  height:260px;
-
+  width:min(760px,78vw);
+  height:250px;
   left:50%;
-  bottom:-120px;
-
-  transform:
-    translateX(-50%);
-
+  bottom:-170px;
+  transform:translateX(-50%);
   border-radius:50%;
-
-  background:
-    radial-gradient(
-      ellipse,
-      #ffe3a0,
-      rgba(245,170,92,.55) 35%,
-      transparent 70%
-    );
-
-  filter:
-    blur(4px);
+  background:radial-gradient(ellipse,rgba(255,205,113,.30),rgba(239,134,57,.11) 42%,transparent 72%);
+  filter:blur(10px);
+  pointer-events:none;
 }
 
 .dawn::after{
-  content:"";
-
+  content:"✦";
   position:absolute;
-
-  left:0;
-  right:0;
-  bottom:0;
-
-  height:170px;
-
-  opacity:.65;
-
-  background:
-    linear-gradient(
-      160deg,
-      transparent 0 22%,
-      #17261e 23% 32%,
-      transparent 33%
-    ),
-    linear-gradient(
-      200deg,
-      transparent 0 29%,
-      #11231d 30% 39%,
-      transparent 40%
-    );
+  left:50%;
+  bottom:66px;
+  transform:translateX(-50%);
+  color:rgba(216,170,90,.52);
+  font-size:14px;
+  text-shadow:0 0 18px rgba(239,134,57,.32);
 }
 
 .dawn-copy{
   position:relative;
-
   z-index:3;
+  max-width:760px;
+  padding:88px 20px 108px;
+}
 
-  max-width:700px;
+.dawn .section-eyebrow{
+  margin-bottom:16px;
+  color:var(--gold);
 }
 
 .dawn-copy h2{
-  margin:
-    0 0 15px;
-
-  color:#fff0ce;
-
-  font-size:
-    clamp(
-      45px,
-      6vw,
-      74px
-    );
-
-  line-height:1;
+  margin:0 0 18px;
+  color:var(--cream);
+  font-size:clamp(46px,5.6vw,76px);
+  line-height:1.02;
   font-weight:400;
-
-  text-shadow:
-    0 3px 15px
-    rgba(0,0,0,.35);
+  letter-spacing:-.035em;
+  text-shadow:0 3px 18px rgba(0,0,0,.45);
 }
 
 .dawn-copy p{
-  max-width:580px;
-
-  margin:
-    0 auto 27px;
-
-  color:#f3e0c4;
-
+  max-width:600px;
+  margin:0 auto 31px;
+  color:#cbbfa9;
   font-size:17px;
-
-  text-shadow:
-    0 2px 8px
-    rgba(0,0,0,.35);
+  line-height:1.65;
+  text-shadow:none;
 }
 
 .dawn-button{
   display:inline-flex;
-
-  padding:
-    13px 23px;
-
-  border:
-    1px solid
-    rgba(255,231,182,.78);
-
-  border-radius:999px;
-
-  color:#26190c;
-
-  background:
-    linear-gradient(
-      180deg,
-      #f7d68d,
-      #e6b460
-    );
-
-  box-shadow:
-    0 10px 30px
-    rgba(0,0,0,.23);
-
-  font-family:
-    Arial,
-    sans-serif;
-
+  align-items:center;
+  justify-content:center;
+  padding:13px 23px;
+  border:1px solid rgba(240,202,123,.65);
+  border-radius:10px;
+  color:#211508;
+  background:linear-gradient(180deg,#f0ca7b,#d8aa5a);
+  box-shadow:0 10px 28px rgba(0,0,0,.28);
+  font-family:Arial,sans-serif;
   font-size:10px;
-
   font-weight:bold;
-
   text-transform:uppercase;
+  letter-spacing:.09em;
+  transition:transform .2s ease,box-shadow .2s ease;
+}
 
-  letter-spacing:.08em;
+.dawn-button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 34px rgba(0,0,0,.36);
 }
 
 
