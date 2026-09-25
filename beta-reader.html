@@ -3367,10 +3367,13 @@ function updateProgressDisplay(){
     );
 
   const progress =
-    Math.max(
-      liveProgress,
-      savedProgress
-    );
+    assignment?.status === "completed"
+      ? 100
+      : Math.max(
+          liveProgress,
+          savedProgress,
+          Number(assignment?.progress_percent || 0)
+        );
 
   $("progressBar")
     .style.width =
@@ -3431,7 +3434,13 @@ async function saveReadingPosition(){
     getVisibleParagraphIndex();
 
   const overallProgress =
-    calculateCurrentProgress();
+    assignment?.status === "completed"
+      ? 100
+      : Math.max(
+          calculateCurrentProgress(),
+          Number(readingPosition?.progress_percent || 0),
+          Number(assignment?.progress_percent || 0)
+        );
 
   const payload = {
     assignment_id:
