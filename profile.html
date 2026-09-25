@@ -1605,6 +1605,26 @@ textarea{
 
               </div>
 
+              <div class="doll-control">
+                <div class="doll-control-label">Facial Hair <span class="doll-control-value" id="facialHairValue"></span></div>
+                <div class="doll-slider"><button class="doll-arrow" type="button" data-cycle="facialHair" data-direction="-1">‹</button><div class="doll-track" id="facialHairTrack"></div><button class="doll-arrow" type="button" data-cycle="facialHair" data-direction="1">›</button></div>
+              </div>
+
+              <div class="doll-control">
+                <div class="doll-control-label">Expression <span class="doll-control-value" id="expressionValue"></span></div>
+                <div class="doll-slider"><button class="doll-arrow" type="button" data-cycle="expression" data-direction="-1">‹</button><div class="doll-track" id="expressionTrack"></div><button class="doll-arrow" type="button" data-cycle="expression" data-direction="1">›</button></div>
+              </div>
+
+              <div class="doll-control">
+                <div class="doll-control-label">Body <span class="doll-control-value" id="bodyValue"></span></div>
+                <div class="doll-slider"><button class="doll-arrow" type="button" data-cycle="body" data-direction="-1">‹</button><div class="doll-track" id="bodyTrack"></div><button class="doll-arrow" type="button" data-cycle="body" data-direction="1">›</button></div>
+              </div>
+
+              <div class="doll-control">
+                <div class="doll-control-label">Background <span class="doll-control-value" id="backgroundValue"></span></div>
+                <div class="doll-slider"><button class="doll-arrow" type="button" data-cycle="background" data-direction="-1">‹</button><div class="doll-track" id="backgroundTrack"></div><button class="doll-arrow" type="button" data-cycle="background" data-direction="1">›</button></div>
+              </div>
+
               <div class="doll-actions">
 
                 <button
@@ -1779,7 +1799,9 @@ const dollOptions = {
     "Round",
     "Soft",
     "Long",
-    "Square"
+    "Square",
+    "Heart",
+    "Diamond"
   ],
 
   skin:[
@@ -1789,14 +1811,20 @@ const dollOptions = {
     "#a96f4d",
     "#815039",
     "#603a2d",
-    "#42291f"
+    "#42291f",
+    "#f8dfcc",
+    "#d9a47d",
+    "#b87855",
+    "#704331"
   ],
 
   eyes:[
     "Round",
     "Happy",
     "Sleepy",
-    "Sharp"
+    "Sharp",
+    "Wide",
+    "Almond"
   ],
 
   eyeColor:[
@@ -1805,7 +1833,10 @@ const dollOptions = {
     "#44705d",
     "#52718d",
     "#73704b",
-    "#252525"
+    "#252525",
+    "#6b4d8a",
+    "#8b633f",
+    "#3d8b92"
   ],
 
   hair:[
@@ -1814,7 +1845,13 @@ const dollOptions = {
     "Curly",
     "Long",
     "Mohawk",
-    "Buzz"
+    "Buzz",
+    "Bob",
+    "Ponytail",
+    "Braids",
+    "Undercut",
+    "Bun",
+    "Locs"
   ],
 
   hairColor:[
@@ -1825,14 +1862,23 @@ const dollOptions = {
     "#d2b07b",
     "#9f9f9f",
     "#f1e7cf",
-    "#71333f"
+    "#71333f",
+    "#315d73",
+    "#6d3f85",
+    "#b85d78",
+    "#2f6d58"
   ],
 
   top:[
     "Tee",
     "Sweater",
     "Hoodie",
-    "Jacket"
+    "Jacket",
+    "Tank",
+    "Button Up",
+    "Turtleneck",
+    "Overalls",
+    "Vest"
   ],
 
   topColor:[
@@ -1843,7 +1889,11 @@ const dollOptions = {
     "#344c66",
     "#6c3434",
     "#c79b59",
-    "#292929"
+    "#292929",
+    "#b86d78",
+    "#587d72",
+    "#8b6b3f",
+    "#ded4c2"
   ],
 
   accessory:[
@@ -1851,7 +1901,47 @@ const dollOptions = {
     "Glasses",
     "Round Glasses",
     "Book",
-    "Earrings"
+    "Earrings",
+    "Cat Ears",
+    "Horns",
+    "Beanie",
+    "Flower Crown",
+    "Nose Ring",
+    "Freckles",
+    "Scar",
+    "Pointed Ears"
+  ],
+
+  facialHair:[
+    "None",
+    "Stubble",
+    "Mustache",
+    "Goatee",
+    "Short Beard",
+    "Full Beard"
+  ],
+
+  expression:[
+    "Smile",
+    "Grin",
+    "Neutral",
+    "Smirk",
+    "Frown"
+  ],
+
+  body:[
+    "Standard",
+    "Slim",
+    "Broad",
+    "Soft"
+  ],
+
+  background:[
+    "Forest",
+    "Midnight",
+    "Parchment",
+    "Ember",
+    "Plum"
   ]
 
 };
@@ -1870,7 +1960,11 @@ const defaultDoll = {
   top:0,
   topColor:0,
 
-  accessory:0
+  accessory:0,
+  facialHair:0,
+  expression:0,
+  body:0,
+  background:0
 
 };
 
@@ -2337,6 +2431,15 @@ function updateDollControls(){
     "accessoryTrack"
   ).textContent =
     accessory;
+
+  const extraControls = ["facialHair","expression","body","background"];
+  extraControls.forEach(key => {
+    const value = optionValue(key);
+    const valueEl = document.getElementById(key + "Value");
+    const trackEl = document.getElementById(key + "Track");
+    if(valueEl) valueEl.textContent = value;
+    if(trackEl) trackEl.textContent = value;
+  });
 
   updateSwatchStates(
     "skin",
@@ -3091,6 +3194,29 @@ function getAccessorySvg(){
 
 }
 
+
+function getBackgroundColor(){
+  const bg=optionValue("background");
+  return ({Midnight:"#111827",Parchment:"#8b7554",Ember:"#5b2d22",Plum:"#3d2945",Forest:"#18221b"})[bg] || "#18221b";
+}
+function getMouthSvg(){
+  const e=optionValue("expression");
+  if(e==="Grin") return '<path d="M137 180 Q160 207 183 180 Q160 195 137 180Z" fill="#f1e7cf" stroke="#713f3f" stroke-width="3"/>';
+  if(e==="Neutral") return '<path d="M142 187 H178" fill="none" stroke="#713f3f" stroke-width="4" stroke-linecap="round"/>';
+  if(e==="Smirk") return '<path d="M141 188 Q162 196 181 181" fill="none" stroke="#713f3f" stroke-width="4" stroke-linecap="round"/>';
+  if(e==="Frown") return '<path d="M140 194 Q160 178 180 194" fill="none" stroke="#713f3f" stroke-width="4" stroke-linecap="round"/>';
+  return '<path d="M139 181 Q160 196 181 181" fill="none" stroke="#713f3f" stroke-width="4" stroke-linecap="round"/>';
+}
+function getFacialHairSvg(){
+  const f=optionValue("facialHair"), hc=escapeXml(optionValue("hairColor"));
+  if(f==="Stubble") return '<g fill="'+hc+'" opacity=".45"><circle cx="145" cy="190" r="2"/><circle cx="154" cy="196" r="2"/><circle cx="165" cy="196" r="2"/><circle cx="175" cy="190" r="2"/></g>';
+  if(f==="Mustache") return '<path d="M137 174 Q150 165 160 174 Q170 165 183 174 Q173 185 160 178 Q147 185 137 174Z" fill="'+hc+'"/>';
+  if(f==="Goatee") return '<path d="M148 177 Q160 185 172 177 L168 207 Q160 217 152 207Z" fill="'+hc+'" opacity=".9"/>';
+  if(f==="Short Beard") return '<path d="M113 169 Q121 213 160 224 Q199 213 207 169 Q195 205 160 211 Q125 205 113 169Z" fill="'+hc+'" opacity=".85"/>';
+  if(f==="Full Beard") return '<path d="M108 160 Q111 219 160 239 Q209 219 212 160 Q201 211 160 222 Q119 211 108 160Z" fill="'+hc+'"/>';
+  return "";
+}
+
 function getAvatarSvg(){
 
   const skin =
@@ -3124,7 +3250,7 @@ function getAvatarSvg(){
 
           <stop
             offset="100%"
-            stop-color="#18221b"
+            stop-color="${getBackgroundColor()}"
           />
 
         </radialGradient>
@@ -3174,16 +3300,9 @@ function getAvatarSvg(){
         stroke-linecap="round"
       />
 
-      <path
-        d="
-          M139 181
-          Q160 196 181 181
-        "
-        fill="none"
-        stroke="#713f3f"
-        stroke-width="4"
-        stroke-linecap="round"
-      />
+      ${getMouthSvg()}
+
+      ${getFacialHairSvg()}
 
       ${getAccessorySvg()}
 
