@@ -1680,23 +1680,9 @@ function normalizeGoogleBook(
 function bookshopSearchUrl(
   book
 ){
-  // Bookshop's documented direct affiliate format is:
-  // /a/{affiliate-id}/{ISBN-13}. Use it whenever we have a valid ISBN-13.
-  const isbn13 =
-    String(book?.isbn13 || "")
-      .replace(/[^0-9]/g, "");
-
-  if(isbn13.length === 13){
-    return (
-      "https://bookshop.org/a/" +
-      encodeURIComponent(BOOKSHOP_AFFILIATE_ID) +
-      "/" +
-      encodeURIComponent(isbn13)
-    );
-  }
-
-  // If we do not have an ISBN-13, fall back to Bookshop search rather than
-  // manufacturing a product URL that may not exist.
+  // A direct /a/{affiliate}/{ISBN} URL returns 404 when Bookshop does not
+  // stock that exact edition. Search by title + author instead so readers
+  // can still reach Bookshop's matching editions.
   const searchTerm =
     [
       book?.title || "",
