@@ -1107,6 +1107,8 @@ textarea{
   display:none !important;
 }
 
+
+#readingSearchInput{appearance:none!important;-webkit-appearance:none!important;background:#08110e!important;background-image:none!important;color:#f1e7cf!important;border:1px solid rgba(199,155,89,.42)!important;border-radius:12px!important;box-shadow:inset 0 0 0 1000px #08110e!important;-webkit-text-fill-color:#f1e7cf!important;caret-color:#dfbd7e!important;padding:14px 16px!important}#readingSearchInput::placeholder{color:#756e61!important;-webkit-text-fill-color:#756e61!important}#readingSearchInput:focus{outline:none!important;border-color:#c79b59!important;box-shadow:inset 0 0 0 1000px #08110e,0 0 0 3px rgba(199,155,89,.09)!important}
 </style>
 <link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927c">
 </head>
@@ -1828,6 +1830,15 @@ const dollStage =
   document.getElementById(
     "dollStage"
   );
+const readingSearchInput=document.getElementById("readingSearchInput");
+const readingSearchButton=document.getElementById("readingSearchButton");
+const readingResults=document.getElementById("readingResults");
+const currentBook=document.getElementById("currentBook");
+const currentBookCover=document.getElementById("currentBookCover");
+const currentBookTitle=document.getElementById("currentBookTitle");
+const currentBookAuthors=document.getElementById("currentBookAuthors");
+const currentBookReaders=document.getElementById("currentBookReaders");
+const clearCurrentBook=document.getElementById("clearCurrentBook");
 
 /* =========================================================
    SESSION STATE
@@ -3814,6 +3825,38 @@ async function requireUser(){
 }
 
 /* =========================================================
+   CURRENTLY READING
+========================================================= */
+function readingEsc(v){return String(v??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]))}
+function renderCurrentReading(row){
+ if(!row){currentBook.classList.remove("show");return}
+ currentBook.classList.add("show");currentBookTitle.textContent=row.title||"Untitled";currentBookAuthors.textContent=(row.author_names||[]).join(", ");
+ const cover=row.cover_url||(row.cover_id?"https://covers.openlibrary.org/b/id/"+row.cover_id+"-M.jpg":"");
+ currentBookCover.src=cover;currentBookCover.style.display=cover?"block":"none";currentBookCover.alt=(row.title||"Book")+" cover";
+ const n=Number(row.other_readers||0);currentBookReaders.textContent=n+" "+(n===1?"Gremlin is":"Gremlins are")+" also reading this book.";
+}
+async function loadCurrentReading(){const {data,error}=await supabaseClient.rpc("get_my_currently_reading");if(error)throw error;renderCurrentReading(Array.isArray(data)?data[0]:data)}
+async function setCurrentReading(workId,bookId){const {error}=await supabaseClient.rpc("set_my_currently_reading",{new_work_id:workId||null,new_book_id:bookId||null});if(error)throw error;readingResults.classList.remove("show");readingSearchInput.value="";await loadCurrentReading()}
+function showReadingResults(rows){
+ readingResults.innerHTML=rows.length?rows.map(row=>'<button class="reading-result" type="button" data-book-id="'+row.id+'" data-work-id="'+readingEsc(row.catalog_work_id||"")+'">'+(row.cover_url?'<img class="reading-cover" src="'+readingEsc(row.cover_url)+'" alt="'+readingEsc(row.title)+' cover">':'<span class="reading-cover"></span>')+'<span><strong>'+readingEsc(row.title)+'</strong><span>'+readingEsc((row.authors||[]).join(", "))+'</span></span></button>').join(""):'<div class="reading-result"><span></span><span>No books found.</span></div>';
+ readingResults.classList.add("show");
+}
+async function searchReadingBooks(){
+ const q=readingSearchInput.value.trim();if(q.length<2){showReadingResults([]);return}
+ readingSearchButton.disabled=true;readingSearchButton.textContent="Searching…";
+ try{
+  const safe=q.replace(/[%_]/g,"");
+  const {data,error}=await supabaseClient.from("books").select("id,title,authors,cover_url,catalog_work_id").ilike("title","%"+safe+"%").order("title").limit(12);
+  if(error)throw error;showReadingResults(data||[]);
+ }catch(error){console.error("Book search:",error);readingResults.innerHTML='<div class="reading-result"><span></span><span>Search failed. Please try again.</span></div>';readingResults.classList.add("show")}
+ finally{readingSearchButton.disabled=false;readingSearchButton.textContent="Find Book"}
+}
+readingSearchButton.addEventListener("click",searchReadingBooks);
+readingSearchInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchReadingBooks()}});
+readingResults.addEventListener("click",async e=>{const b=e.target.closest("[data-book-id]");if(!b)return;try{await setCurrentReading(b.dataset.workId||null,Number(b.dataset.bookId))}catch(error){console.error(error);showMessage(error.message||"Could not save current book.","error")}});
+clearCurrentBook.addEventListener("click",async()=>{try{await setCurrentReading(null,null)}catch(error){console.error(error)}});
+
+/* =========================================================
    LOAD SAVED PROFILE
 ========================================================= */
 
@@ -4456,5 +4499,6 @@ initialize();
 
 </script>
 
-<script src="assets/paper-gremlin-nav.js?v=20260927c"></script>\n</body>
+<script src="assets/paper-gremlin-nav.js?v=20260927d"></script>
+</body>
 </html>
