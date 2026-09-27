@@ -1919,6 +1919,7 @@ async function searchGoogleBooks(query){
   if(clean.length<2){
     ++searchSequence;
     resetGoogleSearch();
+    catalogBooks=[];
     searchStatus.textContent="";
     return;
   }
@@ -2129,7 +2130,9 @@ async function runSearch(){
 
   applyDiscoveryFilters();
 
+  searchStatus.textContent="Searching Paper Gremlin catalog…";
   await searchCatalog(currentSearch);
+  searchStatus.textContent=catalogBooks.length?`Found ${catalogBooks.length} catalog match${catalogBooks.length===1?"":"es"}.`:"No catalog matches found.";
 
   applyDiscoveryFilters();
 }
