@@ -53,7 +53,7 @@ async function addCatalogBook(b){
   if(!b)return;
   const isbns=Array.isArray(b.isbn)?b.isbn.map(v=>String(v).replace(/[^0-9Xx]/g,"")):[];
   const isbn13=isbns.find(v=>v.length===13)||null,isbn10=isbns.find(v=>v.length===10)||null;
-  const key=String(b.source_work_key||"").replace(/^\\/works\\//,"");
+  const key=String(b.source_work_key||"").replace(/^\/works\//,"");
   const cover=b.cover_id?"https://covers.openlibrary.org/b/id/"+encodeURIComponent(b.cover_id)+"-L.jpg":null;
   $("results").innerHTML='<p class="sub">Adding '+esc(b.title||"book")+'…</p>';
   const {data:id,error}=await sb.rpc("get_or_create_book",{new_isbn_13:isbn13,new_isbn_10:isbn10,new_google_books_id:key?"OL-"+key:null,new_title:b.title||"Untitled",new_subtitle:b.subtitle||null,new_authors:Array.isArray(b.author_names)?b.author_names:[],new_publisher:null,new_published_date:b.first_publish_year?String(b.first_publish_year):null,new_description:null,new_cover_url:cover});
