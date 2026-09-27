@@ -1022,7 +1022,7 @@ html body{background:#050b09!important;color:#f1e7cf!important} body .topbar{bac
 <script>
 const SUPABASE_URL="https://nrtutxjznkfvvbmaagum.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
-const GOOGLE_BOOKS_API_KEY="AIzaSyDoOi5oVWrsqZppnTp8Lii8DYKOOq0o9dk";
+const GOOGLE_BOOKS_API_KEY="";
 const GOOGLE_PAGE_SIZE=40;
 
 const supabaseClient=window.supabase.createClient(
@@ -1033,6 +1033,7 @@ const supabaseClient=window.supabase.createClient(
 let currentUser=null;
 let localBooks=[];
 let googleBooks=[];
+let catalogBooks=[];
 let allClubs=[];
 let allPeople=[];
 let currentTab="all";
@@ -1101,17 +1102,13 @@ function bookTitle(book){
 }
 
 function bookAuthor(book){
-  if(Array.isArray(book?.authors)){
-    return book.authors.join(", ")||"Unknown author";
-  }
-
+  if(Array.isArray(book?.authors)) return book.authors.join(", ")||"Unknown author";
+  if(Array.isArray(book?.author_names)) return book.author_names.join(", ")||"Unknown author";
   return book?.author||"Unknown author";
 }
 
 function bookCover(book){
-  return book?.cover_url||
-    book?.thumbnail||
-    "";
+  return book?.cover_url||book?.thumbnail||(book?.cover_id?"https://covers.openlibrary.org/b/id/"+encodeURIComponent(book.cover_id)+"-M.jpg":"");
 }
 
 function bookRating(book){
@@ -1127,6 +1124,7 @@ function bookRating(book){
 }
 
 function bookDetailsUrl(book){
+  if(book?._source==="catalog"&&book.source_work_key){return "book-detail.html?"+new URLSearchParams({work_key:String(book.source_work_key),return:"discover.html"}).toString();}
   if(
     book?._source==="google" &&
     book.google_books_id
@@ -1351,7 +1349,7 @@ function renderBooks(books){
       const cover=bookCover(book);
       const rating=bookRating(book);
       const url=bookDetailsUrl(book);
-      const google=book._source==="google";
+      const google=book._source==="google",catalog=book._source==="catalog";
 
       return `
         <article
@@ -1380,7 +1378,7 @@ function renderBooks(books){
             }
 
             <div class="book-source">
-              ${google?"Google Books":"Paper Gremlin"}
+              ${catalog?"Paper Gremlin Catalog":google?"Google Books":"Paper Gremlin"}
             </div>
           </div>
 
@@ -1680,6 +1678,8 @@ function applyDiscoveryFilters(){
         book
       );
     }
+
+    for(const book of catalogBooks){const key=bookIdentity(book);if(!localMap.has(key))localMap.set(key,book);}
 
     for(const book of googleBooks){
       const key=bookIdentity(book);
@@ -2086,6 +2086,8 @@ async function loadMoreGoogleBooks(){
   }
 }
 
+async function searchCatalog(query){catalogBooks=[];if(!query)return;const safe=query.replace(/[%_,]/g," ").trim();if(!safe)return;const {data,error}=await supabaseClient.from("book_catalog_works").select("id,source_work_key,title,subtitle,author_names,cover_id,first_publish_year,isbn,subjects").or("title.ilike.%"+safe+"%,search_text.ilike.%"+safe+"%").limit(80);if(error){console.warn("Catalog search:",error);return}catalogBooks=(data||[]).map(x=>({...x,_source:"catalog"}));}
+
 async function runSearch(){
   currentSearch=
     discoverSearch.value
@@ -2127,9 +2129,7 @@ async function runSearch(){
 
   applyDiscoveryFilters();
 
-  await searchGoogleBooks(
-    currentSearch
-  );
+  await searchCatalog(currentSearch);
 
   applyDiscoveryFilters();
 }
