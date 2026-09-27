@@ -1226,6 +1226,17 @@ textarea{
 
 </section>
 
+<section class="current-reading" aria-labelledby="currentlyReadingTitle">
+  <div class="current-reading-head"><div><div class="eyebrow">On your nightstand</div><h2 id="currentlyReadingTitle">Currently Reading</h2><p>Pick the book you’re reading now. This becomes the default book for your DogEars.</p></div></div>
+  <div class="reading-search"><input id="readingSearchInput" type="search" placeholder="Search the catalog by title or author…" autocomplete="off"><button id="readingSearchButton" type="button">Find Book</button></div>
+  <div class="reading-results" id="readingResults"></div>
+  <div class="current-book" id="currentBook">
+    <img id="currentBookCover" alt="">
+    <div><h3 id="currentBookTitle"></h3><div class="authors" id="currentBookAuthors"></div><div class="reader-count" id="currentBookReaders"></div></div>
+    <button class="reading-clear" id="clearCurrentBook" type="button">Finished / Clear</button>
+  </div>
+</section>
+
 <div class="profile-layout">
 
 <aside class="card preview-card">
@@ -4411,7 +4422,7 @@ async function initialize(){
       Paper Doll configuration from Supabase.
     */
 
-    await loadSavedProfile();
+    await Promise.all([loadSavedProfile(),loadCurrentReading()]);
 
   }
 
