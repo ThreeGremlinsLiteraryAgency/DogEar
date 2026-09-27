@@ -431,6 +431,8 @@ h1{
   white-space:pre-wrap;
 }
 
+.profile-badges{margin-top:18px;padding-top:17px;border-top:1px solid var(--line)}.profile-badges-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;color:var(--gold);font:800 9px Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}.profile-badges-head a{color:var(--gold-soft);text-decoration:none}.profile-badge-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.mini-badge{width:38px;height:38px;display:grid;place-items:center;border:1px solid rgba(199,155,89,.35);border-radius:50%;background:#162019;font-size:17px}.no-badges{color:#777166;font:11px Arial,sans-serif;line-height:1.4;text-align:center}
+
 .preview-placeholder{
   color:#706b61;
 
@@ -1158,6 +1160,8 @@ textarea{
 
     <a class="nav-link" href="reading-tracker.html">Tracker</a>
 
+    <a class="nav-link" href="badges.html">Badges</a>
+
     <a
       class="nav-link"
       href="marketplace.html"
@@ -1260,6 +1264,8 @@ textarea{
   >
     Your bio will appear here.
   </p>
+
+  <div class="profile-badges"><div class="profile-badges-head"><span>Badges</span><a href="badges.html">View all →</a></div><div class="profile-badge-row" id="profileBadges"><span class="no-badges">Your earned badges will appear here.</span></div></div>
 
 </aside>
 
@@ -3799,7 +3805,11 @@ async function requireUser(){
    LOAD SAVED PROFILE
 ========================================================= */
 
+async function loadProfileBadges(){const {data,error}=await supabaseClient.from("user_badges").select("earned_at,badges(id,name,icon)").eq("user_id",currentUser.id).order("earned_at",{ascending:false}).limit(6);const box=document.getElementById("profileBadges");if(error||!data?.length){box.innerHTML='<span class="no-badges">Your earned badges will appear here.</span>';return}box.innerHTML=data.map(x=>'<span class="mini-badge" title="'+String(x.badges?.name||"Badge").replace(/"/g,"&quot;")+'">'+(x.badges?.icon||"✦")+'</span>').join("")}
+
 async function loadSavedProfile(){
+
+  loadProfileBadges();
 
   const [
     profileResult,
