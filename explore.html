@@ -60,7 +60,7 @@ linear-gradient(135deg,#102c27,#091814 55%,#301d0f)}
 <div class="eyebrow">Get to know Paper Gremlin.</div>
 <h1>A Community<br>Built for Readers</h1>
 <p>Paper Gremlin is a place to find stories, remember the moments that mattered, read alongside other people, and make your reading life feel like something you actually lived—not a list you checked off.</p>
-<div class="hero-actions"><a class="primary" href="auth.html">Create an account →</a><a href="discover.html">Explore books</a></div>
+<div class="hero-actions"><a class="primary" id="accountCta" href="auth.html">Create an account →</a><a href="discover.html">Explore books</a></div>
 </div>
 </section>
 <section class="features">
@@ -74,6 +74,33 @@ linear-gradient(135deg,#102c27,#091814 55%,#301d0f)}
 </section>
 <nav class="more-grid" aria-label="More Paper Gremlin features"><a href="badges.html">Earn Badges</a><a href="beta-reading.html">Beta Reading</a><a href="marketplace.html">Marketplace</a><a href="profile.html">Your Profile</a></nav>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(async()=>{
+  const accountCta=document.getElementById("accountCta");
+  if(!accountCta||!window.supabase)return;
+  try{
+    const client=supabase.createClient(
+      "https://nrtutxjznkfvvbmaagum.supabase.co",
+      "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu"
+    );
+    const {data}=await client.auth.getSession();
+    const apply=(session)=>{
+      if(session?.user){
+        accountCta.textContent="My Dashboard →";
+        accountCta.href="dashboard.html";
+      }else{
+        accountCta.textContent="Create an account →";
+        accountCta.href="auth.html";
+      }
+    };
+    apply(data?.session);
+    client.auth.onAuthStateChange((_event,session)=>apply(session));
+  }catch(error){
+    console.warn("Explore auth CTA:",error);
+  }
+})();
+</script>
 <script src="assets/paper-gremlin-nav.js?v=20260927"></script>
 </body>
 </html>
