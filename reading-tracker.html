@@ -69,4 +69,4 @@ async function addCatalogBook(b){
 async function addBook(bookId){const {error}=await sb.from("reading_calendar_entries").insert({user_id:user.id,book_id:bookId,reading_date:selectedDate});if(error&&error.code!=="23505"){alert(error.message);return}$("modal").classList.remove("show");await load()}
 $("search").oninput=e=>{clearTimeout(searchTimer);const q=e.target.value;searchTimer=setTimeout(()=>searchBooks(q),300)};$("close").onclick=()=>$("modal").classList.remove("show");$("bookClose").onclick=()=>$("bookModal").classList.remove("show");$("bookModal").onclick=e=>{if(e.target===$("bookModal"))$("bookModal").classList.remove("show")};$("modal").onclick=e=>{if(e.target===$("modal"))$("modal").classList.remove("show")};
 $("prev").onclick=async()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);await load()};$("next").onclick=async()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);await load()};$("today").onclick=async()=>{view=new Date();await load()};init();
-</script></body></html>
+</script><script src="assets/paper-gremlin-nav.js?v=20260927"></script>\n</body></html>
