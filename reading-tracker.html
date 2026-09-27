@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reading Tracker · Paper Gremlin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#07110e;--panel:#0c1814;--cream:#f1e7cf;--gold:#d8aa5a;--muted:#a99e89;--line:rgba(216,170,90,.2)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 0,#13251d 0,#07110e 45%);color:var(--cream);font-family:Georgia,serif;min-height:100vh}
+.top{height:88px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 5vw;gap:28px;background:rgba(5,14,11,.9)}
+.brand{display:flex;align-items:center;gap:12px;color:var(--cream);text-decoration:none;font-weight:700}.mark{width:39px;height:39px;border:1px solid rgba(239,198,113,.68);border-radius:50%;display:grid;place-items:center;color:#efc671;background:rgba(9,25,22,.58)}
+nav{margin-left:auto;display:flex;gap:24px}nav a{color:#d9cfba;text-decoration:none;font:700 11px Arial;letter-spacing:.1em;text-transform:uppercase}
+main{width:min(1450px,94vw);margin:42px auto 80px}.kicker{font:700 11px Arial;letter-spacing:.18em;color:var(--gold);text-transform:uppercase}
+h1{font-size:clamp(38px,5vw,70px);margin:8px 0 6px}.sub{color:var(--muted);font-size:17px}
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin:34px 0 18px;gap:14px}.month{font-size:28px}.buttons{display:flex;gap:8px}button{border:1px solid var(--line);background:#102019;color:var(--cream);padding:10px 14px;border-radius:8px;cursor:pointer}button:hover{border-color:var(--gold)}
+.week,.calendar{display:grid;grid-template-columns:repeat(7,1fr)}.week div{padding:10px;color:var(--gold);font:700 10px Arial;letter-spacing:.12em;text-transform:uppercase;text-align:center}
+.day{min-height:155px;border:1px solid var(--line);padding:9px;background:rgba(12,24,20,.72);position:relative}.day.out{opacity:.3}.day.today{box-shadow:inset 0 0 0 1px var(--gold)}.num{font:700 12px Arial;color:var(--muted);margin-bottom:8px}.covers{display:flex;flex-wrap:wrap;gap:6px}.cover{width:45px;height:68px;object-fit:cover;border-radius:3px;box-shadow:0 5px 12px #0008;cursor:pointer}.placeholder{width:45px;height:68px;border:1px solid var(--line);display:grid;place-items:center;font-size:9px;text-align:center;padding:3px}.add{position:absolute;right:7px;top:6px;background:none;border:0;color:var(--gold);font-size:20px;padding:0}.modal{position:fixed;inset:0;background:#000b;display:none;place-items:center;padding:20px;z-index:5}.modal.show{display:grid}.box{width:min(620px,96vw);max-height:80vh;overflow:auto;background:#0c1814;border:1px solid var(--line);padding:24px}.box input{width:100%;padding:12px;background:#07110e;border:1px solid var(--line);color:var(--cream);margin:12px 0}.result{display:flex;gap:12px;align-items:center;padding:10px;border-top:1px solid var(--line);cursor:pointer}.result img{width:42px;height:62px;object-fit:cover}.result small{color:var(--muted)}
+@media(max-width:800px){nav{display:none}.day{min-height:100px;padding:5px}.cover,.placeholder{width:32px;height:48px}.month{font-size:22px}}
+</style></head>
+<body>
+<header class="top"><a class="brand" href="index.html"><span class="mark">✦</span><span>Paper Gremlin</span></a><nav><a href="dashboard.html">Home</a><a href="discover.html">Discover</a><a href="clubs.html">Clubs</a><a href="beta-reading.html">Beta</a><a href="marketplace.html">Marketplace</a></nav></header>
+<main><div class="kicker">Your Reading Life</div><h1>Reading Tracker</h1><div class="sub">A month in books. Add a cover to every day you read.</div>
+<div class="toolbar"><div class="buttons"><button id="prev">←</button><button id="today">Today</button><button id="next">→</button></div><div class="month" id="month"></div></div>
+<div class="week"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div><div class="calendar" id="cal"></div></main>
+<div class="modal" id="modal"><div class="box"><button id="close" style="float:right">×</button><div class="kicker">Add to reading day</div><h2 id="dateTitle"></h2><input id="search" placeholder="Search your saved books…"><div id="results"></div></div></div>
+<script>
+const S="https://nrtutxjznkfvvbmaagum.supabase.co",K="sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu",sb=supabase.createClient(S,K);
+let user,view=new Date(),selectedDate="",entries=[];
+const $=id=>document.getElementById(id),iso=d=>{const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");return y+"-"+m+"-"+day};
+async function init(){const {data:{user:u}}=await sb.auth.getUser();if(!u){location.href="auth.html";return}user=u;await load()}
+async function load(){const start=new Date(view.getFullYear(),view.getMonth(),1),end=new Date(view.getFullYear(),view.getMonth()+1,0);
+const {data,error}=await sb.from("reading_calendar_entries").select("id,reading_date,book_id,books(id,title,cover_url)").gte("reading_date",iso(start)).lte("reading_date",iso(end)).order("reading_date");if(error)console.error(error);entries=data||[];render()}
+function render(){$("month").textContent=view.toLocaleDateString(undefined,{month:"long",year:"numeric"});const first=new Date(view.getFullYear(),view.getMonth(),1),last=new Date(view.getFullYear(),view.getMonth()+1,0),cells=[];for(let i=0;i<first.getDay();i++)cells.push(null);for(let d=1;d<=last.getDate();d++)cells.push(new Date(view.getFullYear(),view.getMonth(),d));while(cells.length%7)cells.push(null);
+$("cal").innerHTML=cells.map(d=>{if(!d)return '<div class="day out"></div>';const key=iso(d),books=entries.filter(e=>e.reading_date===key),today=key===iso(new Date());return '<div class="day '+(today?'today':'')+'"><button class="add" data-date="'+key+'">+</button><div class="num">'+d.getDate()+'</div><div class="covers">'+books.map(e=>e.books?.cover_url?'<img class="cover" src="'+e.books.cover_url+'" title="'+esc(e.books.title)+'" data-book="'+e.book_id+'">':'<div class="placeholder">'+esc(e.books?.title||"Book")+'</div>').join("")+'</div></div>'}).join("");
+document.querySelectorAll(".add").forEach(b=>b.onclick=()=>openDay(b.dataset.date));document.querySelectorAll(".cover").forEach(x=>x.onclick=()=>location.href="book-detail.html?id="+x.dataset.book)}
+function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+async function openDay(d){selectedDate=d;$("dateTitle").textContent=new Date(d+"T12:00:00").toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"});$("modal").classList.add("show");$("search").value="";await searchBooks("")}
+async function searchBooks(q){let req=sb.from("user_books").select("book_id,books(id,title,authors,cover_url)").eq("user_id",user.id).limit(60);const {data}=await req;let rows=(data||[]).filter(x=>!q||x.books?.title?.toLowerCase().includes(q.toLowerCase()));$("results").innerHTML=rows.length?rows.map(x=>'<div class="result" data-id="'+x.book_id+'">'+(x.books?.cover_url?'<img src="'+x.books.cover_url+'">':'')+'<div><b>'+esc(x.books?.title)+'</b><br><small>'+esc((x.books?.authors||[]).join(", "))+'</small></div></div>').join(""):'<p class="sub">Save books to your library first, then they will appear here.</p>';document.querySelectorAll(".result").forEach(r=>r.onclick=()=>addBook(Number(r.dataset.id)))}
+async function addBook(bookId){const {error}=await sb.from("reading_calendar_entries").insert({user_id:user.id,book_id:bookId,reading_date:selectedDate});if(error&&error.code!=="23505"){alert(error.message);return}$("modal").classList.remove("show");await load()}
+$("search").oninput=e=>searchBooks(e.target.value);$("close").onclick=()=>$("modal").classList.remove("show");$("modal").onclick=e=>{if(e.target===$("modal"))$("modal").classList.remove("show")};
+$("prev").onclick=async()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);await load()};$("next").onclick=async()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);await load()};$("today").onclick=async()=>{view=new Date();await load()};init();
+</script></body></html>
