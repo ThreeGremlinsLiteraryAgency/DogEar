@@ -3857,8 +3857,7 @@ function renderCurrentReading(row){
 }
 async function loadCurrentReading(){const {data,error}=await supabaseClient.rpc("get_my_currently_reading");if(error)throw error;renderCurrentReading(Array.isArray(data)?data[0]:data)}
 async function setCurrentReading(workId,bookId){
- const payload={currently_reading_work_id:workId||null,currently_reading_book_id:bookId||null,updated_at:new Date().toISOString()};
- const {error}=await supabaseClient.from("profiles").update(payload).eq("id",currentUser.id);
+ const {error}=await supabaseClient.rpc("set_my_currently_reading",{new_work_id:workId||null,new_book_id:bookId||null});
  if(error)throw error;
  readingResults.classList.remove("show");readingSearchInput.value="";await loadCurrentReading();
 }
@@ -4537,6 +4536,6 @@ initialize();
 
 </script>
 
-<script src="assets/paper-gremlin-nav.js?v=20260927f"></script>
+<script src="assets/paper-gremlin-nav.js?v=20260927g"></script>
 </body>
 </html>
