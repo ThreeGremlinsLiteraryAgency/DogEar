@@ -22,7 +22,7 @@ h1{font-size:clamp(38px,5vw,70px);margin:8px 0 6px}.sub{color:var(--muted);font-
 <main><div class="kicker">Your Reading Life</div><h1>Reading Tracker</h1><div class="sub">A month in books. Add a cover to every day you read.</div><div id="stats" class="sub" style="margin-top:12px;color:var(--gold)"></div>
 <div class="toolbar"><div class="buttons"><button id="prev">←</button><button id="today">Today</button><button id="next">→</button></div><div class="month" id="month"></div></div>
 <div class="week"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div><div class="calendar" id="cal"></div></main>
-<div class="modal" id="modal"><div class="box"><button id="close" style="float:right">×</button><div class="kicker">Add to reading day</div><h2 id="dateTitle"></h2><input id="search" placeholder="Search your saved books…"><div id="results"></div></div></div>
+<div class="modal" id="modal"><div class="box"><button id="close" style="float:right">×</button><div class="kicker">Add to reading day</div><h2 id="dateTitle"></h2><input id="search" placeholder="Search books or authors…"><div id="results"></div></div></div>
 <script>
 const S="https://nrtutxjznkfvvbmaagum.supabase.co",K="sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu",sb=supabase.createClient(S,K);
 let user,view=new Date(),selectedDate="",entries=[];
@@ -35,8 +35,32 @@ $("cal").innerHTML=cells.map(d=>{if(!d)return '<div class="day out"></div>';cons
 document.querySelectorAll(".add").forEach(b=>b.onclick=()=>openDay(b.dataset.date));document.querySelectorAll(".cover").forEach(x=>x.onclick=()=>location.href="book-detail.html?id="+x.dataset.book)}
 function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 async function openDay(d){selectedDate=d;$("dateTitle").textContent=new Date(d+"T12:00:00").toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"});$("modal").classList.add("show");$("search").value="";await searchBooks("")}
-async function searchBooks(q){let req=sb.from("user_books").select("book_id,books(id,title,authors,cover_url)").eq("user_id",user.id).limit(60);const {data}=await req;let rows=(data||[]).filter(x=>!q||x.books?.title?.toLowerCase().includes(q.toLowerCase()));$("results").innerHTML=rows.length?rows.map(x=>'<div class="result" data-id="'+x.book_id+'">'+(x.books?.cover_url?'<img src="'+x.books.cover_url+'">':'')+'<div><b>'+esc(x.books?.title)+'</b><br><small>'+esc((x.books?.authors||[]).join(", "))+'</small></div></div>').join(""):'<p class="sub">Save books to your library first, then they will appear here.</p>';document.querySelectorAll(".result").forEach(r=>r.onclick=()=>addBook(Number(r.dataset.id)))}
+let searchTimer=null, catalogResults=[];
+async function searchBooks(q){
+  const clean=String(q||"").trim();
+  if(!clean){$("results").innerHTML='<p class="sub">Type a title or author to search the Paper Gremlin catalog.</p>';return}
+  $("results").innerHTML='<p class="sub">Searching the shelves…</p>';
+  const {data,error}=await sb.functions.invoke("book-search",{body:{q:clean,page:1,page_size:20}});
+  if(error||data?.error){$("results").innerHTML='<p class="sub">Catalog search could not be reached. Try again.</p>';return}
+  catalogResults=Array.isArray(data?.results)?data.results:[];
+  $("results").innerHTML=catalogResults.length?catalogResults.map((b,i)=>{
+    const cover=b.cover_id?"https://covers.openlibrary.org/b/id/"+encodeURIComponent(b.cover_id)+"-M.jpg":"";
+    return '<div class="result" data-catalog="'+i+'">'+(cover?'<img src="'+cover+'">':'')+'<div><b>'+esc(b.title||"Untitled")+'</b><br><small>'+esc((b.author_names||[]).join(", "))+'</small></div></div>'
+  }).join(""):'<p class="sub">No books found. Try another title or author.</p>';
+  document.querySelectorAll("[data-catalog]").forEach(r=>r.onclick=()=>addCatalogBook(catalogResults[Number(r.dataset.catalog)]))
+}
+async function addCatalogBook(b){
+  if(!b)return;
+  const isbns=Array.isArray(b.isbn)?b.isbn.map(v=>String(v).replace(/[^0-9Xx]/g,"")):[];
+  const isbn13=isbns.find(v=>v.length===13)||null,isbn10=isbns.find(v=>v.length===10)||null;
+  const key=String(b.source_work_key||"").replace(/^\\/works\\//,"");
+  const cover=b.cover_id?"https://covers.openlibrary.org/b/id/"+encodeURIComponent(b.cover_id)+"-L.jpg":null;
+  $("results").innerHTML='<p class="sub">Adding '+esc(b.title||"book")+'…</p>';
+  const {data:id,error}=await sb.rpc("get_or_create_book",{new_isbn_13:isbn13,new_isbn_10:isbn10,new_google_books_id:key?"OL-"+key:null,new_title:b.title||"Untitled",new_subtitle:b.subtitle||null,new_authors:Array.isArray(b.author_names)?b.author_names:[],new_publisher:null,new_published_date:b.first_publish_year?String(b.first_publish_year):null,new_description:null,new_cover_url:cover});
+  if(error){$("results").innerHTML='<p class="sub">'+esc(error.message)+'</p>';return}
+  await addBook(Number(id));
+}
 async function addBook(bookId){const {error}=await sb.from("reading_calendar_entries").insert({user_id:user.id,book_id:bookId,reading_date:selectedDate});if(error&&error.code!=="23505"){alert(error.message);return}$("modal").classList.remove("show");await load()}
-$("search").oninput=e=>searchBooks(e.target.value);$("close").onclick=()=>$("modal").classList.remove("show");$("modal").onclick=e=>{if(e.target===$("modal"))$("modal").classList.remove("show")};
+$("search").oninput=e=>{clearTimeout(searchTimer);const q=e.target.value;searchTimer=setTimeout(()=>searchBooks(q),300)};$("close").onclick=()=>$("modal").classList.remove("show");$("modal").onclick=e=>{if(e.target===$("modal"))$("modal").classList.remove("show")};
 $("prev").onclick=async()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);await load()};$("next").onclick=async()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);await load()};$("today").onclick=async()=>{view=new Date();await load()};init();
 </script></body></html>
