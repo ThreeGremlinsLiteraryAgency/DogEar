@@ -1123,6 +1123,7 @@ textarea{
 .current-reading .reading-cover{display:block!important;width:58px!important;height:82px!important;max-width:58px!important;object-fit:cover!important;border-radius:5px!important;background:#17221b!important}
 .current-reading .result-copy{min-width:0!important;display:block!important}
 .current-reading .result-copy strong{display:block!important;margin:0 0 6px!important;color:#f1e7cf!important;-webkit-text-fill-color:#f1e7cf!important;font:400 19px/1.2 Georgia,serif!important;letter-spacing:0!important;text-transform:none!important}
+.current-reading .result-save{display:inline-block!important;margin-top:10px!important;color:#dfbd7e!important;-webkit-text-fill-color:#dfbd7e!important;font:800 10px/1 Arial,sans-serif!important;letter-spacing:.08em!important;text-transform:uppercase!important}
 .current-reading .result-authors{display:block!important;color:#aaa18f!important;-webkit-text-fill-color:#aaa18f!important;font:12px/1.4 Arial,sans-serif!important;letter-spacing:0!important;text-transform:none!important}
 .current-reading .current-book{margin-top:16px!important;padding:16px!important;background:#091510!important}
 .current-reading .current-reading-actions{display:flex!important;gap:9px!important;flex-wrap:wrap!important;justify-content:flex-end!important}
@@ -1254,7 +1255,7 @@ textarea{
   <div class="current-book" id="currentBook">
     <img id="currentBookCover" alt="">
     <div><h3 id="currentBookTitle"></h3><div class="authors" id="currentBookAuthors"></div><div class="reader-count" id="currentBookReaders"></div></div>
-    <div class="current-reading-actions"><button class="pg-reading-button" id="saveCurrentBook" type="button">Save as Currently Reading</button><button class="reading-clear pg-reading-button secondary" id="clearCurrentBook" type="button">Finished / Clear</button></div>
+    <div class="current-reading-actions"><button class="reading-clear pg-reading-button secondary" id="clearCurrentBook" type="button">Finished / Clear</button></div>
   </div>
 </section>
 
@@ -1857,7 +1858,6 @@ const currentBookTitle=document.getElementById("currentBookTitle");
 const currentBookAuthors=document.getElementById("currentBookAuthors");
 const currentBookReaders=document.getElementById("currentBookReaders");
 const clearCurrentBook=document.getElementById("clearCurrentBook");
-const saveCurrentBook=document.getElementById("saveCurrentBook");
 let pendingReading=null;
 
 /* =========================================================
@@ -3856,9 +3856,14 @@ function renderCurrentReading(row){
  const n=Number(row.other_readers||0);currentBookReaders.textContent=n+" "+(n===1?"Gremlin is":"Gremlins are")+" also reading this book.";
 }
 async function loadCurrentReading(){const {data,error}=await supabaseClient.rpc("get_my_currently_reading");if(error)throw error;renderCurrentReading(Array.isArray(data)?data[0]:data)}
-async function setCurrentReading(workId,bookId){const {error}=await supabaseClient.rpc("set_my_currently_reading",{new_work_id:workId||null,new_book_id:bookId||null});if(error)throw error;readingResults.classList.remove("show");readingSearchInput.value="";await loadCurrentReading()}
+async function setCurrentReading(workId,bookId){
+ const payload={currently_reading_work_id:workId||null,currently_reading_book_id:bookId||null,updated_at:new Date().toISOString()};
+ const {error}=await supabaseClient.from("profiles").update(payload).eq("id",currentUser.id);
+ if(error)throw error;
+ readingResults.classList.remove("show");readingSearchInput.value="";await loadCurrentReading();
+}
 function showReadingResults(rows){
- readingResults.innerHTML=rows.length?rows.map(row=>'<button class="reading-result" type="button" data-book-id="'+row.id+'" data-work-id="'+readingEsc(row.catalog_work_id||"")+'">'+(row.cover_url?'<img class="reading-cover" src="'+readingEsc(row.cover_url)+'" alt="'+readingEsc(row.title)+' cover">':'<span class="reading-cover"></span>')+'<span class="result-copy"><strong>'+readingEsc(row.title)+'</strong><span class="result-authors">'+readingEsc((row.authors||[]).join(", "))+'</span></span></button>').join(""):'<div class="reading-result"><span></span><span>No books found.</span></div>';
+ readingResults.innerHTML=rows.length?rows.map(row=>'<button class="reading-result" type="button" data-book-id="'+row.id+'" data-work-id="'+readingEsc(row.catalog_work_id||"")+'">'+(row.cover_url?'<img class="reading-cover" src="'+readingEsc(row.cover_url)+'" alt="'+readingEsc(row.title)+' cover">':'<span class="reading-cover"></span>')+'<span class="result-copy"><strong>'+readingEsc(row.title)+'</strong><span class="result-authors">'+readingEsc((row.authors||[]).join(", "))+'</span><span class="result-save">Set as Currently Reading →</span></span></button>').join(""):'<div class="reading-result"><span></span><span>No books found.</span></div>';
  readingResults.classList.add("show");
 }
 async function searchReadingBooks(){
@@ -3873,9 +3878,21 @@ async function searchReadingBooks(){
 }
 readingSearchButton.addEventListener("click",searchReadingBooks);
 readingSearchInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchReadingBooks()}});
-readingResults.addEventListener("click",e=>{const b=e.target.closest("[data-book-id]");if(!b)return;const title=b.querySelector("strong")?.textContent||"Book",authors=b.querySelector(".result-authors")?.textContent||"",img=b.querySelector("img");pendingReading={workId:b.dataset.workId||null,bookId:Number(b.dataset.bookId)};currentBook.classList.add("show");currentBookTitle.textContent=title;currentBookAuthors.textContent=authors;currentBookCover.src=img?.src||"";currentBookCover.style.display=img?"block":"none";currentBookReaders.textContent="Ready to save as your current book.";readingResults.classList.remove("show");saveCurrentBook.style.display="inline-flex"});
-saveCurrentBook.addEventListener("click",async()=>{if(!pendingReading)return;saveCurrentBook.disabled=true;saveCurrentBook.textContent="Saving…";try{await setCurrentReading(pendingReading.workId,pendingReading.bookId);pendingReading=null;saveCurrentBook.textContent="Saved ✓";setTimeout(()=>saveCurrentBook.textContent="Save as Currently Reading",1400)}catch(error){console.error(error);showMessage(error.message||"Could not save current book.","error");saveCurrentBook.textContent="Save as Currently Reading"}finally{saveCurrentBook.disabled=false}});
-clearCurrentBook.addEventListener("click",async()=>{try{pendingReading=null;await setCurrentReading(null,null);saveCurrentBook.style.display="none"}catch(error){console.error(error)}});
+readingResults.addEventListener("click",async e=>{
+ const b=e.target.closest("[data-book-id]");if(!b)return;
+ const saveLabel=b.querySelector(".result-save"),old=saveLabel?.textContent;
+ if(saveLabel)saveLabel.textContent="Saving…";b.disabled=true;
+ try{
+  await setCurrentReading(b.dataset.workId||null,Number(b.dataset.bookId));
+  pendingReading=null;
+  currentBookReaders.textContent=(currentBookReaders.textContent||"")+" Saved ✓";
+ }catch(error){
+  console.error("Currently Reading save:",error);
+  if(saveLabel)saveLabel.textContent="Could not save — try again";
+  showMessage(error.message||"Could not save current book.","error");
+ }finally{b.disabled=false;if(saveLabel&&saveLabel.textContent==="Saving…")saveLabel.textContent=old}
+});
+clearCurrentBook.addEventListener("click",async()=>{try{pendingReading=null;await setCurrentReading(null,null);currentBook.classList.remove("show")}catch(error){console.error(error);showMessage(error.message||"Could not clear current book.","error")}});
 
 /* =========================================================
    LOAD SAVED PROFILE
@@ -4520,6 +4537,6 @@ initialize();
 
 </script>
 
-<script src="assets/paper-gremlin-nav.js?v=20260927e"></script>
+<script src="assets/paper-gremlin-nav.js?v=20260927f"></script>
 </body>
 </html>
