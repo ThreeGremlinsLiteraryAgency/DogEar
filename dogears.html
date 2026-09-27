@@ -13,4 +13,4 @@ async function save(e){e.preventDefault();$("error").textContent="";if(!noUrl($(
 async function moderate(id){const {error}=await sb.rpc("moderate_dogear",{p_dogear_id:id,p_hide:true});if(error){alert(error.message);return}await load()}
 async function removeDogEar(id){if(!confirm("Delete this DogEar?"))return;const {error}=await sb.from("dogears").delete().eq("id",id);if(error){alert(error.message);return}await load()}
 document.querySelectorAll("[data-filter]").forEach(b=>b.onclick=()=>{filter=b.dataset.filter;document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x===b));load()});$("newBtn").onclick=openForm;$("close").onclick=$("cancel").onclick=()=>$("modal").classList.remove("show");$("visibility").onchange=()=>$("clubWrap").style.display=$("visibility").value==="club"?"block":"none";$("form").onsubmit=save;init();
-</script></body></html>
+</script><script src="assets/paper-gremlin-nav.js?v=20260927"></script>\n</body></html>
