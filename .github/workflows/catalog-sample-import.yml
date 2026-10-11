@@ -1,0 +1,92 @@
+name: Import Open Library sample into Cloudflare D1
+
+on:
+  workflow_dispatch:
+    inputs:
+      works_url:
+        description: "HTTPS URL to Open Library works TSV dump (.txt.gz)"
+        required: true
+        default: "https://openlibrary.org/data/ol_dump_works_latest.txt.gz"
+      authors_url:
+        description: "HTTPS URL to Open Library authors TSV dump (.txt.gz)"
+        required: true
+        default: "https://openlibrary.org/data/ol_dump_authors_latest.txt.gz"
+      work_limit:
+        description: "Number of works to import (1-1000)"
+        required: true
+        default: "100"
+      execute_import:
+        description: "Set true to write into production D1; false generates batches only"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paper-gremlin-catalog-import
+  cancel-in-progress: false
+
+jobs:
+  sample:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    defaults:
+      run:
+        working-directory: cloudflare/catalog
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate inputs
+        env:
+          WORK_LIMIT: ${{ inputs.work_limit }}
+          WORKS_URL: ${{ inputs.works_url }}
+          AUTHORS_URL: ${{ inputs.authors_url }}
+        run: |
+          python3 - <<'PY'
+          import os
+          from urllib.parse import urlparse
+          n = int(os.environ["WORK_LIMIT"])
+          assert 1 <= n <= 1000, "work_limit must be 1..1000"
+          for key in ("WORKS_URL", "AUTHORS_URL"):
+              u = urlparse(os.environ[key])
+              assert u.scheme == "https" and u.hostname == "openlibrary.org" and u.path.startswith("/data/ol_dump_"), "Only official Open Library dump URLs are permitted"
+          PY
+      - name: Download source dumps (large files)
+        env:
+          WORKS_URL: ${{ inputs.works_url }}
+          AUTHORS_URL: ${{ inputs.authors_url }}
+        run: |
+          mkdir -p source
+          curl --fail --location --retry 3 --max-time 5400 --output source/works.txt.gz "$WORKS_URL"
+          curl --fail --location --retry 3 --max-time 5400 --output source/authors.txt.gz "$AUTHORS_URL"
+      - name: Build import batches
+        env:
+          WORK_LIMIT: ${{ inputs.work_limit }}
+        run: |
+          python3 scripts/import_openlibrary.py --works source/works.txt.gz --authors source/authors.txt.gz --out batches --limit "$WORK_LIMIT" --batch-size 25
+          test -f batches/000001.sql
+      - name: Install Wrangler
+        if: ${{ inputs.execute_import }}
+        run: npm install --no-audit --no-fund
+      - name: Import into D1
+        if: ${{ inputs.execute_import }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" || { echo "::error::Missing CLOUDFLARE_API_TOKEN repository secret"; exit 1; }
+          test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo "::error::Missing CLOUDFLARE_ACCOUNT_ID repository secret"; exit 1; }
+          for file in batches/*.sql; do
+            echo "Applying $(basename "$file")"
+            npx wrangler d1 execute paper-gremlin-catalog --remote --file="$file" --yes
+          done
+      - name: Report
+        if: always()
+        run: |
+          echo "## Paper Gremlin catalog sample" >> "$GITHUB_STEP_SUMMARY"
+          echo "Requested works: ${{ inputs.work_limit }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Remote import requested: ${{ inputs.execute_import }}" >> "$GITHUB_STEP_SUMMARY"
+          if test -d batches; then
+            echo "SQL batches generated: $(find batches -name '*.sql' | wc -l)" >> "$GITHUB_STEP_SUMMARY"
+          fi
