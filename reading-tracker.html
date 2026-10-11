@@ -50,7 +50,7 @@ async function searchBooks(q){
   if(error||data?.error){$("results").innerHTML='<p class="sub">Catalog search could not be reached. Try again.</p>';return}
   catalogResults=Array.isArray(data?.results)?data.results:[];
   $("results").innerHTML=catalogResults.length?catalogResults.map((b,i)=>{
-    const cover=b.cover_id?"https://covers.openlibrary.org/b/id/"+encodeURIComponent(b.cover_id)+"-M.jpg":"";
+    const cover=typeof b.cover_url==="string"&&b.cover_url.startsWith("https://covers.openlibrary.org/")?b.cover_url:"";
     return '<div class="result" data-catalog="'+i+'">'+(cover?'<img src="'+cover+'">':'')+'<div><b>'+esc(b.title||"Untitled")+'</b><br><small>'+esc((b.author_names||[]).join(", "))+'</small></div></div>'
   }).join(""):'<p class="sub">No books found. Try another title or author.</p>';
   document.querySelectorAll("[data-catalog]").forEach(r=>r.onclick=()=>addCatalogBook(catalogResults[Number(r.dataset.catalog)]))
@@ -60,7 +60,7 @@ async function addCatalogBook(b){
   const isbns=Array.isArray(b.isbn)?b.isbn.map(v=>String(v).replace(/[^0-9Xx]/g,"")):[];
   const isbn13=isbns.find(v=>v.length===13)||null,isbn10=isbns.find(v=>v.length===10)||null;
   const key=String(b.source_work_key||"").replace(/^\/works\//,"");
-  const cover=b.cover_id?"https://covers.openlibrary.org/b/id/"+encodeURIComponent(b.cover_id)+"-L.jpg":null;
+  const cover=typeof b.cover_url==="string"&&b.cover_url.startsWith("https://covers.openlibrary.org/")?b.cover_url.replace(/-M\.jpg(?:\?.*)?$/,"-L.jpg"):null;
   $("results").innerHTML='<p class="sub">Adding '+esc(b.title||"book")+'…</p>';
   const {data:id,error}=await sb.rpc("get_or_create_book",{new_isbn_13:isbn13,new_isbn_10:isbn10,new_google_books_id:key?"OL-"+key:null,new_title:b.title||"Untitled",new_subtitle:b.subtitle||null,new_authors:Array.isArray(b.author_names)?b.author_names:[],new_publisher:null,new_published_date:b.first_publish_year?String(b.first_publish_year):null,new_description:null,new_cover_url:cover});
   if(error){$("results").innerHTML='<p class="sub">'+esc(error.message)+'</p>';return}
