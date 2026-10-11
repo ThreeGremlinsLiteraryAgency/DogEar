@@ -1910,6 +1910,7 @@ function normalizeCatalogBook(
   const isbn13 = isbns.find(value => value.length === 13) || "";
   const isbn10 = isbns.find(value => value.length === 10) || "";
   const coverId = row?.cover_id ? String(row.cover_id) : "";
+  const coverUrl = typeof row?.cover_url === "string" && /^https:\/\/covers\.openlibrary\.org\//.test(row.cover_url) ? row.cover_url.replace(/-M\.jpg(?:\?.*)?$/, "-L.jpg") : "";
 
   return {
     id:null,
@@ -1924,7 +1925,7 @@ function normalizeCatalogBook(
     description:row?.raw?.description?.value || row?.raw?.description || "",
     isbn13,
     isbn10,
-    thumbnail:coverId ? "https://covers.openlibrary.org/b/id/" + encodeURIComponent(coverId) + "-L.jpg" : "",
+    thumbnail:coverUrl || (coverId ? "https://covers.openlibrary.org/b/id/" + encodeURIComponent(coverId) + "-L.jpg" : ""),
     categories:Array.isArray(row?.subjects) ? row.subjects : [],
     infoLink:row?.source_work_key ? "https://openlibrary.org/works/" + String(row.source_work_key).replace(/^\/works\//, "") : ""
   };
