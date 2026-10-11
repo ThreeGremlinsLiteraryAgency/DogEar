@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "paper-gremlin-catalog",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-10-10",
+  "workers_dev": true,
+  "r2_buckets": [{"binding": "CATALOG_ARCHIVE", "bucket_name": "paper-gremlin-catalog-archive"}],
+  "d1_databases": [{"binding": "CATALOG_DB", "database_name": "paper-gremlin-catalog"}],
+  "vars": {"ALLOWED_ORIGIN": "https://threegremlinsliteraryagency.github.io"}
+}
