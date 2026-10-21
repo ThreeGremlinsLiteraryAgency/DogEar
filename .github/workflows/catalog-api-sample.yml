@@ -1,0 +1,45 @@
+name: Validate small Open Library API catalog sample
+on:
+  workflow_dispatch:
+    inputs:
+      work_limit:
+        description: "Number of sample works (1-100)"
+        required: true
+        default: "25"
+      execute_import:
+        description: "Write to production D1 (default false)"
+        type: boolean
+        required: true
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: paper-gremlin-catalog-import
+  cancel-in-progress: false
+jobs:
+  sample:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: cloudflare/catalog
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch small API sample and build SQL
+        env:
+          WORK_LIMIT: ${{ inputs.work_limit }}
+        run: |
+          python3 scripts/import_openlibrary_api_sample.py --limit "$WORK_LIMIT" --out batches
+          test -s batches/000001.sql
+      - name: Install Wrangler
+        if: ${{ inputs.execute_import }}
+        run: npm install --no-audit --no-fund
+      - name: Import to D1
+        if: ${{ inputs.execute_import }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" || { echo "::error::Missing Cloudflare API token secret"; exit 1; }
+          test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo "::error::Missing Cloudflare account ID secret"; exit 1; }
+          npx wrangler d1 execute paper-gremlin-catalog --remote --file=batches/000001.sql --yes
