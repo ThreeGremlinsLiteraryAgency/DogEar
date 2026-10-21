@@ -7,8 +7,10 @@ def main():
     p=argparse.ArgumentParser()
     p.add_argument("--limit",type=int,default=25)
     p.add_argument("--out",default="batches")
+    p.add_argument("--page",type=int,default=1,help="Search results page (1..100)")
     a=p.parse_args()
     if not 1<=a.limit<=100: p.error("limit must be 1..100")
+    if not 1<=a.page<=100: p.error("page must be 1..100")
     # Targeted subjects avoid the expensive, broad language-only search.
     # Keep each request small and retry transient upstream failures.
     import time, urllib.error
@@ -16,7 +18,7 @@ def main():
     subjects=("fantasy","science_fiction","mystery","history","romance")
     for subject in subjects:
         if len(docs)>=a.limit: break
-        params=urllib.parse.urlencode({"subject":subject,"limit":min(20,a.limit-len(docs)),"fields":"key,title,author_name,author_key,first_publish_year,cover_i"})
+        params=urllib.parse.urlencode({"subject":subject,"page":a.page,"limit":min(20,a.limit-len(docs)),"fields":"key,title,author_name,author_key,first_publish_year,cover_i"})
         url="https://openlibrary.org/search.json?"+params
         for attempt in range(4):
             try:
@@ -55,5 +57,5 @@ def main():
     if not seen: raise RuntimeError("Open Library returned no usable works")
     out=pathlib.Path(a.out);out.mkdir(parents=True,exist_ok=True)
     (out/"000001.sql").write_text("\n".join(lines)+"\n",encoding="utf-8")
-    print(f"Prepared {len(seen)} works for API smoke test; no D1 writes made")
+    print(f"Prepared {len(seen)} works from page {a.page}; no D1 writes made")
 if __name__=="__main__":main()
