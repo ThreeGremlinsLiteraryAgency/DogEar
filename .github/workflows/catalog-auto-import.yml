@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: "24"
       - name: Install Wrangler
-        run: npm ci --no-audit --no-fund
+        run: npm install --no-audit --no-fund
       - name: Validate credentials and initialize durable cursor
         run: |
           test -n "$CLOUDFLARE_API_TOKEN" || { echo "::error::Missing Cloudflare API token"; exit 1; }
