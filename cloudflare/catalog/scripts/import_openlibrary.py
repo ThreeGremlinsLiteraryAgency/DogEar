@@ -40,7 +40,16 @@ def quote(value):
 def statement(table, fields):
     names = ", ".join(fields)
     values = ", ".join(quote(v) for v in fields.values())
-    return f"INSERT OR REPLACE INTO {table} ({names}) VALUES ({values});"
+    if table == "works":
+        return (f"INSERT INTO works ({names}) VALUES ({values}) "
+                "ON CONFLICT(work_key) DO UPDATE SET " +
+                ", ".join(f"{column}=excluded.{column}" for column in fields if column != "work_key") + ";")
+    if table == "authors":
+        return (f"INSERT INTO authors ({names}) VALUES ({values}) "
+                "ON CONFLICT(author_key) DO UPDATE SET name=excluded.name;")
+    if table == "works_fts":
+        return f"INSERT INTO works_fts ({names}) VALUES ({values});"
+    return f"INSERT OR IGNORE INTO {table} ({names}) VALUES ({values});"
 
 def main():
     ap = argparse.ArgumentParser()
