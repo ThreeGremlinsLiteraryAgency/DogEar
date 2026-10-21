@@ -58,8 +58,23 @@ jobs:
           AUTHORS_URL: ${{ inputs.authors_url }}
         run: |
           mkdir -p source
-          curl --fail --location --retry 3 --max-time 5400 --output source/works.txt.gz "$WORKS_URL"
-          curl --fail --location --retry 3 --max-time 5400 --output source/authors.txt.gz "$AUTHORS_URL"
+          download_dump() {
+            local url="$1" dest="$2"
+            echo "::group::Download $(basename "$dest")"
+            if ! curl --fail --location --show-error --silent \
+              --retry 4 --retry-all-errors --retry-delay 10 --retry-max-time 300 \
+              --connect-timeout 25 --max-time 5400 \
+              --output "$dest.part" "$url"; then
+              rm -f "$dest.part"
+              echo "::error::Open Library dump download failed (possibly archive.org connectivity). Retry the workflow later or use a verified official dump mirror."
+              exit 1
+            fi
+            mv "$dest.part" "$dest"
+            gzip -t "$dest" || { echo "::error::Downloaded dump is not valid gzip"; exit 1; }
+            echo "::endgroup::"
+          }
+          download_dump "$WORKS_URL" source/works.txt.gz
+          download_dump "$AUTHORS_URL" source/authors.txt.gz
       - name: Build import batches
         env:
           WORK_LIMIT: ${{ inputs.work_limit }}
