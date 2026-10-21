@@ -9,11 +9,30 @@ def main():
     p.add_argument("--out",default="batches")
     a=p.parse_args()
     if not 1<=a.limit<=100: p.error("limit must be 1..100")
-    params=urllib.parse.urlencode({"q":"language:eng","limit":a.limit,"fields":"key,title,author_name,author_key,first_publish_year,cover_i,edition_key,isbn"})
-    url="https://openlibrary.org/search.json?"+params
-    req=urllib.request.Request(url,headers={"User-Agent":"PaperGremlinCatalogValidation/1.0 (threegremlinsliteraryagency@gmail.com)"})
-    with urllib.request.urlopen(req,timeout=45) as resp:
-        docs=json.load(resp).get("docs",[])
+    # Targeted subjects avoid the expensive, broad language-only search.
+    # Keep each request small and retry transient upstream failures.
+    import time, urllib.error
+    docs=[]; collected=set()
+    subjects=("fantasy","science_fiction","mystery","history","romance")
+    for subject in subjects:
+        if len(docs)>=a.limit: break
+        params=urllib.parse.urlencode({"subject":subject,"limit":min(20,a.limit-len(docs)),"fields":"key,title,author_name,author_key,first_publish_year,cover_i"})
+        url="https://openlibrary.org/search.json?"+params
+        for attempt in range(4):
+            try:
+                req=urllib.request.Request(url,headers={"User-Agent":"PaperGremlinCatalogValidation/1.0 (threegremlinsliteraryagency@gmail.com)","Accept":"application/json"})
+                with urllib.request.urlopen(req,timeout=35) as resp:
+                    results=json.load(resp).get("docs",[])
+                for item in results:
+                    k=item.get("key")
+                    if k and k not in collected:
+                        collected.add(k); docs.append(item)
+                break
+            except (urllib.error.HTTPError,urllib.error.URLError,TimeoutError) as exc:
+                print(f"Subject {subject}: attempt {attempt+1}/4 failed: {exc}",flush=True)
+                if attempt<3: time.sleep(2**attempt)
+        if len(docs)>=a.limit: break
+    docs=docs[:a.limit]
     lines=[]; seen=set()
     for d in docs:
         wid=d.get("key","").rsplit("/",1)[-1]
