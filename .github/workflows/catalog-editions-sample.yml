@@ -25,15 +25,52 @@ jobs:
         run: |
           python3 scripts/import_openlibrary_api_editions.py
           test -s batches/editions.sql
+          echo "Generated edition upserts: $(grep -c '^INSERT INTO editions' batches/editions.sql)"
       - name: Install Wrangler
         if: ${{ inputs.execute_import }}
         run: npm install --no-audit --no-fund
+      - name: Verify Cloudflare target
+        if: ${{ inputs.execute_import }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_API_TOKEN" || { echo "::error::Missing Cloudflare API token"; exit 1; }
+          test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo "::error::Missing Cloudflare account ID"; exit 1; }
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const cfg=JSON.parse(fs.readFileSync('wrangler.jsonc','utf8'));
+          const expected='f238d108-19a6-498c-9703-a594be211826';
+          const actual=cfg.d1_databases?.find(d=>d.database_name==='paper-gremlin-catalog')?.database_id;
+          if(actual!==expected) throw new Error('D1 database ID mismatch: '+actual);
+          console.log('Expected D1 database ID:',actual);
+          NODE
+          echo "Cloudflare account ID: $CLOUDFLARE_ACCOUNT_ID"
+          npx wrangler d1 execute paper-gremlin-catalog --remote --command="SELECT COUNT(*) AS editions_before FROM editions;" --json
       - name: Import editions
         if: ${{ inputs.execute_import }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          test -n "$CLOUDFLARE_API_TOKEN"
-          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          set -euo pipefail
           npx wrangler d1 execute paper-gremlin-catalog --remote --file=batches/editions.sql --yes
+      - name: Verify imported edition records
+        if: ${{ inputs.execute_import }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute paper-gremlin-catalog --remote --command="SELECT COUNT(*) AS editions_after, COUNT(isbn_10) AS isbn10_count, COUNT(isbn_13) AS isbn13_count FROM editions;" --json
+          npx wrangler d1 execute paper-gremlin-catalog --remote --command="SELECT COUNT(*) AS imported_sample_editions FROM editions WHERE work_key IN ('OL15358691W','OL15450W','OL16597059W','OL17546674W','OL17610507W');" --json > edition-verification.json
+          cat edition-verification.json
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const data=JSON.parse(fs.readFileSync('edition-verification.json','utf8'));
+          const rows=Array.isArray(data)?data[0]?.results:data?.results;
+          const count=Number(rows?.[0]?.imported_sample_editions??0);
+          if(count<1) throw new Error('Import verification failed: no sample editions found in target D1');
+          console.log('Verified sample editions in target D1:',count);
+          NODE
