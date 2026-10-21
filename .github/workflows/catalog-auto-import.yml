@@ -1,0 +1,72 @@
+name: Automatically grow Paper Gremlin catalog
+on:
+  schedule:
+    - cron: "17 */2 * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: paper-gremlin-catalog-import
+  cancel-in-progress: false
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: cloudflare/catalog
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Install Wrangler
+        run: npm ci --no-audit --no-fund
+      - name: Validate credentials and initialize durable cursor
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" || { echo "::error::Missing Cloudflare API token"; exit 1; }
+          test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo "::error::Missing Cloudflare account ID"; exit 1; }
+          npx wrangler d1 execute paper-gremlin-catalog --remote --command="CREATE TABLE IF NOT EXISTS catalog_import_progress (id INTEGER PRIMARY KEY CHECK(id=1), next_page INTEGER NOT NULL, updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);" --yes
+          npx wrangler d1 execute paper-gremlin-catalog --remote --command="INSERT OR IGNORE INTO catalog_import_progress(id,next_page) VALUES (1,12);" --yes
+      - name: Read next unimported page
+        id: cursor
+        run: |
+          npx wrangler d1 execute paper-gremlin-catalog --remote --command="SELECT next_page FROM catalog_import_progress WHERE id=1;" --json > cursor.json
+          python3 - <<'PY'
+          import json, os
+          data=json.load(open("cursor.json"))
+          if isinstance(data,dict): data=data.get("result",data.get("results",[]))
+          if isinstance(data,list) and data and isinstance(data[0],dict) and "results" in data[0]:
+              rows=data[0]["results"]
+          elif isinstance(data,list): rows=data
+          else: rows=[]
+          page=int(rows[0]["next_page"])
+          if not 12<=page<=101: raise ValueError(f"Unexpected cursor: {page}")
+          print(f"Next page: {page}")
+          with open(os.environ["GITHUB_OUTPUT"],"a") as f:
+              f.write(f"page={page}\n")
+              f.write(f"should_import={'true' if page<=100 else 'false'}\n")
+          PY
+      - name: Fetch next Open Library page
+        if: steps.cursor.outputs.should_import == 'true'
+        env:
+          SEARCH_PAGE: ${{ steps.cursor.outputs.page }}
+        run: |
+          python3 scripts/import_openlibrary_api_sample.py --limit 100 --page "$SEARCH_PAGE" --out batches
+          test -s batches/000001.sql
+      - name: Import books to production D1
+        if: steps.cursor.outputs.should_import == 'true'
+        run: npx wrangler d1 execute paper-gremlin-catalog --remote --file=batches/000001.sql --yes
+      - name: Advance cursor only after successful import
+        if: steps.cursor.outputs.should_import == 'true'
+        env:
+          SEARCH_PAGE: ${{ steps.cursor.outputs.page }}
+        run: |
+          npx wrangler d1 execute paper-gremlin-catalog --remote --command="UPDATE catalog_import_progress SET next_page = next_page + 1, updated_at=CURRENT_TIMESTAMP WHERE id=1 AND next_page=$SEARCH_PAGE;" --yes
+          echo "Imported page $SEARCH_PAGE; cursor advanced."
+      - name: Completed current API pagination range
+        if: steps.cursor.outputs.should_import == 'false'
+        run: echo "Pages 12 through 100 complete. No additional pages imported. Bulk-dump ingestion is required to grow beyond this API sample range."
