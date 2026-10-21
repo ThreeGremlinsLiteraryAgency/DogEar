@@ -1,0 +1,26 @@
+name: Paper Gremlin Catalog Tests
+on:
+  push:
+    paths:
+      - 'cloudflare/catalog/**'
+      - '.github/workflows/catalog-tests.yml'
+  pull_request:
+    paths:
+      - 'cloudflare/catalog/**'
+      - '.github/workflows/catalog-tests.yml'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test Worker
+        run: npm test
+        working-directory: cloudflare/catalog
+      - name: Test edition importer
+        run: python -m unittest discover -s cloudflare/catalog/test -p 'test_*.py' -v
