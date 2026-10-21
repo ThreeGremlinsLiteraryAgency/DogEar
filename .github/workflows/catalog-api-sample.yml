@@ -6,6 +6,10 @@ on:
         description: "Number of sample works (1-100)"
         required: true
         default: "25"
+      search_page:
+        description: "Open Library results page (1-100); choose a new page for new books"
+        required: true
+        default: "1"
       execute_import:
         description: "Write to production D1 (default false)"
         type: boolean
@@ -28,8 +32,9 @@ jobs:
       - name: Fetch small API sample and build SQL
         env:
           WORK_LIMIT: ${{ inputs.work_limit }}
+          SEARCH_PAGE: ${{ inputs.search_page }}
         run: |
-          python3 scripts/import_openlibrary_api_sample.py --limit "$WORK_LIMIT" --out batches
+          python3 scripts/import_openlibrary_api_sample.py --limit "$WORK_LIMIT" --page "$SEARCH_PAGE" --out batches
           test -s batches/000001.sql
       - name: Install Wrangler
         if: ${{ inputs.execute_import }}
