@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Join ranked work IDs to the official works dump; prioritize available covers."""
-import csv,gzip,json,re,urllib.request
+import csv,gzip,json,re,urllib.request,os,time
 from pathlib import Path
 rank={}
 with open("paper-gremlin-popularity-ranked.csv",newline="",encoding="utf-8") as h:
@@ -10,9 +10,31 @@ print("Ranking candidates:",len(rank),flush=True)
 hits=[]
 url="https://openlibrary.org/data/ol_dump_works_latest.txt.gz"
 req=urllib.request.Request(url,headers={"User-Agent":"PaperGremlinBulkCatalog/1.0 (threegremlinsliteraryagency@gmail.com)"})
+class LimitedStream:
+ def __init__(self, source, limit):
+  self.source=source
+  self.limit=limit
+  self.used=0
+ def read(self,n=-1):
+  if self.used>=self.limit:
+   raise RuntimeError("Compressed download exceeded safety limit")
+  allowed=min(n if n>=0 else 65536,self.limit-self.used+1)
+  data=self.source.read(allowed)
+  self.used+=len(data)
+  if self.used>self.limit:
+   raise RuntimeError("Compressed download exceeded safety limit")
+  return data
+MAX_DOWNLOAD=int(os.environ.get("PG_MAX_DOWNLOAD_BYTES","5000000000"))
+START=time.monotonic()
 with urllib.request.urlopen(req,timeout=180) as response:
- with gzip.GzipFile(fileobj=response) as stream:
+ length=response.headers.get("Content-Length")
+ if length and int(length)>MAX_DOWNLOAD:
+  raise RuntimeError("Declared dump size exceeds download ceiling")
+ limited=LimitedStream(response,MAX_DOWNLOAD)
+ with gzip.GzipFile(fileobj=limited) as stream:
   for raw in stream:
+   if time.monotonic()-START>3300:
+    raise RuntimeError("Download processing exceeded 55-minute ceiling")
    try:
     parts=raw.decode("utf-8").rstrip("\n").split("\t",4)
     if len(parts)!=5:continue
@@ -28,6 +50,7 @@ with urllib.request.urlopen(req,timeout=180) as response:
       "popularity_rank":rank[key][0],"popularity_score":rank[key][1]}
     hits.append(record)
    except (UnicodeDecodeError,ValueError,TypeError,AttributeError):continue
+print("Compressed bytes downloaded:",limited.used,flush=True)
 print("Candidate works matched:",len(hits),flush=True)
 # Cover availability takes priority, then rank. Uncovered works fill gaps only.
 hits.sort(key=lambda x:(not bool(x["cover_ids"]),x["popularity_rank"]))
