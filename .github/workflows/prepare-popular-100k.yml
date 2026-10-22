@@ -10,7 +10,7 @@ permissions:
 jobs:
   prepare:
     runs-on: ubuntu-latest
-    timeout-minutes: 240
+    timeout-minutes: 65
     steps:
       - uses: actions/checkout@v4
       - name: Fetch ranked queue
@@ -22,7 +22,13 @@ jobs:
           gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$id/zip" > ranked.zip
           unzip -o ranked.zip
       - name: Select popular covered titles from official dump
+        env:
+          PG_MAX_DOWNLOAD_BYTES: '5000000000'
         run: python3 cloudflare/catalog/scripts/select_popular_100k.py
+      - name: Cap staged output before artifact storage
+        run: |
+          set -euo pipefail
+          test "$(stat -c%s paper-gremlin-priority-100k.jsonl.gz)" -le 100000000 || { echo "::error::Artifact exceeds 100 MB safety cap"; exit 1; }
       - uses: actions/upload-artifact@v4
         with:
           name: paper-gremlin-priority-100k
