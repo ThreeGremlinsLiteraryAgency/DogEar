@@ -1,7 +1,7 @@
 name: Import staged Open Library works into D1
 on:
   schedule:
-    - cron: "37 */2 * * *"
+    - cron: "7,37 * * * *"
   workflow_dispatch:
 permissions:
   contents: read
@@ -45,18 +45,18 @@ jobs:
           d=json.load(open("offset.json"))
           row=d[0]["results"][0] if isinstance(d,list) else d["result"][0]["results"][0]
           val=int(row["next_offset"])
-          if not 0<=val<=250000:raise ValueError(val)
+          if not 0<=val<=100000:raise ValueError(val)
           with open(os.environ["GITHUB_OUTPUT"],"a") as f:
               f.write(f"offset={val}\n")
           PY
       - name: Stop if target reached
-        if: steps.progress.outputs.offset == '250000'
-        run: echo "Target of 250,000 staged works processed."
+        if: steps.progress.outputs.offset == '100000'
+        run: echo "Target of 100,000 staged works processed."
       - name: Build next SQL batches
-        if: steps.progress.outputs.offset != '250000'
-        run: python3 scripts/prepare_250k_d1.py --start ${{ steps.progress.outputs.offset }} --count 2000 --chunk 100
+        if: steps.progress.outputs.offset != '100000'
+        run: python3 scripts/prepare_250k_d1.py --start ${{ steps.progress.outputs.offset }} --count 1000 --chunk 100
       - name: Import with 450 MB safety ceiling and checkpoint
-        if: steps.progress.outputs.offset != '250000'
+        if: steps.progress.outputs.offset != '100000'
         env:
           OFFSET: ${{ steps.progress.outputs.offset }}
         run: |
