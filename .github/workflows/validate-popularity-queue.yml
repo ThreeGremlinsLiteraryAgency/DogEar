@@ -1,0 +1,33 @@
+name: Validate ranked Open Library queue
+on:
+  push:
+    paths:
+      - ".github/workflows/validate-popularity-queue.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch latest ranked queue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          id=$(gh api "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100" --jq '.artifacts[] | select(.name=="paper-gremlin-ranked-queue" and .expired==false) | .id' | head -1)
+          test -n "$id" || { echo "::error::No ranked queue artifact found"; exit 1; }
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$id/zip" > ranked.zip
+          unzip -o ranked.zip
+      - name: Validate score ordering, volume and activity
+        run: python3 cloudflare/catalog/scripts/validate_popularity_queue.py
+      - name: Archive validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper-gremlin-popularity-validation
+          path: popularity-validation.json
+          if-no-files-found: warn
+          retention-days: 90
