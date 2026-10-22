@@ -1,7 +1,6 @@
 name: Import popular covered books into Cloudflare
 on:
-  schedule:
-    - cron: "4,19,34,49 * * * *"
+  # Scheduled imports disabled until billing and write safeguards are verified.
   workflow_dispatch:
 permissions:
   contents: read
@@ -11,6 +10,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   import:
+    if: false # cost-safety lock; requires explicit review before re-enabling
     runs-on: ubuntu-latest
     timeout-minutes: 85
     defaults:
