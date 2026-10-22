@@ -1,0 +1,33 @@
+name: Build popularity-ranked book queue
+on:
+  push:
+    paths:
+      - ".github/workflows/build-popularity-queue.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  rank:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download previously staged popularity data
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          id=$(gh api "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100" --jq '.artifacts[] | select(.name=="paper-gremlin-openlibrary-popularity" and .expired==false) | .id' | head -1)
+          test -n "$id" || { echo "::error::No popularity artifact found"; exit 1; }
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$id/zip" > popularity.zip
+          unzip -o popularity.zip
+          gzip -t ol_dump_ratings_latest.txt.gz
+          gzip -t ol_dump_reading-log_latest.txt.gz
+      - name: Rank book work IDs from actual reader activity
+        run: python3 cloudflare/catalog/scripts/rank_openlibrary_popularity.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper-gremlin-ranked-queue
+          path: paper-gremlin-popularity-ranked.csv
+          retention-days: 90
+          if-no-files-found: error
