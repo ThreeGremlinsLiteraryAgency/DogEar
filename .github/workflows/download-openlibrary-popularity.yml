@@ -1,0 +1,36 @@
+name: Download Open Library popularity datasets
+on:
+  push:
+    paths:
+      - ".github/workflows/download-openlibrary-popularity.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Download official monthly ratings and reading logs
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 4 --retry-delay 3 --connect-timeout 20 \
+            "https://openlibrary.org/data/ol_dump_ratings_latest.txt.gz" \
+            -o ol_dump_ratings_latest.txt.gz
+          curl --fail --location --retry 4 --retry-delay 3 --connect-timeout 20 \
+            "https://openlibrary.org/data/ol_dump_reading-log_latest.txt.gz" \
+            -o ol_dump_reading-log_latest.txt.gz
+          gzip -t ol_dump_ratings_latest.txt.gz
+          gzip -t ol_dump_reading-log_latest.txt.gz
+          ls -lh ol_dump_*.txt.gz
+          sha256sum ol_dump_*.txt.gz > popularity-sha256.txt
+      - name: Save popularity datasets for ranking
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper-gremlin-openlibrary-popularity
+          path: |
+            ol_dump_ratings_latest.txt.gz
+            ol_dump_reading-log_latest.txt.gz
+            popularity-sha256.txt
+          retention-days: 90
+          if-no-files-found: error
