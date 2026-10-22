@@ -18,7 +18,7 @@ with gzip.open("openlibrary-250k-works.jsonl.gz","rt",encoding="utf-8") as sourc
         d=json.loads(raw)
         key=d["work_key"]; title=d["title"]
         if not re.fullmatch(r"OL[0-9]+W",key):raise ValueError(key)
-        yr=re.search(r"\\b(1[5-9][0-9]{2}|20[0-9]{2})\\b",str(d.get("first_publish_date") or ""))
+        yr=re.search(r"\b(1[5-9][0-9]{2}|20[0-9]{2})\b",str(d.get("first_publish_date") or ""))
         cover=d.get("cover_ids") or []
         url=f"https://covers.openlibrary.org/b/id/{cover[0]}-M.jpg" if cover and isinstance(cover[0],int) and cover[0]>0 else None
         # Keep subjects short to preserve D1 space. API smoke importer already manages FTS.
