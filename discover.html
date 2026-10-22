@@ -1750,29 +1750,89 @@ function catalogResultToBook(item){
   };
 }
 
+const CLOUD_CATALOG_ENDPOINT="https://paper-gremlin-catalog.threegremlinsliteraryagency.workers.dev/search";
+let bookSearchAbort=null;
+async function quickCatalogFetch(url,timeoutMs,signal){
+  const c=new AbortController();
+  if(signal.aborted)throw new DOMException("Aborted","AbortError");
+  const abort=()=>c.abort();
+  signal.addEventListener("abort",abort,{once:true});
+  const timer=setTimeout(()=>c.abort(),timeoutMs);
+  try{
+    const response=await fetch(url,{signal:c.signal});
+    if(!response.ok)throw new Error("Search service returned "+response.status);
+    return await response.json();
+  }finally{
+    clearTimeout(timer);
+    signal.removeEventListener("abort",abort);
+  }
+}
+function googleResultToBook(item){
+  const v=item.volumeInfo||{};
+  return {
+    _source:"google", google_books_id:item.id,
+    title:v.title||"Untitled",
+    authors:Array.isArray(v.authors)?v.authors:[],
+    description:v.description||"",
+    cover_url:(v.imageLinks?.thumbnail||v.imageLinks?.smallThumbnail||"").replace(/^http:/,"https:"),
+    published_date:v.publishedDate||"",
+    isbn_13:(v.industryIdentifiers||[]).find(i=>i.type==="ISBN_13")?.identifier||"",
+    isbn_10:(v.industryIdentifiers||[]).find(i=>i.type==="ISBN_10")?.identifier||"",
+    categories:v.categories||[]
+  };
+}
 async function searchCatalog(query,page=1,append=false){
   const clean=String(query||"").trim();
-  if(clean.length<2){ resetCatalogSearch(); return; }
+  if(clean.length<2){resetCatalogSearch();return;}
   const sequence=searchSequence;
-  if(!append) resetCatalogSearch();
+  if(bookSearchAbort)bookSearchAbort.abort();
+  const controller=new AbortController();
+  bookSearchAbort=controller;
+  if(!append)resetCatalogSearch();
   catalogLoadingMore=append;
   updateLoadMoreButton();
-
-  const {data,error}=await supabaseClient.functions.invoke("book-search",{
-    body:{q:clean,page,page_size:40}
-  });
-  if(sequence!==searchSequence) return;
-  if(error) throw error;
-  if(data?.error) throw new Error(data.error);
-
-  const incoming=(Array.isArray(data?.results)?data.results:[]).map(catalogResultToBook);
+  let incoming=[];
+  let googleFallback=false;
+  try{
+    const d=await quickCatalogFetch(
+      CLOUD_CATALOG_ENDPOINT+"?q="+encodeURIComponent(clean)+"&limit=40&offset="+((page-1)*40),
+      1200,controller.signal
+    );
+    if(sequence!==searchSequence)return;
+    incoming=(Array.isArray(d.books)?d.books:[]).map(catalogResultToBook);
+    catalogHasMore=incoming.length===40 && page<26;
+  }catch(error){
+    if(sequence!==searchSequence)return;
+    if(controller.signal.aborted)return;
+    console.info("Cloudflare catalog slow or unavailable; using Google Books.",error);
+    googleFallback=true;
+  }
+  // A genuine D1 miss starts Google promptly, without any lengthy retry.
+  if(!incoming.length && (!append || googleFallback)){
+    googleFallback=true;
+    searchStatus.textContent="Checking Google Books…";
+    try{
+      const google=await quickCatalogFetch(
+        "https://www.googleapis.com/books/v1/volumes?q="+encodeURIComponent(clean)+"&maxResults=40",
+        3500,controller.signal
+      );
+      if(sequence!==searchSequence)return;
+      incoming=(google.items||[]).map(googleResultToBook);
+      catalogHasMore=false;
+    }catch(error){
+      if(sequence!==searchSequence)return;
+      if(controller.signal.aborted)return;
+      console.warn("Google Books fallback failed:",error);
+      if(!append)throw error;
+    }
+  }
+  if(sequence!==searchSequence)return;
   const map=new Map((append?catalogBooks:[]).map(book=>[bookIdentity(book),book]));
-  for(const book of incoming) map.set(bookIdentity(book),book);
+  for(const book of incoming)map.set(bookIdentity(book),book);
   catalogBooks=[...map.values()];
   catalogPage=page;
-  catalogTotalItems=Number(data?.total_results||catalogBooks.length)||catalogBooks.length;
-  const totalPages=Number(data?.total_pages||1)||1;
-  catalogHasMore=page<totalPages && incoming.length>0;
+  catalogTotalItems=catalogBooks.length;
+  if(googleFallback)catalogHasMore=false;
   catalogLoadingMore=false;
   updateLoadMoreButton();
 }
