@@ -1,0 +1,33 @@
+name: Prepare popularity-first 100K catalog
+on:
+  push:
+    paths:
+      - ".github/workflows/prepare-popular-100k.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch ranked queue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          id=$(gh api "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100" --jq '.artifacts[] | select(.name=="paper-gremlin-ranked-queue" and .expired==false) | .id' | head -1)
+          test -n "$id" || { echo "::error::Ranked queue artifact missing"; exit 1; }
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$id/zip" > ranked.zip
+          unzip -o ranked.zip
+      - name: Select popular covered titles from official dump
+        run: python3 cloudflare/catalog/scripts/select_popular_100k.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper-gremlin-priority-100k
+          path: |
+            paper-gremlin-priority-100k.jsonl.gz
+            priority-report.json
+          retention-days: 90
+          if-no-files-found: error
