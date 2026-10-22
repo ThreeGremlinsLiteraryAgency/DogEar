@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Stage up to 250,000 unique Open Library works from the official bulk dump."""
+"""Stage up to 100,000 unique Open Library works from the official bulk dump."""
 import gzip, json, os, re, time, urllib.request
 from pathlib import Path
 
 URL = "https://openlibrary.org/data/ol_dump_works_latest.txt.gz"
-TARGET = 250000
+TARGET = 100000
 DEST = Path("openlibrary-250k-works.jsonl.gz")
 KEY = re.compile(r"^/works/(OL[0-9]+W)$")
 seen = set()
