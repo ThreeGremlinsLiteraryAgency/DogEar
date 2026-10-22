@@ -1,0 +1,23 @@
+name: Stage 250K Open Library works bulk dump
+on:
+  push:
+    paths:
+      - ".github/workflows/stage-openlibrary-250k.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download and stage 250,000 unique works from Open Library dump
+        run: python3 cloudflare/catalog/scripts/stage_openlibrary_250k.py
+      - name: Publish staged catalog artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper-gremlin-openlibrary-250k
+          path: openlibrary-250k-works.jsonl.gz
+          retention-days: 90
+          if-no-files-found: error
