@@ -11,7 +11,7 @@ concurrency:
 jobs:
   enrich:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     defaults:
       run:
         working-directory: cloudflare/catalog
@@ -39,18 +39,18 @@ jobs:
           if size>=450000000:raise RuntimeError('450MB storage stop')
           print('DB size:',size)
           PY
-      - name: Ensure resumable progress and fetch up to 25 missing-ISBN works
+      - name: Ensure resumable progress and fetch up to 100 missing-ISBN works
         id: candidates
         run: |
           set -euo pipefail
           npx wrangler d1 execute paper-gremlin-catalog --remote --command="CREATE TABLE IF NOT EXISTS catalog_isbn_enrichment_progress(id INTEGER PRIMARY KEY CHECK(id=1),last_work_key TEXT NOT NULL DEFAULT '',attempted INTEGER NOT NULL DEFAULT 0,imported INTEGER NOT NULL DEFAULT 0,updated_at TEXT DEFAULT CURRENT_TIMESTAMP);" --yes
           npx wrangler d1 execute paper-gremlin-catalog --remote --command="INSERT OR IGNORE INTO catalog_isbn_enrichment_progress(id,last_work_key) VALUES (1,'');" --yes
-          npx wrangler d1 execute paper-gremlin-catalog --remote --command="SELECT work_key FROM works WHERE work_key > (SELECT last_work_key FROM catalog_isbn_enrichment_progress WHERE id=1) AND NOT EXISTS (SELECT 1 FROM editions e WHERE e.work_key=works.work_key AND (e.isbn_10 IS NOT NULL OR e.isbn_13 IS NOT NULL)) ORDER BY work_key LIMIT 25;" --json > candidates-raw.json
+          npx wrangler d1 execute paper-gremlin-catalog --remote --command="SELECT work_key FROM works WHERE work_key > (SELECT last_work_key FROM catalog_isbn_enrichment_progress WHERE id=1) AND NOT EXISTS (SELECT 1 FROM editions e WHERE e.work_key=works.work_key AND (e.isbn_10 IS NOT NULL OR e.isbn_13 IS NOT NULL)) ORDER BY work_key LIMIT 100;" --json > candidates-raw.json
           python3 - <<'PY'
           import json,os
           d=json.load(open('candidates-raw.json'))
           rows=d[0]['results']
-          if len(rows)>25:raise ValueError('Candidate limit exceeded')
+          if len(rows)>100:raise ValueError('Candidate limit exceeded')
           with open('isbn-candidates.json','w') as f:json.dump(rows,f)
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('has_candidates='+('true' if rows else 'false')+'\n')
           print('Candidates',len(rows))
