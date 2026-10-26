@@ -28,6 +28,7 @@ for item in records:
             data=json.load(f)
     except (urllib.error.URLError,TimeoutError,ValueError) as e:
         raise RuntimeError("Open Library unavailable, keeping cursor for retry: "+work) from e
+    per_work=0
     for d in data.get("entries",[]):
         key=str(d.get("key","")).split("/")[-1]
         if not re.fullmatch(r"OL[0-9]+M",key):continue
@@ -39,8 +40,8 @@ for item in records:
         date=d.get("publish_date") if isinstance(d.get("publish_date"),str) else None
         lines.append("INSERT OR IGNORE INTO editions(edition_key,work_key,title,publisher,publish_date,isbn_10,isbn_13) VALUES ("+",".join(quote(v) for v in (key,work,title,publisher,date,ten,thirteen))+");")
         found+=1
-        if found>=75:break
-    if found>=75:break
+        per_work+=1
+        if per_work>=3:break
     time.sleep(1)
 if records:
     last=records[-1]["work_key"]
