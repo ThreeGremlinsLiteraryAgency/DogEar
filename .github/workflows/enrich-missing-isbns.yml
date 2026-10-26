@@ -1,0 +1,65 @@
+name: Enrich missing Paper Gremlin ISBNs
+on:
+  schedule:
+    - cron: '37 6 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: paper-gremlin-catalog-import
+  cancel-in-progress: false
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: cloudflare/catalog
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install --no-audit --no-fund
+      - name: Check connection and storage budget
+        id: budget
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          npx wrangler d1 info paper-gremlin-catalog --json > info.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('info.json'))
+          size=int(d.get('file_size',d.get('fileSize',0)))
+          if not size:raise RuntimeError('Unknown database size; fail closed')
+          if size>=450000000:raise RuntimeError('450MB storage stop')
+          print('DB size:',size)
+          PY
+      - name: Ensure resumable progress and fetch up to 25 missing-ISBN works
+        id: candidates
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute paper-gremlin-catalog --remote --command="CREATE TABLE IF NOT EXISTS catalog_isbn_enrichment_progress(id INTEGER PRIMARY KEY CHECK(id=1),last_work_key TEXT NOT NULL DEFAULT '',attempted INTEGER NOT NULL DEFAULT 0,imported INTEGER NOT NULL DEFAULT 0,updated_at TEXT DEFAULT CURRENT_TIMESTAMP);" --yes
+          npx wrangler d1 execute paper-gremlin-catalog --remote --command="INSERT OR IGNORE INTO catalog_isbn_enrichment_progress(id,last_work_key) VALUES (1,'');" --yes
+          npx wrangler d1 execute paper-gremlin-catalog --remote --command="SELECT work_key FROM works WHERE work_key > (SELECT last_work_key FROM catalog_isbn_enrichment_progress WHERE id=1) AND NOT EXISTS (SELECT 1 FROM editions e WHERE e.work_key=works.work_key AND (e.isbn_10 IS NOT NULL OR e.isbn_13 IS NOT NULL)) ORDER BY work_key LIMIT 25;" --json > candidates-raw.json
+          python3 - <<'PY'
+          import json,os
+          d=json.load(open('candidates-raw.json'))
+          rows=d[0]['results']
+          if len(rows)>25:raise ValueError('Candidate limit exceeded')
+          with open('isbn-candidates.json','w') as f:json.dump(rows,f)
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('has_candidates='+('true' if rows else 'false')+'\n')
+          print('Candidates',len(rows))
+          PY
+      - name: Look up real editions with validated ISBNs
+        if: steps.candidates.outputs.has_candidates == 'true'
+        run: python3 scripts/enrich_missing_isbns.py
+      - name: Save edition records and cursor
+        if: steps.candidates.outputs.has_candidates == 'true'
+        run: npx wrangler d1 execute paper-gremlin-catalog --remote --file=isbn-enrich.sql --yes
+      - name: Report progress
+        run: npx wrangler d1 execute paper-gremlin-catalog --remote --command="SELECT * FROM catalog_isbn_enrichment_progress;" --json
