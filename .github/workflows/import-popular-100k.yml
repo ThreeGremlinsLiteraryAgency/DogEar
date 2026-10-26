@@ -1,6 +1,7 @@
 name: Import popular covered books into Cloudflare
 on:
-  # Scheduled imports disabled until billing and write safeguards are verified.
+  schedule:
+    - cron: '17 6 * * *' # once daily, UTC
   workflow_dispatch:
 permissions:
   contents: read
@@ -10,9 +11,8 @@ concurrency:
   cancel-in-progress: false
 jobs:
   import:
-    if: false # cost-safety lock; requires explicit review before re-enabling
     runs-on: ubuntu-latest
-    timeout-minutes: 85
+    timeout-minutes: 20
     defaults:
       run:
         working-directory: cloudflare/catalog
@@ -53,7 +53,7 @@ jobs:
           )
           if [ "$OFFSET" -ge 100000 ]; then echo "Target complete"; exit 0; fi
           REMAIN=$((100000-OFFSET))
-          if [ "$REMAIN" -gt 5000 ]; then REMAIN=5000; fi
+          if [ "$REMAIN" -gt 100 ]; then REMAIN=100; fi
           python3 scripts/prepare_priority_d1.py --start "$OFFSET" --count "$REMAIN" --chunk 100
           for file in batches/*.sql; do
             SIZE=$(npx wrangler d1 info paper-gremlin-catalog --json | python3 -c 'import sys,json;d=json.load(sys.stdin); print(d.get("file_size",d.get("fileSize",0)))')
