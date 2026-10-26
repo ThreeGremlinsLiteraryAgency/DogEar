@@ -15,7 +15,7 @@ def quote(s):
     return "NULL" if s is None else "'"+str(s).replace("'","''")+"'"
 
 records=json.loads(Path("isbn-candidates.json").read_text())
-if not isinstance(records,list) or len(records)>25: raise ValueError("Bounded to 25 candidates")
+if not isinstance(records,list) or len(records)>100: raise ValueError("Bounded to 100 candidates")
 lines=[]
 found=0
 for item in records:
