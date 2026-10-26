@@ -33,7 +33,7 @@ def storage():
 
 def parse_writes(output):
     # Wrangler's remote --file output displays '<n> rows written'.
-    m=re.search(r"([0-9][0-9,]*)\\s+rows written",output,re.I)
+    m=re.search(r"([0-9][0-9,]*)\s+rows written",output,re.I)
     if not m:
         raise RuntimeError("Cannot measure rows written: stopping rather than guessing")
     return int(m.group(1).replace(",",""))
