@@ -58,5 +58,6 @@ jobs:
           if [ "$OFFSET" -ge 100000 ]; then echo "Target complete"; exit 0; fi
           REMAIN=$((100000-OFFSET))
           if [ "$REMAIN" -gt 3000 ]; then REMAIN=3000; fi
-          python3 scripts/prepare_priority_d1.py --start "$OFFSET" --count "$REMAIN" --chunk 100
+          python3 scripts/preimport_isbns.py --start "$OFFSET" --count "$REMAIN" --max-lookups 100 --out preimport-editions.json
+          python3 scripts/prepare_priority_d1.py --start "$OFFSET" --count "$REMAIN" --chunk 100 --editions preimport-editions.json
           python3 scripts/import_with_budget.py
