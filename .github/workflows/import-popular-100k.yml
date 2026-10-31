@@ -3,6 +3,10 @@ on:
   schedule:
     - cron: '17 6 * * *' # once daily, UTC
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-popular-100k.yml'
 permissions:
   contents: read
   actions: read
