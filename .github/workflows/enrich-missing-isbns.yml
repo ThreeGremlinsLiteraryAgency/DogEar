@@ -34,7 +34,9 @@ jobs:
           python3 - <<'PY'
           import json
           d=json.load(open('info.json'))
-          size=int(d.get('file_size',d.get('fileSize',0)))
+          if isinstance(d,list):d=d[0] if d else {}
+          if isinstance(d,dict) and isinstance(d.get('result'),dict):d=d['result']
+          size=int(d.get('file_size',d.get('fileSize',d.get('database_size',0))))
           if not size:raise RuntimeError('Unknown database size; fail closed')
           if size>=450000000:raise RuntimeError('450MB storage stop')
           print('DB size:',size)
