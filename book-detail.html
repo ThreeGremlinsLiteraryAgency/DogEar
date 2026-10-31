@@ -2190,25 +2190,19 @@ function normalizeGoogleBook(
   };
 }
 
-function bookshopSearchUrl(
-  book
-){
-  // A direct /a/{affiliate}/{ISBN} URL returns 404 when Bookshop does not
-  // stock that exact edition. Search by title + author instead so readers
-  // can still reach Bookshop's matching editions.
-  // Search by title and known author(s), without requiring an ISBN.
-  // A Bookshop search URL alone is not a verified affiliate tracking link.
+function bookshopSearchUrl(book){
+  // Bookshop documents /a/{affiliateId}/{ISBN13} as an affiliate URL.
+  // Search URLs are NOT documented as affiliate-tracked: keep title/author
+  // search as a fallback, rather than inventing an unverified tracking format.
+  const isbn = String(book?.isbn13 || "").replace(/[^0-9]/g, "");
+  if (/^97[89][0-9]{10}$/.test(isbn)) {
+    return "https://bookshop.org/a/" + BOOKSHOP_AFFILIATE_ID + "/" + isbn;
+  }
   const authorNames = Array.isArray(book?.authors)
     ? book.authors.join(" ")
     : (book?.authors || book?.author || "");
-  const searchTerm = [book?.title || "", authorNames]
-    .filter(Boolean)
-    .join(" ");
-
-  return (
-    "https://bookshop.org/search?keywords=" +
-    encodeURIComponent(searchTerm)
-  );
+  const searchTerm = [book?.title || "", authorNames].filter(Boolean).join(" ");
+  return "https://bookshop.org/search?keywords=" + encodeURIComponent(searchTerm);
 }
 
 async function loadSession(){
