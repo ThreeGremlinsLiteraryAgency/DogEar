@@ -2196,11 +2196,14 @@ function bookshopSearchUrl(
   // A direct /a/{affiliate}/{ISBN} URL returns 404 when Bookshop does not
   // stock that exact edition. Search by title + author instead so readers
   // can still reach Bookshop's matching editions.
-  // Bookshop's search relevance is much better with the title alone.
-  // Open Library often lists the illustrator/adaptor as the first author,
-  // which can swamp the title and produce unrelated surname matches.
-  const searchTerm =
-    book?.title || "";
+  // Search by title and known author(s), without requiring an ISBN.
+  // A Bookshop search URL alone is not a verified affiliate tracking link.
+  const authorNames = Array.isArray(book?.authors)
+    ? book.authors.join(" ")
+    : (book?.authors || book?.author || "");
+  const searchTerm = [book?.title || "", authorNames]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     "https://bookshop.org/search?keywords=" +
