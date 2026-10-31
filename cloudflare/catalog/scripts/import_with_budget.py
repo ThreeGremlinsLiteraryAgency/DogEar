@@ -26,7 +26,11 @@ def rows(sql):
 
 def storage():
     d=json.loads(run("info",DB,"--json"))
-    size=d.get("file_size",d.get("fileSize"))
+    if isinstance(d,list):
+        d=d[0] if d else {}
+    if isinstance(d,dict) and isinstance(d.get("result"),dict):
+        d=d["result"]
+    size=d.get("file_size",d.get("fileSize",d.get("database_size",d.get("databaseSize"))))
     if not isinstance(size,(int,float)) or size<=0:
         raise RuntimeError("Cannot verify DB size: fail closed")
     return size
