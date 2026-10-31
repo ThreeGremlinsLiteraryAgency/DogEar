@@ -6,7 +6,9 @@ p=argparse.ArgumentParser()
 p.add_argument("--start",type=int,required=True)
 p.add_argument("--count",type=int,default=5000)
 p.add_argument("--chunk",type=int,default=100)
+p.add_argument("--editions",default=None)
 a=p.parse_args()
+editions=json.loads(Path(a.editions).read_text()) if a.editions else {}
 def q(x):
     return "NULL" if x is None else "'"+str(x).replace("'","''")+"'"
 out=Path("batches"); out.mkdir(exist_ok=True)
@@ -24,6 +26,11 @@ with gzip.open("paper-gremlin-priority-100k.jsonl.gz","rt",encoding="utf-8") as 
         # Keep subjects short to preserve D1 space. API smoke importer already manages FTS.
         subjects=json.dumps((d.get("subjects") or [])[:5],ensure_ascii=False)[:500]
         lines.append(f"INSERT OR IGNORE INTO works(work_key,title,first_publish_year,cover_url,subjects_json) VALUES ({q(key)},{q(title)},{q(int(yr.group(1)) if yr else None)},{q(url)},{q(subjects)});")
+        e=editions.get(key)
+        if e:
+            vals=[e.get(k) for k in ("edition_key","title","publisher","publish_date","isbn_10","isbn_13")]
+            if not re.fullmatch(r"OL[0-9]+M",str(vals[0])):raise ValueError("Invalid edition key")
+            lines.append("INSERT OR IGNORE INTO editions(edition_key,work_key,title,publisher,publish_date,isbn_10,isbn_13) VALUES ("+",".join(q(v) for v in (vals[0],key,*vals[1:]))+");")
         # Unknown author names cannot be inserted safely. Work-author links are deferred.
         lines.append(f"INSERT INTO works_fts(work_key,title,author_names) SELECT {q(key)},{q(title)},'' WHERE NOT EXISTS(SELECT 1 FROM works_fts WHERE work_key={q(key)});")
         total+=1
