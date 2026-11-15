@@ -46,19 +46,58 @@ with urllib.request.urlopen(req,timeout=180) as response:
     covers=[x for x in doc.get("covers",[]) if isinstance(x,int) and x>0]
     author_keys=[a.get("author",{}).get("key","").split("/")[-1] for a in doc.get("authors",[]) if isinstance(a,dict) and isinstance(a.get("author"),dict)]
     record={"work_key":key,"title":title[:350],"first_publish_date":doc.get("first_publish_date"),
-      "subjects":(doc.get("subjects") or [])[:5],"cover_ids":covers[:1],"author_keys":author_keys[:5],
+      "subtitle":doc.get("subtitle") if isinstance(doc.get("subtitle"),str) else None,\n      "subjects":(doc.get("subjects") or [])[:20],"cover_ids":covers[:1],"author_keys":author_keys[:8],
       "popularity_rank":rank[key][0],"popularity_score":rank[key][1]}
     hits.append(record)
    except (UnicodeDecodeError,ValueError,TypeError,AttributeError):continue
 print("Compressed bytes downloaded:",limited.used,flush=True)
 print("Candidate works matched:",len(hits),flush=True)
-# Cover availability takes priority, then rank. Uncovered works fill gaps only.
-hits.sort(key=lambda x:(not bool(x["cover_ids"]),x["popularity_rank"]))
-selected=hits[:100000]
-if len(selected)<100000:raise RuntimeError(f"Only {len(selected)} usable ranked works; refused to make incomplete queue")
+# Only stage genuinely usable new works. Unknown metadata must not silently
+# produce incomplete records; legacy records are intentionally not touched.
+year_re=re.compile(r"\\b(1[5-9][0-9]{2}|20[0-9]{2})\\b")
+def usable(d):
+ return (d["cover_ids"] and d["author_keys"] and
+         year_re.search(str(d.get("first_publish_date") or "")) and
+         any(isinstance(v,str) and v.strip() for v in d["subjects"]))
+hits=[d for d in hits if usable(d)]
+hits.sort(key=lambda x:x["popularity_rank"])
+print("Works meeting initial completeness requirements:",len(hits),flush=True)
+if len(hits)<100000:raise RuntimeError("Fewer than 100,000 covered works have author references, publication year and subjects")
+
+# Resolve author names in bulk from the official authors dump, without making
+# 100,000+ individual API requests. Scan once and retain only needed authors.
+needed={k for d in hits for k in d["author_keys"]}
+author_names={}
+author_url="https://openlibrary.org/data/ol_dump_authors_latest.txt.gz"
+req=urllib.request.Request(author_url,headers={"User-Agent":"PaperGremlinBulkCatalog/1.0 (threegremlinsliteraryagency@gmail.com)"})
+with urllib.request.urlopen(req,timeout=180) as response:
+ length=response.headers.get("Content-Length")
+ if length and int(length)>MAX_DOWNLOAD:raise RuntimeError("Author dump exceeds compressed download safety limit")
+ limited_authors=LimitedStream(response,MAX_DOWNLOAD)
+ with gzip.GzipFile(fileobj=limited_authors) as stream:
+  for raw in stream:
+   try:
+    parts=raw.decode("utf-8").rstrip("\\n").split("\\t",4)
+    if len(parts)!=5:continue
+    aid=parts[1].rsplit("/",1)[-1]
+    if aid not in needed:continue
+    doc=json.loads(parts[4])
+    name=doc.get("name")
+    if isinstance(name,str) and name.strip():author_names[aid]=name.strip()
+   except (UnicodeDecodeError,ValueError,TypeError,AttributeError):continue
+print("Resolved author names:",len(author_names),"of",len(needed),flush=True)
+selected=[]
+for d in hits:
+ authors=[{"author_key":k,"name":author_names[k]} for k in d["author_keys"] if k in author_names]
+ # Require every referenced author to be resolvable; do not conceal gaps.
+ if len(authors)!=len(d["author_keys"]):continue
+ d["authors"]=authors
+ selected.append(d)
+ if len(selected)>=100000:break
+if len(selected)<100000:raise RuntimeError(f"Only {len(selected)} works meet author and core metadata requirements; no incomplete priority artifact published")
 with gzip.open("paper-gremlin-priority-100k.jsonl.gz","wt",encoding="utf-8",compresslevel=6) as out:
- for item in selected:out.write(json.dumps(item,ensure_ascii=False)+"\n")
+ for item in selected:out.write(json.dumps(item,ensure_ascii=False)+"\\n")
 with Path("priority-report.json").open("w") as out:
  json.dump({"selected":len(selected),"with_covers":sum(bool(x["cover_ids"]) for x in selected),"matched_candidates":len(hits),
-  "top_20":selected[:20]},out,indent=2)
-print("Selected 100000; with covers",sum(bool(x["cover_ids"]) for x in selected),flush=True)
+  "with_resolved_authors":len(selected),"top_20":selected[:20]},out,indent=2)
+print("Selected 100000 complete core catalog records",flush=True)
