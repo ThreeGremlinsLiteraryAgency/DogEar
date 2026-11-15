@@ -46,7 +46,8 @@ with urllib.request.urlopen(req,timeout=180) as response:
     covers=[x for x in doc.get("covers",[]) if isinstance(x,int) and x>0]
     author_keys=[a.get("author",{}).get("key","").split("/")[-1] for a in doc.get("authors",[]) if isinstance(a,dict) and isinstance(a.get("author"),dict)]
     record={"work_key":key,"title":title[:350],"first_publish_date":doc.get("first_publish_date"),
-      "subtitle":doc.get("subtitle") if isinstance(doc.get("subtitle"),str) else None,\n      "subjects":(doc.get("subjects") or [])[:20],"cover_ids":covers[:1],"author_keys":author_keys[:8],
+      "subtitle":doc.get("subtitle") if isinstance(doc.get("subtitle"),str) else None,
+      "subjects":(doc.get("subjects") or [])[:20],"cover_ids":covers[:1],"author_keys":author_keys[:8],
       "popularity_rank":rank[key][0],"popularity_score":rank[key][1]}
     hits.append(record)
    except (UnicodeDecodeError,ValueError,TypeError,AttributeError):continue
@@ -54,7 +55,7 @@ print("Compressed bytes downloaded:",limited.used,flush=True)
 print("Candidate works matched:",len(hits),flush=True)
 # Only stage genuinely usable new works. Unknown metadata must not silently
 # produce incomplete records; legacy records are intentionally not touched.
-year_re=re.compile(r"\\b(1[5-9][0-9]{2}|20[0-9]{2})\\b")
+year_re=re.compile(r"\b(1[5-9][0-9]{2}|20[0-9]{2})\b")
 def usable(d):
  return (d["cover_ids"] and d["author_keys"] and
          year_re.search(str(d.get("first_publish_date") or "")) and
@@ -77,7 +78,7 @@ with urllib.request.urlopen(req,timeout=180) as response:
  with gzip.GzipFile(fileobj=limited_authors) as stream:
   for raw in stream:
    try:
-    parts=raw.decode("utf-8").rstrip("\\n").split("\\t",4)
+    parts=raw.decode("utf-8").rstrip("\n").split("\t",4)
     if len(parts)!=5:continue
     aid=parts[1].rsplit("/",1)[-1]
     if aid not in needed:continue
@@ -96,7 +97,7 @@ for d in hits:
  if len(selected)>=100000:break
 if len(selected)<100000:raise RuntimeError(f"Only {len(selected)} works meet author and core metadata requirements; no incomplete priority artifact published")
 with gzip.open("paper-gremlin-priority-100k.jsonl.gz","wt",encoding="utf-8",compresslevel=6) as out:
- for item in selected:out.write(json.dumps(item,ensure_ascii=False)+"\\n")
+ for item in selected:out.write(json.dumps(item,ensure_ascii=False)+"\n")
 with Path("priority-report.json").open("w") as out:
  json.dump({"selected":len(selected),"with_covers":sum(bool(x["cover_ids"]) for x in selected),"matched_candidates":len(hits),
   "with_resolved_authors":len(selected),"top_20":selected[:20]},out,indent=2)
