@@ -75,12 +75,13 @@ with gzip.open("paper-gremlin-priority-100k.jsonl.gz", "rt", encoding="utf-8") a
             "INSERT OR IGNORE INTO works(work_key,title,subtitle,first_publish_year,cover_url,subjects_json) VALUES ("
             + ",".join(q(x) for x in (key, title, subtitle, year, url, json.dumps(subjects, ensure_ascii=False))) + ");"
         )
+        # The immediately preceding INSERT OR IGNORE into works gives changes()=1
+        # only for a newly added work. Avoid scanning the entire FTS table.
+        author_names = " ".join(name for _, name in authors)
+        lines.append(f"INSERT INTO works_fts(work_key,title,author_names) SELECT {q(key)},{q(title)},{q(author_names)} WHERE changes()=1;")
         for aid, name in authors:
             lines.append(f"INSERT OR IGNORE INTO authors(author_key,name) VALUES ({q(aid)},{q(name)});")
             lines.append(f"INSERT OR IGNORE INTO work_authors(work_key,author_key) VALUES ({q(key)},{q(aid)});")
-        # FTS entries now contain the same actual author names as the catalog.
-        author_names = " ".join(name for _, name in authors)
-        lines.append(f"INSERT INTO works_fts(work_key,title,author_names) SELECT {q(key)},{q(title)},{q(author_names)} WHERE NOT EXISTS(SELECT 1 FROM works_fts WHERE work_key={q(key)});")
         edition = d.get("edition")
         if edition:
             eid = edition.get("edition_key")
