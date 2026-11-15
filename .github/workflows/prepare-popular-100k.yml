@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - ".github/workflows/prepare-popular-100k.yml"
+      - "cloudflare/catalog/scripts/select_popular_100k.py"
   workflow_dispatch:
 permissions:
   contents: read
@@ -10,7 +11,7 @@ permissions:
 jobs:
   prepare:
     runs-on: ubuntu-latest
-    timeout-minutes: 65
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
       - name: Fetch ranked queue
