@@ -56,8 +56,11 @@ for file in sorted(glob.glob("batches/*.sql")):
     # 2000-row buffer per next 100 works, plus 30000 daily internal cap.
     if used+2000>MAX_WRITES:
         print("Conservative D1 write budget reached");break
-    result=run("execute",DB,"--remote","--file="+file,"--yes")
-    actual=parse_writes(result)
+    if open(file, encoding='utf-8').read().strip() == '-- empty source window':
+        actual=0
+    else:
+        result=run("execute",DB,"--remote","--file="+file,"--yes")
+        actual=parse_writes(result)
     if actual>2000:
         raise RuntimeError("Single batch exceeded 2000 written rows; manual review required")
     # Update cursor only after successful file import; use idempotent INSERT OR IGNORE SQL.
