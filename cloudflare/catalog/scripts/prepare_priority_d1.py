@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """Prepare only complete, source-verified new works for the 100K D1 catalog.
 
-Does not repair existing rows. Refuses to advance the import cursor when the
-staged record lacks a usable author, cover or required catalog metadata.
+Skip incomplete source records; each batch covers exactly one source window.
+Never reset the cursor or insert incomplete work metadata.
 """
 import argparse
 import gzip
 import json
 import re
+import sys
 from pathlib import Path
 
 p = argparse.ArgumentParser()
@@ -45,6 +46,8 @@ def required(d):
         raise ValueError(f"{key}: missing resolved author names")
     clean = []
     for author in authors:
+        if not isinstance(author, dict):
+            raise ValueError(f"{key}: invalid author metadata")
         aid, name = author.get("author_key"), author.get("name")
         if not re.fullmatch(r"OL[0-9]+A", str(aid)) or not isinstance(name, str) or not name.strip():
             raise ValueError(f"{key}: invalid author metadata")
@@ -55,7 +58,7 @@ out = Path("batches")
 out.mkdir(exist_ok=True)
 for old in out.glob("*.sql"):
     old.unlink()
-count = chunks = 0
+count = chunks = skipped = 0
 lines = []
 with gzip.open("paper-gremlin-priority-100k.jsonl.gz", "rt", encoding="utf-8") as source:
     for i, raw in enumerate(source):
@@ -63,8 +66,23 @@ with gzip.open("paper-gremlin-priority-100k.jsonl.gz", "rt", encoding="utf-8") a
             continue
         if count >= a.count:
             break
-        d = json.loads(raw)
-        year, authors = required(d)
+        count += 1
+        try:
+            d = json.loads(raw)
+            if not isinstance(d, dict):
+                raise ValueError('Invalid source record')
+            year, authors = required(d)
+            edition = d.get('edition')
+            if edition and (not isinstance(edition, dict) or not re.fullmatch(r'OL[0-9]+M', str(edition.get('edition_key')))):
+                raise ValueError(f"{d.get('work_key')}: invalid edition identifier")
+        except (ValueError, TypeError, AttributeError) as exc:
+            skipped += 1
+            print(f'Skipping source offset {i}: {exc}', file=sys.stderr)
+            if count % a.chunk == 0:
+                (out / f"{chunks:06}.sql").write_text("\n".join(lines) + "\n" if lines else "-- empty source window\n", encoding="utf-8")
+                chunks += 1
+                lines = []
+            continue
         key, title = d["work_key"], d["title"].strip()
         cover = d["cover_ids"][0]
         subjects = [s.strip() for s in d["subjects"] if isinstance(s, str) and s.strip()][:20]
@@ -91,14 +109,10 @@ with gzip.open("paper-gremlin-priority-100k.jsonl.gz", "rt", encoding="utf-8") a
                     edition.get("publish_date"), edition.get("isbn_10"), edition.get("isbn_13"))
             lines.append("INSERT OR IGNORE INTO editions(edition_key,work_key,title,publisher,publish_date,isbn_10,isbn_13) VALUES (" +
                          ",".join(q(v) for v in vals) + ");")
-        count += 1
         if count % a.chunk == 0:
             (out / f"{chunks:06}.sql").write_text("\n".join(lines) + "\n", encoding="utf-8")
             chunks += 1
             lines = []
-if lines:
-    (out / f"{chunks:06}.sql").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    chunks += 1
-if not count:
-    raise RuntimeError("No work rows at requested offset")
-print(f"Prepared {count} validated work rows in {chunks} SQL batches from offset {a.start}")
+if count != a.count:
+    raise RuntimeError(f'Source ended early: expected {a.count}, scanned {count}; refusing cursor advance')
+print(f'Prepared {count-skipped} validated works; skipped {skipped}; {chunks} source windows from offset {a.start}')
