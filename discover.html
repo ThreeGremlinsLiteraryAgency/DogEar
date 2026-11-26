@@ -1767,20 +1767,6 @@ async function quickCatalogFetch(url,timeoutMs,signal){
     signal.removeEventListener("abort",abort);
   }
 }
-function googleResultToBook(item){
-  const v=item.volumeInfo||{};
-  return {
-    _source:"google", google_books_id:item.id,
-    title:v.title||"Untitled",
-    authors:Array.isArray(v.authors)?v.authors:[],
-    description:v.description||"",
-    cover_url:(v.imageLinks?.thumbnail||v.imageLinks?.smallThumbnail||"").replace(/^http:/,"https:"),
-    published_date:v.publishedDate||"",
-    isbn_13:(v.industryIdentifiers||[]).find(i=>i.type==="ISBN_13")?.identifier||"",
-    isbn_10:(v.industryIdentifiers||[]).find(i=>i.type==="ISBN_10")?.identifier||"",
-    categories:v.categories||[]
-  };
-}
 async function searchCatalog(query,page=1,append=false){
   const clean=String(query||"").trim();
   if(clean.length<2){resetCatalogSearch();return;}
@@ -1792,7 +1778,6 @@ async function searchCatalog(query,page=1,append=false){
   catalogLoadingMore=append;
   updateLoadMoreButton();
   let incoming=[];
-  let googleFallback=false;
   try{
     const d=await quickCatalogFetch(
       CLOUD_CATALOG_ENDPOINT+"?q="+encodeURIComponent(clean)+"&limit=40&offset="+((page-1)*40),
@@ -1804,27 +1789,7 @@ async function searchCatalog(query,page=1,append=false){
   }catch(error){
     if(sequence!==searchSequence)return;
     if(controller.signal.aborted)return;
-    console.info("Cloudflare catalog slow or unavailable; using Google Books.",error);
-    googleFallback=true;
-  }
-  // A genuine D1 miss starts Google promptly, without any lengthy retry.
-  if(!incoming.length && (!append || googleFallback)){
-    googleFallback=true;
-    searchStatus.textContent="Checking Google Books…";
-    try{
-      const google=await quickCatalogFetch(
-        "https://www.googleapis.com/books/v1/volumes?q="+encodeURIComponent(clean)+"&maxResults=40",
-        3500,controller.signal
-      );
-      if(sequence!==searchSequence)return;
-      incoming=(google.items||[]).map(googleResultToBook);
-      catalogHasMore=false;
-    }catch(error){
-      if(sequence!==searchSequence)return;
-      if(controller.signal.aborted)return;
-      console.warn("Google Books fallback failed:",error);
-      if(!append)throw error;
-    }
+    throw error;
   }
   if(sequence!==searchSequence)return;
   const map=new Map((append?catalogBooks:[]).map(book=>[bookIdentity(book),book]));
@@ -1832,7 +1797,6 @@ async function searchCatalog(query,page=1,append=false){
   catalogBooks=[...map.values()];
   catalogPage=page;
   catalogTotalItems=catalogBooks.length;
-  if(googleFallback)catalogHasMore=false;
   catalogLoadingMore=false;
   updateLoadMoreButton();
 }

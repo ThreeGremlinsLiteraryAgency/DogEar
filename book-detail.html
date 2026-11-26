@@ -1671,9 +1671,6 @@ const supabaseClient =
     SUPABASE_PUBLISHABLE_KEY
   );
 
-const GOOGLE_BOOKS_API_KEY =
-  window.GOOGLE_BOOKS_API_KEY || "";
-
 let currentUser =
   null;
 
@@ -2091,107 +2088,6 @@ async function loadBookByWorkKey(workKey){
   }
 }
 
-function normalizeGoogleBook(
-  item
-){
-  const volume =
-    item?.volumeInfo ||
-    {};
-
-  const identifiers =
-    Array.isArray(
-      volume.industryIdentifiers
-    )
-      ? volume.industryIdentifiers
-      : [];
-
-  const isbn13 =
-    identifiers.find(
-      identifier =>
-        identifier.type ===
-        "ISBN_13"
-    )?.identifier || "";
-
-  const isbn10 =
-    identifiers.find(
-      identifier =>
-        identifier.type ===
-        "ISBN_10"
-    )?.identifier || "";
-
-  const thumbnail =
-    normalizeHttps(
-      volume.imageLinks?.extraLarge ||
-      volume.imageLinks?.large ||
-      volume.imageLinks?.medium ||
-      volume.imageLinks?.small ||
-      volume.imageLinks?.thumbnail ||
-      volume.imageLinks?.smallThumbnail ||
-      ""
-    );
-
-  return {
-    id:null,
-
-    googleId:
-      item?.id ||
-      null,
-
-    title:
-      volume.title ||
-      "Untitled",
-
-    subtitle:
-      volume.subtitle ||
-      "",
-
-    authors:
-      Array.isArray(
-        volume.authors
-      )
-        ? volume.authors
-        : [],
-
-    publisher:
-      volume.publisher ||
-      "",
-
-    publishedDate:
-      volume.publishedDate ||
-      "",
-
-    description:
-      volume.description ||
-      "",
-
-    isbn13,
-    isbn10,
-
-    thumbnail,
-
-    categories:
-      Array.isArray(
-        volume.categories
-      )
-        ? volume.categories
-        : [],
-
-    infoLink:
-      volume.infoLink ||
-      (
-        item?.id
-          ? (
-              "https://books.google.com/books?id=" +
-              encodeURIComponent(
-                item.id
-              )
-            )
-          : ""
-      )
-  };
-}
-
-
 async function loadSession(){
   const {
     data,
@@ -2302,79 +2198,6 @@ async function loadProfileAvatar(){
       error
     );
   }
-}
-
-async function fetchGoogleBook(
-  googleId
-){
-  const params =
-    new URLSearchParams();
-
-  if(GOOGLE_BOOKS_API_KEY){
-    params.set(
-      "key",
-      GOOGLE_BOOKS_API_KEY
-    );
-  }
-
-  const queryString =
-    params.toString();
-
-  const url =
-    "https://www.googleapis.com/books/v1/volumes/" +
-    encodeURIComponent(
-      googleId
-    ) +
-    (
-      queryString
-        ? "?" + queryString
-        : ""
-    );
-
-  const response =
-    await fetch(
-      url
-    );
-
-  if(!response.ok){
-    let details =
-      "";
-
-    try{
-      const payload =
-        await response.json();
-
-      details =
-        payload?.error?.message ||
-        "";
-    }
-    catch{
-      details =
-        "";
-    }
-
-    throw new Error(
-      details ||
-      `Google Books could not load this title (${response.status}).`
-    );
-  }
-
-  const item =
-    await response.json();
-
-  if(
-    !item ||
-    !item.id ||
-    !item.volumeInfo
-  ){
-    throw new Error(
-      "Google Books returned an incomplete book record."
-    );
-  }
-
-  return normalizeGoogleBook(
-    item
-  );
 }
 
 async function importGoogleBook(
@@ -2590,49 +2413,8 @@ async function loadBookByGoogleId(
     return;
   }
 
-  currentBook =
-    await fetchGoogleBook(
-      googleId
-    );
+  throw new Error("This edition is unavailable in the Paper Gremlin library.");
 
-  if(currentUser){
-    currentBookId =
-      await importGoogleBook(
-        currentBook
-      );
-
-    const {
-      data:localBook,
-      error:localError
-    } =
-      await supabaseClient
-        .from("books")
-        .select("*")
-        .eq(
-          "id",
-          currentBookId
-        )
-        .maybeSingle();
-
-    if(localError){
-      throw localError;
-    }
-
-    if(!localBook){
-      throw new Error(
-        "The book was imported but could not be read back from Paper Gremlin."
-      );
-    }
-
-    currentBook =
-      normalizeLocalBook(
-        localBook
-      );
-
-    replaceWithLocalBookUrl(
-      currentBookId
-    );
-  }
 }
 
 function replaceWithLocalBookUrl(

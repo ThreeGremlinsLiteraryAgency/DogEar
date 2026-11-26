@@ -3475,9 +3475,7 @@ async function fetchBookSearchJson(endpoint, timeoutMs, parentSignal) {
   }
 }
 
-// D1 first. If it misses or takes more than 1.2 seconds, move to Google.
-// Both providers have strict deadlines so the page never hangs indefinitely.
-async function searchGoogleBooks(query) {
+async function searchPaperGremlin(query) {
   const trimmedQuery = String(query || "").trim();
   if (activeBookSearchController) activeBookSearchController.abort();
   const searchId = ++activeBookSearch;
@@ -3488,7 +3486,7 @@ async function searchGoogleBooks(query) {
       "A title or author will do.", "Type something into the search box and we'll search the shelves.", "");
     return;
   }
-  setBookSearchStatus("Searching the shelves...", "Checking Paper Gremlin first", "Finding your next read.");
+  setBookSearchStatus("Searching the shelves...", "Checking Paper Gremlin", "Finding your next read.");
   try {
     const data = await fetchBookSearchJson(
       PAPER_GREMLIN_CATALOG + "/search?q=" + encodeURIComponent(trimmedQuery) + "&limit=1",
@@ -3503,35 +3501,13 @@ async function searchGoogleBooks(query) {
         book.cover_url || "");
       return;
     }
-  } catch (error) {
-    if (searchId !== activeBookSearch) return;
-    if (controller.signal.aborted) return;
-    console.info("Paper Gremlin catalog unavailable or slow; trying Google Books.", error);
-  }
-
-  if (searchId !== activeBookSearch) return;
-  setBookSearchStatus("Checking more shelves...", "Searching Google Books", "Just a moment.");
-  try {
-    const data = await fetchBookSearchJson(
-      "https://www.googleapis.com/books/v1/volumes?q=" + encodeURIComponent(trimmedQuery) + "&maxResults=1",
-      3500, controller.signal
-    );
-    if (searchId !== activeBookSearch) return;
-    const volume = data.items?.[0]?.volumeInfo;
-    if (!volume) {
-      showBookResult("Nothing turned up.", "Try another trail.",
-        "We couldn't find a matching book. Try another title, author, ISBN or spelling.", "");
-      return;
-    }
-    showBookResult(volume.title || "Untitled",
-      Array.isArray(volume.authors) ? volume.authors.join(", ") : "Unknown author",
-      cleanDescription(volume.description),
-      volume.imageLinks?.thumbnail || volume.imageLinks?.smallThumbnail || "");
+    showBookResult("Nothing turned up.", "Try another trail.",
+      "Try another title, author, ISBN or spelling.", "");
   } catch (error) {
     if (searchId !== activeBookSearch || controller.signal.aborted) return;
-    console.error("Both book search providers failed:", error);
+    console.error("Paper Gremlin catalog search failed:", error);
     showBookResult("The trail went cold.", "Search temporarily unavailable",
-      "We couldn't complete the search. Please try again.", "");
+      "Please try again.", "");
   }
 }
 
@@ -3548,7 +3524,7 @@ if(bookSearchForm){
       event.preventDefault();
 
 
-      searchGoogleBooks(
+      searchPaperGremlin(
         bookSearchInput
           ? bookSearchInput.value
           : ""
@@ -4176,7 +4152,7 @@ if(hero){
 /* =========================================================
    CLEAN UP IMAGE ALT STATE
 
-   The cover image is hidden until Google Books returns
+   The cover image is hidden until the catalog returns
    an actual cover.
 ========================================================= */
 
