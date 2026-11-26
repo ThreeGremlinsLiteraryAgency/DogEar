@@ -1656,6 +1656,7 @@ h1{
 </main>
 <div id="dogearModal" hidden style="position:fixed;inset:0;z-index:90;background:#000c;padding:20px;place-items:center;overflow:auto"><div class="card" style="width:min(620px,96vw);padding:24px;margin:auto"><button class="btn secondary" id="dogearClose" type="button" style="float:right">×</button><div class="eyebrow">Fold the corner</div><h2 style="font-size:30px;font-weight:400">Add DogEar</h2><div class="detail-grid"><label class="detail-label">Chapter</label><input id="dogearChapter" maxlength="160"><label class="detail-label">Section</label><input id="dogearSection" maxlength="160"><label class="detail-label">Progress %</label><input id="dogearProgress" type="number" min="0" max="100" step=".1"><label class="detail-label">Text anchor</label><input id="dogearAnchor" maxlength="500" placeholder="A short phrase near your place"><label class="detail-label">Note</label><textarea id="dogearNote" class="review-textarea" maxlength="4000" placeholder="Your thought here. URLs are not allowed."></textarea><label class="detail-label">Visibility</label><select id="dogearVisibility"><option value="private">Private</option><option value="club">Share with club</option></select><label class="detail-label" id="dogearClubLabel" hidden>Club</label><select id="dogearClub" hidden></select></div><div class="message" id="dogearMessage"></div><div class="actions"><button class="btn primary" id="dogearSave" type="button">Save DogEar</button><button class="btn secondary" id="dogearCancel" type="button">Cancel</button></div></div></div>
 
+<script src="assets/bookshop.js"></script>
 <script>
 
 const SUPABASE_URL =
@@ -1669,9 +1670,6 @@ const supabaseClient =
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
   );
-
-const BOOKSHOP_AFFILIATE_ID =
-  "128186";
 
 const GOOGLE_BOOKS_API_KEY =
   window.GOOGLE_BOOKS_API_KEY || "";
@@ -1841,6 +1839,8 @@ function normalizeLocalBook(
     id:
       row.id,
 
+    verificationStatus: row.verification_status,
+
     googleId:
       row.google_books_id ||
       row.google_id ||
@@ -1914,6 +1914,7 @@ function normalizeCatalogBook(
 
   return {
     id:null,
+    verificationStatus: row?.verification_status || "verified",
     catalogId:row?.id || null,
     workKey:row?.source_work_key || null,
     googleId:null,
@@ -2190,20 +2191,6 @@ function normalizeGoogleBook(
   };
 }
 
-function bookshopSearchUrl(book){
-  // Bookshop documents /a/{affiliateId}/{ISBN13} as an affiliate URL.
-  // Search URLs are NOT documented as affiliate-tracked: keep title/author
-  // search as a fallback, rather than inventing an unverified tracking format.
-  const isbn = String(book?.isbn13 || "").replace(/[^0-9]/g, "");
-  if (/^97[89][0-9]{10}$/.test(isbn)) {
-    return "https://bookshop.org/a/" + BOOKSHOP_AFFILIATE_ID + "/" + isbn;
-  }
-  const authorNames = Array.isArray(book?.authors)
-    ? book.authors.join(" ")
-    : (book?.authors || book?.author || "");
-  const searchTerm = [book?.title || "", authorNames].filter(Boolean).join(" ");
-  return "https://bookshop.org/search?keywords=" + encodeURIComponent(searchTerm);
-}
 
 async function loadSession(){
   const {
@@ -2885,10 +2872,14 @@ function renderBook(){
       true;
   }
 
-  $("bookshopBtn").href =
-    bookshopSearchUrl(
-      book
-    );
+  const shopButton = $("bookshopBtn");
+  const shopUrl = paperGremlinBookshopUrl(book);
+  shopButton.hidden = !shopUrl;
+  if (shopUrl) {
+    shopButton.href = shopUrl;
+  } else {
+    shopButton.removeAttribute("href");
+  }
 }
   async function ensureLocalBook(){
   if(currentBookId){

@@ -1007,6 +1007,7 @@ h1{font-size:clamp(46px,6vw,72px);max-width:760px}
 
 </nav>
 
+<script src="assets/bookshop.js"></script>
 <script>
 function bookAuthor(book){
   if(!book) return "";
@@ -1034,9 +1035,6 @@ const supabaseClient =
 /* =========================================================
    BOOKSHOP
 ========================================================= */
-
-const BOOKSHOP_AFFILIATE_ID =
-  "128186";
 
 /* =========================================================
    ELEMENTS
@@ -1258,6 +1256,8 @@ function normalizeLocalBook(
     source:
       "local",
 
+    verificationStatus: row.verification_status,
+
     id:
       row.id,
 
@@ -1342,36 +1342,6 @@ function bookDetailsUrl(
 
 }
 
-function bookshopSearchUrl(
-  book
-){
-
-  const searchTerm =
-    book.isbn13 ||
-    book.isbn10 ||
-    [
-      book.title,
-      bookAuthor(book)
-    ]
-      .filter(Boolean)
-      .join(" ");
-
-  if(!searchTerm){
-    return "";
-  }
-
-  return (
-    "https://bookshop.org/search?" +
-    new URLSearchParams({
-      keywords:
-        searchTerm,
-
-      a:
-        BOOKSHOP_AFFILIATE_ID
-    }).toString()
-  );
-
-}
 
 /* =========================================================
    BOOK CARD
@@ -1392,7 +1362,7 @@ function bookCardMarkup(
     bookDetailsUrl(book);
 
   const shopUrl =
-    bookshopSearchUrl(book);
+    paperGremlinBookshopUrl(book);
 
   const sourceLabel =
     book.source === "catalog"
@@ -1512,6 +1482,7 @@ function bookCardMarkup(
                   >
                     Shop
                   </a>
+                  <small>Paper Gremlin may earn a commission from purchases made through this link.</small>
                 `
               : ""
           }
@@ -1912,6 +1883,7 @@ async function searchCatalogBooks(
       const coverId = row?.cover_id ? String(row.cover_id) : "";
       return {
         source:"catalog",
+        verificationStatus: row?.verification_status || "verified",
         id:"",
         workKey:row?.source_work_key || "",
         googleId:"",
