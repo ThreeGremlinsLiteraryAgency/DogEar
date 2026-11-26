@@ -1165,6 +1165,22 @@ h1{
   display:none !important;
 }
 
+.cover.has-generic-art{position:relative;container-type:inline-size}
+.generic-cover-caption{
+  position:absolute;
+  inset-inline:10%;
+  bottom:14%;
+  padding:.5em;
+  border-radius:.25em;
+  background:rgb(14 10 9 / 87%);
+  color:#fff;
+  text-align:center;
+  overflow-wrap:anywhere;
+  font-size:clamp(.68rem,5cqi,1.4rem);
+}
+.generic-cover-caption strong,.generic-cover-caption span{display:block}
+.generic-cover-caption span{font-size:.82em;margin-top:.25em}
+
 </style>
 <link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">\n</head>
 
@@ -1930,27 +1946,25 @@ function normalizeCatalogBook(
 }
 
 async function loadBookByWorkKey(workKey){
-  const normalizedWorkKey = String(workKey || "").trim();
-  const alternateWorkKey = normalizedWorkKey.startsWith("/works/")
-    ? normalizedWorkKey.slice("/works/".length)
-    : "/works/" + normalizedWorkKey;
+  const key = String(workKey || "").trim().replace(/^\/works\//, "");
+  if (!/^OL[0-9]+W$/.test(key)) throw new Error("Invalid catalog work reference.");
 
   const { data, error } = await supabaseClient
     .from("book_catalog_works")
     .select("*")
-    .in("source_work_key", [normalizedWorkKey, alternateWorkKey])
+    .in("source_work_key", [key, "/works/" + key])
     .limit(1)
     .maybeSingle();
+  if (error) throw error;
 
-  if(error){
-    throw error;
+  let catalogBook = data;
+  if (!catalogBook) {
+    const endpoint = "https://paper-gremlin-catalog.threegremlinsliteraryagency.workers.dev/works/";
+    const response = await fetch(endpoint + key, { signal: AbortSignal.timeout(8000) });
+    if (!response.ok) throw new Error("Paper Gremlin could not find this catalog book.");
+    catalogBook = { ...await response.json(), source_work_key: key };
   }
-
-  if(!data){
-    throw new Error("Paper Gremlin could not find this catalog book.");
-  }
-
-  currentBook = normalizeCatalogBook(data);
+  currentBook = normalizeCatalogBook(catalogBook);
 
   // Resolve a catalog result to an existing Paper Gremlin book immediately.
   // This keeps saves, ratings, and reviews attached to the same identity
@@ -1965,7 +1979,7 @@ async function loadBookByWorkKey(workKey){
     if(compatibilityId){
       const { data:bySource, error:sourceError } = await supabaseClient
         .from("books")
-        .select("id")
+        .select("id,cover_url,authors")
         .eq("google_books_id", compatibilityId)
         .limit(1)
         .maybeSingle();
@@ -1977,7 +1991,7 @@ async function loadBookByWorkKey(workKey){
     if(!localMatch && currentBook.isbn13){
       const { data:byIsbn, error:isbnError } = await supabaseClient
         .from("books")
-        .select("id")
+        .select("id,cover_url,authors")
         .eq("isbn_13", currentBook.isbn13)
         .limit(1)
         .maybeSingle();
@@ -1989,7 +2003,7 @@ async function loadBookByWorkKey(workKey){
     if(!localMatch && currentBook.isbn10){
       const { data:byIsbn10, error:isbn10Error } = await supabaseClient
         .from("books")
-        .select("id")
+        .select("id,cover_url,authors")
         .eq("isbn_10", currentBook.isbn10)
         .limit(1)
         .maybeSingle();
@@ -2000,6 +2014,8 @@ async function loadBookByWorkKey(workKey){
 
     if(localMatch?.id){
       currentBookId = localMatch.id;
+      currentBook.thumbnail = normalizeHttps(localMatch.cover_url) || currentBook.thumbnail;
+      if (!currentBook.authors.length) currentBook.authors = normalizeAuthors(localMatch.authors);
     }
   }
   catch(identityError){
@@ -2367,6 +2383,7 @@ async function loadBookByLocalId(
       const localSocialId = currentBookId;
       await loadBookByWorkKey(catalogRow.source_work_key);
       currentBookId = localSocialId;
+      currentBook.thumbnail = normalizeHttps(data.cover_url) || currentBook.thumbnail;
     }
   }
   catch(enrichmentError){
@@ -2531,8 +2548,9 @@ function renderBook(){
   const cover =
     $("bookCover");
 
-  cover.innerHTML =
-    "";
+  cover.replaceChildren();
+  const genericArt = /^https:\/\/threegremlinsliteraryagency\.github\.io\/DogEar\/assets\/cover-templates\/00(?:0[1-9]|10)\.webp$/.test(book.thumbnail);
+  cover.classList.toggle("has-generic-art", genericArt);
 
   if(book.thumbnail){
     const image =
@@ -2555,9 +2573,17 @@ function renderBook(){
           "No cover";
       };
 
-    cover.appendChild(
-      image
-    );
+    cover.appendChild(image);
+    if (genericArt) {
+      const caption = document.createElement("div");
+      caption.className = "generic-cover-caption";
+      const captionTitle = document.createElement("strong");
+      captionTitle.textContent = book.title;
+      const captionAuthor = document.createElement("span");
+      captionAuthor.textContent = authorText;
+      caption.append(captionTitle, captionAuthor);
+      cover.appendChild(caption);
+    }
   }
   else{
     cover.textContent =

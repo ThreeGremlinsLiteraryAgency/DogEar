@@ -1163,7 +1163,11 @@ function cleanIsbn(value){
 }
 
 function bookIdentity(book){
-  const isbn13=cleanIsbn(book?.isbn_13);
+  const source = String(book?.work_key || book?.source_work_key || book?.google_books_id || "");
+  const workKey = source.match(/^(?:OL-|\/works\/)?(OL[0-9]+W)$/)?.[1];
+  if (workKey) return "open-library:" + workKey;
+
+  const isbn13=/^97[89][0-9]{10}$/.test(cleanIsbn(book?.isbn_13)) ? cleanIsbn(book.isbn_13) : "";
 
   if(isbn13){
     return "isbn13:"+isbn13;

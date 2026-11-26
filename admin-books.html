@@ -979,6 +979,18 @@ h1{
 
 }
 
+.cover-options{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(125px,1fr));
+  gap:1rem;
+  margin:1rem 0;
+}
+.cover-option{display:grid;gap:.5rem;align-content:start;cursor:pointer}
+.cover-option img{width:100%;aspect-ratio:2/3;object-fit:contain;border-radius:.35rem}
+#coverMatches{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+#coverSearch button,#coverSave{margin-top:.75rem}
+#coverEditor fieldset{border:1px solid currentColor;border-radius:.5rem;padding:.75rem}
+
 </style>
 <link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">
 </head>
@@ -1060,6 +1072,35 @@ h1{
 
       </div>
 
+    </section>
+
+    <section class="system-panel" id="bookCovers" aria-labelledby="bookCoversHeading">
+      <h2 id="bookCoversHeading">Book Covers</h2>
+      <form id="coverSearch" class="field" role="search">
+        <label for="coverQuery">Search the library by title or author</label>
+        <input id="coverQuery" type="search" required minlength="2" maxlength="120">
+        <button class="btn secondary" type="submit">Search</button>
+      </form>
+      <p id="coverStatus" role="status"></p>
+      <div id="coverMatches"></div>
+      <form id="coverEditor" hidden>
+        <h3 id="coverBookTitle"></h3>
+        <div id="coverNewFields" hidden>
+          <div class="field">
+            <label for="coverNewTitle">Title</label>
+            <input id="coverNewTitle" maxlength="300">
+          </div>
+          <div class="field">
+            <label for="coverNewAuthor">Author</label>
+            <input id="coverNewAuthor" maxlength="300">
+          </div>
+        </div>
+        <fieldset>
+          <legend id="coverOptionsLabel">Choose a cover</legend>
+          <div id="coverOptions" class="cover-options"></div>
+        </fieldset>
+        <button id="coverSave" type="submit" class="btn primary">Save cover</button>
+      </form>
     </section>
 
     <!-- =====================================================
@@ -5781,5 +5822,7 @@ initialize();
 
 </script>
 
+<script src="assets/admin-book-covers.js"></script>
+<script>initializeAdminBookCovers(supabaseClient, refreshMarketplace);</script>
 <script src="assets/paper-gremlin-nav.js?v=20260927"></script>\n</body>
 </html>
