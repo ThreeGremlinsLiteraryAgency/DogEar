@@ -1935,7 +1935,7 @@ h1{
           </h3>
 
           <p>
-            Paper Gremlin stores the Google Books volume ID,
+            Paper Gremlin stores the catalog reference,
             ISBN-13, ISBN-10, publisher, publication date,
             and cover so members know exactly which edition
             they are voting on.
@@ -2110,7 +2110,7 @@ h1{
     >
 
       <div class="no-results">
-        Search Google Books to choose an exact edition.
+        Search Open Library by title, author, or ISBN.
       </div>
 
     </div>
@@ -2121,6 +2121,7 @@ h1{
 </div>
 
 
+<script src="assets/open-library-search.js"></script>
 <script>
 
 
@@ -2134,16 +2135,6 @@ const SUPABASE_URL =
 
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
-
-
-/*
-  Paper Gremlin's website-restricted Google Books key can be placed
-  here in the deployed file. Google Books search also works
-  without it at lower unauthenticated quota.
-*/
-
-const GOOGLE_BOOKS_API_KEY =
-  "";
 
 
 const supabaseClient =
@@ -2603,41 +2594,6 @@ function getIdentifiers(
     isbn13,
     isbn10
   };
-
-}
-
-
-function buildGoogleQuery(
-  rawQuery
-){
-
-  const cleaned =
-    rawQuery.replace(
-      /[-\s]/g,
-      ""
-    );
-
-
-  if(
-    /^\d{9}[\dXx]$/
-      .test(
-        cleaned
-      ) ||
-    /^\d{13}$/
-      .test(
-        cleaned
-      )
-  ){
-
-    return (
-      "isbn:" +
-      cleaned
-    );
-
-  }
-
-
-  return rawQuery;
 
 }
 
@@ -4438,7 +4394,7 @@ function renderSlots(){
                 option.google_books_id
                   ? `
                     <span>
-                      Google Books ID:
+                      Catalog reference:
                       ${escapeHtml(
                         option.google_books_id
                       )}
@@ -5182,7 +5138,7 @@ async function searchBooks(){
   $("results").innerHTML = `
 
     <div class="no-results">
-      Searching Google Books…
+      Searching Open Library…
     </div>
 
   `;
@@ -5190,74 +5146,7 @@ async function searchBooks(){
 
   try{
 
-    const query =
-      buildGoogleQuery(
-        rawQuery
-      );
-
-
-    const url =
-      new URL(
-        "https://www.googleapis.com/books/v1/volumes"
-      );
-
-
-    url.searchParams.set(
-      "q",
-      query
-    );
-
-
-    url.searchParams.set(
-      "maxResults",
-      "20"
-    );
-
-
-    url.searchParams.set(
-      "printType",
-      "books"
-    );
-
-
-    if(
-      GOOGLE_BOOKS_API_KEY
-    ){
-
-      url.searchParams.set(
-        "key",
-        GOOGLE_BOOKS_API_KEY
-      );
-
-    }
-
-
-    const response =
-      await fetch(
-        url.toString()
-      );
-
-
-    if(
-      !response.ok
-    ){
-
-      throw new Error(
-        "Google Books returned " +
-        response.status
-      );
-
-    }
-
-
-    const payload =
-      await response.json();
-
-
-    renderSearchResults(
-      payload.items ||
-      []
-    );
+    renderSearchResults(await searchOpenLibraryWorks(supabaseClient, rawQuery, 20));
 
   }
   catch(
@@ -5265,7 +5154,7 @@ async function searchBooks(){
   ){
 
     console.error(
-      "Google Books search:",
+      "Open Library search:",
       error
     );
 
@@ -5273,7 +5162,7 @@ async function searchBooks(){
     $("results").innerHTML = `
 
       <div class="no-results">
-        Paper Gremlin couldn't search Google Books right now.
+        Paper Gremlin couldn't search Open Library right now.
         Please try again.
       </div>
 
@@ -5303,7 +5192,7 @@ function renderSearchResults(
     container.innerHTML = `
 
       <div class="no-results">
-        No editions matched that search.
+        No titles matched that search.
       </div>
 
     `;
@@ -5481,7 +5370,7 @@ function renderSearchResults(
         class="btn secondary"
         type="button"
       >
-        Use Edition
+        Use Book
       </button>
 
     `;
@@ -5574,7 +5463,7 @@ async function findCentralBook(
 ){
 
   /*
-    Ballot options preserve the exact Google Books edition
+    Ballot options preserve the selected Open Library work
     even when Paper Gremlin does not yet have a matching central
     catalog row.
 
@@ -7134,7 +7023,7 @@ async function handleIncomingBook(){
 
     /*
       If the central Paper Gremlin book already has enough exact
-      edition metadata, prefill the Google Books search with
+      edition metadata, prefill the Open Library search with
       the most precise identifier available.
 
       We still let leadership explicitly choose the edition

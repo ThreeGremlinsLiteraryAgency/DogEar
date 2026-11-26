@@ -1041,7 +1041,7 @@ h1{
 
         <div class="subtitle">
           Curate the normal Bookshop marketplace, import books from
-          Google Books, and manage Paper Gremlin's separate coin reward
+          Open Library, and manage Paper Gremlin's separate coin reward
           inventory.
         </div>
 
@@ -1400,11 +1400,11 @@ h1{
           id="searchGoogleBooksBtn"
           type="button"
         >
-          Search Google Books
+          Search Open Library
         </button>
 
         <div class="google-search-note">
-          Can't find the book in Paper Gremlin? Search Google Books and
+          Can't find the book in Paper Gremlin? Search Open Library and
           import the exact edition.
         </div>
 
@@ -1418,7 +1418,7 @@ h1{
         <div class="google-results-head">
 
           <div class="google-results-title">
-            Google Books Results
+            Open Library Results
           </div>
 
           <div
@@ -1929,6 +1929,7 @@ h1{
 
 </div>
 
+<script src="assets/open-library-search.js"></script>
 <script>
 
 /* =========================================================
@@ -1940,13 +1941,6 @@ const SUPABASE_URL =
 
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
-
-/*
-  Paper Gremlin's website-restricted Google Books API key belongs here.
-  This is the key you created in Google Cloud for the Books API.
-*/
-const GOOGLE_BOOKS_API_KEY =
-  "AIzaSyDoOi5oVWrsqZppnTp8Lii8DYKOOq0o9dk";
 
 const supabaseClient =
   supabase.createClient(
@@ -2975,7 +2969,7 @@ function renderMarketplaceBooks(){
             No marketplace books yet.
           </strong>
 
-          Add an existing Paper Gremlin book, or search Google Books
+          Add an existing Paper Gremlin book, or search Open Library
           to import the first title.
         </div>
       `;
@@ -3302,7 +3296,7 @@ function renderBookPicker(){
               Paper Gremlin's book table is empty.
             </strong>
 
-            Search Google Books below to import the first book.
+            Search Open Library below to import the first book.
           </div>
         `;
 
@@ -3316,7 +3310,7 @@ function renderBookPicker(){
               No Paper Gremlin books found.
             </strong>
 
-            Try another search or search Google Books below.
+            Try another search or search Open Library below.
           </div>
         `;
 
@@ -3576,7 +3570,7 @@ async function searchGoogleBooks(){
   $("googleBooksList").innerHTML =
     `
       <div class="empty">
-        Searching Google Books...
+        Searching Open Library...
       </div>
     `;
 
@@ -3586,72 +3580,8 @@ async function searchGoogleBooks(){
 
   try{
 
-    const endpoint =
-      new URL(
-        "https://www.googleapis.com/books/v1/volumes"
-      );
-
-    endpoint.searchParams.set(
-      "q",
-      query
-    );
-
-    endpoint.searchParams.set(
-      "maxResults",
-      "30"
-    );
-
-    endpoint.searchParams.set(
-      "printType",
-      "books"
-    );
-
-    endpoint.searchParams.set(
-      "projection",
-      "full"
-    );
-
-    endpoint.searchParams.set(
-      "key",
-      GOOGLE_BOOKS_API_KEY
-    );
-
-    const response =
-      await fetch(
-        endpoint.toString()
-      );
-
-    let payload =
-      null;
-
-    try{
-
-      payload =
-        await response.json();
-
-    }
-    catch(error){
-
-      throw new Error(
-        "Google Books returned an unreadable response."
-      );
-
-    }
-
-    if(!response.ok){
-
-      const googleMessage =
-        payload?.error?.message ||
-        "Google Books search failed.";
-
-      throw new Error(
-        googleMessage
-      );
-
-    }
-
     googleBooksResults =
-      (payload.items || [])
+      (await searchOpenLibraryWorks(supabaseClient, query, 30))
         .map(
           normalizeGoogleBook
         )
@@ -3667,7 +3597,7 @@ async function searchGoogleBooks(){
   catch(error){
 
     console.error(
-      "Google Books search:",
+      "Open Library search:",
       error
     );
 
@@ -3679,7 +3609,7 @@ async function searchGoogleBooks(){
         `
           <div class="empty">
             <strong>
-              Google Books search failed.
+              Open Library search failed.
             </strong>
 
             ${escapeHtml(
@@ -3692,7 +3622,7 @@ async function searchGoogleBooks(){
     setMessage(
       "bookPickerMessage",
       error.message ||
-      "Google Books search failed.",
+      "Open Library search failed.",
       "error"
     );
 
@@ -3703,7 +3633,7 @@ async function searchGoogleBooks(){
       false;
 
     button.textContent =
-      "Search Google Books";
+      "Search Open Library";
 
   }
 
@@ -3840,10 +3770,10 @@ function googleBookFormat(item){
     {};
 
   /*
-    Google Books does not provide a perfectly consistent
+    Open Library does not provide a consistent
     "format" field. We preserve a useful value when one is
     available without pretending we know hardcover vs.
-    paperback when Google does not tell us.
+    paperback when the source does not specify a format.
   */
 
   if(
@@ -3902,7 +3832,7 @@ function renderGoogleBooksResults(){
     .textContent =
       googleBooksResults.length === 1
         ? "1 edition found"
-        : `${googleBooksResults.length} editions found`;
+        : `${googleBooksResults.length} works found`;
 
   if(
     !googleBooksResults.length
@@ -3913,7 +3843,7 @@ function renderGoogleBooksResults(){
         <div class="empty">
 
           <strong>
-            No Google Books results.
+            No Open Library results.
           </strong>
 
           Try a different title, author, or ISBN.
@@ -4162,7 +4092,7 @@ async function importGoogleBook(
       Reload books because the RPC may have:
       1. inserted a new record, OR
       2. returned an existing Paper Gremlin book with matching
-         Google Books ID / ISBN.
+         Open Library ID / ISBN.
     */
 
     await loadBooks();
@@ -4243,8 +4173,8 @@ async function importGoogleBook(
     );
 
     await logAdminEvent(
-      "google_book_imported",
-      "Imported a Google Books edition and added it to the Marketplace.",
+      "open_library_work_imported",
+      "Imported an Open Library work and added it to the Marketplace.",
       String(importedBook.id),
       {
         title:
@@ -4279,14 +4209,14 @@ async function importGoogleBook(
   catch(error){
 
     console.error(
-      "Google Books import:",
+      "Open Library import:",
       error
     );
 
     setMessage(
       "bookPickerMessage",
       error.message ||
-      "Paper Gremlin could not import that Google Books edition.",
+      "Paper Gremlin could not import that Open Library work.",
       "error"
     );
 
