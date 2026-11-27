@@ -1166,7 +1166,8 @@ h1{
 }
 
 </style>
-<link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">\n<link rel="stylesheet" href="assets/reader-covers.css?v=cover-names">
+<link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">
+<link rel="stylesheet" href="assets/reader-covers.css?v=cover-names">
 <script src="assets/reader-covers.js?v=cover-names"></script>
 <script src="assets/missing-book.js?v=cover-picker"></script>
 </head>
@@ -1214,6 +1215,13 @@ h1{
   >
     ← Back
   </a>
+
+  <div id="bookPurchase" hidden>
+    <a class="btn primary" id="bookshopBtn" target="_blank" rel="noopener sponsored">Buy this book</a>
+    <p class="disclosure" id="bookPurchaseDisclosure" hidden>
+      Paper Gremlin may earn a commission from qualifying Bookshop.org purchases.
+    </p>
+  </div>
 
   <section class="hero">
 
@@ -1544,46 +1552,6 @@ h1{
       <section class="card">
 
         <div class="card-head">
-          <h2>Get the Book</h2>
-          <p>
-            Support independent bookstores through Bookshop.org.
-          </p>
-        </div>
-
-        <div class="card-body">
-
-          <div class="purchase-card">
-
-            <h3>Bookshop.org</h3>
-
-            <p>
-              Find this title from independent booksellers.
-            </p>
-
-            <a
-              class="btn primary"
-              id="bookshopBtn"
-              href="#"
-              target="_blank"
-              rel="noopener sponsored"
-            >
-              Shop This Book
-            </a>
-
-            <div class="disclosure">
-              Paper Gremlin may earn an affiliate commission
-              from qualifying Bookshop.org purchases.
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      <section class="card">
-
-        <div class="card-head">
           <h2>Book Details</h2>
         </div>
 
@@ -1659,7 +1627,7 @@ h1{
 </main>
 <div id="dogearModal" hidden style="position:fixed;inset:0;z-index:90;background:#000c;padding:20px;place-items:center;overflow:auto"><div class="card" style="width:min(620px,96vw);padding:24px;margin:auto"><button class="btn secondary" id="dogearClose" type="button" style="float:right">×</button><div class="eyebrow">Fold the corner</div><h2 style="font-size:30px;font-weight:400">Add DogEar</h2><div class="detail-grid"><label class="detail-label">Chapter</label><input id="dogearChapter" maxlength="160"><label class="detail-label">Section</label><input id="dogearSection" maxlength="160"><label class="detail-label">Progress %</label><input id="dogearProgress" type="number" min="0" max="100" step=".1"><label class="detail-label">Text anchor</label><input id="dogearAnchor" maxlength="500" placeholder="A short phrase near your place"><label class="detail-label">Note</label><textarea id="dogearNote" class="review-textarea" maxlength="4000" placeholder="Your thought here. URLs are not allowed."></textarea><label class="detail-label">Visibility</label><select id="dogearVisibility"><option value="private">Private</option><option value="club">Share with club</option></select><label class="detail-label" id="dogearClubLabel" hidden>Club</label><select id="dogearClub" hidden></select></div><div class="message" id="dogearMessage"></div><div class="actions"><button class="btn primary" id="dogearSave" type="button">Save DogEar</button><button class="btn secondary" id="dogearCancel" type="button">Cancel</button></div></div></div>
 
-<script src="assets/bookshop.js?v=buy-url"></script>
+<script src="assets/bookshop.js?v=book-search"></script>
 <script>
 
 const SUPABASE_URL =
@@ -2735,6 +2703,8 @@ function renderBook(){
   const shopButton = $("bookshopBtn");
   const shopUrl = paperGremlinBookshopUrl(book);
   shopButton.hidden = !shopUrl;
+  $("bookPurchase").hidden = !shopUrl;
+  $("bookPurchaseDisclosure").hidden = !shopUrl || new URL(shopUrl).hostname !== "bookshop.org";
   if (shopUrl) {
     shopButton.href = shopUrl;
   } else {
@@ -4055,5 +4025,6 @@ initialize();
 
 </script>
 
-<script src="assets/paper-gremlin-nav.js?v=20260927"></script>\n</body>
+<script src="assets/paper-gremlin-nav.js?v=20260927"></script>
+</body>
 </html>
