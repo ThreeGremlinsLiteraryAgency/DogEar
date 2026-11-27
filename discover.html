@@ -2279,16 +2279,12 @@ for (const button of discoveryTabs) {
   });
 }
 
-let typingTimer;
 discoverSearchForm.addEventListener("submit", event => {
   event.preventDefault();
-  clearTimeout(typingTimer);
   void runSearch();
 });
 discoverSearch.addEventListener("input", () => {
-  clearTimeout(typingTimer);
-  if (!discoverSearch.value.trim()) void runSearch();
-  else typingTimer = setTimeout(runSearch, 550);
+  if (!discoverSearch.value.trim() && currentSearch) void runSearch();
 });
 loadMoreButton.addEventListener("click", loadMoreCatalog);
 
@@ -2318,12 +2314,11 @@ async function initialize() {
 
     // Books and search are available independently of reader and club requests.
     void loadAccessories();
-    const booksReady = loadBooks().then(applyDiscoveryFilters);
+    void loadBooks().then(applyDiscoveryFilters);
     void loadClubs().then(applyDiscoveryFilters);
     void loadPeople().then(applyDiscoveryFilters);
     void loadCurrentUserProfile();
-    await booksReady;
-    if (discoverSearch.value.trim() && !searchSequence) await runSearch();
+
   } catch (error) {
     console.error("Discover initialization:", error);
     searchStatus.textContent = "Discover couldn’t finish loading. Refresh to try again.";
