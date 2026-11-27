@@ -1983,17 +1983,18 @@ async function openAuthor(author) {
   bibliographyStatus = "Loading books by " + author.name + "…";
   applyDiscoveryFilters();
   try {
-    const data = await quickCatalogFetch("https://openlibrary.org/authors/" + id + "/works.json?limit=40",
+    const params = new URLSearchParams({
+      q:"author_key:" + id, fields:"key,title,author_key,cover_i", limit:"40",
+    });
+    const data = await quickCatalogFetch("https://openlibrary.org/search.json?" + params,
       6500,controller.signal);
     if (selectedAuthor !== author || controller.signal.aborted) return;
-    bibliography = (data.entries || []).filter(work => {
-      if (!/^\/works\/OL\d+W$/.test(work.key)) return false;
-      return (work.authors || []).some(credit => credit.author?.key === "/authors/" + id &&
-        (!credit.role || /^author$/i.test(credit.role)));
-    }).map(work => ({
+    bibliography = (data.docs || []).filter(work =>
+      /^\/works\/OL\d+W$/.test(work.key) && work.author_key?.includes(id)
+    ).map(work => ({
       _source:"catalog", source_work_key:work.key, title:work.title,
       authors:[author.name],
-      cover_url:work.covers?.[0] > 0 ? "https://covers.openlibrary.org/b/id/" + work.covers[0] + "-M.jpg" : "",
+      cover_url:work.cover_i > 0 ? "https://covers.openlibrary.org/b/id/" + work.cover_i + "-M.jpg" : "",
     }));
     bibliographyStatus = "";
   } catch (error) {
