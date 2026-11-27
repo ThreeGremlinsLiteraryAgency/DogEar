@@ -762,6 +762,12 @@ h1{
     padding-left:75px;
   }
 }
+#readerBookQueue { padding: 20px; }
+#readerBookQueue summary { cursor: pointer; font-weight: bold; }
+.reader-book-review-row { display: grid; gap: 8px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.reader-book-review-row > a { text-decoration: underline; }
+.reader-book-review-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.reader-book-review-actions button { padding: 8px 12px; border: 1px solid currentColor; border-radius: 6px; background: transparent; color: inherit; cursor: pointer; }
 </style>
 <link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">
 </head>
@@ -1479,6 +1485,12 @@ h1{
     <!-- =====================================================
          RECENT ACTIVITY
     ====================================================== -->
+
+    <details class="activity" id="readerBookQueue">
+      <summary>Books pending approval<span data-pending-count></span></summary>
+      <p role="status" aria-live="polite"></p>
+      <div data-list>Loading book submissions…</div>
+    </details>
 
     <section class="activity">
 
@@ -2612,6 +2624,8 @@ async function start(){
 
   }
 
+  $("readerBookQueue").open = true;
+
   await Promise.all([
     loadStats(),
     loadVerification(),
@@ -2629,5 +2643,7 @@ start();
 
 </script>
 
-<script src="assets/paper-gremlin-nav.js?v=20260927"></script>\n</body>
+<script src="assets/paper-gremlin-nav.js?v=20260927"></script>
+<script src="assets/admin-reader-books.js?v=dashboard-queue"></script>
+</body>
 </html>
