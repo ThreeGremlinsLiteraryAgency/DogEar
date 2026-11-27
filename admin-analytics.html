@@ -16,6 +16,8 @@ button{cursor:pointer}button:disabled{opacity:.5}.totals{list-style:none;padding
 table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:8px;border-bottom:1px solid #65563d}
 .note{color:#c8bba3}
 @media print{html,body{color-scheme:light;background:white;color:black}main{padding:0;max-width:none}h1,h2,.note{color:black}.totals li{background:white}.controls,.back,#status{display:none!important}.table-wrap{overflow:visible}thead{display:table-header-group}tr{break-inside:avoid}}
+select{font:inherit;padding:8px 12px;border:1px solid #9b8154;border-radius:7px;background:#182a22;color:inherit}
+.controls{align-items:stretch}.dataset{display:grid;align-content:start;gap:10px;min-width:0;flex:1 1 235px;border:1px solid #594b31;border-radius:8px;padding:12px}.dataset legend label{display:flex;align-items:center;gap:6px}.presets{display:flex;flex-wrap:wrap;gap:8px}.controls>.presets{flex-basis:100%}.report-section{margin-top:24px}.report-section h2{break-after:avoid}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -26,62 +28,101 @@ table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:8px;bord
 <p id="status" role="status">Checking administrator access…</p>
 <section id="dashboard" hidden>
 <form id="range" class="controls">
-<label>From <input type="date" name="start" required></label>
-<label>Through <input type="date" name="end" required></label>
-<button type="submit">Apply dates</button>
-<button type="button" data-days="7">7 days</button>
-<button type="button" data-days="30">30 days</button>
-<button type="button" data-days="90">90 days</button>
-<button type="button" id="prior-month">Prior month</button>
+<fieldset class="dataset">
+ <legend><label><input type="checkbox" name="interest" checked> Book Interest &amp; Buy Clicks</label></legend>
+ <label>From <input type="date" name="start" required></label>
+ <label>Through <input type="date" name="end" required></label>
+ <div class="presets"><button type="button" data-days="7">7 days</button>
+ <button type="button" data-days="30">30 days</button>
+ <button type="button" data-days="90">90 days</button></div>
+</fieldset>
+<fieldset class="dataset">
+ <legend><label><input type="checkbox" name="summary" checked> Vote Totals</label></legend>
+ <label>From month <select name="summaryStart"></select></label>
+ <label>Through month <select name="summaryEnd"></select></label>
+</fieldset>
+<fieldset class="dataset">
+ <legend><label><input type="checkbox" name="matchups" checked> Ballot Matchups</label></legend>
+ <label>From month <select name="matchupsStart"></select></label>
+ <label>Through month <select name="matchupsEnd"></select></label>
+</fieldset>
+<div class="presets"><button type="submit">Run report</button>
 <button type="button" id="excel" disabled>Export to Excel</button>
-<button type="button" id="pdf" disabled>Save as PDF</button>
+<button type="button" id="pdf" disabled>Save as PDF</button></div>
 </form>
-<article id="report" hidden>
-<h2 id="period"></h2>
-<ul id="totals" class="totals"></ul>
-<p class="note">Dates are inclusive and use Eastern time. Views and Buy clicks are event counts collected from launch of this dashboard. Saves count existing saved-book records by date added. Club figures cover closed or finalized public-club ballots from prior months. Ballot details include every prior calendar month touched by the selected dates. Buy clicks are not sales.</p>
-<div id="reports"></div>
-</article>
+<article id="report" hidden><div id="reports"></div></article>
 </section>
 </main>
 <script>
 const client=window.supabase?.createClient("https://nrtutxjznkfvvbmaagum.supabase.co","sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu");
 const get=id=>document.getElementById(id);
 const form=get("range");
-const metrics=[["Public clubs with picks","total_clubs"],["Finalized picks","total_picks"],["Books saved","total_saves"],["Book page views","total_views"],["Buy clicks","total_clicks"]];
-const placements={book_page:"Book details",marketplace:"Marketplace"};
+const fields=form.elements;
+const voting=["summary","matchups"];
+const labels={interest:"Book Interest & Buy Clicks",summary:"Vote Totals",matchups:"Ballot Matchups"};
+const monthFormat=new Intl.DateTimeFormat("en-US",{month:"long",year:"numeric",timeZone:"UTC"});
+const monthLabel=value=>monthFormat.format(new Date(value.slice(0,7)+"-01T00:00:00Z"));
 let snapshot;
 let request=0;
+let latestMonth="";
+function easternDate(){
+ const parts=Object.fromEntries(new Intl.DateTimeFormat("en-US",{timeZone:"America/New_York",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date()).map(x=>[x.type,x.value]));
+ return parts.year+"-"+parts.month+"-"+parts.day;
+}
 function setRange(days){
- const today=new Intl.DateTimeFormat("en-CA",{timeZone:"America/New_York",year:"numeric",month:"2-digit",day:"2-digit"});
- const parts=Object.fromEntries(today.formatToParts(new Date()).map(x=>[x.type,x.value]));
- const end=parts.year+"-"+parts.month+"-"+parts.day;
- const start=new Date(end+"T00:00:00Z");
+ const end=easternDate(),start=new Date(end+"T00:00:00Z");
  start.setUTCDate(start.getUTCDate()-days+1);
- form.elements.start.value=start.toISOString().slice(0,10);
- form.elements.end.value=end;
+ fields.start.value=start.toISOString().slice(0,10);
+ fields.end.value=end;
 }
-function tables(data){
- return [
-  ["Title interest",["Title","Views","Saves","Buy clicks"],data.titles.map(x=>[x.title,Number(x.views),Number(x.saves),Number(x.clicks)])],
-  ["Public club picks",["Title","Club genre","Picks"],data.picks.map(x=>[x.title,x.genre,Number(x.picks)])],
-  ["Historical club ballots",["Month","Ballot","Club genre","Nominated book","Votes","Result"],(data.ballots||[]).map(x=>[x.ballot_month.slice(0,7),String(x.ballot),x.genre,x.title,Number(x.votes),x.result])],
-  ["Buy clicks by placement",["Placement","Clicks"],data.placements.map(x=>[placements[x.placement]||x.placement,Number(x.clicks)])]
- ];
-}
-function draw(data,start,end){
- get("period").textContent=start+" through "+end;
- get("totals").replaceChildren();
- for(const [label,key] of metrics){
-  const item=document.createElement("li"),value=document.createElement("strong");
-  value.textContent=Number(data[key]).toLocaleString();
-  item.append(value,label);get("totals").append(item);
+function populateMonths(){
+ const current=easternDate().slice(0,7);
+ if(latestMonth===current)return;
+ latestMonth=current;
+ const options=[];
+ const month=new Date("2026-09-01T00:00:00Z");
+ while(month.toISOString().slice(0,7)<current){
+  options.push(month.toISOString().slice(0,10));
+  month.setUTCMonth(month.getUTCMonth()+1);
  }
+ for(const key of voting)for(const suffix of ["Start","End"]){
+  const select=fields[key+suffix],previous=select.value;
+  select.replaceChildren(...options.map(value=>new Option(monthLabel(value),value)));
+  select.value=options.includes(previous)?previous:options.at(-1)||"";
+ }
+}
+function sectionsFor(interest,votes,matchups){
+ const result=[];
+ if(interest){
+  const {data,start,end}=interest;
+  const totals=[data.total_views,data.total_saves,data.total_clicks].map(Number);
+  result.push({title:labels.interest,sheet:"Book Interest",period:start+" through "+end,
+   note:"Daily counts use Eastern time. Buy clicks measure retailer visits, and confirmed sales are reported separately.",
+   tables:[
+    {headers:["Book","Page views","Saves","Buy clicks"],rows:[["All activity",...totals],...data.titles.map(x=>[x.title,Number(x.views),Number(x.saves),Number(x.clicks)])]},
+    {caption:"Buy clicks by placement",headers:["Placement","Clicks"],rows:data.placements.map(x=>[({book_page:"Book details",marketplace:"Marketplace"})[x.placement]||x.placement,Number(x.clicks)])}
+   ]});
+ }
+ if(votes)result.push({title:labels.summary,sheet:"Vote Totals",period:monthLabel(votes.start)+" through "+monthLabel(votes.end),
+  note:"Closed or finalized public-club ballots only. Each club counts once per title per month. Wins use the recorded winner.",
+  tables:[{headers:["Month","Book","Votes received","Distinct clubs","Ballots won"],rows:votes.data.summary.map(x=>[monthLabel(x.ballot_month),x.title,Number(x.votes),Number(x.clubs),Number(x.wins)])}]});
+ if(matchups)result.push({title:labels.matchups,sheet:"Ballot Matchups",period:monthLabel(matchups.start)+" through "+monthLabel(matchups.end),
+  note:"Each row shows the nominees in their ballot order with vote totals, along with the recorded winner.",
+  tables:[{headers:["Month","Ballot","Nominee 1","Nominee 2","Nominee 3","Recorded winner"],rows:matchups.data.matchups.map(x=>{
+   const slots=[1,2,3].map(position=>{const n=x.nominees.find(item=>item.position===position);return n?n.title+" ("+n.votes+")":"—";});
+   return [monthLabel(x.ballot_month),String(x.ballot),...slots,x.winner||"No winner recorded"];
+  })}]});
+ return result;
+}
+function draw(sections){
  get("reports").replaceChildren();
- for(const [title,headers,rows] of tables(data)){
+ for(const group of sections){
   const section=document.createElement("section"),heading=document.createElement("h2");
-  heading.textContent=title;section.append(heading);
-  if(rows.length){
+  section.className="report-section";heading.textContent=group.title;section.append(heading);
+  const period=document.createElement("p");period.textContent=group.period;section.append(period);
+  for(const {caption,headers,rows} of group.tables){
+   if(caption){const h=document.createElement("h3");h.textContent=caption;section.append(h);}
+   if(!rows.length){const p=document.createElement("p");p.textContent="No activity in this date range.";section.append(p);continue;}
    const scroll=document.createElement("div"),table=document.createElement("table");
    scroll.className="table-wrap";
    const head=table.createTHead().insertRow();
@@ -89,58 +130,84 @@ function draw(data,start,end){
    const body=table.createTBody();
    for(const row of rows){const tr=body.insertRow();for(const value of row)tr.insertCell().textContent=value;}
    scroll.append(table);section.append(scroll);
-  }else section.append("No activity in this date range.");
+  }
+  const note=document.createElement("p");note.className="note";note.textContent=group.note;section.append(note);
   get("reports").append(section);
  }
  get("report").hidden=false;
 }
+async function call(name,args){
+ const {data,error}=await client.rpc(name,args);
+ if(error)throw error;
+ return data;
+}
 async function load(){
- const id=++request,start=form.elements.start.value,end=form.elements.end.value;
+ populateMonths();
+ const id=++request;
  get("excel").disabled=get("pdf").disabled=true;
  get("report").hidden=true;snapshot=null;
- if(!start||!end||start>end){get("status").textContent="Choose a valid date range.";return;}
+ const selected=Object.keys(labels).filter(key=>fields[key].checked);
+ if(!selected.length){get("status").textContent="Select at least one dataset.";return;}
+ const range=key=>key==="interest"?[fields.start.value,fields.end.value]:[fields[key+"Start"].value,fields[key+"End"].value];
  get("status").textContent="Loading analytics…";
+ const ranges=new Map();
+ for(const key of selected){
+  const [start,end]=range(key);
+  if(!start||!end||start>end){get("status").textContent="Choose a valid range for "+labels[key]+".";return;}
+  if(key==="interest")continue;
+  const slot=ranges.get(start+end)||{start,end,summary:false,matchups:false};
+  slot[key]=true;ranges.set(start+end,slot);
+ }
+ const requests=new Map();
  try{
-  const {data,error}=await client.rpc("read_book_analytics",{p_start:start,p_end:end});
+  for(const slot of ranges.values())requests.set(slot.start+slot.end,call("read_historical_voting",{
+   p_first:slot.start,p_last:slot.end,p_summary:slot.summary,p_matchups:slot.matchups
+  }));
+  const results=await Promise.all(selected.map(async key=>{
+   const [start,end]=range(key);
+   const data=key==="interest"?await call("read_book_analytics",{p_start:start,p_end:end}):await requests.get(start+end);
+   return [key,{data,start,end}];
+  }));
   if(id!==request)return;
-  if(error)throw error;
-  draw(data,start,end);snapshot={data,start,end};
-  get("status").textContent="";
+  const data=Object.fromEntries(results);
+  const sections=sectionsFor(data.interest,data.summary,data.matchups);
+  draw(sections);snapshot=sections;get("status").textContent="";
   get("excel").disabled=get("pdf").disabled=false;
  }catch(error){if(id===request)get("status").textContent="Analytics unavailable. Confirm you are signed in as an active site admin.";}
 }
 const xml=value=>String(value??"").replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;"}[c]));
 get("excel").onclick=()=>{
  if(!snapshot)return;
- const {data,start,end}=snapshot;
- const sheets=[["Summary",["Metric","Value"],[["From",start],["Through",end],...metrics.map(([label,key])=>[label,Number(data[key])])]],...tables(data)];
  const cell=value=>'<Cell><Data ss:Type="'+(typeof value==="number"?"Number":"String")+'">'+xml(value)+'</Data></Cell>';
  const row=values=>"<Row>"+values.map(cell).join("")+"</Row>";
  const workbook='<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?>'+
   '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">'+
-  sheets.map(([name,headers,rows])=>'<Worksheet ss:Name="'+xml(name)+'"><Table>'+row(headers)+rows.map(row).join("")+"</Table></Worksheet>").join("")+"</Workbook>";
+  snapshot.map(group=>'<Worksheet ss:Name="'+xml(group.sheet)+'"><Table>'+row([group.period])+
+    group.tables.map(t=>row(t.headers)+t.rows.map(row).join("")+"<Row/>").join("")+row([group.note])+
+    "</Table></Worksheet>").join("")+"</Workbook>";
  const url=URL.createObjectURL(new Blob([workbook],{type:"application/vnd.ms-excel"}));
- const link=document.createElement("a");link.href=url;link.download="paper-gremlin-analytics-"+start+"-to-"+end+".xml";link.click();
+ const link=document.createElement("a");link.href=url;link.download="paper-gremlin-analytics-"+easternDate()+".xml";link.click();
  setTimeout(()=>URL.revokeObjectURL(url),1000);
 };
 get("pdf").onclick=()=>{if(snapshot)window.print();};
-get("prior-month").onclick=()=>{
- setRange(1);
- const end=new Date(form.elements.end.value.slice(0,7)+"-01T00:00:00Z");
- end.setUTCDate(0);
- form.elements.end.value=end.toISOString().slice(0,10);
- end.setUTCDate(1);
- form.elements.start.value=end.toISOString().slice(0,10);
- void load();
-};
 form.onsubmit=event=>{event.preventDefault();void load();};
-form.querySelectorAll("[data-days]").forEach(button=>button.onclick=()=>{setRange(Number(button.dataset.days));void load();});
+form.addEventListener("change",event=>{
+ const name=event.target.name;
+ for(const key of voting){
+  const from=fields[key+"Start"],through=fields[key+"End"];
+  if(event.target===from&&from.value>through.value)through.value=from.value;
+  if(event.target===through&&from.value>through.value)from.value=through.value;
+ }
+ if(name)void load();
+});
+window.addEventListener("focus",populateMonths);
+form.querySelectorAll("[data-days]").forEach(button=>button.onclick=()=>{fields.interest.checked=true;setRange(Number(button.dataset.days));void load();});
 (async()=>{
  try{
   const {data,error}=await client.auth.getSession();
   if(error)throw error;
   if(!data.session){get("status").textContent="Sign in with an administrator account to view analytics.";return;}
-  setRange(30);await load();
+  setRange(30);populateMonths();await load();
   if(snapshot)get("dashboard").hidden=false;
  }catch(error){get("status").textContent="Unable to check administrator access.";}
 })();
