@@ -1165,6 +1165,30 @@ h1{
   display:none !important;
 }
 
+.book-page { padding-top:24px; }
+.book-hero { gap:14px 30px; margin-top:14px; padding:24px; align-items:start; }
+.book-hero::after { display:none; }
+.book-hero > .cover { grid-column:1; grid-row:1 / span 2; }
+.book-hero-heading,.book-hero-body { grid-column:2; min-width:0; }
+#bookTitle { font-size:clamp(28px,4.6vw,60px) !important; line-height:1.06 !important; overflow-wrap:break-word; }
+.book-hero-heading .author { margin-top:8px; }
+#bookPurchase { margin-top:12px; }
+#bookPurchase .btn { min-height:44px; padding:9px 14px; font-size:11px; }
+#bookPurchaseDisclosure { margin:7px 0 0; line-height:1.4; color:#bdb29c; }
+.book-hero-body .edition { margin-top:0; }
+@media(max-width:680px) {
+  .book-page { width:calc(100% - 28px); padding-top:14px; }
+  .book-hero { grid-template-columns:clamp(76px,25vw,112px) minmax(0,1fr); gap:14px; padding:14px; }
+  .hero.book-hero > .cover { grid-row:1; max-width:100%; border-radius:8px; }
+  .book-hero-heading { align-self:center; }
+  .book-hero-body { grid-column:1 / -1; }
+  .book-hero-heading .author { font-size:16px; line-height:1.25; }
+  .book-hero-heading .eyebrow { font-size:9px; margin-bottom:6px; }
+  .book-hero-heading .eyebrow::after { display:none; }
+  #bookTitle { font-size:clamp(24px,6.7vw,38px) !important; }
+  .book-hero .description { margin-top:12px; }
+  .book-hero .actions { margin-top:14px; }
+}
 </style>
 <link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">
 <link rel="stylesheet" href="assets/reader-covers.css?v=cover-names">
@@ -1207,7 +1231,7 @@ h1{
 
 </header>
 
-<main class="page">
+<main class="page book-page">
 
   <a
     class="back"
@@ -1216,20 +1240,13 @@ h1{
     ← Back
   </a>
 
-  <div id="bookPurchase" hidden>
-    <a class="btn primary" id="bookshopBtn" target="_blank" rel="noopener sponsored">Buy this book</a>
-    <p class="disclosure" id="bookPurchaseDisclosure" hidden>
-      Paper Gremlin may earn a commission from qualifying Bookshop.org purchases.
-    </p>
-  </div>
-
-  <section class="hero">
+  <section class="hero book-hero">
 
     <div class="cover" id="bookCover">
       No cover
     </div>
 
-    <div>
+    <div class="book-hero-heading">
 
       <div class="eyebrow" id="bookEyebrow">
         Book
@@ -1243,6 +1260,15 @@ h1{
         —
       </div>
 
+      <div id="bookPurchase" hidden>
+        <a class="btn primary" id="bookshopBtn" target="_blank" rel="noopener sponsored">Buy this book</a>
+        <p class="disclosure" id="bookPurchaseDisclosure" hidden>
+          Paper Gremlin may earn a commission from qualifying Bookshop.org purchases.
+        </p>
+      </div>
+    </div>
+
+    <div class="book-hero-body">
       <div class="edition" id="editionPills"></div>
 
       <div class="hero-rating">
