@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analytics | Paper Gremlin</title>
+<style>
+:root{color-scheme:dark;font:16px system-ui;background:#091411;color:#f5e7cc}
+body{margin:0}main{max-width:1050px;margin:auto;padding:24px}a{color:#efd094}
+h1,h2{font-family:Georgia,serif;color:#efd094}h1{font-size:clamp(2rem,6vw,3rem)}
+.controls,.totals{display:flex;flex-wrap:wrap;gap:12px;align-items:end}
+label{display:grid;gap:5px}input,button{font:inherit;padding:8px 12px;border:1px solid #9b8154;border-radius:7px;background:#182a22;color:inherit}
+button{cursor:pointer}button:disabled{opacity:.5}.totals{list-style:none;padding:0;margin:24px 0}
+.totals li{background:#13221c;padding:12px;border:1px solid #594b31;border-radius:8px;flex:1;min-width:125px}
+.totals strong{display:block;font-size:1.5rem}.table-wrap{overflow:auto}
+table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:8px;border-bottom:1px solid #65563d}
+.note{color:#c8bba3}
+@media print{html,body{color-scheme:light;background:white;color:black}main{padding:0;max-width:none}h1,h2,.note{color:black}.totals li{background:white}.controls,.back,#status{display:none!important}.table-wrap{overflow:visible}thead{display:table-header-group}tr{break-inside:avoid}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<main>
+<a class="back" href="admin-dashboard.html">← Site Controls</a>
+<h1>Paper Gremlin Analytics</h1>
+<p id="status" role="status">Checking administrator access…</p>
+<section id="dashboard" hidden>
+<form id="range" class="controls">
+<label>From <input type="date" name="start" required></label>
+<label>Through <input type="date" name="end" required></label>
+<button type="submit">Apply dates</button>
+<button type="button" data-days="7">7 days</button>
+<button type="button" data-days="30">30 days</button>
+<button type="button" data-days="90">90 days</button>
+<button type="button" id="excel" disabled>Export to Excel</button>
+<button type="button" id="pdf" disabled>Save as PDF</button>
+</form>
+<article id="report" hidden>
+<h2 id="period"></h2>
+<ul id="totals" class="totals"></ul>
+<p class="note">Dates are inclusive and use Eastern time. Views and Buy clicks are event counts collected from launch of this dashboard. Saves count existing saved-book records by date added. Club figures cover public clubs with a ballot winner and use the ballot month. Buy clicks are not sales.</p>
+<div id="reports"></div>
+</article>
+</section>
+</main>
+<script>
+const client=window.supabase?.createClient("https://nrtutxjznkfvvbmaagum.supabase.co","sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu");
+const get=id=>document.getElementById(id);
+const form=get("range");
+const metrics=[["Public clubs with picks","total_clubs"],["Finalized picks","total_picks"],["Books saved","total_saves"],["Book page views","total_views"],["Buy clicks","total_clicks"]];
+const placements={book_page:"Book details",marketplace:"Marketplace"};
+let snapshot;
+let request=0;
+function setRange(days){
+ const today=new Intl.DateTimeFormat("en-CA",{timeZone:"America/New_York",year:"numeric",month:"2-digit",day:"2-digit"});
+ const parts=Object.fromEntries(today.formatToParts(new Date()).map(x=>[x.type,x.value]));
+ const end=parts.year+"-"+parts.month+"-"+parts.day;
+ const start=new Date(end+"T00:00:00Z");
+ start.setUTCDate(start.getUTCDate()-days+1);
+ form.elements.start.value=start.toISOString().slice(0,10);
+ form.elements.end.value=end;
+}
+function tables(data){
+ return [
+  ["Title interest",["Title","Views","Saves","Buy clicks"],data.titles.map(x=>[x.title,Number(x.views),Number(x.saves),Number(x.clicks)])],
+  ["Public club picks",["Title","Club genre","Picks"],data.picks.map(x=>[x.title,x.genre,Number(x.picks)])],
+  ["Buy clicks by placement",["Placement","Clicks"],data.placements.map(x=>[placements[x.placement]||x.placement,Number(x.clicks)])]
+ ];
+}
+function draw(data,start,end){
+ get("period").textContent=start+" through "+end;
+ get("totals").replaceChildren();
+ for(const [label,key] of metrics){
+  const item=document.createElement("li"),value=document.createElement("strong");
+  value.textContent=Number(data[key]).toLocaleString();
+  item.append(value,label);get("totals").append(item);
+ }
+ get("reports").replaceChildren();
+ for(const [title,headers,rows] of tables(data)){
+  const section=document.createElement("section"),heading=document.createElement("h2");
+  heading.textContent=title;section.append(heading);
+  if(rows.length){
+   const scroll=document.createElement("div"),table=document.createElement("table");
+   scroll.className="table-wrap";
+   const head=table.createTHead().insertRow();
+   for(const label of headers){const cell=document.createElement("th");cell.scope="col";cell.textContent=label;head.append(cell);}
+   const body=table.createTBody();
+   for(const row of rows){const tr=body.insertRow();for(const value of row)tr.insertCell().textContent=value;}
+   scroll.append(table);section.append(scroll);
+  }else section.append("No activity in this date range.");
+  get("reports").append(section);
+ }
+ get("report").hidden=false;
+}
+async function load(){
+ const id=++request,start=form.elements.start.value,end=form.elements.end.value;
+ get("excel").disabled=get("pdf").disabled=true;
+ get("report").hidden=true;snapshot=null;
+ if(!start||!end||start>end){get("status").textContent="Choose a valid date range.";return;}
+ get("status").textContent="Loading analytics…";
+ try{
+  const {data,error}=await client.rpc("read_book_analytics",{p_start:start,p_end:end});
+  if(id!==request)return;
+  if(error)throw error;
+  draw(data,start,end);snapshot={data,start,end};
+  get("status").textContent="";
+  get("excel").disabled=get("pdf").disabled=false;
+ }catch(error){if(id===request)get("status").textContent="Analytics unavailable. Confirm you are signed in as an active site admin.";}
+}
+const xml=value=>String(value??"").replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;"}[c]));
+get("excel").onclick=()=>{
+ if(!snapshot)return;
+ const {data,start,end}=snapshot;
+ const sheets=[["Summary",["Metric","Value"],[["From",start],["Through",end],...metrics.map(([label,key])=>[label,Number(data[key])])]],...tables(data)];
+ const cell=value=>'<Cell><Data ss:Type="'+(typeof value==="number"?"Number":"String")+'">'+xml(value)+'</Data></Cell>';
+ const row=values=>"<Row>"+values.map(cell).join("")+"</Row>";
+ const workbook='<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?>'+
+  '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">'+
+  sheets.map(([name,headers,rows])=>'<Worksheet ss:Name="'+xml(name)+'"><Table>'+row(headers)+rows.map(row).join("")+"</Table></Worksheet>").join("")+"</Workbook>";
+ const url=URL.createObjectURL(new Blob([workbook],{type:"application/vnd.ms-excel"}));
+ const link=document.createElement("a");link.href=url;link.download="paper-gremlin-analytics-"+start+"-to-"+end+".xml";link.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+get("pdf").onclick=()=>{if(snapshot)window.print();};
+form.onsubmit=event=>{event.preventDefault();void load();};
+form.querySelectorAll("[data-days]").forEach(button=>button.onclick=()=>{setRange(Number(button.dataset.days));void load();});
+(async()=>{
+ try{
+  const {data,error}=await client.auth.getSession();
+  if(error)throw error;
+  if(!data.session){get("status").textContent="Sign in with an administrator account to view analytics.";return;}
+  setRange(30);await load();
+  if(snapshot)get("dashboard").hidden=false;
+ }catch(error){get("status").textContent="Unable to check administrator access.";}
+})();
+</script>
+</body>
+</html>
