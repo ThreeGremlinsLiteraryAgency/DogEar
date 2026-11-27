@@ -1308,8 +1308,6 @@ function updateBookResultCount(displayedBooks){
       : 0;
 
   if(!currentSearch){
-    authorResults = [];
-    authorSearch?.abort();
     bookResultCount.textContent=
       displayed===1
         ? "1 book"
@@ -1988,6 +1986,8 @@ async function runSearch(){
   );
 
   if(!currentSearch){
+    authorResults = [];
+    authorSearch?.abort();
     ++searchSequence;
 
     resetCatalogSearch();
@@ -2003,7 +2003,7 @@ async function runSearch(){
 
   searchStatus.textContent="Searching Paper Gremlin catalog…";
   ++searchSequence;
-  if (currentTab !== "accessories") void findAuthors(currentSearch,searchSequence);
+  void findAuthors(currentSearch,searchSequence);
   searchButton.disabled=true;
   searchButton.textContent="Searching…";
   try{
