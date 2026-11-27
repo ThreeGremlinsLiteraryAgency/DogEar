@@ -8,9 +8,27 @@
   function showError(error) {
     status.textContent = error.message || "Couldn’t complete that action.";
   }
+  async function prepareCover(file) {
+    if (file.size > 20 * 1024 * 1024) throw new Error("Choose an image under 20 MB.");
+    const image = await createImageBitmap(file);
+    try {
+      const scale = Math.min(1, 1200 / Math.max(image.width, image.height));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(image.width * scale));
+      canvas.height = Math.max(1, Math.round(image.height * scale));
+      canvas.getContext("2d").drawImage(image,0,0,canvas.width,canvas.height);
+      const cover = await new Promise(resolve => canvas.toBlob(resolve,"image/webp",.82));
+      if (!cover || cover.type !== "image/webp" || cover.size > 1048576)
+        throw new Error("This cover could not be compressed. Choose a smaller image.");
+      return cover;
+    } finally {
+      image.close();
+    }
+  }
+
   async function editBook(bookId) {
     const { data:book, error } = await supabaseClient.from("books")
-      .select("title,authors,subtitle,isbn_13,isbn_10,publisher,published_date,description,updated_at")
+      .select("title,authors,subtitle,isbn_13,isbn_10,publisher,published_date,description,buy_url,updated_at")
       .eq("id",bookId).single();
     if (error) { showError(error); return; }
 
@@ -22,7 +40,7 @@
       ["title","Title",300], ["authors","Authors (one per line)",6000],
       ["subtitle","Subtitle",300], ["isbn_13","ISBN-13",32], ["isbn_10","ISBN-10",32],
       ["publisher","Publisher",300], ["published_date","Publication date or year",40],
-      ["description","Description",10000],
+      ["description","Description",10000], ["buy_url","Buy button URL (optional HTTPS link)",2048],
     ];
     for (const [name,label,maxLength] of fields) {
       const wrapper = document.createElement("label");
@@ -30,6 +48,7 @@
       wrapper.textContent = label;
       const control = document.createElement(["authors","description"].includes(name) ? "textarea" : "input");
       control.name = name;
+      if (name === "buy_url") control.type = "url";
       control.maxLength = maxLength;
       control.required = ["title","authors"].includes(name);
       control.style.cssText = "width:100%;box-sizing:border-box;font-size:16px;padding:6px";
@@ -38,6 +57,14 @@
       wrapper.append(control);
       form.append(wrapper);
     }
+    const coverLabel = document.createElement("label");
+    coverLabel.style.cssText = "display:grid;gap:4px;margin:12px 0";
+    coverLabel.textContent = "Upload new cover (JPEG, PNG, or WebP)";
+    const coverInput = document.createElement("input");
+    coverInput.type = "file";
+    coverInput.accept = "image/jpeg,image/png,image/webp";
+    coverLabel.append(coverInput);
+    form.append(coverLabel);
     const feedback = document.createElement("p");
     feedback.setAttribute("role","status");
     const save = document.createElement("button");
@@ -58,15 +85,30 @@
         ? values.get(name).split(/\r?\n/).map(author => author.trim()).filter(Boolean)
         : values.get(name).trim();
       save.disabled = true;
-      const { error } = await supabaseClient.rpc("edit_submitted_book",args);
-      if (error) {
-        feedback.textContent = error.message;
+      let uploadedPath;
+      try {
+        const file = coverInput.files[0];
+        if (file) {
+          feedback.textContent = "Uploading cover…";
+          const cover = await prepareCover(file);
+          const path = bookId + "/" + crypto.randomUUID() + ".webp";
+          const { error } = await supabaseClient.storage.from("book-covers").upload(path,cover);
+          if (error) throw error;
+          uploadedPath = path;
+        }
+        const { error } = await supabaseClient.rpc("edit_submitted_book_media", {
+          ...args, p_cover_path:uploadedPath || null,
+        });
+        if (error) throw error;
+      } catch (error) {
+        if (uploadedPath) await supabaseClient.storage.from("book-covers").remove([uploadedPath]);
+        feedback.textContent = error.message || "Couldn’t save the book.";
         save.disabled = false;
-      } else {
-        dialog.close();
-        status.textContent = "Book details saved.";
-        await refresh();
+        return;
       }
+      dialog.close();
+      status.textContent = "Book details saved.";
+      await refresh();
     };
     dialog.append(form);
     dialog.addEventListener("close",() => dialog.remove(),{ once:true });
