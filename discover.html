@@ -944,6 +944,7 @@ html body{background:#050b09!important;color:#f1e7cf!important} body .topbar{bac
       Search
     </button>
   </form>
+    <div id="addMissingBookAction"></div>
 
   <div class="search-help">
     Search Paper Gremlin's growing book catalog for titles, authors, and ISBNs,
@@ -1335,7 +1336,6 @@ function renderBooks(books){
         </p>
       </div>
     `;
-    if (currentSearch) paperGremlinMissingBook.addButton(bookGrid, supabaseClient, { query: currentSearch });
     return;
   }
 
@@ -2245,6 +2245,11 @@ async function initialize() {
     hideLoading();
   }
 }
+
+paperGremlinMissingBook.addButton(document.getElementById("addMissingBookAction"), supabaseClient, {
+  get query() { return discoverSearch.value.trim(); },
+});
+document.querySelector("#addMissingBookAction button").classList.add("pg-cover-button");
 
 void initialize();
 </script>
