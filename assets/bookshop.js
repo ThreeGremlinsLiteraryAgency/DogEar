@@ -6,6 +6,16 @@ function paperGremlinBookshopUrl(book) {
     return "";
   }
 
+  if (book?.buyUrl) {
+    try {
+      const destination = new URL(book.buyUrl);
+      if (destination.protocol === "https:" && !destination.username && !destination.password)
+        return destination.href;
+    } catch {
+      // A malformed override falls back to the standard storefront.
+    }
+  }
+
   const storefront = "https://bookshop.org/shop/threegremlins";
   const affiliate = "128186";
   const productBaseUrl = "https://bookshop.org/a/" + affiliate;
