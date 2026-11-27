@@ -875,7 +875,8 @@ html body{background:#050b09!important;color:#f1e7cf!important} body .topbar{bac
 }
 
 </style>
-<link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">\n</head>
+<link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">\n<script src="assets/missing-book.js"></script>
+</head>
 
 <body class="loading-lock">
 
@@ -1333,7 +1334,7 @@ function renderBooks(books){
         </p>
       </div>
     `;
-
+    if (currentSearch) paperGremlinMissingBook.addButton(bookGrid, supabaseClient, { query: currentSearch });
     return;
   }
 
@@ -1393,7 +1394,7 @@ function renderBooks(books){
                 ${
                   rating
                     ? `★ ${escapeHtml(rating)}`
-                    : "Paper Gremlin Book"
+                    : escapeHtml(paperGremlinMissingBook.label(book.verification_status) || "Paper Gremlin Book")
                 }
               </div>
 
@@ -1873,7 +1874,15 @@ async function runSearch(){
   searchButton.disabled=true;
   searchButton.textContent="Searching…";
   try{
-    await searchCatalog(currentSearch);
+    const query = currentSearch;
+    const sequence = searchSequence;
+    const [submitted] = await Promise.all([
+      paperGremlinMissingBook.search(supabaseClient, query), searchCatalog(query)
+    ]);
+    if (sequence !== searchSequence) return;
+    localBooks = [...new Map([
+      ...localBooks, ...submitted.map(book => ({ ...book, _source:"local" }))
+    ].map(book => [book.id, book])).values()];
   }catch(error){
     console.error("Paper Gremlin catalog search:",error);
     searchStatus.textContent="Book search is temporarily unavailable. Try again.";

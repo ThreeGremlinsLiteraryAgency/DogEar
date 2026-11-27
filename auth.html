@@ -765,7 +765,16 @@
 }
 
 </style>
-<link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">\n</head>
+<link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">\n<script>
+function paperGremlinLoginDestination() {
+  const key = "paperGremlinMissingBookReturn";
+  const path = sessionStorage.getItem(key) || "";
+  sessionStorage.removeItem(key);
+  return /^(?:index|marketplace|discover|reading-tracker)\.html(?:\?[^#]*)?$/.test(path)
+    ? path : "dashboard.html";
+}
+</script>
+</head>
 
 
 <body>
@@ -1652,8 +1661,7 @@
               setTimeout(
                 function () {
 
-                  window.location.href =
-                    "dashboard.html";
+                  window.location.href = paperGremlinLoginDestination();
 
                 },
                 1200
@@ -1810,8 +1818,7 @@
             setTimeout(
               function () {
 
-                window.location.href =
-                  "dashboard.html";
+                window.location.href = paperGremlinLoginDestination();
 
               },
               700
@@ -2139,8 +2146,7 @@
             setTimeout(
               function () {
 
-                window.location.href =
-                  "dashboard.html";
+                window.location.href = paperGremlinLoginDestination();
 
               },
               1200

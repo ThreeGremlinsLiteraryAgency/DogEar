@@ -785,7 +785,8 @@ h1{font-size:clamp(46px,6vw,72px);max-width:760px}
 }
 
 </style>
-<link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">\n</head>
+<link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">\n<script src="assets/missing-book.js"></script>
+</head>
 
 <body>
 
@@ -1447,9 +1448,9 @@ function bookCardMarkup(
         </h3>
 
         <div class="book-author">
-          ${escapeHtml(
-            author
-          )}
+          ${escapeHtml(author)}
+          ${paperGremlinMissingBook.label(book.verificationStatus)
+            ? "<br>" + escapeHtml(paperGremlinMissingBook.label(book.verificationStatus)) : ""}
         </div>
 
         <div class="book-actions">
@@ -1962,10 +1963,10 @@ async function runBookSearch(
       inside a PostgREST OR expression.
     */
 
-    const localMatches =
-      searchLocalCache(
-        cleanQuery
-      );
+    const submitted = await paperGremlinMissingBook.search(supabaseClient, cleanQuery);
+    const localMatches = [...new Map([
+      ...searchLocalCache(cleanQuery), ...submitted.map(normalizeLocalBook)
+    ].map(book => [book.id, book])).values()];
 
     let catalogMatches = [];
 
@@ -1996,6 +1997,7 @@ async function runBookSearch(
       "No books found.",
       "Try another title, author, or ISBN."
     );
+    paperGremlinMissingBook.addButton(searchBookGrid, supabaseClient, { query: cleanQuery });
 
   }
 

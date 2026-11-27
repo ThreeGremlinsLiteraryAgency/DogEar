@@ -1182,7 +1182,8 @@ h1{
 .generic-cover-caption span{font-size:.82em;margin-top:.25em}
 
 </style>
-<link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">\n</head>
+<link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">\n<script src="assets/missing-book.js"></script>
+</head>
 
 <body>
 
@@ -1853,6 +1854,9 @@ function normalizeLocalBook(
       row.id,
 
     verificationStatus: row.verification_status,
+    submittedBy: row.submitted_by,
+    coverTemplate: row.cover_template,
+    keepGenericCover: row.keep_generic_cover,
 
     googleId:
       row.google_books_id ||
@@ -2336,6 +2340,8 @@ async function loadBookByLocalId(
       data
     );
 
+  if (paperGremlinMissingBook.label(data.verification_status)) return;
+
   // Local rows are the social identity for saves/ratings, but older rows may
   // contain sparse Google-era metadata. When possible, hydrate the display
   // from the newer Open Library catalog without changing currentBookId.
@@ -2380,9 +2386,14 @@ async function loadBookByLocalId(
     }
 
     if(catalogRow){
+      const localBook = currentBook;
       const localSocialId = currentBookId;
       await loadBookByWorkKey(catalogRow.source_work_key);
       currentBookId = localSocialId;
+      currentBook.submittedBy = localBook.submittedBy;
+      currentBook.coverTemplate = localBook.coverTemplate;
+      currentBook.keepGenericCover = localBook.keepGenericCover;
+      if (localBook.verificationStatus) currentBook.verificationStatus = localBook.verificationStatus;
       currentBook.thumbnail = normalizeHttps(data.cover_url) || currentBook.thumbnail;
     }
   }
@@ -2542,8 +2553,29 @@ function renderBook(){
     "No description is available for this book.";
 
   $("bookEyebrow").textContent =
-    book.categories?.[0] ||
-    "Book";
+    paperGremlinMissingBook.label(book.verificationStatus) || book.categories?.[0] || "Book";
+
+  document.getElementById("keepAssignedCover")?.remove();
+  if (book.coverTemplate) {
+    void supabaseClient.auth.getUser().then(({ data: { user } }) => {
+      if (user?.id !== book.submittedBy) return;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.id = "keepAssignedCover";
+      button.textContent = book.keepGenericCover ? "Use catalog cover when available" : "Keep assigned cover";
+      button.onclick = async () => {
+        button.disabled = true;
+        const { error } = await supabaseClient.rpc("keep_missing_book_cover", {
+          p_book_id: currentBookId, p_keep: !book.keepGenericCover
+        });
+        if (error) {
+          button.textContent = "Couldn’t update cover. Try again.";
+          button.disabled = false;
+        } else location.reload();
+      };
+      $("bookEyebrow").after(button);
+    });
+  }
 
   const cover =
     $("bookCover");

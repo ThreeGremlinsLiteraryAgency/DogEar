@@ -993,6 +993,7 @@ h1{
 
 </style>
 <link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">
+<script src="assets/missing-book.js"></script>
 </head>
 
 <body>
@@ -1377,6 +1378,17 @@ h1{
 
   </div>
 
+<details id="readerBookQueue" class="panel">
+  <summary>Reader-submitted books and cover templates</summary>
+  <div data-list></div>
+  <form>
+    <h3>Replace numbered artwork globally</h3>
+    <label>Template number <input name="number" type="number" min="1" max="10" required></label>
+    <label>New HTTPS image URL <input name="url" type="url" required></label>
+    <button class="btn" type="submit">Replace template</button>
+  </form>
+  <p role="status" aria-live="polite"></p>
+</details>
 </main>
 
 <!-- =========================================================
@@ -5824,5 +5836,6 @@ initialize();
 
 <script src="assets/admin-book-covers.js"></script>
 <script>initializeAdminBookCovers(supabaseClient, refreshMarketplace);</script>
-<script src="assets/paper-gremlin-nav.js?v=20260927"></script>\n</body>
+<script src="assets/paper-gremlin-nav.js?v=20260927"></script>\n<script src="assets/admin-reader-books.js"></script>
+</body>
 </html>

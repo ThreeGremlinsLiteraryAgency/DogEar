@@ -2222,6 +2222,7 @@ footer{
 }
 
 </style>
+<script src="assets/missing-book.js"></script>
 </head>
 
 
@@ -3477,6 +3478,7 @@ async function fetchBookSearchJson(endpoint, timeoutMs, parentSignal) {
 
 async function searchPaperGremlin(query) {
   const trimmedQuery = String(query || "").trim();
+  document.querySelector("[data-add-missing-book]")?.remove();
   if (activeBookSearchController) activeBookSearchController.abort();
   const searchId = ++activeBookSearch;
   const controller = new AbortController();
@@ -3488,6 +3490,21 @@ async function searchPaperGremlin(query) {
   }
   setBookSearchStatus("Searching the shelves...", "Checking Paper Gremlin", "Finding your next read.");
   try {
+    const community = supabaseClient
+      ? await paperGremlinMissingBook.search(supabaseClient, trimmedQuery) : [];
+    if (searchId !== activeBookSearch) return;
+    const book = community[0];
+    if (book) {
+      showBookResult(book.title, (book.authors || []).join(", "),
+        paperGremlinMissingBook.label(book.verification_status) || "Found in the Paper Gremlin library.",
+        book.cover_url || "");
+      const link = document.createElement("a");
+      link.dataset.addMissingBook = "";
+      link.href = "book-detail.html?id=" + encodeURIComponent(book.id);
+      link.textContent = "View book";
+      document.getElementById("bookResult").append(link);
+      return;
+    }
     const data = await fetchBookSearchJson(
       PAPER_GREMLIN_CATALOG + "/search?q=" + encodeURIComponent(trimmedQuery) + "&limit=1",
       1200, controller.signal
@@ -3503,6 +3520,9 @@ async function searchPaperGremlin(query) {
     }
     showBookResult("Nothing turned up.", "Try another trail.",
       "Try another title, author, ISBN or spelling.", "");
+    if (supabaseClient) paperGremlinMissingBook.addButton(
+      document.getElementById("bookResult"), supabaseClient, { query:trimmedQuery }
+    );
   } catch (error) {
     if (searchId !== activeBookSearch || controller.signal.aborted) return;
     console.error("Paper Gremlin catalog search failed:", error);
