@@ -1015,7 +1015,7 @@ h1{font-size:clamp(46px,6vw,72px);max-width:760px}
 
 </nav>
 
-<script src="assets/bookshop.js?v=book-search"></script>
+<script src="assets/bookshop.js?v=exact-edition"></script>
 <script>
 function bookAuthor(book){
   if(!book) return "";
@@ -1857,6 +1857,7 @@ async function searchCatalogBooks(
   query
 ){
 
+  const exactEdition = paperGremlinLookupIsbnEdition(query);
   const {
     data,
     error
@@ -1887,12 +1888,14 @@ async function searchCatalogBooks(
     );
   }
 
-  return (Array.isArray(data.results) ? data.results : [])
+  const exact = await exactEdition;
+  const matches = (Array.isArray(data.results) ? data.results : [])
     .map(row => {
       const isbns = Array.isArray(row?.isbn) ? row.isbn : [];
       const requested = query.replace(/[\s-]/g,"");
-      const requestedIsbn = /^97[89][0-9]{10}$/.test(requested) &&
-        isbns.some(value => String(value).replace(/[\s-]/g,"") === requested) ? requested : "";
+      const sameWork = exact && String(row.source_work_key || "").split("/").pop() === exact.workKey;
+      const requestedIsbn = sameWork || (/^97[89][0-9]{10}$/.test(requested) &&
+        isbns.some(value => String(value).replace(/[\s-]/g,"") === requested)) ? requested : "";
       const coverId = row?.cover_id ? String(row.cover_id) : "";
       return {
         source:"catalog",
@@ -1905,11 +1908,16 @@ async function searchCatalogBooks(
         requestedIsbn,
         isbn13:requestedIsbn || isbns.find(value => String(value).replace(/[^0-9Xx]/g,"").length === 13) || "",
         isbn10:isbns.find(value => String(value).replace(/[^0-9Xx]/g,"").length === 10) || "",
-        thumbnail:coverId ? "https://covers.openlibrary.org/b/id/" + encodeURIComponent(coverId) + "-M.jpg" : "",
+        thumbnail:(sameWork && exact.coverUrl) || (coverId ? "https://covers.openlibrary.org/b/id/" + encodeURIComponent(coverId) + "-M.jpg" : ""),
         description:"",
         raw:row
       };
     });
+  if (exact && !matches.some(book=>book.requestedIsbn)) {
+    matches.unshift({source:"catalog",verificationStatus:"verified",workKey:exact.workKey,
+      title:exact.title,authors:[],isbn13:exact.isbn,requestedIsbn:exact.isbn,thumbnail:exact.coverUrl});
+  }
+  return matches;
 }
 
 /* =========================================================

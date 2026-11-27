@@ -1653,7 +1653,7 @@ h1{
 </main>
 <div id="dogearModal" hidden style="position:fixed;inset:0;z-index:90;background:#000c;padding:20px;place-items:center;overflow:auto"><div class="card" style="width:min(620px,96vw);padding:24px;margin:auto"><button class="btn secondary" id="dogearClose" type="button" style="float:right">×</button><div class="eyebrow">Fold the corner</div><h2 style="font-size:30px;font-weight:400">Add DogEar</h2><div class="detail-grid"><label class="detail-label">Chapter</label><input id="dogearChapter" maxlength="160"><label class="detail-label">Section</label><input id="dogearSection" maxlength="160"><label class="detail-label">Progress %</label><input id="dogearProgress" type="number" min="0" max="100" step=".1"><label class="detail-label">Text anchor</label><input id="dogearAnchor" maxlength="500" placeholder="A short phrase near your place"><label class="detail-label">Note</label><textarea id="dogearNote" class="review-textarea" maxlength="4000" placeholder="Your thought here. URLs are not allowed."></textarea><label class="detail-label">Visibility</label><select id="dogearVisibility"><option value="private">Private</option><option value="club">Share with club</option></select><label class="detail-label" id="dogearClubLabel" hidden>Club</label><select id="dogearClub" hidden></select></div><div class="message" id="dogearMessage"></div><div class="actions"><button class="btn primary" id="dogearSave" type="button">Save DogEar</button><button class="btn secondary" id="dogearCancel" type="button">Cancel</button></div></div></div>
 
-<script src="assets/bookshop.js?v=book-search"></script>
+<script src="assets/bookshop.js?v=exact-edition"></script>
 <script>
 
 const SUPABASE_URL =
@@ -1934,6 +1934,7 @@ async function loadBookByWorkKey(workKey, requestedIsbn = ""){
   const key = String(workKey || "").trim().replace(/^\/works\//, "");
   if (!/^OL[0-9]+W$/.test(key)) throw new Error("Invalid catalog work reference.");
 
+  const editionRequest = paperGremlinLookupIsbnEdition(requestedIsbn);
   const { data, error } = await supabaseClient
     .from("book_catalog_works")
     .select("*")
@@ -2092,6 +2093,15 @@ async function loadBookByWorkKey(workKey, requestedIsbn = ""){
   }
   catch(error){
     console.warn("Open Library detail enrichment:", error);
+  }
+
+  const edition = await editionRequest;
+  if (edition?.workKey === key) {
+    currentBook.isbn13 = edition.isbn;
+    currentBook.isbn10 = "";
+    currentBook.publisher = edition.publisher || currentBook.publisher;
+    currentBook.publishedDate = edition.publishedDate || currentBook.publishedDate;
+    currentBook.thumbnail = edition.coverUrl || currentBook.thumbnail;
   }
 }
 
