@@ -1488,6 +1488,7 @@ function bookCardMarkup(
                     )}"
                     target="_blank"
                     rel="noopener noreferrer sponsored"
+                  data-book-buy="${escapeHtml(book.source === "local" && book.id ? "local:" + book.id : String(book.workKey || "").replace(/^\/works\//,""))}"
                   >
                     Shop
                   </a>
@@ -2412,6 +2413,13 @@ paperGremlinMissingBook.addButton(document.getElementById("addMissingBookAction"
 });
 document.querySelector("#addMissingBookAction button").classList.add("pg-cover-button");
 
+document.addEventListener("click", event => {
+  const link = event.target.closest?.("[data-book-buy]");
+  if (!link?.dataset.bookBuy) return;
+  void supabaseClient.rpc("record_book_activity", {
+    p_book_key:link.dataset.bookBuy,p_placement:"marketplace",p_event:"buy"
+  }).then(() => {});
+});
 initialize();
 
 </script>
