@@ -1165,24 +1165,10 @@ h1{
   display:none !important;
 }
 
-.cover.has-generic-art{position:relative;container-type:inline-size}
-.generic-cover-caption{
-  position:absolute;
-  inset-inline:10%;
-  bottom:14%;
-  padding:.5em;
-  border-radius:.25em;
-  background:rgb(14 10 9 / 87%);
-  color:#fff;
-  text-align:center;
-  overflow-wrap:anywhere;
-  font-size:clamp(.68rem,5cqi,1.4rem);
-}
-.generic-cover-caption strong,.generic-cover-caption span{display:block}
-.generic-cover-caption span{font-size:.82em;margin-top:.25em}
-
 </style>
-<link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">\n<script src="assets/missing-book.js"></script>
+<link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">\n<link rel="stylesheet" href="assets/reader-covers.css">
+<script src="assets/reader-covers.js"></script>
+<script src="assets/missing-book.js?v=cover-picker"></script>
 </head>
 
 <body>
@@ -2562,18 +2548,49 @@ function renderBook(){
       const button = document.createElement("button");
       button.type = "button";
       button.id = "keepAssignedCover";
-      button.textContent = book.keepGenericCover ? "Use catalog cover when available" : "Keep assigned cover";
+      button.className = "pg-cover-button";
+      button.textContent = "Change cover artwork";
       button.onclick = async () => {
-        button.disabled = true;
-        const { error } = await supabaseClient.rpc("keep_missing_book_cover", {
-          p_book_id: currentBookId, p_keep: !book.keepGenericCover
-        });
-        if (error) {
-          button.textContent = "Couldn’t update cover. Try again.";
-          button.disabled = false;
-        } else location.reload();
+        const dialog = document.createElement("dialog");
+        dialog.className = "pg-cover-dialog";
+        dialog.innerHTML = `<form>
+          <h2>Change cover artwork</h2>
+          <p data-cover-picker>Loading cover designs…</p>
+          <p><label><input name="keep" type="checkbox"> Keep my chosen artwork after verification</label></p>
+          <p role="status"></p>
+          <button class="pg-cover-button" type="submit" disabled>Save cover</button>
+          <button class="pg-cover-button" type="button" data-cancel>Cancel</button>
+        </form>`;
+        document.body.append(dialog);
+        dialog.addEventListener("close", () => dialog.remove(), { once:true });
+        const form = dialog.querySelector("form");
+        const save = form.querySelector("[type=submit]");
+        const status = form.querySelector("[role=status]");
+        form.elements.keep.checked = true;
+        form.querySelector("[data-cancel]").onclick = () => dialog.close();
+        dialog.showModal();
+        try {
+          await paperGremlinReaderCovers.picker(form, supabaseClient, {
+            selected: book.coverTemplate, getTitle: () => book.title, getAuthor: () => authorText,
+          });
+          save.disabled = false;
+        } catch (error) {
+          status.textContent = error.message;
+        }
+        form.onsubmit = async event => {
+          event.preventDefault();
+          save.disabled = true;
+          const { data, error } = await supabaseClient.rpc("choose_book_cover", {
+            p_book_id: currentBookId, p_number: Number(form.elements.cover.value),
+            p_keep: form.elements.keep.checked,
+          });
+          if (error || !data) {
+            status.textContent = error?.message || "Couldn’t save that cover. Try again.";
+            save.disabled = false;
+          } else location.reload();
+        };
       };
-      $("bookEyebrow").after(button);
+      $("bookAuthor").after(button);
     });
   }
 
@@ -2581,8 +2598,8 @@ function renderBook(){
     $("bookCover");
 
   cover.replaceChildren();
-  const genericArt = /^https:\/\/threegremlinsliteraryagency\.github\.io\/DogEar\/assets\/cover-templates\/00(?:0[1-9]|10)\.webp$/.test(book.thumbnail);
-  cover.classList.toggle("has-generic-art", genericArt);
+  cover.classList.remove("pg-cover-art");
+  delete cover.dataset.template;
 
   if(book.thumbnail){
     const image =
@@ -2606,15 +2623,15 @@ function renderBook(){
       };
 
     cover.appendChild(image);
-    if (genericArt) {
-      const caption = document.createElement("div");
-      caption.className = "generic-cover-caption";
-      const captionTitle = document.createElement("strong");
-      captionTitle.textContent = book.title;
-      const captionAuthor = document.createElement("span");
-      captionAuthor.textContent = authorText;
-      caption.append(captionTitle, captionAuthor);
-      cover.appendChild(caption);
+    const originalTemplate = book.thumbnail.match(/\/assets\/cover-templates\/00(0[1-9]|10)\.webp$/);
+    if (originalTemplate) {
+      paperGremlinReaderCovers.letter(cover, Number(originalTemplate[1]), book.title, authorText);
+    } else if (book.coverTemplate) {
+      void supabaseClient.rpc("current_book_cover_template", { p_book_id: currentBookId })
+        .then(({ data }) => {
+          if (data && cover.contains(image))
+            paperGremlinReaderCovers.letter(cover, data, book.title, authorText);
+        });
     }
   }
   else{
