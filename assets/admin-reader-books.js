@@ -1,7 +1,8 @@
 "use strict";
 
-(async () => {
+(() => {
   const panel = document.getElementById("readerBookQueue");
+  if (!panel) return;
   const list = panel.querySelector("[data-list]");
   const status = panel.querySelector("[role=status]");
   function showError(error) {
@@ -14,15 +15,24 @@
       return;
     }
     list.replaceChildren();
+    const pending = data.filter(book => book.verification_status === "needs_verification").length;
+    const count = panel.querySelector("[data-pending-count]");
+    if (count) count.textContent = pending ? " · " + pending + " pending" : "";
     if (!data.length) list.textContent = "No submissions to review.";
     for (const book of data) {
       const row = document.createElement("p");
+      row.className = "reader-book-review-row";
       const link = document.createElement("a");
       link.href = "book-detail.html?id=" + encodeURIComponent(book.id);
       link.textContent = book.title;
-      row.append(link, " · " + (book.authors || []).join(", ") + " · " +
-        paperGremlinMissingBook.label(book.verification_status) + " · Cover " +
-        String(book.cover_template).padStart(4,"0") + " ");
+      const details = document.createElement("span");
+      const pendingReview = book.verification_status === "needs_verification";
+      details.textContent = [ (book.authors || []).join(", "),
+        pendingReview ? "Pending approval" : "Published · Unverified"
+      ].filter(Boolean).join(" · ");
+      const actions = document.createElement("span");
+      actions.className = "reader-book-review-actions";
+      row.append(link, details, actions);
       function action(label, rpc, args) {
         const button = document.createElement("button");
         button.type = "button";
@@ -39,18 +49,19 @@
             await refresh();
           }
         };
-        row.append(button, " ");
+        actions.append(button, " ");
       }
       if (book.verification_status === "needs_verification")
         action("Publish as unverified", "review_missing_book", { p_status:"community_unverified" });
       else action("Return to queue", "review_missing_book", { p_status:"needs_verification" });
-      action("Mark verified", "review_missing_book", { p_status:"manually_verified" });
-      action(book.keep_generic_cover ? "Use catalog cover" : "Keep assigned cover",
+      action("Approve as verified", "review_missing_book", { p_status:"manually_verified" });
+      if (panel.querySelector("form")) action(book.keep_generic_cover ? "Use catalog cover" : "Keep assigned cover",
         "keep_missing_book_cover", { p_keep:!book.keep_generic_cover });
       list.append(row);
     }
   }
-  panel.querySelector("form").onsubmit = async event => {
+  const templateForm = panel.querySelector("form");
+  if (templateForm) templateForm.onsubmit = async event => {
     event.preventDefault();
     const fields = new FormData(event.currentTarget);
     const { error } = await supabaseClient.rpc("replace_book_cover_template", {
@@ -60,4 +71,5 @@
     else status.textContent = "Template replaced for books still using its generic artwork.";
   };
   panel.addEventListener("toggle", () => { if (panel.open) void refresh(); });
+  if (panel.open) void refresh();
 })();
