@@ -1364,13 +1364,7 @@ function renderBooks(books){
       const google=book._source==="google",catalog=book._source==="catalog";
 
       return `
-        <article
-          class="book-card"
-          tabindex="0"
-          role="link"
-          data-book-url="${escapeHtml(url)}"
-          aria-label="View ${escapeHtml(title)}"
-        >
+        ${url ? `<a class="book-card" href="${escapeHtml(url)}" aria-label="View ${escapeHtml(title)}">` : `<article class="book-card">`}
           <div class="book-cover-shell">
             ${
               cover
@@ -1396,9 +1390,7 @@ function renderBooks(books){
 
           <div class="book-info">
             <h3 class="book-title">
-              <a href="${escapeHtml(url)}">
-                ${escapeHtml(title)}
-              </a>
+              ${escapeHtml(title)}
             </h3>
 
             <div class="book-author">
@@ -1414,52 +1406,13 @@ function renderBooks(books){
                 }
               </div>
 
-              <a
-                class="book-link"
-                href="${escapeHtml(url)}"
-              >
-                View →
-              </a>
+              ${url ? `<span class="book-link">View →</span>` : ""}
             </div>
           </div>
-        </article>
+        ${url ? "</a>" : "</article>"}
       `;
     })
     .join("");
-
-  bookGrid
-    .querySelectorAll(".book-card[data-book-url]")
-    .forEach(card=>{
-      const url=card.dataset.bookUrl;
-
-      if(!url){
-        return;
-      }
-
-      card.addEventListener(
-        "click",
-        event=>{
-          if(event.target.closest("a")){
-            return;
-          }
-
-          location.href=url;
-        }
-      );
-
-      card.addEventListener(
-        "keydown",
-        event=>{
-          if(
-            event.key==="Enter" ||
-            event.key===" "
-          ){
-            event.preventDefault();
-            location.href=url;
-          }
-        }
-      );
-    });
 }
 
 function renderClubs(clubs){
@@ -1768,6 +1721,7 @@ function catalogResultToBook(item){
   return {
     ...item,
     _source:"catalog",
+    source_work_key:item.source_work_key || item.work_key,
     authors:Array.isArray(item.author_names)?item.author_names:[],
     published_date:item.first_publish_year?String(item.first_publish_year):"",
     cover_url:item.cover_url||"",
