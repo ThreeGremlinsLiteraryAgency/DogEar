@@ -1659,7 +1659,7 @@ h1{
 </main>
 <div id="dogearModal" hidden style="position:fixed;inset:0;z-index:90;background:#000c;padding:20px;place-items:center;overflow:auto"><div class="card" style="width:min(620px,96vw);padding:24px;margin:auto"><button class="btn secondary" id="dogearClose" type="button" style="float:right">×</button><div class="eyebrow">Fold the corner</div><h2 style="font-size:30px;font-weight:400">Add DogEar</h2><div class="detail-grid"><label class="detail-label">Chapter</label><input id="dogearChapter" maxlength="160"><label class="detail-label">Section</label><input id="dogearSection" maxlength="160"><label class="detail-label">Progress %</label><input id="dogearProgress" type="number" min="0" max="100" step=".1"><label class="detail-label">Text anchor</label><input id="dogearAnchor" maxlength="500" placeholder="A short phrase near your place"><label class="detail-label">Note</label><textarea id="dogearNote" class="review-textarea" maxlength="4000" placeholder="Your thought here. URLs are not allowed."></textarea><label class="detail-label">Visibility</label><select id="dogearVisibility"><option value="private">Private</option><option value="club">Share with club</option></select><label class="detail-label" id="dogearClubLabel" hidden>Club</label><select id="dogearClub" hidden></select></div><div class="message" id="dogearMessage"></div><div class="actions"><button class="btn primary" id="dogearSave" type="button">Save DogEar</button><button class="btn secondary" id="dogearCancel" type="button">Cancel</button></div></div></div>
 
-<script src="assets/bookshop.js"></script>
+<script src="assets/bookshop.js?v=buy-url"></script>
 <script>
 
 const SUPABASE_URL =
@@ -1840,6 +1840,7 @@ function normalizeLocalBook(
       row.id,
 
     verificationStatus: row.verification_status,
+    buyUrl: row.buy_url,
     submittedBy: row.submitted_by,
     coverTemplate: row.cover_template,
     keepGenericCover: row.keep_generic_cover,
@@ -1969,7 +1970,7 @@ async function loadBookByWorkKey(workKey){
     if(compatibilityId){
       const { data:bySource, error:sourceError } = await supabaseClient
         .from("books")
-        .select("id,cover_url,authors")
+        .select("id,cover_url,authors,buy_url")
         .eq("google_books_id", compatibilityId)
         .limit(1)
         .maybeSingle();
@@ -1981,7 +1982,7 @@ async function loadBookByWorkKey(workKey){
     if(!localMatch && currentBook.isbn13){
       const { data:byIsbn, error:isbnError } = await supabaseClient
         .from("books")
-        .select("id,cover_url,authors")
+        .select("id,cover_url,authors,buy_url")
         .eq("isbn_13", currentBook.isbn13)
         .limit(1)
         .maybeSingle();
@@ -1993,7 +1994,7 @@ async function loadBookByWorkKey(workKey){
     if(!localMatch && currentBook.isbn10){
       const { data:byIsbn10, error:isbn10Error } = await supabaseClient
         .from("books")
-        .select("id,cover_url,authors")
+        .select("id,cover_url,authors,buy_url")
         .eq("isbn_10", currentBook.isbn10)
         .limit(1)
         .maybeSingle();
@@ -2004,6 +2005,7 @@ async function loadBookByWorkKey(workKey){
 
     if(localMatch?.id){
       currentBookId = localMatch.id;
+      currentBook.buyUrl = localMatch.buy_url;
       currentBook.thumbnail = normalizeHttps(localMatch.cover_url) || currentBook.thumbnail;
       if (!currentBook.authors.length) currentBook.authors = normalizeAuthors(localMatch.authors);
     }
@@ -2376,6 +2378,7 @@ async function loadBookByLocalId(
       const localSocialId = currentBookId;
       await loadBookByWorkKey(catalogRow.source_work_key);
       currentBookId = localSocialId;
+      currentBook.buyUrl = localBook.buyUrl;
       currentBook.submittedBy = localBook.submittedBy;
       currentBook.coverTemplate = localBook.coverTemplate;
       currentBook.keepGenericCover = localBook.keepGenericCover;
