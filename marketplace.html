@@ -784,6 +784,10 @@ h1{font-size:clamp(46px,6vw,72px);max-width:760px}
   display:none !important;
 }
 
+.book-card { position:relative; }
+.book-card .book-details-link::after { content:""; position:absolute; inset:0; z-index:2; }
+.book-card .book-actions a { position:relative; z-index:3; }
+.book-card:focus-within { outline:2px solid currentColor; outline-offset:3px; }
 </style>
 <link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">\n<link rel="stylesheet" href="assets/reader-covers.css?v=cover-names">
 <script src="assets/reader-covers.js?v=cover-names"></script>
@@ -1011,7 +1015,7 @@ h1{font-size:clamp(46px,6vw,72px);max-width:760px}
 
 </nav>
 
-<script src="assets/bookshop.js?v=buy-url"></script>
+<script src="assets/bookshop.js?v=book-search"></script>
 <script>
 function bookAuthor(book){
   if(!book) return "";
@@ -1434,7 +1438,7 @@ function bookCardMarkup(
           ${
             detailsUrl
               ? `
-                  <a
+                  <a class="book-details-link"
                     href="${escapeHtml(
                       detailsUrl
                     )}"
