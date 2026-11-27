@@ -875,14 +875,15 @@ html body{background:#050b09!important;color:#f1e7cf!important} body .topbar{bac
 }
 
 </style>
-<link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">\n<link rel="stylesheet" href="assets/reader-covers.css">
+<link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">
+<link rel="stylesheet" href="assets/reader-covers.css">
 <script src="assets/reader-covers.js"></script>
 <script src="assets/missing-book.js?v=cover-picker"></script>
 </head>
 
-<body class="loading-lock">
+<body>
 
-<div class="loading-screen" id="loadingScreen">
+<div class="loading-screen hidden" id="loadingScreen">
   <div class="loading-inner">
     <div class="loading-mark"></div>
     <div class="loading-text">Wandering through Paper Gremlin...</div>
@@ -949,14 +950,12 @@ html body{background:#050b09!important;color:#f1e7cf!important} body .topbar{bac
     plus public clubs and reader profiles.
   </div>
 
-  <div class="search-status" id="searchStatus"></div>
+  <div class="search-status" id="searchStatus" role="status"></div>
 </section>
 
 <div class="discovery-tabs">
   <button class="tab-button active" type="button" data-tab="all">Everything</button>
-  <button class="tab-button" type="button" data-tab="books">
-      Marketplace
-    </button>
+  <button class="tab-button" type="button" data-tab="books">Books</button>
   <button class="tab-button" type="button" data-tab="clubs">Clubs</button>
   <button class="tab-button" type="button" data-tab="people">Readers</button>
 </div>
@@ -1026,7 +1025,7 @@ html body{background:#050b09!important;color:#f1e7cf!important} body .topbar{bac
 const SUPABASE_URL="https://nrtutxjznkfvvbmaagum.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_C2t5VVsQQGqHhniETEky6A_XDK1Oycu";
 
-const supabaseClient=window.supabase.createClient(
+const supabaseClient=window.supabase?.createClient(
   SUPABASE_URL,
   SUPABASE_PUBLISHABLE_KEY
 );
@@ -2159,3 +2158,96 @@ async function loadCurrentUserProfile(){
     image.onerror=()=>{
       holder.innerHTML="";
       holder.textContent=
+        initials(name);
+    };
+
+    holder.appendChild(
+      image
+    );
+  }
+  else{
+    holder.textContent=
+      initials(name);
+  }
+}
+
+const discoveryTabs = [...document.querySelectorAll(".tab-button[data-tab]")];
+
+function selectTab(tab) {
+  currentTab = discoveryTabs.some(button => button.dataset.tab === tab) ? tab : "all";
+  for (const button of discoveryTabs) {
+    const active = button.dataset.tab === currentTab;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  }
+  updateVisibleSections();
+}
+
+for (const button of discoveryTabs) {
+  button.addEventListener("click", () => {
+    selectTab(button.dataset.tab);
+    const url = new URL(location.href);
+    if (currentTab === "all") url.searchParams.delete("tab");
+    else url.searchParams.set("tab", currentTab);
+    history.replaceState({}, "", url);
+  });
+}
+
+let typingTimer;
+discoverSearchForm.addEventListener("submit", event => {
+  event.preventDefault();
+  clearTimeout(typingTimer);
+  void runSearch();
+});
+discoverSearch.addEventListener("input", () => {
+  clearTimeout(typingTimer);
+  if (!discoverSearch.value.trim()) void runSearch();
+  else typingTimer = setTimeout(runSearch, 550);
+});
+loadMoreButton.addEventListener("click", loadMoreCatalog);
+
+async function initialize() {
+  document.body.classList.add("loading-lock");
+  loadingScreen.classList.remove("hidden");
+  // Reveal the page even when a session or data request is stalled.
+  const releaseOverlay = setTimeout(hideLoading, 3000);
+  try {
+    if (!supabaseClient) throw new Error("Catalog client did not load");
+    const { data, error } = await supabaseClient.auth.getSession();
+    if (error) throw error;
+    if (!data?.session?.user) {
+      location.replace("index.html?next=" + encodeURIComponent(
+        location.pathname.split("/").pop() + location.search
+      ));
+      return;
+    }
+    currentUser = data.session.user;
+    supabaseClient.auth.onAuthStateChange(event => {
+      if (event === "SIGNED_OUT") location.replace("index.html");
+    });
+    const params = new URLSearchParams(location.search);
+    discoverSearch.value = params.get("q") || "";
+    selectTab(params.get("tab"));
+    hideLoading();
+
+    // Books and search are available independently of reader and club requests.
+    const booksReady = loadBooks().then(applyDiscoveryFilters);
+    void loadClubs().then(applyDiscoveryFilters);
+    void loadPeople().then(applyDiscoveryFilters);
+    void loadCurrentUserProfile();
+    await booksReady;
+    if (discoverSearch.value.trim() && !searchSequence) await runSearch();
+  } catch (error) {
+    console.error("Discover initialization:", error);
+    searchStatus.textContent = "Discover couldn’t finish loading. Refresh to try again.";
+  } finally {
+    clearTimeout(releaseOverlay);
+    hideLoading();
+  }
+}
+
+void initialize();
+</script>
+<script src="assets/paper-gremlin-nav.js?v=20260927"></script>
+</body>
+</html>
