@@ -785,8 +785,8 @@ h1{font-size:clamp(46px,6vw,72px);max-width:760px}
 }
 
 .book-card { position:relative; }
-.book-card .book-details-link::after { content:""; position:absolute; inset:0; z-index:2; }
-.book-card .book-actions a { position:relative; z-index:3; }
+.book-card .book-card-hit-area { content:""; position:absolute; inset:0; z-index:2; }
+.book-card .book-actions a,.book-card .book-cover-link { position:relative; z-index:3; }
 .book-card:focus-within { outline:2px solid currentColor; outline-offset:3px; }
 </style>
 <link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">\n<link rel="stylesheet" href="assets/reader-covers.css?v=cover-names">
@@ -1330,10 +1330,9 @@ function bookDetailsUrl(
   }
 
   if(book.workKey){
-    return (
-      "book-detail.html?work_key=" +
-      encodeURIComponent(book.workKey)
-    );
+    const params = new URLSearchParams({work_key:book.workKey});
+    if (book.requestedIsbn) params.set("isbn",book.requestedIsbn);
+    return "book-detail.html?" + params;
   }
 
   if(book.googleId){
@@ -1402,6 +1401,7 @@ function bookCardMarkup(
 
   return `
     <article class="book-card">
+      ${detailsUrl ? `<a class="book-card-hit-area" href="${escapeHtml(detailsUrl)}" tabindex="-1" aria-hidden="true"></a>` : ""}
 
       ${
         detailsUrl
@@ -1890,6 +1890,9 @@ async function searchCatalogBooks(
   return (Array.isArray(data.results) ? data.results : [])
     .map(row => {
       const isbns = Array.isArray(row?.isbn) ? row.isbn : [];
+      const requested = query.replace(/[\s-]/g,"");
+      const requestedIsbn = /^97[89][0-9]{10}$/.test(requested) &&
+        isbns.some(value => String(value).replace(/[\s-]/g,"") === requested) ? requested : "";
       const coverId = row?.cover_id ? String(row.cover_id) : "";
       return {
         source:"catalog",
@@ -1899,7 +1902,8 @@ async function searchCatalogBooks(
         googleId:"",
         title:row?.title || "Untitled",
         authors:Array.isArray(row?.author_names) ? row.author_names : [],
-        isbn13:isbns.find(value => String(value).replace(/[^0-9Xx]/g,"").length === 13) || "",
+        requestedIsbn,
+        isbn13:requestedIsbn || isbns.find(value => String(value).replace(/[^0-9Xx]/g,"").length === 13) || "",
         isbn10:isbns.find(value => String(value).replace(/[^0-9Xx]/g,"").length === 10) || "",
         thumbnail:coverId ? "https://covers.openlibrary.org/b/id/" + encodeURIComponent(coverId) + "-M.jpg" : "",
         description:"",
@@ -1988,8 +1992,8 @@ async function runBookSearch(
 
     const results =
       mergeBooks(
-        localMatches,
-        catalogMatches
+        [...localMatches,...catalogMatches.filter(book=>book.requestedIsbn)],
+        catalogMatches.filter(book=>!book.requestedIsbn)
       );
 
     searchDescription.textContent =

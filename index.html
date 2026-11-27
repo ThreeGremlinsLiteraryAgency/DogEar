@@ -3518,6 +3518,15 @@ async function searchPaperGremlin(query) {
         (book.author_names || []).join(", ") || "Unknown author",
         "Found in the Paper Gremlin library.",
         book.cover_url || "");
+      const workKey = String(book.work_key || book.source_work_key || "").replace(/^\/works\//,"");
+      if (/^OL[0-9]+W$/.test(workKey)) {
+        const link = document.createElement("a");
+        link.dataset.addMissingBook = "";
+        link.className = "pg-cover-button";
+        link.href = "book-detail.html?work_key=" + encodeURIComponent(workKey);
+        link.textContent = "View book";
+        document.getElementById("bookResult").append(link);
+      }
       return;
     }
     showBookResult("Nothing turned up.", "Try another trail.",

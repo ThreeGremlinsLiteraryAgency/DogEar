@@ -1930,7 +1930,7 @@ function normalizeCatalogBook(
   };
 }
 
-async function loadBookByWorkKey(workKey){
+async function loadBookByWorkKey(workKey, requestedIsbn = ""){
   const key = String(workKey || "").trim().replace(/^\/works\//, "");
   if (!/^OL[0-9]+W$/.test(key)) throw new Error("Invalid catalog work reference.");
 
@@ -1950,6 +1950,11 @@ async function loadBookByWorkKey(workKey){
     catalogBook = { ...await response.json(), source_work_key: key };
   }
   currentBook = normalizeCatalogBook(catalogBook);
+  if (/^97[89][0-9]{10}$/.test(requestedIsbn) &&
+      (Array.isArray(catalogBook.isbn) ? catalogBook.isbn : []).some(value => String(value).replace(/[\s-]/g,"") === requestedIsbn)) {
+    currentBook.isbn13 = requestedIsbn;
+    currentBook.isbn10 = "";
+  }
 
   // Resolve a catalog result to an existing Paper Gremlin book immediately.
   // This keeps saves, ratings, and reviews attached to the same identity
@@ -2486,7 +2491,7 @@ async function loadBook(){
     params.get("workKey");
 
   if(workKey){
-    await loadBookByWorkKey(workKey);
+    await loadBookByWorkKey(workKey, params.get("isbn") || "");
     return;
   }
 
