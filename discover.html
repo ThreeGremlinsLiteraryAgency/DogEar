@@ -874,6 +874,11 @@ html body{background:#050b09!important;color:#f1e7cf!important} body .topbar{bac
   display:none !important;
 }
 
+.discovery-extra-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); gap:14px; }
+.discovery-extra-card { padding:16px; border:1px solid var(--line); border-radius:12px; }
+.discovery-extra-card img { display:block; width:100%; height:150px; object-fit:contain; margin-bottom:10px; }
+.discovery-extra-card button,.discovery-extra-card a { color:inherit; text-decoration:underline; }
+.discovery-extra-card button { border:0; padding:0; background:transparent; text-align:left; }
 </style>
 <link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">
 <link rel="stylesheet" href="assets/reader-covers.css?v=cover-names">
@@ -957,6 +962,8 @@ html body{background:#050b09!important;color:#f1e7cf!important} body .topbar{bac
 <div class="discovery-tabs">
   <button class="tab-button active" type="button" data-tab="all">Everything</button>
   <button class="tab-button" type="button" data-tab="books">Books</button>
+  <button class="tab-button" type="button" data-tab="authors">Authors</button>
+  <button class="tab-button" type="button" data-tab="accessories">Reading Accessories</button>
   <button class="tab-button" type="button" data-tab="clubs">Clubs</button>
   <button class="tab-button" type="button" data-tab="people">Readers</button>
 </div>
@@ -981,6 +988,14 @@ html body{background:#050b09!important;color:#f1e7cf!important} body .topbar{bac
   </div>
 </section>
 
+<section class="section" id="authorsSection">
+  <div class="section-head"><div><h2>Authors</h2><p>Find an author and explore their books.</p></div></div>
+  <div id="authorsGrid" class="discovery-extra-grid"></div>
+</section>
+<section class="section" id="accessoriesSection">
+  <div class="section-head"><div><h2>Reading Accessories</h2></div></div>
+  <div id="accessoriesGrid" class="discovery-extra-grid"></div>
+</section>
 <section class="section" id="clubsSection">
   <div class="section-head">
     <div>
@@ -1293,6 +1308,8 @@ function updateBookResultCount(displayedBooks){
       : 0;
 
   if(!currentSearch){
+    authorResults = [];
+    authorSearch?.abort();
     bookResultCount.textContent=
       displayed===1
         ? "1 book"
@@ -1624,6 +1641,10 @@ function renderPeople(people){
 }
 
 function updateVisibleSections(){
+  for (const tab of ["authors","accessories"]) {
+    document.getElementById(tab + "Section").classList.toggle("hidden",
+      currentTab !== "all" && currentTab !== tab);
+  }
   booksSection.classList.toggle(
     "hidden",
     !(
@@ -1693,6 +1714,8 @@ function applyDiscoveryFilters(){
     );
 
   renderBooks(books);
+  renderAuthors(query,books);
+  renderAccessories(query);
   renderClubs(clubs);
   renderPeople(people);
   updateVisibleSections();
@@ -1829,6 +1852,113 @@ async function loadMoreCatalog(){
   }
 }
 
+let accessories = [];
+let accessoriesError = false;
+let authorResults = [];
+let authorSearch;
+
+async function loadAccessories() {
+  const { data,error } = await supabaseClient.from("reading_accessories")
+    .select("name,description,product_url,image_url,gremlins_approved")
+    .order("gremlins_approved",{ ascending:false }).order("name");
+  accessories = data || [];
+  accessoriesError = Boolean(error);
+  applyDiscoveryFilters();
+}
+
+function renderAccessories(query) {
+  const grid = document.getElementById("accessoriesGrid");
+  grid.replaceChildren();
+  const matches = accessories.filter(item => !query ||
+    normalize([item.name,item.description,item.gremlins_approved ? "Gremlins Approved" : ""].join(" ")).includes(query));
+  if (!matches.length) grid.textContent = accessoriesError ? "Accessories couldn’t load." :
+    query ? "No accessories match this search." : "No reading accessories have been added yet.";
+  for (const item of matches) {
+    const card = document.createElement("article");
+    card.className = "discovery-extra-card";
+    if (item.image_url) {
+      const image = document.createElement("img");
+      image.src = item.image_url;
+      image.alt = "";
+      image.loading = "lazy";
+      card.append(image);
+    }
+    const name = document.createElement("h3");
+    name.textContent = item.name;
+    const description = document.createElement("p");
+    description.textContent = item.description;
+    const link = document.createElement("a");
+    link.href = item.product_url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer sponsored";
+    link.textContent = "View product";
+    card.append(name);
+    if (item.gremlins_approved) {
+      const approved = document.createElement("strong");
+      approved.textContent = "Gremlins Approved";
+      card.append(approved);
+    }
+    if (item.description) card.append(description);
+    card.append(link);
+    grid.append(card);
+  }
+}
+
+async function findAuthors(query, sequence) {
+  authorSearch?.abort();
+  const controller = new AbortController();
+  authorSearch = controller;
+  try {
+    const data = await quickCatalogFetch("https://openlibrary.org/search/authors.json?q=" +
+      encodeURIComponent(query) + "&limit=20",5000,controller.signal);
+    if (sequence !== searchSequence) return;
+    authorResults = (data.docs || []).map(author => ({ name:author.name, work:author.top_work }));
+    applyDiscoveryFilters();
+  } catch (error) {
+    if (!controller.signal.aborted) console.warn("Author search:",error);
+  }
+}
+
+function renderAuthors(query, books) {
+  const grid = document.getElementById("authorsGrid");
+  grid.replaceChildren();
+  const names = new Map();
+  if (query) for (const author of authorResults) {
+    if (author.name) names.set(normalize(author.name),author);
+  }
+  for (const book of books) {
+    const authors = book.authors || book.author_names || [];
+    for (const name of Array.isArray(authors) ? authors : [authors]) {
+      const key = normalize(name);
+      if (key && (!query || key.includes(query)) && !names.has(key)) names.set(key,{ name });
+    }
+  }
+  if (!names.size) grid.textContent = query ? "No matching authors yet." : "Search by name to find an author.";
+  for (const author of [...names.values()].slice(0,30)) {
+    const card = document.createElement("article");
+    card.className = "discovery-extra-card";
+    const open = document.createElement("button");
+    open.type = "button";
+    open.textContent = author.name;
+    open.setAttribute("aria-label","Search books by " + author.name);
+    open.onclick = () => {
+      selectTab("books");
+      const url = new URL(location.href);
+      url.searchParams.set("tab","books");
+      history.replaceState({}, "", url);
+      discoverSearch.value = author.name;
+      void runSearch();
+    };
+    card.append(open);
+    if (author.work) {
+      const work = document.createElement("p");
+      work.textContent = author.work;
+      card.append(work);
+    }
+    grid.append(card);
+  }
+}
+
 async function runSearch(){
   currentSearch=
     discoverSearch.value
@@ -1868,10 +1998,12 @@ async function runSearch(){
     return;
   }
 
+  authorResults = [];
   applyDiscoveryFilters();
 
   searchStatus.textContent="Searching Paper Gremlin catalog…";
   ++searchSequence;
+  if (currentTab !== "accessories") void findAuthors(currentSearch,searchSequence);
   searchButton.disabled=true;
   searchButton.textContent="Searching…";
   try{
@@ -2231,6 +2363,7 @@ async function initialize() {
     hideLoading();
 
     // Books and search are available independently of reader and club requests.
+    void loadAccessories();
     const booksReady = loadBooks().then(applyDiscoveryFilters);
     void loadClubs().then(applyDiscoveryFilters);
     void loadPeople().then(applyDiscoveryFilters);
