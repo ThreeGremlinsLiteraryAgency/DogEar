@@ -32,13 +32,14 @@ table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:8px;bord
 <button type="button" data-days="7">7 days</button>
 <button type="button" data-days="30">30 days</button>
 <button type="button" data-days="90">90 days</button>
+<button type="button" id="prior-month">Prior month</button>
 <button type="button" id="excel" disabled>Export to Excel</button>
 <button type="button" id="pdf" disabled>Save as PDF</button>
 </form>
 <article id="report" hidden>
 <h2 id="period"></h2>
 <ul id="totals" class="totals"></ul>
-<p class="note">Dates are inclusive and use Eastern time. Views and Buy clicks are event counts collected from launch of this dashboard. Saves count existing saved-book records by date added. Club figures cover public clubs with a ballot winner and use the ballot month. Buy clicks are not sales.</p>
+<p class="note">Dates are inclusive and use Eastern time. Views and Buy clicks are event counts collected from launch of this dashboard. Saves count existing saved-book records by date added. Club figures cover closed or finalized public-club ballots from prior months. Ballot details include every prior calendar month touched by the selected dates. Buy clicks are not sales.</p>
 <div id="reports"></div>
 </article>
 </section>
@@ -64,6 +65,7 @@ function tables(data){
  return [
   ["Title interest",["Title","Views","Saves","Buy clicks"],data.titles.map(x=>[x.title,Number(x.views),Number(x.saves),Number(x.clicks)])],
   ["Public club picks",["Title","Club genre","Picks"],data.picks.map(x=>[x.title,x.genre,Number(x.picks)])],
+  ["Historical club ballots",["Month","Ballot","Club genre","Nominated book","Votes","Result"],(data.ballots||[]).map(x=>[x.ballot_month.slice(0,7),String(x.ballot),x.genre,x.title,Number(x.votes),x.result])],
   ["Buy clicks by placement",["Placement","Clicks"],data.placements.map(x=>[placements[x.placement]||x.placement,Number(x.clicks)])]
  ];
 }
@@ -122,6 +124,15 @@ get("excel").onclick=()=>{
  setTimeout(()=>URL.revokeObjectURL(url),1000);
 };
 get("pdf").onclick=()=>{if(snapshot)window.print();};
+get("prior-month").onclick=()=>{
+ setRange(1);
+ const end=new Date(form.elements.end.value.slice(0,7)+"-01T00:00:00Z");
+ end.setUTCDate(0);
+ form.elements.end.value=end.toISOString().slice(0,10);
+ end.setUTCDate(1);
+ form.elements.start.value=end.toISOString().slice(0,10);
+ void load();
+};
 form.onsubmit=event=>{event.preventDefault();void load();};
 form.querySelectorAll("[data-days]").forEach(button=>button.onclick=()=>{setRange(Number(button.dataset.days));void load();});
 (async()=>{
