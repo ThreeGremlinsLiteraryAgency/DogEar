@@ -4025,6 +4025,15 @@ async function initialize(){
     // Public book content should render without waiting for authentication.
     await loadBook();
     renderBook();
+    const analyticsKey = currentBookId ? "local:" + currentBookId :
+      String(currentBook?.workKey || "").replace(/^\/works\//,"");
+    if (analyticsKey) {
+      const track = event => supabaseClient.rpc("record_book_activity", {
+        p_book_key:analyticsKey,p_placement:"book_page",p_event:event
+      }).then(() => {});
+      void track("view");
+      $("bookshopBtn").addEventListener("click", () => void track("buy"));
+    }
 
     window.clearTimeout(loadingFailsafe);
     $("loading").classList.add("hidden");
