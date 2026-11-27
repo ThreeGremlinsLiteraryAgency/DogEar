@@ -8,6 +8,71 @@
   function showError(error) {
     status.textContent = error.message || "Couldn’t complete that action.";
   }
+  async function editBook(bookId) {
+    const { data:book, error } = await supabaseClient.from("books")
+      .select("title,authors,subtitle,isbn_13,isbn_10,publisher,published_date,description,updated_at")
+      .eq("id",bookId).single();
+    if (error) { showError(error); return; }
+
+    const dialog = document.createElement("dialog");
+    dialog.style.cssText = "width:min(480px,92%);max-height:88vh;overflow:auto;background:#13221c;color:#f1e7cf;border:1px solid #a88b58;border-radius:10px;padding:20px";
+    const form = document.createElement("form");
+    form.innerHTML = "<h2>Edit book details</h2>";
+    const fields = [
+      ["title","Title",300], ["authors","Authors (one per line)",6000],
+      ["subtitle","Subtitle",300], ["isbn_13","ISBN-13",32], ["isbn_10","ISBN-10",32],
+      ["publisher","Publisher",300], ["published_date","Publication date or year",40],
+      ["description","Description",10000],
+    ];
+    for (const [name,label,maxLength] of fields) {
+      const wrapper = document.createElement("label");
+      wrapper.style.cssText = "display:grid;gap:4px;margin:12px 0";
+      wrapper.textContent = label;
+      const control = document.createElement(["authors","description"].includes(name) ? "textarea" : "input");
+      control.name = name;
+      control.maxLength = maxLength;
+      control.required = ["title","authors"].includes(name);
+      control.style.cssText = "width:100%;box-sizing:border-box;font-size:16px;padding:6px";
+      control.value = name === "authors" ? (book.authors || []).join("\n")
+        : name === "isbn_13" && book.isbn_13?.startsWith("PG-") ? "" : book[name] || "";
+      wrapper.append(control);
+      form.append(wrapper);
+    }
+    const feedback = document.createElement("p");
+    feedback.setAttribute("role","status");
+    const save = document.createElement("button");
+    save.type = "submit";
+    save.className = "btn";
+    save.textContent = "Save book details";
+    const cancel = document.createElement("button");
+    cancel.type = "button";
+    cancel.className = "btn secondary";
+    cancel.textContent = "Cancel";
+    cancel.onclick = () => dialog.close();
+    form.append(feedback, save, " ", cancel);
+    form.onsubmit = async event => {
+      event.preventDefault();
+      const values = new FormData(form);
+      const args = { p_book_id:bookId, p_expected_updated_at:book.updated_at };
+      for (const [name] of fields) args["p_" + name] = name === "authors"
+        ? values.get(name).split(/\r?\n/).map(author => author.trim()).filter(Boolean)
+        : values.get(name).trim();
+      save.disabled = true;
+      const { error } = await supabaseClient.rpc("edit_submitted_book",args);
+      if (error) {
+        feedback.textContent = error.message;
+        save.disabled = false;
+      } else {
+        dialog.close();
+        status.textContent = "Book details saved.";
+        await refresh();
+      }
+    };
+    dialog.append(form);
+    dialog.addEventListener("close",() => dialog.remove(),{ once:true });
+    document.body.append(dialog);
+    dialog.showModal();
+  }
   async function refresh() {
     const { data, error } = await supabaseClient.rpc("list_missing_books");
     if (error) {
@@ -33,6 +98,15 @@
       const actions = document.createElement("span");
       actions.className = "reader-book-review-actions";
       row.append(link, details, actions);
+      const edit = document.createElement("button");
+      edit.type = "button";
+      edit.className = "btn secondary";
+      edit.textContent = "Edit book details";
+      edit.onclick = async () => {
+        edit.disabled = true;
+        try { await editBook(book.id); } finally { edit.disabled = false; }
+      };
+      actions.append(edit, " ");
       function action(label, rpc, args) {
         const button = document.createElement("button");
         button.type = "button";
