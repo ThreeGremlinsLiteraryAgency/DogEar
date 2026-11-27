@@ -1808,6 +1808,10 @@ let accessories = [];
 let accessoriesError = false;
 let authorResults = [];
 let authorSearch;
+let selectedAuthor = null;
+let bibliographyRequest;
+let bibliography = [];
+let bibliographyStatus = "";
 
 async function loadAccessories() {
   const { data,error } = await supabaseClient.from("reading_accessories")
@@ -1864,7 +1868,7 @@ async function findAuthors(query, sequence) {
     const data = await quickCatalogFetch("https://openlibrary.org/search/authors.json?q=" +
       encodeURIComponent(query) + "&limit=20",5000,controller.signal);
     if (sequence !== searchSequence) return;
-    authorResults = (data.docs || []).map(author => ({ name:author.name, work:author.top_work }));
+    authorResults = (data.docs || []).map(author => ({ name:author.name, work:author.top_work, id:author.key }));
     applyDiscoveryFilters();
   } catch (error) {
     if (!controller.signal.aborted) console.warn("Author search:",error);
@@ -1874,6 +1878,10 @@ async function findAuthors(query, sequence) {
 function renderAuthors(query, books) {
   const grid = document.getElementById("authorsGrid");
   grid.replaceChildren();
+  if (selectedAuthor) {
+    renderBibliography(grid,books);
+    return;
+  }
   const names = new Map();
   if (query) for (const author of authorResults) {
     if (author.name) names.set(normalize(author.name),author);
@@ -1893,14 +1901,7 @@ function renderAuthors(query, books) {
     open.type = "button";
     open.textContent = author.name;
     open.setAttribute("aria-label","Search books by " + author.name);
-    open.onclick = () => {
-      selectTab("books");
-      const url = new URL(location.href);
-      url.searchParams.set("tab","books");
-      history.replaceState({}, "", url);
-      discoverSearch.value = author.name;
-      void runSearch();
-    };
+    open.onclick = () => void openAuthor(author);
     card.append(open);
     if (author.work) {
       const work = document.createElement("p");
@@ -1911,7 +1912,100 @@ function renderAuthors(query, books) {
   }
 }
 
+function authorNameKey(name) {
+  return normalize(name).normalize("NFKC").replace(/[^\p{L}\p{N}]/gu,"");
+}
+
+function renderBibliography(grid, books) {
+  const heading = document.createElement("h3");
+  heading.textContent = "Books by " + selectedAuthor.name;
+  const back = document.createElement("button");
+  back.type = "button";
+  back.className = "pg-cover-button";
+  back.textContent = "Back to author results";
+  back.onclick = () => {
+    bibliographyRequest?.abort();
+    selectedAuthor = null;
+    applyDiscoveryFilters();
+  };
+  const header = document.createElement("div");
+  header.style.gridColumn = "1 / -1";
+  header.append(heading,back);
+  grid.append(header);
+  const rows = new Map();
+  const authorKey = authorNameKey(selectedAuthor.name);
+  for (const book of [...books,...bibliography]) {
+    const names = book.authors || book.author_names || [];
+    if (!(Array.isArray(names) ? names : [names]).some(name => authorNameKey(name) === authorKey)) continue;
+    const url = bookDetailsUrl(book);
+    const identity = normalize(bookTitle(book));
+    if (url && !rows.has(identity)) rows.set(identity,{book,url});
+  }
+  if (bibliographyStatus || !rows.size) {
+    const message = document.createElement("p");
+    message.textContent = bibliographyStatus || "No credited books found for this author.";
+    grid.append(message);
+  }
+  for (const {book,url} of rows.values()) {
+    const link = document.createElement("a");
+    link.className = "discovery-extra-card";
+    link.href = url;
+    const cover = bookCover(book);
+    if (cover) {
+      const image = document.createElement("img");
+      image.alt = "";
+      image.src = cover;
+      image.loading = "lazy";
+      link.append(image);
+    }
+    link.append(bookTitle(book));
+    grid.append(link);
+  }
+}
+
+async function openAuthor(author) {
+  bibliographyRequest?.abort();
+  selectedAuthor = author;
+  bibliography = [];
+  bibliographyStatus = "";
+  selectTab("authors");
+  const url = new URL(location.href);
+  url.searchParams.set("tab","authors");
+  history.replaceState({}, "", url);
+  const id = String(author.id || "").split("/").pop();
+  if (!/^OL\d+A$/.test(id)) {
+    applyDiscoveryFilters();
+    return;
+  }
+
+  const controller = new AbortController();
+  bibliographyRequest = controller;
+  bibliographyStatus = "Loading books by " + author.name + "…";
+  applyDiscoveryFilters();
+  try {
+    const data = await quickCatalogFetch("https://openlibrary.org/authors/" + id + "/works.json?limit=40",
+      6500,controller.signal);
+    if (selectedAuthor !== author || controller.signal.aborted) return;
+    bibliography = (data.entries || []).filter(work => {
+      if (!/^\/works\/OL\d+W$/.test(work.key)) return false;
+      return (work.authors || []).some(credit => credit.author?.key === "/authors/" + id &&
+        (!credit.role || /^author$/i.test(credit.role)));
+    }).map(work => ({
+      _source:"catalog", source_work_key:work.key, title:work.title,
+      authors:[author.name],
+      cover_url:work.covers?.[0] > 0 ? "https://covers.openlibrary.org/b/id/" + work.covers[0] + "-M.jpg" : "",
+    }));
+    bibliographyStatus = "";
+  } catch (error) {
+    if (controller.signal.aborted || selectedAuthor !== author) return;
+    bibliographyStatus = "Open Library is unavailable. Showing credited books found in Paper Gremlin.";
+  }
+  applyDiscoveryFilters();
+}
+
 async function runSearch(){
+  bibliographyRequest?.abort();
+  selectedAuthor = null;
   currentSearch=
     discoverSearch.value
       .trim();
