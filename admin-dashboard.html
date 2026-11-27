@@ -768,6 +768,12 @@ h1{
 .reader-book-review-row > a { text-decoration: underline; }
 .reader-book-review-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .reader-book-review-actions button { padding: 8px 12px; border: 1px solid currentColor; border-radius: 6px; background: transparent; color: inherit; cursor: pointer; }
+#accessoryAdmin { padding:20px; }
+#accessoryAdmin summary { cursor:pointer; font-weight:bold; }
+#accessoryAdmin form { display:grid; gap:10px; max-width:540px; margin-top:12px; }
+#accessoryAdmin label { display:grid; gap:4px; }
+#accessoryAdmin label:last-of-type { display:block; }
+#accessoryAdmin input:not([type=checkbox]),#accessoryAdmin textarea { width:100%; padding:8px; font:inherit; }
 </style>
 <link rel="stylesheet" href="assets/paper-gremlin-app.css?v=20260927">
 </head>
@@ -1485,6 +1491,20 @@ h1{
     <!-- =====================================================
          RECENT ACTIVITY
     ====================================================== -->
+
+    <details class="activity" id="accessoryAdmin">
+      <summary>Reading Accessories</summary>
+      <form id="accessoryForm">
+        <label>Accessory name <input name="name" required maxlength="160"></label>
+        <label>Product URL <input name="product_url" type="url" required maxlength="2048"></label>
+        <label>Image URL (optional) <input name="image_url" type="url" maxlength="2048"></label>
+        <label>Description <textarea name="description" maxlength="1000"></textarea></label>
+        <label><input type="checkbox" name="approved" checked> Gremlins Approved</label>
+        <button class="btn" type="submit">Add accessory</button>
+        <p id="accessoryStatus" role="status"></p>
+      </form>
+      <a href="discover.html?tab=accessories">View Reading Accessories</a>
+    </details>
 
     <details class="activity" id="readerBookQueue">
       <summary>Books pending approval<span data-pending-count></span></summary>
@@ -2580,6 +2600,32 @@ function showLocked(){
    START
 ========================================================= */
 
+async function saveAccessory(event) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const submit = form.querySelector("[type=submit]");
+  const status = $("accessoryStatus");
+  const fields = new FormData(form);
+  submit.disabled = true;
+  status.textContent = "Saving…";
+  try {
+    const { error } = await supabaseClient.from("reading_accessories").insert({
+      name: fields.get("name").trim(),
+      product_url: fields.get("product_url").trim(),
+      image_url: fields.get("image_url").trim() || null,
+      description: fields.get("description").trim(),
+      gremlins_approved: fields.has("approved"),
+    });
+    if (error) throw error;
+    form.reset();
+    status.textContent = "Accessory added to Discover.";
+  } catch (error) {
+    status.textContent = error.message || "Couldn’t add the accessory.";
+  } finally {
+    submit.disabled = false;
+  }
+}
+
 async function start(){
 
   const {
@@ -2625,6 +2671,7 @@ async function start(){
   }
 
   $("readerBookQueue").open = true;
+  $("accessoryForm").addEventListener("submit",saveAccessory);
 
   await Promise.all([
     loadStats(),
