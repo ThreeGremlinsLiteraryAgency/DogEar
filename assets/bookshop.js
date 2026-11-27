@@ -20,12 +20,12 @@ function paperGremlinBookshopUrl(book) {
   const affiliate = "128186";
   const productBaseUrl = "https://bookshop.org/a/" + affiliate;
   const verified = status === "verified" || status === "manually_verified";
-  if (!verified) {
+  if (["needs_verification", "community_unverified"].includes(status)) {
     return storefront;
   }
 
   const isbn = String(book.isbn13 || "").replace(/[\s-]/g, "");
-  if (/^97[89][0-9]{10}$/.test(isbn)) {
+  if (verified && /^97[89][0-9]{10}$/.test(isbn)) {
     const checksum = Array.from(isbn).reduce(
       (sum, digit, index) => sum + Number(digit) * (index % 2 ? 3 : 1), 0
     );
@@ -35,7 +35,7 @@ function paperGremlinBookshopUrl(book) {
   }
 
   const authors = Array.isArray(book.authors) ? book.authors.join(" ") : book.authors;
-  const keywords = [book.title, authors].filter(Boolean).join(" ").trim();
+  const keywords = String(book.title || authors || "").trim();
   if (!keywords) {
     return storefront;
   }
