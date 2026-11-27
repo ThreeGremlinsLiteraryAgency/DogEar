@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Prepare only complete, source-verified new works for the 100K D1 catalog.
 
-Skip incomplete source records; each batch covers exactly one source window.
-Never reset the cursor or insert incomplete work metadata.
+Require title, resolved author and cover. Keep year and subjects when available.
+Each batch covers exactly one source window.
 """
 import argparse
 import gzip
@@ -31,17 +31,12 @@ def required(d):
     year = re.search(r"\b(1[5-9][0-9]{2}|20[0-9]{2})\b", str(d.get("first_publish_date") or ""))
     covers = d.get("cover_ids") or []
     authors = d.get("authors") or []
-    subjects = d.get("subjects") or []
     if not re.fullmatch(r"OL[0-9]+W", str(key)):
         raise ValueError("Invalid work key")
     if not isinstance(title, str) or not title.strip():
         raise ValueError(f"{key}: missing title")
-    if not year:
-        raise ValueError(f"{key}: missing first publication year")
     if not (isinstance(covers, list) and covers and isinstance(covers[0], int) and covers[0] > 0):
         raise ValueError(f"{key}: missing cover")
-    if not (isinstance(subjects, list) and any(isinstance(s, str) and s.strip() for s in subjects)):
-        raise ValueError(f"{key}: missing subjects")
     if not isinstance(authors, list) or not authors:
         raise ValueError(f"{key}: missing resolved author names")
     clean = []
@@ -52,7 +47,7 @@ def required(d):
         if not re.fullmatch(r"OL[0-9]+A", str(aid)) or not isinstance(name, str) or not name.strip():
             raise ValueError(f"{key}: invalid author metadata")
         clean.append((aid, name.strip()))
-    return int(year.group()), clean
+    return int(year.group()) if year else None, clean
 
 out = Path("batches")
 out.mkdir(exist_ok=True)
@@ -85,7 +80,8 @@ with gzip.open("paper-gremlin-priority-100k.jsonl.gz", "rt", encoding="utf-8") a
             continue
         key, title = d["work_key"], d["title"].strip()
         cover = d["cover_ids"][0]
-        subjects = [s.strip() for s in d["subjects"] if isinstance(s, str) and s.strip()][:20]
+        source_subjects = d.get("subjects")
+        subjects = [s.strip() for s in source_subjects if isinstance(s, str) and s.strip()][:20] if isinstance(source_subjects, list) else []
         subtitle = d.get("subtitle") if isinstance(d.get("subtitle"), str) else None
         url = f"https://covers.openlibrary.org/b/id/{cover}-M.jpg"
         # Never overwrite a pre-existing row: legacy gaps are explicitly deferred.
