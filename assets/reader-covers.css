@@ -17,21 +17,19 @@
   pointer-events: none;
 }
 .pg-cover-lettering strong, .pg-cover-lettering span {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  overflow-wrap: anywhere;
+  display: block;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
 }
 .pg-cover-lettering strong {
-  -webkit-line-clamp: 5;
-  font-size: var(--title-size, 9.2cqi);
+  font-size: 9.2cqi;
   font-weight: 600;
   line-height: 1.03;
   letter-spacing: -.025em;
   text-wrap: balance;
 }
 .pg-cover-lettering span {
-  -webkit-line-clamp: 2;
   font-size: 4cqi;
   font-weight: 600;
   line-height: 1.25;
@@ -75,6 +73,7 @@
 .pg-cover-choices { min-width: 0; margin: 16px 0; padding: 10px; border: 1px solid #a88b5870; }
 .pg-cover-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(76px,1fr)); gap: 8px; }
 .pg-cover-option { display: grid; gap: 5px; text-align: center; cursor: pointer; color: #f1e7cf; }
+.pg-cover-option > span:last-child { font-size: .875rem; line-height: 1.2; }
 .pg-cover-option .pg-cover-art { display: block; aspect-ratio: 2/3; overflow: hidden; border-radius: 4px; }
 .pg-cover-option img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .pg-cover-option input { justify-self: center; margin: 3px; accent-color: #dfbb76; }

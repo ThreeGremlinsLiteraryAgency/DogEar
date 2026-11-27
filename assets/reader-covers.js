@@ -1,5 +1,43 @@
 "use strict";
 
+const readerCoverNames = new Map([
+  [1, "Gilded Grove"],
+  [2, "Starlit Crescent"],
+  [3, "Antique Olive"],
+  [4, "Rose Garden"],
+  [5, "Moonlit Peaks"],
+  [6, "Hillside Cottage"],
+  [7, "Burgundy Classic"],
+  [8, "Crimson Folio"],
+  [9, "Golden Bookplate"],
+  [10, "Emberworn"],
+]);
+
+const coverLetteringMeasure = document.createElement("canvas").getContext("2d");
+
+function fitCoverLettering(text, width, startingSize, maxLines, letterSpacing) {
+  const words = text.trim().split(/\s+/);
+  for (let size = startingSize; size > 1; size -= .15) {
+    coverLetteringMeasure.font = "600 " + size + "px Georgia, 'Times New Roman', serif";
+    const measure = line => coverLetteringMeasure.measureText(line).width
+      + Math.max(0, line.length - 1) * size * letterSpacing;
+    if (words.some(word => measure(word) > width)) continue;
+    let lines = 1;
+    let line = "";
+    for (const word of words) {
+      const combined = line ? line + " " + word : word;
+      if (measure(combined) > width) {
+        lines++;
+        line = word;
+      } else {
+        line = combined;
+      }
+    }
+    if (lines <= maxLines) return size;
+  }
+  return 1;
+}
+
 window.paperGremlinReaderCovers = {
   letter(art, number, title, author) {
     art.classList.add("pg-cover-art");
@@ -10,11 +48,12 @@ window.paperGremlinReaderCovers = {
     lettering.setAttribute("aria-hidden", "true");
     const heading = document.createElement("strong");
     heading.textContent = title;
-    // Keep long titles inside the artwork's open center.
-    const size = Math.max(4.8, Math.min(9.2, 10.5 - title.length * .044));
-    heading.style.setProperty("--title-size", size + "cqi");
+    // Measure in a 100-unit cover so the same proportions fit thumbnails and full covers.
+    const width = Number(number) === 4 ? 56 : [3, 10].includes(Number(number)) ? 58 : 66;
+    heading.style.fontSize = fitCoverLettering(title, width, 9.2, 5, 0) + "cqi";
     const byline = document.createElement("span");
     byline.textContent = author;
+    byline.style.fontSize = fitCoverLettering(author.toUpperCase(), width, 4, 2, .13) + "cqi";
     lettering.append(heading, byline);
     art.append(lettering);
   },
@@ -42,7 +81,7 @@ window.paperGremlinReaderCovers = {
       radio.value = number;
       radio.checked = number === (selected || data[0].number);
       const label = document.createElement("span");
-      label.textContent = "Cover " + String(number).padStart(4, "0");
+      label.textContent = readerCoverNames.get(Number(number)) || "Alternate artwork";
       choice.append(art, radio, label);
       grid.append(choice);
       choices.push({ art, number });
