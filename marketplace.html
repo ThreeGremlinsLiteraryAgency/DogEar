@@ -905,6 +905,7 @@ h1{font-size:clamp(46px,6vw,72px);max-width:760px}
       </button>
 
     </form>
+    <div id="addMissingBookAction"></div>
 
     <p class="search-hint">
       Search results come from Paper Gremlin and the expanded book catalog. Select any title to rate, review, save, and shop it through Paper Gremlin.
@@ -2000,7 +2001,6 @@ async function runBookSearch(
       "No books found.",
       "Try another title, author, or ISBN."
     );
-    paperGremlinMissingBook.addButton(searchBookGrid, supabaseClient, { query: cleanQuery });
 
   }
 
@@ -2402,6 +2402,11 @@ async function initialize(){
   }
 
 }
+
+paperGremlinMissingBook.addButton(document.getElementById("addMissingBookAction"), supabaseClient, {
+  get query() { return bookSearchInput.value.trim(); },
+});
+document.querySelector("#addMissingBookAction button").classList.add("pg-cover-button");
 
 initialize();
 
